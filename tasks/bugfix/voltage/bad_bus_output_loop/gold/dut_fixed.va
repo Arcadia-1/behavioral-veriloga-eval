@@ -12,10 +12,17 @@ module bin4_out (VDD, VSS, CODE, DOUT);
     parameter real vth = 0.45;
     parameter real td  = 0p;
     parameter real trf = 20p;
+    real d0, d1, d2, d3;
 
-    integer i;
     analog begin
-        for (i = 0; i < 4; i = i + 1)
-            V(DOUT[i]) <+ transition((V(CODE[i]) > vth) ? V(VDD) : V(VSS), td, trf, trf);
+        d0 = (V(CODE[0]) > vth) ? V(VDD) : V(VSS);
+        d1 = (V(CODE[1]) > vth) ? V(VDD) : V(VSS);
+        d2 = (V(CODE[2]) > vth) ? V(VDD) : V(VSS);
+        d3 = (V(CODE[3]) > vth) ? V(VDD) : V(VSS);
+
+        V(DOUT[0]) <+ transition(d0, td, trf, trf);
+        V(DOUT[1]) <+ transition(d1, td, trf, trf);
+        V(DOUT[2]) <+ transition(d2, td, trf, trf);
+        V(DOUT[3]) <+ transition(d3, td, trf, trf);
     end
 endmodule
