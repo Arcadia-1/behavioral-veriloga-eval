@@ -12,6 +12,8 @@ import argparse
 import json
 import re
 import shutil
+import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -89,7 +91,47 @@ def _include_filename_for_module(tb_text: str, missing_module: str) -> str:
     return f"{missing_module}.va"
 
 
+def _spectre_logical_statements(tb_text: str) -> list[str]:
+    statements: list[str] = []
+    current: list[str] = []
+    for raw_line in tb_text.splitlines():
+        line = raw_line.rstrip()
+        stripped = line.strip()
+        if not stripped:
+            if current:
+                statements.append(" ".join(current).strip())
+                current = []
+            continue
+        if stripped.endswith("\\"):
+            current.append(stripped[:-1].strip())
+            continue
+        current.append(stripped)
+        statements.append(" ".join(current).strip())
+        current = []
+    if current:
+        statements.append(" ".join(current).strip())
+    return statements
+
+
 def _instance_excerpt(tb_text: str, missing_module: str) -> str:
+    include_lines: list[str] = []
+    for line in tb_text.splitlines():
+        stripped = line.strip()
+        if re.search(rf'^\s*ahdl_include\s+"{re.escape(missing_module)}\.va"', stripped):
+            include_lines.append(stripped)
+
+    instance_lines: list[str] = []
+    for stmt in _spectre_logical_statements(tb_text):
+        stripped = stmt.strip()
+        if not stripped or stripped.startswith("//") or stripped.startswith("ahdl_include"):
+            continue
+        if re.search(rf"\)\s*{re.escape(missing_module)}\b", stripped):
+            instance_lines.append(stripped)
+            break
+
+    if include_lines or instance_lines:
+        return "\n".join([*include_lines, *instance_lines]).strip()
+
     lines = tb_text.splitlines()
     excerpts: list[str] = []
     for idx, line in enumerate(lines):
@@ -201,6 +243,74 @@ def _response_from_replay_va(path: Path) -> str:
     return f"```verilog\n{text}\n```"
 
 
+def _score_with_maintained_validator(args: argparse.Namespace, *, output_root: Path, model_slug: str) -> dict:
+    validation_output_root = args.output_root.resolve()
+    cmd = [
+        sys.executable,
+        str(ROOT / "runners" / "validate_benchmark_v2_gold.py"),
+        "--backend",
+        args.validation_backend,
+        "--bench-dir",
+        str(args.bench_dir),
+        "--family",
+        args.validation_family,
+        "--candidate-dir",
+        str(output_root),
+        "--model",
+        model_slug,
+        "--sample-idx",
+        str(args.sample_idx),
+        "--output-dir",
+        str(validation_output_root),
+        "--timeout-s",
+        str(args.timeout_s),
+        "--task",
+        args.task,
+    ]
+    if args.validation_backend in {"spectre", "both"}:
+        cmd.extend(["--env", str(args.env), "--profile", args.profile, "--spectre-mode", args.spectre_mode])
+        if args.keep_remote_files:
+            cmd.append("--keep-remote-files")
+
+    proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=args.validator_timeout_s)
+    summary_path = validation_output_root / "summary.json"
+    summary = _json_read(summary_path) if summary_path.exists() else {}
+    result: dict = {
+        "status": "VALIDATOR_ERROR" if proc.returncode else "VALIDATOR_EVALUATED",
+        "scores": {},
+        "notes": [],
+        "validator": {
+            "backend": args.validation_backend,
+            "returncode": proc.returncode,
+            "stdout_tail": "\n".join((proc.stdout or "").splitlines()[-20:]),
+            "stderr_tail": "\n".join((proc.stderr or "").splitlines()[-20:]),
+            "summary": summary,
+        },
+    }
+    primary_name = "evas_result.json" if args.validation_backend in {"evas", "both"} else "spectre_result.json"
+    primary_path = validation_output_root / args.task / primary_name
+    if primary_path.exists():
+        primary = _json_read(primary_path)
+        result.update(
+            {
+                "status": primary.get("status", result["status"]),
+                "scores": primary.get("scores", {}),
+                "notes": primary.get("notes", []),
+                "checker_result": primary.get("checker_result", {}),
+                "primary_result": str(primary_path),
+            }
+        )
+    if args.validation_backend == "both":
+        spectre_path = validation_output_root / args.task / "spectre_result.json"
+        if spectre_path.exists():
+            spectre = _json_read(spectre_path)
+            result["spectre_status"] = spectre.get("status")
+            result["spectre_scores"] = spectre.get("scores", {})
+            result["spectre_notes"] = spectre.get("notes", [])
+            result["spectre_result"] = str(spectre_path)
+    return result
+
+
 def run_one(args: argparse.Namespace) -> dict:
     source_root = args.source_generated_dir.resolve()
     output_root = args.output_generated_dir.resolve()
@@ -295,7 +405,7 @@ def run_one(args: argparse.Namespace) -> dict:
             "scores": {},
             "evas_notes": [api_error],
         }
-    else:
+    elif args.validation_backend == "legacy-score":
         scored = score_one_task(
             args.task,
             task_dir,
@@ -307,14 +417,27 @@ def run_one(args: argparse.Namespace) -> dict:
             top_p=args.top_p,
             timeout_s=args.timeout_s,
         )
+    else:
+        scored = _score_with_maintained_validator(args, output_root=output_root, model_slug=model_slug)
     manifest = {
         **meta,
         "output_generated_dir": str(output_root),
         "output_root": str(args.output_root.resolve()),
+        "validation_backend": args.validation_backend,
         "score_status": scored.get("status"),
         "score_scores": scored.get("scores", {}),
         "score_notes": scored.get("evas_notes") or scored.get("notes") or [],
+        "checker_result": scored.get("checker_result", {}),
     }
+    if scored.get("validator"):
+        manifest["validator"] = scored["validator"]
+    if scored.get("primary_result"):
+        manifest["primary_result"] = scored["primary_result"]
+    if scored.get("spectre_status"):
+        manifest["spectre_status"] = scored["spectre_status"]
+        manifest["spectre_scores"] = scored.get("spectre_scores", {})
+        manifest["spectre_notes"] = scored.get("spectre_notes", [])
+        manifest["spectre_result"] = scored.get("spectre_result")
     _json_write(output_root / "wrong_function_regeneration_manifest.json", manifest)
     return manifest
 
@@ -333,6 +456,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top-p", type=float, default=1.0)
     parser.add_argument("--max-tokens", type=int, default=4096)
     parser.add_argument("--timeout-s", type=int, default=240)
+    parser.add_argument(
+        "--validation-backend",
+        choices=["legacy-score", "evas", "spectre", "both"],
+        default="evas",
+        help="Use the maintained validator by default so benchmark-balanced checker.py routing is honored.",
+    )
+    parser.add_argument("--validation-family", default="benchmark-balanced")
+    parser.add_argument("--validator-timeout-s", type=int, default=900)
+    parser.add_argument("--env", default=str(ROOT / "virtuoso-bridge-lite" / ".env"))
+    parser.add_argument("--profile", default="ci")
+    parser.add_argument("--spectre-mode", default="spectre", choices=["spectre", "aps", "x", "cx", "ax", "mx", "lx", "vx"])
+    parser.add_argument("--keep-remote-files", action="store_true")
     parser.add_argument(
         "--replay-response",
         type=Path,

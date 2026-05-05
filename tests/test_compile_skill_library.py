@@ -13,6 +13,7 @@ from materialize_cultra_candidates import _wrong_function_gate_action  # noqa: E
 from run_wrong_function_regeneration import (  # noqa: E402
     _choose_module_block,
     _include_filename_for_module,
+    _instance_excerpt,
     _missing_module_from_notes,
     _response_from_replay_va,
 )
@@ -94,7 +95,28 @@ def test_wrong_function_regeneration_helpers_extract_public_contract() -> None:
 
     assert _missing_module_from_notes(notes) == ("v2b_4b", "dwa_ptr_gen_no_overlap")
     assert _include_filename_for_module(tb_text, "v2b_4b") == "v2b_4b.va"
+    assert "IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b" in _instance_excerpt(
+        tb_text,
+        "v2b_4b",
+    )
     assert "module v2b_4b" in (_choose_module_block(response, "v2b_4b") or "")
+
+
+def test_wrong_function_regeneration_excerpt_skips_comment_only_mentions() -> None:
+    tb_text = (
+        "// single voltage source driving v2b_4b -> 4-bit code\n"
+        "simulator lang=spectre\n"
+        'ahdl_include "v2b_4b.va"\n'
+        "Vvin (vin_node 0) vsource type=pwl wave=[0 3 10n 7]\n"
+        "// v2b_4b: converts analog voltage to 4-bit code on CLK rising edge\n"
+        "IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b vdd=0.9\n"
+    )
+
+    excerpt = _instance_excerpt(tb_text, "v2b_4b")
+
+    assert 'ahdl_include "v2b_4b.va"' in excerpt
+    assert "IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b vdd=0.9" in excerpt
+    assert "simulator lang=spectre" not in excerpt
 
 
 def test_wrong_function_regeneration_replay_va_wraps_saved_candidate(tmp_path: Path) -> None:
