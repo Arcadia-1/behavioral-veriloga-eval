@@ -93,7 +93,7 @@ small audit slice before it can be promoted.
 | `C-SKILL` | `D` plus LLM-based compile-first closure with public compile-skill guidance injected into compile repair prompts; no mechanism guidance and no behavior repair. | Diagnostic rerun complete: `78/143`. After strict-front-end parity fixes, targeted EVAS+Spectre audit on the 35 D residual compile/interface failures gives EVAS `11/35`, Spectre `11/35`, pass mismatch `0/35`. |
 | `C-PLUS` / `C-SKILLPLUS` | `C` plus compile-skill routed deterministic local compile guards applied only to C residual compile/interface failures; no new LLM calls, no mechanism guidance, and no behavior repair. Skills are selected from public validator notes through `runners/compile_skills/registry.json`; fixer and judge-only actions are recorded in the manifest. | Skillized rerun complete under the current validator: `80/143`; residual compile failures are `8/143`. Targeted EVAS+Spectre audit on the earlier 17 C residual compile failures gives pass mismatch `0/17`. This is a compile-skill ablation, not an official G row. |
 | `C-ULTRA(full)` | `C` plus compile-skill routed deterministic local fixers with per-action EVAS quick accept/reject and batch fallback transaction for coupled safe fixes; no new LLM calls, no mechanism guidance, and no behavior repair. | Full ULTRA rerun complete: `81/143`; residual compile failures are `7/143`. Targeted EVAS+Spectre audit on the 18 C residual compile/interface failures after parity fixes gives EVAS `6/18`, Spectre `6/18`, pass mismatch `0/18`. This remains the conservative Spectre-audited maintained compile-skill ablation. |
-| `C-ULTRA-ADVANCED` | `C-ULTRA(full)` plus advanced public compile skills for sourced port-role repair, missing testbench generation, and dynamic scatter/index materialization; no new LLM calls and no mechanism guidance. | Strict-EVAS result: `83/143`. R6 targeted EVAS+Spectre audit on the 7 advanced residual tasks after adding the backslash module-header guard gives EVAS `2/7`, Spectre `2/7`, pass mismatch `0/7`, and matching failure taxonomy (`FAIL_SIM_CORRECTNESS=4`, `FAIL_DUT_COMPILE=1`). Both advanced PASS deltas are Spectre-confirmed; the remaining compile failure is `completion92_calibration_bugfix`, which requires wrong-function regeneration for missing `v2b_4b`. |
+| `C-ULTRA-ADVANCED` | `C-ULTRA(full)` plus advanced public compile skills for sourced port-role repair, missing testbench generation, and dynamic scatter/index materialization; no new LLM calls and no mechanism guidance. | Strict-EVAS result: `83/143`. R6 targeted EVAS+Spectre audit on the 7 advanced residual tasks after adding the backslash module-header guard gives EVAS `2/7`, Spectre `2/7`, pass mismatch `0/7`, and matching failure taxonomy (`FAIL_SIM_CORRECTNESS=4`, `FAIL_DUT_COMPILE=1`). Both advanced PASS deltas are Spectre-confirmed; the remaining compile failure is `completion92_calibration_bugfix`, which requires wrong-function regeneration for missing `v2b_4b`. A maintained-validator replay of the wrong-function path now passes EVAS and Spectre on this single task (`1/1`, mismatch `0/1`), but it is replay evidence (`api_call_count=0`), not a live model row. |
 | `G` | Circuit-mechanism guidance plus hard compile guard / compile closure. Mechanism-card retrieval must use only `prompt.md`, public port/observable text, event clues, and public functional labels; it must not use `task_id`, `task_name`, directory names, source task ids, gold code, or checker internals for routing. The accepted candidate for each task must pass Spectre-strict preflight and EVAS compile before behavior scoring. Compile repair may use compiler/preflight diagnostics but must not use gold/checker behavior feedback. | Public-only rerun complete: `G0_public=65/143`; `G_public_v2=76/143` with `FAIL_DUT_COMPILE=2`, `FAIL_TB_COMPILE=5`. This does **not** satisfy the official G compile KPI. The earlier `75/143` and `88/143` runs used the old identity-routed mechanism retrieval and are diagnostic only. |
 | `I` | Functional-IR / materialized-IR enhanced condition. | Full balanced rerun complete: `67/143` under spectre-strict EVAS. |
 
@@ -125,6 +125,7 @@ source/parser/kernel parity fixes, plus the current compile-guard ablations, is:
 | `C-SKILL` | `kimi-k2.5` | spectre-strict EVAS | `78/143` | 54.5% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
 | `C-SKILLPLUS` | `kimi-k2.5` | spectre-strict EVAS | `80/143` | 55.9% | `results/adfgi-ablation-CSKILLPLUS-compile-skills-2026-05-03.md` |
 | `C-ULTRA(full)` | `kimi-k2.5` | spectre-strict EVAS | `81/143` | 56.6% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
+| `C-ULTRA-ADVANCED` | `kimi-k2.5` | spectre-strict EVAS | `83/143` | 58.0% | `results/balanced-CULTRA-ADVANCED-skill-acceptreject-kimi-k2.5-spectre-strict-evas-2026-05-03` |
 | `G public-only` | `kimi-k2.5` | spectre-strict EVAS | `76/143` | 53.1% | `results/balanced-G-public-compile-guarded-v2-kimi-k2.5-spectre-strict-evas-2026-05-02` |
 | `I` | `kimi-k2.5` | spectre-strict EVAS | `67/143` | 46.9% | `results/adfgi-balanced-GI-full-2026-05-02.md` |
 
@@ -159,6 +160,34 @@ Cost caveat: this F run includes D one-shot tokens plus repair-round tokens, but
 the historical repair-round metadata did not record API elapsed time for the 72
 repair calls. The adaptive repair runner has been patched to record repair API
 elapsed time in future F/G/I repair runs.
+
+## Paper Table Plan
+
+The current paper-facing result structure should separate the main generation
+rows from compile-skill ablations and targeted audit evidence.
+
+Main/ablation table candidate:
+
+| Row | Intended role | Current status |
+| --- | --- | --- |
+| `A` | Prompt-only baseline. | Main row: `31/143`. |
+| `D` | Public Spectre-strict rule prompt baseline. | Main row: `68/143`; full Spectre audit parity `143/143`. |
+| `F` | EVAS repair loop over `D`. | Main row: `70/143`; modest gain, not a compile-closure solution. |
+| `C` | LLM compile-first closure over `D`. | Compile ablation row: `75/143`; residual compile failures `18/143`. |
+| `C-SKILL` | Prompt-side compile skill guidance inside the compile repair loop. | Compile ablation row: `78/143`; public skill guidance improves compile closure. |
+| `C-SKILLPLUS` | Deterministic skill-routed local guards over `C` residual compile/interface failures. | Compile ablation row: `80/143`; no new LLM calls. |
+| `C-ULTRA(full)` | Skill-routed local accept/reject plus batch fallback. | Conservative maintained compile-skill row: `81/143`; targeted EVAS/Spectre audit parity on residual slice. |
+| `C-ULTRA-ADVANCED` | Advanced public compile skills added to `C-ULTRA(full)`. | Advanced compile-skill row: `83/143`; targeted EVAS/Spectre audit confirms both PASS deltas. |
+
+Side/audit evidence:
+
+| Evidence | Scope | Current conclusion |
+| --- | --- | --- |
+| `D` full Spectre audit | Full 143 tasks | EVAS `68/143`, Spectre `68/143`, pass/fail parity `143/143`. |
+| `C-SKILL`, `C-SKILLPLUS`, `C-ULTRA(full)`, `C-ULTRA-ADVANCED` targeted audits | Residual compile/interface slices | No EVAS/Spectre pass mismatches on audited slices after parity fixes. |
+| Wrong-function regeneration replay | `completion92_calibration_bugfix` | Maintained-validator replay passes EVAS and Spectre (`1/1`, mismatch `0/1`), proving the route and validator plumbing; live model generation remains pending. |
+| `G public-only` | Full 143 tasks | Diagnostic only for now because official G compile KPI is not met. |
+| `I` | Full 143 tasks | Diagnostic/future branch until a rerun improves over the maintained D/F/C-family rows. |
 
 ## Retired Result Policy
 

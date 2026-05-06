@@ -192,12 +192,17 @@ Prompt-side regeneration implementation:
 | `generated-balanced-WRONGFUNC-REGEN-kimi-k2.5-2026-05-04` | Single-task Kimi attempt for `completion92_calibration_bugfix`. |
 | `results/balanced-WRONGFUNC-REGEN-kimi-k2.5-quick-2026-05-04` | Blocked before generation by expired Bailian token: `invalid access token or token expired`. |
 | `generated-balanced-WRONGFUNC-REPLAY-historical-v2b-2026-05-04` | Offline replay mode using a historical model-generated `v2b_4b.va`; `api_call_count=0`, `call_mode=replay_va`. |
-| `results/balanced-WRONGFUNC-REPLAY-historical-v2b-quick-2026-05-04` | Single-task strict-EVAS replay: DUT compile `1.0`, TB compile `1.0`, sim correctness `0.0`; compile closure validated, live Kimi regeneration not validated. |
+| `results/balanced-WRONGFUNC-REPLAY-historical-v2b-quick-2026-05-04` | Legacy single-task scorer replay: DUT compile `1.0`, TB compile `1.0`, sim correctness `0.0`; superseded for current claims by maintained-validator replay. |
+| `generated-balanced-WRONGFUNC-REPLAY-maintained-validator-2026-05-06` | Offline replay candidate validated through `validate_benchmark_v2_gold.py --backend evas`; `api_call_count=0`, `call_mode=replay_va`. |
+| `results/balanced-WRONGFUNC-REPLAY-maintained-validator-evas-2026-05-06` | Single-task maintained-validator EVAS replay: `1/1` PASS, all axis rates `1.0`. |
+| `generated-balanced-WRONGFUNC-REPLAY-maintained-validator-both-2026-05-06` | Offline replay candidate validated through maintained EVAS and Spectre backends. |
+| `results/balanced-WRONGFUNC-REPLAY-maintained-validator-both-2026-05-06` | Single-task maintained-validator EVAS+Spectre replay: EVAS `1/1`, Spectre `1/1`, pass mismatch `0/1`. |
 
 Offline validation boundary:
 
 - Replay mode validates the regeneration plumbing and whether replacing only
-  the missing public module is sufficient to close the compile failure.
+  the missing public module is sufficient to close the compile failure and pass
+  the maintained checker.
 - Replay mode must not be reported as a live model result because it does not
   call the provider.
 - Live model validation still requires a valid provider token, and Spectre audit
@@ -212,7 +217,7 @@ The next compile-skill work should be added in this order.
 | DONE | Backslash module-header guard | Strict preflight + compile skill | Detect and rewrite Verilog-A module headers using shell-style `\` line continuation. | R6 audit closes `original92_dwa_ptr_gen_smoke` failure-domain drift under EVAS+Spectre. |
 | P0 | `missing_testbench_generation` refinement | Prompt-side plus local accept/reject | Improve missing-TB cases where a smoke skeleton reveals deeper DUT legality problems. | `original92_dwa_ptr_gen_smoke` moves beyond TB compile without task-id templates. |
 | P1 | `dynamic_scatter_index_materialization` hardening | Local accept/reject plus guidance | Generalize scatter materialization beyond the observed DWA shape. | Additional dynamic-vector cases compile-clean under EVAS and Spectre. |
-| P1 | Prompt-side wrong-function regeneration | LLM repair | Regenerate the missing public module after `wrong_function_regeneration_gate` fires. | The replacement module compiles under EVAS/Spectre without using task-id templates or hidden gold code. |
+| P1 | Prompt-side wrong-function regeneration live run | LLM repair | Regenerate the missing public module after `wrong_function_regeneration_gate` fires using only public prompt and harness evidence. | A live provider call produces a replacement module that passes EVAS/Spectre without using task-id templates or hidden gold code. Maintained-validator replay already passes EVAS/Spectre (`1/1`, mismatch `0/1`). |
 
 ## Promotion Checklist For New Skills
 

@@ -124,6 +124,7 @@ Targeted EVAS+Spectre audits:
 | `C-ULTRA` | 17 C residual compile/interface failures | `4/17` | `4/17` | `0/17` |
 | `C-ULTRA(full)` | 18 C residual compile/interface failures after parity fixes | `6/18` | `6/18` | `0/18` |
 | `C-ULTRA-ADVANCED` | 7 advanced residual tasks after backslash guard | `2/7` | `2/7` | `0/7` |
+| Wrong-function replay | `completion92_calibration_bugfix` after maintained-validator regeneration replay | `1/1` | `1/1` | `0/1` |
 
 `C-SKILLPLUS` verifies that the skillized execution path preserves the earlier
 hard-guard improvement while making the mechanism reusable and auditable.
@@ -176,9 +177,17 @@ runners/run_wrong_function_regeneration.py
 
 This runner copies the gated candidate, builds a public-only regeneration prompt
 from the task prompt, strict-EVAS notes, and public harness instance evidence,
-then asks the LLM to regenerate only the missing module.  It does not synthesize
-a replacement module locally.  The first `completion92_calibration_bugfix` run
-was blocked before generation by an expired Bailian token:
+then asks the LLM to regenerate only the missing module.  The prompt now includes
+the public harness instance shape, for example:
+
+```text
+ahdl_include "v2b_4b.va"
+IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b vdd=0.9
+```
+
+It does not synthesize a replacement module locally.  The first live
+`completion92_calibration_bugfix` run was blocked before generation by an
+expired Bailian token:
 
 ```text
 AuthenticationError: invalid access token or token expired
@@ -195,16 +204,28 @@ Replay mode sets `api_call_count=0` and records `call_mode=replay_*` in
 `generation_meta.json` and the manifest.  It is only a strategy/plumbing
 validation, not a live model result.
 
-The current historical replay for `completion92_calibration_bugfix` uses an
-older model-generated `v2b_4b.va` and produces:
+The maintained-validator replay for `completion92_calibration_bugfix` uses an
+older model-generated `v2b_4b.va`, replaces only the missing public module, and
+now validates through `validate_benchmark_v2_gold.py` instead of the legacy
+single-task scorer.  It produces:
 
 ```text
-DUT compile: 1.0
-TB compile: 1.0
-Sim correctness: 0.0
-Status: FAIL_SIM_CORRECTNESS
+EVAS:    1/1 PASS
+Spectre: 1/1 PASS
+Pass mismatch: 0/1
+Axis rates: dut_compile=1.0, tb_compile=1.0, sim_correct=1.0
 ```
 
-This confirms that prompt-side regeneration of the missing public module can
-close the remaining compile failure, while behavior correctness remains a
-separate mechanism/functional-repair problem.
+Artifacts:
+
+```text
+generated-balanced-WRONGFUNC-REPLAY-maintained-validator-2026-05-06
+results/balanced-WRONGFUNC-REPLAY-maintained-validator-evas-2026-05-06
+generated-balanced-WRONGFUNC-REPLAY-maintained-validator-both-2026-05-06
+results/balanced-WRONGFUNC-REPLAY-maintained-validator-both-2026-05-06
+```
+
+This confirms that replacing only the missing public module can close the
+remaining compile failure and pass the maintained checker under both EVAS and
+Spectre.  Because replay mode records `api_call_count=0`, it validates the
+strategy and plumbing but must not be reported as a live model result.
