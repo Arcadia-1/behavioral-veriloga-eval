@@ -1,0 +1,163 @@
+{
+  "benchmark": "bpack-v1",
+  "target_size": "bpack48",
+  "pack_count": 12,
+  "task_forms": [
+    "bugfix",
+    "spec-to-va",
+    "end-to-end",
+    "tb-generation"
+  ],
+  "status_legend": {
+    "existing_exact_pack": "All four tasks exist and already share a concrete function-pack identity closely enough for v1.",
+    "existing_needs_contract_review": "Candidate tasks exist, but the shared concrete function contract must be reviewed before promotion.",
+    "needs_authoring": "At least one task form must be newly authored or materially adapted.",
+    "needs_gold_validation": "Pack cannot enter bpack-v1 until strict-evas gold and targeted spectre-audit validation pass."
+  },
+  "packs": [
+    {
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "status": "existing_exact_pack",
+      "forms": {
+        "bugfix": "balanced_threshold_detector_bugfix",
+        "spec-to-va": "balanced_threshold_detector_dut",
+        "end-to-end": "balanced_threshold_detector_e2e",
+        "tb-generation": "balanced_threshold_detector_tb"
+      },
+      "notes": "Exact four-form pack already exists in b143."
+    },
+    {
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "status": "existing_exact_pack",
+      "forms": {
+        "bugfix": "balanced_window_detector_bugfix",
+        "spec-to-va": "balanced_window_detector_dut",
+        "end-to-end": "balanced_window_detector_e2e",
+        "tb-generation": "balanced_window_detector_tb"
+      },
+      "notes": "Exact four-form pack already exists in b143."
+    },
+    {
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "status": "existing_exact_pack",
+      "forms": {
+        "bugfix": "balanced_analog_limiter_bugfix",
+        "spec-to-va": "balanced_analog_limiter_dut",
+        "end-to-end": "balanced_analog_limiter_e2e",
+        "tb-generation": "balanced_analog_limiter_tb"
+      },
+      "notes": "Exact four-form pack already exists in b143."
+    },
+    {
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "status": "existing_exact_pack",
+      "forms": {
+        "bugfix": "balanced_pulse_stretcher_bugfix",
+        "spec-to-va": "balanced_pulse_stretcher_dut",
+        "end-to-end": "balanced_pulse_stretcher_e2e",
+        "tb-generation": "balanced_pulse_stretcher_tb"
+      },
+      "notes": "Exact four-form pack already exists in b143."
+    },
+    {
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "status": "existing_needs_contract_review",
+      "forms": {
+        "bugfix": "original92_wrong_edge_sample_hold_bug",
+        "spec-to-va": "completion92_sample_hold_dut",
+        "end-to-end": "original92_sample_hold_smoke",
+        "tb-generation": "original92_sample_hold_step_tb"
+      },
+      "notes": "All four task forms exist. Need review that the four prompts share the same sample/hold contract rather than aperture/droop variants."
+    },
+    {
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "status": "existing_needs_contract_review",
+      "forms": {
+        "bugfix": "original92_swapped_pfd_outputs_bug",
+        "spec-to-va": "completion92_phase_detector_dut",
+        "end-to-end": "original92_pfd_updn_smoke",
+        "tb-generation": "original92_xor_phase_tb"
+      },
+      "notes": "All four task forms exist, but tb-generation may be XOR/phase-detector oriented rather than exact PFD UP/DN. Review before promotion."
+    },
+    {
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "status": "existing_needs_contract_review",
+      "forms": {
+        "bugfix": "completion92_dac_bugfix",
+        "spec-to-va": "original92_segmented_dac",
+        "end-to-end": "original92_dac_binary_clk_4b_smoke",
+        "tb-generation": "original92_dac_ramp_tb"
+      },
+      "notes": "Existing tasks cover DAC behavior, but spec-to-va may be segmented rather than binary 4b. Likely needs either relabeling to dac_static_mapping or one new spec task."
+    },
+    {
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "status": "needs_authoring",
+      "forms": {
+        "bugfix": null,
+        "spec-to-va": "original92_clk_divider",
+        "end-to-end": "original92_clk_div_smoke",
+        "tb-generation": "original92_clk_div_min_tb"
+      },
+      "notes": "Need a clean clock-divider bugfix task to complete the pack."
+    },
+    {
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "status": "needs_authoring",
+      "forms": {
+        "bugfix": "original92_missing_transition_outputs",
+        "spec-to-va": "completion92_comparator_dut",
+        "end-to-end": "original92_comparator_hysteresis_smoke",
+        "tb-generation": null
+      },
+      "notes": "Need a comparator-hysteresis tb-generation task; existing comparator_offset_tb is related but not exact."
+    },
+    {
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "status": "needs_authoring",
+      "forms": {
+        "bugfix": null,
+        "spec-to-va": null,
+        "end-to-end": "original92_flash_adc_3b_smoke",
+        "tb-generation": null
+      },
+      "notes": "Only end-to-end is cleanly present in b143. Consider authoring the other three forms from the existing gold/checker."
+    },
+    {
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "status": "needs_authoring",
+      "forms": {
+        "bugfix": "completion92_calibration_bugfix",
+        "spec-to-va": "original92_bg_cal",
+        "end-to-end": "original92_dwa_ptr_gen_smoke",
+        "tb-generation": "completion92_calibration_tb"
+      },
+      "notes": "Candidate forms are not all the same concrete function. Needs contract split between calibration and DWA pointer before promotion."
+    },
+    {
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "status": "needs_authoring",
+      "forms": {
+        "bugfix": null,
+        "spec-to-va": "original92_prbs7",
+        "end-to-end": "original92_lfsr_smoke",
+        "tb-generation": null
+      },
+      "notes": "Need bugfix and tb-generation tasks for a clean PRBS7/LFSR pack."
+    }
+  ]
+}

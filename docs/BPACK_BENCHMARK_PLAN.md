@@ -126,6 +126,8 @@ Output:
 docs/BPACK_V1_INVENTORY.json
 ```
 
+The current draft inventory is `docs/BPACK_V1_INVENTORY.json`.
+
 Required fields:
 
 ```json
@@ -233,6 +235,10 @@ Pack-level metrics are the main reason to build this benchmark.  They let us see
 whether a method helps one form only or generalizes across a circuit function.
 
 ## Experiment Plan On `bpack48`
+
+The active first-cycle queue is `docs/BPACK_EXPERIMENT_QUEUE.md`.  It includes
+only priority 1 and priority 2 conditions.  `evas-repair`, `mechanism-public`,
+and `functional-ir` are explicitly excluded from this cycle.
 
 ### Claim P1: Rules establish a strong baseline
 
