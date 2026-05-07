@@ -1,17 +1,11 @@
 # Benchmark Balanced
 
-This split is a task-form-balanced benchmark expansion. It does not modify the
-original 92-task tree. Instead, it imports the original 92 with normalized
-metadata, fills the missing task-form cells for the original 92 core-function
-families, and adds a small set of external task-form-balanced supplement tasks.
+This is the maintained 143-task benchmark for vaEVAS mainline experiments.  It
+is organized by task form and circuit-function coverage: every core-function
+family has at least one task in each of the four task forms, while individual
+tasks avoid duplicate copies of the same observable behavior.
 
 Total tasks: **143**
-
-| source collection | count |
-|---|---:|
-| balanced_supplement_v1 | 16 |
-| original92 | 92 |
-| original92_taskform_completion_v1 | 35 |
 
 | task form | count |
 |---|---:|
@@ -19,6 +13,11 @@ Total tasks: **143**
 | dut-only/spec-to-va | 33 |
 | end-to-end | 62 |
 | tb-generation | 23 |
+
+The benchmark is task-form covered rather than count-equal: the current task mix
+contains more end-to-end tasks than the other forms.  Future additions should be
+made as circuit-function packs: add one function family, then cover the relevant
+task forms without introducing duplicate observable behaviors.
 
 | core function | count |
 |---|---:|
@@ -45,32 +44,10 @@ Total tasks: **143**
 | threshold_detector | 4 |
 | window_detector | 4 |
 
-## Original 92 Task-Form Completion
+## Four-Form Function Packs
 
-The original 92 use the public `category` field as the first-pass core-function
-label. Under that ontology, 18 original core-function families are present. This
-split adds 35 `completion92_*` tasks so every original core-function family has
-at least one task in each of the four forms:
-
-- end-to-end
-- DUT/spec-to-VA
-- testbench generation
-- bugfix
-
-The completion tasks are marked as `original92_taskform_completion_v1` in
-`manifest.json`. They keep a `source_task_id` pointing to the original task used
-as the seed artifact.
-
-## External Balanced Supplement
-
-It covers four external core functions:
-
-- threshold detector
-- window detector
-- analog limiter
-- event pulse stretcher
-
-Each core function is materialized in four task forms:
+Some core functions are materialized as exact four-form packs.  Each listed
+function has one task in each task form:
 
 - end-to-end
 - DUT/spec-to-VA (`dut-only`)
@@ -98,22 +75,22 @@ Each core function is materialized in four task forms:
 
 ## Gold Validation
 
-The 16 added supplement gold artifacts were validated on 2026-04-30:
+The 16 exact four-form pack gold artifacts were validated on 2026-04-30:
 
 | backend | result |
 |---|---:|
 | EVAS | 16/16 PASS |
 | real Spectre | 16/16 PASS |
 
-A four-task smoke sample from `original92_taskform_completion_v1` was also
-validated:
+An additional four-task smoke sample from the non-pack portion of the benchmark
+was also validated:
 
 | backend | result |
 |---|---:|
 | EVAS | 4/4 PASS |
 | real Spectre | 4/4 PASS |
 
-Reproduce supplement validation from `behavioral-veriloga-eval/`:
+Reproduce the four-form pack validation from `behavioral-veriloga-eval/`:
 
 ```bash
 python3 runners/materialize_benchmark_balanced_tasks.py

@@ -15,14 +15,24 @@ canonical names `prompt-only`, `rules-only`, `compile-loop`,
 
 ## Scope
 
-The current mainline benchmark is `benchmark-balanced`:
+The current mainline benchmark is `benchmark-balanced` / `b143`: a 143-task
+Verilog-A generation benchmark organized by task form and circuit-function
+coverage, not by historical construction provenance.
 
-| Slice | Count | Description |
+| Task form | Count | What it tests |
 | --- | ---: | --- |
-| `original92` | 92 | Original 92 benchmark tasks, represented in the balanced benchmark schema. |
-| `completion92` | 35 | Task-form completion set derived from the original 92 benchmark. |
-| `supplement` | 16 | Four new circuit families represented in structured task forms. |
-| **Total** | **143** | Mainline balanced benchmark size. |
+| `bugfix` | 25 | Repair a flawed Verilog-A artifact. |
+| `dut-only/spec-to-va` | 33 | Generate a DUT from a public specification and fixed harness. |
+| `end-to-end` | 62 | Generate DUT/testbench-facing artifacts for a complete behavior task. |
+| `tb-generation` | 23 | Generate a Spectre/EVAS testbench for a public DUT/interface. |
+| **Total** | **143** | Mainline benchmark size. |
+
+The benchmark covers 22 `core_function` families, and every core-function
+family has at least one task in each of the four task forms.  It is therefore
+task-form covered, but not count-equal across task forms: the inherited task mix
+contains more `end-to-end` tasks.  Future benchmark additions should be made as
+function-family packs: add a circuit function once, then cover the relevant task
+forms without adding duplicate copies of the same observable behavior.
 
 All ADFGI rows must use the same benchmark, validator, accounting, and reporting
 format. Non-strict EVAS/fixed-stage-lite results are retired from the mainline
@@ -63,7 +73,7 @@ remain traceable through result summaries.
 | Field | Unified requirement |
 | --- | --- |
 | Benchmark | `benchmark-balanced`, full 143 tasks for main table. |
-| Required slices | Report full 143, plus `original92`, `completion92`, and `supplement`. |
+| Required breakdowns | Report full 143, task-form breakdown, and core-function breakdown. Source-construction labels are debugging metadata, not main table slices. |
 | Task-form breakdown | Report `bugfix`, `dut-only/spec-to-va`, `end-to-end`, and `tb-generation`. |
 | Model label | Record the exact model name in run metadata and tables, e.g. `kimi-k2.5`. |
 | Model thinking mode | Cross-model comparisons must explicitly record and, when supported, control the provider reasoning/thinking mode. Examples: `thinking=disabled`, `reasoning_effort=low`, `default/provider-unknown`, or `none` for deterministic no-new-LLM rows. |

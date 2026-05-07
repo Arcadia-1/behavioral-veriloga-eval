@@ -33,18 +33,33 @@ is solved.  Those are next-stage behavior-repair hypotheses.
 
 Use only one maintained benchmark for current claims:
 
-| Canonical name | Legacy name | Role |
-| --- | --- | --- |
-| `b143` | `benchmark-balanced` | Main benchmark: 143 tasks. |
-| `orig92` | `original92` | Slice inside `b143`; historical anchor only. |
-| `comp35` | `completion92` | Slice inside `b143`; task completion/repair coverage. |
-| `supp16` | `supplement` | Slice inside `b143`; four structured new circuit families. |
+| Canonical name | Role |
+| --- | --- |
+| `b143` / `benchmark-balanced` | Main benchmark: 143 non-oracle Verilog-A generation tasks. |
+
+The benchmark should be described by task forms and circuit-function coverage,
+not by historical construction provenance:
+
+| Task form | Count |
+| --- | ---: |
+| `bugfix` | 25 |
+| `dut-only/spec-to-va` | 33 |
+| `end-to-end` | 62 |
+| `tb-generation` | 23 |
+
+It covers 22 core-function families.  Every core-function family has at least
+one task in each of the four task forms, but the benchmark is not count-equal
+across task forms because the inherited task mix is end-to-end heavy.
 
 Policy:
 
 - Do not run new standalone `full92` main experiments.
-- Report `orig92` only as a slice of `b143` or as appendix historical context.
+- Report task-form and core-function breakdowns for `b143`; use older source
+  labels only for debugging or appendix migration notes.
 - Retire fixed-stage/lite/non-strict EVAS from all current claims.
+- Add future tasks as circuit-function packs: introduce one function family, then
+  cover the relevant task forms without duplicating the same observable
+  behavior.
 
 ## Canonical Validators
 
@@ -82,8 +97,7 @@ Main table should be compact:
 6. `compile-skill-advanced`
 
 Appendix/diagnostic table should include `evas-repair`, `compile-skill-local`,
-`mechanism-public`, `functional-ir`, MiMo/cross-model, prompt compression, and
-historical `orig92` context.
+`mechanism-public`, `functional-ir`, MiMo/cross-model, and prompt compression.
 
 ## Run ID Naming Contract
 
@@ -98,7 +112,7 @@ Where:
 | Field | Example | Notes |
 | --- | --- | --- |
 | `artifact-kind` | `generated`, `results` | Keep generated candidates and evaluation results separate. |
-| `bench` | `b143`, `orig92-slice`, `targeted7` | Full benchmark or explicit targeted slice. |
+| `bench` | `b143`, `targeted7` | Full benchmark or explicit targeted slice. |
 | `model` | `kimi-k25`, `mimo-v25-pro` | Sanitized exact model label; exact provider id remains in metadata. |
 | `validator` | `strict-evas`, `spectre-audit`, `both-audit` | Use `both-audit` only for EVAS+Spectre paired audits. |
 | `condition` | `rules-only`, `compile-skill-advanced` | Canonical condition names only. |
@@ -133,7 +147,7 @@ traceable through result summaries and the legacy-to-canonical mapping above.
 
 | Work | Clean status | Reason |
 | --- | --- | --- |
-| Standalone old 92 experiments | Historical only | `orig92` is now a `b143` slice. |
+| Standalone legacy-92 experiments | Historical only | Current claims use `b143` task-form/core-function breakdowns instead. |
 | Fixed-stage/lite/non-strict EVAS | Retired | Not Spectre-faithful enough for main claims. |
 | Identity-routed G runs | Retired as claims | Used task identity in retrieval, so not public-only. |
 | Current `mechanism-public=76/143` | Diagnostic | Does not meet G compile KPI and does not beat compile-skill path. |
@@ -198,11 +212,11 @@ results/balanced-CULTRA-ADVANCED-skill-acceptreject-kimi-k2.5-spectre-strict-eva
 
 Classify each residual failure by:
 
-1. slice: `orig92`, `comp35`, `supp16`
-2. task form: bugfix, dut-only/spec-to-va, end-to-end, tb-generation
+1. task form: bugfix, dut-only/spec-to-va, end-to-end, tb-generation
+2. core function / circuit family: converter, PLL/timer, DWA/DEM, digital
+   sequence, source/TB, etc.
 3. failure axis: compile, testbench compile, runtime, behavior
-4. circuit family: converter, PLL/timer, DWA/DEM, digital sequence, source/TB
-5. likely next mechanism: mechanism card, functional IR, checker/task cleanup,
+4. likely next mechanism: mechanism card, functional IR, checker/task cleanup,
    or cut/no action
 
 This analysis should produce a small table before any new full G/I run.
