@@ -6,6 +6,13 @@ This document freezes the mainline vaEVAS ADFGI experiment vocabulary for
 `benchmark-balanced`. It supersedes ad-hoc condition names in historical run
 directories when building the current paper table.
 
+Clean-paper naming and run-id policy are now centralized in
+`docs/VAEVAS_CLEAN_MAINLINE.md`.  The legacy A/D/F/G/I labels remain here for
+traceability, but new paper tables and future run directories should prefer the
+canonical names `prompt-only`, `rules-only`, `compile-loop`,
+`compile-skill-prompt`, `compile-skill-accept`, and
+`compile-skill-advanced`.
+
 ## Scope
 
 The current mainline benchmark is `benchmark-balanced`:
@@ -20,6 +27,36 @@ The current mainline benchmark is `benchmark-balanced`:
 All ADFGI rows must use the same benchmark, validator, accounting, and reporting
 format. Non-strict EVAS/fixed-stage-lite results are retired from the mainline
 because they can pass candidates that real Spectre would reject.
+
+## Clean Naming Summary
+
+The clean mainline keeps one benchmark, one primary validator, and descriptive
+condition names:
+
+| Layer | Canonical name | Legacy name |
+| --- | --- | --- |
+| Benchmark | `b143` | `benchmark-balanced` |
+| Main validator | `strict-evas` | spectre-strict EVAS |
+| Spectre audit validator | `spectre-audit` | real Spectre through bridge |
+| Lower baseline | `prompt-only` | `A` |
+| Rule baseline | `rules-only` | `D` |
+| Generic repair diagnostic | `evas-repair` | `F` |
+| LLM compile closure | `compile-loop` | `C` |
+| Prompt-side compile skill | `compile-skill-prompt` | `C-SKILL` |
+| Deterministic local compile skill | `compile-skill-local` | `C-SKILLPLUS` |
+| Accept/reject compile skill | `compile-skill-accept` | `C-ULTRA(full)` |
+| Advanced compile skill | `compile-skill-advanced` | `C-ULTRA-ADVANCED` |
+| Public mechanism diagnostic | `mechanism-public` | `G public-only` |
+| Functional IR diagnostic | `functional-ir` | `I` |
+
+Future generated/result directories should use the shape:
+
+```text
+<artifact-kind>-<bench>__<model>__<validator>__<condition>__<yyyymmdd>[-rN]
+```
+
+Existing historical directories should not be bulk-renamed; their legacy names
+remain traceable through result summaries.
 
 ## Shared Evaluation Contract
 
