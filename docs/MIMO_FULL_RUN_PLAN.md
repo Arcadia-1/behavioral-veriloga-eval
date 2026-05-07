@@ -5,7 +5,8 @@ This plan runs the unified `D` condition on `benchmark-balanced` with Xiaomi MiM
 ## Condition
 
 - Benchmark: `benchmark-balanced` full 143 tasks.
-- Model: `mimo-v2.5-pro`.
+- Provider/model id: `provider=mimo`, `model_id=mimo-v2.5-pro`.
+- Endpoint/profile: Xiaomi MiMo token-plan OpenAI-compatible endpoint.
 - Prompt condition: `D = spectre-strict-v3`, one-shot generation, no repair.
 - Thinking mode: use `MIMO_THINKING_TYPE=disabled` for the controlled MiMo row.
   The provider-default row is diagnostic only because hidden reasoning can
@@ -42,6 +43,7 @@ MIMO_API_KEY=... MODEL=mimo-v2.5-pro GEN_WORKERS=8 MAX_TOKENS=4096 \
 
 The 2026-05-08 probe result showed:
 
+- `provider=mimo`, `model_id=mimo-v2.5-pro`.
 - `MIMO_REASONING_EFFORT=low` did not control hidden reasoning: a high-risk
   task still used about 4095 hidden reasoning tokens and produced no code.
 - `MIMO_THINKING_TYPE=disabled` was accepted and set `reasoning_tokens=0`.
@@ -51,6 +53,7 @@ The 2026-05-08 probe result showed:
 
 For any provider/model, the probe must confirm:
 
+- The exact provider/model id is present in `generation_meta.json` and tables.
 - `reasoning_tokens / output_tokens` is low or zero when the provider reports it.
 - `raw_response_length > 0`.
 - Required fenced code blocks are extracted.

@@ -71,6 +71,8 @@ Report both task-level and pack-level metrics:
 | Sim correctness rate | yes |
 | Avg tokens/task | yes |
 | Avg API time/task | yes |
+| Exact provider | yes |
+| Exact model id | yes |
 | Model thinking/reasoning mode | yes |
 
 ## Provider Probe Before Full Runs
@@ -84,6 +86,7 @@ MODEL=<model> GEN_WORKERS=8 MAX_TOKENS=4096 runners/run_bpack_provider_probe.sh
 
 The current MiMo controlled setting is:
 
+- `provider=mimo`
 - `MODEL=mimo-v2.5-pro`
 - `MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1`
 - `MIMO_THINKING_TYPE=disabled`
@@ -98,6 +101,15 @@ The 2026-05-08 MiMo probe passed the provider gate:
 - 0 hidden reasoning tokens with `MIMO_THINKING_TYPE=disabled`.
 - 1/8 tasks still hit `finish_reason=length`, now due to visible output length
   rather than hidden reasoning.
+
+The Kimi reference rows should be reported as:
+
+- `provider=bailian` / Bailian-Anthropic-compatible route
+- `model_id=kimi-k2.5`
+- `reasoning_mode=provider-default/not-reported`
+
+Do not report broad model-family labels such as only `Kimi` or only `MiMo` in
+tables; use the exact provider/model id pair.
 
 ## Stop/Go Gates
 

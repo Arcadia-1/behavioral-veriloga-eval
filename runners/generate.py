@@ -1314,7 +1314,7 @@ def infer_tb_name(scs_code: str) -> str:
 # Full constructed URL: https://coding.dashscope.aliyuncs.com/apps/anthropic/v1/messages
 _BAILIAN_BASE_URL = "https://coding.dashscope.aliyuncs.com/apps/anthropic"
 _BAILIAN_MODEL_PREFIXES = ("qwen", "glm", "kimi", "minimax")
-_MIMO_DEFAULT_BASE_URL = "https://api.xiaomimimo.com/v1"
+_MIMO_DEFAULT_BASE_URL = "https://token-plan-cn.xiaomimimo.com/v1"
 
 
 def detect_provider(model: str) -> str:
@@ -1557,6 +1557,7 @@ def generate_one_task(
     """
     meta = read_meta(task_dir)
     family = meta.get("family", "end-to-end")
+    provider = detect_provider(model)
     task_start = time.perf_counter()
 
     sample_dir = output_root / model_slug / task_id / f"sample_{sample_idx}"
@@ -1589,8 +1590,10 @@ def generate_one_task(
     enhancement_payload = build_enhancement_payload(task_dir, enhancement_mode)
     gen_meta_base = {
         "model": model,
+        "model_id": model,
         "model_slug": model_slug,
-        "provider": detect_provider(model),
+        "provider": provider,
+        "reasoning_mode": "none" if dry_run else "provider-default/not-reported",
         "task_id": task_id,
         "family": family,
         "sample_idx": sample_idx,

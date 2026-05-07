@@ -92,11 +92,13 @@ def _collect_generation_rows(
         task_meta = bench_meta.get(task_id, {})
         model_slug = meta.get("model_slug") or meta_path.parents[2].name
         model = meta.get("model") or model_slug
+        model_id = meta.get("model_id") or model
         input_tokens = int(_num(meta.get("input_tokens")))
         output_tokens = int(_num(meta.get("output_tokens")))
         reasoning_tokens = int(_num(meta.get("reasoning_tokens")))
         row = {
             "model": model,
+            "model_id": model_id,
             "model_slug": model_slug,
             "provider": meta.get("provider", ""),
             "reasoning_mode": meta.get("reasoning_mode", ""),
@@ -187,7 +189,7 @@ def _aggregate(rows: list[dict[str, Any]], group_keys: tuple[str, ...]) -> list[
         }
         for name, value in zip(group_keys, key):
             row[name] = value
-        for name in ("provider", "reasoning_mode"):
+        for name in ("model_id", "provider", "reasoning_mode"):
             values = sorted({str(item.get(name, "")) for item in items if item.get(name, "")})
             if len(values) == 1:
                 row[name] = values[0]
@@ -233,6 +235,7 @@ def _write_markdown(path: Path, aggregate_rows: list[dict[str, Any]]) -> None:
     preferred = [
         "group",
         "model",
+        "model_id",
         "provider",
         "reasoning_mode",
         "source_collection",

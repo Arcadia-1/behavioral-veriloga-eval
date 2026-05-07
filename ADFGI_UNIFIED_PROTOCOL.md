@@ -91,7 +91,8 @@ targeted candidates have the same pass/fail outcome under real Spectre and
 | Benchmark | `benchmark-balanced`, full 143 tasks for main table. |
 | Required breakdowns | Report full 143, task-form breakdown, and core-function breakdown. Source-construction labels are debugging metadata, not main table slices. |
 | Task-form breakdown | Report `bugfix`, `dut-only/spec-to-va`, `end-to-end`, and `tb-generation`. |
-| Model label | Record the exact model name in run metadata and tables, e.g. `kimi-k2.5`. |
+| Exact model identity | Record exact provider and exact model id in run metadata and tables. Current Kimi reference rows use `provider=bailian`, `model_id=kimi-k2.5`; controlled MiMo probe rows use `provider=mimo`, `model_id=mimo-v2.5-pro`. Do not report only broad labels such as `Kimi` or `MiMo`. |
+| Provider endpoint/profile | Record the endpoint/profile family when it affects semantics or accounting. For example, MiMo controlled rows use the Xiaomi token-plan OpenAI-compatible endpoint; Kimi rows use the Bailian/Anthropic-compatible route. API keys and private hostnames must never be reported. |
 | Model thinking mode | Cross-model comparisons must explicitly record and, when supported, control the provider reasoning/thinking mode. Examples: `thinking=disabled`, `reasoning_effort=low`, `default/provider-unknown`, or `none` for deterministic no-new-LLM rows. |
 | Generation accounting | Record input tokens, output tokens, hidden reasoning tokens when the API reports them, cached input tokens when available, total tokens, per-task elapsed time, and total API elapsed time. |
 | Per-group cost columns | Every reported slice or task type must include average tokens per task and average API time per task. |
@@ -111,8 +112,8 @@ must not be silently mixed with ordinary code-generation mode.
 
 | Case | Protocol |
 | --- | --- |
-| Same model, same ADFGI condition | Keep `temperature`, `max_tokens`, `top_p`, endpoint, and thinking/reasoning controls fixed. |
-| Different AI models | Prefer the closest common mode: code-only final answer, no visible reasoning, and provider reasoning disabled or set to the lowest supported effort. If a provider cannot disable reasoning, label the row as `default/provider-unknown` and do not treat it as directly equivalent to a controlled row. |
+| Same model, same ADFGI condition | Keep exact `model_id`, provider endpoint/profile, `temperature`, `max_tokens`, `top_p`, and thinking/reasoning controls fixed. |
+| Different AI models | Record exact `provider/model_id` for every row. Prefer the closest common mode: code-only final answer, no visible reasoning, and provider reasoning disabled or set to the lowest supported effort. If a provider cannot disable reasoning, label the row as `default/provider-unknown` and do not treat it as directly equivalent to a controlled row. |
 | Deterministic no-new-LLM rows (`C-PLUS`, `C-SKILLPLUS`, `C-ULTRA`) | Record `reasoning_mode=none` for the local fixer layer and inherit the source candidate's model/thinking mode in the manifest. |
 | Repair-loop rows | Record the thinking mode for every LLM repair call; do not mix default-thinking and thinking-disabled repair rounds in one row. |
 
@@ -120,6 +121,12 @@ For Xiaomi MiMo runs, the runner supports generic provider knobs through
 `MIMO_EXTRA_BODY_JSON`, plus convenience environment variables
 `MIMO_THINKING_TYPE` and `MIMO_REASONING_EFFORT`. The exact accepted values are
 provider-specific and must be smoke-tested before a full 143 run.
+
+Historical Kimi reference rows were generated with exact model id
+`kimi-k2.5` through the Bailian/Anthropic-compatible route.  The API did not
+report hidden reasoning tokens in those metadata files, so their thinking mode
+must be labeled `provider-default/not-reported` rather than silently equated
+with MiMo `thinking=disabled`.
 
 ## Prompt Input Optimization Track
 
@@ -179,18 +186,18 @@ only if it materially closes compile failures relative to `F`:
 The maintained A/D/F/G/I pass under the unified validator, after EVAS
 source/parser/kernel parity fixes, plus the current compile-guard ablations, is:
 
-| Condition | Model | Validator | PASS / 143 | Pass rate | Result summary |
-| --- | --- | --- | ---: | ---: | --- |
-| `A` | `kimi-k2.5` | spectre-strict EVAS | `31/143` | 21.7% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
-| `D` | `kimi-k2.5` | spectre-strict EVAS | `68/143` | 47.6% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
-| `F` | `kimi-k2.5` | spectre-strict EVAS | `70/143` | 49.0% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
-| `C` | `kimi-k2.5` | spectre-strict EVAS | `75/143` | 52.4% | `results/adcgi-ablation-C-compile-guarded-v2-2026-05-02.md` |
-| `C-SKILL` | `kimi-k2.5` | spectre-strict EVAS | `78/143` | 54.5% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
-| `C-SKILLPLUS` | `kimi-k2.5` | spectre-strict EVAS | `80/143` | 55.9% | `results/adfgi-ablation-CSKILLPLUS-compile-skills-2026-05-03.md` |
-| `C-ULTRA(full)` | `kimi-k2.5` | spectre-strict EVAS | `81/143` | 56.6% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
-| `C-ULTRA-ADVANCED` | `kimi-k2.5` | spectre-strict EVAS | `83/143` | 58.0% | `results/balanced-CULTRA-ADVANCED-skill-acceptreject-kimi-k2.5-spectre-strict-evas-2026-05-03` |
-| `G public-only` | `kimi-k2.5` | spectre-strict EVAS | `76/143` | 53.1% | `results/balanced-G-public-compile-guarded-v2-kimi-k2.5-spectre-strict-evas-2026-05-02` |
-| `I` | `kimi-k2.5` | spectre-strict EVAS | `67/143` | 46.9% | `results/adfgi-balanced-GI-full-2026-05-02.md` |
+| Condition | Provider | Model id | Reasoning mode | Validator | PASS / 143 | Pass rate | Result summary |
+| --- | --- | --- | --- | --- | ---: | ---: | --- |
+| `A` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `31/143` | 21.7% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
+| `D` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `68/143` | 47.6% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
+| `F` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `70/143` | 49.0% | `results/adfgi-balanced-spectre-strict-evas-final-2026-05-01-mainline.md` |
+| `C` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `75/143` | 52.4% | `results/adcgi-ablation-C-compile-guarded-v2-2026-05-02.md` |
+| `C-SKILL` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `78/143` | 54.5% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
+| `C-SKILLPLUS` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `80/143` | 55.9% | `results/adfgi-ablation-CSKILLPLUS-compile-skills-2026-05-03.md` |
+| `C-ULTRA(full)` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `81/143` | 56.6% | `results/adfgi-ablation-compile-skill-series-2026-05-03.md` |
+| `C-ULTRA-ADVANCED` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `83/143` | 58.0% | `results/balanced-CULTRA-ADVANCED-skill-acceptreject-kimi-k2.5-spectre-strict-evas-2026-05-03` |
+| `G public-only` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `76/143` | 53.1% | `results/balanced-G-public-compile-guarded-v2-kimi-k2.5-spectre-strict-evas-2026-05-02` |
+| `I` | Bailian/Anthropic-compatible | `kimi-k2.5` | provider-default/not-reported | spectre-strict EVAS | `67/143` | 46.9% | `results/adfgi-balanced-GI-full-2026-05-02.md` |
 
 The public-only G rerun supersedes the older mechanism-routed G numbers for
 mainline claims. The old mechanism-only `G` run (`75/143`) and compile-guarded
