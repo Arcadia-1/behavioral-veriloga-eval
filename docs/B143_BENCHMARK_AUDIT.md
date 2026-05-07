@@ -68,7 +68,8 @@ families.
 
 ## Future Addition Rule
 
-Future additions should be made as function-family packs:
+Future additions should be made as function-family packs.  The separate plan for
+an exact pack benchmark is `docs/BPACK_BENCHMARK_PLAN.md`.
 
 ```text
 one circuit-function family

@@ -51,6 +51,8 @@ It covers 22 core-function families.  Every core-function family has at least
 one task in each of the four task forms, but the benchmark is not count-equal
 across task forms because the inherited task mix is end-to-end heavy.
 The detailed benchmark audit is in `docs/B143_BENCHMARK_AUDIT.md`.
+The planned exact function-pack benchmark is described in
+`docs/BPACK_BENCHMARK_PLAN.md`.
 
 Policy:
 
@@ -61,6 +63,8 @@ Policy:
 - Add future tasks as circuit-function packs: introduce one function family, then
   cover the relevant task forms without duplicating the same observable
   behavior.
+- Do not present `b143` as an exact four-form pack benchmark; use the planned
+  `bpack-v1` / `bpack48` benchmark for that claim.
 
 ## Canonical Validators
 
