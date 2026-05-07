@@ -68,6 +68,22 @@ Future generated/result directories should use the shape:
 Existing historical directories should not be bulk-renamed; their legacy names
 remain traceable through result summaries.
 
+## Strict-EVAS Validator Model
+
+`strict-evas` is the single maintained evaluator for full benchmark runs.  It is
+not a collection of alternative metrics.  Internally, it combines:
+
+| Component | Responsibility |
+| --- | --- |
+| Spectre-compatible preflight | Reject candidates that real Spectre would reject before meaningful simulation. |
+| EVAS simulation/checking | Run the candidate through EVAS and the benchmark checker after frontend legality is established. |
+| Parser/kernel parity fixes | Keep EVAS execution semantics aligned with Spectre for legal inputs that both systems should accept. |
+
+`spectre-audit` is the external trust anchor.  It checks whether final or
+targeted candidates have the same pass/fail outcome under real Spectre and
+`strict-evas`.  Main tables use `strict-evas`; audit tables report
+`spectre-audit` parity.
+
 ## Shared Evaluation Contract
 
 | Field | Unified requirement |

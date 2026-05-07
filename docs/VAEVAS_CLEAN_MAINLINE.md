@@ -23,7 +23,7 @@ The paper should defend two claims:
 
 | Claim | Meaning | Minimum evidence |
 | --- | --- | --- |
-| C1: Spectre-aligned evaluation | EVAS can serve as a fast evaluator only when it follows Spectre syntax/source/kernel semantics closely enough. | `strict-evas` main results plus real Spectre audits with zero pass/fail mismatch on full or targeted slices. |
+| C1: Spectre-aligned evaluation | EVAS can serve as a fast evaluator only when the maintained `strict-evas` validator follows Spectre frontend legality and execution semantics closely enough. | `strict-evas` main results plus real Spectre audits with zero pass/fail mismatch on full or targeted slices. |
 | C2: Skill-guided compile closure | The dominant near-term bottleneck is compile/interface legality, and compile skills improve it more reliably than generic repair loops. | `rules-only -> compile-loop -> compile-skill-*` ablation under one benchmark, one validator, one model/accounting protocol. |
 
 The current project should not yet claim that mechanism guidance or functional IR
@@ -50,6 +50,7 @@ not by historical construction provenance:
 It covers 22 core-function families.  Every core-function family has at least
 one task in each of the four task forms, but the benchmark is not count-equal
 across task forms because the inherited task mix is end-to-end heavy.
+The detailed benchmark audit is in `docs/B143_BENCHMARK_AUDIT.md`.
 
 Policy:
 
@@ -65,9 +66,21 @@ Policy:
 
 | Canonical name | Meaning | Use |
 | --- | --- | --- |
-| `strict-evas` | Spectre-aligned preflight, EVAS simulation, then checker. | Main validator for full 143 runs. |
+| `strict-evas` | The unified main validator: Spectre-compatible preflight, EVAS simulation, then checker. | Main validator for full 143 runs. |
 | `spectre-audit` | Real Spectre execution through bridge plus the same checker. | Audit full or targeted slices; not required for every full run. |
 | `legacy-score` | Old single-task/score.py-style validation. | Historical debugging only; not a maintained claim surface. |
+
+`strict-evas` is one validator, not three separate evaluation methods.  Its two
+internal alignment mechanisms have different responsibilities:
+
+| Internal mechanism | Handles | Example |
+| --- | --- | --- |
+| Spectre-compatible preflight | Frontend legality: candidates that Spectre would reject before meaningful simulation. | Unsupported parameter ranges, source syntax, illegal module-header continuation, incompatible instance/source forms. |
+| EVAS parser/kernel parity fixes | Execution semantics: candidates Spectre accepts but EVAS used to parse or simulate differently. | String parameter propagation into `$fopen`, source waveform parameter semantics, timer/cross/source behavior parity. |
+
+Real `spectre-audit` validates the combined `strict-evas` behavior.  The audit
+backend is not the main full-run evaluator because it is slower and heavier; it
+is the trust anchor for targeted/full parity checks.
 
 ## Canonical Condition Names
 
