@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    "tb_dac_ramp.scs"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": false,
+  "bpack_authored_kind": null,
+  "bpack_inventory_status": "existing_needs_contract_review",
+  "bpack_notes": "Existing tasks cover DAC behavior, but spec-to-va may be segmented rather than binary 4b. Likely needs either relabeling to dac_static_mapping or one new spec task.",
+  "bpack_source_task_id": "original92_dac_ramp_tb",
+  "category": "dac",
+  "circuit_function_id": "binary_dac_4b",
+  "core_function": "data-converter",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "tb-generation",
+  "id": "dac_ramp_tb",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "simulator lang=spectre",
+    "tran",
+    "save",
+    "ahdl_include"
+  ],
+  "must_not_include": [
+    "I(",
+    ".control"
+  ],
+  "pack_id": "binary_dac_4b",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_draft_needs_contract_review_and_gold_validation",
+  "scoring": [
+    "tb_compile"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "tb-generation",
+  "source_relative_path": "tasks/tb-generation/voltage/dac_ramp_tb",
+  "source_task_form": "tb-generation",
+  "source_task_id": "dac_ramp_tb",
+  "task_form": "tb-generation",
+  "task_id": "bpack_binary_dac_4b_tb"
+}

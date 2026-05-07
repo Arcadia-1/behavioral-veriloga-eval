@@ -1,0 +1,54 @@
+{
+  "artifacts": [
+    "candidate.out"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": true,
+  "bpack_authored_kind": "e2e",
+  "bpack_inventory_status": "needs_authoring",
+  "bpack_notes": "Need bugfix and tb-generation tasks for a clean PRBS7/LFSR pack.",
+  "bpack_source_task_id": "original92_prbs7",
+  "category": "digital-logic",
+  "circuit_function_id": "prbs7_lfsr",
+  "core_function": "digital-logic",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "expected_output_summary": "A .va file with 7-bit LFSR shift register, XOR feedback, serial and parallel outputs, clock-edge-driven.",
+  "family": "end-to-end",
+  "id": "prbs7",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "electrical"
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "pack_id": "prbs7_lfsr",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_authored_candidate_needs_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_eval_id": 15,
+  "source_family": "spec-to-va",
+  "source_files": [
+    "gold/prbs7_ref.va",
+    "gold/tb_prbs7_ref.scs"
+  ],
+  "source_name": "eval-prbs7",
+  "source_relative_path": "tasks/spec-to-va/voltage/digital-logic/prbs7",
+  "source_task_form": "spec-to-va",
+  "source_task_id": "prbs7",
+  "task_form": "end-to-end",
+  "task_id": "bpack_prbs7_lfsr_e2e"
+}

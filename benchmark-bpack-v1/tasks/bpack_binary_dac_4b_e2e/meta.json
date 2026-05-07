@@ -1,0 +1,70 @@
+{
+  "artifacts": [
+    "dut.va",
+    "tb_dac_binary_clk_4b.scs",
+    "tran.csv"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": false,
+  "bpack_authored_kind": null,
+  "bpack_inventory_status": "existing_needs_contract_review",
+  "bpack_notes": "Existing tasks cover DAC behavior, but spec-to-va may be segmented rather than binary 4b. Likely needs either relabeling to dac_static_mapping or one new spec task.",
+  "bpack_source_task_id": "original92_dac_binary_clk_4b_smoke",
+  "category": "data-converter",
+  "checks": {
+    "dut_compile": "required",
+    "parity_required": true,
+    "sim_correct": "required",
+    "tb_compile": "required",
+    "tran_generated": "required"
+  },
+  "circuit_function_id": "binary_dac_4b",
+  "core_function": "data-converter",
+  "created_at": "2026-04-05",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "evidence": {
+    "notes": "Converted from examples/data-converter/dac_binary_clk_4b; dual validation backfill 2026-04-16",
+    "pr_link": "[TODO]",
+    "result_path": "behavioral-veriloga-eval/results/gold-dual-suite-final/dac_binary_clk_4b_smoke"
+  },
+  "expected_backend": "evas",
+  "family": "end-to-end",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "@(cross(",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "owner": "liangyuxuan",
+  "pack_id": "binary_dac_4b",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_draft_needs_contract_review_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": {
+    "path": "behavioral-veriloga-eval/examples/data-converter/dac_binary_clk_4b",
+    "type": "example"
+  },
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "end-to-end",
+  "source_relative_path": "tasks/end-to-end/voltage/dac_binary_clk_4b_smoke",
+  "source_task_form": "end-to-end",
+  "source_task_id": "dac_binary_clk_4b_smoke",
+  "task_form": "end-to-end",
+  "task_id": "bpack_binary_dac_4b_e2e",
+  "task_name": "4-bit Clocked Binary DAC Smoke Test",
+  "tier": "verified",
+  "verification_status": "passed"
+}

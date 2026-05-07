@@ -1,0 +1,49 @@
+{
+  "artifacts": [
+    "dut_fixed.va"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": false,
+  "bpack_authored_kind": null,
+  "bpack_inventory_status": "existing_needs_contract_review",
+  "bpack_notes": "All four task forms exist. Need review that the four prompts share the same sample/hold contract rather than aperture/droop variants.",
+  "bpack_source_task_id": "original92_wrong_edge_sample_hold_bug",
+  "category": "sample-hold",
+  "circuit_function_id": "sample_hold",
+  "core_function": "sample-hold",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "id": "wrong_edge_sample_hold_bug",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "@(cross(",
+    "transition(",
+    "sampled"
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "pack_id": "sample_hold",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_draft_needs_contract_review_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "bugfix",
+  "source_relative_path": "tasks/bugfix/voltage/wrong_edge_sample_hold_bug",
+  "source_task_form": "bugfix",
+  "source_task_id": "wrong_edge_sample_hold_bug",
+  "task_form": "bugfix",
+  "task_id": "bpack_sample_hold_bugfix"
+}

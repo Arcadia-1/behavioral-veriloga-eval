@@ -1,6 +1,6 @@
 # bpack48 Priority Experiment Queue
 
-**Date**: 2026-05-07
+**Date**: 2026-05-08
 
 This queue narrows `bpack48` experiments to priority 1 and priority 2 only.
 `evas-repair`, `mechanism-public`, and `functional-ir` are explicitly excluded
@@ -11,11 +11,16 @@ from the first bpack run cycle.
 | Step | Output | Status |
 | --- | --- | --- |
 | B0 inventory | `docs/BPACK_V1_INVENTORY.json` | drafted |
-| B1 benchmark root | `benchmark-bpack-v1/` | TODO |
-| B2 gold validation | EVAS+Spectre gold validation summary | TODO |
-| Provider availability | Valid model API key in environment | blocked locally |
+| B1 benchmark root | `benchmark-bpack-v1/` | frozen bpack48: 48/48 tasks |
+| B2 gold validation | EVAS+Spectre gold validation summary | strict-EVAS 48/48; Spectre 48/48 |
+| Provider availability | Valid model API key in environment | MiMo key available for smoke/model runs |
 
-Model experiments must not start until B1 and B2 pass.
+Model experiments can start because B1 and B2 pass.
+
+Current draft status is summarized in
+`docs/BPACK_V1_MATERIALIZATION_REPORT.md` and
+`docs/BPACK_V1_FREEZE_CANDIDATE_REPORT.md`.  The benchmark is runnable,
+task-form complete, and gold-validated by both strict-EVAS and Spectre.
 
 ## Priority 1: Minimal Main Chain
 
@@ -67,6 +72,32 @@ Report both task-level and pack-level metrics:
 | Avg tokens/task | yes |
 | Avg API time/task | yes |
 | Model thinking/reasoning mode | yes |
+
+## Provider Probe Before Full Runs
+
+Before running a new model/provider on the full bpack benchmark, run the fixed
+high-output probe:
+
+```bash
+MODEL=<model> GEN_WORKERS=8 MAX_TOKENS=4096 runners/run_bpack_provider_probe.sh
+```
+
+The current MiMo controlled setting is:
+
+- `MODEL=mimo-v2.5-pro`
+- `MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1`
+- `MIMO_THINKING_TYPE=disabled`
+- `MAX_TOKENS=4096`
+- `GEN_WORKERS=8`
+- `temperature=0`, `top_p=1`
+
+The 2026-05-08 MiMo probe passed the provider gate:
+
+- 8/8 high-output tasks generated extractable code.
+- 0 API errors at `GEN_WORKERS=8`.
+- 0 hidden reasoning tokens with `MIMO_THINKING_TYPE=disabled`.
+- 1/8 tasks still hit `finish_reason=length`, now due to visible output length
+  rather than hidden reasoning.
 
 ## Stop/Go Gates
 

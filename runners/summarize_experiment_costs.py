@@ -94,9 +94,12 @@ def _collect_generation_rows(
         model = meta.get("model") or model_slug
         input_tokens = int(_num(meta.get("input_tokens")))
         output_tokens = int(_num(meta.get("output_tokens")))
+        reasoning_tokens = int(_num(meta.get("reasoning_tokens")))
         row = {
             "model": model,
             "model_slug": model_slug,
+            "provider": meta.get("provider", ""),
+            "reasoning_mode": meta.get("reasoning_mode", ""),
             "task_id": task_id,
             "sample_idx": sample,
             "status": meta.get("status", ""),
@@ -108,6 +111,7 @@ def _collect_generation_rows(
             "benchmark_split": meta.get("benchmark_split") or task_meta.get("benchmark_split", ""),
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
+            "reasoning_tokens": reasoning_tokens,
             "total_tokens": input_tokens + output_tokens,
             "api_elapsed_s": round(_num(meta.get("api_elapsed_s")), 3),
             "task_elapsed_s": round(_num(meta.get("task_elapsed_s")), 3),
@@ -156,6 +160,7 @@ def _aggregate(rows: list[dict[str, Any]], group_keys: tuple[str, ...]) -> list[
     for key, items in sorted(buckets.items(), key=lambda kv: tuple(str(x) for x in kv[0])):
         total_input = sum(int(item["input_tokens"]) for item in items)
         total_output = sum(int(item["output_tokens"]) for item in items)
+        total_reasoning = sum(int(item.get("reasoning_tokens", 0) or 0) for item in items)
         total_tokens = total_input + total_output
         api_elapsed = sum(float(item["api_elapsed_s"]) for item in items)
         task_elapsed = sum(float(item["task_elapsed_s"]) for item in items)
@@ -170,8 +175,10 @@ def _aggregate(rows: list[dict[str, Any]], group_keys: tuple[str, ...]) -> list[
             "no_code_extracted": no_code,
             "total_input_tokens": total_input,
             "total_output_tokens": total_output,
+            "total_reasoning_tokens": total_reasoning,
             "total_tokens": total_tokens,
             "avg_tokens_per_task": round(total_tokens / max(len(items), 1), 2),
+            "avg_reasoning_tokens_per_task": round(total_reasoning / max(len(items), 1), 2),
             "api_elapsed_s": round(api_elapsed, 3),
             "avg_api_elapsed_s_per_task": round(api_elapsed / max(len(items), 1), 3),
             "task_elapsed_s": round(task_elapsed, 3),
@@ -180,6 +187,10 @@ def _aggregate(rows: list[dict[str, Any]], group_keys: tuple[str, ...]) -> list[
         }
         for name, value in zip(group_keys, key):
             row[name] = value
+        for name in ("provider", "reasoning_mode"):
+            values = sorted({str(item.get(name, "")) for item in items if item.get(name, "")})
+            if len(values) == 1:
+                row[name] = values[0]
         result_cols = sorted(k for k in items[0] if k.startswith("result:")) if items else []
         for col in result_cols:
             pass_count = sum(1 for item in items if item.get(col) == "PASS")
@@ -222,6 +233,8 @@ def _write_markdown(path: Path, aggregate_rows: list[dict[str, Any]]) -> None:
     preferred = [
         "group",
         "model",
+        "provider",
+        "reasoning_mode",
         "source_collection",
         "task_form",
         "core_function",
@@ -231,8 +244,10 @@ def _write_markdown(path: Path, aggregate_rows: list[dict[str, Any]]) -> None:
         "no_code_extracted",
         "total_input_tokens",
         "total_output_tokens",
+        "total_reasoning_tokens",
         "total_tokens",
         "avg_tokens_per_task",
+        "avg_reasoning_tokens_per_task",
         "api_elapsed_s",
         "avg_api_elapsed_s_per_task",
     ] + result_cols

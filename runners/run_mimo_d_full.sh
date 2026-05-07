@@ -5,10 +5,11 @@ set -euo pipefail
 # Required environment:
 #   MIMO_API_KEY=<redacted>
 # Optional environment:
-#   MIMO_BASE_URL=https://api.xiaomimimo.com/v1
+#   MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1
+#   MIMO_THINKING_TYPE=disabled
 #   MODEL=mimo-v2.5-pro
 #   DATE_TAG=2026-05-04
-#   GEN_WORKERS=2
+#   GEN_WORKERS=8
 #   SCORE_WORKERS=4
 #   MAX_TOKENS=4096
 #   TIMEOUT_S=240
@@ -18,10 +19,11 @@ if [[ -z "${MIMO_API_KEY:-}" ]]; then
   exit 1
 fi
 
-export MIMO_BASE_URL="${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}"
+export MIMO_BASE_URL="${MIMO_BASE_URL:-https://token-plan-cn.xiaomimimo.com/v1}"
+export MIMO_THINKING_TYPE="${MIMO_THINKING_TYPE:-disabled}"
 MODEL="${MODEL:-mimo-v2.5-pro}"
 DATE_TAG="${DATE_TAG:-2026-05-04}"
-GEN_WORKERS="${GEN_WORKERS:-2}"
+GEN_WORKERS="${GEN_WORKERS:-8}"
 SCORE_WORKERS="${SCORE_WORKERS:-4}"
 MAX_TOKENS="${MAX_TOKENS:-4096}"
 TIMEOUT_S="${TIMEOUT_S:-240}"

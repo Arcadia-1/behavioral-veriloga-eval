@@ -1445,6 +1445,14 @@ def call_mimo(model: str, system: str, user: str,
         "input_tokens": usage_obj.prompt_tokens if usage_obj else 0,
         "output_tokens": usage_obj.completion_tokens if usage_obj else 0,
         "finish_reason": response.choices[0].finish_reason,
+        "provider": "mimo",
+        "reasoning_mode": (
+            f"mimo_thinking:{thinking_type}" if thinking_type
+            else f"mimo_reasoning_effort:{reasoning_effort}" if reasoning_effort
+            else "provider-default"
+        ),
+        "mimo_thinking_type": thinking_type or "",
+        "mimo_reasoning_effort": reasoning_effort or "",
     }
     if usage_obj:
         completion_details = getattr(usage_obj, "completion_tokens_details", None)
@@ -1582,6 +1590,7 @@ def generate_one_task(
     gen_meta_base = {
         "model": model,
         "model_slug": model_slug,
+        "provider": detect_provider(model),
         "task_id": task_id,
         "family": family,
         "sample_idx": sample_idx,

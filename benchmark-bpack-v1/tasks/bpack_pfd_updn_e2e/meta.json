@@ -1,0 +1,54 @@
+{
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": false,
+  "bpack_authored_kind": null,
+  "bpack_inventory_status": "existing_needs_contract_review",
+  "bpack_notes": "All four task forms exist, but tb-generation may be XOR/phase-detector oriented rather than exact PFD UP/DN. Review before promotion.",
+  "bpack_source_task_id": "original92_pfd_updn_smoke",
+  "category": "phase-detector",
+  "checks": {
+    "dut_compile": "required",
+    "parity_required": true,
+    "sim_correct": "required",
+    "tb_compile": "required",
+    "tran_generated": "required"
+  },
+  "circuit_function_id": "pfd_updn",
+  "core_function": "phase-detector",
+  "created_at": "2026-04-05",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "evidence": {
+    "notes": "task assets created 2026-04-05; PFD with combinational reset; example: examples/phase-detector/pfd_updn; dual validation backfill 2026-04-16",
+    "pr_link": "[TODO]",
+    "result_path": "behavioral-veriloga-eval/results/gold-dual-suite-final/pfd_updn_smoke"
+  },
+  "expected_backend": "evas",
+  "family": "end-to-end",
+  "owner": "team",
+  "pack_id": "pfd_updn",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_draft_needs_contract_review_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": {
+    "path": "behavioral-veriloga-eval/examples/phase-detector/pfd_updn",
+    "type": "example"
+  },
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "end-to-end",
+  "source_relative_path": "tasks/end-to-end/voltage/pfd_updn_smoke",
+  "source_task_form": "end-to-end",
+  "source_task_id": "pfd_updn_smoke",
+  "task_form": "end-to-end",
+  "task_id": "bpack_pfd_updn_e2e",
+  "task_name": "Phase-Frequency Detector UP/DN Smoke Test",
+  "tier": "verified",
+  "verification_status": "passed"
+}

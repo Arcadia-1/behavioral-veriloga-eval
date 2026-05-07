@@ -7,10 +7,9 @@ This plan runs the unified `D` condition on `benchmark-balanced` with Xiaomi MiM
 - Benchmark: `benchmark-balanced` full 143 tasks.
 - Model: `mimo-v2.5-pro`.
 - Prompt condition: `D = spectre-strict-v3`, one-shot generation, no repair.
-- Thinking mode: must be recorded. Prefer a smoke-tested thinking-disabled or
-  lowest-reasoning setting for model-to-model comparison; otherwise label the
-  run as provider default and do not compare it as equivalent to controlled
-  Kimi rows.
+- Thinking mode: use `MIMO_THINKING_TYPE=disabled` for the controlled MiMo row.
+  The provider-default row is diagnostic only because hidden reasoning can
+  consume the visible output budget.
 - Validator: spectre-strict EVAS through `runners/validate_benchmark_v2_gold.py --candidate-dir ... --bench-dir benchmark-balanced`.
 - Accounting: `generation_meta.json` plus `summarize_experiment_costs.py` grouped tables. Record input tokens, output tokens, hidden reasoning tokens when reported, cached input tokens when reported, and API elapsed time.
 
@@ -26,18 +25,31 @@ Optional knobs:
 
 ```bash
 MODEL=mimo-v2.5-pro
-MIMO_BASE_URL=https://api.xiaomimimo.com/v1
+MIMO_BASE_URL=https://token-plan-cn.xiaomimimo.com/v1
 MIMO_THINKING_TYPE=disabled
-MIMO_REASONING_EFFORT=low
-MIMO_EXTRA_BODY_JSON='{"thinking":{"type":"disabled"}}'
-GEN_WORKERS=2
+GEN_WORKERS=8
 MAX_TOKENS=4096
 TIMEOUT_S=240
 DATE_TAG=2026-05-04
 ```
 
-The exact thinking/reasoning parameter names are provider-specific. Before a
-full run, execute a one-task smoke test and confirm:
+Before a full run, execute the fixed high-output provider probe:
+
+```bash
+MIMO_API_KEY=... MODEL=mimo-v2.5-pro GEN_WORKERS=8 MAX_TOKENS=4096 \
+  runners/run_bpack_provider_probe.sh
+```
+
+The 2026-05-08 probe result showed:
+
+- `MIMO_REASONING_EFFORT=low` did not control hidden reasoning: a high-risk
+  task still used about 4095 hidden reasoning tokens and produced no code.
+- `MIMO_THINKING_TYPE=disabled` was accepted and set `reasoning_tokens=0`.
+- `GEN_WORKERS=8` completed 8 parallel high-risk tasks without API errors.
+- The controlled probe generated code for all 8 tasks; 1/8 still reached
+  `max_tokens=4096` because visible output was long.
+
+For any provider/model, the probe must confirm:
 
 - `reasoning_tokens / output_tokens` is low or zero when the provider reports it.
 - `raw_response_length > 0`.

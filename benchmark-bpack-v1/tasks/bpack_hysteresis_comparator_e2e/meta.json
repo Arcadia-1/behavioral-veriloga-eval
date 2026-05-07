@@ -1,0 +1,72 @@
+{
+  "artifacts": [
+    "dut.va",
+    "tb_cmp_hysteresis.scs",
+    "tran.csv"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "bpack-v1",
+  "benchmark_split": "benchmark-bpack-v1",
+  "bpack_authored": false,
+  "bpack_authored_kind": null,
+  "bpack_inventory_status": "needs_authoring",
+  "bpack_notes": "Need a comparator-hysteresis tb-generation task; existing comparator_offset_tb is related but not exact.",
+  "bpack_source_task_id": "original92_comparator_hysteresis_smoke",
+  "category": "comparator",
+  "checks": {
+    "dut_compile": "required",
+    "parity_required": true,
+    "sim_correct": "required",
+    "tb_compile": "required",
+    "tran_generated": "required"
+  },
+  "circuit_function_id": "hysteresis_comparator",
+  "core_function": "comparator",
+  "created_at": "2026-04-19",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "evidence": {
+    "notes": "Added on 2026-04-19 to extend comparator coverage toward stateful threshold-history behavior and EVAS/Spectre cross-trigger parity.",
+    "pr_link": "[TODO]",
+    "result_path": "behavioral-veriloga-eval/results/gold-dual-suite-expansion-2026-04-19/comparator_hysteresis_smoke"
+  },
+  "expected_backend": "evas",
+  "family": "end-to-end",
+  "id": "comparator_hysteresis_smoke",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "@(cross(",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt(",
+    "idt("
+  ],
+  "owner": "team",
+  "pack_id": "hysteresis_comparator",
+  "pack_version": "v1",
+  "promotion_status": "bpack_v1_draft_needs_authoring_or_contract_split",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": {
+    "path": "behavioral-veriloga-eval/examples/comparator/comparator",
+    "type": "example"
+  },
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "end-to-end",
+  "source_relative_path": "tasks/end-to-end/voltage/comparator_hysteresis_smoke",
+  "source_task_form": "end-to-end",
+  "source_task_id": "comparator_hysteresis_smoke",
+  "task_form": "end-to-end",
+  "task_id": "bpack_hysteresis_comparator_e2e",
+  "task_name": "Comparator Hysteresis Sweep Smoke Test",
+  "tier": "verified",
+  "verification_status": "passed"
+}
