@@ -7,6 +7,10 @@ It does not delete historical artifacts.  Instead, it defines which results are
 maintained, which are diagnostic, and which future runs should use the new naming
 contract.
 
+Repository artifact cleanup policy lives in
+`docs/REPOSITORY_CLEANUP_POLICY.md`.  Cleanup should be staged as ignore,
+summarize, archive, then delete only in a dedicated cleanup PR if needed.
+
 ## One-Sentence Project Goal
 
 vaEVAS builds a Spectre-aligned evaluation and skill-guided closure framework for
