@@ -102,6 +102,19 @@ The 2026-05-08 MiMo probe passed the provider gate:
 - 1/8 tasks still hit `finish_reason=length`, now due to visible output length
   rather than hidden reasoning.
 
+A follow-up reasoning ablation on the same 8 tasks rejected provider-default
+reasoning for mainline runs:
+
+| Mode | Max tokens | Generated | No code | Hidden reasoning tokens | Avg API s/task | strict-EVAS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `thinking=disabled` | 4096 | 8/8 | 0/8 | 0 | 21.2 | 1/8 |
+| provider default | 4096 | 1/8 | 7/8 | 29,534 | 63.5 | 0/8 |
+| provider default | 8192 | 3/8 | 5/8 | 57,582 | 117.2 | 1/8 |
+
+Conclusion: use `thinking=disabled` for controlled MiMo rows.  Provider-default
+reasoning is diagnostic only unless a future model/prompt passes the same
+artifact gate.
+
 The Kimi reference rows should be reported as:
 
 - `provider=bailian` / Bailian-Anthropic-compatible route

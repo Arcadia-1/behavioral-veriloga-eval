@@ -51,6 +51,25 @@ The 2026-05-08 probe result showed:
 - The controlled probe generated code for all 8 tasks; 1/8 still reached
   `max_tokens=4096` because visible output was long.
 
+## Reasoning-Mode Ablation
+
+A fixed 8-task high-output bpack probe was used to decide whether MiMo
+reasoning should be enabled before any full benchmark row.
+
+| Mode | Max tokens | Generated | No code | Length finishes | Hidden reasoning tokens | Avg API s/task | strict-EVAS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `MIMO_THINKING_TYPE=disabled` | 4096 | 8/8 | 0/8 | 1/8 | 0 | 21.2 | 1/8 |
+| provider default | 4096 | 1/8 | 7/8 | 7/8 | 29,534 | 63.5 | 0/8 |
+| provider default | 8192 | 3/8 | 5/8 | 5/8 | 57,582 | 117.2 | 1/8 |
+
+Conclusion: provider-default reasoning fails the artifact gate for this
+code-generation workload. Increasing the output budget to 8192 reduces but does
+not solve `no_code_extracted`, and it costs about 5.5x the controlled
+`thinking=disabled` average API time on the probe.  The mainline MiMo mode is
+therefore `MIMO_THINKING_TYPE=disabled`, `MAX_TOKENS=4096`, and
+`GEN_WORKERS=8`.  Provider-default reasoning rows are diagnostic only unless a
+future prompt/model configuration passes the same artifact gate.
+
 For any provider/model, the probe must confirm:
 
 - The exact provider/model id is present in `generation_meta.json` and tables.
