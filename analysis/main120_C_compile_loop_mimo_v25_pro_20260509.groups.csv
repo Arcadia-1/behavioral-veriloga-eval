@@ -1,0 +1,44 @@
+group,tasks,generated,api_error,no_code_extracted,total_input_tokens,total_output_tokens,total_reasoning_tokens,total_tokens,avg_tokens_per_task,avg_reasoning_tokens_per_task,api_elapsed_s,avg_api_elapsed_s_per_task,task_elapsed_s,avg_task_elapsed_s_per_task,api_call_count,model_id,provider,reasoning_mode,model,source_collection,task_form,core_function
+overall,120,45,0,0,145542,23046,0,168588,1404.9,0.0,439.928,3.666,440.245,3.669,47,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,
+model,120,45,0,0,145542,23046,0,168588,1404.9,0.0,439.928,3.666,440.245,3.669,47,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,,,
+source_collection,80,28,0,0,90301,12849,0,103150,1289.38,0.0,263.54,3.294,263.717,3.296,30,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,balanced_supplement_v1,,
+source_collection,32,12,0,0,40825,8575,0,49400,1543.75,0.0,143.085,4.471,143.203,4.475,12,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92,,
+source_collection,8,5,0,0,14416,1622,0,16038,2004.75,0.0,33.303,4.163,33.325,4.166,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92_taskform_completion_v1,,
+task_form,30,11,0,0,32835,3625,0,36460,1215.33,0.0,77.141,2.571,77.203,2.573,11,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,bugfix,
+task_form,30,12,0,0,46077,8557,0,54634,1821.13,0.0,149.898,4.997,149.989,5.0,13,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,end-to-end,
+task_form,30,10,0,0,32432,5130,0,37562,1252.07,0.0,103.448,3.448,103.5,3.45,11,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,spec-to-va,
+task_form,30,12,0,0,34198,5734,0,39932,1331.07,0.0,109.441,3.648,109.553,3.652,12,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,tb-generation,
+source_collection+task_form,20,10,0,0,29883,3389,0,33272,1663.6,0.0,72.125,3.606,72.179,3.609,10,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,balanced_supplement_v1,bugfix,
+source_collection+task_form,20,6,0,0,23528,3694,0,27222,1361.1,0.0,70.912,3.546,70.968,3.548,7,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,balanced_supplement_v1,end-to-end,
+source_collection+task_form,20,7,0,0,23561,4042,0,27603,1380.15,0.0,82.261,4.113,82.298,4.115,8,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,balanced_supplement_v1,spec-to-va,
+source_collection+task_form,20,5,0,0,13329,1724,0,15053,752.65,0.0,38.242,1.912,38.272,1.914,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,balanced_supplement_v1,tb-generation,
+source_collection+task_form,8,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,mimo-v2.5-pro,,,,original92,bugfix,
+source_collection+task_form,8,5,0,0,19248,4419,0,23667,2958.38,0.0,70.833,8.854,70.864,8.858,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92,end-to-end,
+source_collection+task_form,8,2,0,0,6024,834,0,6858,857.25,0.0,15.021,1.878,15.033,1.879,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92,spec-to-va,
+source_collection+task_form,8,5,0,0,15553,3322,0,18875,2359.38,0.0,57.231,7.154,57.306,7.163,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92,tb-generation,
+source_collection+task_form,2,1,0,0,2952,236,0,3188,1594.0,0.0,5.016,2.508,5.024,2.512,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92_taskform_completion_v1,bugfix,
+source_collection+task_form,2,1,0,0,3301,444,0,3745,1872.5,0.0,8.153,4.077,8.157,4.079,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92_taskform_completion_v1,end-to-end,
+source_collection+task_form,2,1,0,0,2847,254,0,3101,1550.5,0.0,6.166,3.083,6.169,3.084,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92_taskform_completion_v1,spec-to-va,
+source_collection+task_form,2,2,0,0,5316,688,0,6004,3002.0,0.0,13.968,6.984,13.975,6.988,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,original92_taskform_completion_v1,tb-generation,
+core_function,16,1,0,0,2534,262,0,2796,174.75,0.0,5.668,0.354,5.671,0.354,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,calibration/control
+core_function,12,10,0,0,35831,4219,0,40050,3337.5,0.0,76.729,6.394,76.781,6.398,12,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,continuous dynamics
+core_function,4,1,0,0,2951,329,0,3280,820.0,0.0,6.649,1.662,6.654,1.663,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,continuous dynamics/pll
+core_function,12,3,0,0,10916,2843,0,13759,1146.58,0.0,46.025,3.835,46.091,3.841,3,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,data conversion
+core_function,4,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,mimo-v2.5-pro,,,,,,data conversion/calibration
+core_function,16,6,0,0,19390,3684,0,23074,1442.12,0.0,64.332,4.021,64.381,4.024,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,event/timing
+core_function,16,6,0,0,19029,2868,0,21897,1368.56,0.0,52.25,3.266,52.295,3.268,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,pointer/selection
+core_function,8,2,0,0,5886,819,0,6705,838.12,0.0,15.094,1.887,15.101,1.888,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,source/measurement/TB
+core_function,16,8,0,0,24731,4979,0,29710,1856.88,0.0,98.769,6.173,98.819,6.176,8,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,stateful analog memory
+core_function,16,8,0,0,24274,3043,0,27317,1707.31,0.0,74.412,4.651,74.452,4.653,8,mimo-v2.5-pro,mimo,mimo_thinking:disabled,,,,threshold/static nonlinear
+model+source_collection+task_form,20,10,0,0,29883,3389,0,33272,1663.6,0.0,72.125,3.606,72.179,3.609,10,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,balanced_supplement_v1,bugfix,
+model+source_collection+task_form,20,6,0,0,23528,3694,0,27222,1361.1,0.0,70.912,3.546,70.968,3.548,7,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,balanced_supplement_v1,end-to-end,
+model+source_collection+task_form,20,7,0,0,23561,4042,0,27603,1380.15,0.0,82.261,4.113,82.298,4.115,8,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,balanced_supplement_v1,spec-to-va,
+model+source_collection+task_form,20,5,0,0,13329,1724,0,15053,752.65,0.0,38.242,1.912,38.272,1.914,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,balanced_supplement_v1,tb-generation,
+model+source_collection+task_form,8,0,0,0,0,0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,mimo-v2.5-pro,,,mimo-v2.5-pro,original92,bugfix,
+model+source_collection+task_form,8,5,0,0,19248,4419,0,23667,2958.38,0.0,70.833,8.854,70.864,8.858,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92,end-to-end,
+model+source_collection+task_form,8,2,0,0,6024,834,0,6858,857.25,0.0,15.021,1.878,15.033,1.879,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92,spec-to-va,
+model+source_collection+task_form,8,5,0,0,15553,3322,0,18875,2359.38,0.0,57.231,7.154,57.306,7.163,5,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92,tb-generation,
+model+source_collection+task_form,2,1,0,0,2952,236,0,3188,1594.0,0.0,5.016,2.508,5.024,2.512,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92_taskform_completion_v1,bugfix,
+model+source_collection+task_form,2,1,0,0,3301,444,0,3745,1872.5,0.0,8.153,4.077,8.157,4.079,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92_taskform_completion_v1,end-to-end,
+model+source_collection+task_form,2,1,0,0,2847,254,0,3101,1550.5,0.0,6.166,3.083,6.169,3.084,1,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92_taskform_completion_v1,spec-to-va,
+model+source_collection+task_form,2,2,0,0,5316,688,0,6004,3002.0,0.0,13.968,6.984,13.975,6.988,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,mimo-v2.5-pro,original92_taskform_completion_v1,tb-generation,

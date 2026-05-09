@@ -1,0 +1,378 @@
+{
+  "C": {
+    "axis_pass": {
+      "dut_compile": 105,
+      "sim_correct": 21,
+      "tb_compile": 106
+    },
+    "pass_count": 21,
+    "status_counts": {
+      "FAIL_DUT_COMPILE": 15,
+      "FAIL_SIM_CORRECTNESS": 71,
+      "FAIL_TB_COMPILE": 13,
+      "PASS": 21
+    },
+    "total": 120
+  },
+  "D": {
+    "axis_pass": {
+      "dut_compile": 92,
+      "sim_correct": 21,
+      "tb_compile": 96
+    },
+    "pass_count": 21,
+    "status_counts": {
+      "FAIL_DUT_COMPILE": 28,
+      "FAIL_SIM_CORRECTNESS": 54,
+      "FAIL_TB_COMPILE": 17,
+      "PASS": 21
+    },
+    "total": 120
+  },
+  "baseline_result_root": "results/main120-D-spliced-evas-diagnostics-20260509",
+  "compile_improved_count": 17,
+  "compile_improved_tasks": [
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_barrel_pointer_window_e2e"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_bugfix"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_dut"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_e2e"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_leaky_hold_dut"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.5
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_peak_detector_tb"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_dut"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_e2e"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_sar_logic_4b_e2e"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_settling_time_measurement_tb_bugfix"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_bugfix"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_dut"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.5
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_tb"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 0.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_strongarm_comparator_behavior_dut"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.3333
+      },
+      "d_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_track_hold_aperture_e2e"
+    },
+    {
+      "c_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.5
+      },
+      "c_status": "FAIL_SIM_CORRECTNESS",
+      "d_scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 0.0,
+        "weighted_total": 0.0
+      },
+      "d_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_voltage_clamp_tb"
+    }
+  ],
+  "condition": "C compile-loop",
+  "generated_root": "generated-main120-C-compile-loop-mimo-v2.5-pro-20260509",
+  "model": "mimo-v2.5-pro",
+  "provider": "mimo",
+  "reasoning_mode": "mimo_thinking:disabled",
+  "repair_cost": {
+    "api_call_count": 47,
+    "api_elapsed_s": 439.928,
+    "avg_api_elapsed_s_per_call": 9.36,
+    "cached_input_tokens": 19968,
+    "finish_counts": {
+      "stop": 47
+    },
+    "generated_count": 47,
+    "input_tokens": 145542,
+    "output_tokens": 23046,
+    "reasoning_tokens": 0,
+    "round_meta_count": 47,
+    "total_tokens": 168588
+  },
+  "result_root": "results/main120-C-compile-loop-mimo-v2.5-pro-20260509",
+  "status_transitions": [
+    {
+      "count": 54,
+      "from": "FAIL_SIM_CORRECTNESS",
+      "to": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "count": 21,
+      "from": "PASS",
+      "to": "PASS"
+    },
+    {
+      "count": 15,
+      "from": "FAIL_DUT_COMPILE",
+      "to": "FAIL_DUT_COMPILE"
+    },
+    {
+      "count": 13,
+      "from": "FAIL_DUT_COMPILE",
+      "to": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "count": 13,
+      "from": "FAIL_TB_COMPILE",
+      "to": "FAIL_TB_COMPILE"
+    },
+    {
+      "count": 4,
+      "from": "FAIL_TB_COMPILE",
+      "to": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}
