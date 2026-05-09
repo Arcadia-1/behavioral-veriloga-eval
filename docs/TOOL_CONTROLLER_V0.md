@@ -1,6 +1,6 @@
-# vaEVAS Tool Controller v0.3
+# vaEVAS Tool Controller v0.4
 
-Date: 2026-05-08
+Date: 2026-05-09
 
 ## Goal
 
@@ -33,12 +33,13 @@ manifest, and the trace files.  It includes:
 
 ## Tools
 
-The current controller exposes two tool classes:
+The current controller exposes three tool classes:
 
 | Tool | Type | Cost | Role |
 | --- | --- | ---: | --- |
 | `local_compile_skill_batch` | deterministic local | 0 LLM calls | Applies safe compile-skill fixers and accepts only if strict-EVAS compile rank improves. |
 | `cached_llm_ce_fallback` | cached LLM/CE fallback | projected from cached meta plus local re-score time | Reuses CE-v2 candidate code to evaluate routing without new API spend; the candidate must be re-scored with current strict-EVAS before acceptance. |
+| `llm_plan_execute_compile_repair` | online LLM fallback | plan + repair calls | Uses validator notes to ask for a bounded compile-repair plan, executes one step, and accepts only after EVAS validation. |
 
 Future tools should keep the same action record shape:
 
@@ -132,6 +133,34 @@ Interpretation: controller routing is still valuable as a cost-aware scheduler,
 but it does not improve the current PASS ceiling on this residual slice.  Its
 confirmed benefit is compile-state triage and token/time reduction for selected
 CE probes, not behavior repair.
+
+## T1 Online LLM Fallback Smoke
+
+T1 evaluates whether the controller should have an online LLM fallback after
+S2's deterministic local skill accept/reject stage.  The smoke run starts from
+the 10 S2 Spectre compile-fail residuals, gives the LLM public validator notes,
+asks for a short compile-repair plan, executes the current step, and then
+accepts/rejects through EVAS before targeted Spectre audit.
+
+Model setting: `mimo-v2.5-pro`, reasoning disabled, `max_tokens=4096`,
+temperature 0, top-p 1.
+
+| Row | PASS | Compile OK | Compile fail | Behavior fail | DUT compile fail | TB compile fail |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| S2 Spectre residual slice | 0/10 | 0/10 | 10/10 | 0/10 | 6 | 4 |
+| T1 maintained EVAS slice | 0/10 | 8/10 | 2/10 | 8/10 | 2 | 0 |
+| T1 Spectre slice | 1/10 | 7/10 | 3/10 | 6/10 | 2 | 1 |
+
+Cost: 10 tasks, 28 API calls, 102426 input tokens, 9979 output tokens, 0
+reasoning tokens, 214.088 API seconds.
+
+Interpretation: T1 should not replace S2.  It is a higher-cost fallback for the
+closed-world limitation of deterministic skills.  On this residual slice it
+reduced Spectre compile failures from 10 to 3 and produced one additional
+Spectre PASS.  The remaining work should separate residual compile tools from
+behavior-repair tools.
+
+Artifact: `analysis/main120_T1_llm_tool_controller_smoke_result_20260509.md`.
 
 ## Audit Guardrails
 

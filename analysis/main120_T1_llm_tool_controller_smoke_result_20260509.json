@@ -1,0 +1,386 @@
+{
+  "artifacts": {
+    "cost_summary_prefix": "analysis/main120_T1_llm_tool_controller_smoke_mimo_v25_pro_20260509",
+    "generated_dir": "generated-main120-T1-llm-tool-controller-smoke-mimo-v2.5-pro-20260509",
+    "maintained_evas_result": "results/main120-T1-smoke-maintained-evas-mimo-v2.5-pro-20260509",
+    "quick_evas_result": "results/main120-T1-llm-tool-controller-smoke-mimo-v2.5-pro-20260509",
+    "spectre_result": "results/main120-T1-smoke-spectre-mimo-v2.5-pro-20260509"
+  },
+  "cost": {
+    "avg_api_elapsed_s_per_task": 21.409,
+    "avg_tokens_per_task": 11240.5,
+    "total_api_calls": 28,
+    "total_api_elapsed_s": 214.088,
+    "total_input_tokens": 102426,
+    "total_output_tokens": 9979,
+    "total_reasoning_tokens": 0,
+    "total_tokens": 112405
+  },
+  "experiment": "T1 llm-assisted tool controller smoke on S2 residual Spectre compile failures",
+  "generated_at": "2026-05-09T06:08:56.316837+00:00",
+  "interpretation": [
+    "T1 is not a replacement for S2; it is a fallback tool for S2 residual compile failures.",
+    "On this residual slice, T1 converted Spectre compile failures from 10/10 to 3/10 and produced one Spectre PASS.",
+    "The main benefit is open-ended compile repair exploration under validator accept/reject, at nonzero token/time cost.",
+    "Remaining failures are now mostly behavior residuals plus three compile residuals, so the next work should split behavior tools from residual compile tools."
+  ],
+  "max_tokens": 4096,
+  "model": "mimo-v2.5-pro",
+  "per_task": [
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 20.338,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 8192,
+      "output_tokens": 1002,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "improved"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=debounce_latch.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=334 cols=4",
+        "early=0.000 late=0.244"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_debounce_latch_e2e",
+      "total_tokens": 9194
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 21.156,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 6279,
+      "output_tokens": 927,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "improved"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_TB_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=debounce_latch.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=746 cols=4",
+        "early=0.000 late=0.000"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_debounce_latch_tb",
+      "total_tokens": 7206
+    },
+    {
+      "api_call_count": 4,
+      "api_elapsed_s": 32.199,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 14950,
+      "output_tokens": 1529,
+      "plan_parse_status": [
+        "parsed",
+        "parsed"
+      ],
+      "progress": [
+        "improved",
+        "improved"
+      ],
+      "repair_round_count": 2,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=edge_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=555 cols=4",
+        "pulse_edges=1 high_frac=0.966"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_edge_detector_e2e",
+      "total_tokens": 16479
+    },
+    {
+      "api_call_count": 4,
+      "api_elapsed_s": 25.509,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 13527,
+      "output_tokens": 1030,
+      "plan_parse_status": [
+        "parsed",
+        "parsed"
+      ],
+      "progress": [
+        "improved",
+        "improved"
+      ],
+      "repair_round_count": 2,
+      "s2_spectre_status": "FAIL_TB_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=edge_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=469 cols=4",
+        "pulse_edges=2 high_frac=0.068"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_edge_detector_tb",
+      "total_tokens": 14557
+    },
+    {
+      "api_call_count": 4,
+      "api_elapsed_s": 29.205,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 13257,
+      "output_tokens": 1036,
+      "plan_parse_status": [
+        "parsed",
+        "parsed"
+      ],
+      "progress": [
+        "improved",
+        "improved"
+      ],
+      "repair_round_count": 2,
+      "s2_spectre_status": "FAIL_TB_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=lock_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=841 cols=5",
+        "early_high=0.397 late_high=1.000"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_lock_detector_tb",
+      "total_tokens": 14293
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 15.319,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 7271,
+      "output_tokens": 870,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "improved"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_TB_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=cmp_offset_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_empty",
+        "spectre_tran_csv_missing"
+      ],
+      "t1_spectre_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_offset_comparator_e2e",
+      "total_tokens": 8141
+    },
+    {
+      "api_call_count": 4,
+      "api_elapsed_s": 36.66,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 16332,
+      "output_tokens": 2141,
+      "plan_parse_status": [
+        "parsed",
+        "parsed"
+      ],
+      "progress": [
+        "improved",
+        "improved"
+      ],
+      "repair_round_count": 2,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=one_shot_timer.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=730 cols=4",
+        "trig_edges=5 pulse_edges=5 pulse_frac=0.3846"
+      ],
+      "t1_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_one_shot_timer_e2e",
+      "total_tokens": 18473
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 10.247,
+      "best_layer": "compile_dut",
+      "best_status": "FAIL_DUT_COMPILE",
+      "input_tokens": 6546,
+      "output_tokens": 438,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "stalled"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_DUT_COMPILE",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "t1_spectre_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_bugfix",
+      "total_tokens": 6984
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 12.97,
+      "best_layer": "compile_dut",
+      "best_status": "FAIL_DUT_COMPILE",
+      "input_tokens": 7434,
+      "output_tokens": 584,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "stalled"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_DUT_COMPILE",
+      "t1_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=vco_phase_integrator.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "t1_spectre_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_vco_phase_integrator_bugfix",
+      "total_tokens": 8018
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 10.485,
+      "best_layer": "behavior",
+      "best_status": "FAIL_SIM_CORRECTNESS",
+      "input_tokens": 8638,
+      "output_tokens": 422,
+      "plan_parse_status": [
+        "parsed"
+      ],
+      "progress": [
+        "improved"
+      ],
+      "repair_round_count": 1,
+      "s2_spectre_status": "FAIL_DUT_COMPILE",
+      "t1_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t1_spectre_notes": [],
+      "t1_spectre_status": "PASS",
+      "task_id": "vbm1_voltage_clamp_dut",
+      "total_tokens": 9060
+    }
+  ],
+  "reasoning_mode": "mimo_thinking:disabled",
+  "s2_full_spectre_recomputed_from_fail_tasks": {
+    "behavior_fail": 81,
+    "compile_fail": 10,
+    "compile_ok": 110,
+    "dut_compile_fail": 6,
+    "infra_fail": 0,
+    "pass": 29,
+    "taxonomy": {
+      "FAIL_DUT_COMPILE": 6,
+      "FAIL_SIM_CORRECTNESS": 81,
+      "FAIL_TB_COMPILE": 4,
+      "PASS": 29
+    },
+    "tb_compile_fail": 4,
+    "total": 120
+  },
+  "slice_table": {
+    "S2 Spectre residual slice": {
+      "behavior_fail": 0,
+      "compile_fail": 10,
+      "compile_ok": 0,
+      "dut_compile_fail": 6,
+      "infra_fail": 0,
+      "pass": 0,
+      "taxonomy": {
+        "FAIL_DUT_COMPILE": 6,
+        "FAIL_TB_COMPILE": 4
+      },
+      "tb_compile_fail": 4,
+      "total": 10
+    },
+    "T1 Spectre slice": {
+      "behavior_fail": 6,
+      "compile_fail": 3,
+      "compile_ok": 7,
+      "dut_compile_fail": 2,
+      "infra_fail": 0,
+      "pass": 1,
+      "taxonomy": {
+        "FAIL_DUT_COMPILE": 2,
+        "FAIL_SIM_CORRECTNESS": 6,
+        "FAIL_TB_COMPILE": 1,
+        "PASS": 1
+      },
+      "tb_compile_fail": 1,
+      "total": 10
+    },
+    "T1 maintained EVAS slice": {
+      "behavior_fail": 8,
+      "compile_fail": 2,
+      "compile_ok": 8,
+      "dut_compile_fail": 2,
+      "infra_fail": 0,
+      "pass": 0,
+      "taxonomy": {
+        "FAIL_DUT_COMPILE": 2,
+        "FAIL_SIM_CORRECTNESS": 8
+      },
+      "tb_compile_fail": 0,
+      "total": 10
+    }
+  },
+  "source": {
+    "source_generated_dir": "generated-main120-S2-compile-skill-accept-mimo-v2.5-pro-20260509",
+    "source_spectre_result": "results/main120-S2-spectre-mimo-v2.5-pro-20260509",
+    "tasklist": "tasklists/main120_S2_spectre_compile_fail_10.txt"
+  },
+  "splice_estimate_vs_S2_full_spectre": {
+    "behavior_fail": 87,
+    "compile_fail": 3,
+    "compile_ok": 117,
+    "dut_compile_fail": 2,
+    "infra_fail": 0,
+    "pass": 30,
+    "taxonomy": {
+      "FAIL_DUT_COMPILE": 2,
+      "FAIL_SIM_CORRECTNESS": 87,
+      "FAIL_TB_COMPILE": 1,
+      "PASS": 30
+    },
+    "tb_compile_fail": 1,
+    "total": 120
+  },
+  "task_count": 10
+}

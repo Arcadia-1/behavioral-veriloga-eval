@@ -1,0 +1,30 @@
+group,tasks,generated,api_error,no_code_extracted,total_input_tokens,total_output_tokens,total_reasoning_tokens,total_tokens,avg_tokens_per_task,avg_reasoning_tokens_per_task,api_elapsed_s,avg_api_elapsed_s_per_task,task_elapsed_s,avg_task_elapsed_s_per_task,api_call_count,model_id,provider,reasoning_mode,result:main120-T1-smoke-spectre-mimo-v2.5-pro-20260509:spectre:pass_count,result:main120-T1-smoke-spectre-mimo-v2.5-pro-20260509:spectre:seen_count,result:main120-T1-smoke-spectre-mimo-v2.5-pro-20260509:spectre:pass_rate,model,source_collection,task_form,core_function
+overall,10,10,0,0,102426,9979,0,112405,11240.5,0.0,214.088,21.409,214.681,21.468,28,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,10,0.1,,,,
+model,10,10,0,0,102426,9979,0,112405,11240.5,0.0,214.088,21.409,214.681,21.468,28,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,10,0.1,mimo-v2.5-pro,,,
+source_collection,6,6,0,0,59020,5494,0,64514,10752.33,0.0,122.657,20.443,122.876,20.479,16,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,6,0.1667,,balanced_supplement_v1,,
+source_collection,2,2,0,0,23603,3011,0,26614,13307.0,0.0,51.979,25.989,52.175,26.087,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,original92,,
+source_collection,2,2,0,0,19803,1474,0,21277,10638.5,0.0,39.452,19.726,39.63,19.815,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,original92_taskform_completion_v1,,
+task_form,2,2,0,0,13980,1022,0,15002,7501.0,0.0,23.217,11.608,23.332,11.666,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,,bugfix,
+task_form,4,4,0,0,46745,5542,0,52287,13071.75,0.0,104.516,26.129,104.796,26.199,12,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,4,0.0,,,end-to-end,
+task_form,1,1,0,0,8638,422,0,9060,9060.0,0.0,10.485,10.485,10.507,10.507,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,1,1.0,,,spec-to-va,
+task_form,3,3,0,0,33063,2993,0,36056,12018.67,0.0,75.87,25.29,76.046,25.349,10,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,3,0.0,,,tb-generation,
+source_collection+task_form,1,1,0,0,7434,584,0,8018,8018.0,0.0,12.97,12.97,13.026,13.026,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,balanced_supplement_v1,bugfix,
+source_collection+task_form,2,2,0,0,23142,2531,0,25673,12836.5,0.0,52.537,26.268,52.621,26.311,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,balanced_supplement_v1,end-to-end,
+source_collection+task_form,1,1,0,0,8638,422,0,9060,9060.0,0.0,10.485,10.485,10.507,10.507,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,1,1.0,,balanced_supplement_v1,spec-to-va,
+source_collection+task_form,2,2,0,0,19806,1957,0,21763,10881.5,0.0,46.665,23.332,46.722,23.361,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,balanced_supplement_v1,tb-generation,
+source_collection+task_form,2,2,0,0,23603,3011,0,26614,13307.0,0.0,51.979,25.989,52.175,26.087,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,original92,end-to-end,
+source_collection+task_form,1,1,0,0,6546,438,0,6984,6984.0,0.0,10.247,10.247,10.306,10.306,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,original92_taskform_completion_v1,bugfix,
+source_collection+task_form,1,1,0,0,13257,1036,0,14293,14293.0,0.0,29.205,29.205,29.324,29.324,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,original92_taskform_completion_v1,tb-generation,
+core_function,1,1,0,0,13257,1036,0,14293,14293.0,0.0,29.205,29.205,29.324,29.324,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,,,calibration/control
+core_function,1,1,0,0,6546,438,0,6984,6984.0,0.0,10.247,10.247,10.306,10.306,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,,,continuous dynamics
+core_function,1,1,0,0,7434,584,0,8018,8018.0,0.0,12.97,12.97,13.026,13.026,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,,,,continuous dynamics/pll
+core_function,3,3,0,0,44809,4700,0,49509,16503.0,0.0,94.368,31.456,94.637,31.546,12,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,3,0.0,,,,event/timing
+core_function,2,2,0,0,14471,1929,0,16400,8200.0,0.0,41.494,20.747,41.523,20.761,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,,,,stateful analog memory
+core_function,2,2,0,0,15909,1292,0,17201,8600.5,0.0,25.804,12.902,25.865,12.933,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,2,0.5,,,,threshold/static nonlinear
+model+source_collection+task_form,1,1,0,0,7434,584,0,8018,8018.0,0.0,12.97,12.97,13.026,13.026,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,mimo-v2.5-pro,balanced_supplement_v1,bugfix,
+model+source_collection+task_form,2,2,0,0,23142,2531,0,25673,12836.5,0.0,52.537,26.268,52.621,26.311,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,mimo-v2.5-pro,balanced_supplement_v1,end-to-end,
+model+source_collection+task_form,1,1,0,0,8638,422,0,9060,9060.0,0.0,10.485,10.485,10.507,10.507,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,1,1,1.0,mimo-v2.5-pro,balanced_supplement_v1,spec-to-va,
+model+source_collection+task_form,2,2,0,0,19806,1957,0,21763,10881.5,0.0,46.665,23.332,46.722,23.361,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,mimo-v2.5-pro,balanced_supplement_v1,tb-generation,
+model+source_collection+task_form,2,2,0,0,23603,3011,0,26614,13307.0,0.0,51.979,25.989,52.175,26.087,6,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,2,0.0,mimo-v2.5-pro,original92,end-to-end,
+model+source_collection+task_form,1,1,0,0,6546,438,0,6984,6984.0,0.0,10.247,10.247,10.306,10.306,2,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,mimo-v2.5-pro,original92_taskform_completion_v1,bugfix,
+model+source_collection+task_form,1,1,0,0,13257,1036,0,14293,14293.0,0.0,29.205,29.205,29.324,29.324,4,mimo-v2.5-pro,mimo,mimo_thinking:disabled,0,1,0.0,mimo-v2.5-pro,original92_taskform_completion_v1,tb-generation,
