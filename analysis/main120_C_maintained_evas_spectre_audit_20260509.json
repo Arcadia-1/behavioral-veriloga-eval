@@ -1,0 +1,323 @@
+{
+  "c_evas_vs_spectre": {
+    "pass_mismatch_count": 0,
+    "pass_mismatches": [],
+    "status_mismatch_count": 4,
+    "status_mismatches": [
+      {
+        "evas": "FAIL_TB_COMPILE",
+        "spectre": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_debounce_latch_e2e"
+      },
+      {
+        "evas": "FAIL_TB_COMPILE",
+        "spectre": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_offset_comparator_e2e"
+      },
+      {
+        "evas": "FAIL_TB_COMPILE",
+        "spectre": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_one_shot_timer_e2e"
+      },
+      {
+        "evas": "FAIL_TB_COMPILE",
+        "spectre": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_voltage_clamp_dut"
+      }
+    ],
+    "transitions": {
+      "FAIL_DUT_COMPILE->FAIL_DUT_COMPILE": 15,
+      "FAIL_SIM_CORRECTNESS->FAIL_SIM_CORRECTNESS": 68,
+      "FAIL_TB_COMPILE->FAIL_DUT_COMPILE": 4,
+      "FAIL_TB_COMPILE->FAIL_TB_COMPILE": 9,
+      "PASS->PASS": 24
+    }
+  },
+  "condition": "C compile-loop, MiMo-V2.5-Pro, thinking disabled, max_tokens=4096, workers=8 generation; Spectre audit max_workers=2 profile=jin",
+  "d_spectre_to_c_spectre": {
+    "changed_tasks": [
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_barrel_pointer_window_e2e"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_first_order_lowpass_bugfix"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_first_order_lowpass_dut"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_first_order_lowpass_e2e"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_leaky_hold_dut"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_TB_COMPILE",
+        "task_id": "vbm1_peak_detector_tb"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_resettable_integrator_dut"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_resettable_integrator_e2e"
+      },
+      {
+        "C": "PASS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_sar_logic_4b_e2e"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_settling_time_measurement_tb_bugfix"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_slew_rate_limiter_bugfix"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_slew_rate_limiter_dut"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_TB_COMPILE",
+        "task_id": "vbm1_slew_rate_limiter_tb"
+      },
+      {
+        "C": "PASS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_strongarm_comparator_behavior_dut"
+      },
+      {
+        "C": "FAIL_SIM_CORRECTNESS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_track_hold_aperture_e2e"
+      },
+      {
+        "C": "PASS",
+        "D": "FAIL_TB_COMPILE",
+        "task_id": "vbm1_voltage_clamp_tb"
+      }
+    ],
+    "lost_pass_count": 0,
+    "lost_pass_tasks": [],
+    "new_pass_count": 3,
+    "new_pass_tasks": [
+      {
+        "C": "PASS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_sar_logic_4b_e2e"
+      },
+      {
+        "C": "PASS",
+        "D": "FAIL_DUT_COMPILE",
+        "task_id": "vbm1_strongarm_comparator_behavior_dut"
+      },
+      {
+        "C": "PASS",
+        "D": "FAIL_TB_COMPILE",
+        "task_id": "vbm1_voltage_clamp_tb"
+      }
+    ],
+    "status_changed_count": 16,
+    "transitions": {
+      "FAIL_DUT_COMPILE->FAIL_DUT_COMPILE": 19,
+      "FAIL_DUT_COMPILE->FAIL_SIM_CORRECTNESS": 11,
+      "FAIL_DUT_COMPILE->PASS": 2,
+      "FAIL_SIM_CORRECTNESS->FAIL_SIM_CORRECTNESS": 55,
+      "FAIL_TB_COMPILE->FAIL_SIM_CORRECTNESS": 2,
+      "FAIL_TB_COMPILE->FAIL_TB_COMPILE": 9,
+      "FAIL_TB_COMPILE->PASS": 1,
+      "PASS->PASS": 21
+    }
+  },
+  "date": "2026-05-09",
+  "roots": {
+    "C_evas": "results/main120-C-maintained-evas-mimo-v2.5-pro-20260509",
+    "C_spectre": "results/main120-C-spectre-mimo-v2.5-pro-20260509",
+    "D_evas": "results/main120-D-spliced-evas-diagnostics-20260509",
+    "D_spectre": "results/main120-D-rulesonly-mimo-v2.5-pro-spectre-jin-20260508-main120-D"
+  },
+  "summary": {
+    "C_evas": {
+      "axes": {
+        "dut_compile": 105,
+        "sim_correct": 24,
+        "tb_compile": 106
+      },
+      "n": 120,
+      "pass_count": 24,
+      "pass_tasks": [
+        "vbm1_barrel_pointer_window_tb",
+        "vbm1_debounce_latch_dut",
+        "vbm1_element_shuffler_dut",
+        "vbm1_element_shuffler_tb",
+        "vbm1_lock_detector_dut",
+        "vbm1_offset_calibration_fsm_tb",
+        "vbm1_offset_comparator_bugfix",
+        "vbm1_offset_comparator_dut",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_dut",
+        "vbm1_resettable_counter_divider_tb",
+        "vbm1_rotating_element_selector_dut",
+        "vbm1_sar_logic_4b_bugfix",
+        "vbm1_sar_logic_4b_dut",
+        "vbm1_sar_logic_4b_e2e",
+        "vbm1_strongarm_comparator_behavior_bugfix",
+        "vbm1_strongarm_comparator_behavior_dut",
+        "vbm1_track_hold_aperture_bugfix",
+        "vbm1_track_hold_aperture_dut",
+        "vbm1_vco_phase_integrator_tb",
+        "vbm1_voltage_clamp_bugfix",
+        "vbm1_voltage_clamp_e2e",
+        "vbm1_voltage_clamp_tb"
+      ],
+      "root": "results/main120-C-maintained-evas-mimo-v2.5-pro-20260509",
+      "status": {
+        "FAIL_DUT_COMPILE": 15,
+        "FAIL_SIM_CORRECTNESS": 68,
+        "FAIL_TB_COMPILE": 13,
+        "PASS": 24
+      }
+    },
+    "C_spectre": {
+      "axes": {
+        "dut_compile": 92,
+        "sim_correct": 24,
+        "tb_compile": 92
+      },
+      "n": 120,
+      "pass_count": 24,
+      "pass_tasks": [
+        "vbm1_barrel_pointer_window_tb",
+        "vbm1_debounce_latch_dut",
+        "vbm1_element_shuffler_dut",
+        "vbm1_element_shuffler_tb",
+        "vbm1_lock_detector_dut",
+        "vbm1_offset_calibration_fsm_tb",
+        "vbm1_offset_comparator_bugfix",
+        "vbm1_offset_comparator_dut",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_dut",
+        "vbm1_resettable_counter_divider_tb",
+        "vbm1_rotating_element_selector_dut",
+        "vbm1_sar_logic_4b_bugfix",
+        "vbm1_sar_logic_4b_dut",
+        "vbm1_sar_logic_4b_e2e",
+        "vbm1_strongarm_comparator_behavior_bugfix",
+        "vbm1_strongarm_comparator_behavior_dut",
+        "vbm1_track_hold_aperture_bugfix",
+        "vbm1_track_hold_aperture_dut",
+        "vbm1_vco_phase_integrator_tb",
+        "vbm1_voltage_clamp_bugfix",
+        "vbm1_voltage_clamp_e2e",
+        "vbm1_voltage_clamp_tb"
+      ],
+      "root": "results/main120-C-spectre-mimo-v2.5-pro-20260509",
+      "status": {
+        "FAIL_DUT_COMPILE": 19,
+        "FAIL_SIM_CORRECTNESS": 68,
+        "FAIL_TB_COMPILE": 9,
+        "PASS": 24
+      }
+    },
+    "D_evas": {
+      "axes": {
+        "dut_compile": 92,
+        "sim_correct": 21,
+        "tb_compile": 96
+      },
+      "n": 120,
+      "pass_count": 21,
+      "pass_tasks": [
+        "vbm1_barrel_pointer_window_tb",
+        "vbm1_debounce_latch_dut",
+        "vbm1_element_shuffler_dut",
+        "vbm1_element_shuffler_tb",
+        "vbm1_lock_detector_dut",
+        "vbm1_offset_calibration_fsm_tb",
+        "vbm1_offset_comparator_bugfix",
+        "vbm1_offset_comparator_dut",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_dut",
+        "vbm1_resettable_counter_divider_tb",
+        "vbm1_rotating_element_selector_dut",
+        "vbm1_sar_logic_4b_bugfix",
+        "vbm1_sar_logic_4b_dut",
+        "vbm1_strongarm_comparator_behavior_bugfix",
+        "vbm1_track_hold_aperture_bugfix",
+        "vbm1_track_hold_aperture_dut",
+        "vbm1_vco_phase_integrator_tb",
+        "vbm1_voltage_clamp_bugfix",
+        "vbm1_voltage_clamp_e2e"
+      ],
+      "root": "results/main120-D-spliced-evas-diagnostics-20260509",
+      "status": {
+        "FAIL_DUT_COMPILE": 28,
+        "FAIL_SIM_CORRECTNESS": 54,
+        "FAIL_TB_COMPILE": 17,
+        "PASS": 21
+      }
+    },
+    "D_spectre": {
+      "axes": {
+        "dut_compile": 76,
+        "sim_correct": 21,
+        "tb_compile": 76
+      },
+      "n": 120,
+      "pass_count": 21,
+      "pass_tasks": [
+        "vbm1_barrel_pointer_window_tb",
+        "vbm1_debounce_latch_dut",
+        "vbm1_element_shuffler_dut",
+        "vbm1_element_shuffler_tb",
+        "vbm1_lock_detector_dut",
+        "vbm1_offset_calibration_fsm_tb",
+        "vbm1_offset_comparator_bugfix",
+        "vbm1_offset_comparator_dut",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_dut",
+        "vbm1_resettable_counter_divider_tb",
+        "vbm1_rotating_element_selector_dut",
+        "vbm1_sar_logic_4b_bugfix",
+        "vbm1_sar_logic_4b_dut",
+        "vbm1_strongarm_comparator_behavior_bugfix",
+        "vbm1_track_hold_aperture_bugfix",
+        "vbm1_track_hold_aperture_dut",
+        "vbm1_vco_phase_integrator_tb",
+        "vbm1_voltage_clamp_bugfix",
+        "vbm1_voltage_clamp_e2e"
+      ],
+      "root": "results/main120-D-rulesonly-mimo-v2.5-pro-spectre-jin-20260508-main120-D",
+      "status": {
+        "FAIL_DUT_COMPILE": 32,
+        "FAIL_SIM_CORRECTNESS": 55,
+        "FAIL_TB_COMPILE": 12,
+        "PASS": 21
+      }
+    }
+  }
+}
