@@ -902,7 +902,7 @@ def _candidate_sections(sample_dir: Path) -> list[str]:
     return sections
 
 
-def _compile_gate_score_summary(result: dict) -> str:
+def _compile_gate_score_summary(result: dict, *, compact: bool = False) -> str:
     scores = result.get("scores", {})
     notes = result.get("evas_notes") or result.get("notes") or []
     spectre_notes = result.get("spectre_notes", [])
@@ -912,6 +912,22 @@ def _compile_gate_score_summary(result: dict) -> str:
     diagnostics = "\n".join(f"- {note}" for note in _concrete_diagnostics(result)) or "- <none>"
     gate_state = _syntax_zero_gate_state(result)
     issues = "\n".join(f"- {issue}" for issue in gate_state["issues"]) or "- <none>"
+    if compact:
+        return textwrap.dedent(
+            f"""\
+            Current validator status: {result.get("status", "<unknown>")}
+            Current gate layer: {gate_state["layer"]}
+            Gate cleared: {gate_state["cleared"]}
+
+            Scores: dut_compile={scores.get("dut_compile", "<missing>")}, tb_compile={scores.get("tb_compile", "<missing>")}, sim_correct={scores.get("sim_correct", "<missing>")}, weighted_total={scores.get("weighted_total", "<missing>")}
+
+            Gate issues:
+            {issues}
+
+            Concrete diagnostics:
+            {diagnostics}
+            """
+        ).strip()
     return textwrap.dedent(
         f"""\
         Current validator status: {result.get("status", "<unknown>")}
@@ -1281,6 +1297,7 @@ def _compile_plan_prompt(
     include_mechanism: bool,
     include_compile_skills: bool,
     include_context_engineering: bool,
+    compact_diagnostics: bool,
 ) -> str:
     """Build a compact plan-only prompt for compile-closure repair."""
     original_prompt = build_prompt(
@@ -1291,7 +1308,7 @@ def _compile_plan_prompt(
         enhancement_mode="none",
     )
     mechanism_payload = build_enhancement_payload(task_dir, "mechanism") if include_mechanism else {"text": ""}
-    score_text = _compile_gate_score_summary(result)
+    score_text = _compile_gate_score_summary(result, compact=compact_diagnostics)
     history_text = _compile_history_section(history)
     compile_skill_text = _compile_skill_guidance_section(result, enabled=include_compile_skills)
     context_engineering_text = _compile_context_engineering_section(
@@ -1420,6 +1437,7 @@ def _run_compile_plan_step(
         include_mechanism=include_mechanism,
         include_compile_skills=args.compile_skill_guidance,
         include_context_engineering=args.compile_context_engineering,
+        compact_diagnostics=args.compile_compact_diagnostics,
     )
     (output_sample_dir / "repair_plan_prompt.md").write_text(plan_prompt, encoding="utf-8")
     print("plan ... ", end="", flush=True)
@@ -1488,6 +1506,7 @@ def _compile_only_closure_prompt(
     include_mechanism: bool,
     include_compile_skills: bool,
     include_context_engineering: bool,
+    compact_diagnostics: bool,
     plan_execute_text: str = "",
 ) -> str:
     """Build official-G compile-closure prompt without behavior checker leakage."""
@@ -1514,7 +1533,7 @@ def _compile_only_closure_prompt(
     candidate_text = "\n\n".join(_candidate_sections(sample_dir))
     layer = _classify_repair_layer(result)
     gate_policy = _syntax_zero_gate_policy_section(layer, result)
-    score_text = _compile_gate_score_summary(result)
+    score_text = _compile_gate_score_summary(result, compact=compact_diagnostics)
     history_text = _compile_history_section(history)
     compile_skill_text = _compile_skill_guidance_section(result, enabled=include_compile_skills)
     context_engineering_text = _compile_context_engineering_section(
@@ -1752,6 +1771,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 include_mechanism=not args.no_repair_skill,
                 include_compile_skills=args.compile_skill_guidance,
                 include_context_engineering=args.compile_context_engineering,
+                compact_diagnostics=args.compile_compact_diagnostics,
                 plan_execute_text=plan_execute_text,
             )
         else:
@@ -1846,6 +1866,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 "compile_only_closure": bool(args.compile_only_closure),
                 "compile_skill_guidance": bool(args.compile_skill_guidance),
                 "compile_context_engineering": bool(args.compile_context_engineering),
+                "compile_compact_diagnostics": bool(args.compile_compact_diagnostics),
                 "compile_plan_execute": bool(args.compile_plan_execute),
                 "compile_plan_parse_status": plan_parse_status,
                 "compile_plan": plan or {},
@@ -1950,6 +1971,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
             "compile_only_closure": bool(args.compile_only_closure),
             "compile_skill_guidance": bool(args.compile_skill_guidance),
             "compile_context_engineering": bool(args.compile_context_engineering),
+            "compile_compact_diagnostics": bool(args.compile_compact_diagnostics),
             "compile_plan_execute": bool(args.compile_plan_execute),
             "compile_closure_gate_state": _syntax_zero_gate_state(best_result),
             "materialized_syntax_edits": materialized_syntax_edits,
@@ -2062,6 +2084,14 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     ap.add_argument(
+        "--compile-compact-diagnostics",
+        action="store_true",
+        help=(
+            "In compile-only closure prompts, replace the verbose validator-note section with a compact "
+            "gate summary and concrete diagnostics."
+        ),
+    )
+    ap.add_argument(
         "--compile-plan-execute",
         action="store_true",
         help=(
@@ -2082,6 +2112,8 @@ def main() -> int:
     args = parse_args()
     if args.compile_plan_execute and not args.compile_only_closure:
         raise SystemExit("--compile-plan-execute requires --compile-only-closure")
+    if args.compile_compact_diagnostics and not args.compile_only_closure:
+        raise SystemExit("--compile-compact-diagnostics requires --compile-only-closure")
     _load_env_file(Path(args.env_file))
     tasks = _task_lookup([] if args.all else (args.task or DEFAULT_TASKS), args.bench_dir)
     results = []
@@ -2133,6 +2165,7 @@ def main() -> int:
             "disable_contract_diagnosis": bool(args.disable_contract_diagnosis),
             "compile_skill_guidance": bool(args.compile_skill_guidance),
             "compile_context_engineering": bool(args.compile_context_engineering),
+            "compile_compact_diagnostics": bool(args.compile_compact_diagnostics),
             "compile_plan_execute": bool(args.compile_plan_execute),
             "plan_max_tokens": args.plan_max_tokens,
             "bench_dir": args.bench_dir,

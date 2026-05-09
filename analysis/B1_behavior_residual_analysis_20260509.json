@@ -1,0 +1,278 @@
+{
+  "worker": "B1",
+  "analysis_name": "B1 behavior-repair smoke residual analysis",
+  "created_at_local": "2026-05-09",
+  "selection_policy": [
+    "Use S2 Spectre residual behavior failures where status is FAIL_SIM_CORRECTNESS.",
+    "Require compile-OK evidence from spectre_strict:preflight_pass plus waveform/checker metrics.",
+    "Exclude S2 Spectre FAIL_DUT_COMPILE and FAIL_TB_COMPILE tasks.",
+    "Stratify across core functions, task forms, and checker metric families for a behavior-repair controller smoke.",
+    "Inspect T1 residuals but do not select them because S2 already provides enough compile-OK behavior failures with broader strata."
+  ],
+  "source_artifacts": {
+    "s2_spectre_results": "behavioral-veriloga-eval/results/main120-S2-spectre-mimo-v2.5-pro-20260509/spectre_model_results.json",
+    "s2_summary": "behavioral-veriloga-eval/results/main120-S2-spectre-mimo-v2.5-pro-20260509/summary.json",
+    "metadata_rows": "behavioral-veriloga-eval/analysis/main120_C_compile_loop_mimo_v25_pro_20260509.json",
+    "manifest": "behavioral-veriloga-eval/benchmark-vabench-main-v1/manifest.json",
+    "t1_residual_checked": "behavioral-veriloga-eval/results/main120-T1-smoke-spectre-mimo-v2.5-pro-20260509/spectre_model_results.json"
+  },
+  "residual_pool": {
+    "s2_spectre_total": 120,
+    "s2_spectre_pass_count": 29,
+    "s2_spectre_failure_taxonomy": {
+      "FAIL_SIM_CORRECTNESS": 81,
+      "FAIL_DUT_COMPILE": 9,
+      "FAIL_TB_COMPILE": 1
+    },
+    "s2_spectre_axis_rates": {
+      "dut_compile": 0.9333,
+      "tb_compile": 0.9167,
+      "sim_correct": 0.2417
+    },
+    "eligible_compile_ok_behavior_failures": 81,
+    "t1_spectre_failure_taxonomy_checked": {
+      "FAIL_SIM_CORRECTNESS": 6,
+      "FAIL_TB_COMPILE": 1,
+      "FAIL_DUT_COMPILE": 2
+    }
+  },
+  "counts": {
+    "selected_total": 10,
+    "s2_spectre_fail_sim_correctness": 10,
+    "compile_failures_selected": 0,
+    "by_task_form": {
+      "bugfix": 2,
+      "spec-to-va": 6,
+      "tb-generation": 2
+    },
+    "by_core_function": {
+      "calibration/control": 1,
+      "data conversion/calibration": 1,
+      "continuous dynamics": 1,
+      "continuous dynamics/pll": 1,
+      "data conversion": 1,
+      "event/timing": 2,
+      "pointer/selection": 1,
+      "stateful analog memory": 1,
+      "threshold/static nonlinear": 1
+    },
+    "by_source_collection": {
+      "balanced_supplement_v1": 8,
+      "original92": 2
+    }
+  },
+  "tasks": [
+    {
+      "task_id": "vbm1_background_calibration_accumulator_bugfix",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "bugfix",
+      "task_form": "bugfix",
+      "core_function": "calibration/control",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "background_calibration_accumulator",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "failure_family": "calibration trajectory / missing accumulation",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=523 cols=5",
+        "first=0.003 mid=0.004 late=0.006"
+      ],
+      "selection_rationale": "Small calibration trajectory remains near zero across first/mid/late probes; useful for controller fixes that must add missing state accumulation without changing interfaces.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_cdac_calibration_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "data conversion/calibration",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "cdac_calibration",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "failure_family": "calibration code/output saturation",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=585 cols=5",
+        "first=0.940 mid=0.930 late=0.940"
+      ],
+      "selection_rationale": "CDAC calibration output is stuck high across time probes; stresses data-conversion calibration semantics in a spec-to-VA DUT-only setting.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_first_order_lowpass_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "continuous dynamics",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "first_order_lowpass",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "failure_family": "continuous dynamics mismatch",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=81396 cols=3",
+        "early=0.080 late=0.428"
+      ],
+      "selection_rationale": "Large transient waveform with early/late lowpass mismatch; useful for continuous-time dynamics and coefficient/time-constant repair.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_vco_phase_integrator_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "continuous dynamics/pll",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "vco_phase_integrator",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "failure_family": "PLL phase integration / edge generation",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1815 cols=4",
+        "early_edges=26 late_edges=0 phase_span=105627.099"
+      ],
+      "selection_rationale": "PLL phase behavior shows pathological phase span and lost late edges; covers event/continuous interaction and phase wrapping behavior.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_segmented_dac_tb",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "tb-generation",
+      "task_form": "tb-generation",
+      "core_function": "data conversion",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "segmented_dac",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "failure_family": "DAC stimulus/measurement value mismatch",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "gold_dut_include=segmented_dac.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=327 cols=7",
+        "vals=[1.0, 0.4, 0.333, 1.0, 0.667]"
+      ],
+      "selection_rationale": "Gold DUT with generated testbench yields incorrect DAC sample values; isolates checker-facing stimulus/measurement behavior rather than DUT syntax.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_edge_detector_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "event/timing",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "edge_detector",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "failure_family": "pulse width / edge timing mismatch",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=424 cols=4",
+        "pulse_edges=4 high_frac=0.292"
+      ],
+      "selection_rationale": "Pulse edge count is plausible but high fraction is wrong; good for narrow-pulse timing behavior repair after compile success.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_resettable_counter_divider_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "event/timing",
+      "source_collection": "original92",
+      "pack_id": "resettable_counter_divider",
+      "source_seed_task": "original92_clk_divider",
+      "failure_family": "counter divide ratio mismatch",
+      "checker_metrics": [
+        "contract_save_pruned=removed:3,inserted:1,signals:12",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=2348 cols=13",
+        "ratio=5 in_edges=80 out_edges=40 intervals=[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] lock=1"
+      ],
+      "selection_rationale": "Counter divider produces too many output edges for ratio=5; exercises sequential timing/counting semantics with rich edge metrics.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_barrel_pointer_window_bugfix",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "bugfix",
+      "task_form": "bugfix",
+      "core_function": "pointer/selection",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "barrel_pointer_window",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "failure_family": "pointer/window selection inactive",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=297 cols=7",
+        "count_range=(0, 0)"
+      ],
+      "selection_rationale": "Selection window count remains zero; compact pointer/selection bugfix case for one-hot/window activation behavior.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_leaky_hold_dut",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "spec-to-va",
+      "task_form": "spec-to-va",
+      "core_function": "stateful analog memory",
+      "source_collection": "balanced_supplement_v1",
+      "pack_id": "leaky_hold",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "failure_family": "stateful hold/decay mismatch",
+      "checker_metrics": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=49281 cols=4",
+        "high=0.412 decayed=0.125 rst=0.000"
+      ],
+      "selection_rationale": "Hold/decay/reset probes are present but decay level mismatches; covers stateful analog memory with reset and leakage semantics.",
+      "t1_residual_status_if_present": null
+    },
+    {
+      "task_id": "vbm1_offset_comparator_tb",
+      "source_run": "main120-S2-spectre-mimo-v2.5-pro-20260509",
+      "s2_spectre_status": "FAIL_SIM_CORRECTNESS",
+      "compile_ok_basis": "S2 Spectre FAIL_SIM_CORRECTNESS with spectre_strict:preflight_pass and waveform/checker metrics; compile failures excluded.",
+      "family": "tb-generation",
+      "task_form": "tb-generation",
+      "core_function": "threshold/static nonlinear",
+      "source_collection": "original92",
+      "pack_id": "offset_comparator",
+      "source_seed_task": "original92_comparator_offset_tb",
+      "failure_family": "threshold decision coverage mismatch",
+      "checker_metrics": [
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1536 cols=5",
+        "clock_decisions=3",
+        "high_ok=1",
+        "low_ok=0"
+      ],
+      "selection_rationale": "Comparator testbench has high decision passing but low decision failing; isolates threshold/checker stimulus coverage in a tb-generation task.",
+      "t1_residual_status_if_present": null
+    }
+  ]
+}

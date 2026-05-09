@@ -1,0 +1,117 @@
+{
+  "artifacts": {
+    "cost_prefix": "analysis/main120_T2_llm_residual_compile_mimo_v25_pro_20260509",
+    "generated_dir": "generated-main120-T2-llm-residual-compile-mimo-v2.5-pro-20260509",
+    "maintained_evas": "results/main120-T2-maintained-evas-mimo-v2.5-pro-20260509",
+    "quick_result": "results/main120-T2-llm-residual-compile-mimo-v2.5-pro-20260509",
+    "spectre": "results/main120-T2-spectre-mimo-v2.5-pro-20260509",
+    "tasklist": "tasklists/main120_T1_spectre_compile_fail_3.txt"
+  },
+  "cost": {
+    "api_calls": 6,
+    "api_elapsed_s": 57.634,
+    "input_tokens": 21233,
+    "output_tokens": 1931,
+    "total_tokens": 23164
+  },
+  "experiment": "T2 residual compile fallback on three T1 Spectre compile residuals",
+  "generated_at": "2026-05-09T06:41:21.226552+00:00",
+  "interpretation": [
+    "T2 did not improve the final Spectre validator status relative to the three T1 residuals.",
+    "EVAS considered offset_comparator_e2e compile-closed, and the Spectre log shows 0 simulator errors, but the validator still labels it FAIL_TB_COMPILE because tran extraction/checker data is missing. This is an output-extraction/validation-label residual rather than an AHDL syntax compile residual.",
+    "The two integrator bugfix tasks remain true Spectre AHDL compile failures due to generated use of non-Verilog-A $abstime_step, and vco additionally retains conditional transition.",
+    "Blind T1-style LLM compile fallback appears insufficient for these final two integrator residuals; next action should be trace/memory plus targeted regeneration constraints or behavior/semantic repair, not more generic loop rounds."
+  ],
+  "model": "mimo-v2.5-pro",
+  "reasoning_mode": "mimo_thinking:disabled",
+  "rows": [
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 17.225,
+      "input_tokens": 7207,
+      "output_tokens": 864,
+      "plan_root_cause": "Testbench compile failure due to missing or malformed Spectre netlist syntax, likely from incorrect source instantiation or missing ahdl_include.",
+      "repair_round_count": 1,
+      "spectre_error_count_from_log": 0,
+      "t1_spectre_status": "FAIL_TB_COMPILE",
+      "t2_evas_status": "FAIL_SIM_CORRECTNESS",
+      "t2_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=cmp_offset_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_empty",
+        "spectre_tran_csv_missing"
+      ],
+      "t2_spectre_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_offset_comparator_e2e",
+      "total_tokens": 8071
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 24.199,
+      "input_tokens": 6608,
+      "output_tokens": 499,
+      "plan_root_cause": "The candidate module is an input follower, not an integrator with reset; it fails to compile because it lacks integration logic and proper reset handling, causing Spectre to return error code 2.",
+      "repair_round_count": 1,
+      "spectre_error_count_from_log": 1,
+      "t1_spectre_status": "FAIL_DUT_COMPILE",
+      "t2_evas_status": "FAIL_DUT_COMPILE",
+      "t2_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "t2_spectre_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_bugfix",
+      "total_tokens": 7107
+    },
+    {
+      "api_call_count": 2,
+      "api_elapsed_s": 16.21,
+      "input_tokens": 7418,
+      "output_tokens": 568,
+      "plan_root_cause": "The candidate file has a conditional transition contribution that Spectre rejects, and the behavioral implementation is wrong (just mirrors vctrl instead of integrating phase).",
+      "repair_round_count": 1,
+      "spectre_error_count_from_log": 3,
+      "t1_spectre_status": "FAIL_DUT_COMPILE",
+      "t2_evas_status": "FAIL_DUT_COMPILE",
+      "t2_spectre_notes": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=vco_phase_integrator.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "t2_spectre_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_vco_phase_integrator_bugfix",
+      "total_tokens": 7986
+    }
+  ],
+  "slice_table": {
+    "T1 Spectre residual slice": {
+      "behavior_fail": 0,
+      "compile_fail": 3,
+      "compile_ok": 0,
+      "dut_compile_fail": 2,
+      "pass": 0,
+      "tb_compile_fail": 1
+    },
+    "T2 Spectre validator slice": {
+      "behavior_fail": 0,
+      "compile_fail": 3,
+      "compile_ok": 0,
+      "dut_compile_fail": 2,
+      "pass": 0,
+      "tb_compile_fail": 1
+    },
+    "T2 maintained EVAS slice": {
+      "behavior_fail": 1,
+      "compile_fail": 2,
+      "compile_ok": 1,
+      "dut_compile_fail": 2,
+      "pass": 0,
+      "tb_compile_fail": 0
+    }
+  },
+  "task_count": 3
+}
