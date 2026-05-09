@@ -1,0 +1,977 @@
+{
+  "benchmark": "vaBench-main-v1",
+  "benchmark_root": "benchmark-vabench-main-v1",
+  "created_at": "2026-05-08T08:13:34.978859+00:00",
+  "draft": true,
+  "note": "Audited draft batch. Full vaBench-main-v1 target is 30 packs x 4 forms.",
+  "pack_count": 30,
+  "task_count": 120,
+  "task_forms": [
+    "bugfix",
+    "spec-to-va",
+    "end-to-end",
+    "tb-generation"
+  ],
+  "tasks": [
+    {
+      "pack_id": "offset_comparator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_comparator_offset_tb",
+      "source_task_id": "offset_comparator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_comparator_bugfix"
+    },
+    {
+      "pack_id": "offset_comparator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_comparator_offset_tb",
+      "source_task_id": "offset_comparator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_comparator_dut"
+    },
+    {
+      "pack_id": "offset_comparator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_comparator_offset_tb",
+      "source_task_id": "offset_comparator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_comparator_e2e"
+    },
+    {
+      "pack_id": "offset_comparator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_comparator_offset_tb",
+      "source_task_id": "offset_comparator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_comparator_tb"
+    },
+    {
+      "pack_id": "strongarm_comparator_behavior",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_strongarm_reset_priority_bug",
+      "source_task_id": "strongarm_reset_priority_bug",
+      "task_form": "bugfix",
+      "task_id": "vbm1_strongarm_comparator_behavior_bugfix"
+    },
+    {
+      "pack_id": "strongarm_comparator_behavior",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_cmp_strongarm_smoke",
+      "source_task_id": "cmp_strongarm_smoke",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_strongarm_comparator_behavior_dut"
+    },
+    {
+      "pack_id": "strongarm_comparator_behavior",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_cmp_strongarm_smoke",
+      "source_task_id": "cmp_strongarm_smoke",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_strongarm_comparator_behavior_e2e"
+    },
+    {
+      "pack_id": "strongarm_comparator_behavior",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_cmp_strongarm_smoke",
+      "source_task_id": "cmp_strongarm_smoke",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_strongarm_comparator_behavior_tb"
+    },
+    {
+      "pack_id": "pfd_reset_race",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_pfd_reset_race_smoke",
+      "source_task_id": "pfd_reset_race_smoke",
+      "task_form": "bugfix",
+      "task_id": "vbm1_pfd_reset_race_bugfix"
+    },
+    {
+      "pack_id": "pfd_reset_race",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_pfd_reset_race_smoke",
+      "source_task_id": "pfd_reset_race_smoke",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_pfd_reset_race_dut"
+    },
+    {
+      "pack_id": "pfd_reset_race",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_pfd_reset_race_smoke",
+      "source_task_id": "pfd_reset_race_smoke",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_pfd_reset_race_e2e"
+    },
+    {
+      "pack_id": "pfd_reset_race",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_pfd_reset_race_smoke",
+      "source_task_id": "pfd_reset_race_smoke",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_pfd_reset_race_tb"
+    },
+    {
+      "pack_id": "voltage_clamp",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "voltage_clamp",
+      "task_form": "bugfix",
+      "task_id": "vbm1_voltage_clamp_bugfix"
+    },
+    {
+      "pack_id": "voltage_clamp",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "voltage_clamp",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_voltage_clamp_dut"
+    },
+    {
+      "pack_id": "voltage_clamp",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "voltage_clamp",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_voltage_clamp_e2e"
+    },
+    {
+      "pack_id": "voltage_clamp",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "voltage_clamp",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_voltage_clamp_tb"
+    },
+    {
+      "pack_id": "track_hold_aperture",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sample_hold_aperture_tb",
+      "source_task_id": "track_hold_aperture",
+      "task_form": "bugfix",
+      "task_id": "vbm1_track_hold_aperture_bugfix"
+    },
+    {
+      "pack_id": "track_hold_aperture",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sample_hold_aperture_tb",
+      "source_task_id": "track_hold_aperture",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_track_hold_aperture_dut"
+    },
+    {
+      "pack_id": "track_hold_aperture",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sample_hold_aperture_tb",
+      "source_task_id": "track_hold_aperture",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_track_hold_aperture_e2e"
+    },
+    {
+      "pack_id": "track_hold_aperture",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sample_hold_aperture_tb",
+      "source_task_id": "track_hold_aperture",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_track_hold_aperture_tb"
+    },
+    {
+      "pack_id": "resettable_counter_divider",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_divider",
+      "source_task_id": "resettable_counter_divider",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_counter_divider_bugfix"
+    },
+    {
+      "pack_id": "resettable_counter_divider",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_divider",
+      "source_task_id": "resettable_counter_divider",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_counter_divider_dut"
+    },
+    {
+      "pack_id": "resettable_counter_divider",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_divider",
+      "source_task_id": "resettable_counter_divider",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_counter_divider_e2e"
+    },
+    {
+      "pack_id": "resettable_counter_divider",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_divider",
+      "source_task_id": "resettable_counter_divider",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_counter_divider_tb"
+    },
+    {
+      "pack_id": "sar_logic_4b",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "sar_logic_4b",
+      "task_form": "bugfix",
+      "task_id": "vbm1_sar_logic_4b_bugfix"
+    },
+    {
+      "pack_id": "sar_logic_4b",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "sar_logic_4b",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_sar_logic_4b_dut"
+    },
+    {
+      "pack_id": "sar_logic_4b",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "sar_logic_4b",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_sar_logic_4b_e2e"
+    },
+    {
+      "pack_id": "sar_logic_4b",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "sar_logic_4b",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_sar_logic_4b_tb"
+    },
+    {
+      "pack_id": "one_shot_timer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_burst_gen_smoke",
+      "source_task_id": "one_shot_timer",
+      "task_form": "bugfix",
+      "task_id": "vbm1_one_shot_timer_bugfix"
+    },
+    {
+      "pack_id": "one_shot_timer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_burst_gen_smoke",
+      "source_task_id": "one_shot_timer",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_one_shot_timer_dut"
+    },
+    {
+      "pack_id": "one_shot_timer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_burst_gen_smoke",
+      "source_task_id": "one_shot_timer",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_one_shot_timer_e2e"
+    },
+    {
+      "pack_id": "one_shot_timer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_clk_burst_gen_smoke",
+      "source_task_id": "one_shot_timer",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_one_shot_timer_tb"
+    },
+    {
+      "pack_id": "thermometer_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "thermometer_dac",
+      "task_form": "bugfix",
+      "task_id": "vbm1_thermometer_dac_bugfix"
+    },
+    {
+      "pack_id": "thermometer_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "thermometer_dac",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_thermometer_dac_dut"
+    },
+    {
+      "pack_id": "thermometer_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "thermometer_dac",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_thermometer_dac_e2e"
+    },
+    {
+      "pack_id": "thermometer_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "original92_sar_logic",
+      "source_task_id": "thermometer_dac",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_thermometer_dac_tb"
+    },
+    {
+      "pack_id": "lock_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_pll_closed_loop_bugfix",
+      "source_task_id": "lock_detector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_lock_detector_bugfix"
+    },
+    {
+      "pack_id": "lock_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_pll_closed_loop_dut",
+      "source_task_id": "lock_detector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_lock_detector_dut"
+    },
+    {
+      "pack_id": "lock_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_pll_closed_loop_dut",
+      "source_task_id": "lock_detector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_lock_detector_e2e"
+    },
+    {
+      "pack_id": "lock_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_pll_closed_loop_dut",
+      "source_task_id": "lock_detector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_lock_detector_tb"
+    },
+    {
+      "pack_id": "resettable_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_signal_source_bugfix",
+      "source_task_id": "resettable_integrator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_integrator_bugfix"
+    },
+    {
+      "pack_id": "resettable_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_signal_source_tb",
+      "source_task_id": "resettable_integrator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_integrator_dut"
+    },
+    {
+      "pack_id": "resettable_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_signal_source_tb",
+      "source_task_id": "resettable_integrator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_integrator_e2e"
+    },
+    {
+      "pack_id": "resettable_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "completion92_signal_source_tb",
+      "source_task_id": "resettable_integrator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_integrator_tb"
+    },
+    {
+      "pack_id": "precision_rectifier",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "precision_rectifier",
+      "task_form": "bugfix",
+      "task_id": "vbm1_precision_rectifier_bugfix"
+    },
+    {
+      "pack_id": "precision_rectifier",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "precision_rectifier",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_precision_rectifier_dut"
+    },
+    {
+      "pack_id": "precision_rectifier",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "precision_rectifier",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_precision_rectifier_e2e"
+    },
+    {
+      "pack_id": "precision_rectifier",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "precision_rectifier",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_precision_rectifier_tb"
+    },
+    {
+      "pack_id": "peak_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "peak_detector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_peak_detector_bugfix"
+    },
+    {
+      "pack_id": "peak_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "peak_detector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_peak_detector_dut"
+    },
+    {
+      "pack_id": "peak_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "peak_detector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_peak_detector_e2e"
+    },
+    {
+      "pack_id": "peak_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "peak_detector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_peak_detector_tb"
+    },
+    {
+      "pack_id": "debounce_latch",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "debounce_latch",
+      "task_form": "bugfix",
+      "task_id": "vbm1_debounce_latch_bugfix"
+    },
+    {
+      "pack_id": "debounce_latch",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "debounce_latch",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_debounce_latch_dut"
+    },
+    {
+      "pack_id": "debounce_latch",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "debounce_latch",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_debounce_latch_e2e"
+    },
+    {
+      "pack_id": "debounce_latch",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "debounce_latch",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_debounce_latch_tb"
+    },
+    {
+      "pack_id": "leaky_hold",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "leaky_hold",
+      "task_form": "bugfix",
+      "task_id": "vbm1_leaky_hold_bugfix"
+    },
+    {
+      "pack_id": "leaky_hold",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "leaky_hold",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_leaky_hold_dut"
+    },
+    {
+      "pack_id": "leaky_hold",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "leaky_hold",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_leaky_hold_e2e"
+    },
+    {
+      "pack_id": "leaky_hold",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "leaky_hold",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_leaky_hold_tb"
+    },
+    {
+      "pack_id": "edge_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "edge_detector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_edge_detector_bugfix"
+    },
+    {
+      "pack_id": "edge_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "edge_detector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_edge_detector_dut"
+    },
+    {
+      "pack_id": "edge_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "edge_detector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_edge_detector_e2e"
+    },
+    {
+      "pack_id": "edge_detector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "edge_detector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_edge_detector_tb"
+    },
+    {
+      "pack_id": "segmented_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "segmented_dac",
+      "task_form": "bugfix",
+      "task_id": "vbm1_segmented_dac_bugfix"
+    },
+    {
+      "pack_id": "segmented_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "segmented_dac",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_segmented_dac_dut"
+    },
+    {
+      "pack_id": "segmented_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "segmented_dac",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_segmented_dac_e2e"
+    },
+    {
+      "pack_id": "segmented_dac",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "segmented_dac",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_segmented_dac_tb"
+    },
+    {
+      "pack_id": "cdac_calibration",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "cdac_calibration",
+      "task_form": "bugfix",
+      "task_id": "vbm1_cdac_calibration_bugfix"
+    },
+    {
+      "pack_id": "cdac_calibration",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "cdac_calibration",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_cdac_calibration_dut"
+    },
+    {
+      "pack_id": "cdac_calibration",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "cdac_calibration",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_cdac_calibration_e2e"
+    },
+    {
+      "pack_id": "cdac_calibration",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "cdac_calibration",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_cdac_calibration_tb"
+    },
+    {
+      "pack_id": "offset_calibration_fsm",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "offset_calibration_fsm",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_calibration_fsm_bugfix"
+    },
+    {
+      "pack_id": "offset_calibration_fsm",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "offset_calibration_fsm",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_calibration_fsm_dut"
+    },
+    {
+      "pack_id": "offset_calibration_fsm",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "offset_calibration_fsm",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_calibration_fsm_e2e"
+    },
+    {
+      "pack_id": "offset_calibration_fsm",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "offset_calibration_fsm",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_calibration_fsm_tb"
+    },
+    {
+      "pack_id": "gain_trim_controller",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "gain_trim_controller",
+      "task_form": "bugfix",
+      "task_id": "vbm1_gain_trim_controller_bugfix"
+    },
+    {
+      "pack_id": "gain_trim_controller",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "gain_trim_controller",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_gain_trim_controller_dut"
+    },
+    {
+      "pack_id": "gain_trim_controller",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "gain_trim_controller",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_gain_trim_controller_e2e"
+    },
+    {
+      "pack_id": "gain_trim_controller",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "gain_trim_controller",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_gain_trim_controller_tb"
+    },
+    {
+      "pack_id": "background_calibration_accumulator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "background_calibration_accumulator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_background_calibration_accumulator_bugfix"
+    },
+    {
+      "pack_id": "background_calibration_accumulator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "background_calibration_accumulator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_background_calibration_accumulator_dut"
+    },
+    {
+      "pack_id": "background_calibration_accumulator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "background_calibration_accumulator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_background_calibration_accumulator_e2e"
+    },
+    {
+      "pack_id": "background_calibration_accumulator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "background_calibration_accumulator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_background_calibration_accumulator_tb"
+    },
+    {
+      "pack_id": "rotating_element_selector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "rotating_element_selector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_rotating_element_selector_bugfix"
+    },
+    {
+      "pack_id": "rotating_element_selector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "rotating_element_selector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_rotating_element_selector_dut"
+    },
+    {
+      "pack_id": "rotating_element_selector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "rotating_element_selector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_rotating_element_selector_e2e"
+    },
+    {
+      "pack_id": "rotating_element_selector",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "rotating_element_selector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_rotating_element_selector_tb"
+    },
+    {
+      "pack_id": "barrel_pointer_window",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "barrel_pointer_window",
+      "task_form": "bugfix",
+      "task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "pack_id": "barrel_pointer_window",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "barrel_pointer_window",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_barrel_pointer_window_dut"
+    },
+    {
+      "pack_id": "barrel_pointer_window",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "barrel_pointer_window",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_barrel_pointer_window_e2e"
+    },
+    {
+      "pack_id": "barrel_pointer_window",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "barrel_pointer_window",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_barrel_pointer_window_tb"
+    },
+    {
+      "pack_id": "element_shuffler",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "element_shuffler",
+      "task_form": "bugfix",
+      "task_id": "vbm1_element_shuffler_bugfix"
+    },
+    {
+      "pack_id": "element_shuffler",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "element_shuffler",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_element_shuffler_dut"
+    },
+    {
+      "pack_id": "element_shuffler",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "element_shuffler",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_element_shuffler_e2e"
+    },
+    {
+      "pack_id": "element_shuffler",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "element_shuffler",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_element_shuffler_tb"
+    },
+    {
+      "pack_id": "thermometer_decoder_guarded",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "thermometer_decoder_guarded",
+      "task_form": "bugfix",
+      "task_id": "vbm1_thermometer_decoder_guarded_bugfix"
+    },
+    {
+      "pack_id": "thermometer_decoder_guarded",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "thermometer_decoder_guarded",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_thermometer_decoder_guarded_dut"
+    },
+    {
+      "pack_id": "thermometer_decoder_guarded",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "thermometer_decoder_guarded",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_thermometer_decoder_guarded_e2e"
+    },
+    {
+      "pack_id": "thermometer_decoder_guarded",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "thermometer_decoder_guarded",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_thermometer_decoder_guarded_tb"
+    },
+    {
+      "pack_id": "first_order_lowpass",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "first_order_lowpass",
+      "task_form": "bugfix",
+      "task_id": "vbm1_first_order_lowpass_bugfix"
+    },
+    {
+      "pack_id": "first_order_lowpass",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "first_order_lowpass",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_first_order_lowpass_dut"
+    },
+    {
+      "pack_id": "first_order_lowpass",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "first_order_lowpass",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_first_order_lowpass_e2e"
+    },
+    {
+      "pack_id": "first_order_lowpass",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "first_order_lowpass",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_first_order_lowpass_tb"
+    },
+    {
+      "pack_id": "slew_rate_limiter",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "slew_rate_limiter",
+      "task_form": "bugfix",
+      "task_id": "vbm1_slew_rate_limiter_bugfix"
+    },
+    {
+      "pack_id": "slew_rate_limiter",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "slew_rate_limiter",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_slew_rate_limiter_dut"
+    },
+    {
+      "pack_id": "slew_rate_limiter",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "slew_rate_limiter",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_slew_rate_limiter_e2e"
+    },
+    {
+      "pack_id": "slew_rate_limiter",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "slew_rate_limiter",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_slew_rate_limiter_tb"
+    },
+    {
+      "pack_id": "vco_phase_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "vco_phase_integrator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_vco_phase_integrator_bugfix"
+    },
+    {
+      "pack_id": "vco_phase_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "vco_phase_integrator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_vco_phase_integrator_dut"
+    },
+    {
+      "pack_id": "vco_phase_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "vco_phase_integrator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_vco_phase_integrator_e2e"
+    },
+    {
+      "pack_id": "vco_phase_integrator",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "vco_phase_integrator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_vco_phase_integrator_tb"
+    },
+    {
+      "pack_id": "settling_time_measurement_tb",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "settling_time_measurement_tb",
+      "task_form": "bugfix",
+      "task_id": "vbm1_settling_time_measurement_tb_bugfix"
+    },
+    {
+      "pack_id": "settling_time_measurement_tb",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "settling_time_measurement_tb",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_settling_time_measurement_tb_dut"
+    },
+    {
+      "pack_id": "settling_time_measurement_tb",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "settling_time_measurement_tb",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_settling_time_measurement_tb_e2e"
+    },
+    {
+      "pack_id": "settling_time_measurement_tb",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "settling_time_measurement_tb",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_settling_time_measurement_tb_tb"
+    },
+    {
+      "pack_id": "file_metric_writer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_bugfix",
+      "source_task_id": "file_metric_writer",
+      "task_form": "bugfix",
+      "task_id": "vbm1_file_metric_writer_bugfix"
+    },
+    {
+      "pack_id": "file_metric_writer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_dut",
+      "source_task_id": "file_metric_writer",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_file_metric_writer_dut"
+    },
+    {
+      "pack_id": "file_metric_writer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_e2e",
+      "source_task_id": "file_metric_writer",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_file_metric_writer_e2e"
+    },
+    {
+      "pack_id": "file_metric_writer",
+      "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+      "source_seed_task": "balanced_analog_limiter_tb",
+      "source_task_id": "file_metric_writer",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_file_metric_writer_tb"
+    }
+  ]
+}

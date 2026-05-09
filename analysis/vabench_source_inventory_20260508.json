@@ -1,0 +1,4704 @@
+{
+  "coverage_json": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/analysis/vabench_main_coverage_table_20260508.json",
+  "date": "2026-05-08",
+  "packs": [
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator",
+            "offset"
+          ],
+          "score": 3,
+          "source_task_id": "comparator_offset_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_comparator_offset_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_comparator_offset_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator"
+          ],
+          "score": 2,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comparator_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comparator_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "comparator",
+            "offset"
+          ],
+          "score": 2,
+          "source_task_id": "bg_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_bg_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bg_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator"
+          ],
+          "score": 2,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_delay_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_delay_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator"
+          ],
+          "score": 2,
+          "source_task_id": "cmp_strongarm_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_strongarm_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_strongarm_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator"
+          ],
+          "score": 2,
+          "source_task_id": "comparator_hysteresis_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_comparator_hysteresis_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_comparator_hysteresis_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "comparator",
+            "offset"
+          ],
+          "score": 2,
+          "source_task_id": "comparator_offset_search_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_comparator_offset_search_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_comparator_offset_search_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "cmp",
+            "comparator"
+          ],
+          "score": 2,
+          "source_task_id": "inverted_comparator_logic_bug",
+          "task_dir": "benchmark-balanced/tasks/original92_inverted_comparator_logic_bug",
+          "task_form": "bugfix",
+          "task_id": "original92_inverted_comparator_logic_bug"
+        }
+      ],
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "offset_comparator",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 5,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "behavior",
+            "comparator",
+            "priority",
+            "reset",
+            "strongarm"
+          ],
+          "score": 5,
+          "source_task_id": "strongarm_reset_priority_bug",
+          "task_dir": "benchmark-balanced/tasks/original92_strongarm_reset_priority_bug",
+          "task_form": "bugfix",
+          "task_id": "original92_strongarm_reset_priority_bug"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "behavior",
+            "comparator",
+            "reset",
+            "strongarm"
+          ],
+          "score": 4,
+          "source_task_id": "cmp_strongarm_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_strongarm_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_strongarm_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "behavior",
+            "comparator",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comparator_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comparator_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "behavior",
+            "comparator",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_delay_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_delay_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "behavior",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "behavior",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "behavior",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_comms_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "behavior",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comms_dut"
+        }
+      ],
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "strongarm_comparator_behavior",
+      "planned_tasks": 4,
+      "source_status": "source_backed",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_analog_limiter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_analog_limiter_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_analog_limiter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_analog_limiter_tb"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_limiter_model_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_limiter_model_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_limiter_model_001",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_limiter_model_001"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_limiter_model_002",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_limiter_model_002"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "analog_limiter",
+          "hits": [
+            "bounded",
+            "limiter",
+            "voltage"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_limiter_model_003",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_limiter_model_003"
+        }
+      ],
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "voltage_clamp",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "absolute",
+            "precision"
+          ],
+          "score": 2,
+          "source_task_id": "cross_sine_precision_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cross_sine_precision_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cross_sine_precision_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "sign"
+          ],
+          "score": 1,
+          "source_task_id": "gain_extraction_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_gain_extraction_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_gain_extraction_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "absolute"
+          ],
+          "score": 1,
+          "source_task_id": "phase_accumulator_timer_wrap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_phase_accumulator_timer_wrap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_phase_accumulator_timer_wrap_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "absolute"
+          ],
+          "score": 1,
+          "source_task_id": "simultaneous_event_order_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_simultaneous_event_order_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_simultaneous_event_order_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "absolute"
+          ],
+          "score": 1,
+          "source_task_id": "timer_absolute_grid_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_timer_absolute_grid_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_timer_absolute_grid_smoke"
+        }
+      ],
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "precision_rectifier",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_threshold_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_threshold_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_threshold_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_threshold_detector_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_window_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_window_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_window_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_window_detector_tb"
+        }
+      ],
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "peak_detector",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "aperture",
+            "hold",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "sample_hold_aperture_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_sample_hold_aperture_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_sample_hold_aperture_tb"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "adc_dac_quantize_reconstruct",
+          "hits": [
+            "hold",
+            "sample",
+            "track"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b",
+          "task_dir": "benchmark-v2/tasks/v2_adc_dac_not_continuous_tracking",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_adc_dac_not_continuous_tracking"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold_discrete_update",
+          "hits": [
+            "aperture",
+            "hold",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "sample_hold",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_aperture_tolerance",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_aperture_tolerance"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold",
+          "hits": [
+            "aperture",
+            "hold",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "sample_hold_aperture_tb",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_aperture_tolerance_alias",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_aperture_tolerance_alias"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold",
+          "hits": [
+            "aperture",
+            "hold",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "sample_hold_aperture_tb",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_not_follower_aperture",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_not_follower_aperture"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "sample-hold",
+          "hits": [
+            "hold",
+            "sample"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold_droop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_sample_hold_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_sample_hold_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "hold",
+            "track"
+          ],
+          "score": 2,
+          "source_task_id": "comparator_hysteresis_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_comparator_hysteresis_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_comparator_hysteresis_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "sample",
+            "track"
+          ],
+          "score": 2,
+          "source_task_id": "cppll_freq_step_reacquire_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_freq_step_reacquire_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cppll_freq_step_reacquire_smoke"
+        }
+      ],
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "track_hold_aperture",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "latch",
+            "state",
+            "threshold"
+          ],
+          "score": 3,
+          "source_task_id": "above_threshold_startup_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_stimulus_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_stimulus_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "latch",
+            "state",
+            "threshold"
+          ],
+          "score": 3,
+          "source_task_id": "above_threshold_startup_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_stimulus_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_stimulus_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "latch",
+            "state",
+            "threshold"
+          ],
+          "score": 3,
+          "source_task_id": "above_threshold_startup_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_stimulus_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_stimulus_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "latch",
+            "state",
+            "threshold"
+          ],
+          "score": 3,
+          "source_task_id": "above_threshold_startup_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_above_threshold_startup_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_above_threshold_startup_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "latch",
+            "state"
+          ],
+          "score": 2,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_comms_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "latch",
+            "state"
+          ],
+          "score": 2,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comms_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "state",
+            "threshold"
+          ],
+          "score": 2,
+          "source_task_id": "dff_rst_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dff_rst_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dff_rst_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "sample-hold",
+          "hits": [
+            "state",
+            "threshold"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_sample_hold_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_sample_hold_smoke"
+        }
+      ],
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "debounce_latch",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "sample-hold",
+          "hits": [
+            "droop",
+            "hold"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold_droop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_sample_hold_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_sample_hold_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "sample-hold",
+          "hits": [
+            "droop",
+            "hold"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold_droop_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_sample_hold_droop_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_sample_hold_droop_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold_discrete_update",
+          "hits": [
+            "droop",
+            "hold"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_aperture_tolerance",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_aperture_tolerance"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold",
+          "hits": [
+            "droop",
+            "hold"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold_droop_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_calibration_settled_alias",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_calibration_settled_alias"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "hold"
+          ],
+          "score": 1,
+          "source_task_id": "comparator_hysteresis_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_comparator_hysteresis_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_comparator_hysteresis_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "hold"
+          ],
+          "score": 1,
+          "source_task_id": "cross_hysteresis_window_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cross_hysteresis_window_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cross_hysteresis_window_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "hold"
+          ],
+          "score": 1,
+          "source_task_id": "pipeline_stage",
+          "task_dir": "benchmark-balanced/tasks/original92_pipeline_stage",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_pipeline_stage"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "hold"
+          ],
+          "score": 1,
+          "source_task_id": "sample_hold_aperture_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_sample_hold_aperture_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_sample_hold_aperture_tb"
+        }
+      ],
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "leaky_hold",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "edge",
+            "falling",
+            "pulse",
+            "rising"
+          ],
+          "score": 4,
+          "source_task_id": "clk_burst_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_clk_burst_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_clk_burst_gen_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 4,
+          "source_task_id": "pfd_deadzone_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_deadzone_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_deadzone_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 4,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_reset_race_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_reset_race_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 4,
+          "source_task_id": "pfd_updn_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_updn_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_updn_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_data_converter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_data_converter_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "edge",
+            "pulse"
+          ],
+          "score": 3,
+          "source_task_id": "bbpd_data_edge_alignment_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_phase_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_phase_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "edge",
+            "pulse",
+            "rising"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adc_dac_ideal_4b_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adc_dac_ideal_4b_smoke"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "edge_detector",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_002",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_002"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_005",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_005"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_008",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_008"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_011",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_011"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_014",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_014"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_017",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_017"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_020",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_020"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "event_pulse_stretcher",
+          "hits": [
+            "one",
+            "pulse",
+            "shot"
+          ],
+          "score": 3,
+          "source_task_id": "pattern-derived:public-analog-behavioral-modeling",
+          "task_dir": "benchmark-v2/tasks/v2_ext_pulse_stretcher_023",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_ext_pulse_stretcher_023"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "one_shot_timer",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "counter",
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 4,
+          "source_task_id": "clk_divider",
+          "task_dir": "benchmark-balanced/tasks/original92_clk_divider",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_clk_divider"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "divider_counter_ratio",
+          "hits": [
+            "counter",
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 4,
+          "source_task_id": "clk_div",
+          "task_dir": "benchmark-v2/tasks/v2_divider_ratio_hop_reset_phase",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_divider_ratio_hop_reset_phase"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "divider_counter",
+          "hits": [
+            "counter",
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 4,
+          "source_task_id": "multimod_divider_ratio_switch_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_divider_ratio_hop_reset_phase_alias",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_divider_ratio_hop_reset_phase_alias"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll",
+          "hits": [
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "multimod_divider_ratio_switch_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_closed_loop_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_pll_closed_loop_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_closed_loop_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll",
+          "hits": [
+            "divider",
+            "ratio",
+            "reset"
+          ],
+          "score": 3,
+          "source_task_id": "multimod_divider_ratio_switch_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_pll_dut"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "resettable_counter_divider",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 5,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_reset_race_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_reset_race_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_001",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_001"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_002",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_002"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_003",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_003"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_004",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_004"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_005",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_005"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_event_order",
+          "hits": [
+            "lag",
+            "lead",
+            "pfd",
+            "race",
+            "reset"
+          ],
+          "score": 5,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_lead_lag_006",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_lead_lag_006"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "pfd_reset_race",
+      "planned_tasks": 4,
+      "source_status": "source_backed",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_alias_6b",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_alias_6b"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_alias_weighted_5b",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_alias_weighted_5b"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_keywordless_6b_msb_phrase",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_keywordless_6b_msb_phrase"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_keywordless_weighted_sum",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_keywordless_weighted_sum"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_003",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_003"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_006",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_006"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "thermometer",
+            "unit"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_009",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_009"
+        }
+      ],
+      "mechanism_family": "data conversion",
+      "pack_id": "thermometer_dac",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard",
+            "segmented"
+          ],
+          "score": 4,
+          "source_task_id": "segmented_dac_glitch_tb",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_glitch_guard",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_glitch_guard"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac_with_segment_guard",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard",
+            "segmented"
+          ],
+          "score": 4,
+          "source_task_id": "dac_binary_clk_4b",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_segmented_glitch_guard",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_segmented_glitch_guard"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard",
+            "segmented"
+          ],
+          "score": 4,
+          "source_task_id": "segmented_dac_glitch_tb",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_segmented_glitch_guard_5b",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_segmented_glitch_guard_5b"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "dac",
+            "glitch",
+            "segmented"
+          ],
+          "score": 3,
+          "source_task_id": "segmented_dac_glitch_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_segmented_dac_glitch_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_segmented_dac_glitch_tb"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_012",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_012"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_5b_004",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_5b_004"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "dac",
+            "glitch",
+            "guard"
+          ],
+          "score": 3,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_5b_016",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_5b_016"
+        }
+      ],
+      "mechanism_family": "data conversion",
+      "pack_id": "segmented_dac",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "adc",
+            "dac",
+            "logic",
+            "sar"
+          ],
+          "score": 4,
+          "source_task_id": "sar_logic",
+          "task_dir": "benchmark-balanced/tasks/original92_sar_logic",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_sar_logic"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "adc",
+            "dac",
+            "logic",
+            "sar"
+          ],
+          "score": 4,
+          "source_task_id": "sar_logic_10b",
+          "task_dir": "benchmark-balanced/tasks/original92_sar_logic_10b",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_sar_logic_10b"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc",
+            "dac",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc",
+            "dac",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc",
+            "dac",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "adc",
+            "logic",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "sar_12bit",
+          "task_dir": "benchmark-balanced/tasks/original92_sar_12bit",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_sar_12bit"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "adc",
+            "dac",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "sar_adc_dac_weighted_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_sar_adc_dac_weighted_8b_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_sar_adc_dac_weighted_8b_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "adc_dac_quantize_reconstruct_plus_calibration",
+          "hits": [
+            "adc",
+            "dac",
+            "sar"
+          ],
+          "score": 3,
+          "source_task_id": "sar_adc_dac_weighted_8b",
+          "task_dir": "benchmark-v2/tasks/v2_adc_dac_calibrated_chain_settled",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_adc_dac_calibrated_chain_settled"
+        }
+      ],
+      "mechanism_family": "data conversion",
+      "pack_id": "sar_logic_4b",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration",
+            "capacitive",
+            "cdac",
+            "dac"
+          ],
+          "score": 4,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration",
+            "capacitive",
+            "cdac",
+            "dac"
+          ],
+          "score": 4,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration",
+            "capacitive",
+            "cdac",
+            "dac"
+          ],
+          "score": 4,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "adc_dac_quantize_reconstruct_plus_calibration",
+          "hits": [
+            "calibration",
+            "dac"
+          ],
+          "score": 2,
+          "source_task_id": "sar_adc_dac_weighted_8b",
+          "task_dir": "benchmark-v2/tasks/v2_adc_dac_calibrated_chain_settled",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_adc_dac_calibrated_chain_settled"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "dac"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_data_converter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "dac"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_data_converter_dut"
+        }
+      ],
+      "mechanism_family": "data conversion/calibration",
+      "pack_id": "cdac_calibration",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration",
+            "offset",
+            "trim"
+          ],
+          "score": 3,
+          "source_task_id": "bg_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_bg_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bg_cal"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "adc_dac_quantize_reconstruct_plus_calibration",
+          "hits": [
+            "calibration",
+            "offset"
+          ],
+          "score": 2,
+          "source_task_id": "sar_adc_dac_weighted_8b",
+          "task_dir": "benchmark-v2/tasks/v2_adc_dac_calibrated_chain_settled",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_adc_dac_calibrated_chain_settled"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "sample_hold_plus_calibration",
+          "hits": [
+            "calibration",
+            "offset"
+          ],
+          "score": 2,
+          "source_task_id": "sample_hold",
+          "task_dir": "benchmark-v2/tasks/v2_sample_hold_calibration_settled",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_sample_hold_calibration_settled"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        }
+      ],
+      "mechanism_family": "calibration/control",
+      "pack_id": "offset_calibration_fsm",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration",
+            "trim"
+          ],
+          "score": 2,
+          "source_task_id": "bg_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_bg_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bg_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll",
+          "hits": [
+            "gain"
+          ],
+          "score": 1,
+          "source_task_id": "dco_gain_step_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_dco_gain_step_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_dco_gain_step_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_no_overlap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_no_overlap_smoke"
+        }
+      ],
+      "mechanism_family": "calibration/control",
+      "pack_id": "gain_trim_controller",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "lock",
+            "pll",
+            "streak"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_closed_loop_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "lock",
+            "pll",
+            "streak"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_pll_closed_loop_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "lock",
+            "pll",
+            "streak"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_closed_loop_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "lock",
+            "pll",
+            "streak"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_ratio_hop_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_ratio_hop_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "lock",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_clock_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "lock",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_clock_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "lock",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_lock_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_lock_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "lock",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_timer",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_adpll_timer"
+        }
+      ],
+      "mechanism_family": "calibration/control",
+      "pack_id": "lock_detector",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "accumulator",
+            "background",
+            "calibration"
+          ],
+          "score": 3,
+          "source_task_id": "bg_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_bg_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bg_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_no_overlap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_no_overlap_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "calibration"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_smoke"
+        }
+      ],
+      "mechanism_family": "calibration/control",
+      "pack_id": "background_calibration_accumulator",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_no_overlap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_no_overlap_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "dwa_rotating_pointer_window",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen",
+          "task_dir": "benchmark-v2/tasks/v2_dwa_alias_rotating_window",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_dwa_alias_rotating_window"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "dwa_pointer_rotation",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_dwa_circular_cursor_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_dwa_circular_cursor_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "dwa_pointer_rotation",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_dwa_circular_cursor_001",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_dwa_circular_cursor_001"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "dwa_pointer_rotation",
+          "hits": [
+            "dwa",
+            "rotating",
+            "window"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_dwa_circular_cursor_002",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_dwa_circular_cursor_002"
+        }
+      ],
+      "mechanism_family": "pointer/selection",
+      "pack_id": "rotating_element_selector",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "pointer",
+            "window",
+            "wrap"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_wraparound_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_wraparound_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_wraparound_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "dwa_rotating_pointer_window",
+          "hits": [
+            "pointer",
+            "window",
+            "wrap"
+          ],
+          "score": 3,
+          "source_task_id": "dwa_wraparound_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_dwa_keywordless_cursor_wrap",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_dwa_keywordless_cursor_wrap"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "pointer",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "pointer",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "pointer",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_no_overlap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_no_overlap_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "pointer",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "window",
+            "wrap"
+          ],
+          "score": 2,
+          "source_task_id": "gray_counter_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_gray_counter_4b_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_gray_counter_4b_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "window",
+            "wrap"
+          ],
+          "score": 2,
+          "source_task_id": "phase_accumulator_timer_wrap_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_phase_accumulator_timer_wrap_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_phase_accumulator_timer_wrap_smoke"
+        }
+      ],
+      "mechanism_family": "pointer/selection",
+      "pack_id": "barrel_pointer_window",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comparator_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comparator_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_delay_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_delay_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "element"
+          ],
+          "score": 1,
+          "source_task_id": "cross_hysteresis_window_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cross_hysteresis_window_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cross_hysteresis_window_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "dac_ramp_tb",
+          "task_dir": "benchmark-balanced/tasks/original92_dac_ramp_tb",
+          "task_form": "tb-generation",
+          "task_id": "original92_dac_ramp_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "digital_basics_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_digital_basics_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_digital_basics_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_dwa_ptr_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_dwa_ptr_gen_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "gray_counter_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_gray_counter_4b_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_gray_counter_4b_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "sequence"
+          ],
+          "score": 1,
+          "source_task_id": "prbs7",
+          "task_dir": "benchmark-balanced/tasks/original92_prbs7",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_prbs7"
+        }
+      ],
+      "mechanism_family": "pointer/selection",
+      "pack_id": "element_shuffler",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_000",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_000"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_4b_012",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_4b_012"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_5b_004",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_5b_004"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_5b_016",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_5b_016"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b_smoke",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_6b_008",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_6b_008"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "segmented_dac_glitch_tb",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_not_thermometer_glitch_guard",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_not_thermometer_glitch_guard"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac_with_segment_guard",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_segmented_glitch_guard",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_segmented_glitch_guard"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "guard",
+            "thermometer"
+          ],
+          "score": 2,
+          "source_task_id": "segmented_dac_glitch_tb",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_segmented_glitch_guard_5b",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_segmented_glitch_guard_5b"
+        }
+      ],
+      "mechanism_family": "pointer/selection",
+      "pack_id": "thermometer_decoder_guarded",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/original92_sc_integrator",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_sc_integrator"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "first",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "simultaneous_event_order_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_simultaneous_event_order_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_simultaneous_event_order_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "binary_weighted_dac",
+          "hits": [
+            "first",
+            "order"
+          ],
+          "score": 2,
+          "source_task_id": "dac_binary_clk_4b",
+          "task_dir": "benchmark-v2/tasks/v2_binary_dac_reordered_ports_msb_first",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_binary_dac_reordered_ports_msb_first"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "order"
+          ],
+          "score": 1,
+          "source_task_id": "d2b_4bit_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_adc_sar_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_adc_sar_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "first"
+          ],
+          "score": 1,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_comms_bugfix"
+        }
+      ],
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "first_order_lowpass",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "signal-source",
+          "hits": [
+            "idt",
+            "reset",
+            "resettable"
+          ],
+          "score": 3,
+          "source_task_id": "ramp_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_signal_source_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_signal_source_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "signal-source",
+          "hits": [
+            "idt",
+            "reset",
+            "resettable"
+          ],
+          "score": 3,
+          "source_task_id": "ramp_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_signal_source_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_signal_source_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "idt",
+            "integrator"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "idt",
+            "integrator"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "idt",
+            "integrator"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "idt",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "idt",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "idt",
+            "reset"
+          ],
+          "score": 2,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_comms_bugfix"
+        }
+      ],
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "resettable_integrator",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "limiter"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_analog_limiter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "limiter"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_analog_limiter_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "limiter"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_analog_limiter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "limiter"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_analog_limiter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "rate"
+          ],
+          "score": 1,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_clock_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "rate"
+          ],
+          "score": 1,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_clock_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "rate"
+          ],
+          "score": 1,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_lock_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_lock_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "rate"
+          ],
+          "score": 1,
+          "source_task_id": "adpll_timer_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_timer_smoke"
+        }
+      ],
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "slew_rate_limiter",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "integrator",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "integrator",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "integrator",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "phase",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_clock_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "phase",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_clock_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "phase",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_lock_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_lock_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "phase",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_timer",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_adpll_timer"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "phase",
+            "pll"
+          ],
+          "score": 2,
+          "source_task_id": "adpll_timer_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_timer_smoke"
+        }
+      ],
+      "mechanism_family": "continuous dynamics/pll",
+      "pack_id": "vco_phase_integrator",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "measurement",
+            "testbench",
+            "time"
+          ],
+          "score": 3,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_measurement_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_measurement_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "measurement",
+            "testbench",
+            "time"
+          ],
+          "score": 3,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_measurement_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_measurement_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "measurement",
+            "testbench",
+            "time"
+          ],
+          "score": 3,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_final_step_file_metric_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_final_step_file_metric_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "testbench",
+            "time"
+          ],
+          "score": 2,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_analog_events_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "testbench",
+            "time"
+          ],
+          "score": 2,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_analog_events_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "testbench",
+            "time"
+          ],
+          "score": 2,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_analog_events_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "testbench",
+            "time"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "testbench",
+            "time"
+          ],
+          "score": 2,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_calibration_tb"
+        }
+      ],
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "settling_time_measurement_tb",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "file",
+            "metric"
+          ],
+          "score": 2,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_measurement_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_measurement_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "file",
+            "metric"
+          ],
+          "score": 2,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_measurement_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_measurement_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "measurement",
+          "hits": [
+            "file",
+            "metric"
+          ],
+          "score": 2,
+          "source_task_id": "final_step_file_metric_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_final_step_file_metric_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_final_step_file_metric_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "file"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_analog_limiter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog_limiter",
+          "hits": [
+            "file"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_analog_limiter_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_analog_limiter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "file"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_pulse_stretcher_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "file"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_pulse_stretcher_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "file"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_threshold_detector_bugfix"
+        }
+      ],
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "file_metric_writer",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-main-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "d2b_4bit_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_adc_sar_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_adc_sar_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_data_converter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_data_converter_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adc_dac_ideal_4b_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adc_dac_ideal_4b_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/original92_cdac_cal",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cdac_cal"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "adc"
+          ],
+          "score": 1,
+          "source_task_id": "d2b_4bit",
+          "task_dir": "benchmark-balanced/tasks/original92_d2b_4bit",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_d2b_4bit"
+        }
+      ],
+      "mechanism_family": "data conversion",
+      "pack_id": "folding_adc_encoder",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comparator_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comparator_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "clk_div_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_clk_div_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_clk_div_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "digital-logic",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "clk_divider",
+          "task_dir": "benchmark-balanced/tasks/original92_clk_divider",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_clk_divider"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comparator",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "cmp_delay_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cmp_delay_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cmp_delay_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "xor_pd_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_xor_pd_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_xor_pd_smoke"
+        },
+        {
+          "benchmark": "benchmark-v2",
+          "core_function": "pfd_updn_reset_race",
+          "hits": [
+            "duty"
+          ],
+          "score": 1,
+          "source_task_id": "xor_phase_detector",
+          "task_dir": "benchmark-v2/tasks/v2_pfd_not_xor_detector",
+          "task_form": "benchmark-v2",
+          "task_id": "v2_pfd_not_xor_detector"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "pwm_modulator",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 4,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_clock_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_clock_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_lock_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_lock_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "adpll_timer",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_adpll_timer"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "adpll_timer_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_adpll_timer_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_adpll_timer_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "cppll_timer",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_timer",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cppll_timer"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor",
+            "phase"
+          ],
+          "score": 4,
+          "source_task_id": "cppll_tracking_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_tracking_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cppll_tracking_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "frequency",
+            "lock",
+            "monitor"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_ratio_hop_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_closed_loop_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_closed_loop_bugfix"
+        }
+      ],
+      "mechanism_family": "calibration/control",
+      "pack_id": "phase_frequency_lock_monitor",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_threshold_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_threshold_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_threshold_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_threshold_detector_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_analog_events_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_analog_events_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_analog_events_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "threshold"
+          ],
+          "score": 1,
+          "source_task_id": "above_threshold_startup_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_stimulus_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_stimulus_bugfix"
+        }
+      ],
+      "mechanism_family": "threshold/state",
+      "pack_id": "adaptive_threshold_tracker",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_window_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_window_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_window_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_window_detector_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd_data_edge_alignment_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_phase_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_phase_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd",
+          "task_dir": "benchmark-balanced/tasks/original92_bbpd",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bbpd"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd_data_edge_alignment_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_bbpd_data_edge_alignment_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_bbpd_data_edge_alignment_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "window"
+          ],
+          "score": 2,
+          "source_task_id": "pfd_deadzone_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_deadzone_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_deadzone_smoke"
+        }
+      ],
+      "mechanism_family": "continuous dynamics/measurement",
+      "pack_id": "windowed_rms_detector",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-closed-loop",
+          "hits": [
+            "behavior",
+            "charge",
+            "pump"
+          ],
+          "score": 3,
+          "source_task_id": "cppll_freq_step_reacquire_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_freq_step_reacquire_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cppll_freq_step_reacquire_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "behavior",
+            "charge"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "behavior",
+            "charge"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "behavior",
+            "charge"
+          ],
+          "score": 2,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "behavior",
+            "charge"
+          ],
+          "score": 2,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_dac_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "dac",
+          "hits": [
+            "behavior",
+            "charge"
+          ],
+          "score": 2,
+          "source_task_id": "cdac_cal",
+          "task_dir": "benchmark-balanced/tasks/completion92_dac_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_dac_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "charge",
+            "pump"
+          ],
+          "score": 2,
+          "source_task_id": "cppll_timer",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_timer",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_cppll_timer"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "charge",
+            "pump"
+          ],
+          "score": 2,
+          "source_task_id": "cppll_tracking_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_cppll_tracking_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_cppll_tracking_smoke"
+        }
+      ],
+      "mechanism_family": "mixed-signal analog control",
+      "pack_id": "charge_pump_behavior",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "stimulus",
+          "hits": [
+            "sigma"
+          ],
+          "score": 1,
+          "source_task_id": "noise_gen_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_noise_gen_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_noise_gen_smoke"
+        }
+      ],
+      "mechanism_family": "data conversion/dynamics",
+      "pack_id": "sigma_delta_modulator_1st",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "pulse"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_pulse_stretcher_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "pulse"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_pulse_stretcher_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "pulse"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_pulse_stretcher_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pulse_stretcher",
+          "hits": [
+            "pulse"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_pulse_stretcher_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_pulse_stretcher_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "filter"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "pulse"
+          ],
+          "score": 1,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_data_converter_bugfix"
+        }
+      ],
+      "mechanism_family": "event/timing",
+      "pack_id": "glitch_filter",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 2,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd_data_edge_alignment_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_phase_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_phase_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd",
+          "task_dir": "benchmark-balanced/tasks/original92_bbpd",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "original92_bbpd"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "bbpd_data_edge_alignment_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_bbpd_data_edge_alignment_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_bbpd_data_edge_alignment_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "pfd_deadzone_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_deadzone_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_deadzone_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "pfd_reset_race_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_reset_race_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_reset_race_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "pfd_updn_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_pfd_updn_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_pfd_updn_smoke"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "swapped_pfd_outputs_bug",
+          "task_dir": "benchmark-balanced/tasks/original92_swapped_pfd_outputs_bug",
+          "task_form": "bugfix",
+          "task_id": "original92_swapped_pfd_outputs_bug"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "phase-detector",
+          "hits": [
+            "detector",
+            "phase"
+          ],
+          "score": 2,
+          "source_task_id": "xor_pd_smoke",
+          "task_dir": "benchmark-balanced/tasks/original92_xor_pd_smoke",
+          "task_form": "end-to-end",
+          "task_id": "original92_xor_pd_smoke"
+        }
+      ],
+      "mechanism_family": "phase/mixed-signal",
+      "pack_id": "quadrature_phase_detector",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 3,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "clock",
+            "converter",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_comms_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "comms",
+          "hits": [
+            "clock",
+            "converter",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "serializer_8b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_comms_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_comms_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "clock",
+            "converter",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_data_converter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "data-converter",
+          "hits": [
+            "clock",
+            "converter",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "adc_dac_ideal_4b_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_data_converter_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_data_converter_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll",
+          "hits": [
+            "clock",
+            "multi",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "multimod_divider_ratio_switch_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "clock",
+            "rate",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_pll_clock_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll-clock",
+          "hits": [
+            "clock",
+            "rate",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "adpll_lock_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_clock_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_pll_clock_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "pll",
+          "hits": [
+            "clock",
+            "multi",
+            "sample"
+          ],
+          "score": 3,
+          "source_task_id": "multimod_divider_ratio_switch_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_pll_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_pll_dut"
+        }
+      ],
+      "mechanism_family": "mixed-signal protocol",
+      "pack_id": "sample_rate_converter_stub",
+      "planned_tasks": 4,
+      "source_status": "adapt_existing",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_threshold_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_threshold_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_threshold_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "threshold_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_threshold_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_threshold_detector_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_bugfix",
+          "task_form": "bugfix",
+          "task_id": "balanced_window_detector_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "balanced_window_detector_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_e2e",
+          "task_form": "end-to-end",
+          "task_id": "balanced_window_detector_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "window_detector",
+          "hits": [
+            "sensor"
+          ],
+          "score": 1,
+          "source_task_id": null,
+          "task_dir": "benchmark-balanced/tasks/balanced_window_detector_tb",
+          "task_form": "tb-generation",
+          "task_id": "balanced_window_detector_tb"
+        }
+      ],
+      "mechanism_family": "source/modeling",
+      "pack_id": "temperature_sensor_lut",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "best_score": 1,
+      "candidates": [
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "adc-sar",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "d2b_4bit_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_adc_sar_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_adc_sar_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_amplifier_filter_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_e2e",
+          "task_form": "end-to-end",
+          "task_id": "completion92_amplifier_filter_e2e"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "amplifier-filter",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "sc_integrator",
+          "task_dir": "benchmark-balanced/tasks/completion92_amplifier_filter_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_amplifier_filter_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_analog_events_bugfix"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_dut",
+          "task_form": "dut-only/spec-to-va",
+          "task_id": "completion92_analog_events_dut"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "analog-events",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "cross_interval_163p333_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_analog_events_tb",
+          "task_form": "tb-generation",
+          "task_id": "completion92_analog_events_tb"
+        },
+        {
+          "benchmark": "benchmark-balanced",
+          "core_function": "calibration",
+          "hits": [
+            "source"
+          ],
+          "score": 1,
+          "source_task_id": "dwa_ptr_gen_no_overlap_smoke",
+          "task_dir": "benchmark-balanced/tasks/completion92_calibration_bugfix",
+          "task_form": "bugfix",
+          "task_id": "completion92_calibration_bugfix"
+        }
+      ],
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "noise_source_stat_tb",
+      "planned_tasks": 4,
+      "source_status": "weak_candidate",
+      "split": "vaBench-heldout-v1"
+    }
+  ],
+  "source_benches": [
+    "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-balanced",
+    "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-v2"
+  ],
+  "status_counts": {
+    "adapt_existing": 21,
+    "source_backed": 2,
+    "weak_candidate": 19
+  },
+  "task_forms": [
+    "bugfix",
+    "spec-to-va",
+    "end-to-end",
+    "tb-generation"
+  ]
+}

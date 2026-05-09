@@ -2,9 +2,11 @@
 
 **Date**: 2026-05-07
 
-This document plans the cleaner balanced benchmark that should sit next to the
-current `b143` benchmark.  It does not replace `b143` immediately.  It defines a
-new benchmark family whose unit is a concrete circuit function pack.
+This document planned the first cleaner function-pack benchmark.  As of
+2026-05-08, `benchmark-bpack-v1` has been materialized and is treated as
+`vaBench-dev48`: the clean development benchmark for fast iteration.  The current
+strategy and larger benchmark roadmap live in `docs/VAEVAS_MAINLINE_PROTOCOL.md`
+and `docs/VABENCH_MAIN_EXPANSION_PLAN.md`.
 
 ## Motivation
 

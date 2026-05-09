@@ -15,6 +15,30 @@
       "safe_autofix": true
     },
     {
+      "id": "module_alias_duplicate",
+      "version": "0.1",
+      "description": "Duplicate a uniquely available generated module under a missing public harness module name when the harness still references both names.",
+      "triggers": [
+        "spectre_strict:undefined_module="
+      ],
+      "guidance_file": "SKILL.md",
+      "fixer": "module_alias_duplicate",
+      "judge": "spectre_strict_preflight",
+      "safe_autofix": true
+    },
+    {
+      "id": "verilog_binary_literal_decimal",
+      "version": "0.1",
+      "description": "Convert Verilog-style binary integer literals into decimal integer literals for EVAS/Spectre-compatible Verilog-A parsing.",
+      "triggers": [
+        "Expected RPAREN, got IDENT ('b"
+      ],
+      "guidance_file": "SKILL.md",
+      "fixer": "verilog_binary_literal_decimal",
+      "judge": "spectre_strict_preflight",
+      "safe_autofix": true
+    },
+    {
       "id": "module_name_linkage",
       "version": "0.1",
       "description": "Align a generated Verilog-A module declaration with the model name requested by the public Spectre harness.",
@@ -48,6 +72,18 @@
       ],
       "guidance_file": "SKILL.md",
       "fixer": "pwl_monotonic_time",
+      "judge": "spectre_strict_preflight",
+      "safe_autofix": true
+    },
+    {
+      "id": "pwl_inline_wave_vector",
+      "version": "0.1",
+      "description": "Materialize Spectre continuation-style PWL stimulus rows into inline wave=[time value ...] vectors.",
+      "triggers": [
+        "PWL wave must contain at least one time/value pair"
+      ],
+      "guidance_file": "SKILL.md",
+      "fixer": "pwl_inline_wave_vector",
       "judge": "spectre_strict_preflight",
       "safe_autofix": true
     },

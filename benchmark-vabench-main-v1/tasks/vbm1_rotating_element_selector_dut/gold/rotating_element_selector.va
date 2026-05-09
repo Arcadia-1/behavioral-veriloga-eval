@@ -1,0 +1,6 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module rotating_element_selector(clk,rst_n,sel0,sel1,sel2,sel3);
+    input clk,rst_n; output sel0,sel1,sel2,sel3; electrical clk,rst_n,sel0,sel1,sel2,sel3; parameter real vth=0.45; parameter real vdd=0.9; parameter real tr=300p; integer idx;
+    analog begin @(initial_step) idx=0; @(cross(V(rst_n)-vth,-1)) idx=0; @(cross(V(clk)-vth,+1)) begin if (V(rst_n)>vth) begin idx=idx+1; if (idx>3) idx=0; end end V(sel0)<+transition((idx==0)?vdd:0.0,0,tr,tr); V(sel1)<+transition((idx==1)?vdd:0.0,0,tr,tr); V(sel2)<+transition((idx==2)?vdd:0.0,0,tr,tr); V(sel3)<+transition((idx==3)?vdd:0.0,0,tr,tr); end
+endmodule

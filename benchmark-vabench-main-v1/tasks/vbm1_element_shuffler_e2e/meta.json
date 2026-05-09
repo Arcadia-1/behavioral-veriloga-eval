@@ -1,0 +1,37 @@
+{
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "selector",
+  "circuit_function_id": "element_shuffler",
+  "core_function": "pointer/selection",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "end-to-end",
+  "gold": {
+    "dut": "gold/dut.va",
+    "tb": "gold/tb_ref.scs"
+  },
+  "pack_id": "element_shuffler",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "benchmark-v2 external architecture representative",
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "balanced_supplement_v1",
+  "source_seed_task_id": "balanced_analog_limiter_e2e",
+  "source_task": "v2_ext_limiter_model_000",
+  "source_task_form": "end-to-end",
+  "source_task_id": "element_shuffler",
+  "task_form": "end-to-end",
+  "task_id": "vbm1_element_shuffler_e2e",
+  "v2_checker_spec": {
+    "kind": "limiter",
+    "vin": "raw_level",
+    "vout": "limited_level"
+  }
+}

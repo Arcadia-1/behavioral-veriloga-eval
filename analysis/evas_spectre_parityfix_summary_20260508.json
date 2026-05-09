@@ -1,0 +1,70 @@
+{
+  "binary_pass_fail_mismatches": [],
+  "evas_pass": 21,
+  "evas_root": "results/main120-D-rulesonly-mimo-v2.5-pro-strict-evas-parityfix-20260508-main120-D",
+  "spectre_pass": 21,
+  "spectre_root": "results/main120-D-rulesonly-mimo-v2.5-pro-spectre-jin-20260508-main120-D",
+  "status_label_mismatches": [
+    [
+      "vbm1_barrel_pointer_window_bugfix",
+      "FAIL_DUT_COMPILE",
+      "FAIL_SIM_CORRECTNESS"
+    ],
+    [
+      "vbm1_debounce_latch_e2e",
+      "FAIL_TB_COMPILE",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_first_order_lowpass_bugfix",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_first_order_lowpass_dut",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_first_order_lowpass_e2e",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_offset_comparator_e2e",
+      "FAIL_TB_COMPILE",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_one_shot_timer_e2e",
+      "FAIL_TB_COMPILE",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_resettable_integrator_bugfix",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_resettable_integrator_dut",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_resettable_integrator_e2e",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_track_hold_aperture_e2e",
+      "FAIL_TB_COMPILE",
+      "FAIL_DUT_COMPILE"
+    ],
+    [
+      "vbm1_voltage_clamp_dut",
+      "FAIL_TB_COMPILE",
+      "FAIL_DUT_COMPILE"
+    ]
+  ],
+  "total": 120
+}

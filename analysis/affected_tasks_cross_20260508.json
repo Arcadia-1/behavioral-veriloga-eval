@@ -1,0 +1,769 @@
+{
+  "change_types": [
+    "cross"
+  ],
+  "features_json": "analysis/vabench_main120_feature_tags_20260508.json",
+  "selected_count": 84,
+  "selected_features": [
+    "uses_cross"
+  ],
+  "tasks": [
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "background_calibration_accumulator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_background_calibration_accumulator_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "background_calibration_accumulator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_background_calibration_accumulator_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "background_calibration_accumulator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_background_calibration_accumulator_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "background_calibration_accumulator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_background_calibration_accumulator_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "bugfix",
+      "task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_barrel_pointer_window_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_barrel_pointer_window_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_barrel_pointer_window_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "cdac_calibration",
+      "task_form": "bugfix",
+      "task_id": "vbm1_cdac_calibration_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "cdac_calibration",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_cdac_calibration_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "cdac_calibration",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_cdac_calibration_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "cdac_calibration",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_cdac_calibration_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "debounce_latch",
+      "task_form": "bugfix",
+      "task_id": "vbm1_debounce_latch_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "debounce_latch",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_debounce_latch_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "debounce_latch",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_debounce_latch_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "debounce_latch",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_debounce_latch_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "edge_detector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_edge_detector_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "edge_detector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_edge_detector_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "edge_detector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_edge_detector_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "edge_detector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_edge_detector_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "element_shuffler",
+      "task_form": "bugfix",
+      "task_id": "vbm1_element_shuffler_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "element_shuffler",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_element_shuffler_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "element_shuffler",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_element_shuffler_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "element_shuffler",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_element_shuffler_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "bugfix",
+      "task_id": "vbm1_file_metric_writer_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_file_metric_writer_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_file_metric_writer_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_file_metric_writer_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "gain_trim_controller",
+      "task_form": "bugfix",
+      "task_id": "vbm1_gain_trim_controller_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "gain_trim_controller",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_gain_trim_controller_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "gain_trim_controller",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_gain_trim_controller_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "gain_trim_controller",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_gain_trim_controller_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "bugfix",
+      "task_id": "vbm1_leaky_hold_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_leaky_hold_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_leaky_hold_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_leaky_hold_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "lock_detector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_lock_detector_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "lock_detector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_lock_detector_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "lock_detector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_lock_detector_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "lock_detector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_lock_detector_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_calibration_fsm",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_calibration_fsm_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_calibration_fsm",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_calibration_fsm_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_calibration_fsm",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_calibration_fsm_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_calibration_fsm",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_calibration_fsm_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_comparator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_comparator_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_comparator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_comparator_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_comparator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_comparator_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "offset_comparator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_comparator_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "one_shot_timer",
+      "task_form": "bugfix",
+      "task_id": "vbm1_one_shot_timer_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "one_shot_timer",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_one_shot_timer_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "one_shot_timer",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_one_shot_timer_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "one_shot_timer",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_one_shot_timer_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "pfd_reset_race",
+      "task_form": "bugfix",
+      "task_id": "vbm1_pfd_reset_race_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "pfd_reset_race",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_pfd_reset_race_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "pfd_reset_race",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_pfd_reset_race_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "pfd_reset_race",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_pfd_reset_race_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_counter_divider_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_counter_divider_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_counter_divider_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_counter_divider_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_integrator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_integrator_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_integrator",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_integrator_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_integrator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_integrator_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "resettable_integrator",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_integrator_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "rotating_element_selector",
+      "task_form": "bugfix",
+      "task_id": "vbm1_rotating_element_selector_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "rotating_element_selector",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_rotating_element_selector_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "rotating_element_selector",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_rotating_element_selector_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "rotating_element_selector",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_rotating_element_selector_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "bugfix",
+      "task_id": "vbm1_sar_logic_4b_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_sar_logic_4b_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_sar_logic_4b_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_sar_logic_4b_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "strongarm_comparator_behavior",
+      "task_form": "bugfix",
+      "task_id": "vbm1_strongarm_comparator_behavior_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "strongarm_comparator_behavior",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_strongarm_comparator_behavior_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "strongarm_comparator_behavior",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_strongarm_comparator_behavior_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "strongarm_comparator_behavior",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_strongarm_comparator_behavior_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "thermometer_dac",
+      "task_form": "bugfix",
+      "task_id": "vbm1_thermometer_dac_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "thermometer_dac",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_thermometer_dac_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "thermometer_dac",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_thermometer_dac_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "thermometer_dac",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_thermometer_dac_tb"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "bugfix",
+      "task_id": "vbm1_track_hold_aperture_bugfix"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_track_hold_aperture_dut"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_track_hold_aperture_e2e"
+    },
+    {
+      "forced": false,
+      "matched_features": [
+        "uses_cross"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_track_hold_aperture_tb"
+    }
+  ],
+  "unknown_change_types": []
+}

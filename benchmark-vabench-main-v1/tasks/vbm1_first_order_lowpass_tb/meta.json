@@ -1,0 +1,36 @@
+{
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "filter",
+  "circuit_function_id": "first_order_lowpass",
+  "core_function": "continuous dynamics",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "tb-generation",
+  "gold": {
+    "dut": "gold/dut.va",
+    "tb": "gold/tb_ref.scs"
+  },
+  "pack_id": "first_order_lowpass",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "benchmark-v2 external architecture representative",
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "balanced_supplement_v1",
+  "source_seed_task_id": "balanced_analog_limiter_tb",
+  "source_task": "v2_ext_limiter_model_000",
+  "source_task_form": "tb-generation",
+  "source_task_id": "first_order_lowpass",
+  "task_form": "tb-generation",
+  "task_id": "vbm1_first_order_lowpass_tb",
+  "v2_checker_spec": {
+    "kind": "limiter",
+    "vin": "raw_level",
+    "vout": "limited_level"
+  }
+}

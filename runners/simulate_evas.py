@@ -4177,6 +4177,96 @@ def parse_evas_log_diagnostics(text: str, *, limit: int = 8) -> list[str]:
     return diagnostics
 
 
+def classify_evas_failure_diagnostics(text: str, notes: list[str] | None = None) -> dict[str, object]:
+    """Map EVAS log/runtime failures to Spectre-aligned diagnostic buckets.
+
+    EVAS can fail after it has printed "Compiled Verilog-A module" and even
+    started transient setup.  Some of those failures are still source-level
+    incompatibilities from Spectre's point of view, e.g. an unsupported
+    ``$abstime_step`` symbol.  This classifier keeps the raw log evidence while
+    making the reported axis/status useful for compile-vs-behavior analysis.
+    """
+    joined = "\n".join([text, *(notes or [])]).lower()
+
+    if "$abstime_step" in joined or "keyerror: 'abstime'" in joined or 'keyerror: "$abstime' in joined:
+        return {
+            "stage": "source_unsupported_symbol",
+            "origin": "dut_source",
+            "reason": "unsupported_or_nonstandard_symbol",
+            "axis": "dut_compile",
+            "confidence": 0.95,
+            "spectre_alignment": "spectre_ahdl_compile_error",
+        }
+
+    if "transition() contribution is inside" in joined or "conditional_transition" in joined:
+        return {
+            "stage": "source_semantics_preflight",
+            "origin": "dut_source",
+            "reason": "conditional_transition_semantics",
+            "axis": "dut_compile",
+            "confidence": 0.95,
+            "spectre_alignment": "spectre_incompatible_veriloga",
+        }
+
+    if "pwl wave must contain" in joined or "uncontinued_multiline_source" in joined or "unsupported_tb_directives" in joined:
+        return {
+            "stage": "tb_source_parse",
+            "origin": "testbench_source",
+            "reason": "tb_source_or_netlist_parse",
+            "axis": "tb_compile",
+            "confidence": 0.92,
+            "spectre_alignment": "spectre_netlist_read_error",
+        }
+
+    if "sourced_port_voltage_drive" in joined:
+        return {
+            "stage": "interface_preflight",
+            "origin": "interface_contract",
+            "reason": "interface_source_drive",
+            "axis": "tb_compile",
+            "confidence": 0.95,
+            "spectre_alignment": "spectre_topology_or_interface_error",
+        }
+
+    if "failed to compile verilog-a file" in joined or "dut_not_compiled" in joined:
+        return {
+            "stage": "compile_or_elaboration",
+            "origin": "dut_source",
+            "reason": "dut_compile_or_elaboration_failure",
+            "axis": "dut_compile",
+            "confidence": 0.85,
+            "spectre_alignment": "spectre_ahdl_compile_error",
+        }
+
+    if "invalid source" in joined or "tb_not_executed" in joined:
+        return {
+            "stage": "tb_compile_or_elaboration",
+            "origin": "testbench_source",
+            "reason": "tb_compile_or_elaboration_failure",
+            "axis": "tb_compile",
+            "confidence": 0.8,
+            "spectre_alignment": "spectre_netlist_read_error",
+        }
+
+    return {}
+
+
+def apply_evas_failure_diagnostics(scores: dict[str, float], diagnostic: dict[str, object]) -> dict[str, float]:
+    """Return scores refined by an EVAS diagnostic bucket."""
+    if not diagnostic:
+        return scores
+    refined = dict(scores)
+    axis = diagnostic.get("axis")
+    if axis == "dut_compile":
+        refined["dut_compile"] = 0.0
+        refined["tb_compile"] = 0.0
+        refined["sim_correct"] = 0.0
+    elif axis == "tb_compile":
+        refined["tb_compile"] = 0.0
+        refined["sim_correct"] = 0.0
+    return refined
+
+
 def run_case(
     task_dir: Path,
     dut_path: Path,
@@ -4240,6 +4330,19 @@ def run_case(
         if tb_compile == 0.0:
             notes.append("tb_not_executed")
 
+        evas_diagnostic = classify_evas_failure_diagnostics(combined, notes) if proc.returncode != 0 else {}
+        if evas_diagnostic:
+            notes.append(f"evas_failure_stage={evas_diagnostic['stage']}")
+            notes.append(f"evas_failure_origin={evas_diagnostic['origin']}")
+            notes.append(f"evas_failure_reason={evas_diagnostic['reason']}")
+            notes.append(f"evas_spectre_alignment={evas_diagnostic['spectre_alignment']}")
+            refined_scores = apply_evas_failure_diagnostics(
+                {"dut_compile": dut_compile, "tb_compile": tb_compile, "sim_correct": 0.0},
+                evas_diagnostic,
+            )
+            dut_compile = refined_scores["dut_compile"]
+            tb_compile = refined_scores["tb_compile"]
+
         csv_path = out_dir / "tran.csv"
         if "sim_correct" in scoring and proc.returncode == 0 and csv_path.exists():
             sim_correct, behavior_notes = evaluate_behavior_with_timeout(
@@ -4294,6 +4397,7 @@ def run_case(
                 str(out_dir / "strobe.txt"),
             ],
             "notes": notes,
+            "evas_failure_diagnostic": evas_diagnostic,
             "timing": parse_evas_timing(combined),
             "stdout_tail": combined[-4000:],
         }

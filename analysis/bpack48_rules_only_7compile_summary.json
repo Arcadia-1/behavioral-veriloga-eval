@@ -1,0 +1,113 @@
+{
+  "total_tasks": 7,
+  "backend": "evas",
+  "source": "candidate",
+  "candidate_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/generated-bpack48__mimo-v25-pro__strict-evas__rules-only-mt8192__20260508",
+  "model": "mimo-v2.5-pro",
+  "evas": {
+    "model": "bpack-v1-gold-evas",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "total_tasks": 48,
+    "pass_at_1": 0.3333,
+    "pass_count": 16,
+    "by_family": {
+      "bpack-v1": 0.3333
+    },
+    "axis_rates": {
+      "dut_compile": 0.8043,
+      "tb_compile": 0.7708,
+      "sim_correct": 0.3261
+    },
+    "failure_taxonomy": {
+      "FAIL_TB_COMPILE": 11,
+      "FAIL_SIM_CORRECTNESS": 12,
+      "FAIL_DUT_COMPILE": 9
+    },
+    "failure_domain_taxonomy": {
+      "pass": 16,
+      "validation": 20,
+      "functional": 12
+    },
+    "repair_owner_taxonomy": {
+      "none": 16,
+      "candidate_or_harness_interface": 11,
+      "dut_behavior_or_testbench_behavior": 12,
+      "llm_candidate_syntax": 9
+    },
+    "status": "MODEL_EVALUATED",
+    "backend": "evas",
+    "pass_tasks": [],
+    "fail_tasks": [
+      {
+        "task_id": "bpack_analog_limiter_dut",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_analog_limiter:limited_level->vdd"
+        ]
+      },
+      {
+        "task_id": "bpack_hysteresis_comparator_tb",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "gold_dut_include=cmp_hysteresis.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vvinp: Vvinp: PWL wave must contain at least one time/value pair",
+          "tran.csv missing"
+        ]
+      },
+      {
+        "task_id": "bpack_prbs7_lfsr_e2e",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:11",
+          "generated_include=prbs7_ref.va",
+          "generated_dut_alias=prbs7_ref.va->prbs7.va",
+          "spectre_strict:undefined_module=prbs7;available_modules=prbs7_ref"
+        ]
+      },
+      {
+        "task_id": "bpack_pulse_stretcher_dut",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_pulse_stretcher:stretched_pulse->vdd",
+          "spectre_strict:conditional_transition=dut.va"
+        ]
+      },
+      {
+        "task_id": "bpack_sample_hold_tb",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "gold_dut_include=sample_hold_step_ref.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vin: Vin: PWL wave must contain at least one time/value pair",
+          "sim_correct_not_required"
+        ]
+      },
+      {
+        "task_id": "bpack_threshold_detector_tb",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=14:XDUT:balanced_threshold_detector:decision_level->vss"
+        ]
+      },
+      {
+        "task_id": "bpack_window_detector_tb",
+        "status": "FAIL_TB_COMPILE",
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:4",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=27:XDUT:balanced_window_detector:below_window->vdd,27:XDUT:balanced_window_detector:above_window->vss"
+        ]
+      }
+    ]
+  }
+}

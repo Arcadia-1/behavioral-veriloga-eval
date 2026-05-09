@@ -33,6 +33,7 @@ _INSTANCE_RE = re.compile(
     re.IGNORECASE,
 )
 _WAVE_RE = re.compile(r"wave\s*=\s*\[(?P<body>[^\]]+)\]", re.IGNORECASE)
+_PWL_SOURCE_LINE_RE = re.compile(r"^(?P<prefix>\s*\S+\s*\([^)]*\)\s+vsource\b(?P<attrs>.*?\btype\s*=\s*pwl\b)(?P<tail>.*))$", re.IGNORECASE)
 _TRANSITION_RE = re.compile(
     r"(?P<indent>[ \t]*)V\s*\(\s*(?P<dest>[^)]+?)\s*\)\s*<\+\s*"
     r"transition\s*\((?P<args>.*?)\)\s*;",
@@ -52,6 +53,7 @@ _SOURCED_PORT_RE = re.compile(
     r"->(?P<node>[^|\s]+)",
     re.IGNORECASE,
 )
+_VERILOG_BINARY_LITERAL_RE = re.compile(r"(?P<width>\d+)'[bB](?P<bits>[01_]+)")
 
 _TIME_SCALE = {
     "fs": 1e-15,
@@ -102,6 +104,16 @@ def _module_names(text: str) -> list[str]:
     return [match.group("name") for match in _MODULE_RE.finditer(text)]
 
 
+def _find_module_block(source: str, module_name: str) -> tuple[int, int] | None:
+    match = re.search(rf"\bmodule\s+{re.escape(module_name)}\s*\(", source)
+    if not match:
+        return None
+    end_match = re.search(r"\bendmodule\b", source[match.end() :])
+    if not end_match:
+        return None
+    return match.start(), match.end() + end_match.end()
+
+
 def _clean_port_token(token: str) -> str:
     cleaned = re.sub(r"//.*", " ", token)
     cleaned = re.sub(r"/\*.*?\*/", " ", cleaned, flags=re.DOTALL)
@@ -148,6 +160,75 @@ def _apply_module_name_guard(sample_dir: Path, notes: list[str] | None) -> list[
         if updated != source:
             va_path.write_text(updated, encoding="utf-8")
             edits.append(f"module_name:{va_path.name}:{actual}->{needed}")
+    return edits
+
+
+def _apply_module_alias_duplicate_guard(sample_dir: Path, notes: list[str] | None) -> list[str]:
+    text = _notes_text(notes)
+    match = re.search(r"undefined_module=([^;|\s]+);available_modules=([^|\s]+)", text)
+    if not match:
+        return []
+    missing = [item for item in match.group(1).split(",") if item and item != "<none>"]
+    available = [item for item in match.group(2).split(",") if item and item != "<none>"]
+    if len(missing) != 1 or len(available) != 1:
+        return []
+
+    needed = missing[0]
+    actual = available[0]
+    tb_text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in sorted(sample_dir.glob("*.scs")))
+    # If the harness still references the available module, renaming it would
+    # create a new undefined-module failure.  Duplicate the public module under
+    # the missing name instead.
+    if not re.search(rf"\)\s*{re.escape(actual)}\b", tb_text):
+        return []
+
+    edits: list[str] = []
+    for va_path in sorted(sample_dir.glob("*.va")):
+        source = va_path.read_text(encoding="utf-8", errors="ignore")
+        names = _module_names(source)
+        if actual not in names or needed in names:
+            continue
+        block_span = _find_module_block(source, actual)
+        if not block_span:
+            continue
+        block = source[block_span[0] : block_span[1]]
+        alias_block = re.sub(
+            rf"\bmodule\s+{re.escape(actual)}\s*\(",
+            f"module {needed} (",
+            block,
+            count=1,
+        )
+        if alias_block == block:
+            continue
+        updated = source.rstrip() + "\n\n// Compile-skill alias for public harness linkage.\n" + alias_block + "\n"
+        va_path.write_text(updated, encoding="utf-8")
+        edits.append(f"module_alias_duplicate:{va_path.name}:{actual}->{needed}")
+        edits.extend(_apply_verilog_binary_literal_guard(sample_dir, notes))
+    return edits
+
+
+def _apply_verilog_binary_literal_guard(sample_dir: Path, notes: list[str] | None) -> list[str]:
+    text = _notes_text(notes).lower()
+    if "got ident ('b" not in text and "module_alias_duplicate" not in text and not any(
+        _VERILOG_BINARY_LITERAL_RE.search(path.read_text(encoding="utf-8", errors="ignore"))
+        for path in sample_dir.glob("*.va")
+    ):
+        return []
+    edits: list[str] = []
+    for va_path in sorted(sample_dir.glob("*.va")):
+        source = va_path.read_text(encoding="utf-8", errors="ignore")
+        changed = 0
+
+        def replace(match: re.Match[str]) -> str:
+            nonlocal changed
+            bits = match.group("bits").replace("_", "")
+            changed += 1
+            return str(int(bits, 2))
+
+        updated = _VERILOG_BINARY_LITERAL_RE.sub(replace, source)
+        if changed:
+            va_path.write_text(updated, encoding="utf-8")
+            edits.append(f"verilog_binary_literal_decimal:{va_path.name}:count={changed}")
     return edits
 
 
@@ -238,6 +319,61 @@ def _apply_pwl_monotonic_guard(sample_dir: Path, notes: list[str] | None) -> lis
         if changed_count:
             tb_path.write_text(updated, encoding="utf-8")
             edits.append(f"pwl_strictly_increasing:{tb_path.name}:waves={changed_count}")
+    return edits
+
+
+def _continuation_time_value_tokens(lines: list[str], start_idx: int) -> tuple[list[str], int]:
+    tokens: list[str] = []
+    idx = start_idx + 1
+    while idx < len(lines):
+        stripped = lines[idx].strip()
+        if not stripped:
+            break
+        if not stripped.startswith("+"):
+            break
+        payload = stripped[1:].strip()
+        if not payload:
+            break
+        parts = payload.split()
+        if len(parts) < 2:
+            break
+        # Accept only plain continuation rows that start with time/value data.
+        if _parse_time_seconds(parts[0]) is None:
+            break
+        tokens.extend(parts[:2])
+        idx += 1
+    return tokens, idx
+
+
+def _apply_pwl_inline_wave_guard(sample_dir: Path, notes: list[str] | None) -> list[str]:
+    text = _notes_text(notes).lower()
+    if "pwl wave must contain at least one time/value pair" not in text:
+        return []
+    edits: list[str] = []
+    for tb_path in sorted(sample_dir.glob("*.scs")):
+        lines = tb_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        new_lines: list[str] = []
+        idx = 0
+        changed = 0
+        while idx < len(lines):
+            line = lines[idx]
+            match = _PWL_SOURCE_LINE_RE.match(line)
+            if not match or "wave" in line.lower():
+                new_lines.append(line)
+                idx += 1
+                continue
+            tokens, next_idx = _continuation_time_value_tokens(lines, idx)
+            if len(tokens) < 4 or len(tokens) % 2:
+                new_lines.append(line)
+                idx += 1
+                continue
+            fixed_body, _ = _fix_pwl_body(" ".join(tokens))
+            new_lines.append(f"{match.group('prefix')} wave=[ {fixed_body} ]")
+            changed += 1
+            idx = next_idx
+        if changed:
+            tb_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+            edits.append(f"pwl_inline_wave_vector:{tb_path.name}:sources={changed}")
     return edits
 
 
@@ -577,12 +713,18 @@ def _apply_transition_target_guard(sample_dir: Path, notes: list[str] | None) ->
 
 
 def _apply_fixer_action(sample_dir: Path, *, fixer: str, notes: list[str] | None) -> list[str]:
+    if fixer == "module_alias_duplicate":
+        return _apply_module_alias_duplicate_guard(sample_dir, notes)
+    if fixer == "verilog_binary_literal_decimal":
+        return _apply_verilog_binary_literal_guard(sample_dir, notes)
     if fixer == "module_name":
         return _apply_module_name_guard(sample_dir, notes)
     if fixer == "parameter_default_range":
         return _apply_parameter_range_guard(sample_dir, notes)
     if fixer == "pwl_monotonic_time":
         return _apply_pwl_monotonic_guard(sample_dir, notes)
+    if fixer == "pwl_inline_wave_vector":
+        return _apply_pwl_inline_wave_guard(sample_dir, notes)
     if fixer == "instance_parameter_keyword":
         return _apply_instance_parameter_keyword_guard(sample_dir, notes)
     if fixer == "module_header_backslash":
@@ -607,16 +749,19 @@ def apply_compile_skill_actions(sample_dir: Path, *, notes: list[str] | None = N
     # linkage/syntax normalizations first, structural vector materialization
     # next, transition target-buffering last.
     fixer_order = {
-        "module_name": 0,
-        "parameter_default_range": 1,
-        "pwl_monotonic_time": 2,
-        "instance_parameter_keyword": 3,
-        "module_header_backslash": 4,
-        "missing_testbench_skeleton": 5,
-        "sourced_port_role_repair": 6,
-        "dynamic_scatter_materialization": 7,
-        "vector_unroll": 8,
-        "transition_target_buffer": 9,
+        "module_alias_duplicate": 0,
+        "verilog_binary_literal_decimal": 1,
+        "module_name": 2,
+        "parameter_default_range": 3,
+        "pwl_inline_wave_vector": 4,
+        "pwl_monotonic_time": 5,
+        "instance_parameter_keyword": 6,
+        "module_header_backslash": 7,
+        "missing_testbench_skeleton": 8,
+        "sourced_port_role_repair": 9,
+        "dynamic_scatter_materialization": 10,
+        "vector_unroll": 11,
+        "transition_target_buffer": 12,
         None: 99,
     }
     selected = sorted(selected, key=lambda skill: (fixer_order.get(skill.fixer, 50), skill.id))

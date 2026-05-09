@@ -1,0 +1,266 @@
+{
+  "date": "2026-05-08",
+  "decision": "vaBench-main-v1 uses 30 packs x 4 forms = 120 tasks; vaBench-heldout-v1 uses 12 packs x 4 forms = 48 tasks",
+  "heldout_packs": [
+    {
+      "mechanism_family": "data conversion",
+      "pack_id": "folding_adc_encoder",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "pwm_modulator",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "calibration/control",
+      "pack_id": "phase_frequency_lock_monitor",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "threshold/state",
+      "pack_id": "adaptive_threshold_tracker",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "continuous dynamics/measurement",
+      "pack_id": "windowed_rms_detector",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "mixed-signal analog control",
+      "pack_id": "charge_pump_behavior",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "data conversion/dynamics",
+      "pack_id": "sigma_delta_modulator_1st",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "glitch_filter",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "phase/mixed-signal",
+      "pack_id": "quadrature_phase_detector",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "mixed-signal protocol",
+      "pack_id": "sample_rate_converter_stub",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "source/modeling",
+      "pack_id": "temperature_sensor_lut",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    },
+    {
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "noise_source_stat_tb",
+      "planned_tasks": 4,
+      "split": "vaBench-heldout-v1"
+    }
+  ],
+  "main_packs": [
+    {
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "offset_comparator",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "strongarm_comparator_behavior",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "voltage_clamp",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "threshold/static nonlinear",
+      "pack_id": "precision_rectifier",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "peak_detector",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "track_hold_aperture",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "debounce_latch",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "stateful analog memory",
+      "pack_id": "leaky_hold",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "edge_detector",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "one_shot_timer",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "resettable_counter_divider",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "event/timing",
+      "pack_id": "pfd_reset_race",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "data conversion",
+      "pack_id": "thermometer_dac",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "data conversion",
+      "pack_id": "segmented_dac",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "data conversion",
+      "pack_id": "sar_logic_4b",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "data conversion/calibration",
+      "pack_id": "cdac_calibration",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "calibration/control",
+      "pack_id": "offset_calibration_fsm",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "calibration/control",
+      "pack_id": "gain_trim_controller",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "calibration/control",
+      "pack_id": "lock_detector",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "calibration/control",
+      "pack_id": "background_calibration_accumulator",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "pointer/selection",
+      "pack_id": "rotating_element_selector",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "pointer/selection",
+      "pack_id": "barrel_pointer_window",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "pointer/selection",
+      "pack_id": "element_shuffler",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "pointer/selection",
+      "pack_id": "thermometer_decoder_guarded",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "first_order_lowpass",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "resettable_integrator",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "continuous dynamics",
+      "pack_id": "slew_rate_limiter",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "continuous dynamics/pll",
+      "pack_id": "vco_phase_integrator",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "settling_time_measurement_tb",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    },
+    {
+      "mechanism_family": "source/measurement/TB",
+      "pack_id": "file_metric_writer",
+      "planned_tasks": 4,
+      "split": "vaBench-main-v1"
+    }
+  ],
+  "task_forms": [
+    "bugfix",
+    "spec-to-va",
+    "end-to-end",
+    "tb-generation"
+  ]
+}

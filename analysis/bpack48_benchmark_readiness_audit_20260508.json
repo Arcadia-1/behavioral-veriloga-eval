@@ -1,0 +1,798 @@
+{
+  "benchmark": "benchmark-bpack-v1",
+  "date": "2026-05-08",
+  "form_counts": {
+    "bugfix": 12,
+    "end-to-end": 12,
+    "spec-to-va": 12,
+    "tb-generation": 12
+  },
+  "gold_validation_evidence": {
+    "spectre": "48/48 per docs/BPACK_V1_FREEZE_CANDIDATE_REPORT.md",
+    "spectre_result_root": "results/bpack-v1-gold-spectre-2026-05-08-han-full/",
+    "strict_evas": "48/48 per docs/BPACK_V1_FREEZE_CANDIDATE_REPORT.md",
+    "strict_evas_result_root": "results/bpack-v1-gold-evas-2026-05-07-freeze-candidate/"
+  },
+  "missing_artifacts": [],
+  "pack_count": 12,
+  "pack_form_gaps": {},
+  "task_count": 48,
+  "tasks": [
+    {
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "threshold_detector",
+      "task_form": "bugfix",
+      "task_id": "bpack_threshold_detector_bugfix"
+    },
+    {
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "threshold_detector",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_threshold_detector_dut"
+    },
+    {
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "threshold_detector",
+      "task_form": "end-to-end",
+      "task_id": "bpack_threshold_detector_e2e"
+    },
+    {
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "threshold_detector",
+      "task_form": "tb-generation",
+      "task_id": "bpack_threshold_detector_tb"
+    },
+    {
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "window_detector",
+      "task_form": "bugfix",
+      "task_id": "bpack_window_detector_bugfix"
+    },
+    {
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "window_detector",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_window_detector_dut"
+    },
+    {
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "window_detector",
+      "task_form": "end-to-end",
+      "task_id": "bpack_window_detector_e2e"
+    },
+    {
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "window_detector",
+      "task_form": "tb-generation",
+      "task_id": "bpack_window_detector_tb"
+    },
+    {
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "analog_limiter",
+      "task_form": "bugfix",
+      "task_id": "bpack_analog_limiter_bugfix"
+    },
+    {
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "analog_limiter",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_analog_limiter_dut"
+    },
+    {
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "analog_limiter",
+      "task_form": "end-to-end",
+      "task_id": "bpack_analog_limiter_e2e"
+    },
+    {
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "analog_limiter",
+      "task_form": "tb-generation",
+      "task_id": "bpack_analog_limiter_tb"
+    },
+    {
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pulse_stretcher",
+      "task_form": "bugfix",
+      "task_id": "bpack_pulse_stretcher_bugfix"
+    },
+    {
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pulse_stretcher",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_pulse_stretcher_dut"
+    },
+    {
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pulse_stretcher",
+      "task_form": "end-to-end",
+      "task_id": "bpack_pulse_stretcher_e2e"
+    },
+    {
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut.va",
+        "gold/tb_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pulse_stretcher",
+      "task_form": "tb-generation",
+      "task_id": "bpack_pulse_stretcher_tb"
+    },
+    {
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut_fixed.va",
+        "gold/tb_wrong_edge_sample_hold_bug.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "sample_hold",
+      "task_form": "bugfix",
+      "task_id": "bpack_sample_hold_bugfix"
+    },
+    {
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/sample_hold.va",
+        "gold/tb_sample_hold_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "sample_hold",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_sample_hold_dut"
+    },
+    {
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/sample_hold.va",
+        "gold/tb_sample_hold_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "sample_hold",
+      "task_form": "end-to-end",
+      "task_id": "bpack_sample_hold_e2e"
+    },
+    {
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/sample_hold_step_ref.va",
+        "gold/tb_sample_hold_step_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "sample_hold",
+      "task_form": "tb-generation",
+      "task_id": "bpack_sample_hold_tb"
+    },
+    {
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dut_fixed.va",
+        "gold/tb_swapped_pfd_outputs_bug.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pfd_updn",
+      "task_form": "bugfix",
+      "task_id": "bpack_pfd_updn_bugfix"
+    },
+    {
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/pfd_updn.va",
+        "gold/tb_pfd_updn_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pfd_updn",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_pfd_updn_dut"
+    },
+    {
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/pfd_updn.va",
+        "gold/tb_pfd_updn_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pfd_updn",
+      "task_form": "end-to-end",
+      "task_id": "bpack_pfd_updn_e2e"
+    },
+    {
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/pfd_updn.va",
+        "gold/tb_pfd_updn_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "pfd_updn",
+      "task_form": "tb-generation",
+      "task_id": "bpack_pfd_updn_tb"
+    },
+    {
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dac_binary_clk_4b.va",
+        "gold/tb_dac_binary_clk_4b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "binary_dac_4b",
+      "task_form": "bugfix",
+      "task_id": "bpack_binary_dac_4b_bugfix"
+    },
+    {
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dac_binary_clk_4b.va",
+        "gold/tb_dac_binary_clk_4b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "binary_dac_4b",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_binary_dac_4b_dut"
+    },
+    {
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dac_binary_clk_4b.va",
+        "gold/tb_dac_binary_clk_4b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "binary_dac_4b",
+      "task_form": "end-to-end",
+      "task_id": "bpack_binary_dac_4b_e2e"
+    },
+    {
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/dac_ramp_ref.va",
+        "gold/tb_dac_ramp_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "binary_dac_4b",
+      "task_form": "tb-generation",
+      "task_id": "bpack_binary_dac_4b_tb"
+    },
+    {
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/clk_div.va",
+        "gold/tb_clk_div_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "clock_divider",
+      "task_form": "bugfix",
+      "task_id": "bpack_clock_divider_bugfix"
+    },
+    {
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/clk_div.va",
+        "gold/tb_clk_div_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "clock_divider",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_clock_divider_dut"
+    },
+    {
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/clk_div.va",
+        "gold/tb_clk_div_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "clock_divider",
+      "task_form": "end-to-end",
+      "task_id": "bpack_clock_divider_e2e"
+    },
+    {
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/clk_div.va",
+        "gold/tb_clk_div_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "clock_divider",
+      "task_form": "tb-generation",
+      "task_id": "bpack_clock_divider_tb"
+    },
+    {
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/cmp_hysteresis.va",
+        "gold/tb_cmp_hysteresis_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "hysteresis_comparator",
+      "task_form": "bugfix",
+      "task_id": "bpack_hysteresis_comparator_bugfix"
+    },
+    {
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/cmp_hysteresis.va",
+        "gold/tb_cmp_hysteresis_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "hysteresis_comparator",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_hysteresis_comparator_dut"
+    },
+    {
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/cmp_hysteresis.va",
+        "gold/tb_cmp_hysteresis_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "hysteresis_comparator",
+      "task_form": "end-to-end",
+      "task_id": "bpack_hysteresis_comparator_e2e"
+    },
+    {
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/cmp_hysteresis.va",
+        "gold/tb_cmp_hysteresis_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "hysteresis_comparator",
+      "task_form": "tb-generation",
+      "task_id": "bpack_hysteresis_comparator_tb"
+    },
+    {
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/flash_adc_3b.va",
+        "gold/tb_flash_adc_3b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "flash_adc_3b",
+      "task_form": "bugfix",
+      "task_id": "bpack_flash_adc_3b_bugfix"
+    },
+    {
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/flash_adc_3b.va",
+        "gold/tb_flash_adc_3b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "flash_adc_3b",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_flash_adc_3b_dut"
+    },
+    {
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/flash_adc_3b.va",
+        "gold/tb_flash_adc_3b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "flash_adc_3b",
+      "task_form": "end-to-end",
+      "task_id": "bpack_flash_adc_3b_e2e"
+    },
+    {
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_file_count": 2,
+      "gold_files": [
+        "gold/flash_adc_3b.va",
+        "gold/tb_flash_adc_3b_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "flash_adc_3b",
+      "task_form": "tb-generation",
+      "task_id": "bpack_flash_adc_3b_tb"
+    },
+    {
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/dwa_ptr_gen.va",
+        "gold/tb_dwa_ptr_gen_ref.scs",
+        "gold/v2b_4b.va"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "dwa_pointer",
+      "task_form": "bugfix",
+      "task_id": "bpack_dwa_pointer_bugfix"
+    },
+    {
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/dwa_ptr_gen.va",
+        "gold/tb_dwa_ptr_gen_ref.scs",
+        "gold/v2b_4b.va"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "dwa_pointer",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_dwa_pointer_dut"
+    },
+    {
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/dwa_ptr_gen.va",
+        "gold/tb_dwa_ptr_gen_ref.scs",
+        "gold/v2b_4b.va"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "dwa_pointer",
+      "task_form": "end-to-end",
+      "task_id": "bpack_dwa_pointer_e2e"
+    },
+    {
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/dwa_ptr_gen.va",
+        "gold/tb_dwa_ptr_gen_ref.scs",
+        "gold/v2b_4b.va"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "dwa_pointer",
+      "task_form": "tb-generation",
+      "task_id": "bpack_dwa_pointer_tb"
+    },
+    {
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/prbs7.va",
+        "gold/prbs7_ref.va",
+        "gold/tb_prbs7_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "prbs7_lfsr",
+      "task_form": "bugfix",
+      "task_id": "bpack_prbs7_lfsr_bugfix"
+    },
+    {
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/prbs7.va",
+        "gold/prbs7_ref.va",
+        "gold/tb_prbs7_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "prbs7_lfsr",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_prbs7_lfsr_dut"
+    },
+    {
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/prbs7.va",
+        "gold/prbs7_ref.va",
+        "gold/tb_prbs7_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "prbs7_lfsr",
+      "task_form": "end-to-end",
+      "task_id": "bpack_prbs7_lfsr_e2e"
+    },
+    {
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_file_count": 3,
+      "gold_files": [
+        "gold/prbs7.va",
+        "gold/prbs7_ref.va",
+        "gold/tb_prbs7_ref.scs"
+      ],
+      "has_checker": true,
+      "has_checks_yaml": true,
+      "has_meta": true,
+      "has_prompt": true,
+      "pack_id": "prbs7_lfsr",
+      "task_form": "tb-generation",
+      "task_id": "bpack_prbs7_lfsr_tb"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    "dut.va",
+    "tb_ramp_gen.scs",
+    "tran.csv"
+  ],
+  "balanced_role": "taskform_completion_for_original92_core",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "integrator",
+  "circuit_function_id": "resettable_integrator",
+  "completion_method": "source_gold_recontextualized_as_missing_task_form",
+  "completion_target_form": "bugfix",
+  "core_function": "continuous dynamics",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "id": "ramp_gen_smoke",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "transition(",
+    "@(cross("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "pack_id": "resettable_integrator",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92_taskform_completion_v1",
+  "source_family": "end-to-end",
+  "source_relative_path": "tasks/end-to-end/voltage/ramp_gen_smoke",
+  "source_seed_task_id": "completion92_signal_source_bugfix",
+  "source_task_form": "bugfix",
+  "source_task_id": "resettable_integrator",
+  "task_form": "bugfix",
+  "task_id": "vbm1_resettable_integrator_bugfix"
+}

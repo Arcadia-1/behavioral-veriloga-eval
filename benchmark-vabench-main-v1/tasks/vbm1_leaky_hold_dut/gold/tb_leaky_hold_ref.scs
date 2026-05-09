@@ -1,0 +1,12 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "leaky_hold.va"
+
+Vsample (sample 0) vsource type=pulse val0=0 val1=0.9 delay=20n rise=200p fall=200p width=5n period=200n
+Vrst (rst 0) vsource type=pwl wave=[0 0 110n 0 111n 0.9 130n 0.9 131n 0 170n 0]
+
+XDUT (sample rst vout) leaky_hold
+
+tran tran stop=170n maxstep=500p
+save sample rst vout

@@ -1,0 +1,71 @@
+{
+  "artifacts": [
+    "dut_buggy.va",
+    "dut_fixed.va",
+    "tb_strongarm_reset_priority_bug_ref.scs",
+    "tran.csv"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "comparator",
+  "checks": {
+    "dut_compile": "required",
+    "parity_required": true,
+    "sim_correct": "required",
+    "tb_compile": "required",
+    "tran_generated": "required"
+  },
+  "circuit_function_id": "strongarm_comparator_behavior",
+  "core_function": "threshold/static nonlinear",
+  "created_at": "2026-04-19",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "evidence": {
+    "notes": "Added on 2026-04-19 as a reset-priority comparator bugfix task; EVAS gold validation confirms reset holds both outputs low and post-reset comparator polarity is restored.",
+    "pr_link": "[TODO]",
+    "result_path": "behavioral-veriloga-eval/results/gold-suite-p1-bugfix-2026-04-19/strongarm_reset_priority_bug"
+  },
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "id": "strongarm_reset_priority_bug",
+  "inputs": [
+    "prompt.md",
+    "gold/dut_buggy.va"
+  ],
+  "must_include": [
+    "@(cross(",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt(",
+    "idt("
+  ],
+  "owner": "team",
+  "pack_id": "strongarm_comparator_behavior",
+  "pack_version": "v1",
+  "parity_policy": "default",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": {
+    "path": "behavioral-veriloga-eval/tasks/bugfix/voltage/strongarm_reset_priority_bug/gold",
+    "type": "benchmark-gold"
+  },
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "bugfix",
+  "source_relative_path": "tasks/bugfix/voltage/strongarm_reset_priority_bug",
+  "source_seed_task_id": "original92_strongarm_reset_priority_bug",
+  "source_task_form": "bugfix",
+  "source_task_id": "strongarm_reset_priority_bug",
+  "task_form": "bugfix",
+  "task_id": "vbm1_strongarm_comparator_behavior_bugfix",
+  "task_name": "StrongArm Reset Priority Bugfix",
+  "tier": "verified",
+  "verification_status": "passed"
+}

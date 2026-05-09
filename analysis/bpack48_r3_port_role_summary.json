@@ -1,0 +1,45 @@
+{
+  "evas": {
+    "fail_tasks": [
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_analog_limiter:limited_level->vdd"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_analog_limiter_dut"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_pulse_stretcher:stretched_pulse->vdd",
+          "spectre_strict:conditional_transition=dut.va"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_pulse_stretcher_dut"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=14:XDUT:balanced_threshold_detector:decision_level->vss"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_threshold_detector_tb"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:4",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=27:XDUT:balanced_window_detector:below_window->vdd,27:XDUT:balanced_window_detector:above_window->vss"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_window_detector_tb"
+      }
+    ]
+  },
+  "purpose": "R3 public port-role/order targeted compile-skill smoke",
+  "source": "results-bpack48__mimo-v25-pro__strict-evas__compile-skill-prompt-mt8192__20260508/summary.json"
+}

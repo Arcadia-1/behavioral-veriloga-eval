@@ -1,0 +1,108 @@
+{
+  "evas": {
+    "fail_tasks": [
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_analog_limiter:limited_level->vdd"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_analog_limiter_dut"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:5,inserted:1,signals:34",
+          "aux_include=dwa_ptr_gen.va",
+          "spectre_strict:instance_port_count_mismatch=17:IV2B:v2b_4b:nodes=6:ports=5",
+          "spectre_strict:sourced_port_voltage_drive=17:IV2B:v2b_4b:b3->vin_node"
+        ],
+        "status": "FAIL_DUT_COMPILE",
+        "task_id": "bpack_dwa_pointer_bugfix"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:5,inserted:1,signals:34",
+          "aux_include=dwa_ptr_gen.va",
+          "spectre_strict:instance_port_count_mismatch=17:IV2B:v2b_4b:nodes=6:ports=38",
+          "spectre_strict:modulo_array_index=v2b_4b.va:92:cell_en[(ptr+i)%16]"
+        ],
+        "status": "FAIL_DUT_COMPILE",
+        "task_id": "bpack_dwa_pointer_dut"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:9,inserted:1,signals:34",
+          "gold_dut_include=v2b_4b.va",
+          "gold_dut_include=dwa_ptr_gen.va",
+          "spectre_strict:instance_port_count_mismatch=107:Xconv:v2b_4b:nodes=7:ports=6,112:XDUT:dwa_ptr_gen:nodes=40:ports=38",
+          "spectre_strict:sourced_port_voltage_drive=107:Xconv:v2b_4b:out_3->code_msb_i1,107:Xconv:v2b_4b:out_2->code_msb_i0,107:Xconv:v2b_4b:out_0->vdd"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_dwa_pointer_tb"
+      },
+      {
+        "notes": [
+          "gold_dut_include=cmp_hysteresis.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vvinp: Vvinp: PWL wave must contain at least one time/value pair",
+          "tran.csv missing"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_hysteresis_comparator_tb"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:11",
+          "generated_include=prbs7_ref.va",
+          "generated_dut_alias=prbs7_ref.va->prbs7.va",
+          "spectre_strict:undefined_module=prbs7;available_modules=prbs7_ref"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_prbs7_lfsr_e2e"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "generated_dut_staged_as=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=10:XDUT:balanced_pulse_stretcher:stretched_pulse->vdd",
+          "spectre_strict:conditional_transition=dut.va"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_pulse_stretcher_dut"
+      },
+      {
+        "notes": [
+          "gold_dut_include=sample_hold_step_ref.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vin: Vin: PWL wave must contain at least one time/value pair",
+          "sim_correct_not_required"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_sample_hold_tb"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:2",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=14:XDUT:balanced_threshold_detector:decision_level->vss"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_threshold_detector_tb"
+      },
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:4",
+          "gold_dut_include=dut.va",
+          "spectre_strict:sourced_port_voltage_drive=27:XDUT:balanced_window_detector:below_window->vdd,27:XDUT:balanced_window_detector:above_window->vss"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_window_detector_tb"
+      }
+    ]
+  },
+  "purpose": "R1-R4 combined compile residual local skill smoke",
+  "source": "results-bpack48__mimo-v25-pro__strict-evas__compile-skill-prompt-mt8192__20260508/summary.json"
+}

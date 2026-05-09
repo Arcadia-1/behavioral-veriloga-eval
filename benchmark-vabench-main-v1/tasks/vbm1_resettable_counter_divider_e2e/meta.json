@@ -1,0 +1,50 @@
+{
+  "artifacts": [
+    "candidate.out"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "clock-divider",
+  "circuit_function_id": "resettable_counter_divider",
+  "core_function": "event/timing",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "expected_output_summary": "A .va file with programmable counter, toggle logic for 50% duty, sync reset, LOCK flag after first complete cycle.",
+  "family": "end-to-end",
+  "id": "clk_divider",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "electrical"
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "pack_id": "resettable_counter_divider",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_eval_id": 16,
+  "source_family": "spec-to-va",
+  "source_files": [
+    "gold/clk_divider_ref.va",
+    "gold/tb_clk_divider_ref.scs"
+  ],
+  "source_name": "eval-clk-divider",
+  "source_relative_path": "tasks/spec-to-va/voltage/digital-logic/clk_divider",
+  "source_seed_task_id": "original92_clk_divider",
+  "source_task_form": "dut-only/spec-to-va",
+  "source_task_id": "resettable_counter_divider",
+  "task_form": "end-to-end",
+  "task_id": "vbm1_resettable_counter_divider_e2e"
+}

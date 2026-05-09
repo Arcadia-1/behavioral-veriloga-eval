@@ -49,6 +49,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ALL_FAMILIES = ("end-to-end", "spec-to-va", "bugfix", "tb-generation")
 PUBLIC_SPECTRE_RULES_PATH = ROOT / "specs" / "spectre_veriloga_public_rules.md"
+PUBLIC_SPECTRE_RULES_COMPACT_PATH = ROOT / "specs" / "spectre_veriloga_public_rules_compact.md"
 LEGO_MECHANISM_SKILLS_PATH = ROOT / "docs" / "LEGO_MECHANISM_SKILLS.json"
 ENHANCEMENT_PAYLOAD_VERSIONS = {
     "none": "none",
@@ -71,10 +72,11 @@ def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
 
 
-def _load_public_spectre_rules() -> str:
-    if not PUBLIC_SPECTRE_RULES_PATH.exists():
+def _load_public_spectre_rules(*, compact: bool = False) -> str:
+    path = PUBLIC_SPECTRE_RULES_COMPACT_PATH if compact else PUBLIC_SPECTRE_RULES_PATH
+    if not path.exists():
         return ""
-    return PUBLIC_SPECTRE_RULES_PATH.read_text(encoding="utf-8").strip()
+    return path.read_text(encoding="utf-8").strip()
 
 
 def _load_json(path: Path) -> dict:
@@ -623,7 +625,8 @@ def build_prompt(
     family = meta.get("family", "end-to-end")
     task_id = meta.get("task_id") or meta.get("id") or task_dir.name
     use_extracted_contracts = public_spec_mode == "legacy-extracted"
-    use_public_spectre_rules = public_spec_mode == "spectre-strict-v3"
+    use_public_spectre_rules = public_spec_mode in {"spectre-strict-v3", "spectre-strict-v3-compact"}
+    use_compact_public_spectre_rules = public_spec_mode == "spectre-strict-v3-compact"
 
     # For bugfix tasks, append the buggy DUT source code
     if family == "bugfix":
@@ -742,7 +745,7 @@ endmodule
 """
 
     if use_public_spectre_rules:
-        public_rules = _load_public_spectre_rules()
+        public_rules = _load_public_spectre_rules(compact=use_compact_public_spectre_rules)
         if public_rules:
             prompt_md += (
                 "\n\n## Public Spectre/Verilog-A Compatibility Rules (MANDATORY)\n\n"
@@ -1851,11 +1854,12 @@ def main() -> int:
                     help="Inject Skill circuit knowledge (Experiment condition C: +Skill)")
     ap.add_argument(
         "--public-spec-mode",
-        choices=["prompt-only", "spectre-strict-v3", "legacy-extracted"],
+        choices=["prompt-only", "spectre-strict-v3", "spectre-strict-v3-compact", "legacy-extracted"],
         default="legacy-extracted",
         help=(
             "prompt-only: use prompt.md plus generic output/syntax rules only. "
             "spectre-strict-v3: prompt-only plus public Spectre/Verilog-A compatibility rules. "
+            "spectre-strict-v3-compact: token-compressed public compatibility rules. "
             "legacy-extracted: also inject older helper contracts extracted from checker/gold harness files."
         ),
     )

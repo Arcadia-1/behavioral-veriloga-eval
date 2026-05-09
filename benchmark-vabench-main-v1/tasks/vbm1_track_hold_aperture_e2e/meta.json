@@ -1,0 +1,47 @@
+{
+  "artifacts": [
+    "tb_sample_hold_aperture.scs"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "sample-hold",
+  "circuit_function_id": "track_hold_aperture",
+  "core_function": "stateful analog memory",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "end-to-end",
+  "id": "sample_hold_aperture_tb",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "simulator lang=spectre",
+    "tran",
+    "save",
+    "ahdl_include"
+  ],
+  "must_not_include": [
+    "I(",
+    ".control"
+  ],
+  "pack_id": "track_hold_aperture",
+  "pack_version": "v1",
+  "parity_policy": "not_required",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "tb-generation",
+  "source_relative_path": "tasks/tb-generation/voltage/sample_hold_aperture_tb",
+  "source_seed_task_id": "original92_sample_hold_aperture_tb",
+  "source_task_form": "tb-generation",
+  "source_task_id": "track_hold_aperture",
+  "task_form": "end-to-end",
+  "task_id": "vbm1_track_hold_aperture_e2e"
+}

@@ -2,10 +2,11 @@
 
 **Date**: 2026-05-07
 
-This document trims the current vaEVAS work into a clean paper-facing mainline.
-It does not delete historical artifacts.  Instead, it defines which results are
-maintained, which are diagnostic, and which future runs should use the new naming
-contract.
+This document is the 2026-05-07 clean-mainline snapshot.  The newer 2026-05-08
+protocol is `docs/VAEVAS_MAINLINE_PROTOCOL.md`; use that file as the current
+strategy entry point for benchmark layering, canonical condition names, and
+future work order.  This snapshot remains useful for tracing historical `b143`
+and ADFGI results.
 
 Repository artifact cleanup policy lives in
 `docs/REPOSITORY_CLEANUP_POLICY.md`.  Cleanup should be staged as ignore,

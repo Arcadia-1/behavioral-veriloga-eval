@@ -68,7 +68,9 @@ tran tran stop=100n maxstep=2n
 
 Required public waveform columns in `tran.csv`:
 
-- `clk_i`, `rst_ni`, `\`
+- `clk_i`, `rst_ni`
+- `cell_en_15` through `cell_en_0`
+- `ptr_15` through `ptr_0`
 
 Use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 

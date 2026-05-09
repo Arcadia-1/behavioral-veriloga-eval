@@ -1,0 +1,411 @@
+{
+  "backend": "evas",
+  "bench_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-main-v1",
+  "generated_at": "2026-05-08T08:20:05.316220+00:00",
+  "issues": [],
+  "result_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-main-v1-draft11-new4-gold-evas-2026-05-08",
+  "status": "PASS",
+  "task_results": {
+    "vbm1_lock_detector_bugfix": {
+      "gold_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "lock_detector.va",
+          "gold_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419",
+          "match": true,
+          "staged_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419"
+        },
+        {
+          "file": "tb_lock_detector_ref.scs",
+          "gold_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03",
+          "match": true,
+          "staged_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03"
+        }
+      ],
+      "staged_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ]
+    },
+    "vbm1_lock_detector_dut": {
+      "gold_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "lock_detector.va",
+          "gold_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419",
+          "match": true,
+          "staged_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419"
+        },
+        {
+          "file": "tb_lock_detector_ref.scs",
+          "gold_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03",
+          "match": true,
+          "staged_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03"
+        }
+      ],
+      "staged_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ]
+    },
+    "vbm1_lock_detector_e2e": {
+      "gold_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "lock_detector.va",
+          "gold_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419",
+          "match": true,
+          "staged_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419"
+        },
+        {
+          "file": "tb_lock_detector_ref.scs",
+          "gold_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03",
+          "match": true,
+          "staged_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03"
+        }
+      ],
+      "staged_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ]
+    },
+    "vbm1_lock_detector_tb": {
+      "gold_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "lock_detector.va",
+          "gold_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419",
+          "match": true,
+          "staged_sha256": "96e0c3686e70711ebfae759541a8e013556b9b6a8ef3d42c0154e63ff130b419"
+        },
+        {
+          "file": "tb_lock_detector_ref.scs",
+          "gold_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03",
+          "match": true,
+          "staged_sha256": "e8681d695a777a56125f8ac873bd706b9ef647551db0f63dc406260bdb61ef03"
+        }
+      ],
+      "staged_files": [
+        "lock_detector.va",
+        "tb_lock_detector_ref.scs"
+      ]
+    },
+    "vbm1_one_shot_timer_bugfix": {
+      "gold_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "one_shot_timer.va",
+          "gold_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859",
+          "match": true,
+          "staged_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859"
+        },
+        {
+          "file": "tb_one_shot_timer_ref.scs",
+          "gold_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228",
+          "match": true,
+          "staged_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228"
+        }
+      ],
+      "staged_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ]
+    },
+    "vbm1_one_shot_timer_dut": {
+      "gold_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "one_shot_timer.va",
+          "gold_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859",
+          "match": true,
+          "staged_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859"
+        },
+        {
+          "file": "tb_one_shot_timer_ref.scs",
+          "gold_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228",
+          "match": true,
+          "staged_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228"
+        }
+      ],
+      "staged_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ]
+    },
+    "vbm1_one_shot_timer_e2e": {
+      "gold_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "one_shot_timer.va",
+          "gold_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859",
+          "match": true,
+          "staged_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859"
+        },
+        {
+          "file": "tb_one_shot_timer_ref.scs",
+          "gold_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228",
+          "match": true,
+          "staged_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228"
+        }
+      ],
+      "staged_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ]
+    },
+    "vbm1_one_shot_timer_tb": {
+      "gold_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "one_shot_timer.va",
+          "gold_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859",
+          "match": true,
+          "staged_sha256": "4afb875e01fde700ffe6b5a9c83bf9ac163582798a5d67bf7783709836c72859"
+        },
+        {
+          "file": "tb_one_shot_timer_ref.scs",
+          "gold_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228",
+          "match": true,
+          "staged_sha256": "78be7ce5bcb3e6151832ca9187a67a0261e83b8e6e00ff65b0c8f33629c64228"
+        }
+      ],
+      "staged_files": [
+        "one_shot_timer.va",
+        "tb_one_shot_timer_ref.scs"
+      ]
+    },
+    "vbm1_resettable_integrator_bugfix": {
+      "gold_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "resettable_integrator.va",
+          "gold_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2",
+          "match": true,
+          "staged_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2"
+        },
+        {
+          "file": "tb_resettable_integrator_ref.scs",
+          "gold_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021",
+          "match": true,
+          "staged_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021"
+        }
+      ],
+      "staged_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ]
+    },
+    "vbm1_resettable_integrator_dut": {
+      "gold_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "resettable_integrator.va",
+          "gold_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2",
+          "match": true,
+          "staged_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2"
+        },
+        {
+          "file": "tb_resettable_integrator_ref.scs",
+          "gold_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021",
+          "match": true,
+          "staged_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021"
+        }
+      ],
+      "staged_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ]
+    },
+    "vbm1_resettable_integrator_e2e": {
+      "gold_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "resettable_integrator.va",
+          "gold_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2",
+          "match": true,
+          "staged_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2"
+        },
+        {
+          "file": "tb_resettable_integrator_ref.scs",
+          "gold_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021",
+          "match": true,
+          "staged_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021"
+        }
+      ],
+      "staged_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ]
+    },
+    "vbm1_resettable_integrator_tb": {
+      "gold_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "resettable_integrator.va",
+          "gold_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2",
+          "match": true,
+          "staged_sha256": "0dca7465ae2901402319be45f513d53da95ebd595f5acc6658242b9d7eaafbb2"
+        },
+        {
+          "file": "tb_resettable_integrator_ref.scs",
+          "gold_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021",
+          "match": true,
+          "staged_sha256": "5d43d941cc51842c4275885a3093e4a4ff17bd4892fe127afeb019c2a861b021"
+        }
+      ],
+      "staged_files": [
+        "resettable_integrator.va",
+        "tb_resettable_integrator_ref.scs"
+      ]
+    },
+    "vbm1_thermometer_dac_bugfix": {
+      "gold_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "tb_thermometer_dac_4b_ref.scs",
+          "gold_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc",
+          "match": true,
+          "staged_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc"
+        },
+        {
+          "file": "thermometer_dac_4b.va",
+          "gold_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e",
+          "match": true,
+          "staged_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e"
+        }
+      ],
+      "staged_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ]
+    },
+    "vbm1_thermometer_dac_dut": {
+      "gold_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "tb_thermometer_dac_4b_ref.scs",
+          "gold_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc",
+          "match": true,
+          "staged_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc"
+        },
+        {
+          "file": "thermometer_dac_4b.va",
+          "gold_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e",
+          "match": true,
+          "staged_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e"
+        }
+      ],
+      "staged_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ]
+    },
+    "vbm1_thermometer_dac_e2e": {
+      "gold_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "tb_thermometer_dac_4b_ref.scs",
+          "gold_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc",
+          "match": true,
+          "staged_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc"
+        },
+        {
+          "file": "thermometer_dac_4b.va",
+          "gold_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e",
+          "match": true,
+          "staged_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e"
+        }
+      ],
+      "staged_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ]
+    },
+    "vbm1_thermometer_dac_tb": {
+      "gold_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ],
+      "issues": [],
+      "matches": [
+        {
+          "file": "tb_thermometer_dac_4b_ref.scs",
+          "gold_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc",
+          "match": true,
+          "staged_sha256": "5c51683cd4f63241125a444cbae7e272c8bb52e35ece6f797d3e3725b477c6dc"
+        },
+        {
+          "file": "thermometer_dac_4b.va",
+          "gold_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e",
+          "match": true,
+          "staged_sha256": "7b0633e08f909e07e69c223950d4d1d35f4a76c35cc8885a09242b281b24800e"
+        }
+      ],
+      "staged_files": [
+        "tb_thermometer_dac_4b_ref.scs",
+        "thermometer_dac_4b.va"
+      ]
+    }
+  },
+  "tasks_checked": 16
+}

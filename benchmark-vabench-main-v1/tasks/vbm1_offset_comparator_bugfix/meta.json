@@ -1,0 +1,46 @@
+{
+  "artifacts": [
+    "tb_cmp_offset.scs"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "comparator",
+  "circuit_function_id": "offset_comparator",
+  "core_function": "threshold/static nonlinear",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "id": "comparator_offset_tb",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "simulator lang=spectre",
+    "tran",
+    "save",
+    "ahdl_include"
+  ],
+  "must_not_include": [
+    "I(",
+    ".control"
+  ],
+  "pack_id": "offset_comparator",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_family": "tb-generation",
+  "source_relative_path": "tasks/tb-generation/voltage/comparator_offset_tb",
+  "source_seed_task_id": "original92_comparator_offset_tb",
+  "source_task_form": "tb-generation",
+  "source_task_id": "offset_comparator",
+  "task_form": "bugfix",
+  "task_id": "vbm1_offset_comparator_bugfix"
+}

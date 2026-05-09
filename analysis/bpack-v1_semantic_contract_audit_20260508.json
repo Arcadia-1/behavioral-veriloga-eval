@@ -1,0 +1,2328 @@
+{
+  "benchmark": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-bpack-v1",
+  "by_form": {
+    "bugfix": {
+      "WARN": 12
+    },
+    "end-to-end": {
+      "PASS": 2,
+      "WARN": 10
+    },
+    "spec-to-va": {
+      "PASS": 1,
+      "WARN": 11
+    },
+    "tb-generation": {
+      "PASS": 2,
+      "WARN": 10
+    }
+  },
+  "by_pack": {
+    "analog_limiter": {
+      "WARN": 4
+    },
+    "binary_dac_4b": {
+      "PASS": 1,
+      "WARN": 3
+    },
+    "clock_divider": {
+      "WARN": 4
+    },
+    "dwa_pointer": {
+      "WARN": 4
+    },
+    "flash_adc_3b": {
+      "WARN": 4
+    },
+    "hysteresis_comparator": {
+      "WARN": 4
+    },
+    "pfd_updn": {
+      "PASS": 1,
+      "WARN": 3
+    },
+    "prbs7_lfsr": {
+      "PASS": 1,
+      "WARN": 3
+    },
+    "pulse_stretcher": {
+      "WARN": 4
+    },
+    "sample_hold": {
+      "PASS": 2,
+      "WARN": 2
+    },
+    "threshold_detector": {
+      "WARN": 4
+    },
+    "window_detector": {
+      "WARN": 4
+    }
+  },
+  "date": "2026-05-08",
+  "issue_counts": {
+    "checker_behavior_not_fully_named": 4,
+    "checker_source_task_not_named": 9,
+    "duplicate_public_evaluation_contract": 23,
+    "dut_only_prompt_contains_testbench_contract": 3,
+    "dut_only_prompt_contains_two_block_deliverable": 2,
+    "gold_tran_not_public": 16,
+    "tb_prompt_may_not_exclude_dut_generation": 4
+  },
+  "status_counts": {
+    "PASS": 5,
+    "WARN": 43
+  },
+  "task_count": 48,
+  "tasks": [
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_analog_limiter"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "limited_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "analog_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_analog_limiter_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_analog_limiter"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "limited_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "analog_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_analog_limiter_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_analog_limiter"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "limited_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "analog_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_analog_limiter_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "analog_limiter",
+      "core_function": "analog_limiter",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_analog_limiter"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "limited_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "tb_prompt_may_not_exclude_dut_generation",
+          "detail": "missing explicit no-DUT constraint",
+          "severity": "WARN"
+        },
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "analog_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_analog_limiter_tb"
+    },
+    {
+      "checker_source_task": "dac_binary_clk_4b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "dac_output_monotonic",
+        "dac_output_range_sufficient"
+      ],
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "dac_binary_clk_4b.va"
+      ],
+      "gold_modules": [
+        "dac_binary_clk_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "din3",
+        "din2",
+        "din1",
+        "din0",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=660n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "dac_binary_clk_4b_smoke",
+          "severity": "WARN"
+        },
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "binary_dac_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_binary_dac_4b_bugfix"
+    },
+    {
+      "checker_source_task": "dac_binary_clk_4b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "dac_output_monotonic",
+        "dac_output_range_sufficient"
+      ],
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "dac_binary_clk_4b.va"
+      ],
+      "gold_modules": [
+        "dac_binary_clk_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "din3",
+        "din2",
+        "din1",
+        "din0",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=660n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "dac_binary_clk_4b_smoke",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "binary_dac_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_binary_dac_4b_e2e"
+    },
+    {
+      "checker_source_task": "dac_binary_clk_4b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "dac_output_monotonic",
+        "dac_output_range_sufficient"
+      ],
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "dac_binary_clk_4b.va"
+      ],
+      "gold_modules": [
+        "dac_binary_clk_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "din3",
+        "din2",
+        "din1",
+        "din0",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=660n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "dac_binary_clk_4b_smoke",
+          "severity": "WARN"
+        },
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "binary_dac_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_binary_dac_4b_dut"
+    },
+    {
+      "checker_source_task": "clk_div_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_divides_input_clock"
+      ],
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "clk_div.va"
+      ],
+      "gold_modules": [
+        "clk_div"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "clk_out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=1n"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "clk_div_smoke",
+          "severity": "WARN"
+        },
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "clock_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_clock_divider_bugfix"
+    },
+    {
+      "checker_source_task": "clk_div_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_divides_input_clock"
+      ],
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "clk_div.va"
+      ],
+      "gold_modules": [
+        "clk_div"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "clk_out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=1n"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "clk_div_smoke",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "clock_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_clock_divider_e2e"
+    },
+    {
+      "checker_source_task": "clk_div_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_divides_input_clock"
+      ],
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "clk_div.va"
+      ],
+      "gold_modules": [
+        "clk_div"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "clk_out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=1n"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "clk_div_smoke",
+          "severity": "WARN"
+        },
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "clock_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_clock_divider_dut"
+    },
+    {
+      "checker_source_task": "clk_div_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_divides_input_clock"
+      ],
+      "circuit_function_id": "clock_divider",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "clk_div.va"
+      ],
+      "gold_modules": [
+        "clk_div"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "clk_out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=1n"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "clk_div_smoke",
+          "severity": "WARN"
+        },
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "clock_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_clock_divider_tb"
+    },
+    {
+      "checker_source_task": "dwa_ptr_gen_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "ptr_is_one_hot_after_reset",
+        "cell_en_nonzero_after_reset",
+        "dwa_rotation_correct"
+      ],
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_includes": [
+        "v2b_4b.va",
+        "dwa_ptr_gen.va"
+      ],
+      "gold_modules": [
+        "dwa_ptr_gen",
+        "v2b_4b"
+      ],
+      "gold_save_names": [
+        "clk_i",
+        "rst_ni",
+        "cell_en_15",
+        "cell_en_14",
+        "cell_en_13",
+        "cell_en_12",
+        "cell_en_11",
+        "cell_en_10",
+        "cell_en_9",
+        "cell_en_8",
+        "cell_en_7",
+        "cell_en_6",
+        "cell_en_5",
+        "cell_en_4",
+        "cell_en_3",
+        "cell_en_2",
+        "cell_en_1",
+        "cell_en_0",
+        "ptr_15",
+        "ptr_14",
+        "ptr_13",
+        "ptr_12",
+        "ptr_11",
+        "ptr_10",
+        "ptr_9",
+        "ptr_8",
+        "ptr_7",
+        "ptr_6",
+        "ptr_5",
+        "ptr_4",
+        "ptr_3",
+        "ptr_2",
+        "ptr_1",
+        "ptr_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=100n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        },
+        {
+          "code": "checker_behavior_not_fully_named",
+          "detail": "dwa_rotation_correct: expected keywords ('dwa', 'rotation', 'pointer')",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "dwa_pointer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_dwa_pointer_bugfix"
+    },
+    {
+      "checker_source_task": "dwa_ptr_gen_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "ptr_is_one_hot_after_reset",
+        "cell_en_nonzero_after_reset",
+        "dwa_rotation_correct"
+      ],
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_includes": [
+        "v2b_4b.va",
+        "dwa_ptr_gen.va"
+      ],
+      "gold_modules": [
+        "dwa_ptr_gen",
+        "v2b_4b"
+      ],
+      "gold_save_names": [
+        "clk_i",
+        "rst_ni",
+        "cell_en_15",
+        "cell_en_14",
+        "cell_en_13",
+        "cell_en_12",
+        "cell_en_11",
+        "cell_en_10",
+        "cell_en_9",
+        "cell_en_8",
+        "cell_en_7",
+        "cell_en_6",
+        "cell_en_5",
+        "cell_en_4",
+        "cell_en_3",
+        "cell_en_2",
+        "cell_en_1",
+        "cell_en_0",
+        "ptr_15",
+        "ptr_14",
+        "ptr_13",
+        "ptr_12",
+        "ptr_11",
+        "ptr_10",
+        "ptr_9",
+        "ptr_8",
+        "ptr_7",
+        "ptr_6",
+        "ptr_5",
+        "ptr_4",
+        "ptr_3",
+        "ptr_2",
+        "ptr_1",
+        "ptr_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=100n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        },
+        {
+          "code": "checker_behavior_not_fully_named",
+          "detail": "dwa_rotation_correct: expected keywords ('dwa', 'rotation', 'pointer')",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "dwa_pointer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_dwa_pointer_e2e"
+    },
+    {
+      "checker_source_task": "dwa_ptr_gen_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "ptr_is_one_hot_after_reset",
+        "cell_en_nonzero_after_reset",
+        "dwa_rotation_correct"
+      ],
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_includes": [
+        "v2b_4b.va",
+        "dwa_ptr_gen.va"
+      ],
+      "gold_modules": [
+        "dwa_ptr_gen",
+        "v2b_4b"
+      ],
+      "gold_save_names": [
+        "clk_i",
+        "rst_ni",
+        "cell_en_15",
+        "cell_en_14",
+        "cell_en_13",
+        "cell_en_12",
+        "cell_en_11",
+        "cell_en_10",
+        "cell_en_9",
+        "cell_en_8",
+        "cell_en_7",
+        "cell_en_6",
+        "cell_en_5",
+        "cell_en_4",
+        "cell_en_3",
+        "cell_en_2",
+        "cell_en_1",
+        "cell_en_0",
+        "ptr_15",
+        "ptr_14",
+        "ptr_13",
+        "ptr_12",
+        "ptr_11",
+        "ptr_10",
+        "ptr_9",
+        "ptr_8",
+        "ptr_7",
+        "ptr_6",
+        "ptr_5",
+        "ptr_4",
+        "ptr_3",
+        "ptr_2",
+        "ptr_1",
+        "ptr_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=100n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        },
+        {
+          "code": "dut_only_prompt_contains_testbench_contract",
+          "detail": "source spec retained TB contract",
+          "severity": "WARN"
+        },
+        {
+          "code": "checker_behavior_not_fully_named",
+          "detail": "dwa_rotation_correct: expected keywords ('dwa', 'rotation', 'pointer')",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "dwa_pointer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_dwa_pointer_dut"
+    },
+    {
+      "checker_source_task": "dwa_ptr_gen_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "ptr_is_one_hot_after_reset",
+        "cell_en_nonzero_after_reset",
+        "dwa_rotation_correct"
+      ],
+      "circuit_function_id": "dwa_pointer",
+      "core_function": "calibration",
+      "gold_includes": [
+        "v2b_4b.va",
+        "dwa_ptr_gen.va"
+      ],
+      "gold_modules": [
+        "dwa_ptr_gen",
+        "v2b_4b"
+      ],
+      "gold_save_names": [
+        "clk_i",
+        "rst_ni",
+        "cell_en_15",
+        "cell_en_14",
+        "cell_en_13",
+        "cell_en_12",
+        "cell_en_11",
+        "cell_en_10",
+        "cell_en_9",
+        "cell_en_8",
+        "cell_en_7",
+        "cell_en_6",
+        "cell_en_5",
+        "cell_en_4",
+        "cell_en_3",
+        "cell_en_2",
+        "cell_en_1",
+        "cell_en_0",
+        "ptr_15",
+        "ptr_14",
+        "ptr_13",
+        "ptr_12",
+        "ptr_11",
+        "ptr_10",
+        "ptr_9",
+        "ptr_8",
+        "ptr_7",
+        "ptr_6",
+        "ptr_5",
+        "ptr_4",
+        "ptr_3",
+        "ptr_2",
+        "ptr_1",
+        "ptr_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=100n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        },
+        {
+          "code": "checker_behavior_not_fully_named",
+          "detail": "dwa_rotation_correct: expected keywords ('dwa', 'rotation', 'pointer')",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "dwa_pointer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_dwa_pointer_tb"
+    },
+    {
+      "checker_source_task": "flash_adc_3b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "flash_adc_all_8_codes_present",
+        "flash_adc_monotonic_with_ramp"
+      ],
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "flash_adc_3b.va"
+      ],
+      "gold_modules": [
+        "flash_adc_3b"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "dout2",
+        "dout1",
+        "dout0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=820n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "flash_adc_3b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_flash_adc_3b_bugfix"
+    },
+    {
+      "checker_source_task": "flash_adc_3b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "flash_adc_all_8_codes_present",
+        "flash_adc_monotonic_with_ramp"
+      ],
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "flash_adc_3b.va"
+      ],
+      "gold_modules": [
+        "flash_adc_3b"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "dout2",
+        "dout1",
+        "dout0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=820n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "flash_adc_3b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_flash_adc_3b_e2e"
+    },
+    {
+      "checker_source_task": "flash_adc_3b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "flash_adc_all_8_codes_present",
+        "flash_adc_monotonic_with_ramp"
+      ],
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "flash_adc_3b.va"
+      ],
+      "gold_modules": [
+        "flash_adc_3b"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "dout2",
+        "dout1",
+        "dout0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=820n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        },
+        {
+          "code": "dut_only_prompt_contains_testbench_contract",
+          "detail": "source spec retained TB contract",
+          "severity": "WARN"
+        },
+        {
+          "code": "dut_only_prompt_contains_two_block_deliverable",
+          "detail": "conflicts with DUT-only wrapper",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "flash_adc_3b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_flash_adc_3b_dut"
+    },
+    {
+      "checker_source_task": "flash_adc_3b_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "flash_adc_all_8_codes_present",
+        "flash_adc_monotonic_with_ramp"
+      ],
+      "circuit_function_id": "flash_adc_3b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "flash_adc_3b.va"
+      ],
+      "gold_modules": [
+        "flash_adc_3b"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "dout2",
+        "dout1",
+        "dout0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=820n maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "flash_adc_3b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_flash_adc_3b_tb"
+    },
+    {
+      "checker_source_task": "comparator_hysteresis_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_shows_hysteresis_window",
+        "upward_and_downward_trip_points_are_separated"
+      ],
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_includes": [
+        "cmp_hysteresis.va"
+      ],
+      "gold_modules": [
+        "cmp_hysteresis"
+      ],
+      "gold_save_names": [
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=100p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "hysteresis_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_hysteresis_comparator_bugfix"
+    },
+    {
+      "checker_source_task": "comparator_hysteresis_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_shows_hysteresis_window",
+        "upward_and_downward_trip_points_are_separated"
+      ],
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_includes": [
+        "cmp_hysteresis.va"
+      ],
+      "gold_modules": [
+        "cmp_hysteresis"
+      ],
+      "gold_save_names": [
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=100p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "hysteresis_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_hysteresis_comparator_e2e"
+    },
+    {
+      "checker_source_task": "comparator_hysteresis_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_shows_hysteresis_window",
+        "upward_and_downward_trip_points_are_separated"
+      ],
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_includes": [
+        "cmp_hysteresis.va"
+      ],
+      "gold_modules": [
+        "cmp_hysteresis"
+      ],
+      "gold_save_names": [
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=100p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        },
+        {
+          "code": "dut_only_prompt_contains_testbench_contract",
+          "detail": "source spec retained TB contract",
+          "severity": "WARN"
+        },
+        {
+          "code": "dut_only_prompt_contains_two_block_deliverable",
+          "detail": "conflicts with DUT-only wrapper",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "hysteresis_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_hysteresis_comparator_dut"
+    },
+    {
+      "checker_source_task": "comparator_hysteresis_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "output_shows_hysteresis_window",
+        "upward_and_downward_trip_points_are_separated"
+      ],
+      "circuit_function_id": "hysteresis_comparator",
+      "core_function": "comparator",
+      "gold_includes": [
+        "cmp_hysteresis.va"
+      ],
+      "gold_modules": [
+        "cmp_hysteresis"
+      ],
+      "gold_save_names": [
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=100p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "3",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "hysteresis_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_hysteresis_comparator_tb"
+    },
+    {
+      "checker_source_task": "swapped_pfd_outputs_bug",
+      "checks_items": [
+        "transition(",
+        "up_state",
+        "dn_state",
+        "I(",
+        "ddt(",
+        "pfd_up_dominates_when_ref_leads"
+      ],
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_includes": [
+        "dut_fixed.va"
+      ],
+      "gold_modules": [
+        "pfd_updn_bug"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=50p"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "swapped_pfd_outputs_bug",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pfd_updn",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_pfd_updn_bugfix"
+    },
+    {
+      "checker_source_task": "pfd_updn_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_up_pulses_when_ref_leads",
+        "pfd_up_dn_not_simultaneously_high"
+      ],
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=100p errpreset=conservative"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pfd_updn",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_pfd_updn_dut"
+    },
+    {
+      "checker_source_task": "pfd_updn_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_up_pulses_when_ref_leads",
+        "pfd_up_dn_not_simultaneously_high"
+      ],
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=100p errpreset=conservative"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pfd_updn",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_pfd_updn_tb"
+    },
+    {
+      "checker_source_task": "prbs7",
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "serial_out",
+        "state_0",
+        "I(",
+        "ddt(",
+        "prbs7_sequence_advances",
+        "serial_output_has_transitions",
+        "parallel_state_bus_updates"
+      ],
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "prbs7_ref.va"
+      ],
+      "gold_modules": [
+        "prbs7",
+        "prbs7_ref"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "en",
+        "serial_out",
+        "state_0",
+        "state_1",
+        "state_2",
+        "state_3",
+        "state_4",
+        "state_5",
+        "state_6"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=50p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "prbs7_lfsr",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_prbs7_lfsr_bugfix"
+    },
+    {
+      "checker_source_task": "prbs7",
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "serial_out",
+        "state_0",
+        "I(",
+        "ddt(",
+        "prbs7_sequence_advances",
+        "serial_output_has_transitions",
+        "parallel_state_bus_updates"
+      ],
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "prbs7_ref.va"
+      ],
+      "gold_modules": [
+        "prbs7",
+        "prbs7_ref"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "en",
+        "serial_out",
+        "state_0",
+        "state_1",
+        "state_2",
+        "state_3",
+        "state_4",
+        "state_5",
+        "state_6"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=50p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "prbs7_lfsr",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_prbs7_lfsr_e2e"
+    },
+    {
+      "checker_source_task": "prbs7",
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "serial_out",
+        "state_0",
+        "I(",
+        "ddt(",
+        "prbs7_sequence_advances",
+        "serial_output_has_transitions",
+        "parallel_state_bus_updates"
+      ],
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "prbs7_ref.va"
+      ],
+      "gold_modules": [
+        "prbs7",
+        "prbs7_ref"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "en",
+        "serial_out",
+        "state_0",
+        "state_1",
+        "state_2",
+        "state_3",
+        "state_4",
+        "state_5",
+        "state_6"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=50p"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "prbs7_lfsr",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_prbs7_lfsr_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "pulse_behavior"
+      ],
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_pulse_stretcher"
+      ],
+      "gold_save_names": [
+        "event_in",
+        "stretched_pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=140n maxstep=200p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pulse_stretcher",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_pulse_stretcher_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "pulse_behavior"
+      ],
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_pulse_stretcher"
+      ],
+      "gold_save_names": [
+        "event_in",
+        "stretched_pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=140n maxstep=200p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pulse_stretcher",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_pulse_stretcher_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "pulse_behavior"
+      ],
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_pulse_stretcher"
+      ],
+      "gold_save_names": [
+        "event_in",
+        "stretched_pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=140n maxstep=200p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pulse_stretcher",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_pulse_stretcher_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "pulse_behavior"
+      ],
+      "circuit_function_id": "pulse_stretcher",
+      "core_function": "pulse_stretcher",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_pulse_stretcher"
+      ],
+      "gold_save_names": [
+        "event_in",
+        "stretched_pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=200p"
+      ],
+      "issues": [
+        {
+          "code": "tb_prompt_may_not_exclude_dut_generation",
+          "detail": "missing explicit no-DUT constraint",
+          "severity": "WARN"
+        },
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=140n maxstep=200p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "pulse_stretcher",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_pulse_stretcher_tb"
+    },
+    {
+      "checker_source_task": "wrong_edge_sample_hold_bug",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "I(",
+        "ddt(",
+        "sample_hold_clock_edge_polarity"
+      ],
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_includes": [
+        "dut_fixed.va"
+      ],
+      "gold_modules": [
+        "sample_hold_bug"
+      ],
+      "gold_save_names": [
+        "in",
+        "clk",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=100p"
+      ],
+      "issues": [
+        {
+          "code": "checker_source_task_not_named",
+          "detail": "wrong_edge_sample_hold_bug",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "sample_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_sample_hold_bugfix"
+    },
+    {
+      "checker_source_task": "sample_hold_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "sh_output_tracks_input_at_edges",
+        "sh_output_held_between_edges"
+      ],
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_includes": [
+        "sample_hold.va"
+      ],
+      "gold_modules": [
+        "sample_hold"
+      ],
+      "gold_save_names": [
+        "in",
+        "clk",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1u maxstep=2n"
+      ],
+      "issues": [
+        {
+          "code": "duplicate_public_evaluation_contract",
+          "detail": "2",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "sample_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_sample_hold_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "threshold_behavior"
+      ],
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_threshold_detector"
+      ],
+      "gold_save_names": [
+        "sense_level",
+        "decision_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "threshold_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_threshold_detector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "threshold_behavior"
+      ],
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_threshold_detector"
+      ],
+      "gold_save_names": [
+        "sense_level",
+        "decision_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "threshold_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_threshold_detector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "threshold_behavior"
+      ],
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_threshold_detector"
+      ],
+      "gold_save_names": [
+        "sense_level",
+        "decision_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "threshold_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_threshold_detector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "threshold_behavior"
+      ],
+      "circuit_function_id": "threshold_detector",
+      "core_function": "threshold_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_threshold_detector"
+      ],
+      "gold_save_names": [
+        "sense_level",
+        "decision_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "tb_prompt_may_not_exclude_dut_generation",
+          "detail": "missing explicit no-DUT constraint",
+          "severity": "WARN"
+        },
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "threshold_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_threshold_detector_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "window_behavior"
+      ],
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_window_detector"
+      ],
+      "gold_save_names": [
+        "sensor_level",
+        "inside_window",
+        "below_window",
+        "above_window"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "window_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "bugfix",
+      "task_id": "bpack_window_detector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "window_behavior"
+      ],
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_window_detector"
+      ],
+      "gold_save_names": [
+        "sensor_level",
+        "inside_window",
+        "below_window",
+        "above_window"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "window_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "end-to-end",
+      "task_id": "bpack_window_detector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "window_behavior"
+      ],
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_window_detector"
+      ],
+      "gold_save_names": [
+        "sensor_level",
+        "inside_window",
+        "below_window",
+        "above_window"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "window_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_window_detector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "window_behavior"
+      ],
+      "circuit_function_id": "window_detector",
+      "core_function": "window_detector",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "balanced_window_detector"
+      ],
+      "gold_save_names": [
+        "sensor_level",
+        "inside_window",
+        "below_window",
+        "above_window"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [
+        {
+          "code": "tb_prompt_may_not_exclude_dut_generation",
+          "detail": "missing explicit no-DUT constraint",
+          "severity": "WARN"
+        },
+        {
+          "code": "gold_tran_not_public",
+          "detail": "tran tran stop=120n maxstep=500p",
+          "severity": "WARN"
+        }
+      ],
+      "pack_id": "window_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "WARN",
+      "task_form": "tb-generation",
+      "task_id": "bpack_window_detector_tb"
+    },
+    {
+      "checker_source_task": "dac_ramp_tb",
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "binary_dac_4b",
+      "core_function": "data-converter",
+      "gold_includes": [
+        "dac_ramp_ref.va"
+      ],
+      "gold_modules": [
+        "dac_ramp_ref"
+      ],
+      "gold_save_names": [
+        "CLK",
+        "DIN3",
+        "DIN2",
+        "DIN1",
+        "DIN0",
+        "AOUT"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=68n maxstep=20p"
+      ],
+      "issues": [],
+      "pack_id": "binary_dac_4b",
+      "scoring": [
+        "tb_compile"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "bpack_binary_dac_4b_tb"
+    },
+    {
+      "checker_source_task": "pfd_updn_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_up_pulses_when_ref_leads",
+        "pfd_up_dn_not_simultaneously_high"
+      ],
+      "circuit_function_id": "pfd_updn",
+      "core_function": "phase-detector",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=100p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "pfd_updn",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "bpack_pfd_updn_e2e"
+    },
+    {
+      "checker_source_task": "prbs7",
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "serial_out",
+        "state_0",
+        "I(",
+        "ddt(",
+        "prbs7_sequence_advances",
+        "serial_output_has_transitions",
+        "parallel_state_bus_updates"
+      ],
+      "circuit_function_id": "prbs7_lfsr",
+      "core_function": "digital-logic",
+      "gold_includes": [
+        "prbs7_ref.va"
+      ],
+      "gold_modules": [
+        "prbs7",
+        "prbs7_ref"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "en",
+        "serial_out",
+        "state_0",
+        "state_1",
+        "state_2",
+        "state_3",
+        "state_4",
+        "state_5",
+        "state_6"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=50p"
+      ],
+      "issues": [],
+      "pack_id": "prbs7_lfsr",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "bpack_prbs7_lfsr_dut"
+    },
+    {
+      "checker_source_task": "sample_hold_smoke",
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "sh_output_tracks_input_at_edges",
+        "sh_output_held_between_edges"
+      ],
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_includes": [
+        "sample_hold.va"
+      ],
+      "gold_modules": [
+        "sample_hold"
+      ],
+      "gold_save_names": [
+        "in",
+        "clk",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1u maxstep=2n"
+      ],
+      "issues": [],
+      "pack_id": "sample_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "bpack_sample_hold_e2e"
+    },
+    {
+      "checker_source_task": "sample_hold_step_tb",
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "sample_hold",
+      "core_function": "sample-hold",
+      "gold_includes": [
+        "sample_hold_step_ref.va"
+      ],
+      "gold_modules": [
+        "sample_hold_step_ref"
+      ],
+      "gold_save_names": [
+        "in",
+        "clk",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=100n maxstep=100p"
+      ],
+      "issues": [],
+      "pack_id": "sample_hold",
+      "scoring": [
+        "tb_compile"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "bpack_sample_hold_tb"
+    }
+  ]
+}

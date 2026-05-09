@@ -1,0 +1,30 @@
+{
+  "evas": {
+    "fail_tasks": [
+      {
+        "notes": [
+          "gold_dut_include=cmp_hysteresis.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vvinp: Vvinp: PWL wave must contain at least one time/value pair",
+          "tran.csv missing"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_hysteresis_comparator_tb"
+      },
+      {
+        "notes": [
+          "gold_dut_include=sample_hold_step_ref.va",
+          "spectre_strict:preflight_pass",
+          "returncode=1",
+          "ERROR: Invalid source Vin: Vin: PWL wave must contain at least one time/value pair",
+          "sim_correct_not_required"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_sample_hold_tb"
+      }
+    ]
+  },
+  "purpose": "R1 empty-PWL targeted compile-skill smoke",
+  "source": "results-bpack48__mimo-v25-pro__strict-evas__compile-skill-prompt-mt8192__20260508/summary.json"
+}

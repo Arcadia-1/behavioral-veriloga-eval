@@ -1,0 +1,4567 @@
+{
+  "benchmark": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-main-v1",
+  "by_form": {
+    "bugfix": {
+      "PASS": 30
+    },
+    "end-to-end": {
+      "PASS": 30
+    },
+    "spec-to-va": {
+      "PASS": 30
+    },
+    "tb-generation": {
+      "PASS": 30
+    }
+  },
+  "by_pack": {
+    "background_calibration_accumulator": {
+      "PASS": 4
+    },
+    "barrel_pointer_window": {
+      "PASS": 4
+    },
+    "cdac_calibration": {
+      "PASS": 4
+    },
+    "debounce_latch": {
+      "PASS": 4
+    },
+    "edge_detector": {
+      "PASS": 4
+    },
+    "element_shuffler": {
+      "PASS": 4
+    },
+    "file_metric_writer": {
+      "PASS": 4
+    },
+    "first_order_lowpass": {
+      "PASS": 4
+    },
+    "gain_trim_controller": {
+      "PASS": 4
+    },
+    "leaky_hold": {
+      "PASS": 4
+    },
+    "lock_detector": {
+      "PASS": 4
+    },
+    "offset_calibration_fsm": {
+      "PASS": 4
+    },
+    "offset_comparator": {
+      "PASS": 4
+    },
+    "one_shot_timer": {
+      "PASS": 4
+    },
+    "peak_detector": {
+      "PASS": 4
+    },
+    "pfd_reset_race": {
+      "PASS": 4
+    },
+    "precision_rectifier": {
+      "PASS": 4
+    },
+    "resettable_counter_divider": {
+      "PASS": 4
+    },
+    "resettable_integrator": {
+      "PASS": 4
+    },
+    "rotating_element_selector": {
+      "PASS": 4
+    },
+    "sar_logic_4b": {
+      "PASS": 4
+    },
+    "segmented_dac": {
+      "PASS": 4
+    },
+    "settling_time_measurement_tb": {
+      "PASS": 4
+    },
+    "slew_rate_limiter": {
+      "PASS": 4
+    },
+    "strongarm_comparator_behavior": {
+      "PASS": 4
+    },
+    "thermometer_dac": {
+      "PASS": 4
+    },
+    "thermometer_decoder_guarded": {
+      "PASS": 4
+    },
+    "track_hold_aperture": {
+      "PASS": 4
+    },
+    "vco_phase_integrator": {
+      "PASS": 4
+    },
+    "voltage_clamp": {
+      "PASS": 4
+    }
+  },
+  "date": "2026-05-08",
+  "issue_counts": {},
+  "status_counts": {
+    "PASS": 120
+  },
+  "task_count": 120,
+  "tasks": [
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "background_calibration_accumulator",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "background_calibration_accumulator.va"
+      ],
+      "gold_modules": [
+        "background_calibration_accumulator"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "accum"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "background_calibration_accumulator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_background_calibration_accumulator_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "background_calibration_accumulator",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "background_calibration_accumulator.va"
+      ],
+      "gold_modules": [
+        "background_calibration_accumulator"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "accum"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "background_calibration_accumulator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_background_calibration_accumulator_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "background_calibration_accumulator",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "background_calibration_accumulator.va"
+      ],
+      "gold_modules": [
+        "background_calibration_accumulator"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "accum"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "background_calibration_accumulator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_background_calibration_accumulator_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "background_calibration_accumulator",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "background_calibration_accumulator.va"
+      ],
+      "gold_modules": [
+        "background_calibration_accumulator"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "accum"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "background_calibration_accumulator",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_background_calibration_accumulator_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "barrel_pointer_window",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "barrel_pointer_window.va"
+      ],
+      "gold_modules": [
+        "barrel_pointer_window"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "win0",
+        "win1",
+        "win2",
+        "win3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "barrel_pointer_window",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "barrel_pointer_window",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "barrel_pointer_window.va"
+      ],
+      "gold_modules": [
+        "barrel_pointer_window"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "win0",
+        "win1",
+        "win2",
+        "win3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "barrel_pointer_window",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_barrel_pointer_window_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "barrel_pointer_window",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "barrel_pointer_window.va"
+      ],
+      "gold_modules": [
+        "barrel_pointer_window"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "win0",
+        "win1",
+        "win2",
+        "win3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "barrel_pointer_window",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_barrel_pointer_window_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "barrel_pointer_window",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "barrel_pointer_window.va"
+      ],
+      "gold_modules": [
+        "barrel_pointer_window"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "win0",
+        "win1",
+        "win2",
+        "win3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "barrel_pointer_window",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_barrel_pointer_window_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "cdac_calibration",
+      "core_function": "data conversion/calibration",
+      "gold_includes": [
+        "cdac_calibration.va"
+      ],
+      "gold_modules": [
+        "cdac_calibration"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "cdac_calibration",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_cdac_calibration_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "cdac_calibration",
+      "core_function": "data conversion/calibration",
+      "gold_includes": [
+        "cdac_calibration.va"
+      ],
+      "gold_modules": [
+        "cdac_calibration"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "cdac_calibration",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_cdac_calibration_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "cdac_calibration",
+      "core_function": "data conversion/calibration",
+      "gold_includes": [
+        "cdac_calibration.va"
+      ],
+      "gold_modules": [
+        "cdac_calibration"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "cdac_calibration",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_cdac_calibration_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "cdac_calibration",
+      "core_function": "data conversion/calibration",
+      "gold_includes": [
+        "cdac_calibration.va"
+      ],
+      "gold_modules": [
+        "cdac_calibration"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "err",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "cdac_calibration",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_cdac_calibration_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "debounce_latch",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "debounce_latch.va"
+      ],
+      "gold_modules": [
+        "debounce_latch"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "debounce_latch",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_debounce_latch_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "debounce_latch",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "debounce_latch.va"
+      ],
+      "gold_modules": [
+        "debounce_latch"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "debounce_latch",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_debounce_latch_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "debounce_latch",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "debounce_latch.va"
+      ],
+      "gold_modules": [
+        "debounce_latch"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "debounce_latch",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_debounce_latch_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "debounce_latch",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "debounce_latch.va"
+      ],
+      "gold_modules": [
+        "debounce_latch"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "out"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "debounce_latch",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_debounce_latch_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "edge_detector",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "edge_detector.va"
+      ],
+      "gold_modules": [
+        "edge_detector"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "edge_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_edge_detector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "edge_detector",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "edge_detector.va"
+      ],
+      "gold_modules": [
+        "edge_detector"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "edge_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_edge_detector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "edge_detector",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "edge_detector.va"
+      ],
+      "gold_modules": [
+        "edge_detector"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "edge_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_edge_detector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "edge_detector",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "edge_detector.va"
+      ],
+      "gold_modules": [
+        "edge_detector"
+      ],
+      "gold_save_names": [
+        "sig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "edge_detector",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_edge_detector_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "element_shuffler",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "element_shuffler.va"
+      ],
+      "gold_modules": [
+        "element_shuffler"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "out0",
+        "out1",
+        "out2",
+        "out3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "element_shuffler",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_element_shuffler_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "element_shuffler",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "element_shuffler.va"
+      ],
+      "gold_modules": [
+        "element_shuffler"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "out0",
+        "out1",
+        "out2",
+        "out3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "element_shuffler",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_element_shuffler_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "element_shuffler",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "element_shuffler.va"
+      ],
+      "gold_modules": [
+        "element_shuffler"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "out0",
+        "out1",
+        "out2",
+        "out3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "element_shuffler",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_element_shuffler_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "element_shuffler",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "element_shuffler.va"
+      ],
+      "gold_modules": [
+        "element_shuffler"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "out0",
+        "out1",
+        "out2",
+        "out3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "element_shuffler",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_element_shuffler_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "file_metric_writer",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "file_metric_writer.va"
+      ],
+      "gold_modules": [
+        "file_metric_writer"
+      ],
+      "gold_save_names": [
+        "vin",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=90n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "file_metric_writer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_file_metric_writer_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "file_metric_writer",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "file_metric_writer.va"
+      ],
+      "gold_modules": [
+        "file_metric_writer"
+      ],
+      "gold_save_names": [
+        "vin",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=90n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "file_metric_writer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_file_metric_writer_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "file_metric_writer",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "file_metric_writer.va"
+      ],
+      "gold_modules": [
+        "file_metric_writer"
+      ],
+      "gold_save_names": [
+        "vin",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=90n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "file_metric_writer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_file_metric_writer_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "file_metric_writer",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "file_metric_writer.va"
+      ],
+      "gold_modules": [
+        "file_metric_writer"
+      ],
+      "gold_save_names": [
+        "vin",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=90n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "file_metric_writer",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_file_metric_writer_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "first_order_lowpass",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "first_order_lowpass.va"
+      ],
+      "gold_modules": [
+        "first_order_lowpass"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "first_order_lowpass",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_first_order_lowpass_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "first_order_lowpass",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "first_order_lowpass.va"
+      ],
+      "gold_modules": [
+        "first_order_lowpass"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "first_order_lowpass",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_first_order_lowpass_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "first_order_lowpass",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "first_order_lowpass.va"
+      ],
+      "gold_modules": [
+        "first_order_lowpass"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "first_order_lowpass",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_first_order_lowpass_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "first_order_lowpass",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "first_order_lowpass.va"
+      ],
+      "gold_modules": [
+        "first_order_lowpass"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "first_order_lowpass",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_first_order_lowpass_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "gain_trim_controller",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "gain_trim_controller.va"
+      ],
+      "gold_modules": [
+        "gain_trim_controller"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "meas",
+        "target",
+        "gain_ctrl"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "gain_trim_controller",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_gain_trim_controller_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "gain_trim_controller",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "gain_trim_controller.va"
+      ],
+      "gold_modules": [
+        "gain_trim_controller"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "meas",
+        "target",
+        "gain_ctrl"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "gain_trim_controller",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_gain_trim_controller_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "gain_trim_controller",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "gain_trim_controller.va"
+      ],
+      "gold_modules": [
+        "gain_trim_controller"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "meas",
+        "target",
+        "gain_ctrl"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "gain_trim_controller",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_gain_trim_controller_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "gain_trim_controller",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "gain_trim_controller.va"
+      ],
+      "gold_modules": [
+        "gain_trim_controller"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "meas",
+        "target",
+        "gain_ctrl"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "gain_trim_controller",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_gain_trim_controller_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "leaky_hold",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "leaky_hold.va"
+      ],
+      "gold_modules": [
+        "leaky_hold"
+      ],
+      "gold_save_names": [
+        "sample",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=170n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "leaky_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_leaky_hold_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "leaky_hold",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "leaky_hold.va"
+      ],
+      "gold_modules": [
+        "leaky_hold"
+      ],
+      "gold_save_names": [
+        "sample",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=170n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "leaky_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_leaky_hold_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "leaky_hold",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "leaky_hold.va"
+      ],
+      "gold_modules": [
+        "leaky_hold"
+      ],
+      "gold_save_names": [
+        "sample",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=170n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "leaky_hold",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_leaky_hold_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "leaky_hold",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "leaky_hold.va"
+      ],
+      "gold_modules": [
+        "leaky_hold"
+      ],
+      "gold_save_names": [
+        "sample",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=170n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "leaky_hold",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_leaky_hold_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "@(timer(",
+        "transition(",
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "circuit_function_id": "lock_detector",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "lock_detector.va"
+      ],
+      "gold_modules": [
+        "lock_detector"
+      ],
+      "gold_save_names": [
+        "ref_clk",
+        "fb_clk",
+        "rst_n",
+        "lock"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "lock_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_lock_detector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "@(timer(",
+        "transition(",
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "circuit_function_id": "lock_detector",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "lock_detector.va"
+      ],
+      "gold_modules": [
+        "lock_detector"
+      ],
+      "gold_save_names": [
+        "ref_clk",
+        "fb_clk",
+        "rst_n",
+        "lock"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "lock_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_lock_detector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "@(timer(",
+        "transition(",
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "circuit_function_id": "lock_detector",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "lock_detector.va"
+      ],
+      "gold_modules": [
+        "lock_detector"
+      ],
+      "gold_save_names": [
+        "ref_clk",
+        "fb_clk",
+        "rst_n",
+        "lock"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "lock_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_lock_detector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "@(timer(",
+        "transition(",
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "circuit_function_id": "lock_detector",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "lock_detector.va"
+      ],
+      "gold_modules": [
+        "lock_detector"
+      ],
+      "gold_save_names": [
+        "ref_clk",
+        "fb_clk",
+        "rst_n",
+        "lock"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "lock_detector",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_lock_detector_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "offset_calibration_fsm",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "offset_calibration_fsm.va"
+      ],
+      "gold_modules": [
+        "offset_calibration_fsm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "comp",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "offset_calibration_fsm",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_calibration_fsm_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "offset_calibration_fsm",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "offset_calibration_fsm.va"
+      ],
+      "gold_modules": [
+        "offset_calibration_fsm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "comp",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "offset_calibration_fsm",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_calibration_fsm_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "offset_calibration_fsm",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "offset_calibration_fsm.va"
+      ],
+      "gold_modules": [
+        "offset_calibration_fsm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "comp",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "offset_calibration_fsm",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_calibration_fsm_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "offset_calibration_fsm",
+      "core_function": "calibration/control",
+      "gold_includes": [
+        "offset_calibration_fsm.va"
+      ],
+      "gold_modules": [
+        "offset_calibration_fsm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "comp",
+        "trim"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=220n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "offset_calibration_fsm",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_calibration_fsm_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "offset_comparator",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_offset_ref.va"
+      ],
+      "gold_modules": [
+        "cmp_offset_ref"
+      ],
+      "gold_save_names": [
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=28n maxstep=20p"
+      ],
+      "issues": [],
+      "pack_id": "offset_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_offset_comparator_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "offset_comparator",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_offset_ref.va"
+      ],
+      "gold_modules": [
+        "cmp_offset_ref"
+      ],
+      "gold_save_names": [
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=28n maxstep=20p"
+      ],
+      "issues": [],
+      "pack_id": "offset_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_offset_comparator_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "offset_comparator",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_offset_ref.va"
+      ],
+      "gold_modules": [
+        "cmp_offset_ref"
+      ],
+      "gold_save_names": [
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=28n maxstep=20p"
+      ],
+      "issues": [],
+      "pack_id": "offset_comparator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_offset_comparator_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "offset_comparator",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_offset_ref.va"
+      ],
+      "gold_modules": [
+        "cmp_offset_ref"
+      ],
+      "gold_save_names": [
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=28n maxstep=20p"
+      ],
+      "issues": [],
+      "pack_id": "offset_comparator",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_offset_comparator_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "clk_out_present",
+        "clk_out_duty_cycle_is_burst"
+      ],
+      "circuit_function_id": "one_shot_timer",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "one_shot_timer.va"
+      ],
+      "gold_modules": [
+        "one_shot_timer"
+      ],
+      "gold_save_names": [
+        "trig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=260n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "one_shot_timer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_one_shot_timer_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "clk_out_present",
+        "clk_out_duty_cycle_is_burst"
+      ],
+      "circuit_function_id": "one_shot_timer",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "one_shot_timer.va"
+      ],
+      "gold_modules": [
+        "one_shot_timer"
+      ],
+      "gold_save_names": [
+        "trig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=260n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "one_shot_timer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_one_shot_timer_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "clk_out_present",
+        "clk_out_duty_cycle_is_burst"
+      ],
+      "circuit_function_id": "one_shot_timer",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "one_shot_timer.va"
+      ],
+      "gold_modules": [
+        "one_shot_timer"
+      ],
+      "gold_save_names": [
+        "trig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=260n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "one_shot_timer",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_one_shot_timer_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "clk_out_present",
+        "clk_out_duty_cycle_is_burst"
+      ],
+      "circuit_function_id": "one_shot_timer",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "one_shot_timer.va"
+      ],
+      "gold_modules": [
+        "one_shot_timer"
+      ],
+      "gold_save_names": [
+        "trig",
+        "rst_n",
+        "pulse"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=260n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "one_shot_timer",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_one_shot_timer_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "peak_detector",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "peak_detector.va"
+      ],
+      "gold_modules": [
+        "peak_detector"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "peak_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_peak_detector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "peak_detector",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "peak_detector.va"
+      ],
+      "gold_modules": [
+        "peak_detector"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "peak_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_peak_detector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "peak_detector",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "peak_detector.va"
+      ],
+      "gold_modules": [
+        "peak_detector"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "peak_detector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_peak_detector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "peak_detector",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "peak_detector.va"
+      ],
+      "gold_modules": [
+        "peak_detector"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "peak_detector",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_peak_detector_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_reset_race_short_up_pulses",
+        "pfd_reset_race_short_dn_pulses",
+        "pfd_reset_race_no_long_overlap"
+      ],
+      "circuit_function_id": "pfd_reset_race",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=10p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "pfd_reset_race",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_pfd_reset_race_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_reset_race_short_up_pulses",
+        "pfd_reset_race_short_dn_pulses",
+        "pfd_reset_race_no_long_overlap"
+      ],
+      "circuit_function_id": "pfd_reset_race",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=10p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "pfd_reset_race",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_pfd_reset_race_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_reset_race_short_up_pulses",
+        "pfd_reset_race_short_dn_pulses",
+        "pfd_reset_race_no_long_overlap"
+      ],
+      "circuit_function_id": "pfd_reset_race",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=10p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "pfd_reset_race",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_pfd_reset_race_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "pfd_reset_race_short_up_pulses",
+        "pfd_reset_race_short_dn_pulses",
+        "pfd_reset_race_no_long_overlap"
+      ],
+      "circuit_function_id": "pfd_reset_race",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "pfd_updn.va"
+      ],
+      "gold_modules": [
+        "pfd_updn"
+      ],
+      "gold_save_names": [
+        "ref",
+        "div",
+        "up",
+        "dn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=300n maxstep=10p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "pfd_reset_race",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_pfd_reset_race_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "precision_rectifier",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "precision_rectifier.va"
+      ],
+      "gold_modules": [
+        "precision_rectifier"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "precision_rectifier",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_precision_rectifier_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "precision_rectifier",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "precision_rectifier.va"
+      ],
+      "gold_modules": [
+        "precision_rectifier"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "precision_rectifier",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_precision_rectifier_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "precision_rectifier",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "precision_rectifier.va"
+      ],
+      "gold_modules": [
+        "precision_rectifier"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "precision_rectifier",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_precision_rectifier_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "precision_rectifier",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "precision_rectifier.va"
+      ],
+      "gold_modules": [
+        "precision_rectifier"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "precision_rectifier",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_precision_rectifier_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "lock",
+        "I(",
+        "ddt(",
+        "ratio_code_clamped_to_1_255",
+        "synchronous_reset_clears_state",
+        "output_clock_divides_input",
+        "lock_asserts_after_first_full_period"
+      ],
+      "circuit_function_id": "resettable_counter_divider",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "clk_divider_ref.va"
+      ],
+      "gold_modules": [
+        "clk_divider",
+        "clk_divider_ref"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "rst_n",
+        "clk_out",
+        "lock",
+        "div_code_0",
+        "div_code_1",
+        "div_code_2",
+        "div_code_3",
+        "div_code_4",
+        "div_code_5",
+        "div_code_6",
+        "div_code_7"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=50p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_counter_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_counter_divider_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "lock",
+        "I(",
+        "ddt(",
+        "ratio_code_clamped_to_1_255",
+        "synchronous_reset_clears_state",
+        "output_clock_divides_input",
+        "lock_asserts_after_first_full_period"
+      ],
+      "circuit_function_id": "resettable_counter_divider",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "clk_divider_ref.va"
+      ],
+      "gold_modules": [
+        "clk_divider",
+        "clk_divider_ref"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "rst_n",
+        "clk_out",
+        "lock",
+        "div_code_0",
+        "div_code_1",
+        "div_code_2",
+        "div_code_3",
+        "div_code_4",
+        "div_code_5",
+        "div_code_6",
+        "div_code_7"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=50p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_counter_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_counter_divider_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "lock",
+        "I(",
+        "ddt(",
+        "ratio_code_clamped_to_1_255",
+        "synchronous_reset_clears_state",
+        "output_clock_divides_input",
+        "lock_asserts_after_first_full_period"
+      ],
+      "circuit_function_id": "resettable_counter_divider",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "clk_divider_ref.va"
+      ],
+      "gold_modules": [
+        "clk_divider",
+        "clk_divider_ref"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "rst_n",
+        "clk_out",
+        "lock",
+        "div_code_0",
+        "div_code_1",
+        "div_code_2",
+        "div_code_3",
+        "div_code_4",
+        "div_code_5",
+        "div_code_6",
+        "div_code_7"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=50p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_counter_divider",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_counter_divider_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "electrical",
+        "@(cross(",
+        "transition(",
+        "lock",
+        "I(",
+        "ddt(",
+        "ratio_code_clamped_to_1_255",
+        "synchronous_reset_clears_state",
+        "output_clock_divides_input",
+        "lock_asserts_after_first_full_period"
+      ],
+      "circuit_function_id": "resettable_counter_divider",
+      "core_function": "event/timing",
+      "gold_includes": [
+        "clk_divider_ref.va"
+      ],
+      "gold_modules": [
+        "clk_divider",
+        "clk_divider_ref"
+      ],
+      "gold_save_names": [
+        "clk_in",
+        "rst_n",
+        "clk_out",
+        "lock",
+        "div_code_0",
+        "div_code_1",
+        "div_code_2",
+        "div_code_3",
+        "div_code_4",
+        "div_code_5",
+        "div_code_6",
+        "div_code_7"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=50p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_counter_divider",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_counter_divider_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "@(cross(",
+        "tran.csv",
+        "code_monotonic_non_decreasing",
+        "reset_initializes_code"
+      ],
+      "circuit_function_id": "resettable_integrator",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "resettable_integrator.va"
+      ],
+      "gold_modules": [
+        "resettable_integrator"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_integrator_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "@(cross(",
+        "tran.csv",
+        "code_monotonic_non_decreasing",
+        "reset_initializes_code"
+      ],
+      "circuit_function_id": "resettable_integrator",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "resettable_integrator.va"
+      ],
+      "gold_modules": [
+        "resettable_integrator"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_integrator_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "@(cross(",
+        "tran.csv",
+        "code_monotonic_non_decreasing",
+        "reset_initializes_code"
+      ],
+      "circuit_function_id": "resettable_integrator",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "resettable_integrator.va"
+      ],
+      "gold_modules": [
+        "resettable_integrator"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_integrator_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "@(cross(",
+        "tran.csv",
+        "code_monotonic_non_decreasing",
+        "reset_initializes_code"
+      ],
+      "circuit_function_id": "resettable_integrator",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "resettable_integrator.va"
+      ],
+      "gold_modules": [
+        "resettable_integrator"
+      ],
+      "gold_save_names": [
+        "vin",
+        "rst",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=320n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "resettable_integrator",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_integrator_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "rotating_element_selector",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "rotating_element_selector.va"
+      ],
+      "gold_modules": [
+        "rotating_element_selector"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "sel0",
+        "sel1",
+        "sel2",
+        "sel3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "rotating_element_selector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_rotating_element_selector_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "rotating_element_selector",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "rotating_element_selector.va"
+      ],
+      "gold_modules": [
+        "rotating_element_selector"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "sel0",
+        "sel1",
+        "sel2",
+        "sel3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "rotating_element_selector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_rotating_element_selector_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "rotating_element_selector",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "rotating_element_selector.va"
+      ],
+      "gold_modules": [
+        "rotating_element_selector"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "sel0",
+        "sel1",
+        "sel2",
+        "sel3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "rotating_element_selector",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_rotating_element_selector_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "rotating_element_selector",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "rotating_element_selector.va"
+      ],
+      "gold_modules": [
+        "rotating_element_selector"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst_n",
+        "sel0",
+        "sel1",
+        "sel2",
+        "sel3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=130n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "rotating_element_selector",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_rotating_element_selector_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "sar_logic_4b",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "sar_logic_4b.va"
+      ],
+      "gold_modules": [
+        "sar_logic_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "dp_dac_3",
+        "dp_dac_2",
+        "dp_dac_1",
+        "dp_dac_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1.2u maxstep=2n"
+      ],
+      "issues": [],
+      "pack_id": "sar_logic_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_sar_logic_4b_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "sar_logic_4b",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "sar_logic_4b.va"
+      ],
+      "gold_modules": [
+        "sar_logic_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "dp_dac_3",
+        "dp_dac_2",
+        "dp_dac_1",
+        "dp_dac_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1.2u maxstep=2n"
+      ],
+      "issues": [],
+      "pack_id": "sar_logic_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_sar_logic_4b_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "sar_logic_4b",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "sar_logic_4b.va"
+      ],
+      "gold_modules": [
+        "sar_logic_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "dp_dac_3",
+        "dp_dac_2",
+        "dp_dac_1",
+        "dp_dac_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1.2u maxstep=2n"
+      ],
+      "issues": [],
+      "pack_id": "sar_logic_4b",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_sar_logic_4b_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "sar_logic_4b",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "sar_logic_4b.va"
+      ],
+      "gold_modules": [
+        "sar_logic_4b"
+      ],
+      "gold_save_names": [
+        "rdy",
+        "dp_dac_3",
+        "dp_dac_2",
+        "dp_dac_1",
+        "dp_dac_0"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=1.2u maxstep=2n"
+      ],
+      "issues": [],
+      "pack_id": "sar_logic_4b",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_sar_logic_4b_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "segmented_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "segmented_dac.va"
+      ],
+      "gold_modules": [
+        "segmented_dac"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "t0",
+        "t1",
+        "t2",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=150n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "segmented_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_segmented_dac_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "segmented_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "segmented_dac.va"
+      ],
+      "gold_modules": [
+        "segmented_dac"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "t0",
+        "t1",
+        "t2",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=150n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "segmented_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_segmented_dac_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "segmented_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "segmented_dac.va"
+      ],
+      "gold_modules": [
+        "segmented_dac"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "t0",
+        "t1",
+        "t2",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=150n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "segmented_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_segmented_dac_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "segmented_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "segmented_dac.va"
+      ],
+      "gold_modules": [
+        "segmented_dac"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "t0",
+        "t1",
+        "t2",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=150n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "segmented_dac",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_segmented_dac_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "settling_time_measurement_tb",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "gold_modules": [
+        "settling_time_measurement_tb"
+      ],
+      "gold_save_names": [
+        "step",
+        "vout",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "settling_time_measurement_tb",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_settling_time_measurement_tb_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "settling_time_measurement_tb",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "gold_modules": [
+        "settling_time_measurement_tb"
+      ],
+      "gold_save_names": [
+        "step",
+        "vout",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "settling_time_measurement_tb",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_settling_time_measurement_tb_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "settling_time_measurement_tb",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "gold_modules": [
+        "settling_time_measurement_tb"
+      ],
+      "gold_save_names": [
+        "step",
+        "vout",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "settling_time_measurement_tb",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_settling_time_measurement_tb_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "settling_time_measurement_tb",
+      "core_function": "source/measurement/TB",
+      "gold_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "gold_modules": [
+        "settling_time_measurement_tb"
+      ],
+      "gold_save_names": [
+        "step",
+        "vout",
+        "done"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "settling_time_measurement_tb",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_settling_time_measurement_tb_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "slew_rate_limiter",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "slew_rate_limiter.va"
+      ],
+      "gold_modules": [
+        "slew_rate_limiter"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "slew_rate_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_slew_rate_limiter_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "slew_rate_limiter",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "slew_rate_limiter.va"
+      ],
+      "gold_modules": [
+        "slew_rate_limiter"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "slew_rate_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_slew_rate_limiter_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "slew_rate_limiter",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "slew_rate_limiter.va"
+      ],
+      "gold_modules": [
+        "slew_rate_limiter"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "slew_rate_limiter",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_slew_rate_limiter_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "slew_rate_limiter",
+      "core_function": "continuous dynamics",
+      "gold_includes": [
+        "slew_rate_limiter.va"
+      ],
+      "gold_modules": [
+        "slew_rate_limiter"
+      ],
+      "gold_save_names": [
+        "vin",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=160n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "slew_rate_limiter",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_slew_rate_limiter_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "rst",
+        "I(",
+        "ddt(",
+        "reset_overrides_output",
+        "correct_compare_without_rst"
+      ],
+      "circuit_function_id": "strongarm_comparator_behavior",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "dut_fixed.va"
+      ],
+      "gold_modules": [
+        "strongarm_reset_priority_buggy",
+        "strongarm_reset_priority_fixed"
+      ],
+      "gold_save_names": [
+        "clk",
+        "rst",
+        "inp",
+        "inn",
+        "outp",
+        "outn"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=80n maxstep=20p errpreset=conservative"
+      ],
+      "issues": [],
+      "pack_id": "strongarm_comparator_behavior",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_strongarm_comparator_behavior_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "outputs_toggle_nontrivially",
+        "output_polarity_follows_pre_and_post_swap_windows"
+      ],
+      "circuit_function_id": "strongarm_comparator_behavior",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_strongarm.va"
+      ],
+      "gold_modules": [
+        "cmp_strongarm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=4n maxstep=5p"
+      ],
+      "issues": [],
+      "pack_id": "strongarm_comparator_behavior",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_strongarm_comparator_behavior_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "outputs_toggle_nontrivially",
+        "output_polarity_follows_pre_and_post_swap_windows"
+      ],
+      "circuit_function_id": "strongarm_comparator_behavior",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_strongarm.va"
+      ],
+      "gold_modules": [
+        "cmp_strongarm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=4n maxstep=5p"
+      ],
+      "issues": [],
+      "pack_id": "strongarm_comparator_behavior",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_strongarm_comparator_behavior_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "transition(",
+        "outputs_toggle_nontrivially",
+        "output_polarity_follows_pre_and_post_swap_windows"
+      ],
+      "circuit_function_id": "strongarm_comparator_behavior",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "cmp_strongarm.va"
+      ],
+      "gold_modules": [
+        "cmp_strongarm"
+      ],
+      "gold_save_names": [
+        "clk",
+        "vinp",
+        "vinn",
+        "out_p",
+        "out_n"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=4n maxstep=5p"
+      ],
+      "issues": [],
+      "pack_id": "strongarm_comparator_behavior",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_strongarm_comparator_behavior_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "thermometer_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "thermometer_dac_4b.va"
+      ],
+      "gold_modules": [
+        "thermometer_dac_4b"
+      ],
+      "gold_save_names": [
+        "code_0",
+        "code_1",
+        "code_2",
+        "code_3",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=165n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_thermometer_dac_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "thermometer_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "thermometer_dac_4b.va"
+      ],
+      "gold_modules": [
+        "thermometer_dac_4b"
+      ],
+      "gold_save_names": [
+        "code_0",
+        "code_1",
+        "code_2",
+        "code_3",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=165n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_thermometer_dac_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "thermometer_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "thermometer_dac_4b.va"
+      ],
+      "gold_modules": [
+        "thermometer_dac_4b"
+      ],
+      "gold_save_names": [
+        "code_0",
+        "code_1",
+        "code_2",
+        "code_3",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=165n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_dac",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_thermometer_dac_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "@(cross(",
+        "electrical",
+        "genvar",
+        "transition(",
+        "I(",
+        "ddt(",
+        "manual_review_expected_output"
+      ],
+      "circuit_function_id": "thermometer_dac",
+      "core_function": "data conversion",
+      "gold_includes": [
+        "thermometer_dac_4b.va"
+      ],
+      "gold_modules": [
+        "thermometer_dac_4b"
+      ],
+      "gold_save_names": [
+        "code_0",
+        "code_1",
+        "code_2",
+        "code_3",
+        "aout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=165n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_dac",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_thermometer_dac_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "thermometer_decoder_guarded",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "thermometer_decoder_guarded.va"
+      ],
+      "gold_modules": [
+        "thermometer_decoder_guarded"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "en",
+        "th0",
+        "th1",
+        "th2",
+        "th3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_decoder_guarded",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_thermometer_decoder_guarded_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "thermometer_decoder_guarded",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "thermometer_decoder_guarded.va"
+      ],
+      "gold_modules": [
+        "thermometer_decoder_guarded"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "en",
+        "th0",
+        "th1",
+        "th2",
+        "th3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_decoder_guarded",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_thermometer_decoder_guarded_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "thermometer_decoder_guarded",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "thermometer_decoder_guarded.va"
+      ],
+      "gold_modules": [
+        "thermometer_decoder_guarded"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "en",
+        "th0",
+        "th1",
+        "th2",
+        "th3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_decoder_guarded",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_thermometer_decoder_guarded_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "thermometer_decoder_guarded",
+      "core_function": "pointer/selection",
+      "gold_includes": [
+        "thermometer_decoder_guarded.va"
+      ],
+      "gold_modules": [
+        "thermometer_decoder_guarded"
+      ],
+      "gold_save_names": [
+        "b0",
+        "b1",
+        "en",
+        "th0",
+        "th1",
+        "th2",
+        "th3"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "thermometer_decoder_guarded",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_thermometer_decoder_guarded_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "track_hold_aperture",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "sample_hold_aperture_ref.va"
+      ],
+      "gold_modules": [
+        "sample_hold_aperture_ref"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=100p"
+      ],
+      "issues": [],
+      "pack_id": "track_hold_aperture",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_track_hold_aperture_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "track_hold_aperture",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "sample_hold_aperture_ref.va"
+      ],
+      "gold_modules": [
+        "sample_hold_aperture_ref"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=100p"
+      ],
+      "issues": [],
+      "pack_id": "track_hold_aperture",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_track_hold_aperture_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "track_hold_aperture",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "sample_hold_aperture_ref.va"
+      ],
+      "gold_modules": [
+        "sample_hold_aperture_ref"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=100p"
+      ],
+      "issues": [],
+      "pack_id": "track_hold_aperture",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_track_hold_aperture_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "tran",
+        "save",
+        "ahdl_include"
+      ],
+      "circuit_function_id": "track_hold_aperture",
+      "core_function": "stateful analog memory",
+      "gold_includes": [
+        "sample_hold_aperture_ref.va"
+      ],
+      "gold_modules": [
+        "sample_hold_aperture_ref"
+      ],
+      "gold_save_names": [
+        "vin",
+        "clk",
+        "vout"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=140n maxstep=100p"
+      ],
+      "issues": [],
+      "pack_id": "track_hold_aperture",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_track_hold_aperture_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "vco_phase_integrator",
+      "core_function": "continuous dynamics/pll",
+      "gold_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "gold_modules": [
+        "vco_phase_integrator"
+      ],
+      "gold_save_names": [
+        "vctrl",
+        "phase",
+        "clk"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "vco_phase_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_vco_phase_integrator_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "vco_phase_integrator",
+      "core_function": "continuous dynamics/pll",
+      "gold_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "gold_modules": [
+        "vco_phase_integrator"
+      ],
+      "gold_save_names": [
+        "vctrl",
+        "phase",
+        "clk"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "vco_phase_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_vco_phase_integrator_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "vco_phase_integrator",
+      "core_function": "continuous dynamics/pll",
+      "gold_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "gold_modules": [
+        "vco_phase_integrator"
+      ],
+      "gold_save_names": [
+        "vctrl",
+        "phase",
+        "clk"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "vco_phase_integrator",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_vco_phase_integrator_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "vco_phase_integrator",
+      "core_function": "continuous dynamics/pll",
+      "gold_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "gold_modules": [
+        "vco_phase_integrator"
+      ],
+      "gold_save_names": [
+        "vctrl",
+        "phase",
+        "clk"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=180n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "vco_phase_integrator",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_vco_phase_integrator_tb"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "voltage_clamp",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "voltage_clamp"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "clamped_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "voltage_clamp",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "bugfix",
+      "task_id": "vbm1_voltage_clamp_bugfix"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "voltage_clamp",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "voltage_clamp"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "clamped_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "voltage_clamp",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_voltage_clamp_e2e"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "voltage_clamp",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "voltage_clamp"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "clamped_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "voltage_clamp",
+      "scoring": [
+        "dut_compile",
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_voltage_clamp_dut"
+    },
+    {
+      "checker_source_task": null,
+      "checks_items": [
+        "transition(",
+        "I(",
+        "ddt(",
+        "idt(",
+        "limiter_behavior"
+      ],
+      "circuit_function_id": "voltage_clamp",
+      "core_function": "threshold/static nonlinear",
+      "gold_includes": [
+        "dut.va"
+      ],
+      "gold_modules": [
+        "voltage_clamp"
+      ],
+      "gold_save_names": [
+        "raw_level",
+        "clamped_level"
+      ],
+      "gold_tran_lines": [
+        "tran tran stop=120n maxstep=500p"
+      ],
+      "issues": [],
+      "pack_id": "voltage_clamp",
+      "scoring": [
+        "tb_compile",
+        "sim_correct"
+      ],
+      "status": "PASS",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_voltage_clamp_tb"
+    }
+  ]
+}

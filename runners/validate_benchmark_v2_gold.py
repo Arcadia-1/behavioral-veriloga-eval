@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import contextlib
 import importlib.util
 import io
@@ -24,7 +25,14 @@ from score import (
     spectre_strict_preflight,
     stage_candidate_case,
 )
-from simulate_evas import parse_evas_log_diagnostics, parse_evas_runtime_error, parse_evas_timing, run_evas
+from simulate_evas import (
+    apply_evas_failure_diagnostics,
+    classify_evas_failure_diagnostics,
+    parse_evas_log_diagnostics,
+    parse_evas_runtime_error,
+    parse_evas_timing,
+    run_evas,
+)
 from spectre_validate_baseline import (
     DEFAULT_ENV,
     _copy_flat_spectre_input,
@@ -314,6 +322,12 @@ def validate_evas(
     )
     notes = [*staging_notes, *strict_notes]
     if strict_status is not None and strict_scores is not None:
+        evas_diagnostic = classify_evas_failure_diagnostics("\n".join(notes), notes)
+        if evas_diagnostic:
+            notes.append(f"evas_failure_stage={evas_diagnostic['stage']}")
+            notes.append(f"evas_failure_origin={evas_diagnostic['origin']}")
+            notes.append(f"evas_failure_reason={evas_diagnostic['reason']}")
+            notes.append(f"evas_spectre_alignment={evas_diagnostic['spectre_alignment']}")
         result = {
             "task_id": task_id,
             "backend": "evas",
@@ -327,6 +341,7 @@ def validate_evas(
             "checker_result": {},
             "strict_preflight_status": strict_status,
             "strict_preflight_scores": strict_scores,
+            "evas_failure_diagnostic": evas_diagnostic,
             "timing": {},
             "artifacts": {
                 "staged_dir": str(stage_dir),
@@ -352,6 +367,13 @@ def validate_evas(
     if runtime:
         notes.append("evas_runtime_error=" + runtime)
     notes.extend(parse_evas_log_diagnostics(combined))
+    evas_diagnostic = classify_evas_failure_diagnostics(combined, notes) if proc.returncode != 0 else {}
+    if evas_diagnostic:
+        notes.append(f"evas_failure_stage={evas_diagnostic['stage']}")
+        notes.append(f"evas_failure_origin={evas_diagnostic['origin']}")
+        notes.append(f"evas_failure_reason={evas_diagnostic['reason']}")
+        notes.append(f"evas_spectre_alignment={evas_diagnostic['spectre_alignment']}")
+        scores = apply_evas_failure_diagnostics(scores, evas_diagnostic)
     checker_result = {}
     if "sim_correct" not in required_axes:
         scores["sim_correct"] = 1.0
@@ -376,6 +398,7 @@ def validate_evas(
         "checker_result": checker_result,
         "strict_preflight_status": None,
         "strict_preflight_scores": None,
+        "evas_failure_diagnostic": evas_diagnostic,
         "timing": parse_evas_timing(combined),
         "artifacts": {
             "staged_dir": str(stage_dir),
@@ -397,6 +420,7 @@ def validate_spectre(
     candidate_root: Path | None = None,
     model: str = "",
     sample_idx: int = 0,
+    preflight_short_circuit: bool = False,
 ) -> dict[str, Any]:
     meta = _read_json(task_dir / "meta.json")
     task_id = meta["task_id"]
@@ -427,6 +451,27 @@ def validate_spectre(
         staged_tb=tb,
         staged_va_paths=sorted(stage_dir.glob("*.va")),
     )
+    notes = [*staging_notes, *strict_notes]
+    if preflight_short_circuit and strict_status is not None and strict_scores is not None:
+        result = {
+            "task_id": task_id,
+            "backend": "spectre",
+            "source": "candidate" if candidate_root else "gold",
+            "spectre_mode": spectre_mode,
+            "spectre_short_circuit": "strict_preflight",
+            "required_axes": required_axes,
+            "raw_required_axes": raw_required_axes,
+            "status": strict_status,
+            "scores": strict_scores,
+            "notes": notes,
+            "checker_result": {},
+            "strict_preflight_status": strict_status,
+            "strict_preflight_scores": strict_scores,
+            "artifacts": {"staged_dir": str(stage_dir), "tb": str(tb), "tran_csv": None},
+        }
+        (case_out / "spectre_result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+        return result
+
     input_dir = case_out / "spectre_input"
     netlist = _copy_flat_spectre_input(stage_dir, tb, input_dir)
     include_files = _include_files_for(netlist)
@@ -436,7 +481,6 @@ def validate_spectre(
     spectre_dir.mkdir(parents=True)
     sim._work_dir = spectre_dir
 
-    notes = [*staging_notes, *strict_notes]
     checker_result = {}
     try:
         bridge_console = io.StringIO()
@@ -533,11 +577,19 @@ def main() -> int:
     ap.add_argument("--model", default="completion-package-v0", help="Model slug under --candidate-dir.")
     ap.add_argument("--sample-idx", type=int, default=0)
     ap.add_argument("--task", action="append", default=[])
+    ap.add_argument("--task-file", action="append", default=[], help="Newline-delimited task ids to include.")
     ap.add_argument("--timeout-s", type=int, default=180)
     ap.add_argument("--env", default=str(DEFAULT_ENV))
     ap.add_argument("--profile", default="ci")
     ap.add_argument("--spectre-mode", default="spectre", choices=["spectre", "aps", "x", "cx", "ax", "mx", "lx", "vx"])
     ap.add_argument("--keep-remote-files", action="store_true")
+    ap.add_argument("--resume", action="store_true", help="Reuse existing per-task result JSONs in --output-dir.")
+    ap.add_argument("--max-workers", type=int, default=1, help="Number of local validator workers. Use small values for Spectre.")
+    ap.add_argument(
+        "--spectre-preflight-short-circuit",
+        action="store_true",
+        help="Development mode: skip real Spectre when strict preflight already proves incompatibility.",
+    )
     args = ap.parse_args()
 
     BENCH = Path(args.bench_dir)
@@ -554,36 +606,63 @@ def main() -> int:
     if candidate_root and not candidate_root.is_absolute():
         candidate_root = ROOT / candidate_root
     model_slug = args.model.replace("/", "_")
-    selected = set(args.task) if args.task else None
+    selected_tasks = set(args.task)
+    for task_file in args.task_file:
+        path = Path(task_file)
+        if not path.is_absolute():
+            path = ROOT / path
+        for line in path.read_text(encoding="utf-8").splitlines():
+            item = line.strip()
+            if item and not item.startswith("#"):
+                selected_tasks.add(item)
+    selected = selected_tasks if selected_tasks else None
     tasks = _task_dirs(selected)
     if not tasks:
         print("[benchmark-v2-validate] no tasks selected")
         return 1
 
-    sim = None
+    SpectreSimulator = None
+    spectre_mode_args = None
     if args.backend in {"spectre", "both"}:
         _load_env(Path(args.env))
         SpectreSimulator, spectre_mode_args = _import_bridge()
-        sim = SpectreSimulator(
+
+    def _make_sim(worker_label: str):
+        if SpectreSimulator is None or spectre_mode_args is None:
+            return None
+        return SpectreSimulator(
             spectre_args=spectre_mode_args(args.spectre_mode),
             timeout=args.timeout_s,
-            work_dir=out_root / "_spectre_runs",
+            work_dir=out_root / "_spectre_runs" / worker_label,
             output_format="psfascii",
             keep_remote_files=args.keep_remote_files,
             remote=True,
             profile=args.profile,
         )
 
-    evas_results: list[dict[str, Any]] = []
-    spectre_results: list[dict[str, Any]] = []
-    for idx, task_dir in enumerate(tasks, start=1):
+    serial_sim = _make_sim("serial") if args.max_workers <= 1 and args.backend in {"spectre", "both"} else None
+
+    def _existing_result(case_out: Path, backend: str) -> dict[str, Any] | None:
+        if not args.resume:
+            return None
+        path = case_out / f"{backend}_result.json"
+        if not path.exists():
+            return None
+        return _read_json(path)
+
+    def _validate_one(idx: int, task_dir: Path) -> tuple[int, dict[str, Any] | None, dict[str, Any] | None]:
         task_id = _read_json(task_dir / "meta.json")["task_id"]
         print(f"[benchmark-v2-validate] {idx}/{len(tasks)} {task_id}", flush=True)
         case_out = out_root / task_id
         case_out.mkdir(parents=True, exist_ok=True)
+        evas_result = None
+        spectre_result = None
         if args.backend in {"evas", "both"}:
-            evas_results.append(
-                validate_evas(
+            evas_result = _existing_result(case_out, "evas")
+            if evas_result is not None:
+                print(f"[benchmark-v2-validate] {idx}/{len(tasks)} {task_id} skip EVAS existing", flush=True)
+            else:
+                evas_result = validate_evas(
                     task_dir,
                     case_out,
                     args.timeout_s,
@@ -591,11 +670,14 @@ def main() -> int:
                     model=model_slug,
                     sample_idx=args.sample_idx,
                 )
-            )
         if args.backend in {"spectre", "both"}:
-            assert sim is not None
-            spectre_results.append(
-                validate_spectre(
+            spectre_result = _existing_result(case_out, "spectre")
+            if spectre_result is not None:
+                print(f"[benchmark-v2-validate] {idx}/{len(tasks)} {task_id} skip Spectre existing", flush=True)
+            else:
+                sim = serial_sim if serial_sim is not None else _make_sim(task_id)
+                assert sim is not None
+                spectre_result = validate_spectre(
                     task_dir,
                     case_out,
                     sim,
@@ -604,8 +686,27 @@ def main() -> int:
                     candidate_root=candidate_root,
                     model=model_slug,
                     sample_idx=args.sample_idx,
+                    preflight_short_circuit=args.spectre_preflight_short_circuit,
                 )
-            )
+        return idx, evas_result, spectre_result
+
+    indexed_results: list[tuple[int, dict[str, Any] | None, dict[str, Any] | None]] = []
+    max_workers = max(1, int(args.max_workers))
+    if max_workers == 1:
+        for idx, task_dir in enumerate(tasks, start=1):
+            indexed_results.append(_validate_one(idx, task_dir))
+    else:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [
+                executor.submit(_validate_one, idx, task_dir)
+                for idx, task_dir in enumerate(tasks, start=1)
+            ]
+            for future in concurrent.futures.as_completed(futures):
+                indexed_results.append(future.result())
+
+    indexed_results.sort(key=lambda item: item[0])
+    evas_results = [evas for _idx, evas, _spectre in indexed_results if evas is not None]
+    spectre_results = [spectre for _idx, _evas, spectre in indexed_results if spectre is not None]
 
     summary: dict[str, Any] = {
         "total_tasks": len(tasks),

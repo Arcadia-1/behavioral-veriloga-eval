@@ -65,6 +65,13 @@ _CONCRETE_DIAGNOSTIC_MARKERS = (
     "colon_instance_syntax_lines=",
     "nonincreasing_pwl_time=",
     "uncontinued_multiline_instance=",
+    "pwl wave must contain at least one time/value pair",
+    "instance_port_count_mismatch=",
+    "sourced_port_voltage_drive=",
+    "modulo_array_index=",
+    "parameter_open_upper_range=",
+    "parameter_default_range=",
+    "module_header_backslash_continuation=",
     "evas_runtime_error=",
     "evas_compile_errors:",
     "missing dout_code",
@@ -123,6 +130,75 @@ def _load_env_file(path: Path) -> None:
 def _json_write(path: Path, payload: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def _read_json_or_empty(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _repair_round_cost_meta(task_gen_root: Path) -> dict:
+    """Summarize actual adaptive calls, even if the final candidate rolls back."""
+    round_meta_paths = sorted(task_gen_root.glob("adaptive_round*/generation_meta.json"))
+    metas = [_read_json_or_empty(path) for path in round_meta_paths]
+    metas = [meta for meta in metas if meta]
+    if not metas:
+        return {
+            "status": "source_selected",
+            "api_call_count": 0,
+            "repair_round_count": 0,
+            "repair_round_meta_files": [],
+        }
+
+    numeric_keys = (
+        "input_tokens",
+        "output_tokens",
+        "reasoning_tokens",
+        "cached_input_tokens",
+        "api_elapsed_s",
+        "repair_api_elapsed_s",
+        "plan_api_elapsed_s",
+        "task_elapsed_s",
+        "api_call_count",
+        "repair_input_tokens",
+        "repair_output_tokens",
+        "repair_reasoning_tokens",
+        "repair_cached_input_tokens",
+        "plan_input_tokens",
+        "plan_output_tokens",
+        "plan_reasoning_tokens",
+        "plan_cached_input_tokens",
+    )
+    out: dict[str, object] = {
+        "status": "generated" if any(meta.get("status") == "generated" for meta in metas) else metas[-1].get("status", ""),
+        "repair_round_count": len(metas),
+        "repair_round_meta_files": [str(path) for path in round_meta_paths],
+    }
+    for key in numeric_keys:
+        total = sum(float(meta.get(key, 0) or 0) for meta in metas)
+        if any(key in meta for meta in metas):
+            out[key] = int(total) if key.endswith("tokens") or key == "api_call_count" else round(total, 3)
+    for key in (
+        "finish_reason",
+        "repair_finish_reason",
+        "plan_finish_reason",
+        "provider",
+        "reasoning_mode",
+        "mimo_thinking_type",
+        "mimo_reasoning_effort",
+    ):
+        values = [str(meta.get(key, "")) for meta in metas if meta.get(key, "") != ""]
+        unique = sorted(set(values))
+        if len(unique) == 1:
+            out[key] = unique[0]
+        elif unique:
+            out[key] = ",".join(unique)
+    extra_body_keys = [meta.get("mimo_extra_body_keys") for meta in metas if meta.get("mimo_extra_body_keys")]
+    if extra_body_keys:
+        out["mimo_extra_body_keys"] = extra_body_keys[-1]
+    return out
 
 
 def _parse_value(raw: str) -> float | str:
@@ -891,6 +967,516 @@ def _compile_skill_guidance_section(result: dict, *, enabled: bool) -> str:
     )
 
 
+def _public_interface_summary(task_dir: Path) -> str:
+    prompt_path = task_dir / "prompt.md"
+    if not prompt_path.exists():
+        return "- Public prompt unavailable."
+    prompt = prompt_path.read_text(encoding="utf-8", errors="ignore")
+    lines = prompt.splitlines()
+    patterns = (
+        "module name",
+        "module named",
+        "required module",
+        "public interface",
+        "inputs:",
+        "outputs:",
+        "ports",
+        "port order",
+        "positional",
+        "required instance line",
+        "include file",
+        "required dut include",
+        "save ",
+        "transient",
+        "stimulus",
+        "pwl",
+        "waveform columns",
+    )
+    selected: list[str] = []
+    seen: set[int] = set()
+    for idx, line in enumerate(lines):
+        lowered = line.lower()
+        if not any(pattern in lowered for pattern in patterns):
+            continue
+        extra = 14 if lowered.strip().rstrip(":") in {"ports", "public interface"} else 3
+        if "ports:" in lowered or "public interface" in lowered or "positional port order" in lowered:
+            extra = 14
+        for j in range(max(0, idx - 1), min(len(lines), idx + extra)):
+            if j in seen:
+                continue
+            seen.add(j)
+            text = lines[j].rstrip()
+            if text:
+                selected.append(text)
+        if len(selected) >= 28:
+            break
+    if not selected:
+        selected = [line.rstrip() for line in lines[:18] if line.rstrip()]
+    return "\n".join(f"- {line}" for line in selected[:32]) or "- <none>"
+
+
+def _diagnostic_atoms(result: dict) -> list[dict[str, object]]:
+    atoms: list[dict[str, object]] = []
+    notes = [str(note) for note in (result.get("evas_notes") or result.get("notes") or [])]
+    for note in notes:
+        lowered = note.lower()
+        if "spectre_strict:sourced_port_voltage_drive=" in lowered:
+            payload = note.split("=", 1)[1] if "=" in note else ""
+            for item in payload.split(","):
+                match = re.match(r"\s*(\d+):([^:]+):([^:]+):([^->]+)->(.+)\s*$", item)
+                if match:
+                    atoms.append(
+                        {
+                            "family": "sourced_port_voltage_drive",
+                            "line": int(match.group(1)),
+                            "instance": match.group(2),
+                            "model": match.group(3),
+                            "port": match.group(4),
+                            "node": match.group(5),
+                            "repair_intent": "Recover public positional port order before detaching nodes.",
+                        }
+                    )
+                else:
+                    atoms.append({"family": "sourced_port_voltage_drive", "raw": item.strip()})
+        elif "spectre_strict:instance_port_count_mismatch=" in lowered:
+            payload = note.split("=", 1)[1] if "=" in note else ""
+            for item in payload.split(","):
+                match = re.match(r"\s*(\d+):([^:]+):([^:]+):nodes=(\d+):ports=(\d+)\s*$", item)
+                if match:
+                    atoms.append(
+                        {
+                            "family": "instance_port_count_mismatch",
+                            "line": int(match.group(1)),
+                            "instance": match.group(2),
+                            "model": match.group(3),
+                            "nodes": int(match.group(4)),
+                            "ports": int(match.group(5)),
+                            "repair_intent": "Align module signature and instance node list with the public contract.",
+                        }
+                    )
+                else:
+                    atoms.append({"family": "instance_port_count_mismatch", "raw": item.strip()})
+        elif "spectre_strict:undefined_module=" in lowered:
+            match = re.search(r"undefined_module=([^;,\s]+).*available_modules=([^;,\s]+)", note)
+            atoms.append(
+                {
+                    "family": "undefined_module",
+                    "missing_model": match.group(1) if match else "<unknown>",
+                    "available_modules": match.group(2) if match else "<unknown>",
+                    "raw": note,
+                    "repair_intent": "Create or rename only when the public module contract and port list match.",
+                }
+            )
+        elif "spectre_strict:modulo_array_index=" in lowered:
+            atoms.append(
+                {
+                    "family": "modulo_array_index",
+                    "raw": note,
+                    "repair_intent": "Materialize dynamic array access into compile-safe scalar guarded logic.",
+                }
+            )
+        elif "pwl wave must contain at least one time/value pair" in lowered:
+            match = re.search(r"Invalid source\s+([^:]+):", note)
+            atoms.append(
+                {
+                    "family": "empty_pwl_wave",
+                    "source": match.group(1) if match else "<unknown>",
+                    "raw": note,
+                    "repair_intent": "Materialize an inline PWL wave with strictly increasing time/value pairs.",
+                }
+            )
+        elif "spectre_strict:conditional_transition" in lowered:
+            atoms.append(
+                {
+                    "family": "conditional_transition",
+                    "raw": note,
+                    "repair_intent": "Move transition targets into held variables and contribute unconditionally.",
+                }
+            )
+    return atoms[:12]
+
+
+def _format_diagnostic_atoms(atoms: list[dict[str, object]]) -> str:
+    if not atoms:
+        return "- No structured diagnostic atoms were extracted."
+    rows: list[str] = []
+    for atom in atoms:
+        fields = ", ".join(f"{key}={value}" for key, value in atom.items() if key != "repair_intent")
+        rows.append(f"- {fields}; intent={atom.get('repair_intent', '<none>')}")
+    return "\n".join(rows)
+
+
+def _snippet_for_line(path: Path, line_no: int, *, radius: int = 2) -> str:
+    lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    if not lines:
+        return ""
+    start = max(1, line_no - radius)
+    end = min(len(lines), line_no + radius)
+    body = "\n".join(f"{idx:04d}: {lines[idx - 1]}" for idx in range(start, end + 1))
+    lang = "spectre" if path.suffix.lower() == ".scs" else "verilog-a"
+    return f"# Snippet: {path.name}:{line_no}\n```{lang}\n{body}\n```"
+
+
+def _candidate_focus_snippets(sample_dir: Path, atoms: list[dict[str, object]]) -> str:
+    files = sorted([*sample_dir.glob("*.scs"), *sample_dir.glob("*.va")])
+    if not files:
+        return "No candidate files available for snippets."
+
+    snippets: list[str] = []
+    seen: set[tuple[Path, int]] = set()
+    needles: list[str] = []
+    for atom in atoms:
+        for key in ("instance", "model", "port", "node", "source", "missing_model", "available_modules"):
+            value = str(atom.get(key, "")).strip()
+            if value and value != "<unknown>":
+                needles.append(value)
+        line = atom.get("line")
+        for path in files:
+            if not isinstance(line, int):
+                continue
+            lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+            if not (1 <= line <= len(lines)):
+                continue
+            focus_line = lines[line - 1]
+            if needles and not any(needle and needle in focus_line for needle in needles):
+                continue
+            key = (path, line)
+            if key not in seen:
+                snippets.append(_snippet_for_line(path, line))
+                seen.add(key)
+
+    for path in files:
+        lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        for idx, line in enumerate(lines, start=1):
+            if not any(needle and needle in line for needle in needles):
+                continue
+            key = (path, idx)
+            if key in seen:
+                continue
+            snippets.append(_snippet_for_line(path, idx))
+            seen.add(key)
+            if len(snippets) >= 10:
+                break
+        if len(snippets) >= 10:
+            break
+
+    if not snippets:
+        return "No focused snippets matched the structured diagnostics."
+    return "\n\n".join(snippets[:10])
+
+
+def _compile_context_engineering_section(task_dir: Path, sample_dir: Path, result: dict, *, enabled: bool) -> str:
+    if not enabled:
+        return "# Context Engineering Capsule\nDisabled for this run."
+    atoms = _diagnostic_atoms(result)
+    families = {str(atom.get("family")) for atom in atoms}
+    policies: list[str] = [
+        "Use this capsule as the primary repair context; use the full files below only when copying complete replacements.",
+        "Repair only the current compile/interface/runtime surface. Do not optimize behavior metrics in this round.",
+        "If a local-looking edit would detach an output from the public observable, prefer regenerating the instance/testbench coherently from the public port contract.",
+    ]
+    if "sourced_port_voltage_drive" in families:
+        policies.append(
+            "For sourced-port conflicts, reconstruct positional instance order from public Inputs/Outputs before using any free-node detachment pattern."
+        )
+        policies.append(
+            "If this is a DUT-only task and the current candidate has no Spectre testbench to edit, repair the Verilog-A module header order itself: public input ports first, then public output ports, with matching direction/electrical declarations."
+        )
+        policies.append(
+            "If this is a testbench task, repair the `XDUT (...)` positional node list so true supply/input ports connect to sources and public output ports connect to observable free nodes that are saved."
+        )
+    if "empty_pwl_wave" in families:
+        policies.append(
+            "For empty or file-backed PWL failures, emit inline `wave=[t0 v0 t1 v1 ...]` data with strictly increasing times and enough stimulus coverage."
+        )
+        policies.append(
+            "Do not write a bare `vsource type=pwl` followed by continuation rows; Spectre/EVAS requires the time/value vector to be attached through `wave=[...]` or an existing valid file."
+        )
+    if "undefined_module" in families:
+        policies.append(
+            "For undefined modules, do not blindly rename if the generated body has the wrong port count or wrong public function; create the required module contract instead."
+        )
+        policies.append(
+            "If the public prompt lists multiple required modules and one generated body is a valid implementation, emit an additional module with the missing required name and the same public port contract rather than only editing the Spectre instance."
+        )
+    if "instance_port_count_mismatch" in families:
+        policies.append(
+            "For port-count mismatch, align both module declaration and Spectre instance nodes; avoid vector ports when the public harness uses scalar pins."
+        )
+    if "modulo_array_index" in families:
+        policies.append(
+            "For modulo/dynamic array indexing, materialize scalar guarded assignments instead of runtime-indexed electrical arrays."
+        )
+    if "conditional_transition" in families:
+        policies.append(
+            "For conditional transition diagnostics, compute a real target variable inside conditionals/events, then make exactly one unconditional `V(out) <+ transition(target, ...)` contribution outside those conditionals."
+        )
+
+    policy_text = "\n".join(f"- {line}" for line in policies)
+    return (
+        "# Context Engineering Capsule\n\n"
+        "## Selected Public Contract\n"
+        f"{_public_interface_summary(task_dir)}\n\n"
+        "## Structured Diagnostic Atoms\n"
+        f"{_format_diagnostic_atoms(atoms)}\n\n"
+        "## Focused Repair Policy\n"
+        f"{policy_text}\n\n"
+        "## Focused Candidate Snippets\n"
+        f"{_candidate_focus_snippets(sample_dir, atoms)}"
+    ).strip()
+
+
+def _extract_json_object(text: str) -> dict | None:
+    """Extract the first JSON object from a model response."""
+    candidates: list[str] = []
+    for match in re.finditer(r"```(?:json)?\s*(.*?)```", text, re.IGNORECASE | re.DOTALL):
+        candidates.append(match.group(1).strip())
+    stripped = text.strip()
+    if stripped:
+        candidates.append(stripped)
+
+    start = stripped.find("{")
+    if start >= 0:
+        depth = 0
+        in_string = False
+        escaped = False
+        for idx in range(start, len(stripped)):
+            char = stripped[idx]
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    in_string = False
+                continue
+            if char == '"':
+                in_string = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    candidates.append(stripped[start : idx + 1])
+                    break
+
+    for candidate in candidates:
+        try:
+            parsed = json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(parsed, dict):
+            return parsed
+    return None
+
+
+def _compile_plan_prompt(
+    *,
+    task_dir: Path,
+    sample_dir: Path,
+    result: dict,
+    history: list[dict],
+    round_idx: int,
+    public_spec_mode: str,
+    include_mechanism: bool,
+    include_compile_skills: bool,
+    include_context_engineering: bool,
+) -> str:
+    """Build a compact plan-only prompt for compile-closure repair."""
+    original_prompt = build_prompt(
+        task_dir,
+        include_checker=False,
+        include_skill=False,
+        public_spec_mode=public_spec_mode,
+        enhancement_mode="none",
+    )
+    mechanism_payload = build_enhancement_payload(task_dir, "mechanism") if include_mechanism else {"text": ""}
+    score_text = _compile_gate_score_summary(result)
+    history_text = _compile_history_section(history)
+    compile_skill_text = _compile_skill_guidance_section(result, enabled=include_compile_skills)
+    context_engineering_text = _compile_context_engineering_section(
+        task_dir,
+        sample_dir,
+        result,
+        enabled=include_context_engineering,
+    )
+    file_inventory = ", ".join(path.name for path in sorted([*sample_dir.glob("*.va"), *sample_dir.glob("*.scs")]))
+    if not file_inventory:
+        file_inventory = "<none>"
+
+    return textwrap.dedent(
+        f"""\
+        You are the compile-repair planner for vaEVAS.
+
+        The runner will execute exactly one repair step, then re-run EVAS and may ask
+        you to re-plan from the new validator surface. Make a small, auditable plan.
+
+        Planning rules:
+        - Plan only compile/interface/runtime/observable-gate repair, not behavior optimization.
+        - Use only public task text, public mechanism guidance, current candidate context, and validator notes.
+        - Prefer one minimal current step that should change the next validator result.
+        - If the candidate implements the wrong public function or wrong module contract, classify it as regeneration rather than a simple rename.
+        - Do not tune semantic constants, thresholds, gains, ratios, state-machine policy, or metrics unless required for compilation/interface validity.
+        - Return JSON only. Do not include markdown fences, prose, or code.
+
+        JSON schema:
+        {{
+          "root_cause": "one-sentence diagnosis",
+          "current_step": {{
+            "id": "S1",
+            "strategy": "local_edit | interface_rebuild | stimulus_rebuild | module_regeneration | harness_regeneration",
+            "goal": "what this one step will fix",
+            "edit_scope": ["filenames or file classes"],
+            "expected_validation_delta": ["validator notes expected to disappear or change"],
+            "forbidden_edits": ["edits that would leak checker/gold behavior or tune behavior"]
+          }},
+          "deferred_steps": [
+            {{
+              "id": "S2",
+              "trigger": "what EVAS would need to report before this is attempted",
+              "goal": "future step, not executed now"
+            }}
+          ],
+          "replan_signal": "what new EVAS result should cause the next plan to change"
+        }}
+
+        Attempt round: {round_idx}
+        Candidate file inventory: {file_inventory}
+
+        # Current Gate Feedback
+
+        {score_text}
+
+        # Compile-Closure History
+
+        {history_text}
+
+        {compile_skill_text}
+
+        {context_engineering_text}
+
+        # Public Mechanism Guidance
+
+        {mechanism_payload.get("text", "").strip() or "Mechanism guidance disabled for this run."}
+
+        # Original Public Task Prompt
+
+        {original_prompt.strip()}
+        """
+    ).strip() + "\n"
+
+
+def _compile_plan_execute_section(plan: dict | None, *, parse_status: str) -> str:
+    if not plan:
+        return textwrap.dedent(
+            f"""\
+            # Plan-and-Execute Compile Repair
+
+            Planner parse status: {parse_status}. Continue with the normal compile-closure prompt.
+            Repair only the current validator surface and leave newly exposed failures for the next EVAS re-plan.
+            """
+        ).strip()
+
+    plan_json = json.dumps(plan, indent=2, sort_keys=True)
+    return textwrap.dedent(
+        f"""\
+        # Plan-and-Execute Compile Repair
+
+        Planner parse status: {parse_status}.
+        The JSON plan below is a binding repair plan for this round.
+
+        Execution contract:
+        - Execute only `current_step`.
+        - Do not execute `deferred_steps` unless they are strictly necessary to make the current step compile.
+        - If EVAS exposes a different failure after this edit, leave it for the next validate-and-replan cycle.
+        - If this plan conflicts with the public task prompt or validator diagnostics, prefer the public task prompt and validator diagnostics.
+        - Output complete replacement code blocks only; do not explain the plan in prose.
+
+        ```json
+        {plan_json}
+        ```
+        """
+    ).strip()
+
+
+def _run_compile_plan_step(
+    *,
+    args: argparse.Namespace,
+    task_dir: Path,
+    context_sample_dir: Path,
+    output_sample_dir: Path,
+    result: dict,
+    history: list[dict],
+    round_idx: int,
+    include_mechanism: bool,
+) -> tuple[dict | None, dict, float, str]:
+    plan_prompt = _compile_plan_prompt(
+        task_dir=task_dir,
+        sample_dir=context_sample_dir,
+        result=result,
+        history=history,
+        round_idx=round_idx,
+        public_spec_mode=args.repair_public_spec_mode,
+        include_mechanism=include_mechanism,
+        include_compile_skills=args.compile_skill_guidance,
+        include_context_engineering=args.compile_context_engineering,
+    )
+    (output_sample_dir / "repair_plan_prompt.md").write_text(plan_prompt, encoding="utf-8")
+    print("plan ... ", end="", flush=True)
+    plan_start = time.perf_counter()
+    plan_response, plan_usage = call_model(
+        args.model,
+        plan_prompt,
+        0.0,
+        args.top_p,
+        args.plan_max_tokens,
+    )
+    plan_elapsed_s = time.perf_counter() - plan_start
+    (output_sample_dir / "repair_plan_raw_response.txt").write_text(plan_response, encoding="utf-8")
+    plan = _extract_json_object(plan_response)
+    parse_status = "parsed" if plan else "parse_failed"
+    _json_write(
+        output_sample_dir / "repair_plan.json",
+        {
+            "parse_status": parse_status,
+            "plan": plan or {},
+            "api_elapsed_s": round(plan_elapsed_s, 3),
+            "usage": plan_usage,
+        },
+    )
+    return plan, plan_usage, plan_elapsed_s, parse_status
+
+
+def _usage_int(usage: dict, key: str) -> int:
+    try:
+        return int(usage.get(key, 0) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _combine_repair_usage(repair_usage: dict, plan_usage: dict | None = None) -> dict:
+    if not plan_usage:
+        return dict(repair_usage)
+    combined = dict(repair_usage)
+    for key in ("input_tokens", "output_tokens", "reasoning_tokens", "cached_input_tokens"):
+        if key in repair_usage or key in plan_usage:
+            combined[key] = _usage_int(repair_usage, key) + _usage_int(plan_usage, key)
+            combined[f"repair_{key}"] = _usage_int(repair_usage, key)
+            combined[f"plan_{key}"] = _usage_int(plan_usage, key)
+    combined["repair_finish_reason"] = repair_usage.get("finish_reason", "")
+    combined["plan_finish_reason"] = plan_usage.get("finish_reason", "")
+    for key in (
+        "provider",
+        "reasoning_mode",
+        "mimo_thinking_type",
+        "mimo_reasoning_effort",
+        "mimo_extra_body_keys",
+    ):
+        if key not in combined and key in plan_usage:
+            combined[key] = plan_usage[key]
+    return combined
+
+
 def _compile_only_closure_prompt(
     *,
     task_dir: Path,
@@ -901,6 +1487,8 @@ def _compile_only_closure_prompt(
     public_spec_mode: str,
     include_mechanism: bool,
     include_compile_skills: bool,
+    include_context_engineering: bool,
+    plan_execute_text: str = "",
 ) -> str:
     """Build official-G compile-closure prompt without behavior checker leakage."""
     meta = read_meta(task_dir)
@@ -929,6 +1517,12 @@ def _compile_only_closure_prompt(
     score_text = _compile_gate_score_summary(result)
     history_text = _compile_history_section(history)
     compile_skill_text = _compile_skill_guidance_section(result, enabled=include_compile_skills)
+    context_engineering_text = _compile_context_engineering_section(
+        task_dir,
+        sample_dir,
+        result,
+        enabled=include_context_engineering,
+    )
 
     return textwrap.dedent(
         f"""\
@@ -963,6 +1557,10 @@ def _compile_only_closure_prompt(
         {history_text}
 
         {compile_skill_text}
+
+        {context_engineering_text}
+
+        {plan_execute_text}
 
         # Public Condition G Mechanism Guidance
 
@@ -1123,7 +1721,27 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
             break
         round_start = time.perf_counter()
         layer = _classify_repair_layer(anchor_result)
+        sample_dir = gen_root / f"adaptive_round{round_idx}"
+        sample_dir.mkdir(parents=True, exist_ok=True)
+        plan: dict | None = None
+        plan_usage: dict = {}
+        plan_api_elapsed_s = 0.0
+        plan_parse_status = "not_requested"
+        plan_execute_text = ""
         if args.compile_only_closure:
+            if args.compile_plan_execute:
+                print(f"[adaptive] CALL {model_slug}/{task_id} R{round_idx} ", end="", flush=True)
+                plan, plan_usage, plan_api_elapsed_s, plan_parse_status = _run_compile_plan_step(
+                    args=args,
+                    task_dir=task_dir,
+                    context_sample_dir=anchor_sample,
+                    output_sample_dir=sample_dir,
+                    result=anchor_result,
+                    history=history,
+                    round_idx=round_idx,
+                    include_mechanism=not args.no_repair_skill,
+                )
+                plan_execute_text = _compile_plan_execute_section(plan, parse_status=plan_parse_status)
             prompt = _compile_only_closure_prompt(
                 task_dir=task_dir,
                 sample_dir=anchor_sample,
@@ -1133,6 +1751,8 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 public_spec_mode=args.repair_public_spec_mode,
                 include_mechanism=not args.no_repair_skill,
                 include_compile_skills=args.compile_skill_guidance,
+                include_context_engineering=args.compile_context_engineering,
+                plan_execute_text=plan_execute_text,
             )
         else:
             prompt = build_evas_guided_repair_prompt(
@@ -1158,11 +1778,12 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 prompt += _syntax_zero_gate_policy_section(layer, anchor_result)
             elif args.freeze_gold_harness_on_behavior and anchor_result.get("status") == "FAIL_SIM_CORRECTNESS":
                 prompt += _layer_policy_section("behavior", task_dir)
-        sample_dir = gen_root / f"adaptive_round{round_idx}"
-        sample_dir.mkdir(parents=True, exist_ok=True)
         (sample_dir / "repair_prompt.md").write_text(prompt, encoding="utf-8")
 
-        print(f"[adaptive] CALL {model_slug}/{task_id} R{round_idx} ... ", end="", flush=True)
+        if not args.compile_plan_execute:
+            print(f"[adaptive] CALL {model_slug}/{task_id} R{round_idx} ... ", end="", flush=True)
+        else:
+            print("execute ... ", end="", flush=True)
         api_start = time.perf_counter()
         response_text, usage = call_model(
             args.model,
@@ -1172,6 +1793,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
             args.max_tokens,
         )
         api_elapsed_s = time.perf_counter() - api_start
+        combined_usage = _combine_repair_usage(usage, plan_usage if args.compile_plan_execute else None)
         (sample_dir / "raw_response.txt").write_text(response_text, encoding="utf-8")
         saved = _save_generated_response(
             response_text=response_text,
@@ -1223,12 +1845,18 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 "syntax_zero_gate": bool(args.syntax_zero_gate),
                 "compile_only_closure": bool(args.compile_only_closure),
                 "compile_skill_guidance": bool(args.compile_skill_guidance),
+                "compile_context_engineering": bool(args.compile_context_engineering),
+                "compile_plan_execute": bool(args.compile_plan_execute),
+                "compile_plan_parse_status": plan_parse_status,
+                "compile_plan": plan or {},
                 "syntax_zero_gate_state": syntax_gate_state,
-                "api_elapsed_s": round(api_elapsed_s, 3),
-                "api_call_count": 1,
+                "api_elapsed_s": round(api_elapsed_s + plan_api_elapsed_s, 3),
+                "repair_api_elapsed_s": round(api_elapsed_s, 3),
+                "plan_api_elapsed_s": round(plan_api_elapsed_s, 3),
+                "api_call_count": 2 if args.compile_plan_execute else 1,
                 "task_elapsed_s": round(time.perf_counter() - round_start, 3),
                 "generated_at": datetime.now(timezone.utc).isoformat(),
-                **usage,
+                **combined_usage,
             },
         )
         print("generated" if saved else "no_code")
@@ -1262,6 +1890,8 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
                 "scores": result.get("scores", {}),
                 "evas_notes": result.get("evas_notes", []),
                 "concrete_diagnostics": _concrete_diagnostics(result),
+                "compile_plan_parse_status": plan_parse_status,
+                "compile_plan": plan or {},
                 "metric_gap": {} if args.compile_only_closure else metric_gap_summary(task_dir, result),
                 "failure_subtype": _failure_subtype(result),
                 "metrics": _extract_metrics(result),
@@ -1303,6 +1933,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
         if args.compile_only_closure
         else []
     )
+    repair_round_cost_meta = _repair_round_cost_meta(gen_root)
     _json_write(
         final_dir / "generation_meta.json",
         {
@@ -1318,6 +1949,8 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
             "syntax_zero_gate": bool(args.syntax_zero_gate),
             "compile_only_closure": bool(args.compile_only_closure),
             "compile_skill_guidance": bool(args.compile_skill_guidance),
+            "compile_context_engineering": bool(args.compile_context_engineering),
+            "compile_plan_execute": bool(args.compile_plan_execute),
             "compile_closure_gate_state": _syntax_zero_gate_state(best_result),
             "materialized_syntax_edits": materialized_syntax_edits,
             "materialized_vector_unroll_edits": materialized_vector_unroll_edits,
@@ -1335,6 +1968,7 @@ def run_task(args: argparse.Namespace, task_id: str, task_dir: Path) -> dict:
             ],
             "history": history,
             "generated_at": datetime.now(timezone.utc).isoformat(),
+            **repair_round_cost_meta,
         },
     )
     _json_write(out_root / "best" / task_id / "result.json", best_result)
@@ -1418,11 +2052,36 @@ def parse_args() -> argparse.Namespace:
             "skill guidance into compile-only LLM repair prompts. Use for C-SKILL style ablations."
         ),
     )
+    ap.add_argument(
+        "--compile-context-engineering",
+        action="store_true",
+        help=(
+            "Inject a compact context-engineering capsule into compile-only repair prompts: structured "
+            "diagnostic atoms, public port/stimulus contract excerpts, focused candidate snippets, and "
+            "repair-intent policy. Use for CE-style compile ablations."
+        ),
+    )
+    ap.add_argument(
+        "--compile-plan-execute",
+        action="store_true",
+        help=(
+            "In compile-only closure, call the model once to write a JSON repair plan, then call it again "
+            "to execute only the current planned step before EVAS revalidation."
+        ),
+    )
+    ap.add_argument(
+        "--plan-max-tokens",
+        type=int,
+        default=2048,
+        help="Maximum output tokens for the plan-only model call used by --compile-plan-execute.",
+    )
     return ap.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    if args.compile_plan_execute and not args.compile_only_closure:
+        raise SystemExit("--compile-plan-execute requires --compile-only-closure")
     _load_env_file(Path(args.env_file))
     tasks = _task_lookup([] if args.all else (args.task or DEFAULT_TASKS), args.bench_dir)
     results = []
@@ -1472,6 +2131,10 @@ def main() -> int:
             "repair_public_spec_mode": args.repair_public_spec_mode,
             "no_repair_skill": bool(args.no_repair_skill),
             "disable_contract_diagnosis": bool(args.disable_contract_diagnosis),
+            "compile_skill_guidance": bool(args.compile_skill_guidance),
+            "compile_context_engineering": bool(args.compile_context_engineering),
+            "compile_plan_execute": bool(args.compile_plan_execute),
+            "plan_max_tokens": args.plan_max_tokens,
             "bench_dir": args.bench_dir,
         },
         "results": [

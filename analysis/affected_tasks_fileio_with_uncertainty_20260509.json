@@ -1,0 +1,190 @@
+{
+  "change_types": [
+    "fileio"
+  ],
+  "features_json": "analysis/main120_D_candidate_feature_tags_20260509.json",
+  "include_uncertain": true,
+  "selected_count": 16,
+  "selected_features": [
+    "uses_fileio"
+  ],
+  "tasks": [
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_fileio"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "bugfix",
+      "task_id": "vbm1_file_metric_writer_bugfix",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_fileio"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_file_metric_writer_dut",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_fileio"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_file_metric_writer_e2e",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_fileio"
+      ],
+      "pack_id": "file_metric_writer",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_file_metric_writer_tb",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "first_order_lowpass",
+      "task_form": "bugfix",
+      "task_id": "vbm1_first_order_lowpass_bugfix",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "first_order_lowpass",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_first_order_lowpass_e2e",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "pfd_reset_race",
+      "task_form": "bugfix",
+      "task_id": "vbm1_pfd_reset_race_bugfix",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "pfd_reset_race",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_pfd_reset_race_dut",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "pfd_reset_race",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_pfd_reset_race_e2e",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "pfd_reset_race",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_pfd_reset_race_tb",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "bugfix",
+      "task_id": "vbm1_resettable_counter_divider_bugfix",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_resettable_counter_divider_dut",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_resettable_counter_divider_e2e",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "resettable_counter_divider",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_resettable_counter_divider_tb",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "vco_phase_integrator",
+      "task_form": "bugfix",
+      "task_id": "vbm1_vco_phase_integrator_bugfix",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": true,
+      "matched_features": [],
+      "pack_id": "vco_phase_integrator",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_vco_phase_integrator_e2e",
+      "uncertainty": [
+        "has_macro_use"
+      ]
+    }
+  ],
+  "unknown_change_types": []
+}

@@ -1,0 +1,49 @@
+{
+  "artifacts": [
+    "candidate.out"
+  ],
+  "balanced_role": "imported_original92",
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "sar-logic",
+  "circuit_function_id": "sar_logic_4b",
+  "core_function": "data conversion",
+  "difficulty": "easy",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "expected_output_summary": "A complete .va file with proper port declarations, genvar loops, @(initial_step), cross() events for clock edges, bit-cycling state machine, and transition() outputs using supply voltages.",
+  "family": "tb-generation",
+  "id": "sar_logic",
+  "inputs": [
+    "prompt.md"
+  ],
+  "must_include": [
+    "@(cross(",
+    "electrical",
+    "genvar",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt("
+  ],
+  "pack_id": "sar_logic_4b",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "original92",
+  "source_eval_id": 1,
+  "source_family": "spec-to-va",
+  "source_files": [],
+  "source_name": "eval-sar-logic",
+  "source_relative_path": "tasks/spec-to-va/voltage/adc-sar/sar_logic",
+  "source_seed_task_id": "original92_sar_logic",
+  "source_task_form": "dut-only/spec-to-va",
+  "source_task_id": "sar_logic_4b",
+  "task_form": "tb-generation",
+  "task_id": "vbm1_sar_logic_4b_tb"
+}

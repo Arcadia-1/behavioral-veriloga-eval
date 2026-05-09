@@ -1,0 +1,37 @@
+{
+  "benchmark": "vaBench-main-v1",
+  "benchmark_split": "benchmark-vabench-main-v1",
+  "category": "file-io",
+  "circuit_function_id": "file_metric_writer",
+  "core_function": "source/measurement/TB",
+  "difficulty": "medium",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "gold": {
+    "dut": "gold/dut.va",
+    "tb": "gold/tb_ref.scs"
+  },
+  "pack_id": "file_metric_writer",
+  "pack_version": "v1",
+  "promotion_status": "vabench_main_seed_needs_semantic_audit_and_gold_validation",
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "benchmark-v2 external architecture representative",
+  "source_benchmark": "benchmark-balanced",
+  "source_collection": "balanced_supplement_v1",
+  "source_seed_task_id": "balanced_analog_limiter_bugfix",
+  "source_task": "v2_ext_limiter_model_000",
+  "source_task_form": "bugfix",
+  "source_task_id": "file_metric_writer",
+  "task_form": "bugfix",
+  "task_id": "vbm1_file_metric_writer_bugfix",
+  "v2_checker_spec": {
+    "kind": "limiter",
+    "vin": "raw_level",
+    "vout": "limited_level"
+  }
+}

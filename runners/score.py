@@ -40,7 +40,7 @@ from pathlib import Path
 
 from failure_attribution import attach_failure_attribution
 from interface_parameter_guard import check_interface_parameter_paths, format_issue_notes
-from simulate_evas import has_behavior_check, run_case
+from simulate_evas import classify_evas_failure_diagnostics, has_behavior_check, run_case
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -607,6 +607,31 @@ def spectre_unsupported_directive_lines(tb_path: Path) -> list[str]:
     return bad
 
 
+
+def spectre_uncontinued_multiline_source_lines(tb_path: Path) -> list[str]:
+    """Detect multiline source statements that need Spectre continuation marks.
+
+    Spectre netlists do not implicitly join a primitive source line such as
+    `Vraw (...) vsource type=pwl wave=[` with subsequent numeric rows.  EVAS can
+    recover that intent, but real Spectre reports an unexpected end-of-line
+    unless the source line is continued explicitly.
+    """
+    text = _strip_line_comments(tb_path.read_text(encoding="utf-8", errors="ignore"))
+    bad: list[str] = []
+    primitive_line = re.compile(r"^\s*[A-Za-z_][A-Za-z0-9_.$]*\s*\([^)]*\)\s+(?:vsource|isource)\b", re.IGNORECASE)
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped or stripped.endswith("\\"):
+            continue
+        if not primitive_line.search(stripped):
+            continue
+        opens = stripped.count("[") + stripped.count("(")
+        closes = stripped.count("]") + stripped.count(")")
+        if opens > closes:
+            compact = re.sub(r"\s+", " ", stripped)
+            bad.append(f"{lineno}:{compact}")
+    return bad
+
 def spectre_reversed_source_syntax_lines(tb_path: Path) -> list[str]:
     """Detect reversed Spectre primitive syntax such as `vsource vdd (...)`.
 
@@ -981,6 +1006,23 @@ def _has_digital_verilog_syntax(va_path: Path) -> list[str]:
     return issues
 
 
+
+def _empty_control_branch_hits(va_path: Path) -> list[str]:
+    """Detect empty `if/else` branches written as `end else if (...) end`.
+
+    EVAS currently tolerates this malformed control-flow shape, but Spectre
+    VACOMP rejects it during AHDL read-in.  The robust Verilog-A form is either
+    to remove the empty branch or spell it as `begin ... end` with a statement.
+    """
+    text = _strip_line_comments(va_path.read_text(encoding="utf-8", errors="ignore"))
+    hits: list[str] = []
+    pattern = re.compile(r"\bend\s+else\s+if\s*\([^)]*\)\s*end\b|\bend\s+else\s*end\b")
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        if pattern.search(line):
+            compact = re.sub(r"\s+", " ", line.strip())
+            hits.append(f"{va_path.name}:{lineno}:{compact}")
+    return hits
+
 def _direct_filename_fileio_hits(va_path: Path) -> list[str]:
     """Detect Spectre-incompatible file I/O using a string as the descriptor.
 
@@ -1351,6 +1393,14 @@ def spectre_strict_preflight(
             + ",".join(reversed_source_lines[:8])
         )
 
+    multiline_source_lines = spectre_uncontinued_multiline_source_lines(staged_tb)
+    if multiline_source_lines:
+        _record_failure("tb_syntax")
+        notes.append(
+            "spectre_strict:uncontinued_multiline_source="
+            + ",".join(multiline_source_lines[:8])
+        )
+
     pulse_timing_lines = spectre_pulse_nonpositive_timing_lines(staged_tb)
     if pulse_timing_lines:
         _record_failure("tb_syntax")
@@ -1458,6 +1508,13 @@ def spectre_strict_preflight(
             notes.append(
                 "spectre_strict:embedded_declaration="
                 + ",".join(embedded_decl_hits[:12])
+            )
+        empty_branch_hits = _empty_control_branch_hits(va_path)
+        if empty_branch_hits:
+            _record_failure("ahdl_syntax")
+            notes.append(
+                "spectre_strict:empty_control_branch="
+                + ",".join(empty_branch_hits[:12])
             )
         for digital_issue in _has_digital_verilog_syntax(va_path):
             _record_failure("ahdl_syntax")
@@ -1757,11 +1814,21 @@ def score_one_task(
             staged_va_paths=sorted(tmp_path.rglob("*.va")),
         )
         if strict_status is not None and strict_scores is not None:
+            evas_diagnostic = classify_evas_failure_diagnostics("\n".join(strict_notes), strict_notes)
             evas_result = {
                 "status": strict_status,
                 "scores": strict_scores,
                 "notes": strict_notes,
+                "evas_failure_diagnostic": evas_diagnostic,
             }
+            if evas_diagnostic:
+                evas_result["notes"] = [
+                    *evas_result["notes"],
+                    f"evas_failure_stage={evas_diagnostic['stage']}",
+                    f"evas_failure_origin={evas_diagnostic['origin']}",
+                    f"evas_failure_reason={evas_diagnostic['reason']}",
+                    f"evas_spectre_alignment={evas_diagnostic['spectre_alignment']}",
+                ]
         else:
             try:
                 evas_result = run_case(
@@ -1810,6 +1877,8 @@ def score_one_task(
     }
     if status != "PASS" and evas_result.get("stdout_tail"):
         result["evas_stdout_tail"] = evas_result.get("stdout_tail")
+    if evas_result.get("evas_failure_diagnostic"):
+        result["evas_failure_diagnostic"] = evas_result.get("evas_failure_diagnostic")
     result["evas_notes"] = staging_notes + result["evas_notes"]
     attach_failure_attribution(result)
     _save_result(result, output_dir)

@@ -1,0 +1,2270 @@
+{
+  "backend": "spectre",
+  "failure_origin_counts": {
+    "candidate_behavior": 55,
+    "dut_source": 42,
+    "interface_contract": 1,
+    "none": 21,
+    "testbench_source": 1
+  },
+  "failure_reason_counts": {
+    "checker_behavior_failure": 55,
+    "conditional_transition_semantics": 19,
+    "dut_compile_or_elaboration_failure": 19,
+    "interface_source_drive": 1,
+    "pass": 21,
+    "tb_source_or_netlist_parse": 1,
+    "unsupported_or_nonstandard_symbol": 4
+  },
+  "failure_stage_counts": {
+    "behavior_check": 55,
+    "compile_or_elaboration": 19,
+    "interface_preflight": 1,
+    "pass": 21,
+    "source_semantics_preflight": 19,
+    "source_unsupported_symbol": 4,
+    "tb_source_parse": 1
+  },
+  "normalized_status_counts": {
+    "FAIL": 99,
+    "PASS": 21
+  },
+  "raw_status_counts": {
+    "FAIL_DUT_COMPILE": 32,
+    "FAIL_SIM_CORRECTNESS": 55,
+    "FAIL_TB_COMPILE": 12,
+    "PASS": 21
+  },
+  "result_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/main120-D-rulesonly-mimo-v2.5-pro-spectre-jin-20260508-main120-D",
+  "rows": [
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=523 cols=5",
+        "first=0.003 mid=0.004 late=0.006"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_background_calibration_accumulator_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=557 cols=5",
+        "first=0.004 mid=0.005 late=0.007"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_background_calibration_accumulator_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=background_calibration_accumulator.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=597 cols=5",
+        "first=0.004 mid=0.007 late=0.010"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_background_calibration_accumulator_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "gold_dut_include=background_calibration_accumulator.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=675 cols=8",
+        "first=0.210 mid=0.050 late=0.050"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_background_calibration_accumulator_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=297 cols=7",
+        "count_range=(0, 0)"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:conditional_transition=barrel_pointer_window.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_barrel_pointer_window_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "generated_include=barrel_pointer_window.va",
+        "spectre_strict:conditional_transition=barrel_pointer_window.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_barrel_pointer_window_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "gold_dut_include=barrel_pointer_window.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=360 cols=7",
+        "count_range=(2, 2)"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_barrel_pointer_window_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=530 cols=5",
+        "first=0.040 mid=0.050 late=0.070"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_cdac_calibration_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=585 cols=5",
+        "first=0.940 mid=0.930 late=0.940"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_cdac_calibration_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=cdac_calibration.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=689 cols=5",
+        "first=0.080 mid=0.140 late=0.200"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_cdac_calibration_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=cdac_calibration.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=832 cols=5",
+        "first=0.050 mid=0.050 late=0.050"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_cdac_calibration_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=debounce_latch.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_debounce_latch_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=326 cols=4",
+        "early=0.000 late=1.000"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_debounce_latch_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=debounce_latch.va",
+        "spectre_strict:conditional_transition=debounce_latch.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_debounce_latch_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=debounce_latch.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_debounce_latch_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=400 cols=4",
+        "pulse_edges=4 high_frac=0.280"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_edge_detector_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=424 cols=4",
+        "pulse_edges=4 high_frac=0.292"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_edge_detector_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=edge_detector.va",
+        "spectre_strict:conditional_transition=edge_detector.va",
+        "spectre_strict:conditional_cross=edge_detector.va:20:conditional_block",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_edge_detector_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=edge_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_edge_detector_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:conditional_transition=element_shuffler.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_element_shuffler_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=321 cols=7",
+        "highs={'out0': 34, 'out1': 96, 'out2': 96, 'out3': 95}"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_element_shuffler_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "generated_include=element_shuffler.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=344 cols=7",
+        "highs={'out0': 329, 'out1': 17, 'out2': 0, 'out3': 0}"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_element_shuffler_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "gold_dut_include=element_shuffler.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=341 cols=7",
+        "highs={'out0': 274, 'out1': 26, 'out2': 26, 'out3': 15}"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_element_shuffler_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:interface_parameter_missing=file_metric_writer:filename instance=XDUT passed=filename declared=<none>",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=196 cols=3",
+        "pre=1.000 post=1.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_file_metric_writer_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=196 cols=3",
+        "pre=0.000 post=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_file_metric_writer_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "generated_include=file_metric_writer.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=183 cols=3",
+        "pre=0.000 post=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_file_metric_writer_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "gold_dut_include=file_metric_writer.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=225 cols=4",
+        "pre=0.478 post=0.900"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_file_metric_writer_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.92,
+      "evidence": "unsupported/nonstandard time symbol appears in source or runtime trace",
+      "failure_origin": "dut_source",
+      "failure_reason": "unsupported_or_nonstandard_symbol",
+      "failure_stage": "source_unsupported_symbol",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "generated_include=first_order_lowpass.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_first_order_lowpass_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "gold_dut_include=first_order_lowpass.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=623 cols=3",
+        "early=0.736 late=0.080"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_first_order_lowpass_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=429 cols=6",
+        "first=0.050 late=0.020"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_gain_trim_controller_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=461 cols=6",
+        "first=0.540 late=0.510"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_gain_trim_controller_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "generated_include=gain_trim_controller.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=596 cols=6",
+        "first=0.480 late=0.410"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_gain_trim_controller_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "gold_dut_include=gain_trim_controller.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=567 cols=6",
+        "first=0.300 late=0.200"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_gain_trim_controller_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=376 cols=4",
+        "high=0.496 decayed=0.467 rst=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_leaky_hold_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=leaky_hold.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_leaky_hold_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=leaky_hold.va",
+        "spectre_strict:conditional_transition=leaky_hold.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_leaky_hold_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=leaky_hold.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=431 cols=4",
+        "high=0.561 decayed=0.102 rst=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_leaky_hold_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=834 cols=5",
+        "early_high=0.000 late_high=0.314"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_lock_detector_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=858 cols=5",
+        "early_high=0.000 late_high=0.759"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_lock_detector_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=lock_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1960 cols=5",
+        "early_high=0.000 late_high=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_lock_detector_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=lock_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_lock_detector_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=526 cols=5",
+        "first=0.040 mid=0.030 late=0.040"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_offset_calibration_fsm_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=536 cols=5",
+        "first=0.300 mid=0.400 late=0.400"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_offset_calibration_fsm_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=offset_calibration_fsm.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=596 cols=5",
+        "first=0.100 mid=0.100 late=0.100"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_offset_calibration_fsm_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=offset_calibration_fsm.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=666 cols=5",
+        "first=0.610 mid=0.450 late=0.850"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_offset_calibration_fsm_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1418 cols=5",
+        "clock_decisions=7",
+        "high_ok=1",
+        "low_ok=1"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_offset_comparator_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1440 cols=5",
+        "clock_decisions=7",
+        "high_ok=1",
+        "low_ok=1"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_offset_comparator_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=cmp_offset_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_offset_comparator_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=cmp_offset_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_offset_comparator_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=549 cols=4",
+        "trig_edges=5 pulse_edges=1 pulse_frac=0.8454"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_one_shot_timer_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=one_shot_timer.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_one_shot_timer_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "testbench/source parser rejected source syntax or waveform syntax",
+      "failure_origin": "testbench_source",
+      "failure_reason": "tb_source_or_netlist_parse",
+      "failure_stage": "tb_source_parse",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=one_shot_timer.va",
+        "spectre_strict:unsupported_tb_directives=13:curly_block,14:curly_block,17:curly_block,18:curly_block,21:curly_block,22:curly_block,25:curly_block,26:curly_block",
+        "spectre_strict:conditional_transition=one_shot_timer.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_one_shot_timer_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "normalized_tb_save_tokens=1",
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=one_shot_timer.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_one_shot_timer_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=422 cols=4",
+        "pre=0.550 rst=0.000 late=0.700"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_peak_detector_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=571 cols=4",
+        "pre=0.550 rst=0.292 late=0.700"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_peak_detector_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=peak_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=802 cols=4",
+        "pre=1.793 rst=2.500 late=2.500"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_peak_detector_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=peak_detector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_peak_detector_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=30125 cols=5",
+        "up_first=0.0101 dn_first=0.0000 up_second=0.0000 dn_second=0.0102 up_pulses_first=5 dn_pulses_second=5 overlap_frac=0.0000"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_pfd_reset_race_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "spectre_strict:interface_parameter_missing=pfd_updn:tedge instance=IDUT passed=tedge,vth declared=reset_delay,td,vhi,vth",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=30127 cols=5",
+        "up_first=0.0103 dn_first=0.0000 up_second=0.0000 dn_second=0.0103 up_pulses_first=5 dn_pulses_second=5 overlap_frac=0.0000"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_pfd_reset_race_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "generated_include=pfd_updn.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=30037 cols=5",
+        "up_first=0.0500 dn_first=0.0000 up_second=0.0499 dn_second=0.0000 up_pulses_first=1 dn_pulses_second=0 overlap_frac=0.0000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_pfd_reset_race_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:4",
+        "gold_dut_include=pfd_updn.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=30121 cols=5",
+        "up_first=0.2000 dn_first=0.0000 up_second=0.2000 dn_second=0.0000 up_pulses_first=10 dn_pulses_second=0 overlap_frac=0.0000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_pfd_reset_race_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:conditional_transition=precision_rectifier.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_precision_rectifier_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:conditional_transition=precision_rectifier.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_precision_rectifier_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "generated_include=precision_rectifier.va",
+        "spectre_strict:conditional_transition=precision_rectifier.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_precision_rectifier_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "gold_dut_include=precision_rectifier.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=506 cols=4",
+        "neg=0.577 pos=0.991"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_precision_rectifier_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:3,inserted:1,signals:12",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=2102 cols=13",
+        "ratio=5 in_edges=80 out_edges=8 intervals=[10, 10, 10, 10, 10, 10] lock=1"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_resettable_counter_divider_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:3,inserted:1,signals:12",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=2348 cols=13",
+        "ratio=5 in_edges=80 out_edges=40 intervals=[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2] lock=1"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_resettable_counter_divider_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:12",
+        "generated_include=clk_divider_ref.va",
+        "spectre_strict:conditional_transition=clk_divider_ref.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_counter_divider_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:12",
+        "gold_dut_include=clk_divider_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1911 cols=13",
+        "ratio=5 in_edges=80 out_edges=16 intervals=[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5] lock=1"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_resettable_counter_divider_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.92,
+      "evidence": "unsupported/nonstandard time symbol appears in source or runtime trace",
+      "failure_origin": "dut_source",
+      "failure_reason": "unsupported_or_nonstandard_symbol",
+      "failure_stage": "source_unsupported_symbol",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.92,
+      "evidence": "unsupported/nonstandard time symbol appears in source or runtime trace",
+      "failure_origin": "dut_source",
+      "failure_reason": "unsupported_or_nonstandard_symbol",
+      "failure_stage": "source_unsupported_symbol",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.92,
+      "evidence": "unsupported/nonstandard time symbol appears in source or runtime trace",
+      "failure_origin": "dut_source",
+      "failure_reason": "unsupported_or_nonstandard_symbol",
+      "failure_stage": "source_unsupported_symbol",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=resettable_integrator.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_resettable_integrator_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=resettable_integrator.va",
+        "spectre_strict:nonincreasing_pwl_time=7:t1=1e-08,t2=1e-08:Vvin (vin 0) vsource type=pwl wave=[,29:t1=6e-08,t2=6e-08:Vrst (rst 0) vsource type=pwl wave=[",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_resettable_integrator_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:conditional_transition=rotating_element_selector.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_rotating_element_selector_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=327 cols=7",
+        "highs={'sel0': 86, 'sel1': 98, 'sel2': 94, 'sel3': 49}"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_rotating_element_selector_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "generated_include=rotating_element_selector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=344 cols=7",
+        "highs={'sel0': 328, 'sel1': 16, 'sel2': 0, 'sel3': 0}"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_rotating_element_selector_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "gold_dut_include=rotating_element_selector.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=360 cols=7",
+        "highs={'sel0': 298, 'sel1': 29, 'sel2': 30, 'sel3': 0}"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_rotating_element_selector_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=814 cols=6",
+        "rdy_edges=6 active_bits=4 spans={'dp_dac_0': 1.8, 'dp_dac_1': 1.8, 'dp_dac_2': 1.8, 'dp_dac_3': 1.8}"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_sar_logic_4b_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=936 cols=6",
+        "rdy_edges=5 active_bits=4 spans={'dp_dac_0': 1.800000000000001, 'dp_dac_1': 1.800000000000001, 'dp_dac_2': 1.800000000000001, 'dp_dac_3': 1.800000000000001}"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_sar_logic_4b_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "generated_include=sar_logic_4b.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_sar_logic_4b_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "gold_dut_include=sar_logic_4b.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_sar_logic_4b_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=350 cols=7",
+        "vals=[0.0, 0.465, 0.232, 0.813, 0.203]"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_segmented_dac_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=366 cols=7",
+        "vals=[0.0, 0.15, 0.3, 0.6, 0.45]"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_segmented_dac_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "generated_include=segmented_dac.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=419 cols=7",
+        "vals=[1.029, 0.686, 0.171, 0.514, 0.686]"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_segmented_dac_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "gold_dut_include=segmented_dac.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=327 cols=7",
+        "vals=[1.0, 0.4, 0.333, 1.0, 0.667]"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_segmented_dac_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=settling_time_measurement_tb.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_settling_time_measurement_tb_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=settling_time_measurement_tb.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_settling_time_measurement_tb_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=settling_time_measurement_tb.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=323 cols=4",
+        "early=1.000 late=1.000 done=1.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_settling_time_measurement_tb_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "gold_dut_include=settling_time_measurement_tb.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=513 cols=5",
+        "early=0.916 late=1.196 done=0.900"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_settling_time_measurement_tb_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:embedded_declaration=slew_rate_limiter.va:27:real dt;,slew_rate_limiter.va:28:real dv;,slew_rate_limiter.va:29:real max_dv;,slew_rate_limiter.va:30:real target;",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "spectre_strict:embedded_declaration=slew_rate_limiter.va:24:real dt, dv, max_change, v_target;",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "generated_include=slew_rate_limiter.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=423 cols=3",
+        "early=1.800 late=1.398"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_slew_rate_limiter_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "gold_dut_include=slew_rate_limiter.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_slew_rate_limiter_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:6",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=4031 cols=7",
+        "reset_outp_max=0.000 reset_outn_max=0.000 high_outp=1.000 high_outn=1.000 low_outp=0.985 low_outn=0.985"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_strongarm_comparator_behavior_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:conditional_transition=cmp_strongarm.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_strongarm_comparator_behavior_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "generated_include=cmp_strongarm.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=810 cols=6",
+        "pre_high_frac=0.000 post_low_frac=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_strongarm_comparator_behavior_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "gold_dut_include=cmp_strongarm.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=854 cols=4",
+        "missing time/out_p/out_n"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_strongarm_comparator_behavior_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=428 cols=6",
+        "samples=[(0, 0.0), (2, 0.06), (4, 0.06), (6, 0.12), (8, 0.06), (10, 0.12), (12, 0.12), (15, 0.24)] span=0.240 max_err=0.660 mono=False"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_dac_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=454 cols=6",
+        "samples=[(0, 0.0), (2, 0.06), (4, 0.06), (6, 0.12), (8, 0.06), (10, 0.12), (12, 0.12), (15, 0.24)] span=0.240 max_err=0.660 mono=False"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_dac_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "generated_include=thermometer_dac_4b.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1061 cols=6",
+        "samples=[(8, 0.12), (14, 0.36), (11, 0.36), (13, 0.36), (8, 0.12), (14, 0.36), (11, 0.36), (13, 0.36)] span=0.240 max_err=0.480 mono=True"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_dac_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:5",
+        "gold_dut_include=thermometer_dac_4b.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_thermometer_dac_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:7",
+        "spectre_strict:conditional_transition=thermometer_decoder_guarded.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_thermometer_decoder_guarded_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:7",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=295 cols=8",
+        "off=0.000 th1=0.000 th2=0.000 th3=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_decoder_guarded_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:7",
+        "generated_include=thermometer_decoder_guarded.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=490 cols=8",
+        "off=1.289 th1=1.800 th2=0.536 th3=0.536"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_decoder_guarded_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:7",
+        "gold_dut_include=thermometer_decoder_guarded.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=559 cols=8",
+        "off=0.274 th1=0.900 th2=0.294 th3=0.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_thermometer_decoder_guarded_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1474 cols=4",
+        "edges=7 checked=6 mismatches=0 hold_failures=0"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_track_hold_aperture_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1529 cols=4",
+        "edges=7 checked=6 mismatches=0 hold_failures=0"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_track_hold_aperture_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=sample_hold_aperture_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_track_hold_aperture_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=sample_hold_aperture_ref.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_track_hold_aperture_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.95,
+      "evidence": "transition() appears inside conditional/event/loop/case control flow",
+      "failure_origin": "dut_source",
+      "failure_reason": "conditional_transition_semantics",
+      "failure_stage": "source_semantics_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:conditional_transition=vco_phase_integrator.va",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_vco_phase_integrator_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1815 cols=4",
+        "early_edges=26 late_edges=0 phase_span=105627.099"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_vco_phase_integrator_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 0.9,
+      "evidence": "simulation completed and checker reported a behavior mismatch",
+      "failure_origin": "candidate_behavior",
+      "failure_reason": "checker_behavior_failure",
+      "failure_stage": "behavior_check",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "generated_include=vco_phase_integrator.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1803 cols=4",
+        "early_edges=199 late_edges=193 phase_span=1.000"
+      ],
+      "raw_status": "FAIL_SIM_CORRECTNESS",
+      "task_id": "vbm1_vco_phase_integrator_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:3",
+        "gold_dut_include=vco_phase_integrator.va",
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=631 cols=4",
+        "early_edges=4 late_edges=4 phase_span=0.989"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_vco_phase_integrator_tb"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=1377 cols=3",
+        "low_clamp_ok=1",
+        "mid_follow_ok=1",
+        "high_clamp_ok=1",
+        "max_err=0.0011"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_voltage_clamp_bugfix"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.98,
+      "evidence": "source drives a port that is classified as DUT-driven/output",
+      "failure_origin": "interface_contract",
+      "failure_reason": "interface_source_drive",
+      "failure_stage": "interface_preflight",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "generated_dut_staged_as=dut.va",
+        "spectre_strict:sourced_port_voltage_drive=10:XDUT:voltage_clamp:clamped_level->vdd",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_DUT_COMPILE",
+      "task_id": "vbm1_voltage_clamp_dut"
+    },
+    {
+      "backend": "spectre",
+      "blocking": false,
+      "confidence": 1.0,
+      "evidence": "status=PASS",
+      "failure_origin": "none",
+      "failure_reason": "pass",
+      "failure_stage": "pass",
+      "normalized_status": "PASS",
+      "notes_tail": [
+        "spectre_strict:preflight_pass",
+        "spectre_csv_rows=312 cols=3",
+        "low_clamp_ok=1",
+        "mid_follow_ok=1",
+        "high_clamp_ok=1",
+        "max_err=0"
+      ],
+      "raw_status": "PASS",
+      "task_id": "vbm1_voltage_clamp_e2e"
+    },
+    {
+      "backend": "spectre",
+      "blocking": true,
+      "confidence": 0.82,
+      "evidence": "DUT compile/elaboration failed before a behavior verdict",
+      "failure_origin": "dut_source",
+      "failure_reason": "dut_compile_or_elaboration_failure",
+      "failure_stage": "compile_or_elaboration",
+      "normalized_status": "FAIL",
+      "notes_tail": [
+        "contract_save_pruned=removed:1,inserted:1,signals:2",
+        "gold_dut_include=dut.va",
+        "spectre_strict:preflight_pass",
+        "spectre_data_missing_time",
+        "spectre_returncode=2"
+      ],
+      "raw_status": "FAIL_TB_COMPILE",
+      "task_id": "vbm1_voltage_clamp_tb"
+    }
+  ],
+  "total_tasks": 120
+}

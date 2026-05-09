@@ -1,0 +1,18 @@
+{
+  "evas": {
+    "fail_tasks": [
+      {
+        "notes": [
+          "contract_save_pruned=removed:1,inserted:1,signals:11",
+          "generated_include=prbs7_ref.va",
+          "generated_dut_alias=prbs7_ref.va->prbs7.va",
+          "spectre_strict:undefined_module=prbs7;available_modules=prbs7_ref"
+        ],
+        "status": "FAIL_TB_COMPILE",
+        "task_id": "bpack_prbs7_lfsr_e2e"
+      }
+    ]
+  },
+  "purpose": "R2 required-module alias/wrapper targeted compile-skill smoke",
+  "source": "results-bpack48__mimo-v25-pro__strict-evas__compile-skill-prompt-mt8192__20260508/summary.json"
+}

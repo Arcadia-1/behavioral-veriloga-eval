@@ -1,0 +1,14 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "sar_logic_4b.va"
+
+Vvdd  (vdd 0) vsource dc=0.9
+Vvss  (vss 0) vsource dc=0.0
+Vclks (clks 0) vsource type=pulse val0=0 val1=0.9 period=50n width=25n rise=1n fall=1n
+Vdcomp (dcomp 0) vsource type=pulse val0=0 val1=0.9 period=180n width=95n rise=1n fall=1n delay=20n
+
+IDUT (vdd vss clks dcomp dp_dac_3 dp_dac_2 dp_dac_1 dp_dac_0 rdy) sar_logic_4b
+
+tran tran stop=1.2u maxstep=2n
+save rdy dp_dac_3 dp_dac_2 dp_dac_1 dp_dac_0

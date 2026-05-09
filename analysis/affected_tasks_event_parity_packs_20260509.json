@@ -1,0 +1,217 @@
+{
+  "change_types": [
+    "cross",
+    "pulse",
+    "abstime"
+  ],
+  "features_json": "analysis/main120_D_candidate_feature_tags_20260509.json",
+  "include_uncertain": false,
+  "selected_count": 16,
+  "selected_features": [
+    "uses_abstime",
+    "uses_cross",
+    "uses_pulse_source"
+  ],
+  "tasks": [
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "bugfix",
+      "task_id": "vbm1_barrel_pointer_window_bugfix",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_barrel_pointer_window_dut",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_barrel_pointer_window_e2e",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "barrel_pointer_window",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_barrel_pointer_window_tb",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "bugfix",
+      "task_id": "vbm1_leaky_hold_bugfix",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_leaky_hold_dut",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_leaky_hold_e2e",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "leaky_hold",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_leaky_hold_tb",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "bugfix",
+      "task_id": "vbm1_sar_logic_4b_bugfix",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_sar_logic_4b_dut",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_sar_logic_4b_e2e",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "sar_logic_4b",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_sar_logic_4b_tb",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "bugfix",
+      "task_id": "vbm1_track_hold_aperture_bugfix",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "spec-to-va",
+      "task_id": "vbm1_track_hold_aperture_dut",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "end-to-end",
+      "task_id": "vbm1_track_hold_aperture_e2e",
+      "uncertainty": []
+    },
+    {
+      "forced": false,
+      "included_by_uncertainty": false,
+      "matched_features": [
+        "uses_abstime",
+        "uses_cross",
+        "uses_pulse_source"
+      ],
+      "pack_id": "track_hold_aperture",
+      "task_form": "tb-generation",
+      "task_id": "vbm1_track_hold_aperture_tb",
+      "uncertainty": []
+    }
+  ],
+  "unknown_change_types": []
+}

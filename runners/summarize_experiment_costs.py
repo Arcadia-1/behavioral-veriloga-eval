@@ -129,15 +129,17 @@ def _collect_result_maps(result_dirs: list[Path]) -> dict[str, dict[str, str]]:
     """Return task_id -> backend_label -> status."""
     status_by_task: dict[str, dict[str, str]] = defaultdict(dict)
     for result_dir in result_dirs:
-        label = result_dir.name
+        base_label = result_dir.name
         for path in sorted(result_dir.glob("*/evas_result.json")):
             data = _read_json(path)
             task_id = data.get("task_id") or path.parent.name
+            label = f"{base_label}:evas"
             status_by_task[task_id][label] = _strict_result_status(data)
             status_by_task[task_id][f"{label}:backend"] = "evas"
         for path in sorted(result_dir.glob("*/spectre_result.json")):
             data = _read_json(path)
             task_id = data.get("task_id") or path.parent.name
+            label = f"{base_label}:spectre"
             status_by_task[task_id][label] = _strict_result_status(data)
             status_by_task[task_id][f"{label}:backend"] = "spectre"
     return status_by_task
