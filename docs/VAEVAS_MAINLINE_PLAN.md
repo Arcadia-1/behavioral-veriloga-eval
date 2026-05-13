@@ -20,7 +20,9 @@ The current worktree has two benchmark-like assets that must be kept distinct:
 | `benchmark-vabench-main-v1/` | Not present in this worktree. | Do not reference as an editable path unless it is restored. |
 
 See `docs/VABENCH_MAIN_INVENTORY.md` for the frozen inventory and
-`docs/VAEVAS_VALIDATION_PIPELINE.md` for validation gates.
+`docs/VAEVAS_VALIDATION_PIPELINE.md` for validation gates. See
+`docs/VAEVAS_EXPERIMENT_RUNBOOK.md` for concrete run IDs, experiment blocks,
+and stop/go gates.
 
 ## Benchmark Splits
 
