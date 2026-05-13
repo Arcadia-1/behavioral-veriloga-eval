@@ -1,5 +1,19 @@
 # Repository Guidelines
 
+## Current vaEVAS Mainline
+This repository exists to support the paper-facing vaEVAS mainline:
+
+> **vaEVAS = vaBench benchmark + EVAS Spectre-aligned fast evaluator.**
+
+Benchmark construction and EVAS/Spectre parity are the durable contributions. LLM repair loops, controllers, RAG, compile skills, prompt variants, token optimization, and local/SFT model experiments are support harnesses only; do not treat them as the core research direction unless the user explicitly reopens that scope.
+
+Default priorities:
+- Strengthen `benchmark-vabench-main-v1`, future vaBench splits, gold references, checkers, schemas, and coverage metadata.
+- Preserve and extend EVAS/Spectre parity evidence and regression cases.
+- Keep Spectre as the final paper-facing judge; use strict EVAS as a fast filter/debug evaluator.
+- Avoid benchmark memorization, local model fine-tuning, and workflow over-optimization as default investments.
+- Keep generated candidates, raw simulator outputs, waveform dumps, and historical workflow sweeps out of versioned or high-signal paths unless promoted to a named fixture/report.
+
 ## Project Structure & Module Organization
 `tasks/` holds benchmark cases, organized as `tasks/<family>/voltage/<category>/<case>/` with `prompt.md`, `meta.json`, `checks.yaml`, and optional `gold/`. `examples/` contains runnable reference designs, grouped by intent such as `digital-logic/`, `data-converter/`, and `stimulus/`; each example usually includes `.va`, `tb_*.scs`, `analyze_*.py`, and `validate_*.py` files. `runners/` contains harness scripts for migration and EVAS execution. `schemas/` defines the task and result JSON formats.
 
