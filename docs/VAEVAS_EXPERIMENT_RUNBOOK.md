@@ -119,7 +119,7 @@
 
 | Milestone | Goal | Runs | Decision Gate | Cost | Risk |
 | --- | --- | --- | --- | --- | --- |
-| M0 | Verify bridge and local validation readiness. | R001-R004 | Bridge package imports, tests pass, Spectre license/smoke works. | Low | Persistent tunnel is currently unstable. |
+| M0 | Verify bridge and local validation readiness. | R001-R004 | Bridge package imports, tests pass, Spectre license/smoke works. | Low | Re-run after bridge updates because Spectre availability is environment-dependent. |
 | M1 | Materialize benchmark source. | R005-R007 | main benchmark has source-backed task IDs and no missing gold assets. | Medium | Missing 28 main120 tasks may require reconstruction. |
 | M2 | Lock EVAS-only validity. | R008-R010 | all tracked gold tasks pass integrity and EVAS gold checks. | Low-medium | Checker drift can look like simulator failure. |
 | M3 | Run broad EVAS/Spectre parity. | R011-R014 | zero EVAS PASS / Spectre FAIL mismatches on audited gold slices. | Medium-high | Spectre bridge availability and runtime. |
@@ -129,13 +129,15 @@
 
 ## Current Bridge Update Evidence
 
-- Updated `/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite` from `9a04421` to `02d4264`.
+- Updated `/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite` from `9a04421` to upstream `02d4264`, then onto local branch `codex/python39-maestro-annotations`.
 - Refreshed editable install from `virtuoso-bridge==0.1.0` to `virtuoso-bridge==0.7.0`.
-- Added Python 3.9 compatibility imports to `maestro/lifecycle.py` and `maestro/writer.py`.
-- `python -m pytest` in bridge repo: 31 passed.
+- Added Python 3.9 compatibility imports to `maestro/lifecycle.py` and `maestro/writer.py` (`2f23bcb`).
+- Fixed bridge-managed SSH tunnels so port-forwarding bypasses OpenSSH ControlMaster and records a stable tunnel PID (`65a7ff4`).
+- Added one-command daemon bootstrap: `virtuoso-bridge start -p ci` now starts the tunnel, launches a managed headless Virtuoso session if RAMIC is not responding, and `stop -p ci` cleans it up (`c480e57`).
+- `python -m pytest` in bridge repo: 34 passed.
 - Direct SSH Spectre license probe: OK, Spectre path `/home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre`, version `21.1.0`.
 - Direct SSH Spectre RC smoke: `ok=True`, downloaded PSFASCII artifacts and parsed DC/AC signals.
-- Bridge-managed persistent tunnel is still unstable: `virtuoso-bridge start` can probe Spectre, but follow-up `status`/`license` sees no managed tunnel listener.
+- Bridge-managed `ci` profile validation: `start -> daemon.bootstrap = OK -> status daemon OK/Spectre OK -> stop`; local port `65182` had no residual listener after stop.
 
 ## Stop Conditions
 
