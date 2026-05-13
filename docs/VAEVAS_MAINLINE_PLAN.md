@@ -9,6 +9,19 @@ vaEVAS should be developed as two durable assets:
 
 LLM repair workflows, compile skills, controller policies, RAG, token optimization, and local fine-tuning experiments are supporting harnesses only. They should not drive the paper contribution unless the project scope is explicitly reopened.
 
+## Current Assets
+
+The current worktree has two benchmark-like assets that must be kept distinct:
+
+| Asset | Status | Use |
+| --- | --- | --- |
+| `tasks/` | Source-controlled tree with 92 gold-backed tasks. | Current editable benchmark source. |
+| `vabench-main-v1-main120` | Local result evidence under `results/`, with 120/120 gold EVAS and 120/120 gold Spectre pass summaries. | Broad mainline validation evidence until the matching source split is restored/materialized. |
+| `benchmark-vabench-main-v1/` | Not present in this worktree. | Do not reference as an editable path unless it is restored. |
+
+See `docs/VABENCH_MAIN_INVENTORY.md` for the frozen inventory and
+`docs/VAEVAS_VALIDATION_PIPELINE.md` for validation gates.
+
 ## Benchmark Splits
 
 Use these assets instead of treating heldout construction as the default next milestone:
@@ -38,6 +51,9 @@ Recommended parity layers:
 | Atomic conformance regression | Pin one known EVAS/Spectre semantic. | `cross()` exact-threshold touch fires once at the crossing. |
 | Syntax legality regression | Ensure strict EVAS rejects code Spectre rejects. | Empty control branch, uncontinued PWL/source line, module header backslash continuation. |
 | Stress expansion | Add coverage for solver/event corner cases beyond current benchmark packs. | Coincident timer and PWL edge, transition placement, source breakpoint ordering. |
+
+See `docs/EVAS_SPECTRE_CONFORMANCE_BACKLOG.md` for the first regression
+targets.
 
 ## Ordered Roadmap
 
