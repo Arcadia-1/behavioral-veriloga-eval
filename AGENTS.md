@@ -14,6 +14,12 @@ Default priorities:
 - Avoid benchmark memorization, local model fine-tuning, and workflow over-optimization as default investments.
 - Keep generated candidates, raw simulator outputs, waveform dumps, and historical workflow sweeps out of versioned or high-signal paths unless promoted to a named fixture/report.
 
+Benchmark/evaluator split policy:
+- `vaBench-main` should be the broad end-to-end benchmark and can be used directly for EVAS/Spectre parity audits.
+- Separate EVAS/Spectre conformance regressions are still useful because they isolate one failure cause per case: Spectre syntax legality, source parsing, event scheduling, solver-time sampling, waveform breakpoint behavior, or checker semantics.
+- "Small and focused" means each parity regression is atomic and diagnostic, not that the suite must stay tiny. Add as many dedicated EVAS/Spectre stress cases as needed when they cover distinct semantics.
+- Heldout splits are optional future leaderboard/generalization assets. Do not prioritize heldout construction ahead of main benchmark coverage, gold validation, and EVAS/Spectre parity.
+
 ## Project Structure & Module Organization
 `tasks/` holds benchmark cases, organized as `tasks/<family>/voltage/<category>/<case>/` with `prompt.md`, `meta.json`, `checks.yaml`, and optional `gold/`. `examples/` contains runnable reference designs, grouped by intent such as `digital-logic/`, `data-converter/`, and `stimulus/`; each example usually includes `.va`, `tb_*.scs`, `analyze_*.py`, and `validate_*.py` files. `runners/` contains harness scripts for migration and EVAS execution. `schemas/` defines the task and result JSON formats.
 
