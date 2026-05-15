@@ -23,6 +23,15 @@
     }
   ],
   "properties": {
+    "asset_type": {
+      "type": "string",
+      "enum": [
+        "vabench_task"
+      ]
+    },
+    "benchmark_split": {
+      "type": "string"
+    },
     "id": {
       "type": "string"
     },
@@ -100,9 +109,121 @@
         ]
       }
     },
+    "release_form": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "true-bugfix",
+        "behavior-regression",
+        "evidence-only"
+      ]
+    },
+    "provenance_status": {
+      "type": "string",
+      "enum": [
+        "clean",
+        "badcase_available",
+        "historical_bugfix_fixed_only",
+        "reconstructed_badcase",
+        "provenance_incomplete"
+      ]
+    },
+    "source_main120_id": {
+      "type": "string"
+    },
+    "badcase_origin": {
+      "type": "string",
+      "enum": [
+        "original",
+        "recovered",
+        "reconstructed"
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "model_capability": {
+          "type": "boolean"
+        },
+        "benchmark_coverage": {
+          "type": "boolean"
+        },
+        "bugfix_claim": {
+          "type": "boolean"
+        }
+      }
+    },
     "notes": {
       "type": "string"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "release_form"
+        ],
+        "properties": {
+          "release_form": {
+            "const": "evidence-only"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "counts"
+        ],
+        "properties": {
+          "counts": {
+            "required": [
+              "model_capability",
+              "benchmark_coverage",
+              "bugfix_claim"
+            ],
+            "properties": {
+              "model_capability": {
+                "const": false
+              },
+              "benchmark_coverage": {
+                "const": false
+              },
+              "bugfix_claim": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "release_form"
+        ],
+        "properties": {
+          "release_form": {
+            "const": "true-bugfix"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "provenance_status"
+        ],
+        "properties": {
+          "family": {
+            "const": "bugfix"
+          },
+          "provenance_status": {
+            "enum": [
+              "badcase_available",
+              "reconstructed_badcase"
+            ]
+          }
+        }
+      }
+    }
+  ],
   "additionalProperties": true
 }

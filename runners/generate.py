@@ -38,6 +38,8 @@ import textwrap
 from datetime import datetime, timezone
 from pathlib import Path
 
+from vabench_policy import should_count_as, validate_or_raise
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -245,6 +247,11 @@ def list_task_dirs(families: tuple[str, ...] = ALL_FAMILIES,
                 continue  # no prompt → can't generate
             meta = json.loads(meta_path.read_text(encoding="utf-8"))
             task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+            validate_or_raise(meta, task_dir)
+            if not should_count_as(meta, "model_capability"):
+                if selected and task_id in selected:
+                    raise ValueError(f"{task_id} is excluded from model-capability generation counts")
+                continue
             if selected and task_id not in selected:
                 continue
             # Skip scope-guard tasks

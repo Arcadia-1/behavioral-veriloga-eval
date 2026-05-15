@@ -20,9 +20,13 @@ The current worktree has two benchmark-like assets that must be kept distinct:
 | `benchmark-vabench-main-v1/` | Not present in this worktree. | Do not reference as an editable path unless it is restored. |
 
 See `docs/VABENCH_MAIN_INVENTORY.md` for the frozen inventory and
-`docs/VAEVAS_VALIDATION_PIPELINE.md` for validation gates. See
-`docs/VAEVAS_EXPERIMENT_RUNBOOK.md` for concrete run IDs, experiment blocks,
-and stop/go gates.
+`docs/VABENCH_MAIN120_MATERIALIZATION.md` for the main120 provenance and
+materialization audit. See `docs/VAEVAS_VALIDATION_PIPELINE.md` for validation
+gates. See `docs/VAEVAS_EXPERIMENT_RUNBOOK.md` for concrete run IDs,
+experiment blocks, and stop/go gates. See
+`docs/VABENCH_D001_D004_EXECUTION_PLAN.md` for the accepted D001-D008 checker,
+bugfix-provenance, P2 tolerance, prompt-review, promotion-order, and
+conformance-split execution plan.
 
 ## Benchmark Splits
 
@@ -64,7 +68,7 @@ Work should proceed in this order unless new evidence shows a blocker in an earl
 | Order | Workstream | Goal | Main Outputs | Gate to Move On |
 | --- | --- | --- | --- | --- |
 | 0 | Repository contract and cleanup | Keep the repo aligned with the benchmark + evaluator mainline. | `AGENTS.md`, cleanup manifest, ignore rules for generated runs. | Status is readable; generated artifacts are not polluting source diffs. |
-| 1 | `vaBench-main` inventory | Establish the current benchmark as the paper-facing source of truth. | Coverage table, task taxonomy, gold-validation index, known-limitations list. | Every included task has clear metadata, checks, gold status, and EVAS/Spectre evidence. |
+| 1 | `vaBench-main` inventory | Establish the current benchmark as the paper-facing source of truth. | Coverage table, task taxonomy, main120 provenance/materialization map, gold-validation index, known-limitations list. | Every included task has clear metadata, checks, gold status, and EVAS/Spectre evidence. |
 | 2 | Validation pipeline lock | Make benchmark promotion reproducible. | One-command or documented flows for semantic checks, strict EVAS, Spectre validation, and result summarization. | A new or changed gold task cannot be promoted without fresh validation evidence. |
 | 3 | Broad EVAS/Spectre parity gate | Use `vaBench-main` directly to measure end-to-end evaluator agreement. | Full benchmark parity table with binary PASS/FAIL agreement, failure labels, and representative logs. | Current audited slices maintain zero EVAS PASS / Spectre FAIL mismatches. |
 | 4 | Atomic conformance regressions | Turn known and future mismatches into diagnostic tests. | Dedicated syntax, source, event, sampling, breakpoint, and checker regression cases. | Each historical mismatch has a single-cause regression or a documented reason it is out of scope. |
@@ -77,7 +81,7 @@ Work should proceed in this order unless new evidence shows a blocker in an earl
 
 ## Immediate Work Order
 
-1. Freeze the source-of-truth list for `vaBench-main`: task count, family/category coverage, task forms, and gold evidence.
+1. Materialize `vabench-main-v1-main120` from result evidence into a source-backed split. Treat this as provenance/source recovery, not as "92 existing plus 28 missing": the current `tasks/` IDs and main120 `vbm1_*` IDs are different assets.
 2. Build a compact `vaBench-main` parity report that separates binary EVAS/Spectre agreement from failure taxonomy.
 3. Create the first conformance-regression pack from historical mismatches:
    - empty control branch syntax legality,

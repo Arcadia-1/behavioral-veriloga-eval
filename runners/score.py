@@ -39,6 +39,7 @@ import tempfile
 from pathlib import Path
 
 from simulate_evas import has_behavior_check, run_case
+from vabench_policy import should_count_as, validate_or_raise
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -80,6 +81,11 @@ def list_all_task_dirs(families: tuple[str, ...] = ALL_FAMILIES,
                 continue
             meta = json.loads(meta_path.read_text(encoding="utf-8"))
             task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+            validate_or_raise(meta, task_dir)
+            if not should_count_as(meta, "model_capability"):
+                if selected and task_id in selected:
+                    raise ValueError(f"{task_id} is excluded from model-capability scoring counts")
+                continue
             if selected and task_id not in selected:
                 continue
             # Skip scope-guard tasks by default (they have no LLM prompt intent)
@@ -915,6 +921,9 @@ def score_one_task(
         "task_id": task_id,
         "family": family,
         "category": category,
+        "release_form": meta.get("release_form", "legacy"),
+        "provenance_status": meta.get("provenance_status", "legacy"),
+        "counts": meta.get("counts", {}),
         "sample_idx": sample_idx,
         "temperature": temperature,
         "top_p": top_p,
@@ -1047,9 +1056,25 @@ def _task_pass(result: dict) -> bool:
 
 def build_model_results(model: str, results: list[dict], temperature: float,
                         top_p: float) -> dict:
+    input_total = len(results)
+    excluded = [r for r in results if not should_count_as(r, "model_capability")]
+    results = [r for r in results if should_count_as(r, "model_capability")]
     total = len(results)
     if total == 0:
-        return {"model": model, "total": 0, "pass_at_1": 0.0}
+        return {
+            "model": model,
+            "temperature": temperature,
+            "top_p": top_p,
+            "total_tasks": 0,
+            "input_results": input_total,
+            "excluded_from_model_capability": len(excluded),
+            "pass_at_1": 0.0,
+            "pass_count": 0,
+            "by_family": {},
+            "axis_rates": {},
+            "failure_taxonomy": {},
+            "status": "MODEL_EVALUATED",
+        }
 
     n_pass = sum(1 for r in results if _task_pass(r))
 
@@ -1108,6 +1133,8 @@ def build_model_results(model: str, results: list[dict], temperature: float,
         "temperature": temperature,
         "top_p": top_p,
         "total_tasks": total,
+        "input_results": input_total,
+        "excluded_from_model_capability": len(excluded),
         "pass_at_1": round(n_pass / total, 4),
         "pass_count": n_pass,
         "by_family": family_rates,
@@ -1151,6 +1178,9 @@ def _score_task_entry(
             None,
             None,
         )
+        result["release_form"] = meta.get("release_form", "legacy")
+        result["provenance_status"] = meta.get("provenance_status", "legacy")
+        result["counts"] = meta.get("counts", {})
         _save_result(result, out_root)
         return result
 

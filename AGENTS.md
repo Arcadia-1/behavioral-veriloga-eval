@@ -17,6 +17,7 @@ Default priorities:
 Benchmark/evaluator split policy:
 - `vaBench-main` should be the broad end-to-end benchmark and can be used directly for EVAS/Spectre parity audits.
 - In the current worktree, the source-controlled benchmark source is `tasks/`; the historical `benchmark-vabench-main-v1` directory is not present, while `vabench-main-v1-main120` appears as local result evidence under `results/`.
+- Use `docs/VABENCH_MAIN120_MATERIALIZATION.md` and `runners/materialize_main120_inventory.py` as the provenance surface for main120 source recovery. Do not frame the work as "92 existing plus 28 missing"; current `tasks/` and main120 have different task ID sets.
 - Separate EVAS/Spectre conformance regressions are still useful because they isolate one failure cause per case: Spectre syntax legality, source parsing, event scheduling, solver-time sampling, waveform breakpoint behavior, or checker semantics.
 - "Small and focused" means each parity regression is atomic and diagnostic, not that the suite must stay tiny. Add as many dedicated EVAS/Spectre stress cases as needed when they cover distinct semantics.
 - Heldout splits are optional future leaderboard/generalization assets. Do not prioritize heldout construction ahead of main benchmark coverage, gold validation, and EVAS/Spectre parity.

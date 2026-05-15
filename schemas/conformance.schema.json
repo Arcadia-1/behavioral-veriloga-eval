@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EVAS/Spectre conformance asset",
+  "type": "object",
+  "required": [
+    "asset_type",
+    "suite",
+    "conformance_axis",
+    "expected_relation",
+    "minimality_note",
+    "counts"
+  ],
+  "properties": {
+    "asset_type": {
+      "const": "evas_spectre_conformance"
+    },
+    "suite": {
+      "const": "evas-spectre"
+    },
+    "id": {
+      "type": "string"
+    },
+    "conformance_axis": {
+      "type": "string",
+      "enum": [
+        "syntax-legality",
+        "source-syntax",
+        "solver-time-sampling",
+        "event-ordering",
+        "checker-semantics",
+        "failure-taxonomy"
+      ]
+    },
+    "expected_relation": {
+      "type": "string",
+      "enum": [
+        "both_accept",
+        "both_reject",
+        "waveform_equivalent",
+        "binary_outcome_equal"
+      ]
+    },
+    "diagnostic_signature": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "source_main120_id": {
+          "type": "string"
+        },
+        "historical_result": {
+          "type": "string"
+        }
+      }
+    },
+    "minimality_note": {
+      "type": "string"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_capability",
+        "benchmark_coverage",
+        "bugfix_claim",
+        "broad_parity_denominator"
+      ],
+      "properties": {
+        "model_capability": {
+          "const": false
+        },
+        "benchmark_coverage": {
+          "const": false
+        },
+        "bugfix_claim": {
+          "const": false
+        },
+        "broad_parity_denominator": {
+          "const": false
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "expected_relation": {
+            "const": "both_reject"
+          }
+        },
+        "required": [
+          "expected_relation"
+        ]
+      },
+      "then": {
+        "required": [
+          "diagnostic_signature"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

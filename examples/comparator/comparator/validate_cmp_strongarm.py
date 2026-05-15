@@ -16,11 +16,14 @@ OUT = Path(__file__).parent.parent.parent / 'output' / 'comparator' / 'cmp_stron
 _VTH = 0.45   # half of VDD=0.9
 
 
+def _sample(t_s, values, t_query_s):
+    return np.interp(t_query_s, t_s, values)
+
+
 def validate_csv(out_dir: Path = OUT) -> int:
     data = np.genfromtxt(out_dir / 'tran.csv', delimiter=',', names=True, dtype=None, encoding='utf-8')
     failures = 0
 
-    t_ns   = data['time'] * 1e9
     out_p  = data['out_p']
     out_n  = data['out_n']
 
@@ -32,18 +35,22 @@ def validate_csv(out_dir: Path = OUT) -> int:
         print("FAIL: out_n never toggles")
         failures += 1
 
-    # Before swap (0.6ns < t < 2ns): vinp > vinn -> out_p HIGH
-    pre = out_p[(t_ns > 0.6) & (t_ns < 2.0)]
-    if len(pre) == 0 or (pre > _VTH).mean() < 0.4:
-        pct = 0 if len(pre) == 0 else (pre > _VTH).mean() * 100
-        print(f"FAIL: before swap, out_p HIGH only {pct:.0f}% (expected >40%)")
-        failures += 1
+    # Sample away from clock/source transition boundaries. Row fractions depend
+    # on each simulator's accepted transient points, but these decision points
+    # describe the intended comparator behavior directly.
+    decisions = []
+    for t_sample_ns in (0.75, 1.75, 2.75, 3.75):
+        p = _sample(data['time'], out_p, t_sample_ns * 1e-9)
+        n = _sample(data['time'], out_n, t_sample_ns * 1e-9)
+        if p > _VTH and n < _VTH:
+            decisions.append('P')
+        elif p < _VTH and n > _VTH:
+            decisions.append('N')
+        else:
+            decisions.append('X')
 
-    # After swap (2.5ns < t < 4ns): vinp < vinn -> out_p LOW
-    post = out_p[(t_ns > 2.5) & (t_ns < 4.0)]
-    if len(post) == 0 or (post < _VTH).mean() < 0.4:
-        pct = 0 if len(post) == 0 else (post < _VTH).mean() * 100
-        print(f"FAIL: after swap, out_p LOW only {pct:.0f}% (expected >40%)")
+    if decisions != ['P', 'P', 'N', 'N']:
+        print(f"FAIL: decision samples {''.join(decisions)} (expected PPNN)")
         failures += 1
 
     if failures == 0:

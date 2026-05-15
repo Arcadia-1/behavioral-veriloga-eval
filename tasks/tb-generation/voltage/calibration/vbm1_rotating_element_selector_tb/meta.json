@@ -1,0 +1,43 @@
+{
+  "id": "vbm1_rotating_element_selector_tb",
+  "task_id": "vbm1_rotating_element_selector_tb",
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-main-v1",
+  "family": "tb-generation",
+  "category": "calibration",
+  "domain": "voltage",
+  "difficulty": "easy",
+  "expected_backend": "evas",
+  "release_form": "normal",
+  "provenance_status": "clean",
+  "source_main120_id": "vbm1_rotating_element_selector_tb",
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": false
+  },
+  "must_include": [
+    "ahdl_include",
+    "save",
+    "tran"
+  ],
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "tb_rotating_element_selector_ref.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_files": [
+    "gold/rotating_element_selector.va",
+    "gold/tb_rotating_element_selector_ref.scs"
+  ],
+  "evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_rotating_element_selector_tb/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_rotating_element_selector_tb/spectre_result.json"
+  }
+}

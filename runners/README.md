@@ -65,6 +65,13 @@ Current implemented executable runner:
   - bridge preflight diagnostics in `summary.json` so misconfigured tunnel /
     Virtuoso / Spectre sessions fail fast instead of hanging until subprocess
     timeout
+- `materialize_main120_inventory.py`
+  Inputs: local `vabench-main-v1-main120` EVAS/Spectre result directories and
+  current `tasks/` metadata.
+  Outputs:
+  - `docs/VABENCH_MAIN120_MATERIALIZATION.md`
+  - `docs/VABENCH_MAIN120_MATERIALIZATION.csv`
+  - source-materialization counts for main120 provenance/recovery work
 
 Recommended Spectre workflow:
 

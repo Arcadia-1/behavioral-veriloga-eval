@@ -146,6 +146,8 @@ python3 runners/gen_manifest.py \
 python3 runners/gen_weekly_summary.py
 
 python3 runners/gen_paper_stats.py
+
+python3 runners/materialize_main120_inventory.py
 ```
 
 Tracked conclusions should live in `tables/` or `docs/`. Raw `results/` and
@@ -167,6 +169,7 @@ Before a benchmark task is promoted:
 | Gap | Effect | Next action |
 | --- | --- | --- |
 | Spectre depends on bridge, tunnel, and remote Cadence environment. | Full dual validation is not always locally runnable. | Keep wrapper path as the documented route and record preflight status. |
+| main120 currently lives as result evidence, not a tracked task source split. | A 120/120 pass summary is not enough for benchmark release, review, or source-level regression. | Use `materialize_main120_inventory.py` to rebuild the provenance map before source materialization. |
 | No standalone script named `strict_evas`. | Strictness is distributed across runner behavior, task metadata, and checker logic. | Treat `run_gold_suite.py` plus tests as the EVAS gate. |
 | `run_examples_suite.py` is smoke-oriented. | It is useful for examples but not the main benchmark promotion gate. | Use `run_gold_suite.py` and `run_gold_dual_suite.py` for benchmark claims. |
 | Some older docs reference missing helper scripts or stale task counts. | New agents may follow the wrong branch. | Prefer this file, `VABENCH_MAIN_INVENTORY.md`, and `VAEVAS_MAINLINE_PLAN.md`. |

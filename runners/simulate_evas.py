@@ -14,6 +14,23 @@ import tempfile
 import warnings
 from pathlib import Path
 
+from main120_stable_checks import (
+    check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
+    check_barrel_pointer_window as check_vbm1_barrel_pointer_window,
+    check_cdac_calibration as check_vbm1_cdac_calibration,
+    check_debounce_latch as check_vbm1_debounce_latch,
+    check_edge_detector as check_vbm1_edge_detector,
+    check_element_shuffler as check_vbm1_element_shuffler,
+    check_leaky_hold as check_vbm1_leaky_hold,
+    check_one_shot_timer as check_vbm1_one_shot_timer,
+    check_rotating_element_selector as check_vbm1_rotating_element_selector,
+    check_segmented_dac as check_vbm1_segmented_dac,
+    check_strongarm_comparator_behavior as check_vbm1_strongarm_comparator_behavior,
+    check_thermometer_dac as check_vbm1_thermometer_dac,
+    check_thermometer_decoder_guarded as check_vbm1_thermometer_decoder_guarded,
+    check_track_hold_aperture as check_vbm1_track_hold_aperture,
+)
+
 
 def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
@@ -1090,22 +1107,27 @@ def check_cmp_strongarm(rows: list[dict[str, float]]) -> tuple[bool, str]:
     threshold = 0.45
     out_p = [r["out_p"] for r in rows]
     out_n = [r["out_n"] for r in rows]
-    t_ns = [r["time"] * 1e9 for r in rows]
 
     out_p_span = max(out_p) - min(out_p)
     out_n_span = max(out_n) - min(out_n)
     if out_p_span < threshold or out_n_span < threshold:
         return False, f"insufficient_toggle out_p_span={out_p_span:.3f} out_n_span={out_n_span:.3f}"
 
-    pre = [out_p[idx] for idx, t in enumerate(t_ns) if 0.6 < t < 2.0]
-    post = [out_p[idx] for idx, t in enumerate(t_ns) if 2.5 < t < 4.0]
-    if not pre or not post:
-        return False, "insufficient_polarity_windows"
+    samples = []
+    for sample_t in [0.75e-9, 1.75e-9, 2.75e-9, 3.75e-9]:
+        out_p_sample = sample_signal_at(rows, "out_p", sample_t)
+        out_n_sample = sample_signal_at(rows, "out_n", sample_t)
+        if out_p_sample is None or out_n_sample is None:
+            return False, f"missing_decision_sample_at={sample_t * 1e9:.2f}ns"
+        if out_p_sample > threshold and out_n_sample < threshold:
+            samples.append("P")
+        elif out_p_sample < threshold and out_n_sample > threshold:
+            samples.append("N")
+        else:
+            samples.append("X")
 
-    pre_high_frac = sum(1 for v in pre if v > threshold) / len(pre)
-    post_low_frac = sum(1 for v in post if v < threshold) / len(post)
-    ok = pre_high_frac >= 0.4 and post_low_frac >= 0.4
-    return ok, f"pre_high_frac={pre_high_frac:.3f} post_low_frac={post_low_frac:.3f}"
+    ok = samples == ["P", "P", "N", "N"]
+    return ok, f"decision_samples={''.join(samples)} expected=PPNN"
 
 
 def check_strongarm_reset_priority_bug(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -1280,6 +1302,45 @@ def check_dac_therm_16b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     monotonic = all(last_pairs[sorted_ones[i]] <= last_pairs[sorted_ones[i + 1]] + 1e-9 for i in range(len(sorted_ones) - 1))
     ok = max_ones == 16 and max_vout > 15.0 and monotonic
     return ok, f"max_ones={max_ones} max_vout={max_vout:.3f}"
+
+
+def check_vbm1_thermometer_dac_15seg(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "empty"
+    seg_names = [f"seg{i}" for i in range(15)]
+    required = {"time", "aout", *seg_names}
+    if not required.issubset(rows[0]):
+        return False, f"missing time/aout/seg0..seg14; keys={list(rows[0].keys())[:10]}"
+
+    checkpoints = [
+        (15e-9, 0),
+        (45e-9, 1),
+        (75e-9, 2),
+        (105e-9, 7),
+        (135e-9, 14),
+        (165e-9, 15),
+    ]
+    levels: list[tuple[int, float]] = []
+    errors: list[float] = []
+    notes: list[str] = []
+    for target_t, expected_count in checkpoints:
+        row = min(rows, key=lambda r: abs(r["time"] - target_t))
+        observed_count = sum(1 for name in seg_names if row[name] > 0.45)
+        expected_v = 0.9 * expected_count / 15.0
+        error = abs(row["aout"] - expected_v)
+        levels.append((expected_count, row["aout"]))
+        errors.append(error)
+        notes.append(f"{expected_count}:{row['aout']:.3f}/{observed_count}")
+
+    monotonic = all(levels[i][1] <= levels[i + 1][1] + 1e-6 for i in range(len(levels) - 1))
+    counts_match = all(
+        sum(1 for name in seg_names if min(rows, key=lambda r, t=t: abs(r["time"] - t))[name] > 0.45) == count
+        for t, count in checkpoints
+    )
+    max_err = max(errors)
+    full_scale_ok = abs(levels[-1][1] - 0.9) <= 0.02
+    ok = counts_match and monotonic and max_err <= 0.02 and full_scale_ok
+    return ok, f"levels={' '.join(notes)} max_err={max_err:.3f} monotonic={monotonic}"
 
 
 def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -2369,6 +2430,34 @@ def check_xor_pd(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return True, f"duty={hi_frac:.3f} transitions={transitions}"
 
 
+def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
+    if not rows or "time" not in rows[0] or signal not in rows[0]:
+        return None
+    first_time = rows[0]["time"]
+    last_time = rows[-1].get("time")
+    if last_time is None or time_s < first_time or time_s > last_time:
+        return None
+    if time_s == first_time:
+        return rows[0].get(signal)
+    for idx in range(1, len(rows)):
+        prev = rows[idx - 1]
+        cur = rows[idx]
+        t0 = prev.get("time")
+        t1 = cur.get("time")
+        if t0 is None or t1 is None:
+            continue
+        if t0 <= time_s <= t1:
+            v0 = prev.get(signal)
+            v1 = cur.get(signal)
+            if v0 is None or v1 is None:
+                return None
+            if t1 == t0:
+                return v1
+            alpha = (time_s - t0) / (t1 - t0)
+            return v0 + alpha * (v1 - v0)
+    return None
+
+
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:
     if len(rows) < 2:
         return 0.0
@@ -3337,6 +3426,67 @@ CHECKS = {
     "mixed_domain_cdac_bug": check_mixed_domain_cdac_bug,
     "spectre_port_discipline": check_spectre_port_discipline,
     "strongarm_reset_priority_bug": check_strongarm_reset_priority_bug,
+    "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
+    "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
+    "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
+    "vbm1_background_calibration_accumulator_e2e": check_vbm1_background_calibration_accumulator,
+    "vbm1_barrel_pointer_window_dut": check_vbm1_barrel_pointer_window,
+    "vbm1_barrel_pointer_window_tb": check_vbm1_barrel_pointer_window,
+    "vbm1_barrel_pointer_window_bugfix": check_vbm1_barrel_pointer_window,
+    "vbm1_barrel_pointer_window_e2e": check_vbm1_barrel_pointer_window,
+    "vbm1_cdac_calibration_dut": check_vbm1_cdac_calibration,
+    "vbm1_cdac_calibration_tb": check_vbm1_cdac_calibration,
+    "vbm1_cdac_calibration_bugfix": check_vbm1_cdac_calibration,
+    "vbm1_cdac_calibration_e2e": check_vbm1_cdac_calibration,
+    "vbm1_debounce_latch_dut": check_vbm1_debounce_latch,
+    "vbm1_debounce_latch_tb": check_vbm1_debounce_latch,
+    "vbm1_debounce_latch_bugfix": check_vbm1_debounce_latch,
+    "vbm1_debounce_latch_e2e": check_vbm1_debounce_latch,
+    "vbm1_edge_detector_dut": check_vbm1_edge_detector,
+    "vbm1_edge_detector_tb": check_vbm1_edge_detector,
+    "vbm1_edge_detector_bugfix": check_vbm1_edge_detector,
+    "vbm1_edge_detector_e2e": check_vbm1_edge_detector,
+    "vbm1_element_shuffler_dut": check_vbm1_element_shuffler,
+    "vbm1_element_shuffler_tb": check_vbm1_element_shuffler,
+    "vbm1_element_shuffler_bugfix": check_vbm1_element_shuffler,
+    "vbm1_element_shuffler_e2e": check_vbm1_element_shuffler,
+    "vbm1_leaky_hold_dut": check_vbm1_leaky_hold,
+    "vbm1_leaky_hold_tb": check_vbm1_leaky_hold,
+    "vbm1_leaky_hold_bugfix": check_vbm1_leaky_hold,
+    "vbm1_leaky_hold_e2e": check_vbm1_leaky_hold,
+    "vbm1_one_shot_timer_dut": check_vbm1_one_shot_timer,
+    "vbm1_one_shot_timer_tb": check_vbm1_one_shot_timer,
+    "vbm1_one_shot_timer_bugfix": check_vbm1_one_shot_timer,
+    "vbm1_one_shot_timer_e2e": check_vbm1_one_shot_timer,
+    "vbm1_rotating_element_selector_dut": check_vbm1_rotating_element_selector,
+    "vbm1_rotating_element_selector_tb": check_vbm1_rotating_element_selector,
+    "vbm1_rotating_element_selector_bugfix": check_vbm1_rotating_element_selector,
+    "vbm1_rotating_element_selector_e2e": check_vbm1_rotating_element_selector,
+    "vbm1_pfd_reset_race_dut": check_pfd_reset_race,
+    "vbm1_pfd_reset_race_tb": check_pfd_reset_race,
+    "vbm1_pfd_reset_race_bugfix": check_pfd_reset_race,
+    "vbm1_pfd_reset_race_e2e": check_pfd_reset_race,
+    "vbm1_segmented_dac_dut": check_vbm1_segmented_dac,
+    "vbm1_segmented_dac_tb": check_vbm1_segmented_dac,
+    "vbm1_segmented_dac_bugfix": check_vbm1_segmented_dac,
+    "vbm1_segmented_dac_e2e": check_vbm1_segmented_dac,
+    "vbm1_strongarm_comparator_behavior_dut": check_vbm1_strongarm_comparator_behavior,
+    "vbm1_strongarm_comparator_behavior_tb": check_vbm1_strongarm_comparator_behavior,
+    "vbm1_strongarm_comparator_behavior_e2e": check_vbm1_strongarm_comparator_behavior,
+    "vbm1_strongarm_comparator_behavior_bugfix": check_strongarm_reset_priority_bug,
+    "vbm1_thermometer_dac_dut": check_vbm1_thermometer_dac,
+    "vbm1_thermometer_dac_tb": check_vbm1_thermometer_dac,
+    "vbm1_thermometer_dac_bugfix": check_vbm1_thermometer_dac,
+    "vbm1_thermometer_dac_e2e": check_vbm1_thermometer_dac,
+    "vbm1_thermometer_dac_15seg_bugfix": check_vbm1_thermometer_dac_15seg,
+    "vbm1_thermometer_decoder_guarded_dut": check_vbm1_thermometer_decoder_guarded,
+    "vbm1_thermometer_decoder_guarded_tb": check_vbm1_thermometer_decoder_guarded,
+    "vbm1_thermometer_decoder_guarded_bugfix": check_vbm1_thermometer_decoder_guarded,
+    "vbm1_thermometer_decoder_guarded_e2e": check_vbm1_thermometer_decoder_guarded,
+    "vbm1_track_hold_aperture_dut": check_vbm1_track_hold_aperture,
+    "vbm1_track_hold_aperture_tb": check_vbm1_track_hold_aperture,
+    "vbm1_track_hold_aperture_bugfix": check_vbm1_track_hold_aperture,
+    "vbm1_track_hold_aperture_e2e": check_vbm1_track_hold_aperture,
     "wrong_edge_sample_hold_bug": check_sample_hold,
     "inverted_comparator_logic_bug": check_inverted_comparator_logic_bug,
     "swapped_pfd_outputs_bug": check_pfd_updn,

@@ -19,9 +19,9 @@
 - **Dataset / split / task**: `tasks/` plus the historical `vabench-main-v1-main120` result directories.
 - **Compared systems**: none.
 - **Metrics**: task count, family/category coverage, required file completeness, gold DUT/TB presence, provenance of each task.
-- **Setup details**: restore or materialize the 120-task source split; keep `benchmark-vabench-main-v1/` out of docs unless the directory is actually restored.
+- **Setup details**: use `python3 runners/materialize_main120_inventory.py` to rebuild the provenance audit, then restore or materialize the 120-task source split; keep `benchmark-vabench-main-v1/` out of docs unless the directory is actually restored.
 - **Success criterion**: every main benchmark item maps to an editable task source and has a stable ID, metadata, checker, gold DUT, gold testbench, EVAS result, and Spectre result.
-- **Failure interpretation**: if main120 cannot be materialized, the paper-facing benchmark must be scoped to the 92 tracked tasks until the missing 28 are restored.
+- **Failure interpretation**: if main120 cannot be materialized, the paper-facing benchmark must be scoped to the 92 tracked tasks plus any independently promoted expansion batches. Do not describe the gap as "missing 28"; current `tasks/` and main120 use different task ID sets.
 - **Table / figure target**: benchmark inventory table.
 - **Priority**: MUST-RUN.
 
@@ -120,7 +120,7 @@
 | Milestone | Goal | Runs | Decision Gate | Cost | Risk |
 | --- | --- | --- | --- | --- | --- |
 | M0 | Verify bridge and local validation readiness. | R001-R004 | Bridge package imports, tests pass, Spectre license/smoke works. | Low | Re-run after bridge updates because Spectre availability is environment-dependent. |
-| M1 | Materialize benchmark source. | R005-R007 | main benchmark has source-backed task IDs and no missing gold assets. | Medium | Missing 28 main120 tasks may require reconstruction. |
+| M1 | Materialize benchmark source. | R005-R007 | main benchmark has source-backed task IDs and no missing gold assets. | Medium | main120 is validated result evidence, but its prompt/meta/checker source split still needs reconstruction or restoration. |
 | M2 | Lock EVAS-only validity. | R008-R010 | all tracked gold tasks pass integrity and EVAS gold checks. | Low-medium | Checker drift can look like simulator failure. |
 | M3 | Run broad EVAS/Spectre parity. | R011-R014 | zero EVAS PASS / Spectre FAIL mismatches on audited gold slices. | Medium-high | Spectre bridge availability and runtime. |
 | M4 | Build conformance pack. | R015-R020 | historical mismatch classes are atomic regressions. | Medium | Some historical failures may be out of current scope. |
