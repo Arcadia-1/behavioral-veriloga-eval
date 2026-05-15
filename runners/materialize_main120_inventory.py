@@ -60,6 +60,7 @@ CATEGORY_HINTS = [
     ("barrel", "calibration"),
     ("selector", "calibration"),
     ("shuffler", "calibration"),
+    ("gain_trim", "calibration"),
     ("calibration", "calibration"),
     ("lowpass", "amplifier-filter"),
     ("integrator", "amplifier-filter"),
@@ -513,7 +514,7 @@ def build_markdown(rows: list[dict[str, str]], stats: dict, csv_output: Path, ge
 def write_csv(rows: list[dict[str, str]], output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

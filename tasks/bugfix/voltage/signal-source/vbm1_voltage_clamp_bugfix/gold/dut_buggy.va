@@ -1,0 +1,18 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module voltage_clamp(raw_level, vdd, vss, clamped_level);
+    input raw_level, vdd, vss;
+    output clamped_level;
+    electrical raw_level, vdd, vss, clamped_level;
+    parameter real vlo = 0.18;
+    parameter real vhi = 0.72;
+    parameter real tr = 40p;
+    real y;
+
+    analog begin
+        y = V(raw_level);
+        if (y > vhi) y = vhi;
+        V(clamped_level) <+ transition(y, 0.0, tr, tr);
+    end
+endmodule

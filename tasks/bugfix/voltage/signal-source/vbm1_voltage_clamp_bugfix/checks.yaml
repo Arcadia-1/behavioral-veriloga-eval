@@ -1,0 +1,25 @@
+syntax:
+  must_include:
+    - "transition("
+    - "vlo"
+    - "vhi"
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "safe_window_low_inputs_clip_to_vlo"
+    - "safe_window_mid_inputs_follow_raw_level"
+    - "safe_window_high_inputs_clip_to_vhi"
+bugfix:
+  buggy_expected: "FAIL_SIM_CORRECTNESS"
+  fixed_expected: "PASS"
+  reconstruction_note: "Single-root-cause badcase: the lower-bound clamp is omitted while the upper-bound clamp remains present."
+parity:
+  required: true
+  tolerance_notes: "Clamp values should be sampled away from PWL and transition breakpoints, e.g. 10 ns, 35 ns, 60 ns, 85 ns, and 110 ns."
