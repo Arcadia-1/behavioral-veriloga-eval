@@ -101,8 +101,8 @@ def build_report() -> dict[str, object]:
 
     assets_static_clean = (
         planned_entries == 75
-        and source_linked_entries == 75
-        and materialized_entries == 75
+        and source_linked_entries >= planned_entries
+        and materialized_entries >= planned_entries
         and asset.get("status") == "pass"
         and static.get("status") == "pass"
     )
@@ -149,7 +149,10 @@ def build_report() -> dict[str, object]:
             allowed=assets_static_clean,
             completion_required=True,
             claim_text="All release entries have materialized source-task assets and pass static checks.",
-            safe_wording=f"The release has {materialized_entries}/75 materialized entries and {static_forms} static-certified forms with zero asset issues.",
+            safe_wording=(
+                f"The release has {materialized_entries} materialized entries for the 75-entry plan "
+                f"and {static_forms} static-certified forms with zero asset issues."
+            ),
             unsafe_wording=[
                 "Static certification proves EVAS/Spectre behavioral parity.",
                 "Asset materialization means the task is scored.",
@@ -159,7 +162,12 @@ def build_report() -> dict[str, object]:
                 rel(REPORTS_ROOT / "static_certification.json"),
                 rel(REPORTS_ROOT / "release_status.json"),
             ],
-            required_before_allowed=[] if assets_static_clean else ["asset_integrity and static_certification must pass for all release forms"],
+            required_before_allowed=[]
+            if assets_static_clean
+            else [
+                "asset_integrity and static_certification must pass for all release forms",
+                "source_linked/materialized entry counts must cover the 75-entry release plan",
+            ],
             numbers={
                 "source_linked_entries": source_linked_entries,
                 "materialized_entries": materialized_entries,

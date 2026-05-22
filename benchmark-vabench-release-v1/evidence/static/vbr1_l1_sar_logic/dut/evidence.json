@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_sar_logic/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_sar_logic/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_sar_logic/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_sar_logic/forms/dut/gold/sar_logic_4b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_sar_logic/forms/dut/gold/tb_sar_logic_4b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/gold/sar_logic_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/gold/tb_sar_logic_4b_ref.scs"
   ],
   "checks": {
     "must_include": [

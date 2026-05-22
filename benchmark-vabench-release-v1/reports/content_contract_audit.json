@@ -35,13 +35,13 @@
         "quantization_error_within_one_lsb"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
@@ -58,10 +58,10 @@
         "saturation_at_rails"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+        "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
@@ -78,10 +78,10 @@
         "adpll_ratio_hop_lock_reacquired"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_amplifier_filter_chain",
@@ -98,10 +98,10 @@
         "metric_tracks_settling"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_comparator_measurement_flow",
@@ -118,10 +118,10 @@
         "output_high_above_offset"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_complete_calibration_loop",
@@ -138,10 +138,10 @@
         "loop_converges_toward_target"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/gold/complete_calibration_loop.va"
+        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/gold/complete_calibration_loop.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_converter_front_end",
@@ -158,10 +158,10 @@
         "droop_not_excessive_between_samples"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
@@ -179,11 +179,11 @@
         "vctrl_stays_bounded"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_event_controller",
@@ -198,10 +198,10 @@
         "simultaneous_event_order"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/gold/simultaneous_event_order_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/gold/simultaneous_event_order_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_flash_adc_mini_array",
@@ -217,10 +217,10 @@
         "flash_adc_monotonic_with_ramp"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va"
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
@@ -239,13 +239,13 @@
         "differential_gain_above_threshold"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va"
+        "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
+        "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_measurement_flow",
@@ -260,10 +260,10 @@
         "final_step_file_metric"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/gold/final_step_file_metric_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/gold/final_step_file_metric_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_pll_timing_slice",
@@ -279,10 +279,10 @@
         "vctrl_stays_bounded"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
@@ -299,10 +299,10 @@
         "frame_pulse_width_is_single_bit_window"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
@@ -321,12 +321,12 @@
         "dac_output_in_range"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sar_adc_weighted_8b.va",
-        "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sh_ideal.va"
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sar_adc_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sh_ideal.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md"
     }
   ],
   "findings": [

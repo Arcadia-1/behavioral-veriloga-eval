@@ -1,7 +1,9 @@
 # vaBench Release Package v1
 
 This directory is the clean paper-facing benchmark package for the 75-entry L1/L2
-vaBench release target. It is intentionally claim-gated: source assets,
+vaBench content target. The current materialized working package has 76 entries:
+the added pipeline ADC stage is pending fresh dual validation and is excluded
+from the strong content denominator until that decision is finalized. It is intentionally claim-gated: source assets,
 static checks, imported EVAS/Spectre evidence, fresh rerun staging, score
 denominators, speed/debug measurements, and model baselines are reported as
 separate surfaces.
@@ -55,7 +57,9 @@ Use these reports as the source of truth:
 
 Current safe wording is intentionally narrow:
 
-- The package defines a 75-entry L1/L2 coverage target.
+- The package defines a 75-entry L1/L2 coverage target, with one additional
+  materialized pipeline ADC stage kept pending/content-excluded until fresh
+  EVAS/Spectre evidence is available.
 - All materialized release forms pass static/integrity checks.
 - The imported certified EVAS/Spectre subset is clean with respect to
   EVAS PASS / Spectre FAIL mismatches.

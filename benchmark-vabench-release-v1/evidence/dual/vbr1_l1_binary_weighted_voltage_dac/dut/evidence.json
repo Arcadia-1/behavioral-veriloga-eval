@@ -14,11 +14,11 @@
   "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
+    "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_binary_weighted_voltage_dac/dut/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_binary_weighted_voltage_dac/dut/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/simple_binary_voltage_dac_4b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/simple_binary_voltage_dac_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "summary": "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/vbr1_l1_binary_weighted_voltage_dac/dut/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -41,17 +41,17 @@
       ],
       "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.006590603383812538,
-      "max_abs_v": 0.07672091378082024,
-      "mean_nrmse": 0.0014645785297361194,
-      "p95_nrmse": 0.007322892648680597,
-      "max_nrmse": 0.007322892648680597,
+      "max_rmse_v": 0.0045140545361082975,
+      "max_abs_v": 0.026745638685761075,
+      "mean_nrmse": 0.0010031232302462885,
+      "p95_nrmse": 0.005015616151231442,
+      "max_nrmse": 0.005015616151231442,
       "per_signal": {
         "aout": {
-          "rmse_v": 0.006590603383812538,
-          "max_abs_v": 0.07672091378082024,
+          "rmse_v": 0.0045140545361082975,
+          "max_abs_v": 0.026745638685761075,
           "span_v": 0.9,
-          "nrmse": 0.007322892648680597,
+          "nrmse": 0.005015616151231442,
           "kind": "analog"
         },
         "code_0": {
@@ -102,8 +102,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/simple_binary_voltage_dac_4b.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/simple_binary_voltage_dac_4b.va",
+      "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/dut/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
     ]
   },
   "failures": [],

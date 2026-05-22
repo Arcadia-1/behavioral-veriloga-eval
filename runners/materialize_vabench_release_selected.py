@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
+from vabench_release_paths import release_category_entry_dir
+
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACKER_CSV = ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv"
@@ -352,7 +354,7 @@ def copy_release_assets(entry_dir: Path, source: SourceTask) -> dict[str, object
 
 def write_release_entry(row: dict[str, str], ready: list[SourceTask], invalid: list[SourceTask]) -> dict[str, str]:
     entry_id = row["entry_id"]
-    entry_dir = PACKAGE_ROOT / "tasks" / entry_id
+    entry_dir = release_category_entry_dir(PACKAGE_ROOT / "tasks", entry_id, row["category"])
     if entry_dir.exists():
         shutil.rmtree(entry_dir)
     entry_dir.mkdir(parents=True)

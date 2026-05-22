@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/gold/cmp_delay.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/gold/edge_interval_timer.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_propagation_delay_comparator/forms/dut/gold/tb_cmp_delay_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/gold/cmp_delay.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/gold/edge_interval_timer.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/gold/tb_cmp_delay_ref.scs"
   ],
   "checks": {
     "must_include": [

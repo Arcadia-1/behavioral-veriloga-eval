@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-19",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "ready_to_finish",
   "ready_to_run_fresh_dual": false,
@@ -21,13 +21,13 @@
     {
       "id": "P1_local_release_package_ready",
       "status": "pass",
-      "requirement": "75 entries are materialized with zero asset/static issues.",
+      "requirement": "The 75-entry release plan is covered by materialized entries with zero asset/static issues.",
       "evidence": [
         "benchmark-vabench-release-v1/reports/release_status.json",
         "benchmark-vabench-release-v1/reports/asset_integrity.json",
         "benchmark-vabench-release-v1/reports/static_certification.json"
       ],
-      "finding": "planned=75, source_linked=75, materialized=75, asset=pass, static=pass",
+      "finding": "planned=75, source_linked=77, materialized=77, asset=pass, static=pass",
       "recovery": []
     },
     {
@@ -58,7 +58,7 @@
         "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
         "benchmark-vabench-release-v1/reports/external_blockers.json"
       ],
-      "finding": "bridge_status=ready, ready_profiles=['default', 'ci', 'jin'], reason=bridge profile default is ready for release rerun",
+      "finding": "full release dual certification is already imported; bridge readiness is not required to finish",
       "recovery": []
     },
     {
@@ -66,9 +66,9 @@
       "status": "pass",
       "requirement": "Fresh rerun summary must be complete, non-dry-run, current to the queue, and have zero expected misses.",
       "evidence": [
-        "results/vabench-release-v1-dual-rerun/summary.json"
+        "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/summary.json"
       ],
-      "finding": "summary_status=dry_run, tasks_total=3, queue_count=0, dry_run=True, expected_miss_count=0",
+      "finding": "summary_status=complete, tasks_total=16, queue_count=0, dry_run=False, expected_miss_count=0",
       "recovery": []
     },
     {

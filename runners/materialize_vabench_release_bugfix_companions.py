@@ -7,6 +7,8 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from vabench_release_paths import release_entry_path, release_form_dir
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -254,7 +256,7 @@ def apply_replacements(text: str, replacements: tuple[tuple[str, str], ...], *, 
 
 
 def source_file(entry_id: str, form: str, name: str) -> Path:
-    path = TASKS_ROOT / entry_id / "forms" / form / "gold" / name
+    path = release_form_dir(TASKS_ROOT, entry_id, form) / "gold" / name
     if not path.exists():
         raise RuntimeError(f"{entry_id}: source file missing: {rel(path)}")
     return path
@@ -424,7 +426,7 @@ def write_bugfix(entry_path: Path, spec: BugfixSpec) -> bool:
 def materialize_bugfixes() -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     for entry_id, spec in sorted(BUGFIX_SPECS.items()):
-        entry_path = TASKS_ROOT / entry_id / "release_entry.json"
+        entry_path = release_entry_path(TASKS_ROOT, entry_id)
         if not entry_path.exists():
             continue
         if write_bugfix(entry_path, spec):

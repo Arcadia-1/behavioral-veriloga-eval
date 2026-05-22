@@ -1,7 +1,7 @@
 {
   "task_id": "vbr1_l2_flash_adc_mini_array:e2e",
   "release_entry_id": "vbr1_l2_flash_adc_mini_array",
-  "source_task_id": "flash_adc_3b_smoke",
+  "source_task_id": "flash_adc_mini_array_e2e",
   "backend": "evas",
   "status": "PASS",
   "scores": {
@@ -11,7 +11,7 @@
     "behavior_score": null
   },
   "artifacts": [
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_flash_adc_mini_array/e2e/gold",
+    "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/vbr1_l2_flash_adc_mini_array/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_flash_adc_mini_array/e2e/evidence.json"
   ],
   "notes": [

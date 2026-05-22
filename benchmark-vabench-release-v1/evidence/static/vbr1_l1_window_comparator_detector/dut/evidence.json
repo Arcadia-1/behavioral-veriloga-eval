@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/cross_hysteresis_window_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_cross_hysteresis_window_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/cross_hysteresis_window_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_cross_hysteresis_window_ref.scs"
   ],
   "checks": {
     "must_include": [

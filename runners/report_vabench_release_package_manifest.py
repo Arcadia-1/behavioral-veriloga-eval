@@ -51,7 +51,7 @@ def score_rows_by_id() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
 
 def read_entries() -> list[tuple[Path, dict[str, Any]]]:
     rows: list[tuple[Path, dict[str, Any]]] = []
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         rows.append((path, read_json(path)))
     return rows
 
@@ -229,7 +229,7 @@ def write_csv(report: dict[str, Any]) -> None:
         "evidence",
     ]
     with MANIFEST_CSV.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in report["forms"]:
             writer.writerow({field: row.get(field, "") for field in fields})

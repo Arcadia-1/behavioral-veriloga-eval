@@ -12,14 +12,14 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/tb_adc_dac_ideal_4b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/tb_adc_dac_ideal_4b_ref.scs"
   ],
   "checks": {
     "must_include": [

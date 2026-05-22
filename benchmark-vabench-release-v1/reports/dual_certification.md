@@ -1,6 +1,6 @@
 # vaBench Release Dual Certification
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 This report is generated from historical imported evidence plus fresh
 release EVAS/Spectre rerun results when available.
@@ -12,14 +12,14 @@ release EVAS/Spectre rerun results when available.
 | status | `pass` |
 | source | `historical main120 import plus fresh release dual rerun` |
 | simulator rerun | `True` |
-| release entries | 75 |
-| dual-certified release forms | 259 |
+| release entries | 77 |
+| dual-certified release forms | 265 |
 | dual-failed release forms | 0 |
 | dual-pending release forms | 0 |
-| dual-pass materialized entries | 75 |
+| dual-pass materialized entries | 77 |
 | dual-pending materialized entries | 0 |
 | dual-failed materialized entries | 0 |
-| fully certified entries | 75 |
+| fully certified entries | 77 |
 | source-equivalence failures | 0 |
 | source-equivalence blocked forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |

@@ -1,0 +1,30 @@
+syntax:
+  must_include:
+    - "din"
+    - "en"
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  checks:
+    - "driver_disabled_common_mode"
+    - "driver_polarity_tracks_din"
+    - "driver_common_mode_stable"
+  public_observables:
+    - "din"
+    - "en"
+    - "outp"
+    - "outn"
+parity:
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

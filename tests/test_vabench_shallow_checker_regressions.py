@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from runners.vabench_release_paths import release_form_dir
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -49,7 +51,7 @@ def test_unresolved_shallow_dut_companions_stay_in_manual_review() -> None:
 def test_review_required_dut_companion_checks_do_not_claim_function_strength() -> None:
     assert SHALLOW_DUT_COMPANIONS == set()
     for entry_id in SHALLOW_DUT_COMPANIONS:
-        checks_path = PACKAGE_ROOT / "tasks" / entry_id / "forms" / "dut" / "checks.yaml"
+        checks_path = release_form_dir(PACKAGE_ROOT / "tasks", entry_id, "dut") / "checks.yaml"
         text = checks_path.read_text(encoding="utf-8")
 
         assert 'dut_companion_role: "function_checked_dut"' not in text
@@ -63,7 +65,7 @@ def test_review_required_dut_companion_checks_do_not_claim_function_strength() -
 def test_review_required_dut_prompts_remain_visible_as_companion_risks() -> None:
     assert SHALLOW_DUT_COMPANIONS == set()
     for entry_id in SHALLOW_DUT_COMPANIONS:
-        prompt_path = PACKAGE_ROOT / "tasks" / entry_id / "forms" / "dut" / "prompt.md"
+        prompt_path = release_form_dir(PACKAGE_ROOT / "tasks", entry_id, "dut") / "prompt.md"
         text = prompt_path.read_text(encoding="utf-8")
         lowered = text.lower()
 
@@ -74,8 +76,9 @@ def test_review_required_dut_prompts_remain_visible_as_companion_risks() -> None
 
 def test_promoted_function_checked_duts_have_specific_public_contracts() -> None:
     for entry_id in PROMOTED_FUNCTION_CHECKED_DUTS:
-        prompt_path = PACKAGE_ROOT / "tasks" / entry_id / "forms" / "dut" / "prompt.md"
-        checks_path = PACKAGE_ROOT / "tasks" / entry_id / "forms" / "dut" / "checks.yaml"
+        dut_dir = release_form_dir(PACKAGE_ROOT / "tasks", entry_id, "dut")
+        prompt_path = dut_dir / "prompt.md"
+        checks_path = dut_dir / "checks.yaml"
         prompt = prompt_path.read_text(encoding="utf-8")
         checks = checks_path.read_text(encoding="utf-8")
 

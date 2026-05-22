@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
   ],
   "checks": {
     "must_include": [

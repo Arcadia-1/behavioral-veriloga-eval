@@ -1,7 +1,7 @@
 {
   "release_entry_id": "vbr1_l2_flash_adc_mini_array",
   "task_id": "vbr1_l2_flash_adc_mini_array:e2e",
-  "source_task_id": "flash_adc_3b_smoke",
+  "source_task_id": "flash_adc_mini_array_e2e",
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
@@ -14,11 +14,11 @@
   "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_flash_adc_mini_array/e2e/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_flash_adc_mini_array/e2e/gold",
+    "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/vbr1_l2_flash_adc_mini_array/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_flash_adc_mini_array/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_flash_adc_mini_array/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/tb_flash_adc_3b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/tb_flash_adc_3b_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,39 +28,109 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "summary": "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_flash_adc_mini_array/e2e/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_flash_adc_mini_array/e2e/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/vbr1_l2_flash_adc_mini_array/e2e/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
       "status": "passed",
       "common_window_s": [
         0.0,
-        8.2e-07
+        8.6e-08
       ],
-      "signals_compared": 5,
+      "signals_compared": 12,
       "samples": 1200,
-      "max_rmse_v": 0.1,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.002000001689915654,
-      "p95_nrmse": 0.01,
-      "max_nrmse": 0.01,
+      "max_rmse_v": 2.3148674218550456e-16,
+      "max_abs_v": 2.886579864025407e-15,
+      "mean_nrmse": 2.449595155402165e-17,
+      "p95_nrmse": 2.939514186482598e-16,
+      "max_nrmse": 2.939514186482598e-16,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.1,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.01,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.01
+          "mismatch_ratio": 0.0
+        },
+        "cmp0": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp1": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp2": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp3": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp4": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp5": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp6": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
         },
         "dout0": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
-          "span_v": 0.9000000000000057,
+          "span_v": 0.9,
           "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
@@ -70,7 +140,7 @@
         "dout1": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
-          "span_v": 0.9000000000000055,
+          "span_v": 0.9,
           "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
@@ -80,7 +150,7 @@
         "dout2": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
-          "span_v": 0.9000000000000052,
+          "span_v": 0.9,
           "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
@@ -88,10 +158,10 @@
           "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 7.604620442704282e-09,
-          "max_abs_v": 4.998851027560036e-08,
-          "span_v": 0.9,
-          "nrmse": 8.449578269671424e-09,
+          "rmse_v": 2.3148674218550456e-16,
+          "max_abs_v": 2.886579864025407e-15,
+          "span_v": 0.7875,
+          "nrmse": 2.939514186482598e-16,
           "kind": "analog"
         }
       }
@@ -102,8 +172,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/tb_flash_adc_3b_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va",
+      "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/tb_flash_adc_3b_ref.scs"
     ]
   },
   "failures": [],

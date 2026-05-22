@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs"
   ],
   "checks": {
     "must_include": [

@@ -1,6 +1,6 @@
 # vaBench Release Static Certification
 
-Date: 2026-05-18
+Date: 2026-05-22
 
 This report records static release certification for materialized
 release forms. It checks public syntax guardrails against copied gold
@@ -12,10 +12,10 @@ EVAS or Spectre simulation report.
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| static-certified release forms | 259 |
+| static-certified release forms | 265 |
 | static-failed release forms | 0 |
-| static-certified entries | 75 |
-| entries with materialized assets | 75 |
+| static-certified entries | 77 |
+| entries with materialized assets | 77 |
 | blocking issues | 0 |
 
 ## Failures

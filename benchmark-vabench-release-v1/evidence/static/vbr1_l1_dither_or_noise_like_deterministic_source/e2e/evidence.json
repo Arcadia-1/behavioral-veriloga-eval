@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/noise_gen.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/noise_gen_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/tb_noise_gen_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/noise_gen.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/noise_gen_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/tb_noise_gen_ref.scs"
   ],
   "checks": {
     "must_include": [

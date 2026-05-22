@@ -34,7 +34,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def read_entries() -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         if payload:
             payload["_manifest"] = rel(path)
@@ -276,7 +276,7 @@ def build_report() -> dict[str, Any]:
 
 def write_csv(path: Path, rows: list[dict[str, Any]], fields: list[str]) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow(row)

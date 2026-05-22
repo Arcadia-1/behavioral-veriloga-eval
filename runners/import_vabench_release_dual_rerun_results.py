@@ -19,6 +19,11 @@ IMPORT_REPORT_MD = PACKAGE_ROOT / "reports" / "dual_rerun_import.md"
 DEFAULT_SUMMARY_JSON = ROOT / "results" / "vabench-release-v1-dual-rerun" / "summary.json"
 DUAL_RERUN_QUEUE_JSON = PACKAGE_ROOT / "reports" / "dual_rerun_queue.json"
 PRIMARY_VARIANTS = {"gold", "fixed"}
+DUAL_REFRESH_BLOCKERS = {
+    "evas_certification",
+    "spectre_certification",
+    "fresh_evas_spectre_dual_refresh_pending",
+}
 
 
 def rel(path: Path) -> str:
@@ -38,7 +43,7 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
 
 def read_entries() -> dict[str, tuple[Path, dict[str, object]]]:
     entries: dict[str, tuple[Path, dict[str, object]]] = {}
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         entries[str(payload["release_entry_id"])] = (path, payload)
     return entries
@@ -324,7 +329,7 @@ def recompute_dual_report(current: dict[str, object], updates: dict[tuple[str, s
         missing_forms = entry.get("missing_forms", [])
         blockers = entry.get("release_blockers", [])
         effective_blockers = (
-            [blocker for blocker in blockers if blocker not in {"evas_certification", "spectre_certification"}]
+            [blocker for blocker in blockers if blocker not in DUAL_REFRESH_BLOCKERS]
             if dual_pass and isinstance(blockers, list)
             else blockers
         )
@@ -526,11 +531,7 @@ def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]
         blockers = entry.get("release_blockers", [])
         if isinstance(blockers, list):
             if dual_pass:
-                entry["release_blockers"] = [
-                    blocker
-                    for blocker in blockers
-                    if blocker not in {"evas_certification", "spectre_certification"}
-                ]
+                entry["release_blockers"] = [blocker for blocker in blockers if blocker not in DUAL_REFRESH_BLOCKERS]
             else:
                 retained = list(blockers)
                 for blocker in ("evas_certification", "spectre_certification"):

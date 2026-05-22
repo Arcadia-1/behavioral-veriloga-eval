@@ -12,18 +12,25 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/tb/gold/flash_adc_3b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/tb/gold/tb_flash_adc_3b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/gold/flash_adc_3b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/gold/tb_flash_adc_3b_ref.scs"
   ],
   "checks": {
     "must_include": [
+      "ahdl_include",
       "tran",
-      "save"
+      "save",
+      "cmp0",
+      "cmp6"
     ],
-    "must_not_include": [],
+    "must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
     "failures": []
   },
   "notes": "Static release certification only; EVAS and Spectre remain pending."

@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
   ],
   "checks": {
     "must_include": [

@@ -12,14 +12,14 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/simple_binary_voltage_dac_4b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/tb_simple_binary_voltage_dac_4b_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/simple_binary_voltage_dac_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/tb_simple_binary_voltage_dac_4b_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/gold/tb_simple_binary_voltage_dac_4b_ref.scs"
   ],
   "checks": {
     "must_include": [

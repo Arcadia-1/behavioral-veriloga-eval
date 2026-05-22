@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_burst_clock_source/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_burst_clock_source/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_burst_clock_source/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_burst_clock_source/forms/dut/gold/clk_burst_gen.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_burst_clock_source/forms/dut/gold/tb_clk_burst_gen_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/gold/clk_burst_gen.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/gold/tb_clk_burst_gen_ref.scs"
   ],
   "checks": {
     "must_include": [

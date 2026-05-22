@@ -7,6 +7,8 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
+from vabench_release_paths import release_entry_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -37,7 +39,7 @@ def is_release_speed_summary(path: Path) -> bool:
 
 
 def release_entry(entry_id: str) -> dict[str, object]:
-    return read_json(TASKS_ROOT / entry_id / "release_entry.json")
+    return read_json(release_entry_path(TASKS_ROOT, entry_id))
 
 
 def task_by_form(entry: dict[str, object], form: str) -> dict[str, object]:

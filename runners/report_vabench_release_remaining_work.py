@@ -49,17 +49,21 @@ def selected_rerun_pending_forms(dual: dict[str, object]) -> list[dict[str, obje
     for task in dual.get("task_reports", []):
         if not isinstance(task, dict):
             continue
+        if task.get("status") != "pending":
+            continue
+        if int(task.get("source_equivalence_failure_count", 0)) > 0:
+            continue
         blockers = task.get("pending_blockers", [])
-        if blockers == ["no imported dual evidence; EVAS/Spectre rerun required for this selected release task"]:
-            rows.append(
-                {
-                    "entry_id": task["entry_id"],
-                    "form": task["form"],
-                    "source_task_id": task["source_task_id"],
-                    "reason": blockers[0],
-                    "evidence": task["evidence"],
-                }
-            )
+        reason = "; ".join(str(blocker) for blocker in blockers) if isinstance(blockers, list) else str(blockers)
+        rows.append(
+            {
+                "entry_id": task["entry_id"],
+                "form": task["form"],
+                "source_task_id": task["source_task_id"],
+                "reason": reason or "fresh EVAS/Spectre rerun required",
+                "evidence": task["evidence"],
+            }
+        )
     return rows
 
 
@@ -87,7 +91,7 @@ def current_seed_missing_forms(status: dict[str, object]) -> list[dict[str, obje
 
 def all_missing_required_forms() -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         entry = read_json(path)
         missing = entry.get("missing_forms", [])
         if not missing:

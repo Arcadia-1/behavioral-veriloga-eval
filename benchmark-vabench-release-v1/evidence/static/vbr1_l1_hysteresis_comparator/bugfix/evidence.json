@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/tb_cmp_hysteresis_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/gold/tb_cmp_hysteresis_ref.scs"
   ],
   "checks": {
     "must_include": [

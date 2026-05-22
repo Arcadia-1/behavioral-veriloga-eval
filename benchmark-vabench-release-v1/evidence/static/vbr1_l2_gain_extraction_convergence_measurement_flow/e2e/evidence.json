@@ -12,14 +12,14 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/tb_gain_extraction_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va"
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/tb_gain_extraction_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va"
   ],
   "checks": {
     "must_include": [

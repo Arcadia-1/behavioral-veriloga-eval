@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-21",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "claim_count": 9,
@@ -35,7 +35,7 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "All release entries have materialized source-task assets and pass static checks.",
-      "safe_wording": "The release has 75/75 materialized entries and 259 static-certified forms with zero asset issues.",
+      "safe_wording": "The release has 77 materialized entries for the 75-entry plan and 265 static-certified forms with zero asset issues.",
       "unsafe_wording": [
         "Static certification proves EVAS/Spectre behavioral parity.",
         "Asset materialization means the task is scored."
@@ -47,9 +47,9 @@
       ],
       "required_before_allowed": [],
       "numbers": {
-        "source_linked_entries": 75,
-        "materialized_entries": 75,
-        "static_certified_forms": 259
+        "source_linked_entries": 77,
+        "materialized_entries": 77,
+        "static_certified_forms": 265
       },
       "notes": []
     },
@@ -59,7 +59,7 @@
       "allowed": true,
       "completion_required": false,
       "claim_text": "The imported EVAS/Spectre evidence subset has no EVAS PASS / Spectre FAIL mismatch.",
-      "safe_wording": "On the full imported release evidence (259 forms), EVAS PASS / Spectre FAIL count is 0.",
+      "safe_wording": "On the full imported release evidence (265 forms), EVAS PASS / Spectre FAIL count is 0.",
       "unsafe_wording": [
         "Imported parity evidence enables benchmark scores by itself.",
         "Zero EVAS PASS / Spectre FAIL proves speedup or model baseline claims."
@@ -70,7 +70,7 @@
       ],
       "required_before_allowed": [],
       "numbers": {
-        "dual_certified_forms": 259,
+        "dual_certified_forms": 265,
         "dual_pending_forms": 0,
         "dual_failed_forms": 0,
         "evas_pass_spectre_fail_count": 0
@@ -83,7 +83,7 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "The full release package is EVAS/Spectre certified.",
-      "safe_wording": "The full release package has EVAS/Spectre certification for 259 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches.",
+      "safe_wording": "The full release package has EVAS/Spectre certification for 265 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches.",
       "unsafe_wording": [
         "vaBench release is fully EVAS/Spectre certified.",
         "All release tasks pass Spectre and EVAS."
@@ -101,7 +101,7 @@
         "selected_rerun_pending_forms": 0,
         "source_equivalence_blocked_forms": 0,
         "fresh_dual_rerun_queue_forms": 0,
-        "bridge_status": "ready",
+        "bridge_status": "blocked",
         "bridge_required_for_current_claim": false,
         "external_blockers_status": "pending"
       },
@@ -113,7 +113,7 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "The release benchmark has an enabled score denominator.",
-      "safe_wording": "The release benchmark score denominator is enabled for 74 certified content-denominator entries and 255 forms.",
+      "safe_wording": "The release benchmark score denominator is enabled for 75 certified content-denominator entries and 257 forms.",
       "unsafe_wording": [
         "Current baseline percentages are release benchmark scores.",
         "The 75 planned entries are already the scored denominator."
@@ -125,8 +125,8 @@
       "required_before_allowed": [],
       "numbers": {
         "score_denominator_status": "score_enabled",
-        "scored_entries": 74,
-        "scored_forms": 255
+        "scored_entries": 75,
+        "scored_forms": 257
       },
       "notes": []
     },
@@ -229,7 +229,7 @@
         "source_design_pending_entries": 0,
         "missing_required_form_entries": 0,
         "dual_pending_forms": 0,
-        "scored_entries": 74
+        "scored_entries": 75
       },
       "notes": []
     }

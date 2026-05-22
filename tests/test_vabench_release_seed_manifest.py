@@ -4,6 +4,8 @@ import csv
 import json
 from pathlib import Path
 
+from runners.vabench_release_paths import release_entry_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "VABENCH_RELEASE_SEED_MANIFEST.csv"
@@ -25,7 +27,7 @@ def test_seed_manifest_links_all_current_l1_seed_entries() -> None:
 
 def test_seed_release_entries_are_score_enabled_after_certification() -> None:
     for row in rows():
-        payload = json.loads((PACKAGE_TASKS / row["entry_id"] / "release_entry.json").read_text(encoding="utf-8"))
+        payload = json.loads(release_entry_path(PACKAGE_TASKS, row["entry_id"]).read_text(encoding="utf-8"))
 
         assert payload["counts"] == {
             "benchmark_score": True,

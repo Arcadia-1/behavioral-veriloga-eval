@@ -2570,6 +2570,76 @@ def check_flash_adc_3b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return True, f"codes={len(unique)}/8 reversals={reversals}"
 
 
+_RELEASE_FLASH_ADC_CMP_COLS = tuple(f"cmp{idx}" for idx in range(7))
+_RELEASE_FLASH_ADC_BIT_COLS = ("dout0", "dout1", "dout2")
+
+
+def check_release_flash_adc_mini_array(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    """Release flash ADC mini-array: seven comparator decisions plus encoder."""
+    required = {"time", "vin", "clk", "dout0", "dout1", "dout2", *_RELEASE_FLASH_ADC_CMP_COLS}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
+
+    vth = 0.45
+    times = [r["time"] for r in rows]
+    edge_times = rising_edges([r["clk"] for r in rows], times, threshold=vth)
+    sample_rows = sample_rows_at_or_after_times(rows, [edge_t + 0.5e-9 for edge_t in edge_times])
+    if len(sample_rows) < 8:
+        return False, f"too_few_settled_samples={len(sample_rows)}"
+
+    thresholds = [(idx + 1) * 0.9 / 8.0 for idx in range(7)]
+    observed_codes: list[int] = []
+    expected_codes: list[int] = []
+    comparator_mismatches = 0
+    thermometer_errors = 0
+    encoder_mismatches = 0
+    out_of_range = 0
+
+    for row in sample_rows:
+        vin = row["vin"]
+        expected_cmp = [1 if vin >= threshold - 1e-6 else 0 for threshold in thresholds]
+        observed_cmp = [1 if row[col] >= vth else 0 for col in _RELEASE_FLASH_ADC_CMP_COLS]
+        expected_code = sum(expected_cmp)
+        observed_code = (
+            (1 if row["dout0"] >= vth else 0)
+            | ((1 if row["dout1"] >= vth else 0) << 1)
+            | ((1 if row["dout2"] >= vth else 0) << 2)
+        )
+
+        if observed_cmp != expected_cmp:
+            comparator_mismatches += 1
+        if any(lo < hi for lo, hi in zip(observed_cmp, observed_cmp[1:])):
+            thermometer_errors += 1
+        if observed_code != sum(observed_cmp):
+            encoder_mismatches += 1
+        if not 0 <= observed_code <= 7:
+            out_of_range += 1
+        observed_codes.append(observed_code)
+        expected_codes.append(expected_code)
+
+    observed_unique = sorted(set(observed_codes))
+    expected_unique = sorted(set(expected_codes))
+    reversals = sum(1 for prev, curr in zip(observed_codes, observed_codes[1:]) if curr < prev)
+    ok = (
+        observed_unique == list(range(8))
+        and expected_unique == list(range(8))
+        and comparator_mismatches == 0
+        and thermometer_errors == 0
+        and encoder_mismatches == 0
+        and out_of_range == 0
+        and reversals == 0
+    )
+    return ok, (
+        f"observed_codes={','.join(str(c) for c in observed_unique)} "
+        f"expected_codes={','.join(str(c) for c in expected_unique)} "
+        f"comparator_mismatches={comparator_mismatches} "
+        f"thermometer_errors={thermometer_errors} "
+        f"encoder_mismatches={encoder_mismatches} "
+        f"reversals={reversals}"
+    )
+
+
 def check_serializer_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """8-bit P2S: verify 0xA5 bit sequence MSB-first after LOAD."""
     if not rows or not {"load", "clk", "sout"}.issubset(rows[0]):
@@ -2857,26 +2927,46 @@ def check_pfd_small_phase_error_response(rows: list[dict[str, float]]) -> tuple[
     return check_pfd_deadzone(rows)
 
 
+_RELEASE_SIMPLE_BINARY_DAC_CODES = tuple(range(16))
+_RELEASE_SIMPLE_BINARY_DAC_SAMPLE_TIMES_NS = tuple(5.0 + 10.0 * idx for idx in range(16))
+
+
 def check_simple_binary_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    if not rows or "time" not in rows[0] or "aout" not in rows[0]:
-        return False, "missing time/aout"
-    sample_times_ns = [10.0, 30.0, 50.0, 70.0, 90.0, 110.0, 130.0, 150.0]
-    expected = [0.0, 0.12, 0.24, 0.36, 0.48, 0.60, 0.72, 0.90]
+    required = {"time", "aout", "code_0", "code_1", "code_2", "code_3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/aout/code_0/code_1/code_2/code_3"
+    expected = [0.9 * code / 15.0 for code in _RELEASE_SIMPLE_BINARY_DAC_CODES]
     observed: list[float] = []
-    for t_ns in sample_times_ns:
+    observed_codes: list[int] = []
+    code_mismatches = 0
+    for t_ns, expected_code in zip(_RELEASE_SIMPLE_BINARY_DAC_SAMPLE_TIMES_NS, _RELEASE_SIMPLE_BINARY_DAC_CODES):
         value = sample_signal_at(rows, "aout", t_ns * 1e-9)
         if value is None:
             return False, f"missing_sample_at={t_ns:g}ns"
+        observed_code = 0
+        for bit_idx in range(4):
+            bit_value = sample_signal_at(rows, f"code_{bit_idx}", t_ns * 1e-9)
+            if bit_value is None:
+                return False, f"missing_code_{bit_idx}_sample_at={t_ns:g}ns"
+            if bit_value > 0.45:
+                observed_code |= 1 << bit_idx
+        if observed_code != expected_code:
+            code_mismatches += 1
+        observed_codes.append(observed_code)
         observed.append(value)
     max_err = max(abs(got - want) for got, want in zip(observed, expected))
     monotonic = all(b >= a - 1e-3 for a, b in zip(observed, observed[1:]))
+    zero_scale_ok = abs(observed[0]) <= 0.02
     full_scale_ok = abs(observed[-1] - 0.90) <= 0.02
-    ok = max_err <= 0.02 and monotonic and full_scale_ok
+    ok = max_err <= 0.02 and monotonic and zero_scale_ok and full_scale_ok and code_mismatches == 0
     obs_text = ",".join(f"{value:.3f}" for value in observed)
     exp_text = ",".join(f"{value:.3f}" for value in expected)
+    code_text = ",".join(str(code) for code in observed_codes)
     return ok, (
         f"simple_binary_dac_levels={obs_text} expected={exp_text} "
-        f"max_err={max_err:.3f} monotonic={monotonic} full_scale_ok={full_scale_ok}"
+        f"observed_codes={code_text} code_mismatches={code_mismatches} "
+        f"max_err={max_err:.3f} monotonic={monotonic} "
+        f"zero_scale_ok={zero_scale_ok} full_scale_ok={full_scale_ok}"
     )
 
 
@@ -3125,24 +3215,198 @@ def check_sar_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_pipeline_stage(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    """1.5-bit MDAC: check VRES is bounded and sub-ADC outputs vary."""
-    if not rows:
-        return False, "empty"
-    vres_col = next((k for k in rows[0] if k.lower() in {"vres", "vout", "residue"}), None)
-    d_cols = [k for k in rows[0] if k.lower() in {"d1", "d0", "dout1", "dout0"}]
-    if vres_col is None:
-        return False, f"missing vres column; keys={list(rows[0].keys())[:10]}"
-    vres_vals = [r[vres_col] for r in rows]
-    vres_range = max(vres_vals) - min(vres_vals)
-    vres_bounded = max(abs(v) for v in vres_vals) < 2.0
-    d_active = False
-    for col in d_cols:
-        vals = [r[col] for r in rows]
-        if max(vals) - min(vals) > 0.4:
-            d_active = True
-            break
-    ok = vres_bounded and vres_range > 0.1
-    return ok, f"vres_range={vres_range:.3f} bounded={vres_bounded} d_active={d_active}"
+    """1.5-bit MDAC: verify sub-ADC decisions and gain-of-2 residue."""
+    required = {"time", "phi1", "phi2", "vin", "vres", "d1", "d0"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
+
+    vth = 0.45
+    times = [r["time"] for r in rows]
+    phi2_edges = rising_edges([r["phi2"] for r in rows], times, threshold=vth)
+    sample_rows = sample_rows_at_or_after_times(rows, [edge_t + 0.8e-9 for edge_t in phi2_edges])
+    if len(sample_rows) < 3:
+        return False, f"phi2_samples={len(sample_rows)}"
+
+    region_counts = {"upper": 0, "middle": 0, "lower": 0}
+    bit_mismatches = 0
+    residue_mismatches = 0
+    bounded_failures = 0
+    max_residue_err = 0.0
+
+    for row in sample_rows:
+        vin = row["vin"]
+        vin_rel = vin - 0.45
+        if vin_rel > 0.9 / 4.0:
+            region = "upper"
+            exp_d1, exp_d0 = 1, 0
+            exp_vres = 0.45 + 2.0 * vin_rel - 0.9 / 2.0
+        elif vin_rel < -0.9 / 4.0:
+            region = "lower"
+            exp_d1, exp_d0 = 0, 0
+            exp_vres = 0.45 + 2.0 * vin_rel + 0.9 / 2.0
+        else:
+            region = "middle"
+            exp_d1, exp_d0 = 0, 1
+            exp_vres = 0.45 + 2.0 * vin_rel
+        exp_vres = min(0.9, max(0.0, exp_vres))
+        region_counts[region] += 1
+
+        got_d1 = 1 if row["d1"] >= vth else 0
+        got_d0 = 1 if row["d0"] >= vth else 0
+        if (got_d1, got_d0) != (exp_d1, exp_d0):
+            bit_mismatches += 1
+
+        err = abs(row["vres"] - exp_vres)
+        max_residue_err = max(max_residue_err, err)
+        if err > 0.04:
+            residue_mismatches += 1
+        if row["vres"] < -0.02 or row["vres"] > 0.92:
+            bounded_failures += 1
+
+    missing_regions = [name for name, count in region_counts.items() if count == 0]
+    ok = (
+        not missing_regions
+        and bit_mismatches == 0
+        and residue_mismatches == 0
+        and bounded_failures == 0
+    )
+    return ok, (
+        f"regions=upper:{region_counts['upper']},middle:{region_counts['middle']},lower:{region_counts['lower']} "
+        f"bit_mismatches={bit_mismatches} "
+        f"residue_mismatches={residue_mismatches} "
+        f"max_residue_err={max_residue_err:.4f} "
+        f"bounded_failures={bounded_failures}"
+    )
+
+
+def _pipeline_adc_chain_stage_code(value: float, *, vrefp: float = 0.9, vrefn: float = 0.0) -> int:
+    span = vrefp - vrefn
+    if value < vrefn + span * 0.25:
+        return 0
+    if value < vrefn + span * 0.50:
+        return 1
+    if value < vrefn + span * 0.75:
+        return 2
+    return 3
+
+
+def _pipeline_adc_chain_expected(vin: float, *, vrefp: float = 0.9, vrefn: float = 0.0) -> tuple[int, int, int, float, float]:
+    span = vrefp - vrefn
+    vin = min(vrefp, max(vrefn, vin))
+    s1_code = _pipeline_adc_chain_stage_code(vin, vrefp=vrefp, vrefn=vrefn)
+    center1 = vrefn + (s1_code + 0.5) * span / 4.0
+    res1 = (vrefp + vrefn) / 2.0 + 4.0 * (vin - center1)
+    res1 = min(vrefp, max(vrefn, res1))
+
+    s2_code = _pipeline_adc_chain_stage_code(res1, vrefp=vrefp, vrefn=vrefn)
+    center2 = vrefn + (s2_code + 0.5) * span / 4.0
+    res2 = (vrefp + vrefn) / 2.0 + 4.0 * (res1 - center2)
+    res2 = min(vrefp, max(vrefn, res2))
+
+    final_code = 4 * s1_code + s2_code
+    return s1_code, s2_code, final_code, res1, res2
+
+
+def check_release_pipeline_adc_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    """Release L2 pipeline ADC: verify two-stage decisions, residues, and final code."""
+    required = {
+        "time",
+        "vin",
+        "clk",
+        "res1",
+        "res2",
+        "s1b1",
+        "s1b0",
+        "s2b1",
+        "s2b0",
+        "dout3",
+        "dout2",
+        "dout1",
+        "dout0",
+    }
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
+
+    vth = 0.45
+    times = [row["time"] for row in rows]
+    edge_times = rising_edges([row["clk"] for row in rows], times, threshold=vth)
+    sample_rows = sample_rows_at_or_after_times(rows, [edge_t + 0.8e-9 for edge_t in edge_times])
+    if len(sample_rows) < 16:
+        return False, f"too_few_settled_samples={len(sample_rows)}"
+
+    observed_codes: list[int] = []
+    expected_codes: list[int] = []
+    stage_bit_mismatches = 0
+    final_concat_mismatches = 0
+    final_code_mismatches = 0
+    residue_mismatches = 0
+    bounded_failures = 0
+    max_res1_err = 0.0
+    max_res2_err = 0.0
+    res2_values: list[float] = []
+
+    for row in sample_rows:
+        exp_s1, exp_s2, exp_final, exp_res1, exp_res2 = _pipeline_adc_chain_expected(row["vin"])
+        got_s1 = ((1 if row["s1b1"] >= vth else 0) << 1) | (1 if row["s1b0"] >= vth else 0)
+        got_s2 = ((1 if row["s2b1"] >= vth else 0) << 1) | (1 if row["s2b0"] >= vth else 0)
+        got_final = (
+            ((1 if row["dout3"] >= vth else 0) << 3)
+            | ((1 if row["dout2"] >= vth else 0) << 2)
+            | ((1 if row["dout1"] >= vth else 0) << 1)
+            | (1 if row["dout0"] >= vth else 0)
+        )
+        got_concat = 4 * got_s1 + got_s2
+
+        if got_s1 != exp_s1 or got_s2 != exp_s2:
+            stage_bit_mismatches += 1
+        if got_final != got_concat:
+            final_concat_mismatches += 1
+        if got_final != exp_final:
+            final_code_mismatches += 1
+
+        res1_err = abs(row["res1"] - exp_res1)
+        res2_err = abs(row["res2"] - exp_res2)
+        max_res1_err = max(max_res1_err, res1_err)
+        max_res2_err = max(max_res2_err, res2_err)
+        if res1_err > 0.04 or res2_err > 0.04:
+            residue_mismatches += 1
+        if row["res1"] < -0.02 or row["res1"] > 0.92 or row["res2"] < -0.02 or row["res2"] > 0.92:
+            bounded_failures += 1
+
+        observed_codes.append(got_final)
+        expected_codes.append(exp_final)
+        res2_values.append(row["res2"])
+
+    observed_unique = sorted(set(observed_codes))
+    expected_unique = sorted(set(expected_codes))
+    reversals = sum(1 for prev, curr in zip(observed_codes, observed_codes[1:]) if curr < prev)
+    res2_span = max(res2_values) - min(res2_values) if res2_values else 0.0
+    ok = (
+        observed_unique == list(range(16))
+        and expected_unique == list(range(16))
+        and stage_bit_mismatches == 0
+        and final_concat_mismatches == 0
+        and final_code_mismatches == 0
+        and residue_mismatches == 0
+        and bounded_failures == 0
+        and reversals == 0
+        and res2_span > 0.20
+    )
+    return ok, (
+        f"observed_codes={','.join(str(code) for code in observed_unique)} "
+        f"expected_codes={','.join(str(code) for code in expected_unique)} "
+        f"stage_bit_mismatches={stage_bit_mismatches} "
+        f"final_concat_mismatches={final_concat_mismatches} "
+        f"final_code_mismatches={final_code_mismatches} "
+        f"residue_mismatches={residue_mismatches} "
+        f"max_res1_err={max_res1_err:.4f} "
+        f"max_res2_err={max_res2_err:.4f} "
+        f"res2_span={res2_span:.4f} "
+        f"reversals={reversals} "
+        f"bounded_failures={bounded_failures}"
+    )
 
 
 def check_sar_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -3212,33 +3476,37 @@ def check_cdac_cal(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return False, f"no vdac activity in {vdac_cols[:4]}"
 
 
-def _release_cdac_pulse_high(time_s: float, *, delay_s: float, width_s: float, period_s: float) -> bool:
-    if time_s < delay_s:
-        return False
-    phase = (time_s - delay_s) % period_s
-    return phase < width_s
+_RELEASE_CDAC_CODE_SEQUENCE = (
+    0,
+    1,
+    2,
+    3,
+    7,
+    15,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    255,
+    511,
+    767,
+    1023,
+)
+_RELEASE_CDAC_CAL_SEQUENCE = (0, 1, 2, 3) * 4
+_RELEASE_CDAC_SAMPLE_START_S = 5e-9
+_RELEASE_CDAC_SAMPLE_PERIOD_S = 4e-9
 
 
-def _release_cdac_expected_code(time_s: float) -> int:
-    code = 0
-    for bit_idx, width_s, period_s in (
-        (0, 4e-9, 8e-9),
-        (1, 8e-9, 16e-9),
-        (2, 16e-9, 32e-9),
-        (3, 32e-9, 64e-9),
-    ):
-        if _release_cdac_pulse_high(time_s, delay_s=2e-9, width_s=width_s, period_s=period_s):
-            code |= 1 << bit_idx
-    return code
-
-
-def _release_cdac_expected_cal(time_s: float) -> int:
-    cal = 0
-    if _release_cdac_pulse_high(time_s, delay_s=10e-9, width_s=18e-9, period_s=36e-9):
-        cal |= 1
-    if _release_cdac_pulse_high(time_s, delay_s=20e-9, width_s=18e-9, period_s=36e-9):
-        cal |= 2
-    return cal
+def _release_cdac_state_index(edge_t: float) -> int | None:
+    idx = int(round((edge_t - _RELEASE_CDAC_SAMPLE_START_S) / _RELEASE_CDAC_SAMPLE_PERIOD_S))
+    if idx < 0 or idx >= len(_RELEASE_CDAC_CODE_SEQUENCE):
+        return None
+    expected_edge_t = _RELEASE_CDAC_SAMPLE_START_S + idx * _RELEASE_CDAC_SAMPLE_PERIOD_S
+    if abs(edge_t - expected_edge_t) > 0.35e-9:
+        return None
+    return idx
 
 
 def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -3249,10 +3517,11 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
 
     times = [r["time"] for r in rows]
     clk_edges = rising_edges([r["clk"] for r in rows], times)
-    if len(clk_edges) < 8:
+    if len(clk_edges) < 14:
         return False, f"clk_edges={len(clk_edges)}"
 
     checked = 0
+    covered_states: set[int] = set()
     mismatches = 0
     cal_mismatches = 0
     diff_values: list[float] = []
@@ -3260,7 +3529,8 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
     max_cm_error = 0.0
 
     for edge_t in clk_edges:
-        if edge_t < 2e-9:
+        state_idx = _release_cdac_state_index(edge_t)
+        if state_idx is None:
             continue
         sample_t = edge_t + 0.25e-9
         vdac_p = sample_signal_at(rows, "vdac_p", sample_t)
@@ -3270,8 +3540,8 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
         if vdac_p is None or vdac_n is None or cal0 is None or cal1 is None:
             continue
 
-        code = _release_cdac_expected_code(edge_t)
-        expected_cal = _release_cdac_expected_cal(edge_t)
+        code = _RELEASE_CDAC_CODE_SEQUENCE[state_idx]
+        expected_cal = _RELEASE_CDAC_CAL_SEQUENCE[state_idx]
         observed_cal = (1 if cal0 > 0.45 else 0) | (2 if cal1 > 0.45 else 0)
         expected_diff = 0.6 * (((code + 32 * expected_cal) / 1023.0) - 0.5)
         actual_diff = vdac_p - vdac_n
@@ -3279,6 +3549,7 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
         cm_error = abs(0.5 * (vdac_p + vdac_n) - 0.45)
 
         checked += 1
+        covered_states.add(state_idx)
         diff_values.append(actual_diff)
         max_diff_error = max(max_diff_error, diff_error)
         max_cm_error = max(max_cm_error, cm_error)
@@ -3287,8 +3558,8 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
         if diff_error > 0.035 or cm_error > 0.025:
             mismatches += 1
 
-    if checked < 8:
-        return False, f"settled_samples={checked}"
+    if checked < 14 or len(covered_states) < 14:
+        return False, f"settled_samples={checked} covered_states={len(covered_states)}"
     diff_span = max(diff_values) - min(diff_values)
     allowed_mismatches = max(1, checked // 10)
     ok = (
@@ -3299,7 +3570,8 @@ def check_release_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool,
     )
     return ok, (
         f"samples={checked} mismatches={mismatches}/{allowed_mismatches} "
-        f"cal_mismatches={cal_mismatches} diff_span={diff_span:.4f} "
+        f"cal_mismatches={cal_mismatches} covered_states={len(covered_states)} "
+        f"diff_span={diff_span:.4f} "
         f"max_diff_error={max_diff_error:.4f} max_cm_error={max_cm_error:.4f}"
     )
 
@@ -4359,6 +4631,8 @@ CHECKS = {
     "sample_hold_smoke": check_sample_hold,
     "sample_hold_droop_smoke": check_sample_hold_droop,
     "flash_adc_3b_smoke": check_flash_adc_3b,
+    "flash_adc_mini_array_e2e": check_release_flash_adc_mini_array,
+    "pipeline_adc_chain_e2e": check_release_pipeline_adc_chain,
     "serializer_8b_smoke": check_serializer_8b,
     "serializer_frame_alignment_smoke": check_serializer_frame_alignment,
     "xor_pd_smoke": check_xor_pd,
@@ -4533,6 +4807,8 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_dwa_dem_encoder": check_dwa_dem_encoder_release,
     "vbr1_l1_hysteresis_comparator": check_cmp_hysteresis,
     "vbr1_l1_binary_weighted_voltage_dac": check_simple_binary_dac_4b,
+    "vbr1_l1_pipeline_adc_stage": check_pipeline_stage,
+    "vbr1_l2_pipeline_adc_chain": check_release_pipeline_adc_chain,
     "vbr1_l1_pfd_small_phase_error_response": check_pfd_small_phase_error_response,
     "vbr1_l1_propagation_delay_comparator": check_cmp_delay,
     "vbr1_l1_ramp_or_step_source": check_bound_step_period_guard,
@@ -4586,7 +4862,10 @@ RELEASE_FORM_CHECK_ALIASES = {
     "vbr1_l2_measurement_flow_tb": check_final_step_file_metric,
     "vbr1_l2_serializer_frame_alignment_flow_tb": check_serializer_frame_alignment,
     "vbr1_l1_bang_bang_phase_detector_tb": check_bbpd_data_edge_alignment,
-    "vbr1_l2_flash_adc_mini_array_tb": check_flash_adc_3b,
+    "vbr1_l2_flash_adc_mini_array_e2e": check_release_flash_adc_mini_array,
+    "vbr1_l2_flash_adc_mini_array_tb": check_release_flash_adc_mini_array,
+    "vbr1_l2_pipeline_adc_chain_e2e": check_release_pipeline_adc_chain,
+    "vbr1_l2_pipeline_adc_chain_tb": check_release_pipeline_adc_chain,
     "vbr1_l2_converter_front_end_tb": check_sample_hold_droop,
     "vbr1_l2_comparator_measurement_flow_tb": check_comparator_offset_search,
     "vbr1_l1_sine_periodic_voltage_source_e2e": check_multitone,
@@ -4634,6 +4913,13 @@ def evaluate_behavior_with_timeout(
     full92 matrix run. Keep this timeout shorter than simulation timeout so one
     pathological waveform becomes a normal task failure instead of a matrix hang.
     """
+    direct_max_bytes = int(os.environ.get("VAEVAS_BEHAVIOR_DIRECT_MAX_BYTES", "5000000"))
+    try:
+        if csv_path.stat().st_size <= direct_max_bytes:
+            return evaluate_behavior(task_id, csv_path)
+    except OSError:
+        pass
+
     eval_timeout_s = max(10, min(60, max(1, timeout_s // 3)))
     ctx = mp.get_context("spawn")
     queue: mp.Queue = ctx.Queue(maxsize=1)

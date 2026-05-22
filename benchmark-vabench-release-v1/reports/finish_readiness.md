@@ -1,6 +1,6 @@
 # vaBench Release Finish Readiness
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 This report states whether it is safe to start or import the fresh
 EVAS/Spectre release rerun. It is a readiness gate, not simulator
@@ -21,11 +21,11 @@ certification evidence.
 
 | ID | Status | Finding |
 | --- | --- | --- |
-| `P1_local_release_package_ready` | `pass` | planned=75, source_linked=75, materialized=75, asset=pass, static=pass |
+| `P1_local_release_package_ready` | `pass` | planned=75, source_linked=77, materialized=77, asset=pass, static=pass |
 | `P2_primary_rerun_queue_ready` | `pass` | queue_status=complete, queue_count=0, ready=0, blocked=0 |
 | `P3_staging_ready` | `pass` | queue_rows=0, ready_primary_rows=0, bundles=0, ready_bundles=0, blocked_bundles=0 |
-| `P4_bridge_ready` | `pass` | bridge_status=ready, ready_profiles=['default', 'ci', 'jin'], reason=bridge profile default is ready for release rerun |
-| `P5_current_summary_acceptable` | `pass` | summary_status=dry_run, tasks_total=3, queue_count=0, dry_run=True, expected_miss_count=0 |
+| `P4_bridge_ready` | `pass` | full release dual certification is already imported; bridge readiness is not required to finish |
+| `P5_current_summary_acceptable` | `pass` | summary_status=complete, tasks_total=16, queue_count=0, dry_run=False, expected_miss_count=0 |
 | `P6_import_gate_clear` | `pass` | import_status=imported, stale_summary=False, imported=0 |
 | `P7_full_dual_certification_clear` | `pass` | dual_pending=0, dual_failed=0, evas_pass_spectre_fail=0 |
 

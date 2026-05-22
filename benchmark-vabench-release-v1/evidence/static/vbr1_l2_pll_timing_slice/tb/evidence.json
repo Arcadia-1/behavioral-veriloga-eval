@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
   ],
   "checks": {
     "must_include": [

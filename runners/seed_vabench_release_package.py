@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
+from vabench_release_paths import release_category_entry_dir
+
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACKER_CSV = ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv"
@@ -191,7 +193,7 @@ def copy_release_assets(entry_dir: Path, source: SourceTask) -> dict[str, object
 
 
 def write_release_entry(entry: dict[str, str], base_id: str, reg: dict[str, str], sources: list[SourceTask], missing: list[str]) -> None:
-    entry_dir = PACKAGE_ROOT / "tasks" / entry["entry_id"]
+    entry_dir = release_category_entry_dir(PACKAGE_ROOT / "tasks", entry["entry_id"], entry["category"])
     if entry_dir.exists():
         shutil.rmtree(entry_dir)
     entry_dir.mkdir(parents=True)
@@ -299,7 +301,7 @@ def seed_current_entries() -> list[dict[str, str]]:
                 "asset_complete_forms": "|".join(asset_complete),
                 "asset_materialized_forms": "|".join(asset_materialized),
                 "certification_status": "not_certified",
-                "package_task_dir": rel(PACKAGE_ROOT / "tasks" / entry_id),
+                "package_task_dir": rel(release_category_entry_dir(PACKAGE_ROOT / "tasks", entry_id, entry["category"])),
                 "notes": "release assets copied from source tasks; not scored until certified",
             }
         )

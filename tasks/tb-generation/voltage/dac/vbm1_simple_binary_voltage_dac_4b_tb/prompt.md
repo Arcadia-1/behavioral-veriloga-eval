@@ -10,7 +10,8 @@ The testbench must exercise:
 - Drive `aout` linearly between `vss` and `vref` using code/15 and smooth with `transition()`; no unit-element or segmented DAC structure is required.
 
 Stimulus and observability requirements:
-- Apply multiple binary codes spanning low, middle, and full-scale values.
+- Apply all 16 unsigned binary codes from `0` through `15` in increasing order.
+- Drive `vref` at 0.9 V, `vss` at 0 V, use 10 ns code windows, and place stable samples at `5, 15, 25, ..., 155 ns`.
 - Save all code bits and `aout`.
 
 Review note: This is a behavioral binary-weighted transfer model, not a unit-element or segmented DAC implementation.

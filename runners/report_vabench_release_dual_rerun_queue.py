@@ -29,7 +29,7 @@ def read_json(path: Path) -> dict[str, object]:
 
 def read_entries() -> dict[str, dict[str, object]]:
     entries: dict[str, dict[str, object]] = {}
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         entries[str(payload["release_entry_id"])] = payload
     return entries
@@ -144,7 +144,7 @@ def write_csv(report: dict[str, object]) -> None:
         "evidence",
     ]
     with REPORT_CSV.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row[field] for field in fields})

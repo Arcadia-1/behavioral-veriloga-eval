@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_vco_phase_integrator/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_vco_phase_integrator/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_vco_phase_integrator/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
   ],
   "checks": {
     "must_include": [

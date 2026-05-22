@@ -11,6 +11,7 @@ from datetime import date
 from pathlib import Path
 
 from simulate_evas import has_behavior_check
+from vabench_release_paths import release_entry_dir, release_entry_path, release_form_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,7 +40,7 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
 
 
 def form_dir(entry_id: str, form: str) -> Path:
-    return TASKS_ROOT / entry_id / "forms" / form
+    return release_form_dir(TASKS_ROOT, entry_id, form)
 
 
 def read_queue_rows(queue_json: Path = QUEUE_JSON) -> list[dict[str, object]]:
@@ -51,7 +52,7 @@ def read_queue_rows(queue_json: Path = QUEUE_JSON) -> list[dict[str, object]]:
 
 
 def release_entry(entry_id: str) -> dict[str, object]:
-    path = TASKS_ROOT / entry_id / "release_entry.json"
+    path = release_entry_path(TASKS_ROOT, entry_id)
     if not path.exists():
         return {}
     return read_json(path)
@@ -129,7 +130,7 @@ def ahdl_includes(path: Path) -> list[str]:
 
 
 def sibling_gold_files(entry_id: str) -> list[Path]:
-    entry_root = TASKS_ROOT / entry_id / "forms"
+    entry_root = release_entry_dir(TASKS_ROOT, entry_id) / "forms"
     if not entry_root.exists():
         return []
     files: list[Path] = []
@@ -158,7 +159,7 @@ def resolve_tb(entry_id: str, form: str) -> tuple[Path | None, str | None]:
     if source_tb is not None:
         return source_tb, None
 
-    entry_root = TASKS_ROOT / entry_id / "forms"
+    entry_root = release_entry_dir(TASKS_ROOT, entry_id) / "forms"
     for sibling_form in ("e2e", "tb", "dut", "bugfix"):
         if sibling_form == form:
             continue
@@ -420,7 +421,7 @@ def write_csv(manifest: dict[str, object], report_csv: Path = MANIFEST_CSV) -> N
         "blockers",
     ]
     with report_csv.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for record in manifest["bundles"]:
             writer.writerow(

@@ -30,7 +30,7 @@ def rel(path: Path) -> str:
 
 def read_entries() -> list[tuple[Path, dict[str, object]]]:
     entries: list[tuple[Path, dict[str, object]]] = []
-    for path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         entries.append((path, json.loads(path.read_text(encoding="utf-8"))))
     return entries
 

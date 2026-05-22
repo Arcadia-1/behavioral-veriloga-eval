@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/dut/gold/bound_step_period_guard_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/dut/gold/tb_bound_step_period_guard_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/gold/bound_step_period_guard_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/gold/tb_bound_step_period_guard_ref.scs"
   ],
   "checks": {
     "must_include": [

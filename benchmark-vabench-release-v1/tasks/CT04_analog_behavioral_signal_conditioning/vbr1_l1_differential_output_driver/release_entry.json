@@ -1,0 +1,176 @@
+{
+  "id": "vbr1_l1_differential_output_driver",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_differential_output_driver",
+  "level": "L1",
+  "category": "Analog Behavioral Signal Conditioning",
+  "base_function": "Differential output driver",
+  "package_status": "selected_l1_addition",
+  "score_surface": "model-capability",
+  "source_base_id": "differential_output_driver",
+  "canonical_kernel": "",
+  "source_registry_status": "selected_from_existing_task",
+  "source_evidence_status": "selected_source_pending_dual",
+  "source_tasks": [
+    {
+      "form": "dut",
+      "source_path": "dut_companion_from_e2e:differential_voltage_output_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "tb",
+      "source_path": "tb_companion_from_e2e:differential_voltage_output_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "bugfix",
+      "source_path": "bugfix_companion_from_dut:differential_voltage_output_ref.va",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "e2e",
+      "source_path": "tasks/end-to-end/voltage/differential_voltage_output_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    }
+  ],
+  "release_tasks": [
+    {
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/tb_differential_voltage_output_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "dut_companion_from_e2e:differential_voltage_output_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/dut/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/dut/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/dut/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/dut/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/dut/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_differential_output_driver_dut",
+      "historical_source_task_id": "vbr1_l1_differential_output_driver_dut"
+    },
+    {
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/tb_differential_voltage_output_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "tb_companion_from_e2e:differential_voltage_output_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/tb/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/tb/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/tb/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/tb/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/tb/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_differential_output_driver_tb",
+      "historical_source_task_id": "vbr1_l1_differential_output_driver_tb"
+    },
+    {
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/tb_differential_voltage_output_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "bugfix_companion_from_dut:differential_voltage_output_ref.va",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/bugfix/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/bugfix/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/bugfix/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/bugfix/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/bugfix/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_differential_output_driver_bugfix",
+      "historical_source_task_id": "vbr1_l1_differential_output_driver_bugfix"
+    },
+    {
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/tb_differential_voltage_output_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "tasks/end-to-end/voltage/differential_voltage_output_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/e2e/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_differential_output_driver/e2e/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/spectre_result.json",
+      "release_source_task_id": "differential_voltage_output_smoke",
+      "historical_source_task_id": "differential_voltage_output_smoke"
+    }
+  ],
+  "missing_forms": [],
+  "certification": {
+    "static": "pass",
+    "evas": "pass",
+    "spectre": "pass",
+    "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "model_capability": false,
+    "l0_conformance": false
+  },
+  "release_blockers": []
+}

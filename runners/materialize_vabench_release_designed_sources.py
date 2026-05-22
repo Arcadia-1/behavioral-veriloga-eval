@@ -8,6 +8,8 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from vabench_release_paths import release_entry_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -740,7 +742,7 @@ def write_form_assets(entry_dir: Path, row: dict[str, str], spec: DesignedSpec, 
 
 
 def materialize_entry(row: dict[str, str], spec: DesignedSpec, *, refresh_existing: bool = False) -> bool:
-    entry_path = TASKS_ROOT / row["entry_id"] / "release_entry.json"
+    entry_path = release_entry_path(TASKS_ROOT, row["entry_id"])
     if not entry_path.exists():
         return False
     entry = json.loads(entry_path.read_text(encoding="utf-8"))

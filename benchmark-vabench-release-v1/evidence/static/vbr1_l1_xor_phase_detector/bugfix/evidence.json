@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs"
   ],
   "checks": {
     "must_include": [

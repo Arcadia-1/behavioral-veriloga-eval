@@ -810,7 +810,7 @@ def write_tb_companion(entry_path: Path, entry: dict[str, object], e2e_task: dic
 
 def materialize_tb_companions() -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
-    for entry_path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for entry_path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         entry = read_json(entry_path)
         e2e_task = next((task for task in entry.get("release_tasks", []) if task.get("form") == "e2e"), None)
         if not isinstance(e2e_task, dict):

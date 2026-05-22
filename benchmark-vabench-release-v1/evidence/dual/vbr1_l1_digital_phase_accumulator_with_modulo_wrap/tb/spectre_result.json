@@ -3,18 +3,16 @@
   "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
   "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
   "backend": "spectre",
-  "status": "PASS",
+  "status": "PENDING",
   "scores": {
-    "rerun_backend_pass": true,
-    "rerun_expected_result_met": true,
-    "raw_status": "PASS",
-    "behavior_score": 1.0
+    "historical_weighted_total": null,
+    "historical_backend_pass": false,
+    "source_equivalence_failure_count": 0
   },
   "artifacts": [
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/evidence.json"
   ],
   "notes": [
-    "Imported from fresh vaBench release EVAS/Spectre dual rerun summary."
+    "no imported dual evidence; EVAS/Spectre rerun required for this selected release task"
   ]
 }

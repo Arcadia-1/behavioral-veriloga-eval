@@ -6,16 +6,16 @@ Date: 2026-05-22
 | --- | ---: |
 | status | `pass` |
 | prompt version | `public-contract-v2` |
-| prompts | 259 |
+| prompts | 263 |
 
 ## Form Counts
 
 | Form | Prompts |
 | --- | ---: |
-| `bugfix` | 52 |
-| `dut` | 57 |
-| `e2e` | 75 |
-| `tb` | 75 |
+| `bugfix` | 53 |
+| `dut` | 58 |
+| `e2e` | 76 |
+| `tb` | 76 |
 
 ## Change Summary
 
@@ -35,23 +35,23 @@ Date: 2026-05-22
 
 | Task | Form | Target Artifacts | Prompt SHA256 |
 | --- | --- | --- | --- |
-| `vbr1_l1_aperture_delay_track_and_hold:bugfix` | `bugfix` | `dut_fixed.va` | `450d46d8b8ee` |
-| `vbr1_l1_aperture_delay_track_and_hold:dut` | `dut` | `sample_hold_aperture_ref.va` | `e950eff8efef` |
-| `vbr1_l1_aperture_delay_track_and_hold:e2e` | `e2e` | `sample_hold_aperture_ref.va`, `tb_sample_hold_aperture_ref.scs` | `335e4d00b496` |
-| `vbr1_l1_aperture_delay_track_and_hold:tb` | `tb` | `tb_sample_hold_aperture_ref.scs` | `fcdbfb01c5f5` |
-| `vbr1_l1_bang_bang_phase_detector:bugfix` | `bugfix` | `dut_fixed.va` | `12b9eb54c386` |
-| `vbr1_l1_bang_bang_phase_detector:dut` | `dut` | `bbpd_ref.va` | `549e0d006cde` |
-| `vbr1_l1_bang_bang_phase_detector:e2e` | `e2e` | `bbpd_data_edge_alignment_ref.va`, `tb_bbpd_data_edge_alignment_ref.scs` | `80cc22e846fc` |
-| `vbr1_l1_bang_bang_phase_detector:tb` | `tb` | `tb_bbpd_data_edge_alignment_ref.scs` | `e48334ba3cbb` |
-| `vbr1_l1_binary_weighted_voltage_dac:bugfix` | `bugfix` | `dut_fixed.va` | `f16d04c7bff8` |
-| `vbr1_l1_binary_weighted_voltage_dac:dut` | `dut` | `simple_binary_voltage_dac_4b.va` | `3ef431690cca` |
-| `vbr1_l1_binary_weighted_voltage_dac:e2e` | `e2e` | `simple_binary_voltage_dac_4b.va`, `tb_simple_binary_voltage_dac_4b_ref.scs` | `d14d20651a93` |
-| `vbr1_l1_binary_weighted_voltage_dac:tb` | `tb` | `tb_simple_binary_voltage_dac_4b_ref.scs` | `ac8e84b74d45` |
-| `vbr1_l1_burst_clock_source:dut` | `dut` | `clk_burst_gen.va` | `85bb9702ec8e` |
-| `vbr1_l1_burst_clock_source:e2e` | `e2e` | `clk_burst_gen.va`, `tb_clk_burst_gen_ref.scs` | `9e668ab307f5` |
-| `vbr1_l1_burst_clock_source:tb` | `tb` | `tb_clk_burst_gen_ref.scs` | `b3d40d37f665` |
-| `vbr1_l1_calibration_deadband_controller:bugfix` | `bugfix` | `dut_fixed.va` | `61060e8cafe0` |
-| `vbr1_l1_calibration_deadband_controller:dut` | `dut` | `calibration_deadband_controller.va` | `89abdcafcf19` |
-| `vbr1_l1_calibration_deadband_controller:e2e` | `e2e` | `calibration_deadband_controller.va`, `tb_calibration_deadband_controller.scs` | `53f9f22f70c5` |
-| `vbr1_l1_calibration_deadband_controller:tb` | `tb` | `tb_calibration_deadband_controller.scs` | `6bd13096bdbb` |
-| `vbr1_l1_capacitive_weighted_sar_feedback_dac:bugfix` | `bugfix` | `dut_fixed.va` | `ca3a0022605b` |
+| `vbr1_l1_binary_weighted_voltage_dac:bugfix` | `bugfix` | `dut_fixed.va` | `aa43a793a850` |
+| `vbr1_l1_binary_weighted_voltage_dac:dut` | `dut` | `simple_binary_voltage_dac_4b.va` | `42a6bf7afb2c` |
+| `vbr1_l1_binary_weighted_voltage_dac:e2e` | `e2e` | `simple_binary_voltage_dac_4b.va`, `tb_simple_binary_voltage_dac_4b_ref.scs` | `53369ce2063d` |
+| `vbr1_l1_binary_weighted_voltage_dac:tb` | `tb` | `tb_simple_binary_voltage_dac_4b_ref.scs` | `bb9e5597b8e0` |
+| `vbr1_l1_capacitive_weighted_sar_feedback_dac:bugfix` | `bugfix` | `dut_fixed.va` | `9baf4c177244` |
+| `vbr1_l1_capacitive_weighted_sar_feedback_dac:dut` | `dut` | `cdac_cal.va` | `8089cea8c599` |
+| `vbr1_l1_capacitive_weighted_sar_feedback_dac:e2e` | `e2e` | `cdac_cal.va`, `tb_cdac_cal_ref.scs` | `5f9a803f7b4f` |
+| `vbr1_l1_capacitive_weighted_sar_feedback_dac:tb` | `tb` | `tb_cdac_cal_ref.scs` | `1f5b4f5ad7d8` |
+| `vbr1_l1_clocked_adc_quantizer:bugfix` | `bugfix` | `dut_fixed.va` | `317bebc66fe8` |
+| `vbr1_l1_clocked_adc_quantizer:dut` | `dut` | `flash_adc_3b.va` | `3af7293ba681` |
+| `vbr1_l1_clocked_adc_quantizer:e2e` | `e2e` | `flash_adc_3b.va`, `tb_flash_adc_3b_ref.scs` | `fea727c98d48` |
+| `vbr1_l1_clocked_adc_quantizer:tb` | `tb` | `tb_flash_adc_3b_ref.scs` | `9a5c3808a76b` |
+| `vbr1_l1_dac_mismatch_unit_weighting_model:bugfix` | `bugfix` | `dut_fixed.va` | `30ce8beb11b0` |
+| `vbr1_l1_dac_mismatch_unit_weighting_model:dut` | `dut` | `dac_mismatch_unit_weighting_model.va` | `2eb87c3578e8` |
+| `vbr1_l1_dac_mismatch_unit_weighting_model:e2e` | `e2e` | `dac_mismatch_unit_weighting_model.va`, `tb_dac_mismatch_unit_weighting_model.scs` | `b821604ef1b6` |
+| `vbr1_l1_dac_mismatch_unit_weighting_model:tb` | `tb` | `tb_dac_mismatch_unit_weighting_model.scs` | `fd60ec47071a` |
+| `vbr1_l1_pipeline_adc_stage:bugfix` | `bugfix` | `dut_fixed.va` | `f7fff75347eb` |
+| `vbr1_l1_pipeline_adc_stage:dut` | `dut` | `pipeline_stage.va` | `8a1916223021` |
+| `vbr1_l1_pipeline_adc_stage:e2e` | `e2e` | `pipeline_stage.va`, `tb_pipeline_stage_ref.scs` | `8db26e55e418` |
+| `vbr1_l1_pipeline_adc_stage:tb` | `tb` | `tb_pipeline_stage_ref.scs` | `fa21f2c51d96` |

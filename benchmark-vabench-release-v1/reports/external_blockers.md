@@ -1,6 +1,6 @@
 # vaBench Release External Blockers
 
-Date: 2026-05-21
+Date: 2026-05-23
 
 This report isolates the non-certification blockers that prevent the
 release package from becoming fully paper-claimable. It is a recovery
@@ -15,10 +15,10 @@ and claim-boundary artifact, not simulator certification evidence.
 | blocked | 0 |
 | pending | 1 |
 | ready-to-continue | 0 |
-| bridge status | `ready` |
+| bridge status | `blocked` |
 | primary rerun queue rows | 0 |
 | ready staging bundles | 0 |
-| latest rerun summary | `dry_run` |
+| latest rerun summary | `complete` |
 | latest import | `imported` |
 
 ## Blockers

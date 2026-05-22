@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_ref.scs"
   ],
   "checks": {
     "must_include": [

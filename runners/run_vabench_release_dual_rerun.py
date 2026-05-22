@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
@@ -119,6 +120,48 @@ def write_summary(path: Path, summary: dict[str, object]) -> None:
     path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 
 
+def run_one_bundle(
+    *,
+    index: int,
+    record: dict[str, object],
+    output_root: Path,
+    bridge_repo: Path,
+    cadence_cshrc: str | None,
+    timeout_s: int,
+    dry_run: bool,
+) -> tuple[int, dict[str, object]]:
+    task_dir = bundle_task_dir(record)
+    result_root = output_root / str(record["entry_id"]) / str(record["form"]) / str(record["variant"])
+    expected_result = str(record["expected_result"])
+    bundle_started_at = datetime.now().isoformat(timespec="seconds")
+    bundle_t0 = time.perf_counter()
+    if dry_run:
+        raw_result = dry_run_raw_result(task_dir)
+    else:
+        raw_result = run_dual_case(
+            task_dir=task_dir,
+            output_root=result_root,
+            bridge_repo=bridge_repo,
+            cadence_cshrc=cadence_cshrc,
+            timeout_s=timeout_s,
+        )
+    bundle_wall_time_s = time.perf_counter() - bundle_t0
+    result = {
+        "entry_id": record["entry_id"],
+        "form": record["form"],
+        "variant": record["variant"],
+        "expected_result": expected_result,
+        "expected_result_met": expected_result_met(raw_result, expected_result) if not dry_run else None,
+        "started_at": bundle_started_at,
+        "finished_at": datetime.now().isoformat(timespec="seconds"),
+        "wall_time_s": bundle_wall_time_s,
+        "staged_task_dir": record["staged_task_dir"],
+        "result_root": rel_or_abs(result_root),
+        "raw_result": raw_result,
+    }
+    return index, result
+
+
 def run_bundles(
     *,
     bundles: list[dict[str, object]],
@@ -127,60 +170,72 @@ def run_bundles(
     cadence_cshrc: str | None,
     timeout_s: int,
     dry_run: bool,
+    workers: int = 1,
 ) -> dict[str, object]:
-    results: list[dict[str, object]] = []
+    results_by_index: dict[int, dict[str, object]] = {}
     started = datetime.now().isoformat(timespec="seconds")
     summary_path = output_root / "summary.json"
     partial_path = output_root / "summary.partial.json"
-    for idx, record in enumerate(bundles, start=1):
-        task_dir = bundle_task_dir(record)
-        result_root = output_root / str(record["entry_id"]) / str(record["form"]) / str(record["variant"])
-        expected_result = str(record["expected_result"])
-        bundle_started_at = datetime.now().isoformat(timespec="seconds")
-        bundle_t0 = time.perf_counter()
-        if dry_run:
-            raw_result = dry_run_raw_result(task_dir)
-        else:
-            raw_result = run_dual_case(
-                task_dir=task_dir,
-                output_root=result_root,
-                bridge_repo=bridge_repo,
-                cadence_cshrc=cadence_cshrc,
-                timeout_s=timeout_s,
-            )
-        bundle_wall_time_s = time.perf_counter() - bundle_t0
-        raw_status = str(raw_result.get("status", "UNKNOWN"))
-        result = {
-            "entry_id": record["entry_id"],
-            "form": record["form"],
-            "variant": record["variant"],
-            "expected_result": expected_result,
-            "expected_result_met": expected_result_met(raw_result, expected_result) if not dry_run else None,
-            "started_at": bundle_started_at,
-            "finished_at": datetime.now().isoformat(timespec="seconds"),
-            "wall_time_s": bundle_wall_time_s,
-            "staged_task_dir": record["staged_task_dir"],
-            "result_root": rel_or_abs(result_root),
-            "raw_result": raw_result,
-        }
-        results.append(result)
+
+    def current_results() -> list[dict[str, object]]:
+        return [results_by_index[idx] for idx in sorted(results_by_index)]
+
+    def write_partial() -> None:
+        results = current_results()
         partial = {
             "status": "running",
             "started_at": started,
             "updated_at": datetime.now().isoformat(timespec="seconds"),
             "tasks_total": len(bundles),
-            "tasks_completed": idx,
+            "tasks_completed": len(results),
+            "workers": max(1, workers),
             "pass_expected_met_count": sum(1 for item in results if item["expected_result_met"] is True),
             "expected_miss_count": sum(1 for item in results if item["expected_result_met"] is False),
             "results": results,
         }
         write_summary(partial_path, partial)
 
+    effective_workers = max(1, min(workers, len(bundles) or 1))
+    if effective_workers == 1:
+        for idx, record in enumerate(bundles, start=1):
+            completed_idx, result = run_one_bundle(
+                index=idx,
+                record=record,
+                output_root=output_root,
+                bridge_repo=bridge_repo,
+                cadence_cshrc=cadence_cshrc,
+                timeout_s=timeout_s,
+                dry_run=dry_run,
+            )
+            results_by_index[completed_idx] = result
+            write_partial()
+    else:
+        with ThreadPoolExecutor(max_workers=effective_workers) as executor:
+            futures = [
+                executor.submit(
+                    run_one_bundle,
+                    index=idx,
+                    record=record,
+                    output_root=output_root,
+                    bridge_repo=bridge_repo,
+                    cadence_cshrc=cadence_cshrc,
+                    timeout_s=timeout_s,
+                    dry_run=dry_run,
+                )
+                for idx, record in enumerate(bundles, start=1)
+            ]
+            for future in as_completed(futures):
+                completed_idx, result = future.result()
+                results_by_index[completed_idx] = result
+                write_partial()
+
+    results = current_results()
     final = {
         "status": "complete" if not dry_run else "dry_run",
         "started_at": started,
         "finished_at": datetime.now().isoformat(timespec="seconds"),
         "tasks_total": len(bundles),
+        "workers": effective_workers,
         "total_wall_time_s": sum(float(item.get("wall_time_s", 0.0)) for item in results),
         "pass_count": sum(1 for item in results if item["raw_result"].get("status") == "PASS"),
         "nonpass_count": sum(1 for item in results if item["raw_result"].get("status") != "PASS"),
@@ -215,6 +270,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--form", action="append", choices=["dut", "tb", "bugfix", "e2e"], help="Restrict by form.")
     ap.add_argument("--variant", action="append", help="Restrict by staged variant: gold, fixed, or buggy.")
     ap.add_argument("--include-buggy", action="store_true", help="Also run bugfix buggy companion bundles.")
+    ap.add_argument("--workers", type=int, default=1, help="Number of staged bundles to run concurrently.")
     ap.add_argument("--dry-run", action="store_true", help="Check selection and output shape without simulator calls.")
     ap.add_argument("--skip-bridge-preflight", action="store_true", help="Skip bridge health checks.")
     ap.add_argument("--require-virtuoso-daemon", action="store_true", help="Treat CIW daemon disconnect as a hard blocker.")
@@ -246,6 +302,7 @@ def main() -> int:
             cadence_cshrc=args.cadence_cshrc or None,
             timeout_s=args.timeout_s,
             dry_run=True,
+            workers=args.workers,
         )
         print(json.dumps(summary, indent=2))
         return 0
@@ -307,6 +364,7 @@ def main() -> int:
         cadence_cshrc=effective_cshrc or None,
         timeout_s=args.timeout_s,
         dry_run=False,
+        workers=args.workers,
     )
     summary["bridge_repo"] = str(bridge_repo)
     summary["bridge_profile"] = bridge_profile

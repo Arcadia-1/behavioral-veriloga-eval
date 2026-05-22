@@ -12,14 +12,14 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
   ],
   "checks": {
     "must_include": [

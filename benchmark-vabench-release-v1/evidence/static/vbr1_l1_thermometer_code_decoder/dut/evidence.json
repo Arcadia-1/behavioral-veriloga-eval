@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_thermometer_code_decoder/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_thermometer_code_decoder/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_thermometer_code_decoder/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_thermometer_code_decoder/forms/dut/gold/tb_thermometer_decoder_guarded_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_thermometer_code_decoder/forms/dut/gold/thermometer_decoder_guarded.va"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/gold/tb_thermometer_decoder_guarded_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/gold/thermometer_decoder_guarded.va"
   ],
   "checks": {
     "must_include": [

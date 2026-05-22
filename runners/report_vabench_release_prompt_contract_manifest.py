@@ -15,6 +15,7 @@ TASKS_ROOT = PACKAGE_ROOT / "tasks"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "prompt_contract_manifest.json"
 REPORT_MD = REPORTS_ROOT / "prompt_contract_manifest.md"
+PACKAGE_MANIFEST = PACKAGE_ROOT / "MANIFEST.json"
 
 PROMPT_VERSION_ID = "public-contract-v2"
 SYNC_SCRIPT = ROOT / "runners" / "sync_vabench_release_prompt_contracts.py"
@@ -45,12 +46,25 @@ def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def expected_prompt_count(default: int) -> int:
+    if not PACKAGE_MANIFEST.exists():
+        return default
+    manifest = read_json(PACKAGE_MANIFEST)
+    summary = manifest.get("summary", {})
+    if not isinstance(summary, dict):
+        return default
+    try:
+        return int(summary.get("form_count", default))
+    except (TypeError, ValueError):
+        return default
+
+
 def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def release_form_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("*/forms/*/release_task.json"))
+    return sorted(path.parent for path in TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json"))
 
 
 def target_artifacts(form: str, gold_names: list[str]) -> list[str]:
@@ -102,16 +116,18 @@ def build_row(form_dir: Path) -> dict[str, Any]:
 
 def build_report() -> dict[str, Any]:
     rows = [build_row(form_dir) for form_dir in release_form_dirs()]
+    expected_count = expected_prompt_count(len(rows))
     status_counts = Counter(str(row["status"]) for row in rows)
     form_counts = Counter(str(row["form"]) for row in rows)
     failed_rows = [row for row in rows if row["status"] != "pass"]
     return {
         "date": date.today().isoformat(),
         "release": "vabench-release-v1",
-        "status": "pass" if not failed_rows and len(rows) == 259 else "fail",
+        "status": "pass" if not failed_rows and len(rows) == expected_count else "fail",
         "prompt_version_id": PROMPT_VERSION_ID,
         "previous_prompt_version": "pre-public-contract-v2",
         "prompt_count": len(rows),
+        "expected_prompt_count": expected_count,
         "status_counts": dict(sorted(status_counts.items())),
         "form_counts": dict(sorted(form_counts.items())),
         "sync_script": rel(SYNC_SCRIPT),

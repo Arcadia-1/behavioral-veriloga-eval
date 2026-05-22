@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-19",
+  "date": "2026-05-22",
   "release": "vabench-release-v1",
   "status": "ready",
   "contract_version": "v1",
@@ -44,14 +44,14 @@
   },
   "task_selection": {
     "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "package_entry_count": 75,
-    "package_form_count": 259,
-    "certified_entries": 75,
-    "certified_forms": 259,
-    "pending_entries": 0,
-    "pending_forms": 0,
-    "scored_entries": 74,
-    "scored_forms": 255,
+    "package_entry_count": 76,
+    "package_form_count": 263,
+    "certified_entries": 72,
+    "certified_forms": 249,
+    "pending_entries": 4,
+    "pending_forms": 14,
+    "scored_entries": 71,
+    "scored_forms": 245,
     "score_enabled": true,
     "l0_conformance_excluded": true,
     "unscored_rows_excluded": true,
@@ -105,8 +105,8 @@
   "score_gate": {
     "status": "score_enabled",
     "score_claim_allowed": true,
-    "scored_entries": 74,
-    "scored_forms": 255,
+    "scored_entries": 71,
+    "scored_forms": 245,
     "blocking_reason": "",
     "finish_readiness_status": "ready_to_finish",
     "ready_to_finish_release": true
@@ -138,14 +138,14 @@
     "unscored_rows_excluded": true
   },
   "speed_debug_protocol": {
-    "status": "measured_subset",
+    "status": "measured",
     "claim_allowed": false,
     "required_timing_fields": [
       "raw_result.timing.evas_wall_time_s",
       "raw_result.timing.spectre_wall_time_s",
       "raw_result.timing.combined_wall_time_s"
     ],
-    "timed_rows": 164
+    "timed_rows": 277
   },
   "commands": {
     "refresh_package": "python3 runners/run_vabench_release_longrun.py",

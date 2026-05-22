@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-19",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "pass",
-  "validated_file_count": 1655,
+  "validated_file_count": 1693,
   "issue_count": 0,
   "count_issue_count": 0,
   "count_issues": [],
@@ -192,28 +192,28 @@
     {
       "schema": "release_entry",
       "schema_path": "schemas/vabench-release-entry.schema.json",
-      "file_count": 75,
+      "file_count": 77,
       "failure_count": 0,
       "failures": []
     },
     {
       "schema": "release_task",
       "schema_path": "schemas/vabench-release-task.schema.json",
-      "file_count": 259,
+      "file_count": 265,
       "failure_count": 0,
       "failures": []
     },
     {
       "schema": "evidence",
       "schema_path": "schemas/vabench-evidence.schema.json",
-      "file_count": 518,
+      "file_count": 530,
       "failure_count": 0,
       "failures": []
     },
     {
       "schema": "result",
       "schema_path": "schemas/vabench-release-result.schema.json",
-      "file_count": 777,
+      "file_count": 795,
       "failure_count": 0,
       "failures": []
     }

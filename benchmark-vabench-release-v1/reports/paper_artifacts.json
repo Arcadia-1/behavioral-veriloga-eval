@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-21",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "coverage_summary": {
@@ -25,65 +25,51 @@
       "selected_l1_addition": 32,
       "selected_l2_target": 15
     },
-    "source_linked_entry_count": 75,
-    "asset_materialized_entry_count": 75,
-    "static_certified_release_task_count": 259,
-    "dual_certified_release_task_count": 259,
-    "fully_certified_entry_count": 75,
+    "source_linked_entry_count": 77,
+    "asset_materialized_entry_count": 77,
+    "static_certified_release_task_count": 265,
+    "dual_certified_release_task_count": 265,
+    "fully_certified_entry_count": 77,
     "certification_matrix_status": "complete",
-    "scored_release_entries": 74,
-    "scored_release_forms": 255,
+    "scored_release_entries": 75,
+    "scored_release_forms": 257,
     "score_denominator_status": "score_enabled",
     "claim_status": "score_enabled"
   },
   "parity_summary": {
     "release_dual_status": "pass",
-    "dual_certified_release_task_count": 259,
+    "dual_certified_release_task_count": 265,
     "dual_pending_release_task_count": 0,
     "dual_failed_release_task_count": 0,
     "evas_pass_spectre_fail_count": 0,
     "source_equivalence_blocked_release_task_count": 0,
     "main120_gold_evas": {
-      "source": "results/vabench-main-v1-main120-gold-evas-2026-05-08/summary.json",
-      "available": true,
-      "total_tasks": 120,
-      "pass_count": 120,
-      "pass_rate": 1.0,
-      "axis_rates": {
-        "dut_compile": 1.0,
-        "tb_compile": 1.0,
-        "sim_correct": 1.0
-      }
+      "source": "",
+      "available": false,
+      "total_tasks": 0,
+      "pass_count": 0,
+      "pass_rate": null,
+      "axis_rates": {}
     },
     "main120_gold_spectre": {
-      "source": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/summary.json",
-      "available": true,
-      "total_tasks": 120,
-      "pass_count": 120,
-      "pass_rate": 1.0,
-      "axis_rates": {
-        "dut_compile": 1.0,
-        "tb_compile": 1.0,
-        "sim_correct": 1.0
-      }
+      "source": "",
+      "available": false,
+      "total_tasks": 0,
+      "pass_count": 0,
+      "pass_rate": null,
+      "axis_rates": {}
     },
     "l0_conformance_case_count": 4,
     "l0_counts_in_benchmark_denominator": 0,
     "dual_rerun_staging_status": "complete",
     "dual_rerun_queue_rows_with_ready_primary_bundle": 0,
     "dual_rerun_ready_bundle_count": 0,
-    "latest_dual_rerun_attempt_status": "dry_run",
+    "latest_dual_rerun_attempt_status": "complete",
     "latest_dual_rerun_attempt_reason": "",
-    "bridge_diagnostics_status": "ready",
-    "bridge_diagnostics_reason": "bridge profile ci is ready for release rerun",
-    "bridge_ready_profiles": [
-      "ci"
-    ],
-    "bridge_ssh_ok_profiles": [
-      "default",
-      "ci",
-      "jin"
-    ]
+    "bridge_diagnostics_status": "blocked",
+    "bridge_diagnostics_reason": "all bridge SSH profile smokes failed during banner exchange",
+    "bridge_ready_profiles": [],
+    "bridge_ssh_ok_profiles": []
   },
   "speed_debug_summary": {
     "status": "measured",
@@ -189,8 +175,8 @@
     "claim_allowed": false,
     "reason": "Baseline artifact exists but has no claimable baseline summary yet.",
     "required_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
-    "current_scored_release_entries": 74,
-    "current_scored_release_forms": 255,
+    "current_scored_release_entries": 75,
+    "current_scored_release_forms": 257,
     "score_denominator_status": "score_enabled",
     "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
     "baseline_summary_count": 0,
@@ -224,17 +210,15 @@
     }
   },
   "certification_gap_summary": {
-    "assets_materialized": true,
+    "assets_materialized": false,
     "static_certification_complete": true,
     "fresh_dual_rerun_queue_ready": true,
     "fresh_dual_rerun_queue_count": 0,
     "fresh_dual_rerun_ready_bundle_count": 0,
     "dual_pending_release_task_count": 0,
-    "bridge_ready": true,
+    "bridge_ready": false,
     "bridge_required_for_certification": false,
-    "bridge_ready_profiles": [
-      "ci"
-    ],
+    "bridge_ready_profiles": [],
     "external_blockers_status": "pending",
     "external_blocked_count": 0,
     "external_pending_count": 1,
@@ -243,9 +227,9 @@
     "import_reason": "No current dual rerun queue remains; dual_certification.json already reflects imported fresh rerun evidence."
   },
   "claim_gates": {
-    "can_claim_release_assets_materialized": true,
+    "can_claim_release_assets_materialized": false,
     "can_claim_top_level_coverage_plan": true,
-    "can_claim_release_package_complete": true,
+    "can_claim_release_package_complete": false,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
     "can_claim_speedup": false,
@@ -269,7 +253,7 @@
     "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "baseline_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
     "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "latest_dual_rerun_attempt": "results/vabench-release-v1-dual-rerun/summary.json",
+    "latest_dual_rerun_attempt": "results/vabench-release-v1-dual-rerun-ct01-pending-pwlfix-isolated-20260523/summary.json",
     "conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
     "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
     "certification_matrix": "benchmark-vabench-release-v1/reports/certification_matrix.json"

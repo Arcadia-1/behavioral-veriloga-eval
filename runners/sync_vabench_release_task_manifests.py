@@ -91,7 +91,7 @@ def release_task_payload(entry: dict[str, object], task: dict[str, object]) -> d
 
 def build_report() -> dict[str, object]:
     rows: list[dict[str, object]] = []
-    for entry_path in sorted(TASKS_ROOT.glob("*/release_entry.json")):
+    for entry_path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
         entry = read_json(entry_path)
         for task in entry.get("release_tasks", []):
             if not isinstance(task, dict):

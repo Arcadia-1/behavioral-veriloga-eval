@@ -142,7 +142,7 @@ def build_report() -> dict[str, object]:
         blockers.append(
             blocker(
                 blocker_id="B2_fresh_dual_rerun_not_complete",
-                status="blocked" if not bridge_ready else "ready_to_run",
+                status="blocked" if not bridge_ready else "ready_to_continue",
                 scope=f"{queue_count} primary EVAS/Spectre release rows",
                 diagnosis=rerun_diagnosis,
                 claim_impact=[
@@ -179,7 +179,7 @@ def build_report() -> dict[str, object]:
         blockers.append(
             blocker(
                 blocker_id="B3_fresh_result_import_not_complete",
-                status="blocked" if not rerun_complete else "ready_to_import",
+                status="blocked" if not rerun_complete else "ready_to_continue",
                 scope="fresh rerun result import gate",
                 diagnosis=str(import_report.get("reason", "fresh rerun results have not been imported")),
                 claim_impact=[

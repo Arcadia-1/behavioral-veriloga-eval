@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
   ],
   "checks": {
     "must_include": [

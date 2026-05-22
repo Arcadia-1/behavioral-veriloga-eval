@@ -38,7 +38,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def release_entries() -> list[dict[str, Any]]:
-    return [read_json(path) for path in sorted(TASKS_ROOT.glob("*/release_entry.json"))]
+    return [read_json(path) for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json"))]
 
 
 def parse_sim_checks(path: Path) -> list[str]:

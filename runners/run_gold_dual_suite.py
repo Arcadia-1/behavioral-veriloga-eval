@@ -851,10 +851,15 @@ def run_spectre_case(
     bridge_py = bridge_repo / ".venv" / "bin" / "python"
     result_json = output_dir / "spectre_result.json"
     csv_path = output_dir / "tran_spectre.csv"
+    safe_task_id = "".join(ch if ch.isalnum() or ch in {"_", "-"} else "_" for ch in task_id)
+    spectre_tb_path = output_dir / f"{safe_task_id}__{tb_path.name}"
+    # Spectre names its AHDL CMI cache from the testbench basename. Parallel
+    # release forms often share one gold TB, so isolate the basename per task.
+    spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     payload = {
         "bridge_repo": str(bridge_repo.resolve()),
-        "tb_path": str(tb_path.resolve()),
+        "tb_path": str(spectre_tb_path.resolve()),
         "include_paths": [str(p.resolve()) for p in include_paths],
         "output_dir": str(output_dir.resolve()),
         "result_json": str(result_json.resolve()),

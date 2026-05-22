@@ -1,6 +1,6 @@
 # vaBench Release Dual Rerun Staging Manifest
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 This manifest lists runnable staging bundles prepared from
 `dual_rerun_queue.json`. It is an execution input, not simulator pass evidence.

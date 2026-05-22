@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/dac_weighted_8b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sar_adc_weighted_8b.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sh_ideal.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/tb_sar_adc_dac_weighted_8b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/dac_weighted_8b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sar_adc_weighted_8b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sh_ideal.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/tb_sar_adc_dac_weighted_8b_ref.scs"
   ],
   "checks": {
     "must_include": [

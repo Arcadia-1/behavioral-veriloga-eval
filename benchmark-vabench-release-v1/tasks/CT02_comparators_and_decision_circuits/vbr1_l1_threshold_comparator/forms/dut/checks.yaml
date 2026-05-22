@@ -1,0 +1,26 @@
+syntax:
+  must_include:
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  checks:
+    - "output_high_when_vinp_above_vinn"
+    - "output_low_when_vinp_below_vinn"
+  public_observables:
+    - "vinp"
+    - "vinn"
+    - "out_p"
+parity:
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

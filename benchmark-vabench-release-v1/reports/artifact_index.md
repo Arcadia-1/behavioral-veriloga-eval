@@ -1,6 +1,6 @@
 # vaBench Release Artifact Index
 
-Date: 2026-05-19
+Date: 2026-05-22
 
 This index maps the release package artifacts to their role in the
 paper-facing claim surface. It is a navigation layer, not new
@@ -38,7 +38,7 @@ certification evidence.
 | `external_blockers` | `pending` | `external_blocker` | `False` | `benchmark-vabench-release-v1/reports/external_blockers.json` |
 | `finish_readiness` | `ready_to_finish` | `recovery_path` | `False` | `benchmark-vabench-release-v1/reports/finish_readiness.json` |
 | `finish_after_bridge_attempt` | `dry_run` | `recovery_path` | `False` | `benchmark-vabench-release-v1/reports/finish_after_bridge_attempt.json` |
-| `speed_debug_artifact` | `measured_subset` | `speed_debug` | `False` | `benchmark-vabench-release-v1/reports/speed_debug_artifact.json` |
+| `speed_debug_artifact` | `measured` | `speed_debug` | `False` | `benchmark-vabench-release-v1/reports/speed_debug_artifact.json` |
 | `baseline_artifact` | `ready_for_baseline_runs` | `baseline` | `False` | `benchmark-vabench-release-v1/reports/baseline_artifact.json` |
 | `score_denominator_enablement` | `enabled` | `scoring_denominator` | `False` | `benchmark-vabench-release-v1/reports/score_denominator_enablement.json` |
 | `score_denominator_manifest` | `score_enabled` | `scoring_denominator` | `False` | `benchmark-vabench-release-v1/reports/score_denominator_manifest.json` |

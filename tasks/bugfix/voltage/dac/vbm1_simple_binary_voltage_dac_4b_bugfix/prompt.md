@@ -8,6 +8,8 @@ Interpret the four code inputs as a 4-bit unsigned code. Drive `aout` linearly
 from `vss` to `vref` so code `0` maps to `vss` and code `15` maps to `vref`.
 Intermediate codes must be monotonic and use the ideal `code / 15` endpoint
 scaling.
+The validation testbench steps through all 16 unsigned input codes from `0`
+through `15`; the fix must preserve each binary bit weight.
 
 Keep the model purely voltage-domain and drive `aout` with `transition`. Do not
 use current contributions.

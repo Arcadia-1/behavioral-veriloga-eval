@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_offset_comparator/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_offset_comparator/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_offset_comparator/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_offset_comparator/forms/tb/gold/cmp_offset_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_offset_comparator/forms/tb/gold/tb_comparator_offset_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/gold/cmp_offset_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/gold/tb_comparator_offset_ref.scs"
   ],
   "checks": {
     "must_include": [

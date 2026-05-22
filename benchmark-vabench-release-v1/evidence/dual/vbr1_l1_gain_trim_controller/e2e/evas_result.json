@@ -3,18 +3,19 @@
   "release_entry_id": "vbr1_l1_gain_trim_controller",
   "source_task_id": "vbm1_gain_trim_controller_e2e",
   "backend": "evas",
-  "status": "PASS",
+  "status": "FAIL_INFRA",
   "scores": {
-    "rerun_backend_pass": true,
-    "rerun_expected_result_met": true,
-    "raw_status": "PASS",
-    "behavior_score": null
+    "historical_weighted_total": 1.0,
+    "historical_backend_pass": true,
+    "source_equivalence_failure_count": 2
   },
   "artifacts": [
-    "results/vabench-release-v1-dual-rerun-gain-trim-20260518/vbr1_l1_gain_trim_controller/e2e/gold",
+    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_gain_trim_controller_e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_trim_controller/e2e/evidence.json"
   ],
   "notes": [
-    "Imported from fresh vaBench release EVAS/Spectre dual rerun summary."
+    "Imported from main120 gold historical result; no simulator rerun was performed in this release step.",
+    "evas staged Spectre testbench hash not found in normalized release gold",
+    "spectre staged Spectre testbench hash not found in normalized release gold"
   ]
 }

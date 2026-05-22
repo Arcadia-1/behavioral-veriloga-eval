@@ -15,6 +15,7 @@ EVIDENCE_ROOT = PACKAGE_ROOT / "evidence"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "schema_validation.json"
 REPORT_MD = REPORTS_ROOT / "schema_validation.md"
+PACKAGE_MANIFEST = PACKAGE_ROOT / "MANIFEST.json"
 SCHEMAS = {
     "release_entry": ROOT / "schemas" / "vabench-release-entry.schema.json",
     "package_manifest": ROOT / "schemas" / "vabench-package-manifest.schema.json",
@@ -55,6 +56,19 @@ def rel(path: Path) -> str:
 
 def read_json(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def expected_release_entry_count(default: int) -> int:
+    if not PACKAGE_MANIFEST.exists():
+        return default
+    manifest = read_json(PACKAGE_MANIFEST)
+    summary = manifest.get("summary", {})
+    if not isinstance(summary, dict):
+        return default
+    try:
+        return int(summary.get("entry_count", default))
+    except (TypeError, ValueError):
+        return default
 
 
 def validate_files(schema_id: str, paths: list[Path]) -> dict[str, object]:
@@ -110,8 +124,8 @@ def build_report() -> dict[str, object]:
         "dual_certification": [REPORTS_ROOT / "dual_certification.json"] if (REPORTS_ROOT / "dual_certification.json").exists() else [],
         "certification_matrix": [REPORTS_ROOT / "certification_matrix.json"] if (REPORTS_ROOT / "certification_matrix.json").exists() else [],
         "remaining_work": [REPORTS_ROOT / "remaining_work.json"] if (REPORTS_ROOT / "remaining_work.json").exists() else [],
-        "release_entry": sorted(TASKS_ROOT.glob("*/release_entry.json")),
-        "release_task": sorted(TASKS_ROOT.glob("*/forms/*/release_task.json")),
+        "release_entry": sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")),
+        "release_task": sorted(TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json")),
         "evidence": sorted(EVIDENCE_ROOT.glob("*/*/*/evidence.json")),
         "result": sorted(EVIDENCE_ROOT.glob("*/*/*/*result.json")),
     }
@@ -147,7 +161,7 @@ def build_report() -> dict[str, object]:
         "dual_certification": 1,
         "certification_matrix": 1,
         "remaining_work": 1,
-        "release_entry": 75,
+        "release_entry": expected_release_entry_count(len(groups["release_entry"])),
         "release_task": release_task_count,
         "evidence": release_task_count * 2,
         "result": release_task_count * 3,

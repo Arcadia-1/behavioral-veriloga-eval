@@ -1,6 +1,6 @@
 # vaBench Release Score Denominator Manifest
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 This manifest is the source of truth for what is allowed to enter the
 benchmark score denominator. Counted rows must be in the frozen content
@@ -11,26 +11,26 @@ denominator, score-enabled, and certified by static, EVAS, and Spectre checks.
 | Metric | Value |
 | --- | ---: |
 | status | `score_enabled` |
-| planned entries | 75 |
-| release forms | 259 |
-| content denominator entries | 74 |
+| planned entries | 77 |
+| release forms | 265 |
+| content denominator entries | 76 |
 | content-excluded entries | 1 |
-| content denominator forms | 255 |
+| content denominator forms | 261 |
 | content-excluded forms | 4 |
-| certified entries | 75 |
-| certified forms | 259 |
-| score-enabled entries | 74 |
-| score-enabled forms | 255 |
-| scored entries | 74 |
-| scored forms | 255 |
+| certified entries | 77 |
+| certified forms | 265 |
+| score-enabled entries | 75 |
+| score-enabled forms | 257 |
+| scored entries | 75 |
+| scored forms | 257 |
 | L0 conformance counted | 0 |
 
 ## Entry Exclusion Reasons
 
-- `benchmark_score_disabled`: 1
+- `benchmark_score_disabled`: 2
 - `content_denominator_excluded:duplicate_strongarm_clocked_comparator`: 1
 
 ## Form Exclusion Reasons
 
-- `benchmark_score_disabled`: 4
+- `benchmark_score_disabled`: 8
 - `content_denominator_excluded:duplicate_strongarm_clocked_comparator`: 4

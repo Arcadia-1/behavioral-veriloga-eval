@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_up_dn_logic/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_up_dn_logic/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_up_dn_logic/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs"
   ],
   "checks": {
     "must_include": [

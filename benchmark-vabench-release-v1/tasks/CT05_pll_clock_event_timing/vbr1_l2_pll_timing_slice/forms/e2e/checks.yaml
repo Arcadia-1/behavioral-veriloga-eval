@@ -1,0 +1,19 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "@(timer("
+    - "transition("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "cppll_tracks_reference_frequency"
+    - "vctrl_stays_bounded"
+
+parity:
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

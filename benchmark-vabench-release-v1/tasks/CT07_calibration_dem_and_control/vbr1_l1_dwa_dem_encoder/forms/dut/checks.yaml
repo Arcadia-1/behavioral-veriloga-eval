@@ -1,0 +1,30 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  checks:
+    - "ptr_is_one_hot_after_reset"
+    - "cell_en_nonzero_after_reset"
+    - "dwa_rotation_correct"
+  public_observables:
+    - "clk_i"
+    - "rst_ni"
+    - "code_3..code_0"
+    - "cell_en_15..cell_en_0"
+    - "ptr_15..ptr_0"
+parity:
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

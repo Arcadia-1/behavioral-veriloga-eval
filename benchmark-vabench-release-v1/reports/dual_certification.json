@@ -1,17 +1,17 @@
 {
-  "date": "2026-05-19",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "pass",
   "source": "historical main120 import plus fresh release dual rerun",
   "simulator_rerun": true,
-  "dual_certified_release_task_count": 259,
+  "dual_certified_release_task_count": 265,
   "dual_failed_release_task_count": 0,
   "dual_pending_release_task_count": 0,
-  "dual_pass_materialized_entry_count": 75,
+  "dual_pass_materialized_entry_count": 77,
   "dual_pending_materialized_entry_count": 0,
   "dual_failed_materialized_entry_count": 0,
-  "fully_certified_entry_count": 75,
-  "entry_count": 75,
+  "fully_certified_entry_count": 77,
+  "entry_count": 77,
   "issue_count": 0,
   "source_equivalence_failure_count": 0,
   "source_equivalence_blocked_release_task_count": 0,
@@ -2279,6 +2279,74 @@
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/e2e/evidence.json"
     },
     {
+      "entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "dut",
+      "source_task_id": "pipeline_stage",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/dut/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_pipeline_adc_stage_tb",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/tb/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_pipeline_adc_stage_bugfix_fixed",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/bugfix/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_pipeline_adc_stage_e2e",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/e2e/evidence.json",
+      "simulator_rerun": true
+    },
+    {
       "entry_id": "vbr1_l1_precision_rectifier",
       "form": "dut",
       "source_task_id": "vbm1_precision_rectifier_dut",
@@ -4236,7 +4304,7 @@
     {
       "entry_id": "vbr1_l2_flash_adc_mini_array",
       "form": "e2e",
-      "source_task_id": "flash_adc_3b_smoke",
+      "source_task_id": "flash_adc_mini_array_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -4316,6 +4384,40 @@
       "failures": [],
       "pending_blockers": [],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_measurement_flow/e2e/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_pipeline_adc_chain",
+      "form": "tb",
+      "source_task_id": "vbr1_l2_pipeline_adc_chain_tb",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pipeline_adc_chain/tb/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_pipeline_adc_chain",
+      "form": "e2e",
+      "source_task_id": "pipeline_adc_chain_e2e",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pipeline_adc_chain/e2e/evidence.json",
       "simulator_rerun": true
     },
     {
@@ -4703,6 +4805,14 @@
       "release_blockers": []
     },
     {
+      "entry_id": "vbr1_l1_pipeline_adc_stage",
+      "release_task_count": 4,
+      "dual": "pass",
+      "fully_certified": true,
+      "missing_forms": [],
+      "release_blockers": []
+    },
+    {
       "entry_id": "vbr1_l1_precision_rectifier",
       "release_task_count": 4,
       "dual": "pass",
@@ -4992,6 +5102,14 @@
     },
     {
       "entry_id": "vbr1_l2_measurement_flow",
+      "release_task_count": 2,
+      "dual": "pass",
+      "fully_certified": true,
+      "missing_forms": [],
+      "release_blockers": []
+    },
+    {
+      "entry_id": "vbr1_l2_pipeline_adc_chain",
       "release_task_count": 2,
       "dual": "pass",
       "fully_certified": true,

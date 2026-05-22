@@ -1,0 +1,176 @@
+{
+  "id": "vbr1_l1_serializer_frame_aligner",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+  "level": "L1",
+  "category": "Digital and Event-Driven Logic",
+  "base_function": "Serializer/frame aligner",
+  "package_status": "selected_l1_addition",
+  "score_surface": "model-capability",
+  "source_base_id": "serializer_frame_aligner",
+  "canonical_kernel": "",
+  "source_registry_status": "selected_from_existing_task",
+  "source_evidence_status": "selected_source_pending_dual",
+  "source_tasks": [
+    {
+      "form": "dut",
+      "source_path": "dut_companion_from_e2e:serializer_frame_alignment_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "tb",
+      "source_path": "tb_companion_from_e2e:serializer_frame_alignment_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "bugfix",
+      "source_path": "bugfix_companion_from_dut:serializer_frame_alignment_ref.va",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    },
+    {
+      "form": "e2e",
+      "source_path": "tasks/end-to-end/voltage/serializer_frame_alignment_smoke",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true,
+      "checks_has_sim_correct": true,
+      "checks_has_parity": true,
+      "checks_normalized_for_release": false
+    }
+  ],
+  "release_tasks": [
+    {
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/gold/serializer_frame_alignment_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/gold/tb_serializer_frame_alignment_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "dut_companion_from_e2e:serializer_frame_alignment_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/dut/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/dut/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/dut/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/dut/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/dut/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_serializer_frame_aligner_dut",
+      "historical_source_task_id": "vbr1_l1_serializer_frame_aligner_dut"
+    },
+    {
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/gold/serializer_frame_alignment_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/gold/tb_serializer_frame_alignment_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "tb_companion_from_e2e:serializer_frame_alignment_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/tb/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/tb/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/tb/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/tb/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/tb/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_serializer_frame_aligner_tb",
+      "historical_source_task_id": "vbr1_l1_serializer_frame_aligner_tb"
+    },
+    {
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/tb_serializer_frame_alignment_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "bugfix_companion_from_dut:serializer_frame_alignment_ref.va",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/bugfix/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/bugfix/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/bugfix/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/bugfix/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/bugfix/spectre_result.json",
+      "release_source_task_id": "vbr1_l1_serializer_frame_aligner_bugfix",
+      "historical_source_task_id": "vbr1_l1_serializer_frame_aligner_bugfix"
+    },
+    {
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/gold/serializer_frame_alignment_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/gold/tb_serializer_frame_alignment_ref.scs"
+      ],
+      "asset_materialized": true,
+      "historical_dual_expected": false,
+      "source_path": "tasks/end-to-end/voltage/serializer_frame_alignment_smoke",
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/e2e/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/e2e/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/e2e/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/e2e/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/e2e/spectre_result.json",
+      "release_source_task_id": "serializer_frame_alignment_smoke",
+      "historical_source_task_id": "serializer_frame_alignment_smoke"
+    }
+  ],
+  "missing_forms": [],
+  "certification": {
+    "static": "pass",
+    "evas": "pass",
+    "spectre": "pass",
+    "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "model_capability": false,
+    "l0_conformance": false
+  },
+  "release_blockers": []
+}

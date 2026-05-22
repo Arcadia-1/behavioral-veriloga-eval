@@ -1,0 +1,21 @@
+syntax:
+  must_include:
+    - "tran"
+    - "save"
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "weighted_code_response"
+    - "explicit_mismatch_terms"
+    - "bounded_reconstruction_voltage"
+parity:
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

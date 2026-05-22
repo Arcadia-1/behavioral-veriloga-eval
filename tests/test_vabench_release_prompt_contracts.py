@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from runners.vabench_release_paths import release_form_dir
+
 
 ROOT = Path(__file__).resolve().parents[1]
 TASKS_ROOT = ROOT / "benchmark-vabench-release-v1" / "tasks"
@@ -26,12 +28,12 @@ def _target_artifacts(form: str, names: list[str]) -> list[str]:
 
 
 def _release_form_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("*/forms/*/release_task.json"))
+    return sorted(path.parent for path in TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json"))
 
 
 def test_release_prompts_have_public_contract_scaffold() -> None:
     form_dirs = _release_form_dirs()
-    assert len(form_dirs) == 259
+    assert len(form_dirs) == 265
 
     for form_dir in form_dirs:
         release_task = _read_json(form_dir / "release_task.json")
@@ -75,12 +77,8 @@ def test_release_prompts_do_not_embed_runner_or_overdirect_repair_text() -> None
 
 
 def test_converter_front_end_e2e_uses_release_testbench_artifact_name() -> None:
-    prompt = (
-        TASKS_ROOT
-        / "vbr1_l2_converter_front_end"
-        / "forms"
-        / "e2e"
-        / "prompt.md"
-    ).read_text(encoding="utf-8")
+    prompt = (release_form_dir(TASKS_ROOT, "vbr1_l2_converter_front_end", "e2e") / "prompt.md").read_text(
+        encoding="utf-8"
+    )
     assert "`tb_sample_hold_droop_ref.scs`" in prompt
     assert "`tb_sample_hold_droop.scs`" not in prompt

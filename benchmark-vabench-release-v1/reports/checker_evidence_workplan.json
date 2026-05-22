@@ -89,8 +89,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -105,8 +105,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -121,8 +121,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -137,8 +137,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -153,8 +153,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -169,8 +169,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -185,8 +185,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -201,8 +201,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -217,8 +217,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -232,8 +232,8 @@
       ],
       "specific_check_count": 2,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -247,8 +247,8 @@
       ],
       "specific_check_count": 2,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -263,8 +263,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -278,8 +278,8 @@
       ],
       "specific_check_count": 2,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -294,8 +294,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     },
     {
@@ -310,8 +310,8 @@
       ],
       "specific_check_count": 3,
       "checker_strength": "multi_behavior_check",
-      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
-      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md",
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md",
       "recommended_action": "confirm_checker_maps_to_composition_claim"
     }
   ],

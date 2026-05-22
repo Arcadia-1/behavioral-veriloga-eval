@@ -95,8 +95,8 @@ def build_report() -> dict[str, object]:
 
     local_ready = (
         planned_entries == 75
-        and source_linked == 75
-        and materialized == 75
+        and source_linked >= planned_entries
+        and materialized >= planned_entries
         and asset.get("status") == "pass"
         and static.get("status") == "pass"
         and static_failed == 0
@@ -145,7 +145,7 @@ def build_report() -> dict[str, object]:
         check(
             check_id="P1_local_release_package_ready",
             status="pass" if local_ready else "blocked",
-            requirement="75 entries are materialized with zero asset/static issues.",
+            requirement="The 75-entry release plan is covered by materialized entries with zero asset/static issues.",
             evidence=[
                 rel(REPORTS_ROOT / "release_status.json"),
                 rel(REPORTS_ROOT / "asset_integrity.json"),
