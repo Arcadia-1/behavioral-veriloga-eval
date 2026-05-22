@@ -1,0 +1,59 @@
+{
+  "date": "2026-05-21",
+  "release": "vabench-release-v1",
+  "status": "pending",
+  "blocker_count": 1,
+  "blocked_count": 0,
+  "pending_count": 1,
+  "ready_to_continue_count": 0,
+  "bridge_status": "ready",
+  "bridge_reason": "bridge profile ci is ready for release rerun",
+  "latest_finish_attempt_status": "dry_run",
+  "latest_finish_attempt_reason": "dry run: no bridge tunnel or simulator command was executed",
+  "queue_count": 0,
+  "ready_staging_bundle_count": 0,
+  "latest_rerun_summary_status": "dry_run",
+  "latest_import_status": "imported",
+  "paper_status": "in_progress",
+  "completion_status": "in_progress",
+  "blockers": [
+    {
+      "id": "B4_downstream_paper_claims_disabled",
+      "status": "pending",
+      "scope": "speed/debug, model baseline artifacts",
+      "diagnosis": "downstream paper claims remain disabled until their dedicated artifacts are explicitly enabled",
+      "claim_impact": [
+        "do not claim EVAS speedup/debug advantage",
+        "do not claim model baseline results on the release package"
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+        "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
+        "benchmark-vabench-release-v1/reports/baseline_artifact.json",
+        "benchmark-vabench-release-v1/reports/paper_artifacts.json"
+      ],
+      "recovery_commands": [
+        "python3 runners/report_vabench_release_speed_debug.py",
+        "python3 runners/report_vabench_release_baseline_artifact.py"
+      ],
+      "stop_condition": "paper_artifacts claim gates allow scored benchmark, speedup, and baseline claims only after their dedicated artifacts support them.",
+      "details": {
+        "score_denominator_status": "score_enabled",
+        "speed_status": "measured",
+        "speed_claim_allowed": false,
+        "baseline_status": "ready_for_baseline_runs",
+        "baseline_claim_allowed": false
+      }
+    }
+  ],
+  "claim_boundary": [
+    "This report is blocker/recovery evidence only; it is not EVAS/Spectre certification evidence.",
+    "A blocked or dry-run simulator summary must not be imported into release evidence.",
+    "Score, speed, and baseline claims remain governed by their dedicated claim gates."
+  ],
+  "recovery_sequence": [
+    "Keep the imported full EVAS/Spectre rerun as the release certification evidence.",
+    "Use the enabled score denominator gate for scored benchmark rows/forms.",
+    "Enable speed/debug and model baseline claims only after their dedicated artifacts support them."
+  ]
+}

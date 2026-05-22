@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench external blocker report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "blocker_count",
+    "blocked_count",
+    "pending_count",
+    "ready_to_continue_count",
+    "bridge_status",
+    "queue_count",
+    "ready_staging_bundle_count",
+    "latest_rerun_summary_status",
+    "latest_import_status",
+    "paper_status",
+    "completion_status",
+    "blockers",
+    "claim_boundary",
+    "recovery_sequence"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "blocked",
+        "pending",
+        "clear"
+      ]
+    },
+    "blocker_count": {
+      "type": "integer"
+    },
+    "blocked_count": {
+      "type": "integer"
+    },
+    "pending_count": {
+      "type": "integer"
+    },
+    "ready_to_continue_count": {
+      "type": "integer"
+    },
+    "bridge_status": {
+      "type": "string"
+    },
+    "bridge_reason": {
+      "type": "string"
+    },
+    "queue_count": {
+      "type": "integer"
+    },
+    "ready_staging_bundle_count": {
+      "type": "integer"
+    },
+    "latest_rerun_summary_status": {
+      "type": "string"
+    },
+    "latest_import_status": {
+      "type": "string"
+    },
+    "paper_status": {
+      "type": "string"
+    },
+    "completion_status": {
+      "type": "string"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "scope",
+          "diagnosis",
+          "claim_impact",
+          "evidence",
+          "recovery_commands",
+          "stop_condition",
+          "details"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "blocked",
+              "pending",
+              "ready_to_continue",
+              "clear"
+            ]
+          },
+          "scope": {
+            "type": "string"
+          },
+          "diagnosis": {
+            "type": "string"
+          },
+          "claim_impact": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recovery_commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "stop_condition": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recovery_sequence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

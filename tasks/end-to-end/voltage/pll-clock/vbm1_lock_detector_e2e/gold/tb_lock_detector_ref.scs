@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "lock_detector.va"
+
+Vrst (rst_n 0) vsource type=pwl wave=[0 0 10n 0 11n 0.9 220n 0.9]
+Vref (ref_clk 0) vsource type=pulse val0=0 val1=0.9 delay=40n period=40n width=12n rise=200p fall=200p
+Vfb  (fb_clk 0) vsource type=pwl wave=[0 0 39n 0 39.2n 0.9 51n 0.9 51.2n 0 79n 0 79.2n 0.9 91n 0.9 91.2n 0 119n 0 119.2n 0.9 131n 0.9 131.2n 0 159n 0 159.2n 0.9 171n 0.9 171.2n 0 199n 0 199.2n 0.9 211n 0.9 211.2n 0]
+
+XDUT (ref_clk fb_clk rst_n lock) lock_detector
+
+tran tran stop=220n maxstep=500p
+save ref_clk fb_clk rst_n lock

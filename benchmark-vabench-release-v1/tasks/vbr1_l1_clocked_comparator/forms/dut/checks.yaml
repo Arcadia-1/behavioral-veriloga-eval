@@ -1,0 +1,20 @@
+syntax:
+  must_include:
+    - "module"
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "behavioral_module_present"
+    - "companion_testbench_available"
+    - "voltage_domain_outputs"
+parity:
+  reference: "spectre"
+  status: "pending_until_evas_spectre_rerun"
+  notes:
+    - "dut companion copied from release e2e gold and awaits fresh EVAS/Spectre dual rerun."

@@ -1,0 +1,96 @@
+{
+  "release_entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
+  "task_id": "vbr1_l2_adc_dac_reconstruction_chain:e2e",
+  "source_task_id": "adc_dac_ideal_4b_smoke",
+  "task_form": "e2e",
+  "taxonomy": {
+    "level": "L2",
+    "category": "Data Converters",
+    "base_function": "ADC/DAC reconstruction chain"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_adc_dac_reconstruction_chain/e2e/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_adc_dac_reconstruction_chain/e2e/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adc_dac_reconstruction_chain/e2e/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adc_dac_reconstruction_chain/e2e/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/tb_adc_dac_ideal_4b_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_adc_dac_reconstruction_chain/e2e/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_adc_dac_reconstruction_chain/e2e/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "mode": "adc_dac_task_aware",
+      "task_family": "clocked_adc_dac_reconstruction",
+      "metrics": {
+        "evas": {
+          "status": "ok",
+          "unique_codes": 16,
+          "min_code": 0,
+          "max_code": 15,
+          "reversals": 0,
+          "vout_span_v": 0.84375,
+          "vin_span_v": 0.7236,
+          "edge_count": 40,
+          "edge_sample_count": 40,
+          "edge_unique_codes": 13,
+          "edge_min_code": 3,
+          "edge_max_code": 15,
+          "edge_avg_abs_vout_err_v": 0.03365625000000001
+        },
+        "spectre": {
+          "status": "ok",
+          "unique_codes": 14,
+          "min_code": 0,
+          "max_code": 15,
+          "reversals": 0,
+          "vout_span_v": 0.84375,
+          "vin_span_v": 0.7226933522603233,
+          "edge_count": 40,
+          "edge_sample_count": 40,
+          "edge_unique_codes": 13,
+          "edge_min_code": 3,
+          "edge_max_code": 15,
+          "edge_avg_abs_vout_err_v": 0.03524999999999999
+        }
+      },
+      "notes": [
+        "compares settled quantizer/reconstruction behavior instead of pointwise clocked bit timing"
+      ],
+      "failures": []
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/adc_ideal_4b_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/dac_ideal_4b_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/gold/tb_adc_dac_ideal_4b_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

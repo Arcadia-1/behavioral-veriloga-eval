@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench speed/debug artifact",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "claim_allowed",
+    "measurement_scope",
+    "measurement_plan",
+    "timing_totals",
+    "required_to_claim",
+    "debug_triage_order",
+    "rows"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "pending_measurement",
+        "measured_subset",
+        "measured",
+        "measured_with_failures"
+      ]
+    },
+    "claim_allowed": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "measurement_scope": {
+      "type": "object",
+      "required": [
+        "planned_primary_rerun_rows",
+        "planned_staged_bundles",
+        "timed_rows"
+      ],
+      "properties": {
+        "planned_primary_rerun_rows": {
+          "type": "integer"
+        },
+        "planned_staged_bundles": {
+          "type": "integer"
+        },
+        "timed_rows": {
+          "type": "integer"
+        },
+        "scored_form_count": {
+          "type": "integer"
+        },
+        "timed_scored_form_count": {
+          "type": "integer"
+        },
+        "full_score_denominator_timed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "measurement_plan": {
+      "type": "object",
+      "required": [
+        "status",
+        "bridge_ready",
+        "primary_queue_rows",
+        "staged_bundle_count",
+        "required_timing_fields",
+        "claim_blockers"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "measured_or_ready_to_import",
+            "ready_to_measure",
+            "blocked_by_bridge",
+            "blocked_by_staging"
+          ]
+        },
+        "bridge_ready": {
+          "type": "boolean"
+        },
+        "primary_queue_rows": {
+          "type": "integer"
+        },
+        "staged_bundle_count": {
+          "type": "integer"
+        },
+        "required_timing_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claim_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "timing_totals": {
+      "type": "object",
+      "required": [
+        "evas_wall_time_s",
+        "spectre_wall_time_s",
+        "spectre_over_evas_speedup"
+      ]
+    },
+    "timing_distribution": {
+      "type": "object"
+    },
+    "required_to_claim": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "debug_triage_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "additionalProperties": true
+}

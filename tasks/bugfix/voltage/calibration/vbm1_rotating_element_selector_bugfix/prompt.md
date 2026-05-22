@@ -12,3 +12,5 @@ rising edges must be:
 
 Keep outputs voltage-domain only and drive them with `transition`. Do not use
 current contributions.
+
+Return exactly one complete Verilog-A file named `dut_fixed.va`.

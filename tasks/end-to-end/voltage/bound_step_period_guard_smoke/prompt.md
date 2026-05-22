@@ -4,7 +4,7 @@ Write a Verilog-A module named `bound_step_period_guard_ref`.
 
 ## Objective
 
-Write a Verilog-A timing guard that uses `$bound_step()` to keep a narrow periodic observation window visible even when the external transient step is much coarser than the target pulse width.
+Write a Verilog-A periodic phase-ramp source with a guard pulse at the start of each cycle. This is a source/timing primitive benchmark: the public behavior is the phase ramp, period wrap, and guard-pulse timing, not the `$bound_step()` implementation detail alone.
 
 ## Specification
 
@@ -12,12 +12,12 @@ Write a Verilog-A timing guard that uses `$bound_step()` to keep a narrow period
 - **Ports**: `VDD`, `VSS`, `guard_out`, `phase_out` - all `electrical`
 - **Behavior**:
   - Track an internal cycle boundary every `8 ns` using `@(timer(next_cycle))`.
-  - Request `$bound_step(period / 16)` continuously.
+  - Request `$bound_step(period / 16)` continuously so the waveform remains observable with coarse outer transient settings.
   - Drive `guard_out` HIGH only during the first `1.5 ns` of each cycle, then LOW for the rest of the period.
   - Drive `phase_out` as a normalized `0..VDD` ramp within each cycle so resets are externally visible.
 - **Testbench intent**:
   - The supplied testbench uses a coarse `tran maxstep=20n`.
-  - The DUT should rely on `$bound_step()` rather than the outer `tran` step to preserve the periodic guard windows.
+  - The checker validates the source behavior: repeated wraps, guard pulses, and a visible ramp.
 
 ## Constraints
 

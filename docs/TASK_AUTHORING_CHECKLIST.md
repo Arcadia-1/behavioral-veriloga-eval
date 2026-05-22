@@ -36,4 +36,4 @@
 ### 6. 结果登记
 - [ ] 表格结论已同步到 `tables/`（必要时运行 `scripts/sync_tables_from_results.sh`）
 - [ ] 在 `tables/RUN_REGISTRY.md` 追加本次 run 记录（如适用）
-- [ ] `docs/project/PROJECT_STATUS.md` 与 `docs/project/WORK_TODO.md` 的相关状态节已更新
+- [ ] `docs/VAEVAS_MAINLINE_PLAN.md`、`docs/VABENCH_TOPDOWN_FUNCTION_TAXONOMY.md` 或相关 materialization 表格已更新

@@ -14,4 +14,4 @@ The testbench must stimulate reset and at least six post-reset clocked states,
 save `clk`, `rst_n`, and all `win*` outputs, and run a transient analysis with
 sufficient time resolution for event checking.
 
-Return `barrel_pointer_window.va` and `tb_barrel_pointer_window_ref.scs`.
+Return exactly two files: `barrel_pointer_window.va` and `tb_barrel_pointer_window_ref.scs`.

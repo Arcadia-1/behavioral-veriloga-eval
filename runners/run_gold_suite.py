@@ -35,6 +35,10 @@ def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
 
 
+def checker_task_id(meta: dict, task_id: str) -> str:
+    return str(meta.get("checker_task_id") or meta.get("source_checker_task_id") or task_id)
+
+
 def list_gold_task_dirs(
     selected: set[str] | None = None,
     families: tuple[str, ...] = ("end-to-end",),
@@ -78,6 +82,7 @@ def run_gold_case(task_dir: Path, output_root: Path, timeout_s: int) -> dict:
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
     task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+    checker_id = checker_task_id(meta, task_id)
 
     tb_path = choose_gold_tb(gold_dir)
     if tb_path is None:
@@ -111,11 +116,13 @@ def run_gold_case(task_dir: Path, output_root: Path, timeout_s: int) -> dict:
         output_root=output_root / task_id,
         timeout_s=timeout_s,
         task_id_override=task_id,
+        checker_task_id_override=checker_id,
     )
+    result["checker_task_id"] = checker_id
     result["gold_dir"] = str(gold_dir)
     result["gold_tb"] = str(tb_path)
     result["gold_includes"] = includes
-    result["behavior_check_available"] = has_behavior_check(task_id)
+    result["behavior_check_available"] = has_behavior_check(checker_id)
     return result
 
 

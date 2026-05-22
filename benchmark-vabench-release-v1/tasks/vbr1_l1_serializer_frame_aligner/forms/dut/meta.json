@@ -1,0 +1,25 @@
+{
+  "id": "vbr1_l1_serializer_frame_aligner_dut",
+  "task_id": "vbr1_l1_serializer_frame_aligner_dut",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+  "family": "spec-to-va",
+  "category": "Digital and Event-Driven Logic",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "serializer_frame_alignment_ref.va",
+    "tb_serializer_frame_alignment_ref.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "dut_companion_from_e2e"
+}

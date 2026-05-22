@@ -1,0 +1,79 @@
+{
+  "release_entry_id": "vbr1_l2_pll_timing_slice",
+  "task_id": "vbr1_l2_pll_timing_slice:tb",
+  "source_task_id": "vbr1_l2_pll_timing_slice_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L2",
+    "category": "PLL / Clock / Event Timing",
+    "base_function": "PLL timing slice"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_pll_timing_slice/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_pll_timing_slice/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pll_timing_slice/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pll_timing_slice/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_pll_timing_slice/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_pll_timing_slice/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "mode": "pll_task_aware",
+      "task_family": "cppll_tracking",
+      "metrics": {
+        "evas": {
+          "late_edge_ratio": 1.0,
+          "late_fb_freq_hz": 49998832.70107888,
+          "late_vctrl_mean_v": 0.4500923314907553,
+          "late_vctrl_min_v": 0.4236091,
+          "late_vctrl_max_v": 0.475979
+        },
+        "spectre": {
+          "late_edge_ratio": 1.0,
+          "late_fb_freq_hz": 49993529.03707898,
+          "late_vctrl_mean_v": 0.449170158516297,
+          "late_vctrl_min_v": 0.4235970126512249,
+          "late_vctrl_max_v": 0.4759724777579244
+        },
+        "late_edge_ratio_delta": 0.0,
+        "late_fb_freq_rel_delta": 0.00010607575644032543,
+        "late_vctrl_mean_delta_v": 0.0009221729744582907,
+        "late_vctrl_min_delta_v": 1.208734877511386e-05,
+        "late_vctrl_max_delta_v": 6.522242075590601e-06
+      },
+      "notes": [
+        "ignored_signals=dco_clk,lock"
+      ],
+      "failures": []
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

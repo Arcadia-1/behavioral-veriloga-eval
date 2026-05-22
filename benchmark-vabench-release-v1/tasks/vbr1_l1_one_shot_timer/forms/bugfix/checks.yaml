@@ -1,0 +1,26 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "@(timer("
+    - "$abstime"
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "trigger_edges_generate_safe_window_pulses"
+    - "pulse_clears_after_configured_width"
+    - "reset_falling_edge_clears_active_pulse_before_timeout"
+bugfix:
+  buggy_expected: "FAIL_SIM_CORRECTNESS"
+  fixed_expected: "PASS"
+  reconstruction_note: "Single-root-cause badcase: buggy source omits reset falling-edge pulse clear."
+parity:
+  required: true
+  tolerance_notes: "Pulse checks use safe windows away from trigger, reset, and timeout boundaries."

@@ -1,0 +1,516 @@
+{
+  "date": "2026-05-21",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "reason": "bridge profile ci is ready for release rerun",
+  "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
+  "profile_count": 3,
+  "ready_profiles": [
+    "ci"
+  ],
+  "ssh_ok_profiles": [
+    "default",
+    "ci",
+    "jin"
+  ],
+  "ssh_config_jump_ok_profiles": [
+    "default",
+    "ci"
+  ],
+  "ssh_failure_code_counts": {
+    "ok": 3
+  },
+  "alternate_ssh_failure_code_counts": {
+    "ok": 2
+  },
+  "hop_ssh_failure_code_counts": {
+    "connect_timeout": 3,
+    "ok": 2
+  },
+  "hop_ssh_ok_routes": [
+    "default:explicit_jump:thu-sui",
+    "ci:explicit_jump:thu-sui"
+  ],
+  "ssh_timeout_s": 8,
+  "skip_ssh": false,
+  "profiles": [
+    {
+      "profile": "default",
+      "remote_host": "thu-wei",
+      "remote_user": "jinzhihong",
+      "jump_host": "thu-sui",
+      "jump_user": "jinzhihong",
+      "use_ssh_config_jump": false,
+      "remote_port": "65081",
+      "local_port": 65082,
+      "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+      "ssh_config": {
+        "user": "jinzhihong",
+        "hostname": "thu-wei",
+        "port": "22",
+        "identityfile": "~/.ssh/id_ed25519",
+        "proxyjump": "thu-jin"
+      },
+      "diagnostic_notes": [
+        "VB_JUMP_HOST=thu-sui differs from local ssh_config ProxyJump=thu-jin; try VB_USE_SSH_CONFIG_JUMP=1 if the explicit jump host times out"
+      ],
+      "hop_ssh_smokes": [
+        {
+          "route": "explicit_jump",
+          "target_host": "thu-sui",
+          "target_user": "jinzhihong",
+          "ssh_smoke": {
+            "status": "ok",
+            "returncode": 0,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-sui",
+              "echo ok"
+            ],
+            "stdout_tail": "on thu-sui\nok\n",
+            "stderr_tail": "",
+            "failure_code": "ok",
+            "failure_summary": "ssh echo smoke succeeded",
+            "remediation": []
+          }
+        },
+        {
+          "route": "ssh_config_proxyjump",
+          "target_host": "thu-jin",
+          "target_user": "jinzhihong",
+          "ssh_smoke": {
+            "status": "failed",
+            "returncode": 255,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-jin",
+              "echo ok"
+            ],
+            "stdout_tail": "",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
+            "failure_code": "connect_timeout",
+            "failure_summary": "SSH connection timed out before authentication",
+            "remediation": [
+              "Check network/VPN reachability to the target or jump host.",
+              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+            ]
+          }
+        }
+      ],
+      "ssh_smoke": {
+        "status": "ok",
+        "returncode": 0,
+        "command": [
+          "ssh",
+          "-o",
+          "BatchMode=yes",
+          "-o",
+          "ConnectTimeout=8",
+          "-o",
+          "ServerAliveInterval=2",
+          "-o",
+          "ServerAliveCountMax=1",
+          "-o",
+          "StrictHostKeyChecking=no",
+          "-o",
+          "LogLevel=ERROR",
+          "-J",
+          "j***@thu-sui",
+          "j***@thu-wei",
+          "echo ok"
+        ],
+        "stdout_tail": "ok\n",
+        "stderr_tail": "",
+        "failure_code": "ok",
+        "failure_summary": "ssh echo smoke succeeded",
+        "remediation": []
+      },
+      "alternate_ssh_smokes": [
+        {
+          "route": "ssh_config_proxyjump",
+          "env": "VB_USE_SSH_CONFIG_JUMP=1",
+          "ssh_smoke": {
+            "status": "ok",
+            "returncode": 0,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-wei",
+              "echo ok"
+            ],
+            "stdout_tail": "ok\n",
+            "stderr_tail": "",
+            "failure_code": "ok",
+            "failure_summary": "ssh echo smoke succeeded",
+            "remediation": []
+          }
+        }
+      ],
+      "preflight": {
+        "status": "blocked",
+        "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
+        "bridge_profile": "",
+        "bridge_cli": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge",
+        "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+        "require_daemon": false,
+        "issue_codes": [
+          "tunnel_not_running"
+        ],
+        "issues": [
+          "virtuoso-bridge tunnel is not running"
+        ],
+        "note_codes": [
+          "daemon_disconnected"
+        ],
+        "notes": [
+          "Virtuoso daemon is not connected to the bridge"
+        ],
+        "remediation": [
+          "cd /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval && ./scripts/start_bridge_tunnel.sh",
+          "cd /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite && ./.venv/bin/virtuoso-bridge start",
+          "in remote Virtuoso CIW run: load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")",
+          "add load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\") to remote ~/.cdsinit for auto-load on startup"
+        ],
+        "tunnel_running": false,
+        "daemon_ok": false,
+        "spectre_ok": true,
+        "load_path": "/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il",
+        "spectre_path": "/home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre",
+        "spectre_version": "@(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $",
+        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65082\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================\n\n  Virtuoso Bridge v0.7.0 [ci]\n\n[tunnel] running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65182\n\n[daemon] OK - connected to Virtuoso CIW\n  hostname  : thu-wei\n  time      : May 21 14:19:08 2026\n  version   : @(#)$CDS: virtuoso version 6.1.8-64b 06/22/2022 16:25 (sjfhw316) $\n  workdir   : /home/jinzhihong\n\n[spectre] probing...\n[spectre] OK\n  path    : /home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre\n  version : @(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $\n\n========================================================================\n\n  Virtuoso Bridge v0.7.0 [jin]\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  local port  : 65084\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================",
+        "status_exit_code": 0,
+        "reason": "virtuoso-bridge tunnel is not running"
+      },
+      "ready_for_release_rerun": false
+    },
+    {
+      "profile": "ci",
+      "remote_host": "thu-wei",
+      "remote_user": "jinzhihong",
+      "jump_host": "thu-sui",
+      "jump_user": "jinzhihong",
+      "use_ssh_config_jump": false,
+      "remote_port": "65181",
+      "local_port": 65182,
+      "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+      "ssh_config": {
+        "user": "jinzhihong",
+        "hostname": "thu-wei",
+        "port": "22",
+        "identityfile": "~/.ssh/id_ed25519",
+        "proxyjump": "thu-jin"
+      },
+      "diagnostic_notes": [
+        "VB_JUMP_HOST=thu-sui differs from local ssh_config ProxyJump=thu-jin; try VB_USE_SSH_CONFIG_JUMP=1 if the explicit jump host times out"
+      ],
+      "hop_ssh_smokes": [
+        {
+          "route": "explicit_jump",
+          "target_host": "thu-sui",
+          "target_user": "jinzhihong",
+          "ssh_smoke": {
+            "status": "ok",
+            "returncode": 0,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-sui",
+              "echo ok"
+            ],
+            "stdout_tail": "on thu-sui\nok\n",
+            "stderr_tail": "",
+            "failure_code": "ok",
+            "failure_summary": "ssh echo smoke succeeded",
+            "remediation": []
+          }
+        },
+        {
+          "route": "ssh_config_proxyjump",
+          "target_host": "thu-jin",
+          "target_user": "jinzhihong",
+          "ssh_smoke": {
+            "status": "failed",
+            "returncode": 255,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-jin",
+              "echo ok"
+            ],
+            "stdout_tail": "",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
+            "failure_code": "connect_timeout",
+            "failure_summary": "SSH connection timed out before authentication",
+            "remediation": [
+              "Check network/VPN reachability to the target or jump host.",
+              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+            ]
+          }
+        }
+      ],
+      "ssh_smoke": {
+        "status": "ok",
+        "returncode": 0,
+        "command": [
+          "ssh",
+          "-o",
+          "BatchMode=yes",
+          "-o",
+          "ConnectTimeout=8",
+          "-o",
+          "ServerAliveInterval=2",
+          "-o",
+          "ServerAliveCountMax=1",
+          "-o",
+          "StrictHostKeyChecking=no",
+          "-o",
+          "LogLevel=ERROR",
+          "-J",
+          "j***@thu-sui",
+          "j***@thu-wei",
+          "echo ok"
+        ],
+        "stdout_tail": "ok\n",
+        "stderr_tail": "",
+        "failure_code": "ok",
+        "failure_summary": "ssh echo smoke succeeded",
+        "remediation": []
+      },
+      "alternate_ssh_smokes": [
+        {
+          "route": "ssh_config_proxyjump",
+          "env": "VB_USE_SSH_CONFIG_JUMP=1",
+          "ssh_smoke": {
+            "status": "ok",
+            "returncode": 0,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-wei",
+              "echo ok"
+            ],
+            "stdout_tail": "ok\n",
+            "stderr_tail": "",
+            "failure_code": "ok",
+            "failure_summary": "ssh echo smoke succeeded",
+            "remediation": []
+          }
+        }
+      ],
+      "preflight": {
+        "status": "ok",
+        "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
+        "bridge_profile": "ci",
+        "bridge_cli": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge",
+        "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+        "require_daemon": false,
+        "issue_codes": [],
+        "issues": [],
+        "note_codes": [],
+        "notes": [],
+        "remediation": [],
+        "tunnel_running": true,
+        "daemon_ok": true,
+        "spectre_ok": true,
+        "load_path": null,
+        "spectre_path": "/home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre",
+        "spectre_version": "@(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $",
+        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0 [ci]\n\n[tunnel] running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65182\n\n[daemon] OK - connected to Virtuoso CIW\n  hostname  : thu-wei\n  time      : May 21 14:19:21 2026\n  version   : @(#)$CDS: virtuoso version 6.1.8-64b 06/22/2022 16:25 (sjfhw316) $\n  workdir   : /home/jinzhihong\n\n[spectre] probing...\n[spectre] OK\n  path    : /home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre\n  version : @(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $\n\n========================================================================",
+        "status_exit_code": 0
+      },
+      "ready_for_release_rerun": true
+    },
+    {
+      "profile": "jin",
+      "remote_host": "thu-wei",
+      "remote_user": "jinzhihong",
+      "jump_host": "",
+      "jump_user": "",
+      "use_ssh_config_jump": false,
+      "remote_port": "65081",
+      "local_port": 65084,
+      "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+      "ssh_config": {
+        "user": "jinzhihong",
+        "hostname": "thu-wei",
+        "port": "22",
+        "identityfile": "~/.ssh/id_ed25519",
+        "proxyjump": "thu-jin"
+      },
+      "diagnostic_notes": [
+        "no VB_JUMP_HOST is set; SSH smoke relies on local ssh_config ProxyJump=thu-jin"
+      ],
+      "hop_ssh_smokes": [
+        {
+          "route": "ssh_config_proxyjump",
+          "target_host": "thu-jin",
+          "target_user": "jinzhihong",
+          "ssh_smoke": {
+            "status": "failed",
+            "returncode": 255,
+            "command": [
+              "ssh",
+              "-o",
+              "BatchMode=yes",
+              "-o",
+              "ConnectTimeout=8",
+              "-o",
+              "ServerAliveInterval=2",
+              "-o",
+              "ServerAliveCountMax=1",
+              "-o",
+              "StrictHostKeyChecking=no",
+              "-o",
+              "LogLevel=ERROR",
+              "j***@thu-jin",
+              "echo ok"
+            ],
+            "stdout_tail": "",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
+            "failure_code": "connect_timeout",
+            "failure_summary": "SSH connection timed out before authentication",
+            "remediation": [
+              "Check network/VPN reachability to the target or jump host.",
+              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+            ]
+          }
+        }
+      ],
+      "ssh_smoke": {
+        "status": "ok",
+        "returncode": 0,
+        "command": [
+          "ssh",
+          "-o",
+          "BatchMode=yes",
+          "-o",
+          "ConnectTimeout=8",
+          "-o",
+          "ServerAliveInterval=2",
+          "-o",
+          "ServerAliveCountMax=1",
+          "-o",
+          "StrictHostKeyChecking=no",
+          "-o",
+          "LogLevel=ERROR",
+          "j***@thu-wei",
+          "echo ok"
+        ],
+        "stdout_tail": "ok\n",
+        "stderr_tail": "",
+        "failure_code": "ok",
+        "failure_summary": "ssh echo smoke succeeded",
+        "remediation": []
+      },
+      "alternate_ssh_smokes": [],
+      "preflight": {
+        "status": "blocked",
+        "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
+        "bridge_profile": "jin",
+        "bridge_cli": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge",
+        "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
+        "require_daemon": false,
+        "issue_codes": [
+          "tunnel_not_running"
+        ],
+        "issues": [
+          "virtuoso-bridge tunnel is not running"
+        ],
+        "note_codes": [
+          "daemon_disconnected"
+        ],
+        "notes": [
+          "Virtuoso daemon is not connected to the bridge"
+        ],
+        "remediation": [
+          "cd /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval && ./scripts/start_bridge_tunnel.sh",
+          "cd /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite && ./.venv/bin/virtuoso-bridge start",
+          "in remote Virtuoso CIW run: load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")",
+          "add load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\") to remote ~/.cdsinit for auto-load on startup"
+        ],
+        "tunnel_running": false,
+        "daemon_ok": false,
+        "spectre_ok": null,
+        "load_path": "/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il",
+        "spectre_path": null,
+        "spectre_version": null,
+        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0 [jin]\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  local port  : 65084\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================",
+        "status_exit_code": 1,
+        "reason": "virtuoso-bridge tunnel is not running"
+      },
+      "ready_for_release_rerun": false
+    }
+  ],
+  "notes": [
+    "This is bridge readiness evidence only; it is not EVAS/Spectre certification evidence.",
+    "Use BRIDGE_PROFILE=<profile> with scripts/run_with_bridge.sh to select a profile for release rerun."
+  ]
+}

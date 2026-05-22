@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench bridge diagnostics",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "reason",
+    "bridge_repo",
+    "profile_count",
+    "ready_profiles",
+    "ssh_ok_profiles",
+    "ssh_failure_code_counts",
+    "hop_ssh_failure_code_counts",
+    "ssh_timeout_s",
+    "skip_ssh",
+    "profiles",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "blocked"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "bridge_repo": {
+      "type": "string"
+    },
+    "profile_count": {
+      "type": "integer"
+    },
+    "ready_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ssh_ok_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ssh_config_jump_ok_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ssh_failure_code_counts": {
+      "type": "object"
+    },
+    "alternate_ssh_failure_code_counts": {
+      "type": "object"
+    },
+    "hop_ssh_failure_code_counts": {
+      "type": "object"
+    },
+    "hop_ssh_ok_routes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ssh_timeout_s": {
+      "type": "integer"
+    },
+    "skip_ssh": {
+      "type": "boolean"
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "profile",
+          "remote_host",
+          "remote_user",
+          "local_port",
+          "diagnostic_notes",
+          "hop_ssh_smokes",
+          "ssh_smoke",
+          "alternate_ssh_smokes",
+          "preflight",
+          "ready_for_release_rerun"
+        ],
+        "properties": {
+          "profile": {
+            "type": "string"
+          },
+          "remote_host": {
+            "type": "string"
+          },
+          "remote_user": {
+            "type": "string"
+          },
+          "local_port": {
+            "type": "integer"
+          },
+          "use_ssh_config_jump": {
+            "type": "boolean"
+          },
+          "diagnostic_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hop_ssh_smokes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "ssh_smoke": {
+            "type": "object"
+          },
+          "alternate_ssh_smokes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "preflight": {
+            "type": "object"
+          },
+          "ready_for_release_rerun": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

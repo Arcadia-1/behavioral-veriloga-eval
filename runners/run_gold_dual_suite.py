@@ -7,17 +7,24 @@ import json
 import math
 import os
 import subprocess
+import time
 from pathlib import Path
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
 from run_gold_suite import (
     ahdl_includes,
     benchmark_root,
+    checker_task_id as resolve_checker_task_id,
     choose_gold_tb,
     list_gold_task_dirs,
     read_meta,
 )
-from simulate_evas import evaluate_behavior, rising_edges
+from simulate_evas import (
+    behavior_side_output_names,
+    evaluate_behavior,
+    rising_edges,
+    validate_behavior_side_outputs,
+)
 
 
 def project_root() -> Path:
@@ -67,9 +74,26 @@ def interp_at(rows: list[dict[str, float]], sig: str, t: float) -> float:
     return y0 + a * (y1 - y0)
 
 
-ADPLL_TIMER_TASK_IDS = {"adpll_lock_smoke", "adpll_ratio_hop_smoke", "adpll_timer", "adpll_timer_smoke"}
-CPPLL_REACQUIRE_TASK_IDS = {"cppll_freq_step_reacquire_smoke"}
-CPPLL_TRACKING_TASK_IDS = {"cppll_timer", "cppll_tracking_smoke"}
+ADPLL_TIMER_TASK_IDS = {
+    "adpll_lock_smoke",
+    "adpll_ratio_hop_smoke",
+    "adpll_timer",
+    "adpll_timer_smoke",
+    "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+}
+CPPLL_REACQUIRE_TASK_IDS = {
+    "cppll_freq_step_reacquire_smoke",
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+}
+CPPLL_TRACKING_TASK_IDS = {
+    "cppll_timer",
+    "cppll_tracking_smoke",
+    "vbr1_l2_pll_timing_slice_tb",
+}
+ADC_DAC_CLOCKED_RECON_TASK_IDS = {
+    "adc_dac_ideal_4b_smoke",
+    "vbr1_l2_adc_dac_reconstruction_chain_tb",
+}
 
 
 def first_rising_time(rows: list[dict[str, float]], sig: str, threshold: float = 0.45) -> float:
@@ -195,6 +219,141 @@ def rel_delta(a: float, b: float) -> float:
         return float("inf")
     denom = max(abs(a), abs(b), 1e-12)
     return abs(a - b) / denom
+
+
+def _adc_dac_code_from_row(row: dict[str, float], threshold: float = 0.45) -> int | None:
+    if "dout_code" in row:
+        return int(round(row["dout_code"]))
+    bit_names = ("dout_3", "dout_2", "dout_1", "dout_0")
+    if not all(bit in row for bit in bit_names):
+        return None
+    return (
+        ((1 if row["dout_3"] > threshold else 0) << 3)
+        | ((1 if row["dout_2"] > threshold else 0) << 2)
+        | ((1 if row["dout_1"] > threshold else 0) << 1)
+        | (1 if row["dout_0"] > threshold else 0)
+    )
+
+
+def _adc_dac_code_at(rows: list[dict[str, float]], t: float, threshold: float = 0.45) -> int | None:
+    if not rows:
+        return None
+    if "dout_code" in rows[0]:
+        return int(round(interp_at(rows, "dout_code", t)))
+    bit_names = ("dout_3", "dout_2", "dout_1", "dout_0")
+    if not all(bit in rows[0] for bit in bit_names):
+        return None
+    return (
+        ((1 if interp_at(rows, "dout_3", t) > threshold else 0) << 3)
+        | ((1 if interp_at(rows, "dout_2", t) > threshold else 0) << 2)
+        | ((1 if interp_at(rows, "dout_1", t) > threshold else 0) << 1)
+        | (1 if interp_at(rows, "dout_0", t) > threshold else 0)
+    )
+
+
+def adc_dac_clocked_reconstruction_metrics(rows: list[dict[str, float]]) -> dict[str, float | int | str]:
+    required = {"time", "clk", "rst_n", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return {"status": "blocked", "reason": "missing time/clk/rst_n/vin/vout"}
+
+    post = [r for r in rows if r["rst_n"] > 0.45]
+    if not post:
+        return {"status": "blocked", "reason": "no post-reset samples"}
+    codes = [_adc_dac_code_from_row(r) for r in post]
+    if any(code is None for code in codes):
+        return {"status": "blocked", "reason": "missing dout_code or dout_3..0"}
+    code_ints = [int(code) for code in codes if code is not None]
+    reversals = sum(1 for a, b in zip(code_ints[:-1], code_ints[1:]) if b < a)
+
+    times = [r["time"] for r in rows]
+    clk_edges = [
+        edge_t
+        for edge_t in rising_edges([r["clk"] for r in rows], times, threshold=0.45)
+        if interp_at(rows, "rst_n", edge_t) > 0.45
+    ]
+    edge_codes: list[int] = []
+    edge_vout_errors: list[float] = []
+    # The ADC output and DAC reconstruction are intentionally clocked. Compare
+    # settled code-level behavior instead of pointwise bit timing, because EVAS
+    # and Spectre may place digital transition samples on opposite sides of a
+    # clock edge while still implementing the same quantizer.
+    for edge_t in clk_edges:
+        sample_t = min(edge_t + 0.2e-9, rows[-1]["time"])
+        code = _adc_dac_code_at(rows, sample_t)
+        if code is None:
+            continue
+        edge_codes.append(code)
+        expected_vout = 0.9 * max(0, min(15, code)) / 15.0
+        edge_vout_errors.append(abs(interp_at(rows, "vout", sample_t) - expected_vout))
+
+    vouts = [r["vout"] for r in post]
+    vins = [r["vin"] for r in post]
+    return {
+        "status": "ok",
+        "unique_codes": len(set(code_ints)),
+        "min_code": min(code_ints),
+        "max_code": max(code_ints),
+        "reversals": reversals,
+        "vout_span_v": max(vouts) - min(vouts),
+        "vin_span_v": max(vins) - min(vins),
+        "edge_count": len(clk_edges),
+        "edge_sample_count": len(edge_codes),
+        "edge_unique_codes": len(set(edge_codes)),
+        "edge_min_code": min(edge_codes) if edge_codes else -1,
+        "edge_max_code": max(edge_codes) if edge_codes else -1,
+        "edge_avg_abs_vout_err_v": (
+            sum(edge_vout_errors) / len(edge_vout_errors) if edge_vout_errors else float("inf")
+        ),
+    }
+
+
+def compare_adc_dac_clocked_reconstruction_parity(
+    evas_rows: list[dict[str, float]],
+    spectre_rows: list[dict[str, float]],
+) -> dict:
+    ev = adc_dac_clocked_reconstruction_metrics(evas_rows)
+    sp = adc_dac_clocked_reconstruction_metrics(spectre_rows)
+    failures: list[str] = []
+    if ev.get("status") != "ok" or sp.get("status") != "ok":
+        failures.append(f"metrics_blocked evas={ev.get('reason')} spectre={sp.get('reason')}")
+    else:
+        if min(int(ev["unique_codes"]), int(sp["unique_codes"])) < 12:
+            failures.append(f"unique_codes={ev['unique_codes']}/{sp['unique_codes']}")
+        if abs(float(ev["vout_span_v"]) - float(sp["vout_span_v"])) > 0.05:
+            failures.append(
+                f"vout_span_delta={abs(float(ev['vout_span_v']) - float(sp['vout_span_v'])):.4f}"
+            )
+        if abs(float(ev["vin_span_v"]) - float(sp["vin_span_v"])) > 0.05:
+            failures.append(
+                f"vin_span_delta={abs(float(ev['vin_span_v']) - float(sp['vin_span_v'])):.4f}"
+            )
+        if int(ev["edge_sample_count"]) < 20 or int(sp["edge_sample_count"]) < 20:
+            failures.append(f"edge_samples={ev['edge_sample_count']}/{sp['edge_sample_count']}")
+        if abs(int(ev["edge_max_code"]) - int(sp["edge_max_code"])) > 1:
+            failures.append(f"edge_max_code_delta={ev['edge_max_code']}/{sp['edge_max_code']}")
+        if abs(int(ev["edge_min_code"]) - int(sp["edge_min_code"])) > 1:
+            failures.append(f"edge_min_code_delta={ev['edge_min_code']}/{sp['edge_min_code']}")
+        if int(ev["reversals"]) > 2 or int(sp["reversals"]) > 2:
+            failures.append(f"monotonic_reversals={ev['reversals']}/{sp['reversals']}")
+        if float(ev["edge_avg_abs_vout_err_v"]) > 0.08 or float(sp["edge_avg_abs_vout_err_v"]) > 0.08:
+            failures.append(
+                "edge_vout_quantization_error="
+                f"{float(ev['edge_avg_abs_vout_err_v']):.4f}/{float(sp['edge_avg_abs_vout_err_v']):.4f}"
+            )
+
+    return {
+        "status": "passed" if not failures else "needs_review",
+        "mode": "adc_dac_task_aware",
+        "task_family": "clocked_adc_dac_reconstruction",
+        "metrics": {
+            "evas": ev,
+            "spectre": sp,
+        },
+        "notes": [
+            "compares settled quantizer/reconstruction behavior instead of pointwise clocked bit timing"
+        ],
+        "failures": failures,
+    }
 
 
 def compare_adpll_timer_parity(
@@ -498,6 +657,8 @@ def compare_waveforms(
         return compare_cppll_reacquire_parity(evas_rows, spectre_rows)
     if task_id in CPPLL_TRACKING_TASK_IDS:
         return compare_cppll_tracking_parity(evas_rows, spectre_rows)
+    if task_id in ADC_DAC_CLOCKED_RECON_TASK_IDS:
+        return compare_adc_dac_clocked_reconstruction_parity(evas_rows, spectre_rows)
 
     common_signals = sorted((set(evas_rows[0]) & set(spectre_rows[0])) - {"time"})
     if not common_signals:
@@ -684,6 +845,7 @@ def run_spectre_case(
     bridge_repo: Path,
     cadence_cshrc: str | None,
     timeout_s: int,
+    side_output_files: tuple[str, ...] = (),
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     bridge_py = bridge_repo / ".venv" / "bin" / "python"
@@ -698,23 +860,81 @@ def run_spectre_case(
         "result_json": str(result_json.resolve()),
         "csv_path": str(csv_path.resolve()),
         "cadence_cshrc": cadence_cshrc or "",
+        "bridge_profile": os.environ.get("VAEVAS_BRIDGE_PROFILE") or os.environ.get("BRIDGE_PROFILE") or "",
+        "side_output_files": list(side_output_files),
     }
 
     inline = (
-        "import csv, json, os\n"
+        "import csv, json, os, shlex\n"
         "from pathlib import Path\n"
         "from dotenv import load_dotenv\n"
         "payload = json.loads(" + repr(json.dumps(payload)) + ")\n"
         "bridge_repo = Path(payload['bridge_repo'])\n"
         "load_dotenv(bridge_repo / '.env')\n"
+        "profile = payload.get('bridge_profile') or os.environ.get('VAEVAS_BRIDGE_PROFILE') or os.environ.get('BRIDGE_PROFILE') or None\n"
         "if payload['cadence_cshrc']:\n"
         "    os.environ['VB_CADENCE_CSHRC'] = payload['cadence_cshrc']\n"
         "from virtuoso_bridge.spectre.runner import SpectreSimulator, spectre_mode_args\n"
         "tb = Path(payload['tb_path'])\n"
         "out = Path(payload['output_dir'])\n"
         "out.mkdir(parents=True, exist_ok=True)\n"
-        "sim = SpectreSimulator.from_env(spectre_args=spectre_mode_args('ax'), work_dir=out, output_format='psfascii')\n"
+        "side_output_files = list(payload.get('side_output_files') or [])\n"
+        "sim = SpectreSimulator.from_env(spectre_args=spectre_mode_args('ax'), work_dir=out, output_format='psfascii', keep_remote_files=bool(side_output_files), profile=profile)\n"
+        "runner = None\n"
+        "remote_pwd = ''\n"
+        "if side_output_files:\n"
+        "    try:\n"
+        "        runner = sim._get_ssh_runner()\n"
+        "        pwd_result = runner.run_command('pwd')\n"
+        "        pwd_lines = [line.strip() for line in (pwd_result.stdout or '').splitlines() if line.strip()]\n"
+        "        remote_pwd = next((line for line in reversed(pwd_lines) if line.startswith('/')), '')\n"
+        "        if remote_pwd:\n"
+        "            stale_targets = ' '.join(shlex.quote(f'{remote_pwd}/{name}') for name in side_output_files)\n"
+        "            if stale_targets:\n"
+        "                runner.run_command('rm -f ' + stale_targets)\n"
+        "    except Exception:\n"
+        "        remote_pwd = ''\n"
         "res = sim.run_simulation(tb, {'include_files': payload['include_paths']})\n"
+        "side_outputs = {}\n"
+        "remote_run_dir = ''\n"
+        "if side_output_files:\n"
+        "    try:\n"
+        "        if runner is None:\n"
+        "            runner = sim._get_ssh_runner()\n"
+        "        spec_cmd = str(getattr(res, 'metadata', {}).get('spectre_command', ''))\n"
+        "        for token in shlex.split(spec_cmd):\n"
+        "            if token.endswith('/' + tb.name):\n"
+        "                remote_run_dir = str(Path(token).parent)\n"
+        "                break\n"
+        "        remote_output_dirs = []\n"
+        "        for candidate_dir in (remote_run_dir, remote_pwd):\n"
+        "            if candidate_dir and candidate_dir not in remote_output_dirs:\n"
+        "                remote_output_dirs.append(candidate_dir)\n"
+        "        if remote_output_dirs:\n"
+        "            for name in side_output_files:\n"
+        "                local_path = out / name\n"
+        "                attempts = []\n"
+        "                downloaded = False\n"
+        "                for remote_dir in remote_output_dirs:\n"
+        "                    remote_path = f'{remote_dir}/{name}'\n"
+        "                    result = runner.download(remote_path, local_path)\n"
+        "                    attempts.append({'remote_path': remote_path, 'returncode': result.returncode, 'stderr_tail': (result.stderr or '')[-500:]})\n"
+        "                    if result.returncode == 0:\n"
+        "                        side_outputs[name] = {'downloaded': True, 'path': str(local_path), 'remote_path': remote_path, 'attempts': attempts}\n"
+        "                        downloaded = True\n"
+        "                        break\n"
+        "                if not downloaded:\n"
+        "                    side_outputs[name] = {'downloaded': False, 'path': '', 'attempts': attempts, 'stderr_tail': attempts[-1]['stderr_tail'] if attempts else ''}\n"
+        "            if remote_run_dir:\n"
+        "                runner.run_command('rm -rf ' + shlex.quote(remote_run_dir))\n"
+        "            if remote_pwd:\n"
+        "                cleanup_targets = ' '.join(shlex.quote(f'{remote_pwd}/{name}') for name in side_output_files)\n"
+        "                if cleanup_targets:\n"
+        "                    runner.run_command('rm -f ' + cleanup_targets)\n"
+        "        else:\n"
+        "            side_outputs['_error'] = 'remote_output_dir_unresolved'\n"
+        "    except Exception as exc:\n"
+        "        side_outputs['_error'] = f'{type(exc).__name__}: {str(exc)[:300]}'\n"
         "keys = sorted(res.data.keys())\n"
         "if 'time' in keys:\n"
         "    keys = ['time'] + [k for k in keys if k != 'time']\n"
@@ -733,6 +953,9 @@ def run_spectre_case(
         "    'signals': keys,\n"
         "    'rows': nrows,\n"
         "    'csv_path': str(csv_path),\n"
+        "    'side_outputs': side_outputs,\n"
+        "    'remote_run_dir': remote_run_dir,\n"
+        "    'remote_pwd': remote_pwd,\n"
         "}\n"
         "Path(payload['result_json']).write_text(json.dumps(summary, indent=2), encoding='utf-8')\n"
         "print(json.dumps(summary, indent=2))\n"
@@ -793,6 +1016,7 @@ def run_dual_case(
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
     task_id = meta.get("task_id", task_dir.name)
+    checker_task_id = resolve_checker_task_id(meta, str(task_id))
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
 
     tb_path = choose_gold_tb(gold_dir)
@@ -831,11 +1055,14 @@ def run_dual_case(
 
     from run_gold_suite import run_gold_case
 
+    evas_t0 = time.perf_counter()
     evas_result = run_gold_case(task_dir, output_root, timeout_s)
+    evas_wall_time_s = time.perf_counter() - evas_t0
     evas_csv = evas_root / "tran.csv"
     if not evas_csv.exists():
         evas_csv = case_root / "tran.csv"
 
+    spectre_t0 = time.perf_counter()
     spectre_result = run_spectre_case(
         task_id=task_id,
         tb_path=tb_path,
@@ -844,9 +1071,12 @@ def run_dual_case(
         bridge_repo=bridge_repo,
         cadence_cshrc=cadence_cshrc,
         timeout_s=timeout_s,
+        side_output_files=behavior_side_output_names(checker_task_id),
     )
+    spectre_wall_time_s = time.perf_counter() - spectre_t0
     if should_retry_spectre_upload(spectre_result):
         notes.append("spectre:retry_after_upload_failure")
+        retry_t0 = time.perf_counter()
         spectre_result = run_spectre_case(
             task_id=task_id,
             tb_path=tb_path,
@@ -855,7 +1085,9 @@ def run_dual_case(
             bridge_repo=bridge_repo,
             cadence_cshrc=cadence_cshrc,
             timeout_s=timeout_s,
+            side_output_files=behavior_side_output_names(checker_task_id),
         )
+        spectre_wall_time_s += time.perf_counter() - retry_t0
 
     spectre_csv = spectre_root / "tran_spectre.csv"
     if "sim_correct" not in scoring:
@@ -863,7 +1095,13 @@ def run_dual_case(
         spectre_behavior_notes = ["behavior_not_required_by_scoring"]
         notes.append("spectre:behavior_not_required_by_scoring")
     elif spectre_result.get("ok") and spectre_csv.exists():
-        spectre_sim_correct, spectre_behavior_notes = evaluate_behavior(task_id, spectre_csv)
+        spectre_sim_correct, spectre_behavior_notes = evaluate_behavior(checker_task_id, spectre_csv)
+        side_output_result = validate_behavior_side_outputs(checker_task_id, spectre_root, spectre_csv)
+        if side_output_result is not None:
+            side_output_ok, side_output_note = side_output_result
+            spectre_behavior_notes.append(side_output_note)
+            if not side_output_ok:
+                spectre_sim_correct = 0.0
         notes.extend(f"spectre:{note}" for note in spectre_behavior_notes)
     else:
         spectre_sim_correct = 0.0
@@ -876,7 +1114,7 @@ def run_dual_case(
             "reason": "task scoring does not require sim_correct parity",
         }
     elif evas_result["status"] == "PASS" and spectre_sim_correct == 1.0 and spectre_csv.exists() and evas_csv.exists():
-        parity = compare_waveforms(task_id, evas_csv, spectre_csv)
+        parity = compare_waveforms(checker_task_id, evas_csv, spectre_csv)
     else:
         parity = {
             "status": "blocked",
@@ -896,6 +1134,7 @@ def run_dual_case(
 
     return {
         "task_id": task_id,
+        "checker_task_id": checker_task_id,
         "status": status,
         "gold_dir": str(gold_dir),
         "gold_tb": str(tb_path),
@@ -907,6 +1146,11 @@ def run_dual_case(
             "behavior_notes": spectre_behavior_notes,
         },
         "parity": parity,
+        "timing": {
+            "evas_wall_time_s": evas_wall_time_s,
+            "spectre_wall_time_s": spectre_wall_time_s,
+            "combined_wall_time_s": evas_wall_time_s + spectre_wall_time_s,
+        },
         "notes": notes,
     }
 

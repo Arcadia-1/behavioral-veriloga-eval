@@ -1,0 +1,58 @@
+{
+  "release_entry_id": "vbr1_l1_resettable_integrator",
+  "task_id": "vbr1_l1_resettable_integrator:tb",
+  "source_task_id": "vbm1_resettable_integrator_tb",
+  "release_source_task_id": "vbm1_resettable_integrator_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Analog Behavioral Signal Conditioning",
+    "base_function": "Resettable integrator"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_resettable_integrator_tb/evas_result.json",
+    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_resettable_integrator_tb/spectre_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_resettable_integrator/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_resettable_integrator/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_resettable_integrator/forms/tb/gold/resettable_integrator.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_resettable_integrator/forms/tb/gold/tb_resettable_integrator_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_resettable_integrator_tb/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_resettable_integrator_tb/spectre_result.json",
+    "source": "main120 gold dual evidence from 2026-05-08",
+    "source_equivalence_source": "main120_staged_sources",
+    "simulator_rerun": false
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "main120_staged_sources",
+    "normalization": "Verilog-A token stream; Spectre ahdl_include path plus trailing whitespace",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_resettable_integrator/forms/tb/gold/resettable_integrator.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_resettable_integrator/forms/tb/gold/tb_resettable_integrator_ref.scs"
+    ],
+    "evas_staged_sources": [
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_resettable_integrator_tb/staged/resettable_integrator.va",
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_resettable_integrator_tb/staged/tb_resettable_integrator_ref.scs"
+    ],
+    "spectre_staged_sources": [
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_resettable_integrator_tb/staged/resettable_integrator.va",
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_resettable_integrator_tb/staged/tb_resettable_integrator_ref.scs"
+    ],
+    "release_va_hash_count": 1,
+    "release_scs_hash_count": 1,
+    "evas_va_hash_count": 1,
+    "evas_scs_hash_count": 1,
+    "spectre_va_hash_count": 1,
+    "spectre_scs_hash_count": 1
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from historical main120 gold run and linked to release gold by source hash equivalence."
+}

@@ -222,6 +222,19 @@ def promotion_contract(parsed: ParsedTaskId, source_paths: Iterable[Path]) -> di
     }
 
 
+def materialization_state(exact_current: bool, contract: dict[str, str]) -> tuple[str, str]:
+    if exact_current:
+        return "has_exact_task_id", ""
+    if (
+        contract.get("release_form") == "evidence-only"
+        and contract.get("counts_model_capability") == "false"
+        and contract.get("counts_benchmark_coverage") == "false"
+        and contract.get("counts_bugfix_claim") == "false"
+    ):
+        return "closed_evidence_only", "no_release_source_task_expected"
+    return "needs_source_task", "prompt.md;meta.json;checks.yaml;gold/"
+
+
 def tokens(text: str) -> set[str]:
     raw = re.split(r"[^a-zA-Z0-9]+", text.lower())
     normalized = set()
@@ -342,6 +355,7 @@ def build_rows(repo_root: Path, evas_dir: Path, spectre_dir: Path, tasks_root: P
             contract = promotion_contract(parsed, evas_source if evas_source else spectre_source)
         evas_status, evas_weighted = read_result_status(evas_dir, task_id, "evas")
         spectre_status, spectre_weighted = read_result_status(spectre_dir, task_id, "spectre")
+        state, missing_pieces = materialization_state(exact_current, contract)
         row = {
             "task_id": task_id,
             "base": parsed.base,
@@ -362,8 +376,8 @@ def build_rows(repo_root: Path, evas_dir: Path, spectre_dir: Path, tasks_root: P
             "staged_source_hash_match": "yes" if source_hash_match else "no",
             "evas_staged_dir": rel(evas_dir / task_id / "staged", repo_root),
             "spectre_staged_dir": rel(spectre_dir / task_id / "staged", repo_root),
-            "materialization_state": "needs_source_task" if not exact_current else "has_exact_task_id",
-            "missing_source_pieces": "" if exact_current else "prompt.md;meta.json;checks.yaml;gold/",
+            "materialization_state": state,
+            "missing_source_pieces": missing_pieces,
             **contract,
         }
         rows.append(row)
@@ -377,6 +391,7 @@ def build_rows(repo_root: Path, evas_dir: Path, spectre_dir: Path, tasks_root: P
         "task_rows": len(rows),
         "exact_current_overlap": sum(1 for row in rows if row["exact_current_task"] == "yes"),
         "needs_source_task": sum(1 for row in rows if row["materialization_state"] == "needs_source_task"),
+        "closed_evidence_only": sum(1 for row in rows if row["materialization_state"] == "closed_evidence_only"),
         "dual_pass": sum(1 for row in rows if row["evas_status"] == "PASS" and row["spectre_status"] == "PASS"),
         "staged_source_present_both": sum(
             1 for row in rows if row["evas_staged_source_files"] and row["spectre_staged_source_files"]
@@ -442,9 +457,10 @@ def build_markdown(rows: list[dict[str, str]], stats: dict, csv_output: Path, ge
         "",
         "## Summary",
         "",
-        "This inventory treats `vabench-main-v1-main120` as validated result evidence",
-        "that still needs to be restored/materialized into source-controlled benchmark",
-        "tasks before it can serve as a release-quality benchmark source split.",
+        "This inventory tracks `vabench-main-v1-main120` as validated result",
+        "evidence plus its source-controlled benchmark release state. It separates",
+        "materialized public tasks from fixed-only historical rows that are retained",
+        "as evidence-only.",
         "",
         markdown_table(
             ["Metric", "Value"],
@@ -455,12 +471,36 @@ def build_markdown(rows: list[dict[str, str]], stats: dict, csv_output: Path, ge
                 ["Dual PASS rows", str(stats["dual_pass"])],
                 ["Exact overlap with current `tasks/` IDs", str(stats["exact_current_overlap"])],
                 ["Rows needing source task materialization", str(stats["needs_source_task"])],
+                ["Evidence-only rows intentionally not materialized", str(stats["closed_evidence_only"])],
                 ["Rows with staged source assets in both runs", str(stats["staged_source_present_both"])],
                 ["Rows where EVAS/Spectre staged source hashes match", str(stats["staged_source_hash_match"])],
                 ["Rows countable as model capability after current policy", str(stats["countable_model_capability"])],
                 ["Rows countable as bugfix claim after current policy", str(stats["countable_bugfix_claim"])],
                 ["Row-level CSV", f"`{csv_output.as_posix()}`"],
             ],
+        ),
+        "",
+        "## Claim Wording",
+        "",
+        "Use this conservative wording in paper-facing text and PR summaries:",
+        "",
+        f"- `main120` contains {stats['dual_pass']} EVAS/Spectre dual-validated evidence rows.",
+        (
+            f"- {stats['exact_current_overlap']} rows are materialized as source-controlled "
+            "`prompt.md`/`meta.json`/`checks.yaml`/`gold/` benchmark tasks."
+        ),
+        (
+            f"- {stats['countable_model_capability']} rows count toward model-capability "
+            "evaluation under the current policy."
+        ),
+        (
+            f"- {stats['countable_bugfix_claim']} rows count as bugfix tasks because they "
+            "have buggy/fixed provenance and EVAS/Spectre confirmation."
+        ),
+        (
+            f"- {stats['closed_evidence_only']} fixed-only historical rows are intentionally "
+            "closed as evidence-only without release source tasks; all evidence-only rows are "
+            "excluded from model-capability and bugfix denominators."
         ),
         "",
         "## Source Evidence",
@@ -502,10 +542,17 @@ def build_markdown(rows: list[dict[str, str]], stats: dict, csv_output: Path, ge
         "",
         "## Materialization Decision",
         "",
-        "The next safe action is to create source task directories from the staged",
-        "`.va`/`.scs` files and the recorded dual-pass evidence, while marking",
-        "`prompt.md`, `meta.json`, and `checks.yaml` as review targets rather than",
-        "pretending they already exist in `tasks/`.",
+        (
+            "Ordinary `dut`, `tb`, and `e2e` rows now have source-controlled `prompt.md`, "
+            "`meta.json`, `checks.yaml`, and `gold/` task directories. The only non-overlap rows "
+            "are intentionally closed as evidence-only fixed-only bugfix history, so there is no "
+            "remaining source-task materialization queue for main120."
+            if stats["needs_source_task"] == 0
+            else "The next safe action is to create source task directories from the staged "
+            "`.va`/`.scs` files and the recorded dual-pass evidence, while marking "
+            "`prompt.md`, `meta.json`, and `checks.yaml` as review targets rather than "
+            "pretending they already exist in `tasks/`."
+        ),
         "",
     ]
     return "\n".join(lines)
@@ -548,7 +595,8 @@ def main() -> int:
         "summary: "
         f"rows={stats['task_rows']} dual_pass={stats['dual_pass']} "
         f"exact_current_overlap={stats['exact_current_overlap']} "
-        f"needs_source_task={stats['needs_source_task']}"
+        f"needs_source_task={stats['needs_source_task']} "
+        f"closed_evidence_only={stats['closed_evidence_only']}"
     )
     return 0
 

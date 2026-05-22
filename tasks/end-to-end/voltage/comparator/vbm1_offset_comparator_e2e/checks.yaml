@@ -1,0 +1,22 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "ahdl_include"
+    - "save"
+    - "tran"
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "clocked_output_sequence_LHHHLLL"
+    - "offset_threshold_affects_borderline_decisions"
+parity:
+  required: true
+  tolerance_notes: "Judge settled post-clock decisions, not continuous-time comparator behavior."

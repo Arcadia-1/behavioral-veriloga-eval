@@ -1,0 +1,107 @@
+{
+  "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+  "task_id": "vbr1_l1_calibration_deadband_controller:tb",
+  "source_task_id": "vbr1_l1_calibration_deadband_controller_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Calibration, DEM, and Control",
+    "base_function": "Calibration deadband controller"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_calibration_deadband_controller/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_calibration_deadband_controller/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_calibration_deadband_controller/forms/tb/gold/tb_calibration_deadband_controller.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_calibration_deadband_controller/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_calibration_deadband_controller/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        8e-08
+      ],
+      "signals_compared": 5,
+      "samples": 1200,
+      "max_rmse_v": 0.15811388300841897,
+      "max_abs_v": 1.0,
+      "mean_nrmse": 0.005008682975220383,
+      "p95_nrmse": 0.025,
+      "max_nrmse": 0.025,
+      "per_signal": {
+        "clk": {
+          "rmse_v": 0.15811388300841897,
+          "max_abs_v": 1.0,
+          "span_v": 0.9,
+          "nrmse": 0.025,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.025
+        },
+        "metric": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "out": {
+          "rmse_v": 1.9318957604020463e-05,
+          "max_abs_v": 0.00043348646617358266,
+          "span_v": 0.44523914874996023,
+          "nrmse": 4.339006949020493e-05,
+          "kind": "analog"
+        },
+        "rst": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vin": {
+          "rmse_v": 1.4860381090471504e-08,
+          "max_abs_v": 4.843777401397631e-08,
+          "span_v": 0.5990492076730612,
+          "nrmse": 2.480661171090597e-08,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_calibration_deadband_controller/forms/tb/gold/tb_calibration_deadband_controller.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

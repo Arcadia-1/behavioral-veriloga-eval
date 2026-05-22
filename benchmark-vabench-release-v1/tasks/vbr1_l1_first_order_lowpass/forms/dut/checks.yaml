@@ -1,0 +1,20 @@
+syntax:
+  must_include:
+    - "@(timer("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "vout_monotone_step_response"
+    - "vout_not_instantaneous"
+    - "vout_reaches_expected_late_level"
+parity:
+  required: true
+  tolerance_notes: "Use safe-time level windows to avoid judging the exact discrete update row."

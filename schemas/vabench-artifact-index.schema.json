@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release artifact index",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "artifact_count",
+    "missing_artifact_count",
+    "missing_artifacts",
+    "claim_gates",
+    "artifacts",
+    "commands",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "in_progress",
+        "blocked"
+      ]
+    },
+    "artifact_count": {
+      "type": "integer"
+    },
+    "missing_artifact_count": {
+      "type": "integer"
+    },
+    "missing_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "claim_gates": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "exists",
+          "kind",
+          "purpose",
+          "claim_role",
+          "status",
+          "certification_evidence",
+          "notes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "exists": {
+            "type": "boolean"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "claim_role": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "certification_evidence": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "command",
+          "purpose"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

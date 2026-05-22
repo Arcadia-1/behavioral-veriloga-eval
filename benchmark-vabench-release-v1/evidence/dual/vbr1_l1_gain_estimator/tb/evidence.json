@@ -1,0 +1,102 @@
+{
+  "release_entry_id": "vbr1_l1_gain_estimator",
+  "task_id": "vbr1_l1_gain_estimator:tb",
+  "source_task_id": "vbr1_l1_gain_estimator_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Measurement and Testbench Instrumentation",
+    "base_function": "Gain estimator"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_gain_estimator/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/dither_adder.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/gain_amp_fixed.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/lfsr.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/tb_gain_extraction_ref.scs",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/vin_src.va"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_gain_estimator/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        0.0002
+      ],
+      "signals_compared": 4,
+      "samples": 1200,
+      "max_rmse_v": 0.06032514992314572,
+      "max_abs_v": 0.20926540085768663,
+      "mean_nrmse": 0.08282847668007512,
+      "p95_nrmse": 0.12783625716505415,
+      "max_nrmse": 0.12783625716505415,
+      "per_signal": {
+        "vamp_n": {
+          "rmse_v": 0.060325149923145714,
+          "max_abs_v": 0.20926540085768663,
+          "span_v": 0.5929412891784638,
+          "nrmse": 0.10173882477762317,
+          "kind": "analog"
+        },
+        "vamp_p": {
+          "rmse_v": 0.06032514992314572,
+          "max_abs_v": 0.20926540085768658,
+          "span_v": 0.5929412891784639,
+          "nrmse": 0.10173882477762317,
+          "kind": "analog"
+        },
+        "vinn": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.0,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vinp": {
+          "rmse_v": 0.013950629804311547,
+          "max_abs_v": 0.048441034457797905,
+          "span_v": 0.10912889749501481,
+          "nrmse": 0.12783625716505415,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/dither_adder.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/gain_amp_fixed.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/lfsr.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/tb_gain_extraction_ref.scs",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_estimator/forms/tb/gold/vin_src.va"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

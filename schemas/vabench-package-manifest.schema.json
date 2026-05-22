@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release package manifest",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "package_root",
+    "summary",
+    "entries",
+    "forms",
+    "reports",
+    "claim_boundary"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "in_progress",
+        "complete"
+      ]
+    },
+    "package_root": {
+      "const": "benchmark-vabench-release-v1"
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "planned_entry_count",
+        "entry_count",
+        "form_count",
+        "certified_entry_count",
+        "certified_form_count",
+        "scored_entry_count",
+        "scored_form_count",
+        "l0_conformance_case_count"
+      ],
+      "properties": {
+        "planned_entry_count": {
+          "type": "integer"
+        },
+        "entry_count": {
+          "type": "integer"
+        },
+        "form_count": {
+          "type": "integer"
+        },
+        "certified_entry_count": {
+          "type": "integer"
+        },
+        "certified_form_count": {
+          "type": "integer"
+        },
+        "scored_entry_count": {
+          "type": "integer"
+        },
+        "scored_form_count": {
+          "type": "integer"
+        },
+        "l0_conformance_case_count": {
+          "type": "integer"
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "level",
+          "category",
+          "base_function",
+          "release_entry_manifest",
+          "form_count",
+          "forms",
+          "certification",
+          "counted_in_score"
+        ],
+        "properties": {
+          "release_entry_id": {
+            "type": "string"
+          },
+          "level": {
+            "enum": [
+              "L1",
+              "L2"
+            ]
+          },
+          "category": {
+            "type": "string"
+          },
+          "base_function": {
+            "type": "string"
+          },
+          "release_entry_manifest": {
+            "type": "string"
+          },
+          "form_count": {
+            "type": "integer"
+          },
+          "forms": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "dut",
+                "tb",
+                "bugfix",
+                "e2e"
+              ]
+            }
+          },
+          "certification": {
+            "type": "string"
+          },
+          "counted_in_score": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "forms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "task_id",
+          "release_entry_id",
+          "form",
+          "family",
+          "release_task_manifest",
+          "static",
+          "evas",
+          "spectre",
+          "counted_in_score"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "release_entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "enum": [
+              "dut",
+              "tb",
+              "bugfix",
+              "e2e"
+            ]
+          },
+          "family": {
+            "enum": [
+              "spec-to-va",
+              "tb-generation",
+              "bugfix",
+              "end-to-end"
+            ]
+          },
+          "release_task_manifest": {
+            "type": "string"
+          },
+          "static": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "evas": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "spectre": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "counted_in_score": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "reports": {
+      "type": "object"
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

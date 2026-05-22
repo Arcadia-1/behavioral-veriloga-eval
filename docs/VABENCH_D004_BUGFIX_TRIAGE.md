@@ -2,10 +2,11 @@
 
 Date: 2026-05-14; updated 2026-05-15
 
-This table supports D004 in `VABENCH_SEMANTIC_DECISIONS.md`: historical
-`bugfix` rows without current badcases should first be reviewed for a
-reconstructable buggy source. A row remains release-facing `bugfix` only after
-the reconstructed badcase fails and the fixed source passes the public checker.
+This table records the retained D004 bugfix provenance policy for the current
+vaBench release: historical `bugfix` rows without current badcases should first
+be reviewed for a reconstructable buggy source. A row remains release-facing
+`bugfix` only after the reconstructed badcase fails and the fixed source passes
+the public checker.
 
 Release options:
 
@@ -45,7 +46,7 @@ Reconstruction gate:
 | `vbm1_debounce_latch_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Rising-edge path bypasses the debounce timer and latches immediately, so the short-pulse window incorrectly sets `out`. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-batch3-*2026-05-14`. |
 | `vbm1_edge_detector_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Wrong edge polarity triggers on falling edges instead of rising edges; this is a model-repair defect rather than timer conformance. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-pilot-*2026-05-14`. |
 | `vbm1_element_shuffler_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Direct state-to-output mapping omits the intended shuffled output assignment, producing `2,1,3,0,2,1` instead of `1,2,3,0,1,2`. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-batch2-*2026-05-14`. |
-| `vbm1_file_metric_writer_bugfix` | fixed DUT + TB plus output artifact | B3 conformance preferred; normal measurement task allowed | Uses `$fopen/$fwrite` and a file artifact; current pass evidence mainly proves file/event/tool behavior plus `done` flag. | Do not count historical row as bugfix. Reuse function as `tb-generation`/measurement only when file-output semantics are public; keep atomic file I/O in conformance. |
+| `vbm1_file_metric_writer_bugfix` | fixed DUT + TB plus output artifact; identical to the `_dut` staged fixture | B4 closed evidence-only; normal measurement task plus B3 conformance carry the useful semantics | Uses `$fopen/$fwrite` and a file artifact; current pass evidence mainly proves file/event/tool behavior plus `done` flag, not a repair. | Do not count historical row as bugfix. Ordinary `dut`/`tb`/`e2e` tasks are materialized; atomic file I/O stays in conformance. |
 | `vbm1_first_order_lowpass_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source uses a too-small alpha, producing an unrealistically slow step response. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_gain_trim_controller_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source reverses the trim update direction, increasing error instead of correcting gain. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_leaky_hold_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source omits the leakage decay multiply, so held output stays high until reset. This is separate from atomic `$abstime` decay conformance. | EVAS and Spectre confirmed fixed-pass/buggy-fail on 2026-05-15. |
@@ -56,18 +57,18 @@ Reconstruction gate:
 | `vbm1_peak_detector_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source ignores reset, so a stale peak survives into the reset-clear window. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_pfd_reset_race_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | The DIV edge path forgets to clear both states when UP is already asserted; this creates a persistent UP/DN overlap. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-pilot-*2026-05-14`; EVAS needs a 300s timeout budget for this dense 10ps-step case. |
 | `vbm1_precision_rectifier_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source behaves as an absolute-value rectifier, leaking negative half-cycle magnitude instead of producing zero. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
-| `vbm1_resettable_counter_divider_bugfix` | two reference-like DUTs + TB | B1-review | Has `clk_divider.va` and `clk_divider_ref.va`, but neither is clearly labeled buggy/fixed. | Determine whether one file is actually a badcase or just alternate specs. |
+| `vbm1_resettable_counter_divider_bugfix` | two reference-like DUTs + TB; identical to the `_dut` staged fixture | B4 closed evidence-only | Has `clk_divider.va` and `clk_divider_ref.va`, but the TB includes and instantiates only `clk_divider_ref`; `clk_divider.va` is an unused auxiliary/legacy source, not proven badcase evidence. | Do not count historical row as bugfix. Redesign a clean divider badcase later if this repair pattern is needed. |
 | `vbm1_resettable_integrator_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source leaves stale accumulated state through reset, corrupting the post-reset integration window. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_rotating_element_selector_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Off-by-one wrap at `idx >= 3` skips selector state 3, producing `1,2,0,1,2,0` instead of `1,2,3,0,1,2`. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-batch2-*2026-05-14`. |
 | `vbm1_sar_logic_4b_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source asserts `rdy` one SAR clock edge early, before the conversion-complete boundary. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_segmented_dac_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | The thermometer segment is weighted as two binary LSBs instead of four, compressing upper-code output levels. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-pilot-*2026-05-14`. |
-| `vbm1_settling_time_measurement_tb_bugfix` | fixed DUT/TB measurement only | B3 measurement/conformance preferred; normal `tb`/`e2e` task allowed | Timer-driven first-order response and `done` threshold are measurement/testbench semantics rather than a DUT repair pair. | Do not count historical row as bugfix. Reuse as `tb-generation` or `e2e` settling-measurement coverage if prompt/checker are reviewed. |
+| `vbm1_settling_time_measurement_tb_bugfix` | fixed DUT/TB measurement only; identical to the `_dut` staged fixture | B4 closed evidence-only; normal measurement task plus B3 conformance carry the useful semantics | Timer-driven first-order response and `done` threshold are measurement/testbench semantics rather than a DUT repair pair. | Do not count historical row as bugfix. Ordinary `dut`/`tb`/`e2e` tasks are materialized; boundary semantics stay in conformance. |
 | `vbm1_slew_rate_limiter_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source limits only rising changes, allowing a falling step to exceed the configured slew bound. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 | `vbm1_strongarm_comparator_behavior_bugfix` | `dut_buggy.va` + `dut_fixed.va` + TB | B1 | Explicit buggy/fixed pair; reset-priority defect is visible in source. | Keep as release-facing bugfix. |
 | `vbm1_thermometer_dac_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed with semantic rename | Historical id says thermometer DAC, but the source is a 4-bit binary DAC. Endpoint scaling divides by 16 instead of 15, so full-scale code 15 never reaches `vref`. | Keep historical `task_id` for main120 traceability, but present/release this as a 4-bit binary DAC task. Add a separate true 15-segment thermometer DAC task later. |
 | `vbm1_thermometer_decoder_guarded_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Binary code is decoded as one-hot rather than cumulative thermometer outputs. | EVAS and Spectre confirmed buggy-fail/fixed-pass in `results/d004-batch3-*2026-05-14`. |
 | `vbm1_track_hold_aperture_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + aperture-discriminating TB | B1-reconstructed | Buggy source samples at the clock edge instead of at `clk+taperture`; the TB moves `vin` between those times and checks a later safe window. | EVAS and Spectre confirmed fixed-pass/buggy-fail on 2026-05-15. |
-| `vbm1_vco_phase_integrator_bugfix` | fixed DUT + TB only | B3 conformance preferred for startup; normal VCO task allowed | Exposes EVAS/Spectre `timer(0)` startup semantics: Spectre has `phase=0.039` at `t=0` while EVAS starts at `0`, but later behavior aligns. | Do not count historical row as bugfix. Reuse VCO as `spec-to-va`/`e2e` with safe post-startup metrics; keep startup semantic in conformance. |
+| `vbm1_vco_phase_integrator_bugfix` | fixed DUT + TB only; identical to the `_dut` staged fixture | B4 closed evidence-only; normal VCO task plus B3 conformance carry the useful semantics | Exposes EVAS/Spectre `timer(0)` startup semantics: Spectre has `phase=0.039` at `t=0` while EVAS starts at `0`, but later behavior aligns. | Do not count historical row as bugfix. Ordinary `dut`/`tb`/`e2e` tasks are materialized; startup semantics stay in conformance. |
 | `vbm1_voltage_clamp_bugfix` | reconstructed `dut_buggy.va` + `dut_fixed.va` + TB | B1-reconstructed | Buggy source omits the lower clamp while preserving the upper clamp. | EVAS and Spectre confirmed buggy-fail/fixed-pass on 2026-05-15. |
 
 ## Immediate Conclusions
@@ -108,9 +109,12 @@ Reconstruction gate:
 - EVAS/Spectre semantic cases belong in the separate conformance suite. The
   first B3 assets cover `vco_phase_integrator`, file-output timing, and
   settling/done boundary behavior under `conformance/evas-spectre/`.
-- `resettable_counter_divider` needs manual review before classification,
-  because it contains two Verilog-A sources but the file names do not prove a
-  buggy/fixed pair.
+- Manual review on 2026-05-15 closed the remaining fixed-only bugfix rows as
+  evidence-only. `file_metric_writer`, `resettable_counter_divider`,
+  `settling_time_measurement_tb`, and `vco_phase_integrator` have staged source
+  files identical to their `_dut` rows, so they are not release-facing bugfix
+  tasks. Their useful behavior coverage is now represented by ordinary
+  `dut`/`tb`/`e2e` tasks and, where appropriate, conformance assets.
 
 ## Remaining Fixed-Only Buckets
 
@@ -120,6 +124,6 @@ rows above. A row can move only after the relevant evidence gate is satisfied.
 | Bucket | Rows | Next action | Release-count rule |
 | --- | --- | --- | --- |
 | B1 reconstructable | None currently queued from the reviewed fixed-only set. | Continue only when a reviewer identifies another realistic single-root-cause defect. | Count as `true-bugfix` only after the dual evidence is present. |
-| B2 normal behavior | `vbm1_file_metric_writer_bugfix`, `vbm1_settling_time_measurement_tb_bugfix`, `vbm1_vco_phase_integrator_bugfix` | Reframe as non-bugfix `tb-generation`, `spec-to-va`, or `end-to-end` tasks with public behavior prompts after extracting atomic simulator semantics into conformance. | Count as model capability only under the new non-bugfix family, never as bugfix claim. |
+| B2 normal behavior | None remaining from the fixed-only historical bugfix set. | Ordinary `dut`/`tb`/`e2e` tasks are now materialized for `file_metric_writer`, `settling_time_measurement_tb`, and `vco_phase_integrator`. | Count normal behavior only under those non-bugfix task IDs, never under the historical bugfix rows. |
 | B3 conformance | File I/O write timing from `vbm1_file_metric_writer_bugfix`; settling/done threshold boundary from `vbm1_settling_time_measurement_tb_bugfix`; `timer(0)` startup and phase accepted-point behavior from `vbm1_vco_phase_integrator_bugfix`; any future B1 candidate whose intended failure is simulator scheduling rather than DUT repair. | Minimal `conformance/evas-spectre/` assets exist for these three axes; next work is a dedicated conformance runner hook. | Exclude from vaBench model-capability and bugfix denominators. |
-| B4 evidence-only | `vbm1_background_calibration_accumulator_bugfix`, `vbm1_resettable_counter_divider_bugfix` | Keep validation evidence but block public release until a distinct defect is designed (`background_calibration_accumulator`) or the two-source fixture is manually identified as a real buggy/fixed pair (`resettable_counter_divider`). | Exclude from model-capability and bugfix denominators until reclassified. |
+| B4 evidence-only | `vbm1_background_calibration_accumulator_bugfix`, `vbm1_file_metric_writer_bugfix`, `vbm1_resettable_counter_divider_bugfix`, `vbm1_settling_time_measurement_tb_bugfix`, `vbm1_vco_phase_integrator_bugfix` | Keep validation evidence but block public bugfix release. Reopen only for a new, reviewed single-root-cause badcase or a deliberately separate conformance task. | Exclude from model-capability and bugfix denominators until reclassified. |

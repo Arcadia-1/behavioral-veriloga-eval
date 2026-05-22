@@ -1,0 +1,93 @@
+{
+  "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+  "task_id": "vbr1_l1_aperture_delay_track_and_hold:bugfix",
+  "source_task_id": "vbm1_track_hold_aperture_bugfix_fixed",
+  "task_form": "bugfix",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Sample, Hold, and Analog Memory",
+    "base_function": "Aperture-delay track-and-hold"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_aperture_delay_track_and_hold/bugfix/fixed",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_aperture_delay_track_and_hold/bugfix/fixed",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/bugfix/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/bugfix/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/tb_sample_hold_aperture_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/tb_sample_hold_aperture_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_aperture_delay_track_and_hold/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_aperture_delay_track_and_hold/bugfix/fixed",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        1.3e-07
+      ],
+      "signals_compared": 3,
+      "samples": 1200,
+      "max_rmse_v": 0.040824829046386304,
+      "max_abs_v": 1.0,
+      "mean_nrmse": 0.0005574246706891525,
+      "p95_nrmse": 0.0016666666666666668,
+      "max_nrmse": 0.0016666666666666668,
+      "per_signal": {
+        "clk": {
+          "rmse_v": 0.040824829046386304,
+          "max_abs_v": 1.0,
+          "span_v": 0.9,
+          "nrmse": 0.0016666666666666668,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0016666666666666668
+        },
+        "vin": {
+          "rmse_v": 2.594412203904451e-06,
+          "max_abs_v": 8.870744308264733e-05,
+          "span_v": 0.7000000000000001,
+          "nrmse": 3.70630314843493e-06,
+          "kind": "analog"
+        },
+        "vout": {
+          "rmse_v": 1.330729576649073e-06,
+          "max_abs_v": 3.500007776280345e-05,
+          "span_v": 0.7000000000000001,
+          "nrmse": 1.9010422523558185e-06,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/tb_sample_hold_aperture_buggy.scs",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/gold/tb_sample_hold_aperture_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

@@ -12,4 +12,4 @@ The testbench must stimulate reset and enough rising clock edges to observe at
 least six post-reset states, save all public observables, and run a transient
 analysis suitable for fixed-time sequence checks.
 
-Return `rotating_element_selector.va` and `tb_rotating_element_selector_ref.scs`.
+Return exactly two files: `rotating_element_selector.va` and `tb_rotating_element_selector_ref.scs`.

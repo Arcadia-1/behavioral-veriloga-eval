@@ -1,0 +1,265 @@
+{
+  "date": "2026-05-21",
+  "release": "vabench-release-v1",
+  "status": "in_progress",
+  "claim_count": 9,
+  "allowed_claim_count": 7,
+  "blocked_claim_count": 2,
+  "completion_required_claim_count": 8,
+  "blocked_completion_required_claim_count": 2,
+  "claims": [
+    {
+      "id": "C1_coverage_target_defined",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "The release target defines a 75-entry L1/L2 vaBench coverage plan.",
+      "safe_wording": "The current release package defines 75 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
+      "unsafe_wording": [
+        "vaBench is fully certified because it has 75 rows.",
+        "The 75-entry table alone proves benchmark correctness."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/release_status.json",
+        "docs/VABENCH_RELEASE_TRACKER.csv"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "planned_entries": 75
+      },
+      "notes": []
+    },
+    {
+      "id": "C2_source_assets_static_clean",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "All release entries have materialized source-task assets and pass static checks.",
+      "safe_wording": "The release has 75/75 materialized entries and 259 static-certified forms with zero asset issues.",
+      "unsafe_wording": [
+        "Static certification proves EVAS/Spectre behavioral parity.",
+        "Asset materialization means the task is scored."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/asset_integrity.json",
+        "benchmark-vabench-release-v1/reports/static_certification.json",
+        "benchmark-vabench-release-v1/reports/release_status.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "source_linked_entries": 75,
+        "materialized_entries": 75,
+        "static_certified_forms": 259
+      },
+      "notes": []
+    },
+    {
+      "id": "C3_imported_dual_subset_clean",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": false,
+      "claim_text": "The imported EVAS/Spectre evidence subset has no EVAS PASS / Spectre FAIL mismatch.",
+      "safe_wording": "On the full imported release evidence (259 forms), EVAS PASS / Spectre FAIL count is 0.",
+      "unsafe_wording": [
+        "Imported parity evidence enables benchmark scores by itself.",
+        "Zero EVAS PASS / Spectre FAIL proves speedup or model baseline claims."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/dual_certification.json",
+        "benchmark-vabench-release-v1/reports/certification_matrix.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "dual_certified_forms": 259,
+        "dual_pending_forms": 0,
+        "dual_failed_forms": 0,
+        "evas_pass_spectre_fail_count": 0
+      },
+      "notes": []
+    },
+    {
+      "id": "C4_full_release_dual_certified",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "The full release package is EVAS/Spectre certified.",
+      "safe_wording": "The full release package has EVAS/Spectre certification for 259 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches.",
+      "unsafe_wording": [
+        "vaBench release is fully EVAS/Spectre certified.",
+        "All release tasks pass Spectre and EVAS."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/dual_certification.json",
+        "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
+        "benchmark-vabench-release-v1/reports/dual_rerun_import.json",
+        "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
+        "benchmark-vabench-release-v1/reports/external_blockers.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "dual_pending_forms": 0,
+        "selected_rerun_pending_forms": 0,
+        "source_equivalence_blocked_forms": 0,
+        "fresh_dual_rerun_queue_forms": 0,
+        "bridge_status": "ready",
+        "bridge_required_for_current_claim": false,
+        "external_blockers_status": "pending"
+      },
+      "notes": []
+    },
+    {
+      "id": "C5_score_denominator_enabled",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "The release benchmark has an enabled score denominator.",
+      "safe_wording": "The release benchmark score denominator is enabled for 74 certified content-denominator entries and 255 forms.",
+      "unsafe_wording": [
+        "Current baseline percentages are release benchmark scores.",
+        "The 75 planned entries are already the scored denominator."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+        "benchmark-vabench-release-v1/reports/release_status.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "score_denominator_status": "score_enabled",
+        "scored_entries": 74,
+        "scored_forms": 255
+      },
+      "notes": []
+    },
+    {
+      "id": "C6_speed_debug_claim",
+      "status": "blocked",
+      "allowed": false,
+      "completion_required": true,
+      "claim_text": "EVAS has measured same-slice speed/debug advantages over Spectre on the release package.",
+      "safe_wording": "Speed/debug has subset timing evidence, but release-wide speedup remains blocked until the dedicated artifact marks the speed claim allowed.",
+      "unsafe_wording": [
+        "EVAS is faster on vaBench-release-v1.",
+        "EVAS debug advantage is proven by the current release artifacts."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/speed_debug_artifact.json"
+      ],
+      "required_before_allowed": [
+        "Run same-slice EVAS/Spectre timing for every scored release form, or state a narrower subset-only claim.",
+        "Stratify or fix EVAS slow outliers before claiming aggregate speedup on the release package.",
+        "Keep per-row EVAS and Spectre wall-clock timings from run_gold_dual_suite timing fields.",
+        "Keep Spectre-reported runtime from spectre.out alongside wrapper wall-clock timings.",
+        "Report machine/bridge/Cadence configuration with the timing artifact.",
+        "Do not compute speedup from historical main120 summaries because they lack same-slice runtime metadata."
+      ],
+      "numbers": {
+        "speed_status": "measured",
+        "claim_allowed": false,
+        "timed_rows": 277,
+        "timed_scored_forms": 255,
+        "scored_forms": 255
+      },
+      "notes": []
+    },
+    {
+      "id": "C7_model_baseline_claim",
+      "status": "blocked",
+      "allowed": false,
+      "completion_required": true,
+      "claim_text": "Model baselines are scored on the clean vaBench release package.",
+      "safe_wording": "Model baseline reporting is pending until baseline runs report against the enabled score denominator.",
+      "unsafe_wording": [
+        "The current unscored release rows support model baseline results.",
+        "Historical candidate runs are release benchmark baselines."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/baseline_artifact.json",
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+      ],
+      "required_before_allowed": [
+        "baseline runs must report against counted release entries/forms only"
+      ],
+      "numbers": {
+        "baseline_status": "ready_for_baseline_runs",
+        "baseline_claim_allowed": false,
+        "baseline_summary_count": 0
+      },
+      "notes": []
+    },
+    {
+      "id": "C8_l0_conformance_separate",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "L0 EVAS/Spectre conformance cases are kept outside the L1/L2 benchmark denominator.",
+      "safe_wording": "L0 conformance has 4 cases and contributes 0 entries to benchmark coverage.",
+      "unsafe_wording": [
+        "L0 conformance cases increase the 75-entry benchmark size.",
+        "Conformance regressions are scored release tasks."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/conformance_manifest.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "conformance_case_count": 4,
+        "benchmark_coverage_count": 0
+      },
+      "notes": []
+    },
+    {
+      "id": "C9_release_package_complete",
+      "status": "allowed",
+      "allowed": true,
+      "completion_required": true,
+      "claim_text": "The clean vaBench release package is complete.",
+      "safe_wording": "The clean vaBench release package structure, source assets, EVAS/Spectre certification, and score denominator are complete; speed/debug and model baselines remain separate gated claims.",
+      "unsafe_wording": [
+        "The release package is complete.",
+        "The active goal is done."
+      ],
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/completion_audit.json",
+        "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+        "benchmark-vabench-release-v1/reports/external_blockers.json"
+      ],
+      "required_before_allowed": [],
+      "numbers": {
+        "package_complete": true,
+        "source_design_pending_entries": 0,
+        "missing_required_form_entries": 0,
+        "dual_pending_forms": 0,
+        "scored_entries": 74
+      },
+      "notes": []
+    }
+  ],
+  "blocked_claim_ids": [
+    "C6_speed_debug_claim",
+    "C7_model_baseline_claim"
+  ],
+  "blocked_completion_required_claim_ids": [
+    "C6_speed_debug_claim",
+    "C7_model_baseline_claim"
+  ],
+  "claim_policy": [
+    "Allowed claims may be used only with their safe_wording scope.",
+    "Blocked claims must not appear as paper conclusions, abstract claims, figure captions, or benchmark result text.",
+    "Partial imported evidence must not be phrased as full-release certification.",
+    "Score, speed, and baseline claims require an enabled denominator and fresh release evidence."
+  ],
+  "source_reports": {
+    "release_status": "benchmark-vabench-release-v1/reports/release_status.json",
+    "asset_integrity": "benchmark-vabench-release-v1/reports/asset_integrity.json",
+    "static_certification": "benchmark-vabench-release-v1/reports/static_certification.json",
+    "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "certification_matrix": "benchmark-vabench-release-v1/reports/certification_matrix.json",
+    "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
+    "bridge_profile_diagnostics": "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
+    "external_blockers": "benchmark-vabench-release-v1/reports/external_blockers.json",
+    "paper_artifacts": "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+    "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+    "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
+    "baseline_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json"
+  }
+}

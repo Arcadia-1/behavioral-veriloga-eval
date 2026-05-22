@@ -1,0 +1,18 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "outputs_toggle_nontrivially"
+    - "decision_samples_at_0p75_1p75_2p75_3p75ns_match_PPNN"
+parity:
+  required: true
+  tolerance_notes: "Use fixed decision sample points; normal benchmark stop time is kept away from source-edge final-boundary behavior."

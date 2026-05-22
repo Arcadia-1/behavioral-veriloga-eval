@@ -6,4 +6,8 @@ PROJECT_ROOT="$(cd "$ROOT_DIR/.." && pwd)"
 DEFAULT_BRIDGE_REPO="$PROJECT_ROOT/../iccad/virtuoso-bridge-lite"
 BRIDGE_REPO="${BRIDGE_REPO:-$DEFAULT_BRIDGE_REPO}"
 
-python3 "$ROOT_DIR/runners/bridge_preflight.py" --bridge-repo "$BRIDGE_REPO" "$@"
+ARGS=(--bridge-repo "$BRIDGE_REPO")
+if [[ -n "${BRIDGE_PROFILE:-}" ]]; then
+  ARGS+=(--profile "$BRIDGE_PROFILE")
+fi
+python3 "$ROOT_DIR/runners/bridge_preflight.py" "${ARGS[@]}" "$@"

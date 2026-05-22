@@ -1,0 +1,475 @@
+{
+  "date": "2026-05-19",
+  "release": "vabench-release-v1",
+  "status": "in_progress",
+  "artifact_count": 29,
+  "missing_artifact_count": 0,
+  "missing_artifacts": [],
+  "claim_gates": {
+    "can_claim_release_assets_materialized": true,
+    "can_claim_top_level_coverage_plan": true,
+    "can_claim_release_package_complete": true,
+    "can_claim_scored_benchmark": true,
+    "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
+    "can_claim_speedup": false,
+    "can_claim_model_baseline": false,
+    "blocking_conditions": [
+      "external blocker report active: 0 blocked, 1 pending",
+      "speed/debug timing artifact not claimable",
+      "release model baseline artifact pending"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "release_tracker",
+      "path": "docs/VABENCH_RELEASE_TRACKER.csv",
+      "exists": true,
+      "kind": "tracker",
+      "purpose": "75-entry L1/L2 release coverage target.",
+      "claim_role": "coverage_plan",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "release_package_root",
+      "path": "benchmark-vabench-release-v1",
+      "exists": true,
+      "kind": "package",
+      "purpose": "Clean release package root with tasks, conformance, evidence, and reports.",
+      "claim_role": "release_structure",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "release_package_readme",
+      "path": "benchmark-vabench-release-v1/README.md",
+      "exists": true,
+      "kind": "runbook",
+      "purpose": "Reader-facing package entrypoint with layout, claim boundaries, and reproducible commands.",
+      "claim_role": "reproducibility",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "release_package_manifest",
+      "path": "benchmark-vabench-release-v1/MANIFEST.json",
+      "exists": true,
+      "kind": "package_manifest",
+      "purpose": "Machine-readable package-level manifest for all release entries, forms, assets, evidence, and score status.",
+      "claim_role": "reproducibility",
+      "status": "in_progress",
+      "certification_evidence": false,
+      "notes": [
+        "benchmark-vabench-release-v1/MANIFEST.csv",
+        "benchmark-vabench-release-v1/MANIFEST.md",
+        "This manifest indexes release assets; it is not simulator certification evidence."
+      ]
+    },
+    {
+      "id": "release_evaluator_contract",
+      "path": "benchmark-vabench-release-v1/EVALUATOR.json",
+      "exists": true,
+      "kind": "evaluator_contract",
+      "purpose": "Machine-readable evaluator/result contract for task selection, backend roles, score gates, and baseline lanes.",
+      "claim_role": "reproducibility",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": [
+        "benchmark-vabench-release-v1/EVALUATOR.md",
+        "schemas/vabench-evaluator-contract.schema.json",
+        "This contract defines evaluator IO and gates; it is not simulator certification evidence."
+      ]
+    },
+    {
+      "id": "release_schemas",
+      "path": "schemas/vabench-release-entry.schema.json",
+      "exists": true,
+      "kind": "schema",
+      "purpose": "Machine-readable release entry/task/evidence/result schema family.",
+      "claim_role": "reproducibility",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": [
+        "schemas/vabench-release-task.schema.json",
+        "schemas/vabench-package-manifest.schema.json",
+        "schemas/vabench-evaluator-contract.schema.json",
+        "schemas/vabench-speed-debug-artifact.schema.json",
+        "schemas/vabench-baseline-artifact.schema.json",
+        "schemas/vabench-paper-artifacts.schema.json",
+        "schemas/vabench-claim-gate.schema.json",
+        "schemas/vabench-score-denominator.schema.json",
+        "schemas/vabench-dual-rerun-queue.schema.json",
+        "schemas/vabench-dual-rerun-staging.schema.json",
+        "schemas/vabench-dual-rerun-import.schema.json",
+        "schemas/vabench-bridge-diagnostics.schema.json",
+        "schemas/vabench-external-blockers.schema.json",
+        "schemas/vabench-finish-readiness.schema.json",
+        "schemas/vabench-completion-audit.schema.json",
+        "schemas/vabench-finish-after-bridge-attempt.schema.json",
+        "schemas/vabench-conformance-manifest.schema.json",
+        "schemas/vabench-artifact-index.schema.json",
+        "schemas/vabench-checksum-manifest.schema.json",
+        "schemas/vabench-paper-tables.schema.json",
+        "schemas/vabench-release-task-manifest-sync.schema.json",
+        "schemas/vabench-release-status.schema.json",
+        "schemas/vabench-asset-integrity.schema.json",
+        "schemas/vabench-static-certification.schema.json",
+        "schemas/vabench-dual-certification.schema.json",
+        "schemas/vabench-certification-matrix.schema.json",
+        "schemas/vabench-remaining-work.schema.json",
+        "schemas/vabench-evidence.schema.json",
+        "schemas/vabench-release-result.schema.json"
+      ]
+    },
+    {
+      "id": "release_task_manifest_sync",
+      "path": "benchmark-vabench-release-v1/reports/release_task_manifest_sync.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Generated per-form release_task.json manifests for every materialized release form.",
+      "claim_role": "reproducibility",
+      "status": "pass",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "schema_validation",
+      "path": "benchmark-vabench-release-v1/reports/schema_validation.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Schema validation for release entries, release task manifests, evidence, and results.",
+      "claim_role": "reproducibility",
+      "status": "pass",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "asset_integrity",
+      "path": "benchmark-vabench-release-v1/reports/asset_integrity.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Prompt/meta/checks/gold asset integrity audit.",
+      "claim_role": "source_materialization",
+      "status": "pass",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "static_certification",
+      "path": "benchmark-vabench-release-v1/reports/static_certification.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Static certification for materialized release forms.",
+      "claim_role": "static_quality",
+      "status": "pass",
+      "certification_evidence": true,
+      "notes": []
+    },
+    {
+      "id": "dual_certification",
+      "path": "benchmark-vabench-release-v1/reports/dual_certification.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Imported EVAS/Spectre certification evidence and pending dual evidence.",
+      "claim_role": "parity",
+      "status": "pass",
+      "certification_evidence": true,
+      "notes": [
+        "dual_certified_release_task_count=259",
+        "dual_pending_release_task_count=0",
+        "evas_pass_spectre_fail_count=0"
+      ]
+    },
+    {
+      "id": "certification_matrix",
+      "path": "benchmark-vabench-release-v1/reports/certification_matrix.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Entry/form-level certification matrix derived from dual evidence and score denominator gates.",
+      "claim_role": "parity_audit",
+      "status": "complete",
+      "certification_evidence": false,
+      "notes": [
+        "Derived audit view only; dual_certification.json remains the certification evidence source.",
+        "benchmark-vabench-release-v1/reports/certification_matrix_entries.csv",
+        "benchmark-vabench-release-v1/reports/certification_matrix_forms.csv"
+      ]
+    },
+    {
+      "id": "l0_conformance_manifest",
+      "path": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Non-scored EVAS/Spectre conformance cases kept outside the L1/L2 denominator.",
+      "claim_role": "evaluator_health",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "dual_rerun_queue",
+      "path": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
+      "exists": true,
+      "kind": "execution_queue",
+      "purpose": "Pending primary release rows that still need fresh EVAS/Spectre rerun.",
+      "claim_role": "rerun_plan",
+      "status": "complete",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "dual_rerun_staging",
+      "path": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
+      "exists": true,
+      "kind": "execution_queue",
+      "purpose": "Runnable staged bundles for release dual rerun.",
+      "claim_role": "rerun_plan",
+      "status": "complete",
+      "certification_evidence": false,
+      "notes": [
+        "Staging readiness is not simulator pass evidence."
+      ]
+    },
+    {
+      "id": "dual_rerun_import",
+      "path": "benchmark-vabench-release-v1/reports/dual_rerun_import.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Import gate for fresh dual rerun summaries.",
+      "claim_role": "certification_import_gate",
+      "status": "imported",
+      "certification_evidence": false,
+      "notes": [
+        "Blocked, dry-run, or running summaries are not imported as certification evidence."
+      ]
+    },
+    {
+      "id": "bridge_profile_diagnostics",
+      "path": "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
+      "exists": true,
+      "kind": "diagnostic",
+      "purpose": "External bridge readiness diagnosis for the fresh EVAS/Spectre rerun.",
+      "claim_role": "external_blocker",
+      "status": "ready",
+      "certification_evidence": false,
+      "notes": [
+        "Bridge readiness is not EVAS/Spectre certification evidence."
+      ]
+    },
+    {
+      "id": "external_blockers",
+      "path": "benchmark-vabench-release-v1/reports/external_blockers.json",
+      "exists": true,
+      "kind": "recovery_report",
+      "purpose": "Conservative blocker and recovery sequence for external bridge, fresh rerun, import, speed, and baseline gates.",
+      "claim_role": "external_blocker",
+      "status": "pending",
+      "certification_evidence": false,
+      "notes": [
+        "This report is a claim-boundary and recovery artifact, not certification evidence."
+      ]
+    },
+    {
+      "id": "finish_readiness",
+      "path": "benchmark-vabench-release-v1/reports/finish_readiness.json",
+      "exists": true,
+      "kind": "readiness_gate",
+      "purpose": "Preflight gate for safely starting, importing, and finishing the fresh EVAS/Spectre release rerun.",
+      "claim_role": "recovery_path",
+      "status": "ready_to_finish",
+      "certification_evidence": false,
+      "notes": [
+        "Readiness does not imply simulator certification evidence."
+      ]
+    },
+    {
+      "id": "finish_after_bridge_attempt",
+      "path": "benchmark-vabench-release-v1/reports/finish_after_bridge_attempt.json",
+      "exists": true,
+      "kind": "execution_report",
+      "purpose": "One-command finish attempt report for post-bridge rerun/import/artifact refresh.",
+      "claim_role": "recovery_path",
+      "status": "dry_run",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "speed_debug_artifact",
+      "path": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Same-slice EVAS/Spectre timing and debug evidence gate.",
+      "claim_role": "speed_debug",
+      "status": "measured_subset",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "baseline_artifact",
+      "path": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Model baseline protocol and claim gate.",
+      "claim_role": "baseline",
+      "status": "ready_for_baseline_runs",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "score_denominator_enablement",
+      "path": "benchmark-vabench-release-v1/reports/score_denominator_enablement.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "P1 write-step record for frozen benchmark_score flags before denominator manifest rebuild.",
+      "claim_role": "scoring_denominator",
+      "status": "enabled",
+      "certification_evidence": false,
+      "notes": [
+        "benchmark-vabench-release-v1/reports/score_denominator_enablement.md"
+      ]
+    },
+    {
+      "id": "score_denominator_manifest",
+      "path": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Source-of-truth manifest for which release entries/forms may enter score denominators.",
+      "claim_role": "scoring_denominator",
+      "status": "score_enabled",
+      "certification_evidence": false,
+      "notes": [
+        "A task is not scored unless this manifest marks it counted_in_score=true."
+      ]
+    },
+    {
+      "id": "paper_artifacts",
+      "path": "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Paper-facing coverage, parity, speed/debug, baseline, and claim-gate summary.",
+      "claim_role": "paper_claims",
+      "status": "in_progress",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "claim_gate",
+      "path": "benchmark-vabench-release-v1/reports/claim_gate.json",
+      "exists": true,
+      "kind": "claim_ledger",
+      "purpose": "Paper-facing claim ledger with allowed/blocked wording and required evidence gates.",
+      "claim_role": "paper_claims",
+      "status": "in_progress",
+      "certification_evidence": false,
+      "notes": [
+        "This ledger prevents imported subset evidence from being phrased as full-release certification."
+      ]
+    },
+    {
+      "id": "paper_tables",
+      "path": "benchmark-vabench-release-v1/reports/paper_tables.json",
+      "exists": true,
+      "kind": "paper_table_export",
+      "purpose": "CSV/Markdown exports for coverage, parity, claim gates, blockers, speed/debug, and baselines.",
+      "claim_role": "paper_claims",
+      "status": "in_progress",
+      "certification_evidence": false,
+      "notes": [
+        "benchmark-vabench-release-v1/reports/paper_tables/coverage.csv",
+        "benchmark-vabench-release-v1/reports/paper_tables/parity.csv",
+        "benchmark-vabench-release-v1/reports/paper_tables/claim_gate.csv",
+        "benchmark-vabench-release-v1/reports/paper_tables/external_blockers.csv",
+        "benchmark-vabench-release-v1/reports/paper_tables/speed_baseline.csv"
+      ]
+    },
+    {
+      "id": "completion_audit",
+      "path": "benchmark-vabench-release-v1/reports/completion_audit.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "Requirement-by-requirement audit for the active release goal.",
+      "claim_role": "completion_gate",
+      "status": "in_progress",
+      "certification_evidence": false,
+      "notes": []
+    },
+    {
+      "id": "checksum_manifest",
+      "path": "benchmark-vabench-release-v1/reports/checksum_manifest.json",
+      "exists": true,
+      "kind": "report",
+      "purpose": "SHA-256 manifest for release package, release docs, and schema files.",
+      "claim_role": "reproducibility",
+      "status": "pass",
+      "certification_evidence": false,
+      "notes": [
+        "Checksums support traceability; they are not simulator certification evidence."
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "id": "refresh_release_package",
+      "command": "python3 runners/run_vabench_release_longrun.py",
+      "purpose": "Regenerate package, reports, staging, and tests without claiming blocked rerun evidence."
+    },
+    {
+      "id": "finish_after_bridge",
+      "command": "python3 runners/finish_vabench_release_after_bridge.py",
+      "purpose": "After bridge recovery, run fresh dual rerun, import complete evidence, and refresh paper gates."
+    },
+    {
+      "id": "external_blockers",
+      "command": "python3 runners/report_vabench_release_external_blockers.py",
+      "purpose": "Refresh the claim-boundary blocker report without running simulators."
+    },
+    {
+      "id": "finish_readiness",
+      "command": "python3 runners/report_vabench_release_finish_readiness.py",
+      "purpose": "Refresh the preflight gate for starting/importing the fresh EVAS/Spectre release rerun."
+    },
+    {
+      "id": "certification_matrix",
+      "command": "python3 runners/report_vabench_release_certification_matrix.py",
+      "purpose": "Refresh the entry/form-level certification audit matrix without running simulators."
+    },
+    {
+      "id": "claim_gate",
+      "command": "python3 runners/report_vabench_release_claim_gate.py",
+      "purpose": "Refresh the paper-facing allowed/blocked claim ledger."
+    },
+    {
+      "id": "package_manifest",
+      "command": "python3 runners/report_vabench_release_package_manifest.py",
+      "purpose": "Refresh the root package manifest for release entries/forms and score status."
+    },
+    {
+      "id": "evaluator_contract",
+      "command": "python3 runners/report_vabench_release_evaluator_contract.py",
+      "purpose": "Refresh the evaluator/result contract and score/baseline gate description."
+    },
+    {
+      "id": "score_denominator_enablement",
+      "command": "python3 runners/enable_vabench_release_score_denominator.py",
+      "purpose": "Freeze benchmark_score flags after dual certification before refreshing score_denominator_manifest.json."
+    },
+    {
+      "id": "paper_tables",
+      "command": "python3 runners/report_vabench_release_paper_tables.py",
+      "purpose": "Refresh paper-ready CSV and Markdown tables from the current claim-gated reports."
+    },
+    {
+      "id": "primary_dual_rerun",
+      "command": "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
+      "purpose": "Run the 0-row primary EVAS/Spectre release rerun through the bridge wrapper."
+    }
+  ],
+  "notes": [
+    "This index is a navigation and traceability layer; it does not create new certification evidence.",
+    "Only artifacts marked certification_evidence=true can support simulator certification claims.",
+    "Paper claims remain governed by claim_gate.json, paper_artifacts.json, and completion_audit.json."
+  ]
+}

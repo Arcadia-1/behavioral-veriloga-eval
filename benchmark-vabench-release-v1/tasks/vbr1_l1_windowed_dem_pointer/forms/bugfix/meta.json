@@ -1,0 +1,49 @@
+{
+  "id": "vbm1_barrel_pointer_window_bugfix",
+  "task_id": "vbm1_barrel_pointer_window_bugfix",
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-main-v1",
+  "family": "bugfix",
+  "category": "calibration",
+  "domain": "voltage",
+  "difficulty": "easy",
+  "expected_backend": "evas",
+  "release_form": "true-bugfix",
+  "provenance_status": "reconstructed_badcase",
+  "badcase_origin": "reconstructed",
+  "source_main120_id": "vbm1_barrel_pointer_window_bugfix",
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": true
+  },
+  "inputs": [
+    "prompt.md",
+    "gold/dut_buggy.va"
+  ],
+  "artifacts": [
+    "dut_fixed.va"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_files": [
+    "gold/dut_buggy.va",
+    "gold/dut_fixed.va",
+    "gold/tb_barrel_pointer_window_ref.scs",
+    "gold/tb_barrel_pointer_window_buggy.scs"
+  ],
+  "reconstruction": {
+    "bug_class": "wrong_adjacent_window_mapping",
+    "single_root_cause": "The buggy source maps win0 to the same adjacent index pair as win1, losing the wrap-around 3/0 window.",
+    "fixed_expectation": "The fixed source emits exactly two adjacent active windows while the pointer rotates through 12, 23, 03, 01, 12, 23."
+  },
+  "evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_barrel_pointer_window_bugfix/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_barrel_pointer_window_bugfix/spectre_result.json",
+    "local_evas_verification": "2026-05-15: fixed source PASS; buggy source FAIL_SIM_CORRECTNESS.",
+    "spectre_status": "2026-05-15: fixed source PASS and buggy source FAIL_SIM_CORRECTNESS."
+  }
+}

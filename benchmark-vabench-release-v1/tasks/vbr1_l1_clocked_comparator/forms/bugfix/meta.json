@@ -1,0 +1,32 @@
+{
+  "id": "vbr1_l1_clocked_comparator_bugfix",
+  "task_id": "vbr1_l1_clocked_comparator_bugfix",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_clocked_comparator",
+  "family": "bugfix",
+  "category": "Comparators and Decision Circuits",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md",
+    "gold/dut_buggy.va"
+  ],
+  "artifacts": [
+    "dut_buggy.va",
+    "dut_fixed.va",
+    "tb_cmp_strongarm_ref.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "behavior_checks": [
+    "positive_input_difference_asserts_dcmpp",
+    "negative_input_difference_asserts_dcmpn",
+    "outputs_reset_when_clock_falls"
+  ],
+  "source": "bugfix_companion_from_dut"
+}

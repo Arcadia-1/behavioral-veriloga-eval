@@ -12,4 +12,4 @@ steps.
 The testbench must apply enough codes to show monotonic levels and save all
 public observables.
 
-Return `segmented_dac.va` and `tb_segmented_dac_ref.scs`.
+Return exactly two files: `segmented_dac.va` and `tb_segmented_dac_ref.scs`.

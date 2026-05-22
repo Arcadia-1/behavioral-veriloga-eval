@@ -11,3 +11,5 @@ set the latch.
 
 Keep the model purely voltage-domain and drive `out` with `transition`. Do not
 use current contributions.
+
+Return exactly one complete Verilog-A file named `dut_fixed.va`.

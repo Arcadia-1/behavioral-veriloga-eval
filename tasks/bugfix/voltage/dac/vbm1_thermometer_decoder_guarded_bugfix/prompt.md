@@ -11,3 +11,5 @@ and `th2`. `th3` remains low for this guarded two-bit task.
 
 Keep the model purely voltage-domain and drive outputs with `transition`. Do
 not use current contributions.
+
+Return exactly one complete Verilog-A file named `dut_fixed.va`.

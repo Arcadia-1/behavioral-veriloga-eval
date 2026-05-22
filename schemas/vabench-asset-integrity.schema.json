@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release asset integrity report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "audited_release_task_count",
+    "form_counts",
+    "issue_count",
+    "warning_count",
+    "task_reports",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "audited_release_task_count": {
+      "type": "integer"
+    },
+    "form_counts": {
+      "type": "object"
+    },
+    "issue_count": {
+      "type": "integer"
+    },
+    "warning_count": {
+      "type": "integer"
+    },
+    "task_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "form",
+          "release_path",
+          "status",
+          "issues",
+          "warnings"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "type": "string"
+          },
+          "release_path": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

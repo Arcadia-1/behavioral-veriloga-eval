@@ -1,0 +1,31 @@
+{
+  "release_entry_id": "vbr1_l2_event_controller",
+  "task_id": "vbr1_l2_event_controller:e2e",
+  "task_form": "e2e",
+  "taxonomy": {
+    "level": "L2",
+    "category": "Digital and Event-Driven Logic",
+    "base_function": "Event controller"
+  },
+  "static": "pass",
+  "evas": "pending",
+  "spectre": "pending",
+  "verdict": "not_certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/gold/simultaneous_event_order_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/gold/tb_simultaneous_event_order_ref.scs"
+  ],
+  "checks": {
+    "must_include": [
+      "@(timer(",
+      "@(cross(",
+      "transition("
+    ],
+    "must_not_include": [],
+    "failures": []
+  },
+  "notes": "Static release certification only; EVAS and Spectre remain pending."
+}

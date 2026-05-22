@@ -1,0 +1,66 @@
+{
+  "release_entry_id": "vbr1_l1_gain_trim_controller",
+  "task_id": "vbr1_l1_gain_trim_controller:bugfix",
+  "source_task_id": "vbm1_gain_trim_controller_bugfix",
+  "release_source_task_id": "vbm1_gain_trim_controller_bugfix",
+  "task_form": "bugfix",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Calibration, DEM, and Control",
+    "base_function": "Gain trim controller"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_gain_trim_controller_bugfix/evas_result.json",
+    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_gain_trim_controller_bugfix/spectre_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_trim_controller/bugfix/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_trim_controller/bugfix/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/tb_gain_trim_controller_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/tb_gain_trim_controller_ref.scs",
+    "results/d004-b1-batch-dual-fixed-2026-05-15/summary.json",
+    "results/d004-b1-batch-dual-fixed-2026-05-15/vbm1_gain_trim_controller_bugfix/spectre/tran_spectre.csv"
+  ],
+  "historical_evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_gain_trim_controller_bugfix/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_gain_trim_controller_bugfix/spectre_result.json",
+    "source": "main120 gold dual evidence from 2026-05-08",
+    "source_equivalence_source": "d004_fixed_dual",
+    "simulator_rerun": false
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "d004_fixed_dual",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/tb_gain_trim_controller_buggy.scs",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_gain_trim_controller/forms/bugfix/gold/tb_gain_trim_controller_ref.scs"
+    ],
+    "d004_summary": "results/d004-b1-batch-dual-fixed-2026-05-15/summary.json",
+    "d004_gold_dir": "tasks/bugfix/voltage/calibration/vbm1_gain_trim_controller_bugfix/gold",
+    "d004_gold_sources": [
+      "tasks/bugfix/voltage/calibration/vbm1_gain_trim_controller_bugfix/gold/dut_buggy.va",
+      "tasks/bugfix/voltage/calibration/vbm1_gain_trim_controller_bugfix/gold/dut_fixed.va",
+      "tasks/bugfix/voltage/calibration/vbm1_gain_trim_controller_bugfix/gold/tb_gain_trim_controller_buggy.scs",
+      "tasks/bugfix/voltage/calibration/vbm1_gain_trim_controller_bugfix/gold/tb_gain_trim_controller_ref.scs"
+    ],
+    "d004_spectre_csv": "results/d004-b1-batch-dual-fixed-2026-05-15/vbm1_gain_trim_controller_bugfix/spectre/tran_spectre.csv",
+    "release_va_hash_count": 2,
+    "release_scs_hash_count": 1,
+    "d004_va_hash_count": 2,
+    "d004_scs_hash_count": 1,
+    "evidence_artifacts": [
+      "results/d004-b1-batch-dual-fixed-2026-05-15/summary.json",
+      "results/d004-b1-batch-dual-fixed-2026-05-15/vbm1_gain_trim_controller_bugfix/spectre/tran_spectre.csv"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from historical main120 gold run and linked to release gold by source hash equivalence."
+}

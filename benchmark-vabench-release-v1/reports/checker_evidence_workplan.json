@@ -1,0 +1,325 @@
+{
+  "date": "2026-05-22",
+  "release": "vabench-release-v1",
+  "status": "in_progress",
+  "summary": {
+    "prompt_version_id": "public-contract-v2",
+    "prompt_manifest_status": "pass",
+    "l2_e2e_count": 15,
+    "l2_checker_strength_counts": {
+      "multi_behavior_check": 15
+    },
+    "dual_status": "pass",
+    "dual_certified_release_task_count": 259,
+    "evas_pass_spectre_fail_count": 0,
+    "targeted_l2_checker_tightening_status": "pass",
+    "targeted_l2_checker_tightening_pass_count": 2,
+    "targeted_l2_checker_tightening_fail_count": 0,
+    "speed_claim_allowed": false,
+    "score_denominator_status": "score_enabled"
+  },
+  "work_items": [
+    {
+      "id": "W1_prompt_version_traceability",
+      "priority": "P0",
+      "status": "done",
+      "work": "Treat public-contract-v2 as the prompt source of truth and mark old baselines historical.",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/prompt_contract_manifest.json"
+      ],
+      "stop_condition": "prompt_contract_manifest status=pass and every row baseline_compatibility=requires_rerun"
+    },
+    {
+      "id": "W2_l2_checker_strength_audit",
+      "priority": "P0",
+      "status": "ready_for_claim_mapping",
+      "work": "Audit L2 e2e checkers for composition/measurement-flow strength instead of structural-only pass conditions.",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/checker_evidence_workplan.json"
+      ],
+      "row_count": 15,
+      "weak_or_needs_review_count": 0,
+      "stop_condition": "Every L2 e2e row has a checker claim mapped to a public composition behavior or is explicitly downgraded."
+    },
+    {
+      "id": "W3_evas_spectre_parity_evidence",
+      "priority": "P0",
+      "status": "done",
+      "work": "Keep historical full-release dual certification separate from targeted reruns for checker-tightened rows; preserve zero EVAS PASS / Spectre FAIL.",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/dual_certification.json",
+        "benchmark-vabench-release-v1/reports/targeted_l2_checker_tightening_20260522.json"
+      ],
+      "targeted_refresh_policy": "No full dual refresh is required for prompt-only changes; checker changes require targeted reruns for affected rows.",
+      "stop_condition": "dual_certification status=pass, targeted_l2_checker_tightening status=pass, and EVAS PASS / Spectre FAIL=0 in both evidence sources."
+    },
+    {
+      "id": "W4_speed_evidence_positioning",
+      "priority": "P1",
+      "status": "blocked_for_speed_claim",
+      "work": "Do not claim aggregate EVAS speedup until the speed artifact allows it; stratify or fix slow EVAS outliers, or narrow the claim.",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/speed_debug_artifact.json"
+      ],
+      "stop_condition": "speed_debug_artifact claim_allowed=true, or paper wording uses a narrower measured-subset/no-speedup-safe statement."
+    },
+    {
+      "id": "W5_public_contract_v2_baseline_rerun",
+      "priority": "P2",
+      "status": "pending",
+      "work": "Rerun minimal prompt-only baselines on public-contract-v2 after checker-strength decisions are frozen.",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/prompt_contract_manifest.json",
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+      ],
+      "scored_entry_count": 74,
+      "stop_condition": "Baseline artifact is regenerated against prompt_version_id=public-contract-v2."
+    }
+  ],
+  "l2_e2e_rows": [
+    {
+      "release_entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
+      "task_id": "vbr1_l2_adc_dac_reconstruction_chain:e2e",
+      "category": "Data Converters",
+      "base_function": "ADC/DAC reconstruction chain",
+      "checks": [
+        "adc_covers_full_code_range",
+        "dac_output_in_range",
+        "quantization_error_within_one_lsb"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "task_id": "vbr1_l2_adc_dac_source_sweep_flow:e2e",
+      "category": "Stimulus and Sources",
+      "base_function": "ADC/DAC source sweep flow",
+      "checks": [
+        "code_monotonic_with_input",
+        "reconstruction_follows_code",
+        "saturation_at_rails"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow:e2e",
+      "category": "PLL / Clock / Event Timing",
+      "base_function": "ADPLL lock/ratio-hop/timer flow",
+      "checks": [
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "task_id": "vbr1_l2_amplifier_filter_chain:e2e",
+      "category": "Analog Behavioral Signal Conditioning",
+      "base_function": "Amplifier/filter chain",
+      "checks": [
+        "amplified_input",
+        "filtered_output_lags_input",
+        "metric_tracks_settling"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "task_id": "vbr1_l2_comparator_measurement_flow:e2e",
+      "category": "Comparators and Decision Circuits",
+      "base_function": "Comparator measurement flow",
+      "checks": [
+        "switching_point_at_offset",
+        "output_low_below_offset",
+        "output_high_above_offset"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_complete_calibration_loop",
+      "task_id": "vbr1_l2_complete_calibration_loop:e2e",
+      "category": "Calibration, DEM, and Control",
+      "base_function": "Complete calibration loop",
+      "checks": [
+        "error_drives_trim",
+        "actuator_moves_opposite_error",
+        "loop_converges_toward_target"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_front_end",
+      "task_id": "vbr1_l2_converter_front_end:e2e",
+      "category": "Sample, Hold, and Analog Memory",
+      "base_function": "Converter front-end",
+      "checks": [
+        "sample_tracks_input_after_clk_edge",
+        "hold_windows_show_bounded_droop",
+        "droop_not_excessive_between_samples"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:e2e",
+      "category": "PLL / Clock / Event Timing",
+      "base_function": "CPPLL tracking and frequency-step reacquire flow",
+      "checks": [
+        "cppll_reacquires_after_reference_step",
+        "late_window_tracks_new_reference",
+        "vctrl_stays_bounded"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_event_controller",
+      "task_id": "vbr1_l2_event_controller:e2e",
+      "category": "Digital and Event-Driven Logic",
+      "base_function": "Event controller",
+      "checks": [
+        "ref_edges_align_with_absolute_timer_grid",
+        "plateau_levels_encode_cross_after_timer_order",
+        "simultaneous_event_order"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_event_controller/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "task_id": "vbr1_l2_flash_adc_mini_array:e2e",
+      "category": "Data Converters",
+      "base_function": "Flash ADC mini-array",
+      "checks": [
+        "flash_adc_all_8_codes_present",
+        "flash_adc_monotonic_with_ramp"
+      ],
+      "specific_check_count": 2,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+      "category": "Measurement and Testbench Instrumentation",
+      "base_function": "Gain extraction/convergence measurement flow",
+      "checks": [
+        "gain_amplification_present",
+        "differential_gain_above_threshold"
+      ],
+      "specific_check_count": 2,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_measurement_flow",
+      "task_id": "vbr1_l2_measurement_flow:e2e",
+      "category": "Measurement and Testbench Instrumentation",
+      "base_function": "Measurement flow",
+      "checks": [
+        "ref_edges_counted_on_expected_grid",
+        "metric_out_normalizes_final_edge_count",
+        "final_step_writes_candidate_metric_file"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_pll_timing_slice",
+      "task_id": "vbr1_l2_pll_timing_slice:e2e",
+      "category": "PLL / Clock / Event Timing",
+      "base_function": "PLL timing slice",
+      "checks": [
+        "cppll_tracks_reference_frequency",
+        "vctrl_stays_bounded"
+      ],
+      "specific_check_count": 2,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "task_id": "vbr1_l2_serializer_frame_alignment_flow:e2e",
+      "category": "Digital and Event-Driven Logic",
+      "base_function": "Serializer frame-alignment flow",
+      "checks": [
+        "frame_pulse_present_for_each_loaded_word",
+        "serialized_bits_match_word0xA5_then_0x3C",
+        "frame_pulse_width_is_single_bit_window"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    },
+    {
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+      "category": "Data Converters",
+      "base_function": "Weighted SAR ADC/DAC loop",
+      "checks": [
+        "sar_adc_code_range_sufficient",
+        "sar_adc_unique_code_count",
+        "dac_output_in_range"
+      ],
+      "specific_check_count": 3,
+      "checker_strength": "multi_behavior_check",
+      "checks_path": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md",
+      "recommended_action": "confirm_checker_maps_to_composition_claim"
+    }
+  ],
+  "evidence_sources": {
+    "prompt_contract_manifest": "benchmark-vabench-release-v1/reports/prompt_contract_manifest.json",
+    "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "targeted_l2_checker_tightening": "benchmark-vabench-release-v1/reports/targeted_l2_checker_tightening_20260522.json",
+    "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
+    "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+  }
+}

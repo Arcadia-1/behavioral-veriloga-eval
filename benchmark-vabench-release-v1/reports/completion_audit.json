@@ -1,0 +1,172 @@
+{
+  "date": "2026-05-19",
+  "release": "vabench-release-v1",
+  "status": "in_progress",
+  "proved_count": 7,
+  "blocked_count": 0,
+  "incomplete_count": 1,
+  "requirements": [
+    {
+      "id": "R1_schema_package",
+      "requirement": "Define the clean release package, task, evaluator, score denominator, rerun/bridge/readiness gate, paper artifact, claim gate, speed/debug, baseline, result, and evidence schemas.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1",
+        "benchmark-vabench-release-v1/MANIFEST.json",
+        "benchmark-vabench-release-v1/EVALUATOR.json",
+        "schemas/vabench-release-entry.schema.json",
+        "schemas/vabench-release-task.schema.json",
+        "schemas/vabench-package-manifest.schema.json",
+        "schemas/vabench-evaluator-contract.schema.json",
+        "schemas/vabench-speed-debug-artifact.schema.json",
+        "schemas/vabench-baseline-artifact.schema.json",
+        "schemas/vabench-paper-artifacts.schema.json",
+        "schemas/vabench-claim-gate.schema.json",
+        "schemas/vabench-score-denominator.schema.json",
+        "schemas/vabench-dual-rerun-queue.schema.json",
+        "schemas/vabench-dual-rerun-staging.schema.json",
+        "schemas/vabench-dual-rerun-import.schema.json",
+        "schemas/vabench-bridge-diagnostics.schema.json",
+        "schemas/vabench-external-blockers.schema.json",
+        "schemas/vabench-finish-readiness.schema.json",
+        "schemas/vabench-completion-audit.schema.json",
+        "schemas/vabench-finish-after-bridge-attempt.schema.json",
+        "schemas/vabench-conformance-manifest.schema.json",
+        "schemas/vabench-artifact-index.schema.json",
+        "schemas/vabench-checksum-manifest.schema.json",
+        "schemas/vabench-paper-tables.schema.json",
+        "schemas/vabench-release-task-manifest-sync.schema.json",
+        "schemas/vabench-release-status.schema.json",
+        "schemas/vabench-asset-integrity.schema.json",
+        "schemas/vabench-static-certification.schema.json",
+        "schemas/vabench-dual-certification.schema.json",
+        "schemas/vabench-certification-matrix.schema.json",
+        "schemas/vabench-remaining-work.schema.json",
+        "schemas/vabench-evidence.schema.json",
+        "schemas/vabench-release-result.schema.json",
+        "benchmark-vabench-release-v1/reports/schema_validation.json"
+      ],
+      "finding": "Release package root, package manifest, evaluator contract, and all current release schemas are present and validate current release JSON surfaces.",
+      "blockers": []
+    },
+    {
+      "id": "R2_tracker_75_entries",
+      "requirement": "Create an execution tracker for the 75 selected L1/L2 functions.",
+      "status": "proved",
+      "evidence": [
+        "docs/VABENCH_RELEASE_TRACKER.csv",
+        "benchmark-vabench-release-v1/reports/release_status.json"
+      ],
+      "finding": "Tracker has 75 rows with level counts {'L1': 60, 'L2': 15}.",
+      "blockers": []
+    },
+    {
+      "id": "R3_source_materialization",
+      "requirement": "Materialize each release task with prompt/meta/checks/gold assets.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/asset_integrity.json",
+        "benchmark-vabench-release-v1/reports/release_status.json"
+      ],
+      "finding": "source-linked=75, asset-materialized=75, asset-status=pass",
+      "blockers": []
+    },
+    {
+      "id": "R4_static_certification",
+      "requirement": "Certify release task source assets with static/integrity checks.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/static_certification.json"
+      ],
+      "finding": "static-status=pass, static-certified-forms=259",
+      "blockers": []
+    },
+    {
+      "id": "R5_dual_certification",
+      "requirement": "Certify release tasks with EVAS/Spectre evidence without importing blocked reruns.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/dual_certification.json",
+        "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
+        "benchmark-vabench-release-v1/reports/dual_rerun_import.json",
+        "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
+        "benchmark-vabench-release-v1/reports/external_blockers.json",
+        "benchmark-vabench-release-v1/reports/finish_readiness.json"
+      ],
+      "finding": "dual-status=pass, dual-certified=259, dual-pending=0, EVAS-pass/Spectre-fail=0, staging=complete, import=imported, bridge=ready, finish-readiness=ready_to_finish",
+      "blockers": []
+    },
+    {
+      "id": "R6_l0_conformance_separate",
+      "requirement": "Keep L0 EVAS/Spectre conformance separate from scored L1/L2 benchmark coverage.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/conformance_manifest.json"
+      ],
+      "finding": "conformance-cases=4, benchmark-coverage-count=0",
+      "blockers": []
+    },
+    {
+      "id": "R7_paper_artifacts",
+      "requirement": "Produce paper-facing coverage, parity, speed/debug, and baseline artifacts.",
+      "status": "incomplete",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+        "benchmark-vabench-release-v1/reports/paper_tables.json",
+        "benchmark-vabench-release-v1/reports/external_blockers.json",
+        "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
+        "benchmark-vabench-release-v1/reports/baseline_artifact.json"
+      ],
+      "finding": "paper-status=in_progress, speed=measured_subset, speed-claim=False, baseline=ready_for_baseline_runs, baseline-claim=False, paper-tables=in_progress",
+      "blockers": [
+        "speed/debug timing artifact is not claimable",
+        "release model baseline artifact is pending"
+      ]
+    },
+    {
+      "id": "R8_no_overclaiming",
+      "requirement": "Do not over-claim uncertified tasks, unmeasured speedups, or missing baselines.",
+      "status": "proved",
+      "evidence": [
+        "benchmark-vabench-release-v1/reports/claim_gate.json",
+        "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+        "benchmark-vabench-release-v1/reports/release_status.json",
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+      ],
+      "finding": "scored=74, scored_forms=255, paper-claim-gates={'can_claim_release_assets_materialized': True, 'can_claim_top_level_coverage_plan': True, 'can_claim_release_package_complete': True, 'can_claim_scored_benchmark': True, 'can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence': True, 'can_claim_speedup': False, 'can_claim_model_baseline': False, 'blocking_conditions': ['external blocker report active: 0 blocked, 1 pending', 'speed/debug timing artifact not claimable', 'release model baseline artifact pending']}, blocked-claim-ids=['C6_speed_debug_claim', 'C7_model_baseline_claim']",
+      "blockers": []
+    }
+  ],
+  "blocking_conditions": [
+    "external blocker report active: 0 blocked, 1 pending",
+    "speed/debug timing artifact not claimable",
+    "release model baseline artifact pending"
+  ],
+  "next_actions": [
+    "Use score_denominator_manifest.json as the recovery checklist for enabling scored release rows.",
+    "Complete full-denominator same-slice EVAS/Spectre speed/debug timing from the fresh rerun.",
+    "Run simple model baselines only after benchmark_score is enabled for certified release rows."
+  ],
+  "notes": [
+    "This audit proves the current state requirement-by-requirement; it does not mark the active goal complete.",
+    "Blocked or pending simulator attempts are not imported as certification evidence."
+  ],
+  "evidence_sources": {
+    "tracker": "docs/VABENCH_RELEASE_TRACKER.csv",
+    "release_status": "benchmark-vabench-release-v1/reports/release_status.json",
+    "schema_validation": "benchmark-vabench-release-v1/reports/schema_validation.json",
+    "package_manifest": "benchmark-vabench-release-v1/MANIFEST.json",
+    "evaluator_contract": "benchmark-vabench-release-v1/EVALUATOR.json",
+    "asset_integrity": "benchmark-vabench-release-v1/reports/asset_integrity.json",
+    "static_certification": "benchmark-vabench-release-v1/reports/static_certification.json",
+    "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
+    "bridge_profile_diagnostics": "benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json",
+    "external_blockers": "benchmark-vabench-release-v1/reports/external_blockers.json",
+    "finish_readiness": "benchmark-vabench-release-v1/reports/finish_readiness.json",
+    "claim_gate": "benchmark-vabench-release-v1/reports/claim_gate.json",
+    "paper_tables": "benchmark-vabench-release-v1/reports/paper_tables.json",
+    "paper_artifacts": "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+    "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+  }
+}

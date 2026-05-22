@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench paper tables report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "table_count",
+    "tables",
+    "source_reports",
+    "table_rows",
+    "claim_boundary",
+    "matrix_summary_snapshot"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "in_progress"
+      ]
+    },
+    "table_count": {
+      "type": "integer"
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "csv",
+          "row_count",
+          "caption"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "csv": {
+            "type": "string"
+          },
+          "row_count": {
+            "type": "integer"
+          },
+          "caption": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "source_reports": {
+      "type": "object"
+    },
+    "table_rows": {
+      "type": "object"
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "matrix_summary_snapshot": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

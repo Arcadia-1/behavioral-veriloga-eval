@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench dual rerun import report",
+  "type": "object",
+  "required": [
+    "date",
+    "status",
+    "reason",
+    "summary",
+    "current_queue_count",
+    "summary_tasks_total",
+    "stale_summary",
+    "imported_primary_result_count",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "imported",
+        "partial_imported",
+        "imported_with_failures",
+        "blocked",
+        "missing"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "tasks_total": {
+      "type": "integer"
+    },
+    "current_queue_count": {
+      "type": "integer"
+    },
+    "summary_tasks_total": {
+      "type": "integer"
+    },
+    "stale_summary": {
+      "type": "boolean"
+    },
+    "imported_primary_result_count": {
+      "type": "integer"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

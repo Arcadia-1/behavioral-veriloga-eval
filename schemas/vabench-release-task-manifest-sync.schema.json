@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release task manifest sync report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "release_task_manifest_count",
+    "rows",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "release_task_manifest_count": {
+      "type": "integer"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "form",
+          "manifest",
+          "static",
+          "evas",
+          "spectre"
+        ],
+        "properties": {
+          "release_entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "type": "string"
+          },
+          "manifest": {
+            "type": "string"
+          },
+          "static": {
+            "type": "string"
+          },
+          "evas": {
+            "type": "string"
+          },
+          "spectre": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

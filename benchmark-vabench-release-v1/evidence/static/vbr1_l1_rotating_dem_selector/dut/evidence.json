@@ -1,0 +1,33 @@
+{
+  "release_entry_id": "vbr1_l1_rotating_dem_selector",
+  "task_id": "vbr1_l1_rotating_dem_selector:dut",
+  "task_form": "dut",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Calibration, DEM, and Control",
+    "base_function": "Rotating DEM selector"
+  },
+  "static": "pass",
+  "evas": "pending",
+  "spectre": "pending",
+  "verdict": "not_certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_rotating_dem_selector/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_rotating_dem_selector/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_rotating_dem_selector/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_rotating_dem_selector/forms/dut/gold/rotating_element_selector.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_rotating_dem_selector/forms/dut/gold/tb_rotating_element_selector_ref.scs"
+  ],
+  "checks": {
+    "must_include": [
+      "@(cross(",
+      "transition("
+    ],
+    "must_not_include": [
+      "I(",
+      "ddt("
+    ],
+    "failures": []
+  },
+  "notes": "Static release certification only; EVAS and Spectre remain pending."
+}

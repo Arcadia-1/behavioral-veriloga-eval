@@ -1,0 +1,27 @@
+{
+  "id": "vbr1_l2_adc_dac_reconstruction_chain_tb",
+  "task_id": "vbr1_l2_adc_dac_reconstruction_chain_tb",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
+  "family": "tb-generation",
+  "category": "Data Converters",
+  "domain": "voltage",
+  "difficulty": "hard",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "adc_ideal_4b.va",
+    "adc_ideal_4b_ref.va",
+    "dac_ideal_4b.va",
+    "dac_ideal_4b_ref.va",
+    "tb_adc_dac_ideal_4b_ref.scs"
+  ],
+  "scoring": [
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "tb_companion_from_e2e"
+}

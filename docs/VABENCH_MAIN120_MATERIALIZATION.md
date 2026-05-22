@@ -4,9 +4,10 @@ Generated: 2026-05-15
 
 ## Summary
 
-This inventory treats `vabench-main-v1-main120` as validated result evidence
-that still needs to be restored/materialized into source-controlled benchmark
-tasks before it can serve as a release-quality benchmark source split.
+This inventory tracks `vabench-main-v1-main120` as validated result
+evidence plus its source-controlled benchmark release state. It separates
+materialized public tasks from fixed-only historical rows that are retained
+as evidence-only.
 
 | Metric | Value |
 | --- | --- |
@@ -14,13 +15,24 @@ tasks before it can serve as a release-quality benchmark source split.
 | Spectre pass tasks | 120 |
 | Paired EVAS/Spectre task IDs | 120 |
 | Dual PASS rows | 120 |
-| Exact overlap with current `tasks/` IDs | 44 |
-| Rows needing source task materialization | 76 |
+| Exact overlap with current `tasks/` IDs | 116 |
+| Rows needing source task materialization | 0 |
+| Evidence-only rows intentionally not materialized | 4 |
 | Rows with staged source assets in both runs | 120 |
 | Rows where EVAS/Spectre staged source hashes match | 120 |
 | Rows countable as model capability after current policy | 115 |
 | Rows countable as bugfix claim after current policy | 25 |
 | Row-level CSV | `docs/VABENCH_MAIN120_MATERIALIZATION.csv` |
+
+## Claim Wording
+
+Use this conservative wording in paper-facing text and PR summaries:
+
+- `main120` contains 120 EVAS/Spectre dual-validated evidence rows.
+- 116 rows are materialized as source-controlled `prompt.md`/`meta.json`/`checks.yaml`/`gold/` benchmark tasks.
+- 115 rows count toward model-capability evaluation under the current policy.
+- 25 rows count as bugfix tasks because they have buggy/fixed provenance and EVAS/Spectre confirmation.
+- 4 fixed-only historical rows are intentionally closed as evidence-only without release source tasks; all evidence-only rows are excluded from model-capability and bugfix denominators.
 
 ## Source Evidence
 
@@ -83,40 +95,37 @@ not source-of-truth mappings.
 
 | Base | Forms present | Candidate current tasks |
 | --- | --- | --- |
-| background_calibration_accumulator | dut,tb,bugfix,e2e | vbm1_background_calibration_accumulator_bugfix |
+| background_calibration_accumulator | dut,tb,bugfix,e2e | - |
 | barrel_pointer_window | dut,tb,bugfix,e2e | - |
-| cdac_calibration | dut,tb,bugfix,e2e | cdac_cal;vbm1_cdac_calibration_bugfix |
-| debounce_latch | dut,tb,bugfix,e2e | vbm1_debounce_latch_bugfix |
+| cdac_calibration | dut,tb,bugfix,e2e | - |
+| debounce_latch | dut,tb,bugfix,e2e | - |
 | edge_detector | dut,tb,bugfix,e2e | - |
 | element_shuffler | dut,tb,bugfix,e2e | - |
-| file_metric_writer | dut,tb,bugfix,e2e | - |
-| first_order_lowpass | dut,tb,bugfix,e2e | vbm1_first_order_lowpass_bugfix |
-| gain_trim_controller | dut,tb,bugfix,e2e | vbm1_gain_trim_controller_bugfix |
-| leaky_hold | dut,tb,bugfix,e2e | sample_hold_smoke;vbm1_leaky_hold_bugfix |
-| lock_detector | dut,tb,bugfix,e2e | vbm1_lock_detector_bugfix |
-| offset_calibration_fsm | dut,tb,bugfix,e2e | vbm1_offset_calibration_fsm_bugfix |
-| offset_comparator | dut,tb,bugfix,e2e | comparator_offset_search_smoke;comparator_offset_tb;vbm1_offset_comparator_bugfix |
-| one_shot_timer | dut,tb,bugfix,e2e | vbm1_one_shot_timer_bugfix |
-| peak_detector | dut,tb,bugfix,e2e | vbm1_peak_detector_bugfix |
-| pfd_reset_race | dut,tb,bugfix,e2e | pfd_reset_race_smoke;vbm1_pfd_reset_race_bugfix |
-| precision_rectifier | dut,tb,bugfix,e2e | vbm1_precision_rectifier_bugfix |
-| resettable_counter_divider | dut,tb,bugfix,e2e | - |
-| resettable_integrator | dut,tb,bugfix,e2e | vbm1_resettable_integrator_bugfix |
+| file_metric_writer | dut,tb,bugfix,e2e | vbm1_file_metric_writer_dut;vbm1_file_metric_writer_e2e;vbm1_file_metric_writer_tb |
+| first_order_lowpass | dut,tb,bugfix,e2e | - |
+| gain_trim_controller | dut,tb,bugfix,e2e | - |
+| leaky_hold | dut,tb,bugfix,e2e | - |
+| lock_detector | dut,tb,bugfix,e2e | - |
+| offset_calibration_fsm | dut,tb,bugfix,e2e | - |
+| offset_comparator | dut,tb,bugfix,e2e | - |
+| one_shot_timer | dut,tb,bugfix,e2e | - |
+| peak_detector | dut,tb,bugfix,e2e | - |
+| pfd_reset_race | dut,tb,bugfix,e2e | - |
+| precision_rectifier | dut,tb,bugfix,e2e | - |
+| resettable_counter_divider | dut,tb,bugfix,e2e | vbm1_resettable_counter_divider_dut;vbm1_resettable_counter_divider_e2e;vbm1_resettable_counter_divider_tb |
+| resettable_integrator | dut,tb,bugfix,e2e | - |
 | rotating_element_selector | dut,tb,bugfix,e2e | - |
-| sar_logic_4b | dut,tb,bugfix,e2e | gray_counter_4b_smoke;sar_logic;vbm1_sar_logic_4b_bugfix |
+| sar_logic_4b | dut,tb,bugfix,e2e | - |
 | segmented_dac | dut,tb,bugfix,e2e | - |
-| settling_time_measurement_tb | dut,tb,bugfix,e2e | - |
-| slew_rate_limiter | dut,tb,bugfix,e2e | vbm1_slew_rate_limiter_bugfix |
+| settling_time_measurement_tb | dut,tb,bugfix,e2e | vbm1_settling_time_measurement_tb_dut;vbm1_settling_time_measurement_tb_e2e;vbm1_settling_time_measurement_tb_tb |
+| slew_rate_limiter | dut,tb,bugfix,e2e | - |
 | strongarm_comparator_behavior | dut,tb,bugfix,e2e | - |
-| thermometer_dac | dut,tb,bugfix,e2e | dac_ramp_tb;vbm1_thermometer_dac_15seg_bugfix;vbm1_thermometer_dac_bugfix |
-| thermometer_decoder_guarded | dut,tb,bugfix,e2e | vbm1_thermometer_decoder_guarded_bugfix |
-| track_hold_aperture | dut,tb,bugfix,e2e | sample_hold_aperture_tb;sample_hold_smoke;vbm1_track_hold_aperture_bugfix |
-| vco_phase_integrator | dut,tb,bugfix,e2e | - |
-| voltage_clamp | dut,tb,bugfix,e2e | vbm1_voltage_clamp_bugfix |
+| thermometer_dac | dut,tb,bugfix,e2e | - |
+| thermometer_decoder_guarded | dut,tb,bugfix,e2e | - |
+| track_hold_aperture | dut,tb,bugfix,e2e | - |
+| vco_phase_integrator | dut,tb,bugfix,e2e | vbm1_vco_phase_integrator_dut;vbm1_vco_phase_integrator_e2e;vbm1_vco_phase_integrator_tb |
+| voltage_clamp | dut,tb,bugfix,e2e | - |
 
 ## Materialization Decision
 
-The next safe action is to create source task directories from the staged
-`.va`/`.scs` files and the recorded dual-pass evidence, while marking
-`prompt.md`, `meta.json`, and `checks.yaml` as review targets rather than
-pretending they already exist in `tasks/`.
+Ordinary `dut`, `tb`, and `e2e` rows now have source-controlled `prompt.md`, `meta.json`, `checks.yaml`, and `gold/` task directories. The only non-overlap rows are intentionally closed as evidence-only fixed-only bugfix history, so there is no remaining source-task materialization queue for main120.

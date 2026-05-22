@@ -1,0 +1,79 @@
+{
+  "date": "2026-05-21",
+  "release": "vabench-release-v1",
+  "status": "ready_for_baseline_runs",
+  "claim_allowed": false,
+  "scored_release_entries": 74,
+  "scored_release_forms": 255,
+  "score_denominator_status": "score_enabled",
+  "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+  "fully_certified_entry_count": 75,
+  "dual_pending_release_task_count": 0,
+  "dual_failed_release_task_count": 0,
+  "baseline_summary_count": 0,
+  "baseline_summaries": [],
+  "execution_plan": {
+    "status": "ready_for_baseline_runs",
+    "blocked_by": [],
+    "denominator_preview": {
+      "planned_entries": 75,
+      "release_forms": 259,
+      "certified_entries": 75,
+      "certified_forms": 259,
+      "scored_entries": 74,
+      "scored_forms": 255
+    },
+    "run_order": [
+      "Use score_denominator_manifest.json as the frozen scored-row source.",
+      "Run prompt-only model generation on the scored denominator.",
+      "Run EVAS-feedback debugging as an engineering baseline, with Spectre as final judge.",
+      "Aggregate pass@1, axis rates, and failure taxonomy into a release baseline summary."
+    ],
+    "command_templates": [
+      "python3 runners/finish_vabench_release_after_bridge.py",
+      "python3 runners/report_vabench_release_score_denominator.py",
+      "python3 runners/report_vabench_release_baseline_artifact.py"
+    ],
+    "aggregation_metrics": [
+      "pass@1",
+      "compile_pass_rate",
+      "sim_correct_rate",
+      "EVAS_PASS_Spectre_FAIL_count",
+      "failure_taxonomy_counts"
+    ]
+  },
+  "baseline_protocol": {
+    "minimal_lanes": [
+      "prompt_only_generation",
+      "evas_feedback_debug_generation",
+      "spectre_final_judge_confirmation"
+    ],
+    "non_goals": [
+      "Do not present controller/RAG/SFT orchestration as the core contribution.",
+      "Do not tune on the release package or memorize benchmark gold."
+    ],
+    "required_result_fields": [
+      "model",
+      "task_id",
+      "release_entry_id",
+      "form",
+      "candidate_artifacts",
+      "evas_status",
+      "spectre_status",
+      "score",
+      "failure_taxonomy"
+    ],
+    "result_schema_contract": {
+      "spectre_is_final_judge": true,
+      "evas_is_filter_debug_signal": true,
+      "score_denominator_source": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+      "unscored_rows_excluded": true
+    }
+  },
+  "required_to_claim": [
+    "Use the enabled score_denominator_manifest.json as the denominator source of truth.",
+    "Run baseline model outputs through the release evaluator on scored rows.",
+    "Publish pass@1 / axis rates / failure taxonomy with Spectre as the final judge.",
+    "Keep baseline methods simple and describe them as stress tests, not as the paper's core method."
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release result",
+  "type": "object",
+  "required": [
+    "task_id",
+    "backend",
+    "status",
+    "scores",
+    "artifacts"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "release_entry_id": {
+      "type": "string"
+    },
+    "backend": {
+      "enum": [
+        "static",
+        "evas",
+        "spectre"
+      ]
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL_STATIC",
+        "FAIL_DUT_COMPILE",
+        "FAIL_TB_COMPILE",
+        "FAIL_SIM_CORRECTNESS",
+        "FAIL_INFRA",
+        "PENDING"
+      ]
+    },
+    "scores": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

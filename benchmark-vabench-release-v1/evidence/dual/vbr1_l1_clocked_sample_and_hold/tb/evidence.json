@@ -1,0 +1,89 @@
+{
+  "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+  "task_id": "vbr1_l1_clocked_sample_and_hold:tb",
+  "source_task_id": "vbr1_l1_clocked_sample_and_hold_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Sample, Hold, and Analog Memory",
+    "base_function": "Clocked sample-and-hold"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_clocked_sample_and_hold/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_clocked_sample_and_hold/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_sample_and_hold/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_sample_and_hold/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_clocked_sample_and_hold/forms/tb/gold/sample_hold.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_clocked_sample_and_hold/forms/tb/gold/tb_sample_hold_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_clocked_sample_and_hold/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_clocked_sample_and_hold/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        1e-06
+      ],
+      "signals_compared": 3,
+      "samples": 1200,
+      "max_rmse_v": 0.1,
+      "max_abs_v": 1.0,
+      "mean_nrmse": 0.0033338759932282584,
+      "p95_nrmse": 0.01,
+      "max_nrmse": 0.01,
+      "per_signal": {
+        "clk": {
+          "rmse_v": 0.1,
+          "max_abs_v": 1.0,
+          "span_v": 0.9,
+          "nrmse": 0.01,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.01
+        },
+        "in": {
+          "rmse_v": 7.81580520324003e-09,
+          "max_abs_v": 4.611776113772059e-08,
+          "span_v": 0.9,
+          "nrmse": 8.684228003600032e-09,
+          "kind": "analog"
+        },
+        "out": {
+          "rmse_v": 1.4283644023326322e-06,
+          "max_abs_v": 4.0455317998733253e-05,
+          "span_v": 0.8820900450009405,
+          "nrmse": 1.6192954567706398e-06,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_clocked_sample_and_hold/forms/tb/gold/sample_hold.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_clocked_sample_and_hold/forms/tb/gold/tb_sample_hold_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

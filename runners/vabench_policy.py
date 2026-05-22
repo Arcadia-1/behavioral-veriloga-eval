@@ -18,6 +18,11 @@ BADCASE_ORIGINS = ("original", "recovered", "reconstructed")
 COUNT_KEYS = ("model_capability", "benchmark_coverage", "bugfix_claim")
 
 
+CONTENT_DENOMINATOR_EXCLUDED_ENTRIES: dict[str, list[str]] = {
+    "vbr1_l1_clocked_comparator": ["duplicate_strongarm_clocked_comparator"],
+}
+
+
 def task_id_from_meta(meta: dict[str, Any], task_dir: Path | None = None) -> str:
     if "task_id" in meta:
         return str(meta["task_id"])
@@ -41,6 +46,14 @@ def should_count_as(meta: dict[str, Any], key: str = "model_capability") -> bool
     if meta.get("release_form") == "evidence-only":
         return False
     return count_flags(meta)[key]
+
+
+def content_denominator_exclusion_reasons(release_entry_id: str) -> list[str]:
+    return list(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES.get(release_entry_id, []))
+
+
+def is_content_denominator_entry(release_entry_id: str) -> bool:
+    return release_entry_id not in CONTENT_DENOMINATOR_EXCLUDED_ENTRIES
 
 
 def validation_errors(

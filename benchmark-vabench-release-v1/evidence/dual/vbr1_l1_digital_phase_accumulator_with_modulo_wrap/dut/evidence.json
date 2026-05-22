@@ -1,0 +1,82 @@
+{
+  "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+  "task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap:dut",
+  "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+  "task_form": "dut",
+  "taxonomy": {
+    "level": "L1",
+    "category": "PLL / Clock / Event Timing",
+    "base_function": "Digital phase accumulator with modulo wrap"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        7.5e-08
+      ],
+      "signals_compared": 2,
+      "samples": 1200,
+      "max_rmse_v": 1.6769379450514881e-15,
+      "max_abs_v": 2.9753977059954195e-14,
+      "mean_nrmse": 1.2421762555936948e-15,
+      "p95_nrmse": 2.4843525111873897e-15,
+      "max_nrmse": 2.4843525111873897e-15,
+      "per_signal": {
+        "clk_out": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "phase_out": {
+          "rmse_v": 1.6769379450514881e-15,
+          "max_abs_v": 2.9753977059954195e-14,
+          "span_v": 0.675,
+          "nrmse": 2.4843525111873897e-15,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

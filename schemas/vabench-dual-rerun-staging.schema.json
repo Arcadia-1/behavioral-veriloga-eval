@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench dual rerun staging manifest",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "queue_row_count",
+    "queue_rows_with_ready_primary_bundle",
+    "bundle_count",
+    "ready_bundle_count",
+    "blocked_bundle_count",
+    "form_counts",
+    "variant_counts",
+    "blocker_counts",
+    "staging_root",
+    "bundles",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "blocked",
+        "complete"
+      ]
+    },
+    "queue_row_count": {
+      "type": "integer"
+    },
+    "queue_rows_with_ready_primary_bundle": {
+      "type": "integer"
+    },
+    "bundle_count": {
+      "type": "integer"
+    },
+    "ready_bundle_count": {
+      "type": "integer"
+    },
+    "blocked_bundle_count": {
+      "type": "integer"
+    },
+    "form_counts": {
+      "type": "object"
+    },
+    "variant_counts": {
+      "type": "object"
+    },
+    "blocker_counts": {
+      "type": "object"
+    },
+    "staging_root": {
+      "type": "string"
+    },
+    "bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "form",
+          "variant",
+          "expected_result",
+          "source_task_id",
+          "queue_reason",
+          "status",
+          "blockers",
+          "staged_task_dir",
+          "staged_gold_dir",
+          "source_testbench",
+          "source_includes",
+          "source_include_origins",
+          "staged_testbench",
+          "staged_includes"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "enum": [
+              "dut",
+              "tb",
+              "bugfix",
+              "e2e"
+            ]
+          },
+          "variant": {
+            "enum": [
+              "gold",
+              "fixed",
+              "buggy"
+            ]
+          },
+          "expected_result": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "source_task_id": {
+            "type": "string"
+          },
+          "queue_reason": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ready",
+              "blocked"
+            ]
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "staged_task_dir": {
+            "type": "string"
+          },
+          "staged_gold_dir": {
+            "type": "string"
+          },
+          "source_testbench": {
+            "type": "string"
+          },
+          "source_includes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_include_origins": {
+            "type": "object"
+          },
+          "staged_testbench": {
+            "type": "string"
+          },
+          "staged_includes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

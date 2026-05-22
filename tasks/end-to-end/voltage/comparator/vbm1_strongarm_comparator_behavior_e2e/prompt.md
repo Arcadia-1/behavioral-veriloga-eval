@@ -14,4 +14,4 @@ input that produces two positive decisions followed by two negative decisions.
 Save the clock, inputs, and outputs. Keep the transient stop time away from a
 source transition boundary.
 
-Return `cmp_strongarm.va` and `tb_cmp_strongarm_ref.scs`.
+Return exactly two files: `cmp_strongarm.va` and `tb_cmp_strongarm_ref.scs`.

@@ -1,0 +1,30 @@
+{
+  "id": "vbr1_l1_voltage_gain_amplifier_e2e",
+  "task_id": "vbr1_l1_voltage_gain_amplifier_e2e",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_voltage_gain_amplifier",
+  "family": "end-to-end",
+  "category": "Analog Behavioral Signal Conditioning",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "voltage_gain_amplifier.va",
+    "tb_voltage_gain_amplifier.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "behavior_checks": [
+    "gain_applied",
+    "common_mode_offset",
+    "output_clamped"
+  ],
+  "designed_source": true
+}

@@ -1,0 +1,82 @@
+{
+  "release_entry_id": "vbr1_l2_measurement_flow",
+  "task_id": "vbr1_l2_measurement_flow:tb",
+  "source_task_id": "vbr1_l2_measurement_flow_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L2",
+    "category": "Measurement and Testbench Instrumentation",
+    "base_function": "Measurement flow"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_measurement_flow/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_measurement_flow/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_measurement_flow/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_measurement_flow/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_measurement_flow/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_measurement_flow/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        8e-08
+      ],
+      "signals_compared": 2,
+      "samples": 1200,
+      "max_rmse_v": 0.05,
+      "max_abs_v": 1.0,
+      "mean_nrmse": 0.001250717234957946,
+      "p95_nrmse": 0.0025,
+      "max_nrmse": 0.0025,
+      "per_signal": {
+        "metric_out": {
+          "rmse_v": 1.2910229243028297e-06,
+          "max_abs_v": 1.4088982593696286e-05,
+          "span_v": 0.9,
+          "nrmse": 1.4344699158920329e-06,
+          "kind": "analog"
+        },
+        "ref": {
+          "rmse_v": 0.05,
+          "max_abs_v": 1.0,
+          "span_v": 0.9,
+          "nrmse": 0.0025,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0025
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

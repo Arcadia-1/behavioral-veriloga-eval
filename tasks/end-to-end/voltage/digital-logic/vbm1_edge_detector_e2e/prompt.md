@@ -12,4 +12,4 @@ The testbench must stimulate reset and multiple input transitions, save all
 public observables, and run a transient analysis suitable for fixed-time pulse
 checks.
 
-Return `edge_detector.va` and `tb_edge_detector_ref.scs`.
+Return exactly two files: `edge_detector.va` and `tb_edge_detector_ref.scs`.

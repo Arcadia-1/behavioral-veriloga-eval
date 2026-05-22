@@ -1,0 +1,157 @@
+{
+  "id": "vbr1_l1_windowed_dem_pointer",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_windowed_dem_pointer",
+  "level": "L1",
+  "category": "Calibration, DEM, and Control",
+  "base_function": "Windowed DEM pointer",
+  "package_status": "current_l1_seed",
+  "score_surface": "model-capability",
+  "source_base_id": "barrel_pointer_window",
+  "canonical_kernel": "windowed_pointer_wrap",
+  "source_registry_status": "release_seed",
+  "source_evidence_status": "main120_dual_pass_bugfix_confirmed",
+  "source_tasks": [
+    {
+      "form": "dut",
+      "source_path": "tasks/spec-to-va/voltage/calibration/vbm1_barrel_pointer_window_dut",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true
+    },
+    {
+      "form": "tb",
+      "source_path": "tasks/tb-generation/voltage/calibration/vbm1_barrel_pointer_window_tb",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true
+    },
+    {
+      "form": "bugfix",
+      "source_path": "tasks/bugfix/voltage/calibration/vbm1_barrel_pointer_window_bugfix",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true
+    },
+    {
+      "form": "e2e",
+      "source_path": "tasks/end-to-end/voltage/calibration/vbm1_barrel_pointer_window_e2e",
+      "prompt": true,
+      "meta": true,
+      "checks": true,
+      "gold": true,
+      "asset_complete": true
+    }
+  ],
+  "release_tasks": [
+    {
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut/gold/barrel_pointer_window.va",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/dut/gold/tb_barrel_pointer_window_ref.scs"
+      ],
+      "asset_materialized": true,
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/dut/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/dut/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/dut/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/dut/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/dut/spectre_result.json",
+      "release_source_task_id": "vbm1_barrel_pointer_window_dut",
+      "historical_source_task_id": "vbm1_barrel_pointer_window_dut"
+    },
+    {
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb/gold/barrel_pointer_window.va",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/tb/gold/tb_barrel_pointer_window_ref.scs"
+      ],
+      "asset_materialized": true,
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/tb/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/tb/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/tb/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/tb/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/tb/spectre_result.json",
+      "release_source_task_id": "vbm1_barrel_pointer_window_tb",
+      "historical_source_task_id": "vbm1_barrel_pointer_window_tb"
+    },
+    {
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/gold/tb_barrel_pointer_window_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/bugfix/gold/tb_barrel_pointer_window_ref.scs"
+      ],
+      "asset_materialized": true,
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/bugfix/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/bugfix/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/bugfix/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/bugfix/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/bugfix/spectre_result.json",
+      "release_source_task_id": "vbm1_barrel_pointer_window_bugfix",
+      "historical_source_task_id": "vbm1_barrel_pointer_window_bugfix"
+    },
+    {
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e",
+      "prompt": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e/checks.yaml",
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e/gold/barrel_pointer_window.va",
+        "benchmark-vabench-release-v1/tasks/vbr1_l1_windowed_dem_pointer/forms/e2e/gold/tb_barrel_pointer_window_ref.scs"
+      ],
+      "asset_materialized": true,
+      "static_status": "pass",
+      "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/e2e/evidence.json",
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/e2e/result.json",
+      "evas_status": "pass",
+      "spectre_status": "pass",
+      "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/e2e/evidence.json",
+      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/e2e/evas_result.json",
+      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_windowed_dem_pointer/e2e/spectre_result.json",
+      "release_source_task_id": "vbm1_barrel_pointer_window_e2e",
+      "historical_source_task_id": "vbm1_barrel_pointer_window_e2e"
+    }
+  ],
+  "missing_forms": [],
+  "certification": {
+    "static": "pass",
+    "evas": "pass",
+    "spectre": "pass",
+    "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "model_capability": false,
+    "l0_conformance": false
+  },
+  "release_blockers": []
+}

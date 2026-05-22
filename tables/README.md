@@ -21,7 +21,10 @@ Update rule:
 1. refresh table content in `results/` after experiments
 2. copy updated summaries into `tables/`
 3. commit only the tracked `tables/` files for remote sharing
-4. refresh status docs with `docs/project/POST_RUN_PLAYBOOK.md`
+4. refresh current docs such as `docs/VAEVAS_MAINLINE_PLAN.md`,
+   `docs/VABENCH_MAIN120_MATERIALIZATION.*`, or
+   `docs/VAEVAS_VALIDATION_PIPELINE.md` when the result changes a
+   paper-facing claim
 
 Helper:
 - `scripts/sync_tables_from_results.sh`

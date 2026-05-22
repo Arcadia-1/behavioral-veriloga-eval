@@ -1,0 +1,58 @@
+{
+  "release_entry_id": "vbr1_l1_settling_time_detector",
+  "task_id": "vbr1_l1_settling_time_detector:e2e",
+  "source_task_id": "vbm1_settling_time_measurement_tb_e2e",
+  "release_source_task_id": "vbm1_settling_time_measurement_tb_e2e",
+  "task_form": "e2e",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Measurement and Testbench Instrumentation",
+    "base_function": "Settling response measurement helper"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_e2e/evas_result.json",
+    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_settling_time_measurement_tb_e2e/spectre_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/e2e/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/e2e/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_settling_time_detector/forms/e2e/gold/settling_time_measurement_tb.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_settling_time_detector/forms/e2e/gold/tb_settling_time_measurement_tb_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_e2e/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_settling_time_measurement_tb_e2e/spectre_result.json",
+    "source": "main120 gold dual evidence from 2026-05-08",
+    "source_equivalence_source": "main120_staged_sources",
+    "simulator_rerun": false
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "main120_staged_sources",
+    "normalization": "Verilog-A token stream; Spectre ahdl_include path plus trailing whitespace",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_settling_time_detector/forms/e2e/gold/settling_time_measurement_tb.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_settling_time_detector/forms/e2e/gold/tb_settling_time_measurement_tb_ref.scs"
+    ],
+    "evas_staged_sources": [
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_e2e/staged/settling_time_measurement_tb.va",
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_e2e/staged/tb_settling_time_measurement_tb_ref.scs"
+    ],
+    "spectre_staged_sources": [
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_settling_time_measurement_tb_e2e/staged/settling_time_measurement_tb.va",
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_settling_time_measurement_tb_e2e/staged/tb_settling_time_measurement_tb_ref.scs"
+    ],
+    "release_va_hash_count": 1,
+    "release_scs_hash_count": 1,
+    "evas_va_hash_count": 1,
+    "evas_scs_hash_count": 1,
+    "spectre_va_hash_count": 1,
+    "spectre_scs_hash_count": 1
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from historical main120 gold run and linked to release gold by source hash equivalence."
+}

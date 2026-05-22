@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import sys
 from pathlib import Path
 
@@ -11,6 +12,14 @@ sys.path.insert(0, str(ROOT / "runners"))
 
 from score import build_model_results  # noqa: E402
 from vabench_policy import should_count_as, validate_or_raise, validation_errors  # noqa: E402
+
+
+INVENTORY_CSV = ROOT / "docs" / "VABENCH_MAIN120_MATERIALIZATION.csv"
+
+
+def main120_inventory_rows() -> list[dict[str, str]]:
+    with INVENTORY_CSV.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
 
 
 def test_evidence_only_is_excluded_from_model_and_bugfix_counts() -> None:
@@ -81,3 +90,50 @@ def test_model_results_exclude_non_countable_rows_from_denominator() -> None:
     assert summary["excluded_from_model_capability"] == 1
     assert summary["total_tasks"] == 1
     assert summary["pass_count"] == 1
+
+
+def test_main120_evidence_only_rows_never_count() -> None:
+    rows = main120_inventory_rows()
+    evidence_only = [row for row in rows if row["release_form"] == "evidence-only"]
+
+    assert {row["task_id"] for row in evidence_only} == {
+        "vbm1_background_calibration_accumulator_bugfix",
+        "vbm1_file_metric_writer_bugfix",
+        "vbm1_resettable_counter_divider_bugfix",
+        "vbm1_settling_time_measurement_tb_bugfix",
+        "vbm1_vco_phase_integrator_bugfix",
+    }
+    for row in evidence_only:
+        assert row["counts_model_capability"] == "false"
+        assert row["counts_benchmark_coverage"] == "false"
+        assert row["counts_bugfix_claim"] == "false"
+
+
+def test_main120_closed_evidence_only_rows_have_no_release_task_expected() -> None:
+    rows = main120_inventory_rows()
+    closed = [row for row in rows if row["materialization_state"] == "closed_evidence_only"]
+
+    assert {row["task_id"] for row in closed} == {
+        "vbm1_file_metric_writer_bugfix",
+        "vbm1_resettable_counter_divider_bugfix",
+        "vbm1_settling_time_measurement_tb_bugfix",
+        "vbm1_vco_phase_integrator_bugfix",
+    }
+    for row in closed:
+        assert row["exact_current_task"] == "no"
+        assert row["missing_source_pieces"] == "no_release_source_task_expected"
+        assert row["counts_model_capability"] == "false"
+        assert row["counts_benchmark_coverage"] == "false"
+        assert row["counts_bugfix_claim"] == "false"
+
+
+def test_main120_bugfix_claim_rows_are_true_bugfix_only() -> None:
+    rows = main120_inventory_rows()
+    claim_rows = [row for row in rows if row["counts_bugfix_claim"] == "true"]
+
+    assert len(claim_rows) == 25
+    for row in claim_rows:
+        assert row["family"] == "bugfix"
+        assert row["release_form"] == "true-bugfix"
+        assert row["provenance_status"] in {"badcase_available", "reconstructed_badcase"}
+        assert row["materialization_state"] == "has_exact_task_id"

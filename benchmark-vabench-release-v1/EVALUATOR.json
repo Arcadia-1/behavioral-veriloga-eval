@@ -1,0 +1,166 @@
+{
+  "date": "2026-05-19",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "contract_version": "v1",
+  "inputs": {
+    "package_manifest": "benchmark-vabench-release-v1/MANIFEST.json",
+    "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+    "claim_gate": "benchmark-vabench-release-v1/reports/claim_gate.json",
+    "finish_readiness": "benchmark-vabench-release-v1/reports/finish_readiness.json",
+    "l0_conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json"
+  },
+  "schemas": {
+    "release_entry": "schemas/vabench-release-entry.schema.json",
+    "release_task": "schemas/vabench-release-task.schema.json",
+    "package_manifest": "schemas/vabench-package-manifest.schema.json",
+    "evaluator_contract": "schemas/vabench-evaluator-contract.schema.json",
+    "speed_debug_artifact": "schemas/vabench-speed-debug-artifact.schema.json",
+    "baseline_artifact": "schemas/vabench-baseline-artifact.schema.json",
+    "paper_artifacts": "schemas/vabench-paper-artifacts.schema.json",
+    "claim_gate": "schemas/vabench-claim-gate.schema.json",
+    "score_denominator": "schemas/vabench-score-denominator.schema.json",
+    "dual_rerun_queue": "schemas/vabench-dual-rerun-queue.schema.json",
+    "dual_rerun_staging": "schemas/vabench-dual-rerun-staging.schema.json",
+    "dual_rerun_import": "schemas/vabench-dual-rerun-import.schema.json",
+    "bridge_diagnostics": "schemas/vabench-bridge-diagnostics.schema.json",
+    "external_blockers": "schemas/vabench-external-blockers.schema.json",
+    "finish_readiness": "schemas/vabench-finish-readiness.schema.json",
+    "completion_audit": "schemas/vabench-completion-audit.schema.json",
+    "finish_after_bridge_attempt": "schemas/vabench-finish-after-bridge-attempt.schema.json",
+    "conformance_manifest": "schemas/vabench-conformance-manifest.schema.json",
+    "artifact_index": "schemas/vabench-artifact-index.schema.json",
+    "checksum_manifest": "schemas/vabench-checksum-manifest.schema.json",
+    "paper_tables": "schemas/vabench-paper-tables.schema.json",
+    "release_task_manifest_sync": "schemas/vabench-release-task-manifest-sync.schema.json",
+    "release_status": "schemas/vabench-release-status.schema.json",
+    "asset_integrity": "schemas/vabench-asset-integrity.schema.json",
+    "static_certification": "schemas/vabench-static-certification.schema.json",
+    "dual_certification": "schemas/vabench-dual-certification.schema.json",
+    "certification_matrix": "schemas/vabench-certification-matrix.schema.json",
+    "remaining_work": "schemas/vabench-remaining-work.schema.json",
+    "evidence": "schemas/vabench-evidence.schema.json",
+    "result": "schemas/vabench-release-result.schema.json"
+  },
+  "task_selection": {
+    "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+    "package_entry_count": 75,
+    "package_form_count": 259,
+    "certified_entries": 75,
+    "certified_forms": 259,
+    "pending_entries": 0,
+    "pending_forms": 0,
+    "scored_entries": 74,
+    "scored_forms": 255,
+    "score_enabled": true,
+    "l0_conformance_excluded": true,
+    "unscored_rows_excluded": true,
+    "selection_rule": "Only rows marked counted_in_score=true by score_denominator_manifest.json may enter benchmark scores."
+  },
+  "backend_roles": {
+    "static": {
+      "role": "source/package integrity gate",
+      "certification_scope": "asset and static contract only",
+      "final_judge": false
+    },
+    "evas": {
+      "role": "fast behavioral Verilog-A filter and debug evaluator",
+      "certification_scope": "fast signal for release tasks, never final alone",
+      "final_judge": false
+    },
+    "spectre": {
+      "role": "final simulator reference for release certification and scoring",
+      "certification_scope": "behavioral correctness and final pass/fail axis",
+      "final_judge": true
+    }
+  },
+  "result_contract": {
+    "schema": "schemas/vabench-release-result.schema.json",
+    "required_fields": [
+      "task_id",
+      "release_entry_id",
+      "backend",
+      "status",
+      "scores",
+      "artifacts"
+    ],
+    "status_values": [
+      "PASS",
+      "FAIL_STATIC",
+      "FAIL_DUT_COMPILE",
+      "FAIL_TB_COMPILE",
+      "FAIL_SIM_CORRECTNESS",
+      "FAIL_INFRA",
+      "PENDING"
+    ],
+    "evidence_schema": "schemas/vabench-evidence.schema.json",
+    "evidence_verdict_values": [
+      "not_certified",
+      "certified",
+      "quarantined"
+    ],
+    "spectre_final_judge": true,
+    "evas_pass_spectre_fail_is_hard_mismatch": true
+  },
+  "score_gate": {
+    "status": "score_enabled",
+    "score_claim_allowed": true,
+    "scored_entries": 74,
+    "scored_forms": 255,
+    "blocking_reason": "",
+    "finish_readiness_status": "ready_to_finish",
+    "ready_to_finish_release": true
+  },
+  "baseline_protocol": {
+    "status": "ready_for_baseline_runs",
+    "ready_for_baseline_runs": true,
+    "claim_allowed": false,
+    "minimal_lanes": [
+      "prompt_only_generation",
+      "evas_feedback_debug_generation",
+      "spectre_final_judge_confirmation"
+    ],
+    "required_result_fields": [
+      "model",
+      "task_id",
+      "release_entry_id",
+      "form",
+      "candidate_artifacts",
+      "evas_status",
+      "spectre_status",
+      "score",
+      "failure_taxonomy"
+    ],
+    "non_goals": [
+      "Do not present controller/RAG/SFT orchestration as the core contribution.",
+      "Do not tune on the release package or memorize benchmark gold."
+    ],
+    "unscored_rows_excluded": true
+  },
+  "speed_debug_protocol": {
+    "status": "measured_subset",
+    "claim_allowed": false,
+    "required_timing_fields": [
+      "raw_result.timing.evas_wall_time_s",
+      "raw_result.timing.spectre_wall_time_s",
+      "raw_result.timing.combined_wall_time_s"
+    ],
+    "timed_rows": 164
+  },
+  "commands": {
+    "refresh_package": "python3 runners/run_vabench_release_longrun.py",
+    "finish_after_bridge": "python3 runners/finish_vabench_release_after_bridge.py",
+    "primary_dual_rerun": "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
+    "enable_score_denominator": "python3 runners/enable_vabench_release_score_denominator.py",
+    "refresh_score_denominator": "python3 runners/report_vabench_release_score_denominator.py",
+    "refresh_baseline_gate": "python3 runners/report_vabench_release_baseline_artifact.py"
+  },
+  "claim_boundary": [
+    "This contract defines evaluator IO and score gates; it is not simulator certification evidence.",
+    "Spectre is the final judge for release scoring.",
+    "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
+    "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
+    "Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.",
+    "claim_gate_status=in_progress"
+  ]
+}

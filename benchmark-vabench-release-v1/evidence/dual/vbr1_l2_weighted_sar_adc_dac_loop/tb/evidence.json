@@ -1,0 +1,190 @@
+{
+  "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+  "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:tb",
+  "source_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+  "task_form": "tb",
+  "taxonomy": {
+    "level": "L2",
+    "category": "Data Converters",
+    "base_function": "Weighted SAR ADC/DAC loop"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/tb/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/tb/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/dac_weighted_8b.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sar_adc_weighted_8b.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sh_ideal.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/tb_sar_adc_dac_weighted_8b_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        1e-05
+      ],
+      "signals_compared": 13,
+      "samples": 1200,
+      "max_rmse_v": 9.648059767965755e-07,
+      "max_abs_v": 2.316561953552565e-05,
+      "mean_nrmse": 1.0033848671349727e-07,
+      "p95_nrmse": 1.072006640885084e-06,
+      "max_nrmse": 1.072006640885084e-06,
+      "per_signal": {
+        "clks": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_0": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_1": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_2": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_3": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_4": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_5": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_6": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "dout_7": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "rst_n": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vin": {
+          "rmse_v": 1.8372031183193564e-07,
+          "max_abs_v": 5.30959112565732e-07,
+          "span_v": 0.8999989809329453,
+          "nrmse": 2.0413391095342117e-07,
+          "kind": "analog"
+        },
+        "vin_sh": {
+          "rmse_v": 9.648059767965755e-07,
+          "max_abs_v": 2.316561953552565e-05,
+          "span_v": 0.9,
+          "nrmse": 1.072006640885084e-06,
+          "kind": "analog"
+        },
+        "vout": {
+          "rmse_v": 2.5334057841836372e-08,
+          "max_abs_v": 4.705882361566438e-08,
+          "span_v": 0.8964706,
+          "nrmse": 2.825977543695953e-08,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/dac_weighted_8b.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sar_adc_weighted_8b.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/sh_ideal.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/gold/tb_sar_adc_dac_weighted_8b_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

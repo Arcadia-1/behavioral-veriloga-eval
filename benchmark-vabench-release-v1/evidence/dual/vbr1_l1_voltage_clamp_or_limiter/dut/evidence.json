@@ -1,0 +1,58 @@
+{
+  "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
+  "task_id": "vbr1_l1_voltage_clamp_or_limiter:dut",
+  "source_task_id": "vbm1_voltage_clamp_dut",
+  "release_source_task_id": "vbm1_voltage_clamp_dut",
+  "task_form": "dut",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Analog Behavioral Signal Conditioning",
+    "base_function": "Voltage clamp or limiter"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_voltage_clamp_dut/evas_result.json",
+    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_voltage_clamp_dut/spectre_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/dut/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/dut/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_clamp_or_limiter/forms/dut/gold/dut.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_clamp_or_limiter/forms/dut/gold/tb_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_voltage_clamp_dut/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_voltage_clamp_dut/spectre_result.json",
+    "source": "main120 gold dual evidence from 2026-05-08",
+    "source_equivalence_source": "main120_staged_sources",
+    "simulator_rerun": false
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "main120_staged_sources",
+    "normalization": "Verilog-A token stream; Spectre ahdl_include path plus trailing whitespace",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_clamp_or_limiter/forms/dut/gold/dut.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_clamp_or_limiter/forms/dut/gold/tb_ref.scs"
+    ],
+    "evas_staged_sources": [
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_voltage_clamp_dut/staged/dut.va",
+      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_voltage_clamp_dut/staged/tb_ref.scs"
+    ],
+    "spectre_staged_sources": [
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_voltage_clamp_dut/staged/dut.va",
+      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_voltage_clamp_dut/staged/tb_ref.scs"
+    ],
+    "release_va_hash_count": 1,
+    "release_scs_hash_count": 1,
+    "evas_va_hash_count": 1,
+    "evas_scs_hash_count": 1,
+    "spectre_va_hash_count": 1,
+    "spectre_scs_hash_count": 1
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from historical main120 gold run and linked to release gold by source hash equivalence."
+}

@@ -598,7 +598,7 @@ def check_gain_trim_controller(rows: list[dict[str, float]]) -> tuple[bool, str]
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/gain_ctrl"
 
-    sample_times_ns = [20.0, 70.0, 100.0, 150.0, 178.0]
+    sample_times_ns = [20.0, 70.0, 150.0, 250.0, 310.0, 470.0, 590.0, 610.0]
     samples: list[float] = []
     for t_ns in sample_times_ns:
         value = sample_signal(rows, "gain_ctrl", t_ns * 1e-9)
@@ -607,14 +607,24 @@ def check_gain_trim_controller(rows: list[dict[str, float]]) -> tuple[bool, str]
         samples.append(value)
 
     reset_nominal = abs(samples[0] - 0.30) <= 0.04
-    low_meas_increases = samples[0] < samples[1] < samples[2]
-    high_meas_decreases = samples[2] > samples[3] > samples[4] - 0.02
+    low_meas_increases = samples[0] < samples[1] < samples[2] < samples[3]
+    reaches_upper_clamp = 0.83 <= samples[3] <= 0.86
+    high_meas_decreases = samples[3] > samples[4] > samples[5] > samples[6] - 0.02
+    reaches_lower_clamp = 0.04 <= samples[6] <= 0.07 and 0.04 <= samples[7] <= 0.07
     in_range = all(0.04 <= value <= 0.86 for value in samples)
-    ok = reset_nominal and low_meas_increases and high_meas_decreases and in_range
+    ok = (
+        reset_nominal
+        and low_meas_increases
+        and reaches_upper_clamp
+        and high_meas_decreases
+        and reaches_lower_clamp
+        and in_range
+    )
     values = ",".join(f"{value:.3f}" for value in samples)
     return ok, (
         f"gain_trim_samples={values} reset_nominal={reset_nominal} "
-        f"low_meas_increases={low_meas_increases} high_meas_decreases={high_meas_decreases} "
+        f"low_meas_increases={low_meas_increases} reaches_upper_clamp={reaches_upper_clamp} "
+        f"high_meas_decreases={high_meas_decreases} reaches_lower_clamp={reaches_lower_clamp} "
         f"in_range={in_range}"
     )
 
@@ -704,6 +714,147 @@ def check_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return ok, f"sar_rdy_sequence={rdy_sequence} expected=LHL code176={code} expected_code=1010"
 
 
+def check_file_metric_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "done"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/done"
+
+    crossings = _crossing_times(rows, "vin")
+    if len(crossings) != 1:
+        return False, f"expected_one_vin_crossing got={len(crossings)}"
+
+    cross_t = crossings[0]
+    before = sample_signal(rows, "done", max(0.0, cross_t - 10e-9))
+    after = sample_signal(rows, "done", cross_t + 10e-9)
+    final = rows[-1].get("done")
+    if before is None or after is None or final is None:
+        return False, "missing_done_sample"
+
+    cross_window_ok = 25e-9 <= cross_t <= 36e-9
+    done_low_before = before < 0.1
+    done_high_after = after > 0.8 and final > 0.8
+    ok = cross_window_ok and done_low_before and done_high_after
+    return ok, (
+        f"cross_t={cross_t:.3e} cross_window_ok={cross_window_ok} "
+        f"done_before={before:.3f} done_after={after:.3f} done_final={final:.3f}"
+    )
+
+
+def check_pfd_reset_race(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "div", "up", "dn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/ref/div/up/dn"
+
+    up_edges = _crossing_times(rows, "up")
+    dn_edges = _crossing_times(rows, "dn")
+    ref_edges = _crossing_times(rows, "ref")
+    div_edges = _crossing_times(rows, "div")
+    if len(ref_edges) < 4 or len(div_edges) < 4:
+        return False, f"not_enough_input_edges ref={len(ref_edges)} div={len(div_edges)}"
+
+    high_rows = [row for row in rows if row.get("up", 0.0) > 0.45 or row.get("dn", 0.0) > 0.45]
+    overlap_rows = [row for row in rows if row.get("up", 0.0) > 0.45 and row.get("dn", 0.0) > 0.45]
+    final_clear = rows[-1].get("up", 1.0) < 0.1 and rows[-1].get("dn", 1.0) < 0.1
+    pulses_exist = len(up_edges) >= 2 and len(dn_edges) >= 2 and bool(high_rows)
+    overlap_frac = len(overlap_rows) / max(len(rows), 1)
+    overlap_bounded = overlap_frac <= 0.02
+    ok = pulses_exist and overlap_bounded and final_clear
+    return ok, (
+        f"up_edges={len(up_edges)} dn_edges={len(dn_edges)} "
+        f"overlap_frac={overlap_frac:.4f} final_clear={final_clear}"
+    )
+
+
+def check_resettable_counter_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_in", "rst_n", "clk_out", "lock"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk_in/rst_n/clk_out/lock"
+
+    first = rows[0]
+    ratio = 0
+    for idx in range(8):
+        signal = f"div_code_{idx}"
+        if signal not in first:
+            return False, "missing div_code_*"
+        if first[signal] > 0.45:
+            ratio |= 1 << idx
+    ratio = max(ratio, 1)
+
+    in_edges = _crossing_times(rows, "clk_in")
+    out_edges = _crossing_times(rows, "clk_out")
+    lock_edges = _crossing_times(rows, "lock")
+    if len(in_edges) < max(12, ratio * 2) or len(out_edges) < 3:
+        return False, f"not_enough_edges in={len(in_edges)} out={len(out_edges)} ratio={ratio}"
+
+    intervals: list[int] = []
+    for start_t, end_t in zip(out_edges, out_edges[1:]):
+        intervals.append(sum(1 for edge_t in in_edges if start_t < edge_t <= end_t))
+    measured = intervals[1:] if len(intervals) > 2 else intervals
+    ratio_ok = bool(measured) and all(count == ratio for count in measured)
+    reset_low = sample_signal(rows, "clk_out", 1e-9)
+    reset_holds_low = reset_low is not None and reset_low < 0.1
+    lock_final = rows[-1].get("lock", 0.0) > 0.8
+    ok = ratio == 5 and ratio_ok and reset_holds_low and lock_final
+    reset_text = f"{reset_low:.3f}" if reset_low is not None else "nan"
+    return ok, (
+        f"ratio={ratio} intervals={measured[:8]} reset_low={reset_text} "
+        f"lock_edges={len(lock_edges)} lock_final={lock_final}"
+    )
+
+
+def check_settling_time_measurement_tb(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "step", "vout", "done"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/step/vout/done"
+
+    sample_times_ns = [40.0, 80.0, 119.0, 121.0, 150.0]
+    values: list[float] = []
+    done_values: list[float] = []
+    for t_ns in sample_times_ns:
+        vout = sample_signal(rows, "vout", t_ns * 1e-9)
+        done = sample_signal(rows, "done", t_ns * 1e-9)
+        if vout is None or done is None:
+            return False, f"missing_sample_at={t_ns:g}ns"
+        values.append(vout)
+        done_values.append(done)
+
+    monotone = values[0] < values[1] < values[2] <= values[3] + 0.02 <= values[4] + 0.02
+    boundary_ok = done_values[2] < 0.1 and done_values[3] > 0.8 and done_values[4] > 0.8
+    late_settled = values[4] > 0.75
+    ok = monotone and boundary_ok and late_settled
+    value_text = ",".join(f"{value:.3f}" for value in values)
+    done_text = ",".join(f"{value:.3f}" for value in done_values)
+    return ok, (
+        f"vout_samples={value_text} done_samples={done_text} "
+        f"monotone={monotone} boundary_ok={boundary_ok} late_settled={late_settled}"
+    )
+
+
+def check_vco_phase_integrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vctrl", "phase", "clk"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vctrl/phase/clk"
+
+    phase_values = [row["phase"] for row in rows]
+    phase_span = max(phase_values) - min(phase_values)
+    clk_edges = _crossing_times(rows, "clk")
+    early_edges = [time for time in clk_edges if 10e-9 <= time <= 80e-9]
+    late_edges = [time for time in clk_edges if 90e-9 <= time <= rows[-1]["time"]]
+    phase_1ns = sample_signal(rows, "phase", 1e-9)
+    phase_10ns = sample_signal(rows, "phase", 10e-9)
+    startup_ok = phase_1ns is not None and 0.025 <= phase_1ns <= 0.06
+    phase_progress = phase_10ns is not None and phase_10ns > 0.25
+    span_ok = phase_span > 0.85
+    edge_rate_ok = len(clk_edges) >= 5 and len(late_edges) >= len(early_edges)
+    ok = startup_ok and phase_progress and span_ok and edge_rate_ok
+    return ok, (
+        f"phase_1ns={(phase_1ns if phase_1ns is not None else float('nan')):.3f} "
+        f"phase_10ns={(phase_10ns if phase_10ns is not None else float('nan')):.3f} "
+        f"phase_span={phase_span:.3f} clk_edges={len(clk_edges)} "
+        f"early_edges={len(early_edges)} late_edges={len(late_edges)}"
+    )
+
+
 MAIN120_STABLE_CHECKS = {
     "vbm1_background_calibration_accumulator": check_background_calibration_accumulator,
     "vbm1_barrel_pointer_window": check_barrel_pointer_window,
@@ -725,10 +876,15 @@ MAIN120_STABLE_CHECKS = {
     "vbm1_offset_calibration_fsm": check_offset_calibration_fsm,
     "vbm1_offset_comparator": check_offset_comparator,
     "vbm1_peak_detector": check_peak_detector,
+    "vbm1_pfd_reset_race": check_pfd_reset_race,
     "vbm1_precision_rectifier": check_precision_rectifier,
+    "vbm1_file_metric_writer": check_file_metric_writer,
+    "vbm1_resettable_counter_divider": check_resettable_counter_divider,
     "vbm1_resettable_integrator": check_resettable_integrator,
     "vbm1_sar_logic_4b": check_sar_logic_4b,
+    "vbm1_settling_time_measurement_tb": check_settling_time_measurement_tb,
     "vbm1_slew_rate_limiter": check_slew_rate_limiter,
+    "vbm1_vco_phase_integrator": check_vco_phase_integrator,
     "vbm1_voltage_clamp": check_voltage_clamp,
 }
 

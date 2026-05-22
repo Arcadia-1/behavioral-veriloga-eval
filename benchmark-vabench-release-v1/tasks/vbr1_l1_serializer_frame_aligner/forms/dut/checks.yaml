@@ -1,0 +1,28 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  checks:
+    - "frame_pulse_present_for_each_loaded_word"
+    - "serialized_bits_match_word0xA5_then_0x3C"
+    - "frame_pulse_width_is_single_bit_window"
+  public_observables:
+    - "clk"
+    - "frame"
+    - "sout"
+parity:
+  reference: "spectre"
+  status: "pending_until_evas_spectre_rerun"
+  notes:
+    - "Function-checked DUT companion copied from release e2e gold and awaits fresh EVAS/Spectre dual rerun."

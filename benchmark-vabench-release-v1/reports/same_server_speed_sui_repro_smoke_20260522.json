@@ -1,0 +1,1535 @@
+{
+  "schema_version": "same-server-speed.v1",
+  "artifact_kind": "candidate_same_server_evas_spectre_timing",
+  "date": "2026-05-22",
+  "created_at": "2026-05-22T00:23:12",
+  "claim_allowed": false,
+  "no_claim_reason": "Same-server timing is measured directly on one host and the artifact emits checker/waveform accuracy gates. Paper-facing speed claims should use only accuracy-gated rows and still need repeated cold/warm runs.",
+  "evas_only_no_claim_reason": "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing.",
+  "host": "thu-sui",
+  "selected_rows": 4,
+  "jobs": 4,
+  "evas_modes": [
+    "strict_current",
+    "profile_fast_skip_source_error_control"
+  ],
+  "spectre_modes": [
+    "ax"
+  ],
+  "output_root": "results/same-server-speed-sui-repro-smoke-20260522",
+  "results": [
+    {
+      "backend": "spectre",
+      "mode": "ax",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax/tb_loop_filter_abstraction.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax/tran_spectre.csv",
+        "rows": 532,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 4.652382703032345,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.014280099999999999,
+        "aggregate_elapsed_s": 2.19,
+        "reported_wall_s": 2.19,
+        "accepted_tran_steps": 531.0
+      },
+      "command": "spectre -64 tb_loop_filter_abstraction.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax/tb_loop_filter_abstraction.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/ax",
+      "fixture_notes": [
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "stdout_tail": "     1 (5.1 %)       2 (6.1 %)       3 (4.6 %)\n         4 (5.1 %)       5 (5.6 %)       6 (4.6 %)       7 (4.6 %)\n         8 (5.1 %)       9 (50.0 %)     10 (4.6 %)      11 (5.6 %)\n        12 (5.1 %)      13 (7.1 %)      14 (6.2 %)      15 (6.1 %)\n        16 (4.6 %)      17 (5.6 %)      18 (4.6 %)      19 (5.6 %)\n        20 (4.6 %)      21 (5.1 %)      22 (46.7 %)     23 (4.6 %)\n        24 (4.6 %)      25 (5.6 %)      26 (5.1 %)      27 (4.6 %)\n        28 (5.7 %)      29 (5.1 %)      30 (4.6 %)      31 (5.6 %)\n        32 (4.6 %)      33 (4.6 %)      34 (4.6 %)      35 (6.7 %)\n        36 (9.6 %)      37 (6.6 %)      38 (8.1 %)      39 (7.2 %)\n        40 (5.1 %)      41 (4.6 %)      42 (5.1 %)      43 (6.6 %)\n        44 (5.1 %)      45 (5.1 %)      46 (6.1 %)      47 (5.6 %)\n        48 (45.9 %)     49 (13.8 %)     50 (6.1 %)      51 (5.1 %)\n        52 (4.6 %)      53 (5.1 %)      54 (4.6 %)      55 (5.1 %)\n        56 (7.1 %)      57 (5.1 %)      58 (5.1 %)      59 (5.1 %)\n        60 (13.8 %)     61 (4.6 %)      62 (4.6 %)      63 (5.1 %)\n        Total: 491.7%\nInitial condition solution time: CPU = 1.516 ms, elapsed = 531.912 us.\nIntrinsic tran analysis time:    CPU = 21.942 ms, elapsed = 12.171 ms.\nTotal time required for tran analysis `tran': CPU = 25.166 ms, elapsed = 14.2801 ms, util. = 176%.\nTime accumulated: CPU = 1.04961 s, elapsed = 2.18726 s.\nPeak resident memory used = 132 Mbytes.\n\nLicensing Information:\nLic Summary:\n[00:23:06.409081] Cdslmd servers:5280@thu-sui\n[00:23:06.409127] Feature usage summary:\n[00:23:06.409132] Virtuoso_Multi_mode_Simulation\n[00:23:06.409133] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (12:23:06 AM, Fri May 22, 2026):\nTime used: CPU = 1.06 s, elapsed = 2.19 s, util. = 48.2%.\nTime spent in licensing: elapsed = 57.5 ms.\nPeak memory used = 132 Mbytes.\nSimulation started at: 12:23:04 AM, Fri May 22, 2026, ended at: 12:23:06 AM, Fri May 22, 2026, with elapsed time (wall clock): 2.19 s.\nspectre completes with 0 errors, 2 warnings, and 9 notices.\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_tb"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/strict_current/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 2.034987478982657,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.7363999999999999,
+        "total_elapsed_s": 0.8,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.132 later_pos_delta=0.016 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/strict_current",
+      "stdout_tail": "**************************\nTransient Analysis `tran': time = (0 s -> 80 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 2266\n    dynamic_step_shrinks = 24313\n    err_ratio_skipped_outputs = 84588\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 155\n    model_breakpoint_clamps = 95\n    output_step_clamps = 145\n    source_breakpoint_clamps = 244\n    steps_total = 42294\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 736.4 ms, elapsed = 736.4 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/strict_current/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "self"
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 1.931911312522137e-05,
+            "max_abs_v": 0.0004334664410167166,
+            "mean_nrmse": 8.68315720541335e-06,
+            "p95_nrmse": 4.339041878833234e-05,
+            "max_nrmse": 4.339041878833234e-05,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 1.931911312522137e-05,
+                "max_abs_v": 0.0004334664410167166,
+                "span_v": 0.44523914874996023,
+                "nrmse": 4.339041878833234e-05,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.5196224264701248e-08,
+                "max_abs_v": 4.698940675451624e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 2.5367238734409247e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.2717815008945763,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0089,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 452\n    dynamic_step_shrinks = 0\n    err_ratio_skipped_outputs = 904\n    err_ratio_skipped_sources = 1356\n    min_step_clamps = 12\n    model_breakpoint_clamps = 95\n    output_step_clamps = 80\n    source_breakpoint_clamps = 214\n    steps_total = 452\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 8.9 ms, elapsed = 8.9 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/tb/gold/vbr1_l1_loop_filter_abstraction_tb/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "passed",
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "signals_compared": 5,
+          "samples": 1200,
+          "max_rmse_v": 2.1857490350396668e-05,
+          "max_abs_v": 0.0004883589653215115,
+          "mean_nrmse": 9.8226655754717e-06,
+          "p95_nrmse": 4.909156774694741e-05,
+          "max_nrmse": 4.909156774694741e-05,
+          "per_signal": {
+            "clk": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "metric": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "out": {
+              "rmse_v": 2.1857490350396668e-05,
+              "max_abs_v": 0.0004883589653215115,
+              "span_v": 0.4452392,
+              "nrmse": 4.909156774694741e-05,
+              "kind": "analog"
+            },
+            "rst": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "vin": {
+              "rmse_v": 1.3035426701843993e-08,
+              "max_abs_v": 7.240192567703474e-08,
+              "span_v": 0.5990509457241846,
+              "nrmse": 2.176013041108823e-08,
+              "kind": "analog"
+            }
+          }
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 2.5653522749550363e-06,
+            "max_abs_v": 5.4892524476546356e-05,
+            "mean_nrmse": 1.1556888692591349e-06,
+            "p95_nrmse": 5.761739476117638e-06,
+            "max_nrmse": 5.761739476117638e-06,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 2.5653522749550363e-06,
+                "max_abs_v": 5.4892524476546356e-05,
+                "span_v": 0.4452392,
+                "nrmse": 5.761739476117638e-06,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.0007039244433637e-08,
+                "max_abs_v": 3.3333333593343895e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 1.6704870178035702e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax/tb_loop_filter_abstraction.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax/tran_spectre.csv",
+        "rows": 532,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 4.684412720846012,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 15.511,
+        "aggregate_elapsed_s": 2.18,
+        "reported_wall_s": 2.18,
+        "accepted_tran_steps": 531.0
+      },
+      "command": "spectre -64 tb_loop_filter_abstraction.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax/tb_loop_filter_abstraction.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/ax",
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold"
+      ],
+      "notes": [
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "stdout_tail": "1 %)       3 (4.6 %)\n         4 (5.1 %)       5 (5.6 %)       6 (4.6 %)       7 (4.6 %)\n         8 (5.1 %)       9 (50.0 %)     10 (4.6 %)      11 (5.6 %)\n        12 (5.1 %)      13 (7.1 %)      14 (6.2 %)      15 (6.1 %)\n        16 (4.6 %)      17 (5.6 %)      18 (4.6 %)      19 (5.6 %)\n        20 (4.6 %)      21 (5.1 %)      22 (46.7 %)     23 (4.6 %)\n        24 (4.6 %)      25 (5.6 %)      26 (5.1 %)      27 (4.6 %)\n        28 (5.6 %)      29 (5.1 %)      30 (4.6 %)      31 (5.6 %)\n        32 (4.6 %)      33 (4.6 %)      34 (4.6 %)      35 (6.7 %)\n        36 (9.6 %)      37 (6.6 %)      38 (8.1 %)      39 (7.2 %)\n        40 (5.1 %)      41 (4.6 %)      42 (5.1 %)      43 (6.6 %)\n        44 (5.1 %)      45 (5.1 %)      46 (6.1 %)      47 (5.6 %)\n        48 (45.9 %)     49 (13.8 %)     50 (6.1 %)      51 (5.1 %)\n        52 (4.6 %)      53 (5.1 %)      54 (4.6 %)      55 (5.1 %)\n        56 (7.1 %)      57 (5.1 %)      58 (5.1 %)      59 (5.1 %)\n        60 (13.8 %)     61 (4.6 %)      62 (4.6 %)      63 (5.1 %)\n        Total: 491.5%\nInitial condition solution time: CPU = 1.347 ms, elapsed = 355.959 us.\nIntrinsic tran analysis time:    CPU = 24.119 ms, elapsed = 13.376 ms.\nTotal time required for tran analysis `tran': CPU = 27.12 ms, elapsed = 15.511 ms, util. = 175%.\nTime accumulated: CPU = 1.00466 s, elapsed = 2.17262 s.\nPeak resident memory used = 129 Mbytes.\n\nLicensing Information:\nLic Summary:\n[00:23:06.408923] Cdslmd servers:5280@thu-sui\n[00:23:06.408948] Feature usage summary:\n[00:23:06.408949] Virtuoso_Multi_mode_Simulation\n[00:23:06.408950] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (12:23:06 AM, Fri May 22, 2026):\nTime used: CPU = 1.01 s, elapsed = 2.18 s, util. = 46.5%.\nTime spent in licensing: elapsed = 256 ms, percentage of total = 11.7%.\nPeak memory used = 129 Mbytes.\nSimulation started at: 12:23:04 AM, Fri May 22, 2026, ended at: 12:23:06 AM, Fri May 22, 2026, with elapsed time (wall clock): 2.18 s.\nspectre completes with 0 errors, 2 warnings, and 9 notices.\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_dut"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/strict_current/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.5486533648800105,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.7599,
+        "total_elapsed_s": 0.8,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.132 later_pos_delta=0.016 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/strict_current",
+      "stdout_tail": "************************\nTransient Analysis `tran': time = (0 s -> 80 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 2266\n    dynamic_step_shrinks = 24313\n    err_ratio_skipped_outputs = 84588\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 155\n    model_breakpoint_clamps = 95\n    output_step_clamps = 145\n    source_breakpoint_clamps = 244\n    steps_total = 42294\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 759.9 ms, elapsed = 759.9 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/strict_current/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "self"
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 1.931911312522137e-05,
+            "max_abs_v": 0.0004334664410167166,
+            "mean_nrmse": 8.68315720541335e-06,
+            "p95_nrmse": 4.339041878833234e-05,
+            "max_nrmse": 4.339041878833234e-05,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 1.931911312522137e-05,
+                "max_abs_v": 0.0004334664410167166,
+                "span_v": 0.44523914874996023,
+                "nrmse": 4.339041878833234e-05,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.5196224264701248e-08,
+                "max_abs_v": 4.698940675451624e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 2.5367238734409247e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.8085125430952758,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0091,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/profile_fast_skip_source_error_control",
+      "stdout_tail": "**************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 452\n    dynamic_step_shrinks = 0\n    err_ratio_skipped_outputs = 904\n    err_ratio_skipped_sources = 1356\n    min_step_clamps = 12\n    model_breakpoint_clamps = 95\n    output_step_clamps = 80\n    source_breakpoint_clamps = 214\n    steps_total = 452\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 9.1 ms, elapsed = 9.1 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/dut/gold/vbr1_l1_loop_filter_abstraction_dut/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "passed",
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "signals_compared": 5,
+          "samples": 1200,
+          "max_rmse_v": 2.1857490350396668e-05,
+          "max_abs_v": 0.0004883589653215115,
+          "mean_nrmse": 9.8226655754717e-06,
+          "p95_nrmse": 4.909156774694741e-05,
+          "max_nrmse": 4.909156774694741e-05,
+          "per_signal": {
+            "clk": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "metric": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "out": {
+              "rmse_v": 2.1857490350396668e-05,
+              "max_abs_v": 0.0004883589653215115,
+              "span_v": 0.4452392,
+              "nrmse": 4.909156774694741e-05,
+              "kind": "analog"
+            },
+            "rst": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "vin": {
+              "rmse_v": 1.3035426701843993e-08,
+              "max_abs_v": 7.240192567703474e-08,
+              "span_v": 0.5990509457241846,
+              "nrmse": 2.176013041108823e-08,
+              "kind": "analog"
+            }
+          }
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 2.5653522749550363e-06,
+            "max_abs_v": 5.4892524476546356e-05,
+            "mean_nrmse": 1.1556888692591349e-06,
+            "p95_nrmse": 5.761739476117638e-06,
+            "max_nrmse": 5.761739476117638e-06,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 2.5653522749550363e-06,
+                "max_abs_v": 5.4892524476546356e-05,
+                "span_v": 0.4452392,
+                "nrmse": 5.761739476117638e-06,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.0007039244433637e-08,
+                "max_abs_v": 3.3333333593343895e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 1.6704870178035702e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax/tb_adc_dac_source_sweep_flow.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax/tran_spectre.csv",
+        "rows": 510,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 4.472621638095006,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.0134301,
+        "aggregate_elapsed_s": 1.79,
+        "reported_wall_s": 1.79,
+        "accepted_tran_steps": 509.0
+      },
+      "command": "spectre -64 tb_adc_dac_source_sweep_flow.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax/tb_adc_dac_source_sweep_flow.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/ax",
+      "fixture_notes": [
+        "materialized adc_dac_source_sweep_flow.va from benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+      ],
+      "notes": [
+        "quantized_recon_mismatches=0/38 metric_hi=311"
+      ],
+      "stdout_tail": " %)       1 (6.2 %)       2 (5.6 %)       3 (11.1 %)\n         4 (6.2 %)       5 (46.9 %)      6 (6.2 %)       7 (6.9 %)\n         8 (6.2 %)       9 (8.2 %)      10 (6.2 %)      11 (6.9 %)\n        12 (5.6 %)      13 (6.3 %)      14 (16.9 %)     15 (6.8 %)\n        16 (6.2 %)      17 (5.6 %)      18 (14.9 %)     19 (6.2 %)\n        20 (5.7 %)      21 (6.8 %)      22 (6.8 %)      23 (5.6 %)\n        24 (9.9 %)      25 (6.2 %)      26 (6.2 %)      27 (6.2 %)\n        28 (6.2 %)      29 (6.9 %)      30 (29.6 %)     31 (6.2 %)\n        32 (5.6 %)      33 (6.2 %)      34 (5.6 %)      35 (5.6 %)\n        36 (6.2 %)      37 (5.6 %)      38 (11.9 %)     39 (5.6 %)\n        40 (6.9 %)      41 (7.4 %)      42 (7.5 %)      43 (5.6 %)\n        44 (6.8 %)      45 (6.8 %)      46 (6.8 %)      47 (5.6 %)\n        48 (5.6 %)      49 (6.2 %)      50 (6.9 %)      51 (6.2 %)\n        52 (8.7 %)      53 (5.7 %)      54 (5.7 %)      55 (6.2 %)\n        56 (9.9 %)      57 (5.7 %)      58 (7.5 %)      59 (5.6 %)\n        60 (5.6 %)      61 (5.7 %)      62 (6.2 %)      63 (6.2 %)\n        Total: 505.5%\nInitial condition solution time: CPU = 351 us, elapsed = 352.859 us.\nIntrinsic tran analysis time:    CPU = 20.537 ms, elapsed = 11.492 ms.\nTotal time required for tran analysis `tran': CPU = 23.495 ms, elapsed = 13.4301 ms, util. = 175%.\nTime accumulated: CPU = 817.949 ms, elapsed = 1.7864 s.\nPeak resident memory used = 129 Mbytes.\n\nLicensing Information:\nLic Summary:\n[00:23:09.506938] Cdslmd servers:5280@thu-sui\n[00:23:09.506958] Feature usage summary:\n[00:23:09.506959] Virtuoso_Multi_mode_Simulation\n[00:23:09.506959] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (12:23:09 AM, Fri May 22, 2026):\nTime used: CPU = 825 ms, elapsed = 1.79 s, util. = 46%.\nTime spent in licensing: elapsed = 49 ms.\nPeak memory used = 130 Mbytes.\nSimulation started at: 12:23:07 AM, Fri May 22, 2026, ended at: 12:23:09 AM, Fri May 22, 2026, with elapsed time (wall clock): 1.79 s.\nspectre completes with 0 errors, 2 warnings, and 9 notices.\n",
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/strict_current/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.5599773949943483,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.7629,
+        "total_elapsed_s": 0.8,
+        "accepted_tran_steps": 445.0
+      },
+      "fixture_notes": [
+        "materialized adc_dac_source_sweep_flow.va from benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "quantized_recon_mismatches=0/38 metric_hi=279"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/strict_current",
+      "stdout_tail": "********************\nTransient Analysis `tran': time = (0 s -> 80 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 445\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 2323\n    dynamic_step_shrinks = 25570\n    err_ratio_skipped_outputs = 86096\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 172\n    model_breakpoint_clamps = 92\n    output_step_clamps = 145\n    source_breakpoint_clamps = 240\n    steps_total = 43048\nModel event counters:\n    model[0] adc_dac_source_sweep_flow_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 762.9 ms, elapsed = 762.9 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/strict_current/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "self"
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 0.0339712480708806,
+            "max_abs_v": 0.060059267780247616,
+            "mean_nrmse": 0.008088396382840635,
+            "p95_nrmse": 0.04044196198914357,
+            "max_nrmse": 0.04044196198914357,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 0.0339712480708806,
+                "max_abs_v": 0.060059267780247616,
+                "span_v": 0.8400000000000001,
+                "nrmse": 0.04044196198914357,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.5940047682375775e-08,
+                "max_abs_v": 4.845250001217494e-08,
+                "span_v": 0.7999999999999999,
+                "nrmse": 1.992505960296972e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.7967399801127613,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0092,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 445.0
+      },
+      "fixture_notes": [
+        "materialized adc_dac_source_sweep_flow.va from benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "quantized_recon_mismatches=0/39 metric_hi=276"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "***********************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 445\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 445\n    dynamic_step_shrinks = 0\n    err_ratio_skipped_outputs = 890\n    err_ratio_skipped_sources = 1780\n    min_step_clamps = 9\n    model_breakpoint_clamps = 90\n    output_step_clamps = 80\n    source_breakpoint_clamps = 211\n    steps_total = 445\nModel event counters:\n    model[0] adc_dac_source_sweep_flow_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 9.2 ms, elapsed = 9.2 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/vbr1_l2_adc_dac_source_sweep_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "passed",
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "signals_compared": 5,
+          "samples": 1200,
+          "max_rmse_v": 7.835203901623437e-06,
+          "max_abs_v": 6.899497261758647e-05,
+          "mean_nrmse": 2.0119986314622583e-06,
+          "p95_nrmse": 1.0045133207209534e-05,
+          "max_nrmse": 1.0045133207209534e-05,
+          "per_signal": {
+            "clk": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "metric": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "out": {
+              "rmse_v": 7.835203901623437e-06,
+              "max_abs_v": 6.899497261758647e-05,
+              "span_v": 0.78,
+              "nrmse": 1.0045133207209534e-05,
+              "kind": "analog"
+            },
+            "rst": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "vin": {
+              "rmse_v": 1.1887960081404488e-08,
+              "max_abs_v": 6.969876498175154e-08,
+              "span_v": 0.7999999999999999,
+              "nrmse": 1.485995010175561e-08,
+              "kind": "analog"
+            }
+          }
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 0.033971030784773135,
+            "max_abs_v": 0.06000000000000005,
+            "mean_nrmse": 0.008088343908037487,
+            "p95_nrmse": 0.04044170331520611,
+            "max_nrmse": 0.04044170331520611,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 0.033971030784773135,
+                "max_abs_v": 0.06000000000000005,
+                "span_v": 0.8400000000000001,
+                "nrmse": 0.04044170331520611,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.2979985059874768e-08,
+                "max_abs_v": 3.333333342681044e-08,
+                "span_v": 0.7999999999999999,
+                "nrmse": 1.6224981324843463e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax/tb_loop_filter_abstraction.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax/tran_spectre.csv",
+        "rows": 532,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 4.295299035962671,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.0138559,
+        "aggregate_elapsed_s": 1.66,
+        "reported_wall_s": 1.66,
+        "accepted_tran_steps": 531.0
+      },
+      "command": "spectre -64 tb_loop_filter_abstraction.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax/tb_loop_filter_abstraction.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/spectre/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/ax",
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold",
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+      ],
+      "notes": [
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "stdout_tail": " no\n    skipdc = no\n    reltol = 1e-03\n    abstol(V) = 1 uV\n    abstol(I) = 1 pA\n    temp = 27 C\n    tnom = 27 C\n    tempeffects = all\n    errpreset = moderate\n    method = trap\n    lteratio = 3.5\n    relref = sigglobal\n    cmin = 0 F\n    gmin = 1 pS\n    rabsshort = 1 mOhm\n\n\nNotice from spectre during transient analysis `tran'.\n    Multithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   5       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             531\n\nMaximum value achieved for any signal of each quantity: \nV: V(rst) = 900 mV\nI: I(Vclk:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (2.0 %)      11 (8.1 %)      16 (2.0 %)      20 (2.0 %)\n        32 (4.7 %)      34 (43.3 %)     38 (2.0 %)      42 (1.4 %)\n        46 (2.7 %)      \n        Total: 76.2%\nInitial condition solution time: CPU = 376 us, elapsed = 375.986 us.\nIntrinsic tran analysis time:    CPU = 21.949 ms, elapsed = 11.8749 ms.\nTotal time required for tran analysis `tran': CPU = 24.945 ms, elapsed = 13.8559 ms, util. = 180%.\nTime accumulated: CPU = 786.278 ms, elapsed = 1.6488 s.\nPeak resident memory used = 128 Mbytes.\n\nLicensing Information:\nLic Summary:\n[00:23:11.337434] Cdslmd servers:5280@thu-sui\n[00:23:11.337455] Feature usage summary:\n[00:23:11.337460] Virtuoso_Multi_mode_Simulation\n[00:23:11.337460] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (12:23:11 AM, Fri May 22, 2026):\nTime used: CPU = 795 ms, elapsed = 1.66 s, util. = 48%.\nTime spent in licensing: elapsed = 60.4 ms.\nPeak memory used = 128 Mbytes.\nSimulation started at: 12:23:09 AM, Fri May 22, 2026, ended at: 12:23:11 AM, Fri May 22, 2026, with elapsed time (wall clock): 1.66 s.\nspectre completes with 0 errors, 2 warnings, and 9 notices.\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "task_id": "vbr1_l1_loop_filter_abstraction_bugfix"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/strict_current/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.5369689310900867,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.7556,
+        "total_elapsed_s": 0.8,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold",
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.132 later_pos_delta=0.016 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/strict_current",
+      "stdout_tail": "*****************\nTransient Analysis `tran': time = (0 s -> 80 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 2266\n    dynamic_step_shrinks = 24313\n    err_ratio_skipped_outputs = 84588\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 155\n    model_breakpoint_clamps = 95\n    output_step_clamps = 145\n    source_breakpoint_clamps = 244\n    steps_total = 42294\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 755.6 ms, elapsed = 755.6 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/strict_current/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "self"
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 1.931911312522137e-05,
+            "max_abs_v": 0.0004334664410167166,
+            "mean_nrmse": 8.68315720541335e-06,
+            "p95_nrmse": 4.339041878833234e-05,
+            "max_nrmse": 4.339041878833234e-05,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 1.931911312522137e-05,
+                "max_abs_v": 0.0004334664410167166,
+                "span_v": 0.44523914874996023,
+                "nrmse": 4.339041878833234e-05,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.5196224264701248e-08,
+                "max_abs_v": 4.698940675451624e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 2.5367238734409247e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "csv_path": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.7130752189550549,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0092,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "testbench source: benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold",
+        "materialized loop_filter_abstraction.va from benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ],
+      "result_root": "results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/profile_fast_skip_source_error_control",
+      "stdout_tail": "*******************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 452\n    dynamic_step_shrinks = 0\n    err_ratio_skipped_outputs = 904\n    err_ratio_skipped_sources = 1356\n    min_step_clamps = 12\n    model_breakpoint_clamps = 95\n    output_step_clamps = 80\n    source_breakpoint_clamps = 214\n    steps_total = 452\nModel event counters:\n    model[0] loop_filter_abstraction_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 9.2 ms, elapsed = 9.2 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-repro-smoke-20260522/evas/vbr1_l1_loop_filter_abstraction/bugfix/fixed/vbr1_l1_loop_filter_abstraction_bugfix/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "passed",
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "signals_compared": 5,
+          "samples": 1200,
+          "max_rmse_v": 2.1857490350396668e-05,
+          "max_abs_v": 0.0004883589653215115,
+          "mean_nrmse": 9.8226655754717e-06,
+          "p95_nrmse": 4.909156774694741e-05,
+          "max_nrmse": 4.909156774694741e-05,
+          "per_signal": {
+            "clk": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "metric": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "out": {
+              "rmse_v": 2.1857490350396668e-05,
+              "max_abs_v": 0.0004883589653215115,
+              "span_v": 0.4452392,
+              "nrmse": 4.909156774694741e-05,
+              "kind": "analog"
+            },
+            "rst": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "vin": {
+              "rmse_v": 1.3035426701843993e-08,
+              "max_abs_v": 7.240192567703474e-08,
+              "span_v": 0.5990509457241846,
+              "nrmse": 2.176013041108823e-08,
+              "kind": "analog"
+            }
+          }
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 2.5653522749550363e-06,
+            "max_abs_v": 5.4892524476546356e-05,
+            "mean_nrmse": 1.1556888692591349e-06,
+            "p95_nrmse": 5.761739476117638e-06,
+            "max_nrmse": 5.761739476117638e-06,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 2.5653522749550363e-06,
+                "max_abs_v": 5.4892524476546356e-05,
+                "span_v": 0.4452392,
+                "nrmse": 5.761739476117638e-06,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.0007039244433637e-08,
+                "max_abs_v": 3.3333333593343895e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 1.6704870178035702e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "mode_summary": [
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 4,
+        "pass_count": 4,
+        "nonpass_count": 0,
+        "total_wall_time_s": 3.590109243057668,
+        "mean_wall_time_s": 0.897527310764417,
+        "geomean_wall_time_s": 0.8742543561415943
+      },
+      {
+        "backend": "evas",
+        "mode": "strict_current",
+        "runs": 4,
+        "pass_count": 4,
+        "nonpass_count": 0,
+        "total_wall_time_s": 6.680587169947103,
+        "mean_wall_time_s": 1.6701467924867757,
+        "geomean_wall_time_s": 1.6579630173842963
+      },
+      {
+        "backend": "spectre",
+        "mode": "ax",
+        "runs": 4,
+        "pass_count": 4,
+        "nonpass_count": 0,
+        "total_wall_time_s": 18.104716097936034,
+        "mean_wall_time_s": 4.5261790244840086,
+        "geomean_wall_time_s": 4.523468155328715
+      }
+    ],
+    "accuracy_gate_summary": [
+      {
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 4,
+        "pass_count": 4,
+        "fail_count": 0,
+        "blocked_count": 0,
+        "missing_count": 0
+      },
+      {
+        "mode": "strict_current",
+        "runs": 4,
+        "pass_count": 4,
+        "fail_count": 0,
+        "blocked_count": 0,
+        "missing_count": 0
+      }
+    ],
+    "speedups": [
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "bugfix",
+        "variant": "fixed",
+        "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.295299035962671,
+        "evas_wall_time_s": 0.7130752189550549,
+        "spectre_over_evas_speedup": 6.023626851395888
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "bugfix",
+        "variant": "fixed",
+        "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.295299035962671,
+        "evas_wall_time_s": 1.5369689310900867,
+        "spectre_over_evas_speedup": 2.7946557338125593
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "dut",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.684412720846012,
+        "evas_wall_time_s": 0.8085125430952758,
+        "spectre_over_evas_speedup": 5.7938652416107255
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "dut",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.684412720846012,
+        "evas_wall_time_s": 1.5486533648800105,
+        "spectre_over_evas_speedup": 3.0248297179200976
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.652382703032345,
+        "evas_wall_time_s": 1.2717815008945763,
+        "spectre_over_evas_speedup": 3.6581619560906016
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.652382703032345,
+        "evas_wall_time_s": 2.034987478982657,
+        "spectre_over_evas_speedup": 2.286197213045355
+      },
+      {
+        "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.472621638095006,
+        "evas_wall_time_s": 0.7967399801127613,
+        "spectre_over_evas_speedup": 5.613652822420187
+      },
+      {
+        "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.472621638095006,
+        "evas_wall_time_s": 1.5599773949943483,
+        "spectre_over_evas_speedup": 2.8671066981141804
+      }
+    ],
+    "accuracy_gated_speedups": [
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "bugfix",
+        "variant": "fixed",
+        "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.295299035962671,
+        "evas_wall_time_s": 0.7130752189550549,
+        "spectre_over_evas_speedup": 6.023626851395888
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "bugfix",
+        "variant": "fixed",
+        "task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.295299035962671,
+        "evas_wall_time_s": 1.5369689310900867,
+        "spectre_over_evas_speedup": 2.7946557338125593
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "dut",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.684412720846012,
+        "evas_wall_time_s": 0.8085125430952758,
+        "spectre_over_evas_speedup": 5.7938652416107255
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "dut",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_dut",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.684412720846012,
+        "evas_wall_time_s": 1.5486533648800105,
+        "spectre_over_evas_speedup": 3.0248297179200976
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.652382703032345,
+        "evas_wall_time_s": 1.2717815008945763,
+        "spectre_over_evas_speedup": 3.6581619560906016
+      },
+      {
+        "entry_id": "vbr1_l1_loop_filter_abstraction",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_loop_filter_abstraction_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.652382703032345,
+        "evas_wall_time_s": 2.034987478982657,
+        "spectre_over_evas_speedup": 2.286197213045355
+      },
+      {
+        "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.472621638095006,
+        "evas_wall_time_s": 0.7967399801127613,
+        "spectre_over_evas_speedup": 5.613652822420187
+      },
+      {
+        "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.472621638095006,
+        "evas_wall_time_s": 1.5599773949943483,
+        "spectre_over_evas_speedup": 2.8671066981141804
+      }
+    ],
+    "geomean_spectre_over_evas_speedup": 3.757207800721411,
+    "geomean_accuracy_gated_spectre_over_evas_speedup": 3.757207800721411
+  }
+}

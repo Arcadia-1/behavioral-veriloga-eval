@@ -1,0 +1,24 @@
+{
+  "id": "vbr1_l1_clocked_adc_quantizer_tb",
+  "task_id": "vbr1_l1_clocked_adc_quantizer_tb",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+  "family": "tb-generation",
+  "category": "Data Converters",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "flash_adc_3b.va",
+    "tb_flash_adc_3b_ref.scs"
+  ],
+  "scoring": [
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source": "tb_companion_from_e2e"
+}

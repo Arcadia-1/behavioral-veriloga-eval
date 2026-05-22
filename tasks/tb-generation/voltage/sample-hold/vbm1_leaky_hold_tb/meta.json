@@ -1,0 +1,44 @@
+{
+  "id": "vbm1_leaky_hold_tb",
+  "task_id": "vbm1_leaky_hold_tb",
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-main-v1",
+  "family": "tb-generation",
+  "category": "sample-hold",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "release_form": "normal",
+  "provenance_status": "clean",
+  "source_main120_id": "vbm1_leaky_hold_tb",
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": false
+  },
+  "must_include": [
+    "ahdl_include",
+    "tran",
+    "save"
+  ],
+  "must_not_include": [],
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "tb_leaky_hold_ref.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_files": [
+    "gold/leaky_hold.va",
+    "gold/tb_leaky_hold_ref.scs"
+  ],
+  "evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_leaky_hold_tb/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_leaky_hold_tb/spectre_result.json"
+  }
+}

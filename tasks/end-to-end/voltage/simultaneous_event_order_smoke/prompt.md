@@ -6,6 +6,12 @@ Write a Verilog-A module named `simultaneous_event_order_ref`.
 
 Write a Verilog-A model where an absolute timer event and a `cross()` event happen at the same nominal times, and the final plateau level reveals the execution order.
 
+Public behavior requirements:
+- The Spectre testbench should drive `VDD=0.9 V`, `VSS=0 V`, and a `ref` pulse train whose rising edges occur at 10 ns, 30 ns, 50 ns, and 70 ns.
+- The DUT should schedule absolute timer events on the same 10 ns + 20 ns grid.
+- After each same-time timer/cross event pair, `out` should settle to approximately 20%, 40%, 60%, and 80% of `VDD`, respectively.
+- Use voltage-domain contributions and smooth transitions; do not use current-domain branch contributions.
+
 Ports:
 - `VDD`: inout electrical
 - `VSS`: inout electrical

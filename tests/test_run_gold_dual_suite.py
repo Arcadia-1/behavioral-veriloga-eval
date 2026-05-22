@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,3 +60,79 @@ def test_run_dual_case_marks_non_scored_behavior_as_not_required(
     assert result["spectre"]["behavior_score"] == 1.0
     assert "behavior_not_required_by_scoring" in result["spectre"]["behavior_notes"]
     assert "spectre:behavior_not_required_by_scoring" in result["notes"]
+
+
+def test_run_spectre_case_passes_bridge_profile(monkeypatch, tmp_path: Path) -> None:
+    bridge_repo = tmp_path / "bridge"
+    (bridge_repo / ".venv" / "bin").mkdir(parents=True)
+    output_dir = tmp_path / "out"
+    captured: dict[str, object] = {}
+
+    monkeypatch.setenv("VAEVAS_BRIDGE_PROFILE", "ci")
+
+    def fake_run_cmd(cmd, *, cwd: Path, env=None, timeout_s=None):
+        captured["cmd"] = cmd
+        captured["cwd"] = cwd
+        captured["env"] = env
+        captured["timeout_s"] = timeout_s
+        captured["inline"] = cmd[-1]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "spectre_result.json").write_text(
+            json.dumps({"status": "success", "ok": True, "errors": [], "warnings": []}),
+            encoding="utf-8",
+        )
+        return SimpleNamespace(stdout="", stderr="", returncode=0)
+
+    monkeypatch.setattr(dual, "run_cmd", fake_run_cmd)
+
+    result = dual.run_spectre_case(
+        task_id="case",
+        tb_path=tmp_path / "tb.scs",
+        include_paths=[],
+        output_dir=output_dir,
+        bridge_repo=bridge_repo,
+        cadence_cshrc=None,
+        timeout_s=5,
+    )
+
+    assert result["ok"] is True
+    assert captured["cwd"] == bridge_repo
+    assert captured["env"]["VAEVAS_BRIDGE_PROFILE"] == "ci"
+    assert '"bridge_profile": "ci"' in captured["inline"]
+    assert "profile=profile" in captured["inline"]
+
+
+def test_run_spectre_case_can_request_side_output_downloads(monkeypatch, tmp_path: Path) -> None:
+    bridge_repo = tmp_path / "bridge"
+    (bridge_repo / ".venv" / "bin").mkdir(parents=True)
+    output_dir = tmp_path / "out"
+    captured: dict[str, object] = {}
+
+    def fake_run_cmd(cmd, *, cwd: Path, env=None, timeout_s=None):
+        captured["inline"] = cmd[-1]
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "spectre_result.json").write_text(
+            json.dumps({"status": "success", "ok": True, "errors": [], "warnings": []}),
+            encoding="utf-8",
+        )
+        return SimpleNamespace(stdout="", stderr="", returncode=0)
+
+    monkeypatch.setattr(dual, "run_cmd", fake_run_cmd)
+
+    result = dual.run_spectre_case(
+        task_id="case",
+        tb_path=tmp_path / "tb.scs",
+        include_paths=[],
+        output_dir=output_dir,
+        bridge_repo=bridge_repo,
+        cadence_cshrc=None,
+        timeout_s=5,
+        side_output_files=("candidate.out",),
+    )
+
+    assert result["ok"] is True
+    assert '"side_output_files": ["candidate.out"]' in captured["inline"]
+    assert "keep_remote_files=bool(side_output_files)" in captured["inline"]
+    assert "remote_pwd = next((line for line in reversed(pwd_lines) if line.startswith('/')), '')" in captured["inline"]
+    assert "remote_output_dirs.append(candidate_dir)" in captured["inline"]
+    assert "runner.download(remote_path, local_path)" in captured["inline"]

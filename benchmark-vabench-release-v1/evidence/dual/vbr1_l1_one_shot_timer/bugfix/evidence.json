@@ -1,0 +1,99 @@
+{
+  "release_entry_id": "vbr1_l1_one_shot_timer",
+  "task_id": "vbr1_l1_one_shot_timer:bugfix",
+  "source_task_id": "vbm1_one_shot_timer_bugfix_fixed",
+  "task_form": "bugfix",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Digital and Event-Driven Logic",
+    "base_function": "One-shot timer"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_one_shot_timer/bugfix/fixed",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_one_shot_timer/bugfix/fixed",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/bugfix/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/bugfix/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/tb_one_shot_timer_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/tb_one_shot_timer_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_one_shot_timer/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_one_shot_timer/bugfix/fixed",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
+      "signals_compared": 3,
+      "samples": 1200,
+      "max_rmse_v": 0.05,
+      "max_abs_v": 1.0,
+      "mean_nrmse": 0.0011111111111111111,
+      "p95_nrmse": 0.0025,
+      "max_nrmse": 0.0025,
+      "per_signal": {
+        "pulse": {
+          "rmse_v": 0.02886751345948129,
+          "max_abs_v": 1.0,
+          "span_v": 0.9000000000000056,
+          "nrmse": 0.0008333333333333334,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0008333333333333334
+        },
+        "rst_n": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "trig": {
+          "rmse_v": 0.05,
+          "max_abs_v": 1.0,
+          "span_v": 0.9,
+          "nrmse": 0.0025,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0025
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/tb_one_shot_timer_buggy.scs",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_one_shot_timer/forms/bugfix/gold/tb_one_shot_timer_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}
