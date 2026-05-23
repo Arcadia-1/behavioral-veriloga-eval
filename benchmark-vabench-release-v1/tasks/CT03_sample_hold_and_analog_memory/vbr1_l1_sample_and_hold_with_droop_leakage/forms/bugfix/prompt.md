@@ -19,30 +19,32 @@
 
 ## Public Interface To Preserve
 
-- `dut_buggy.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vout`.
-- `dut_fixed.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vout`.
+- `dut_buggy.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vin`, `vout`.
+- `dut_fixed.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vin`, `vout`.
 
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=170n maxstep=500p
+tran tran stop=170n maxstep=250p
 ```
 
 The release harness expects these exact public scalar observables:
 
 - `sample`
 - `rst`
+- `vin`
 - `vout`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 ## Public Behavior Checks
 
-- `sample_event_captures_high_hold_level`
+- `sample_event_captures_vin_not_fixed_internal_level`
 - `safe_window_vout_decays_monotonically`
 - `reset_window_clears_output_near_zero`
+- `post_reset_sample_recovers_to_vin`
 
 ## Observed Mismatch Framing
 
@@ -56,16 +58,16 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Task: vbm1_leaky_hold_bugfix
+# Task: vin_sampled_droop_hold_bugfix
 
-The provided voltage-domain leaky-hold model has a leakage bug: after a sample
-event it keeps the held output level instead of applying the intended gradual
-decay. Fix the design so it captures a high held value on each sample edge,
-decays while reset is low, and clears promptly when reset is high.
+The provided voltage-domain leaky-hold model has an input-sampling bug: on a
+sample event it captures a fixed internal level instead of the current value of
+`V(vin)`. Fix the design so each sample event captures `vin`, the held value
+decays while reset is low, and the output clears promptly when reset is high.
 
 The fixed module must be named `leaky_hold` and use electrical ports `sample`,
-`rst`, and `vout`. On a rising `sample` threshold crossing, the held value
-should be driven near the configured sampled level. A periodic leakage update
+`rst`, `vin`, and `vout`. On a rising `sample` threshold crossing, the held
+value should be driven near the sampled `vin` level. A periodic leakage update
 should reduce the held value over time while `rst` is low. When `rst` is high,
 the held value and output should clear near zero.
 

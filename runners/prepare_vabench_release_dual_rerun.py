@@ -92,7 +92,7 @@ def resolve_checker_task_id(row: dict[str, object]) -> tuple[str, bool, list[str
     entry_id = str(row["entry_id"])
     form = str(row["form"])
     task = release_task(entry_id, form)
-    candidates: list[str] = []
+    candidates: list[str] = [f"{entry_id}_{form}", entry_id]
     for value in (
         row.get("source_task_id"),
         task.get("source_task_id"),

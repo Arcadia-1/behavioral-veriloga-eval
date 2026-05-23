@@ -22,6 +22,9 @@
     "must_include": [
       "@(cross(",
       "@(timer(",
+      "taperture",
+      "valid",
+      "coarse",
       "transition("
     ],
     "must_not_include": [],

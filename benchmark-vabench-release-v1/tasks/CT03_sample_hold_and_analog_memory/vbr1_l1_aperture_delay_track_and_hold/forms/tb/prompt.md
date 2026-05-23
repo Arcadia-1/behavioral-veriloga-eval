@@ -56,7 +56,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Task: vbm1_track_hold_aperture_tb
+# Task: vbr1_l1_aperture_delay_track_and_hold:tb
 
 Write a Spectre testbench for a sample-and-hold with aperture delay DUT.
 

@@ -1,14 +1,18 @@
 {
-  "id": "sample_hold_droop_smoke",
-  "task_name": "Sample-and-Hold Droop Smoke Test",
+  "id": "vbr1_l2_converter_front_end_e2e",
+  "task_id": "vbr1_l2_converter_front_end_e2e",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l2_converter_front_end",
+  "task_name": "Converter Front-End Chain",
   "family": "end-to-end",
-  "category": "sample-hold",
+  "category": "Sample, Hold, and Analog Memory",
   "domain": "voltage",
   "difficulty": "medium",
   "expected_backend": "evas",
   "source": {
     "type": "benchmark-gold",
-    "path": "behavioral-veriloga-eval/tasks/end-to-end/voltage/sample_hold_droop_smoke/gold"
+    "path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold"
   },
   "tier": "verified",
   "verification_status": "passed",
@@ -43,13 +47,11 @@
     "tb_compile": "required",
     "tran_generated": "required",
     "sim_correct": "required",
-    "parity_required": false
+    "parity_required": true
   },
   "evidence": {
-    "result_path": "behavioral-veriloga-eval/results/gold-suite-p2-2026-04-19/sample_hold_droop_smoke",
-    "pr_link": "codex/upstream-complete-pr",
-    "notes": "Added on 2026-04-19 as a P2 sample-and-hold benchmark with explicit hold-window droop checks under EVAS."
-  },
-  "task_id": "sample_hold_droop_smoke",
-  "asset_type": "vabench_task"
+    "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_converter_front_end/e2e/evidence.json",
+    "rerun_summary": "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/summary.json",
+    "notes": "Strengthened on 2026-05-23 as an L2 front-end chain with aperture-delayed sampling, bounded droop, coarse decision, and valid pulse checks."
+  }
 }

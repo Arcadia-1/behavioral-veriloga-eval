@@ -19,7 +19,7 @@
 
 ## Public DUT Interface To Instantiate
 
-- `sample_hold_droop_ref.va` declares module `sample_hold_droop_ref` with positional ports: `vdd`, `vss`, `clk`, `vin`, `vout`.
+- `sample_hold_droop_ref.va` declares module `sample_hold_droop_ref` with positional ports: `vdd`, `vss`, `clk`, `vin`, `vout`, `valid`, `coarse`.
 
 ## Public Testbench And Observable Contract
 
@@ -34,6 +34,8 @@ The release harness expects these exact public scalar observables:
 - `vin`
 - `clk`
 - `vout`
+- `valid`
+- `coarse`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -46,9 +48,10 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `transient_analysis_present`
-- `public_observables_saved`
-- `dut_or_system_instantiated`
+- `aperture_delayed_sample_tracks_vin`
+- `hold_windows_show_bounded_droop`
+- `coarse_decision_matches_held_sample`
+- `valid_pulses_mark_completed_samples`
 
 ## Output Contract
 
@@ -57,23 +60,25 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Converter front-end Testbench Companion
+# Converter front-end chain Testbench Companion
 
 Write a Spectre transient testbench for the `Converter front-end` behavioral
 Verilog-A release task. This is the testbench-generation companion for an
 already materialized end-to-end task.
 
 The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+by the corresponding end-to-end form, drive an aperture-sensitive sampling
+scenario, save the observable waveform or metric signals, and preserve the
+EVAS/Spectre validation contract.
 
 Domain: pure voltage-domain behavioral Verilog-A.
 
 Public requirements:
 
 - include a transient `tran` analysis
-- save the public observables needed by the checker
+- save `vin`, `clk`, `vout`, `valid`, and `coarse`
 - include or instantiate the Verilog-A behavioral module under test
+- exercise aperture-delayed sampling, bounded hold droop, coarse decision, and
+  valid-pulse behavior
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

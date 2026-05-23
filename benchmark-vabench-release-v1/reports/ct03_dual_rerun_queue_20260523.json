@@ -1,0 +1,45 @@
+{
+  "date": "2026-05-23",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "scope": "CT03 sample/hold and analog memory changes",
+  "queue_count": 6,
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_dut",
+      "queue_reason": "gold and checker upgraded to true vin-sampled droop sample-and-hold"
+    },
+    {
+      "entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_tb",
+      "queue_reason": "gold and checker upgraded to true vin-sampled droop sample-and-hold"
+    },
+    {
+      "entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_bugfix",
+      "queue_reason": "bugfix now rejects fixed-internal-level capture instead of missing droop only"
+    },
+    {
+      "entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_e2e",
+      "queue_reason": "gold and checker upgraded to true vin-sampled droop sample-and-hold"
+    },
+    {
+      "entry_id": "vbr1_l2_converter_front_end",
+      "form": "tb",
+      "source_task_id": "vbr1_l2_converter_front_end_tb",
+      "queue_reason": "L2 converter front-end upgraded to aperture-delayed sample, droop hold, valid pulse, and coarse decision"
+    },
+    {
+      "entry_id": "vbr1_l2_converter_front_end",
+      "form": "e2e",
+      "source_task_id": "vbr1_l2_converter_front_end_e2e",
+      "queue_reason": "L2 converter front-end upgraded to aperture-delayed sample, droop hold, valid pulse, and coarse decision"
+    }
+  ]
+}

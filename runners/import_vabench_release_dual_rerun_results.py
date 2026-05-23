@@ -83,16 +83,20 @@ def stale_summary_reason(
     *,
     summary_tasks_total: int | None,
     queue_count: int | None,
+    primary_result_count: int | None = None,
     original_reason: object,
 ) -> str | None:
     if summary_tasks_total is None or queue_count is None:
         return None
     if summary_tasks_total == queue_count:
         return None
+    if primary_result_count == queue_count:
+        return None
     suffix = f" last rerun blocker: {original_reason}" if original_reason else ""
     return (
         "stale dual rerun summary: "
-        f"summary tasks_total={summary_tasks_total}, current queue_count={queue_count}; "
+        f"summary tasks_total={summary_tasks_total}, primary_result_count={primary_result_count}, "
+        f"current queue_count={queue_count}; "
         f"rerun the current EVAS/Spectre queue before import.{suffix}"
     )
 
@@ -597,9 +601,11 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "notes": ["No dual rerun summary exists yet."],
         }
     tasks_total = summary_task_count(summary)
+    primary_count = len(primary_result_rows(summary))
     stale_reason = stale_summary_reason(
         summary_tasks_total=tasks_total,
         queue_count=queue_count,
+        primary_result_count=primary_count,
         original_reason=summary.get("reason", ""),
     )
     if stale_reason and not getattr(build_import_report, "allow_partial_stale", False):

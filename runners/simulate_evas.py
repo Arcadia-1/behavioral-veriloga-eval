@@ -2544,6 +2544,131 @@ def check_sample_hold_droop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
+def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sample", "rst", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sample/rst/vin/vout"
+
+    times = [r["time"] for r in rows]
+    sample_edges = rising_edges([r["sample"] for r in rows], times, threshold=0.45)
+    if len(sample_edges) < 3:
+        return False, f"too_few_sample_edges={len(sample_edges)}"
+
+    expected: list[float] = []
+    observed: list[float] = []
+    errors: list[float] = []
+    for edge_t in sample_edges[:3]:
+        want = sample_signal_at(rows, "vin", edge_t + 0.05e-9)
+        got = sample_signal_at(rows, "vout", edge_t + 1.20e-9)
+        if want is None or got is None:
+            return False, f"missing_sample_window_at={edge_t:.3e}"
+        expected.append(want)
+        observed.append(got)
+        errors.append(abs(got - want))
+
+    max_err = max(errors)
+    expected_span = max(expected) - min(expected)
+    observed_span = max(observed) - min(observed)
+    sample_match = max_err <= 0.045 and expected_span >= 0.35 and observed_span >= 0.30
+
+    # Use the high second sample as the droop window; reset begins well after it.
+    second_edge = sample_edges[1]
+    droop_start_t = second_edge + 2.0e-9
+    reset_edges = rising_edges([r["rst"] for r in rows], times, threshold=0.45)
+    droop_end_t = (reset_edges[0] - 2.0e-9) if reset_edges else (second_edge + 35.0e-9)
+    droop_values = [r["vout"] for r in rows if droop_start_t <= r["time"] <= droop_end_t]
+    if len(droop_values) < 8:
+        return False, f"insufficient_droop_window_samples={len(droop_values)}"
+    droop = droop_values[0] - droop_values[-1]
+    upward_steps = sum(1 for a, b in zip(droop_values[:-1], droop_values[1:]) if b - a > 0.004)
+    droop_ok = 0.04 <= droop <= 0.45 and upward_steps <= max(1, len(droop_values) // 10)
+
+    reset_t = reset_edges[0] if reset_edges else 125.0e-9
+    reset_sample = sample_signal_at(rows, "vout", reset_t + 8.0e-9)
+    reset_clear = reset_sample is not None and reset_sample < 0.05
+
+    ok = sample_match and droop_ok and reset_clear
+    exp_text = ",".join(f"{value:.3f}" for value in expected)
+    obs_text = ",".join(f"{value:.3f}" for value in observed)
+    return ok, (
+        f"vin_samples={exp_text} held_samples={obs_text} "
+        f"max_sample_err={max_err:.3f} expected_span={expected_span:.3f} "
+        f"observed_span={observed_span:.3f} droop={droop:.3f} "
+        f"upward_steps={upward_steps} reset_clear={reset_clear}"
+    )
+
+
+def check_release_converter_front_end_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "vout", "valid", "coarse"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/clk/vout/valid/coarse"
+
+    times = [r["time"] for r in rows]
+    clk_edges = rising_edges([r["clk"] for r in rows], times, threshold=0.45)
+    if len(clk_edges) < 6:
+        return False, f"too_few_clk_edges={len(clk_edges)}"
+
+    sample_errors: list[float] = []
+    coarse_mismatches = 0
+    valid_hits = 0
+    valid_low_hits = 0
+    aperture_sensitive = 0
+    for edge_t in clk_edges[:8]:
+        vin_edge = sample_signal_at(rows, "vin", edge_t)
+        vin_aperture = sample_signal_at(rows, "vin", edge_t + 0.20e-9)
+        vout_settled = sample_signal_at(rows, "vout", edge_t + 1.00e-9)
+        valid_high = sample_signal_at(rows, "valid", edge_t + 0.80e-9)
+        valid_low = sample_signal_at(rows, "valid", edge_t + 3.50e-9)
+        coarse = sample_signal_at(rows, "coarse", edge_t + 1.00e-9)
+        if None in (vin_edge, vin_aperture, vout_settled, valid_high, valid_low, coarse):
+            return False, f"missing_front_end_sample_at={edge_t:.3e}"
+        assert vin_edge is not None and vin_aperture is not None and vout_settled is not None
+        assert valid_high is not None and valid_low is not None and coarse is not None
+        sample_errors.append(abs(vout_settled - vin_aperture))
+        expected_coarse_high = vin_aperture > 0.45
+        if (coarse > 0.45) != expected_coarse_high:
+            coarse_mismatches += 1
+        if valid_high > 0.45:
+            valid_hits += 1
+        if valid_low < 0.45:
+            valid_low_hits += 1
+        if abs(vin_aperture - vin_edge) > 0.18 and abs(vout_settled - vin_aperture) + 0.08 < abs(vout_settled - vin_edge):
+            aperture_sensitive += 1
+
+    max_sample_err = max(sample_errors)
+    sample_ok = max_sample_err <= 0.055
+    coarse_ok = coarse_mismatches == 0
+    valid_ok = valid_hits >= 6 and valid_low_hits >= 6
+    aperture_ok = aperture_sensitive >= 2
+
+    droop_windows = 0
+    droop_failures = 0
+    for start_t, end_t in zip(clk_edges[:7], clk_edges[1:8]):
+        t_start = start_t + 2.0e-9
+        t_end = end_t - 2.0e-9
+        idxs = [idx for idx, row in enumerate(rows) if t_start <= row["time"] <= t_end]
+        if len(idxs) < 8:
+            continue
+        first = rows[idxs[0]]["vout"]
+        if first < 0.55:
+            continue
+        last = rows[idxs[-1]]["vout"]
+        droop = first - last
+        upward_steps = sum(1 for a, b in zip(idxs[:-1], idxs[1:]) if rows[b]["vout"] - rows[a]["vout"] > 0.004)
+        droop_windows += 1
+        if not (0.004 <= droop <= 0.16) or upward_steps > max(1, len(idxs) // 8):
+            droop_failures += 1
+
+    droop_ok = droop_windows >= 2 and droop_failures == 0
+    ok = sample_ok and coarse_ok and valid_ok and aperture_ok and droop_ok
+    return ok, (
+        f"edges={len(clk_edges)} max_sample_err={max_sample_err:.3f} "
+        f"coarse_mismatches={coarse_mismatches} valid_high_hits={valid_hits} "
+        f"valid_low_hits={valid_low_hits} aperture_sensitive={aperture_sensitive} "
+        f"droop_windows={droop_windows} droop_failures={droop_failures}"
+    )
+
+
 def check_flash_adc_3b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """3-bit flash ADC: all 8 codes present, monotonic with ramp input."""
     if not rows or not {"vin", "clk", "dout2", "dout1", "dout0"}.issubset(rows[0]):
@@ -4813,6 +4938,7 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_propagation_delay_comparator": check_cmp_delay,
     "vbr1_l1_ramp_or_step_source": check_bound_step_period_guard,
     "vbr1_l1_clocked_sample_and_hold": check_sample_hold,
+    "vbr1_l1_sample_and_hold_with_droop_leakage": check_release_vin_sampled_droop_hold,
     "vbr1_l1_serializer_frame_aligner": check_serializer_frame_alignment,
     "vbr1_l1_threshold_comparator": check_comparator,
     "vbr1_l1_unit_element_thermometer_dac": check_vbm1_thermometer_dac_15seg,
@@ -4834,6 +4960,7 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_dac_mismatch_unit_weighting_model": check_release_dac_mismatch_unit_weighting,
     "vbr1_l1_event_pulse_stretcher": check_release_event_pulse_stretcher,
     "vbr1_l2_adc_dac_source_sweep_flow": check_release_quantized_reconstruction,
+    "vbr1_l2_converter_front_end": check_release_converter_front_end_chain,
 }
 
 
@@ -4866,7 +4993,6 @@ RELEASE_FORM_CHECK_ALIASES = {
     "vbr1_l2_flash_adc_mini_array_tb": check_release_flash_adc_mini_array,
     "vbr1_l2_pipeline_adc_chain_e2e": check_release_pipeline_adc_chain,
     "vbr1_l2_pipeline_adc_chain_tb": check_release_pipeline_adc_chain,
-    "vbr1_l2_converter_front_end_tb": check_sample_hold_droop,
     "vbr1_l2_comparator_measurement_flow_tb": check_comparator_offset_search,
     "vbr1_l1_sine_periodic_voltage_source_e2e": check_multitone,
     "vbr1_l1_sine_periodic_voltage_source_tb": check_multitone,

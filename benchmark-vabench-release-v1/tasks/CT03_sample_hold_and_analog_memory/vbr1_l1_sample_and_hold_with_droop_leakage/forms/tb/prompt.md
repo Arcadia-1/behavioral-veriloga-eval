@@ -19,20 +19,21 @@
 
 ## Public DUT Interface To Instantiate
 
-- `leaky_hold.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vout`.
+- `leaky_hold.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vin`, `vout`.
 
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=170n maxstep=500p
+tran tran stop=170n maxstep=250p
 ```
 
 The release harness expects these exact public scalar observables:
 
 - `sample`
 - `rst`
+- `vin`
 - `vout`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
@@ -41,13 +42,15 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `sample`
 - `rst`
+- `vin`
 
 ## Public Behavior Checks
 
-- `capture_reaches_high_level`
+- `rising_sample_edge_captures_vin`
+- `multiple_input_levels_are_preserved`
 - `held_output_droops_over_time`
 - `reset_clears_output`
-- `second_capture_recovers`
+- `post_reset_sample_recovers_to_vin`
 
 ## Output Contract
 
@@ -56,19 +59,26 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Task: vbm1_leaky_hold_tb
+# Task: vin_sampled_droop_hold_tb
 
-Write a Spectre testbench for a leaky sample-and-hold DUT.
+Write a Spectre testbench for a sample-and-hold DUT with observable
+droop/leakage.
 
-The DUT module is `leaky_hold` with ports `sample, rst, vout`. All ports are electrical; digital-control ports use 0/0.9 V logic levels. The candidate DUT file will be available as `leaky_hold.va`; include it with `ahdl_include` and instantiate the DUT using the exact module and port names.
+The DUT module is `leaky_hold` with ports `sample, rst, vin, vout`. All ports
+are electrical; digital-control ports use 0/0.9 V logic levels. The candidate
+DUT file will be available as `leaky_hold.va`; include it with `ahdl_include`
+and instantiate the DUT using the exact module and port names.
 
 The testbench must exercise:
-- A rising `sample` edge captures a fixed 0.75 V held level.
-- A 1 ns timer applies exponential droop by multiplying the held value by 0.985 while reset is low.
+- A rising `sample` edge captures the current value of `V(vin)`, not a fixed
+  internal level.
+- A 1 ns timer applies exponential droop by multiplying the held value by
+  0.985 while reset is low.
 - High `rst` clears the held value; drive `vout` through `transition()`.
 
 Stimulus and observability requirements:
-- Generate capture events, an observable droop interval, reset clearing, and a second capture.
-- Save `sample`, `rst`, and `vout`.
+- Generate at least three capture events with distinct `vin` levels, an
+  observable droop interval, reset clearing, and post-reset recapture.
+- Save `sample`, `rst`, `vin`, and `vout`.
 
 Return exactly one Spectre testbench file named `tb_leaky_hold_ref.scs`.

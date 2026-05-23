@@ -1,7 +1,7 @@
 {
   "release_entry_id": "vbr1_l2_converter_front_end",
   "task_id": "vbr1_l2_converter_front_end:e2e",
-  "source_task_id": "sample_hold_droop_smoke",
+  "source_task_id": "vbr1_l2_converter_front_end_e2e",
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_converter_front_end/e2e/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_converter_front_end/e2e/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/e2e/gold",
+    "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/vbr1_l2_converter_front_end/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_converter_front_end/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_converter_front_end/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_converter_front_end/e2e/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_converter_front_end/e2e/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/e2e/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/vbr1_l2_converter_front_end/e2e/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -39,36 +39,56 @@
         0.0,
         1.7e-07
       ],
-      "signals_compared": 3,
+      "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.07071067811865475,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.0016666751055582905,
-      "p95_nrmse": 0.005,
-      "max_nrmse": 0.005,
+      "max_rmse_v": 5.389055823872307e-06,
+      "max_abs_v": 0.00017577364715193333,
+      "mean_nrmse": 1.6442674692833136e-06,
+      "p95_nrmse": 6.9090459280414165e-06,
+      "max_nrmse": 6.9090459280414165e-06,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.07071067811865475,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.005,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.005
+          "mismatch_ratio": 0.0
+        },
+        "coarse": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9000000000000004,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "valid": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9000000000000004,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 1.022034768663786e-15,
-          "max_abs_v": 3.0753177782116836e-14,
-          "span_v": 0.65,
-          "nrmse": 1.5723611825596708e-15,
+          "rmse_v": 7.873748510250909e-07,
+          "max_abs_v": 2.7275442350260803e-05,
+          "span_v": 0.6000000000000001,
+          "nrmse": 1.3122914183751514e-06,
           "kind": "analog"
         },
         "vout": {
-          "rmse_v": 2.0253338638953485e-08,
-          "max_abs_v": 4.974921918865505e-08,
-          "span_v": 0.8,
-          "nrmse": 2.5316673298691855e-08,
+          "rmse_v": 5.389055823872307e-06,
+          "max_abs_v": 0.00017577364715193333,
+          "span_v": 0.7800000000000002,
+          "nrmse": 6.9090459280414165e-06,
           "kind": "analog"
         }
       }
@@ -79,8 +99,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs"
     ]
   },
   "failures": [],

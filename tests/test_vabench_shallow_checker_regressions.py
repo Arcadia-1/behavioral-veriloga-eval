@@ -16,6 +16,7 @@ PROMOTED_FUNCTION_CHECKED_DUTS = {
     "vbr1_l1_burst_clock_source",
     "vbr1_l1_clocked_adc_quantizer",
     "vbr1_l1_clocked_sample_and_hold",
+    "vbr1_l1_sample_and_hold_with_droop_leakage",
     "vbr1_l1_differential_output_driver",
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
@@ -33,6 +34,7 @@ PROMOTED_FUNCTION_CHECKED_DUTS = {
 
 NEWLY_TEMPLATE_FUNCTION_CHECKED_DUTS = PROMOTED_FUNCTION_CHECKED_DUTS - {
     "vbr1_l1_pfd_small_phase_error_response",
+    "vbr1_l1_sample_and_hold_with_droop_leakage",
     "vbr1_l1_unit_element_thermometer_dac",
 }
 

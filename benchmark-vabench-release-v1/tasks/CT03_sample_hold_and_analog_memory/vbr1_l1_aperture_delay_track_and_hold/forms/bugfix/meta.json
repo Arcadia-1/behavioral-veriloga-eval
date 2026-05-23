@@ -1,10 +1,11 @@
 {
-  "id": "vbm1_track_hold_aperture_bugfix",
-  "task_id": "vbm1_track_hold_aperture_bugfix",
+  "id": "vbr1_l1_aperture_delay_track_and_hold_bugfix",
+  "task_id": "vbr1_l1_aperture_delay_track_and_hold_bugfix",
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-main-v1",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
   "family": "bugfix",
-  "category": "sample-hold",
+  "category": "Sample, Hold, and Analog Memory",
   "domain": "voltage",
   "difficulty": "medium",
   "expected_backend": "evas",
@@ -56,9 +57,10 @@
     "repair": "Arm a timer at $abstime + taperture on each rising clock edge and capture vin from that delayed timer event."
   },
   "evidence": {
-    "historical_evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_track_hold_aperture_bugfix/evas_result.json",
-    "historical_spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_track_hold_aperture_bugfix/spectre_result.json",
-    "local_evas_verification": "2026-05-15: fixed source PASS; buggy source FAIL_SIM_CORRECTNESS.",
-    "spectre_status": "2026-05-15: fixed source PASS and buggy source FAIL_SIM_CORRECTNESS."
+    "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/bugfix/evidence.json",
+    "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/bugfix/evas_result.json",
+    "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/bugfix/spectre_result.json",
+    "buggy_expected": "FAIL_SIM_CORRECTNESS",
+    "fixed_expected": "PASS"
   }
 }

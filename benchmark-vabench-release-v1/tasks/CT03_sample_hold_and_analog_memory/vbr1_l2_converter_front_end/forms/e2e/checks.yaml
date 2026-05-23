@@ -2,6 +2,9 @@ syntax:
   must_include:
     - "@(cross("
     - "@(timer("
+    - "taperture"
+    - "valid"
+    - "coarse"
     - "transition("
 dut_compile:
   backend: "evas"
@@ -9,10 +12,11 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "sample_tracks_input_after_clk_edge"
+    - "aperture_delayed_sample_tracks_vin"
     - "hold_windows_show_bounded_droop"
-    - "droop_not_excessive_between_samples"
+    - "coarse_decision_matches_held_sample"
+    - "valid_pulses_mark_completed_samples"
 
 parity:
-  required: false
-  tolerance_notes: "EVAS-primary P2 expansion task; bridge-backed dual validation is deferred."
+  required: true
+  tolerance_notes: "L2 chain checks sample aperture, bounded droop, coarse decision, and valid pulse timing."

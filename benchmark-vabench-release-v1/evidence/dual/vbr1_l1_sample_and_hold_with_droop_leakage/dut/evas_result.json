@@ -1,19 +1,20 @@
 {
   "task_id": "vbr1_l1_sample_and_hold_with_droop_leakage:dut",
   "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
-  "source_task_id": "vbm1_leaky_hold_dut",
+  "source_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_dut",
   "backend": "evas",
   "status": "PASS",
   "scores": {
-    "historical_weighted_total": 1.0,
-    "historical_backend_pass": true,
-    "source_equivalence_failure_count": 0
+    "rerun_backend_pass": true,
+    "rerun_expected_result_met": true,
+    "raw_status": "PASS",
+    "behavior_score": null
   },
   "artifacts": [
-    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_leaky_hold_dut/evas_result.json",
+    "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/vbr1_l1_sample_and_hold_with_droop_leakage/dut/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_sample_and_hold_with_droop_leakage/dut/evidence.json"
   ],
   "notes": [
-    "Imported from main120 gold historical result; no simulator rerun was performed in this release step."
+    "Imported from fresh vaBench release EVAS/Spectre dual rerun summary."
   ]
 }

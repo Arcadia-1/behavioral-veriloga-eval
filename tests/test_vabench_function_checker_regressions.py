@@ -14,6 +14,7 @@ PROMOTED_DUTS = {
     "vbr1_l1_burst_clock_source",
     "vbr1_l1_clocked_adc_quantizer",
     "vbr1_l1_clocked_sample_and_hold",
+    "vbr1_l1_sample_and_hold_with_droop_leakage",
     "vbr1_l1_differential_output_driver",
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
@@ -498,4 +499,132 @@ def test_retriggerable_pulse_stretcher_checker_requires_burst_extension() -> Non
     assert sim.check_release_event_pulse_stretcher(_retriggerable_stretcher_rows())[0]
     assert not sim.check_release_event_pulse_stretcher(
         _retriggerable_stretcher_rows(ignore_retrigger=True)
+    )[0]
+
+
+def _vin_sampled_droop_hold_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    sample_edges_ns = [20.0, 80.0, 145.0]
+    reset_start_ns = 120.0
+    reset_end_ns = 136.0
+
+    def vin_at(time_ns: float) -> float:
+        if time_ns < 55.0:
+            return 0.20
+        if time_ns < 110.0:
+            return 0.72
+        if time_ns < 138.0:
+            return 0.34
+        return 0.34
+
+    rows: list[dict[str, float]] = []
+    held = 0.0
+    last_sample_idx = -1
+    for idx in range(341):
+        time_ns = idx * 0.5
+        reset_high = reset_start_ns <= time_ns <= reset_end_ns
+        sample_high = any(edge <= time_ns <= edge + 2.0 for edge in sample_edges_ns)
+
+        for sample_idx, edge in enumerate(sample_edges_ns):
+            if time_ns == edge and not reset_high:
+                last_sample_idx = sample_idx
+                held = 0.75 if mode == "fixed_internal_level" else vin_at(time_ns)
+
+        if reset_high and mode != "ignore_reset":
+            held = 0.0
+        elif last_sample_idx >= 0 and mode != "no_droop":
+            held *= 0.992
+
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "sample": 0.9 if sample_high else 0.0,
+                "rst": 0.9 if reset_high else 0.0,
+                "vin": vin_at(time_ns),
+                "vout": held,
+            }
+        )
+    return rows
+
+
+def test_vin_sampled_droop_hold_checker_requires_input_capture_droop_and_reset() -> None:
+    assert sim.check_release_vin_sampled_droop_hold(_vin_sampled_droop_hold_rows())[0]
+    assert not sim.check_release_vin_sampled_droop_hold(
+        _vin_sampled_droop_hold_rows(mode="fixed_internal_level")
+    )[0]
+    assert not sim.check_release_vin_sampled_droop_hold(
+        _vin_sampled_droop_hold_rows(mode="no_droop")
+    )[0]
+    assert not sim.check_release_vin_sampled_droop_hold(
+        _vin_sampled_droop_hold_rows(mode="ignore_reset")
+    )[0]
+
+
+def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
+    aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
+    pre_levels = [0.18, 0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65]
+    rows: list[dict[str, float]] = []
+
+    def add(time_ns: float, clk: float, vin: float, vout: float, valid: float, coarse: float) -> None:
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "vin": vin,
+                "vout": vout,
+                "valid": valid,
+                "coarse": coarse,
+            }
+        )
+
+    held = 0.0
+    coarse = 0.0
+    for idx, edge_ns in enumerate(edges_ns):
+        pre = pre_levels[idx]
+        aperture = aperture_levels[idx]
+        sampled = pre if mode == "sample_edge_not_aperture" else aperture
+        coarse = 0.9 if sampled > 0.45 else 0.0
+        if mode == "wrong_coarse" and idx in {1, 3}:
+            coarse = 0.0 if coarse > 0.45 else 0.9
+
+        add(edge_ns, 0.45, pre, held, 0.0, coarse)
+        add(edge_ns + 0.001, 0.9, pre, held, 0.0, coarse)
+        add(edge_ns + 0.2, 0.9, aperture, held, 0.0, coarse)
+        add(edge_ns + 0.8, 0.9, aperture, sampled, 0.9, coarse)
+        add(edge_ns + 1.0, 0.9, aperture, sampled, 0.9, coarse)
+        add(edge_ns + 3.5, 0.9, aperture, sampled, 0.9 if mode == "valid_stuck_high" else 0.0, coarse)
+        add(edge_ns + 8.0, 0.0, aperture, sampled, 0.0, coarse)
+
+        held = sampled
+        if idx + 1 < len(edges_ns):
+            next_edge = edges_ns[idx + 1]
+            window_points = [edge_ns + offset for offset in (9, 10, 11, 12, 13, 14, 15, 16, 17, 18)]
+            for point_idx, time_ns in enumerate(window_points):
+                if time_ns >= next_edge - 1.5:
+                    continue
+                if held > 0.55:
+                    droop = 0.0 if mode == "no_hold_droop" else 0.006 * point_idx
+                    vout = held - droop
+                else:
+                    vout = held
+                add(time_ns, 0.0, aperture, vout, 0.0, coarse)
+            if held > 0.55 and mode != "no_hold_droop":
+                held = max(0.0, held - 0.006 * 8)
+
+    return sorted(rows, key=lambda row: row["time"])
+
+
+def test_converter_front_end_checker_requires_aperture_coarse_valid_and_droop() -> None:
+    assert sim.check_release_converter_front_end_chain(_converter_front_end_chain_rows())[0]
+    assert not sim.check_release_converter_front_end_chain(
+        _converter_front_end_chain_rows(mode="sample_edge_not_aperture")
+    )[0]
+    assert not sim.check_release_converter_front_end_chain(
+        _converter_front_end_chain_rows(mode="wrong_coarse")
+    )[0]
+    assert not sim.check_release_converter_front_end_chain(
+        _converter_front_end_chain_rows(mode="valid_stuck_high")
+    )[0]
+    assert not sim.check_release_converter_front_end_chain(
+        _converter_front_end_chain_rows(mode="no_hold_droop")
     )[0]

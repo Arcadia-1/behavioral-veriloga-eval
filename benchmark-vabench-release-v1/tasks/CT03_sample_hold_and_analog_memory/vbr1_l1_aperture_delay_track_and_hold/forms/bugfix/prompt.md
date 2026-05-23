@@ -56,7 +56,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Task: vbm1_track_hold_aperture_bugfix
+# Task: vbr1_l1_aperture_delay_track_and_hold:bugfix
 
 The provided voltage-domain track/hold model has an aperture bug: it samples
 `vin` immediately at the rising `clk` edge instead of waiting for the configured

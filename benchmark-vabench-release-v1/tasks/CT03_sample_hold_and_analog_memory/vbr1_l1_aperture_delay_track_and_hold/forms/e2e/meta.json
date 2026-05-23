@@ -1,10 +1,11 @@
 {
-  "id": "vbm1_track_hold_aperture_e2e",
-  "task_id": "vbm1_track_hold_aperture_e2e",
+  "id": "vbr1_l1_aperture_delay_track_and_hold_e2e",
+  "task_id": "vbr1_l1_aperture_delay_track_and_hold_e2e",
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-main-v1",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
   "family": "end-to-end",
-  "category": "sample-hold",
+  "category": "Sample, Hold, and Analog Memory",
   "domain": "voltage",
   "difficulty": "medium",
   "expected_backend": "evas",
@@ -46,7 +47,8 @@
     "gold/tb_sample_hold_aperture_ref.scs"
   ],
   "evidence": {
-    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_track_hold_aperture_e2e/evas_result.json",
-    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_track_hold_aperture_e2e/spectre_result.json"
+    "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/e2e/evidence.json",
+    "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/e2e/evas_result.json",
+    "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/e2e/spectre_result.json"
   }
 }

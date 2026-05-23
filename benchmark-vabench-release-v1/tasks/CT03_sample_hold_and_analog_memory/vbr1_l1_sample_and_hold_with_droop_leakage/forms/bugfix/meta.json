@@ -1,10 +1,11 @@
 {
-  "id": "vbm1_leaky_hold_bugfix",
-  "task_id": "vbm1_leaky_hold_bugfix",
+  "id": "vbr1_l1_sample_and_hold_with_droop_leakage_bugfix",
+  "task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_bugfix",
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-main-v1",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
   "family": "bugfix",
-  "category": "sample-hold",
+  "category": "Sample, Hold, and Analog Memory",
   "domain": "voltage",
   "difficulty": "easy",
   "expected_backend": "evas",
@@ -51,13 +52,12 @@
     "fixed_source": "gold/dut_fixed.va",
     "buggy_testbench": "gold/tb_leaky_hold_buggy.scs",
     "fixed_testbench": "gold/tb_leaky_hold_ref.scs",
-    "defect": "The buggy implementation omits the leakage multiply in the periodic timer update, so the held value stays high until reset.",
-    "repair": "Apply the configured decay factor on each leakage timer tick while reset is low."
+    "defect": "The buggy implementation captures a fixed internal level on each sample event instead of the current input voltage V(vin).",
+    "repair": "Capture V(vin) on each rising sample edge, keep the leakage decay timer active while reset is low, and clear promptly when reset is high."
   },
   "evidence": {
-    "historical_evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_leaky_hold_bugfix/evas_result.json",
-    "historical_spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_leaky_hold_bugfix/spectre_result.json",
-    "local_evas_verification": "2026-05-15: fixed source PASS; buggy source FAIL_SIM_CORRECTNESS.",
-    "spectre_status": "2026-05-15: fixed source PASS and buggy source FAIL_SIM_CORRECTNESS."
+    "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/evidence.json",
+    "local_dual_rerun": "2026-05-23: fixed source EVAS/Spectre PASS; buggy fixed-internal-level source expected FAIL.",
+    "rerun_summary": "results/vabench-release-v1-dual-rerun-ct03-enhance-20260523/summary.json"
   }
 }
