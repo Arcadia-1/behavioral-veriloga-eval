@@ -56,19 +56,6 @@ Public stimulus/source nodes visible in the reference harness include:
 - `CAL0`
 - `CAL1`
 
-Required public stimulus pattern for this benchmark form:
-
-- Drive `VDD` at 0.9 V and `VSS` at 0 V.
-- Drive `CLK` as a 0-to-0.9 V pulse with delay 1n, rise/fall 20p, width 1n,
-  and period 4n.
-- Starting at 2n and then every 4n, drive `D9`...`D0` through this sparse
-  10-bit code sequence before the next `CLK` rising edge:
-  `0, 1, 2, 3, 7, 15, 16, 32, 64, 128, 256, 512, 255, 511, 767, 1023`.
-- In the same code windows, drive `CAL0`/`CAL1` through calibration codes
-  `0, 1, 2, 3` repeatedly, where `CAL0` is the LSB and `CAL1` is the MSB.
-- Use deterministic voltage sources such as `type=pwl` with logic high 0.9 V
-  and logic low 0 V for the data and calibration inputs.
-
 ## Public Behavior Checks
 
 - `behavioral_module_present`

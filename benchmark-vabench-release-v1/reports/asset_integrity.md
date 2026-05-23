@@ -11,7 +11,7 @@ not a simulator certification report.
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| audited release forms | 265 |
+| audited release forms | 249 |
 | blocking issues | 0 |
 | review warnings | 0 |
 
@@ -19,10 +19,10 @@ not a simulator certification report.
 
 | Form | Count |
 | --- | ---: |
-| bugfix | 53 |
-| dut | 58 |
-| e2e | 77 |
-| tb | 77 |
+| bugfix | 49 |
+| dut | 54 |
+| e2e | 73 |
+| tb | 73 |
 
 ## Blocking Issues
 

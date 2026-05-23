@@ -12,5 +12,8 @@ sim_correct:
     - "up_dn_overlap_not_sustained"
 
 parity:
-  required: true
-  tolerance_notes: "Requires EVAS/Spectre dual validation on short-pulse PFD behavior under small REF/DIV phase offsets."
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."
+    - "Checks short-pulse PFD behavior under small REF/DIV phase offsets."

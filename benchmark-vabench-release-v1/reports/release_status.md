@@ -11,26 +11,26 @@ are complete.
 
 | Metric | Value |
 | --- | ---: |
-| planned L1/L2 entries | 75 |
-| source-linked package entries | 77 |
-| source-linked current seeds | 28 |
-| entries with copied release assets | 77 |
-| current seeds with all requested release assets | 28 |
+| planned L1/L2 entries | 73 |
+| source-linked package entries | 73 |
+| source-linked current seeds | 26 |
+| entries with copied release assets | 73 |
+| current seeds with all requested release assets | 26 |
 | asset integrity status | `pass` |
 | asset integrity issues | 0 |
 | asset integrity warnings | 0 |
 | static certification status | `pass` |
-| static-certified release forms | 265 |
+| static-certified release forms | 249 |
 | static-failed release forms | 0 |
-| static-certified entries | 77 |
+| static-certified entries | 73 |
 | dual certification status | `pass` |
-| dual-certified release forms | 265 |
+| dual-certified release forms | 249 |
 | dual-failed release forms | 0 |
 | dual-pending release forms | 0 |
-| dual-pass materialized entries | 77 |
+| dual-pass materialized entries | 73 |
 | dual-pending materialized entries | 0 |
 | dual-failed materialized entries | 0 |
-| fully certified entries | 77 |
+| fully certified entries | 73 |
 | source-equivalence blocked forms | 0 |
 | source-equivalence blocker details | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -41,28 +41,28 @@ are complete.
 | L0 broad parity denominator count | 0 |
 | score denominator status | `score_enabled` |
 | score claim allowed | `True` |
-| score content denominator entries | 76 |
-| score content denominator forms | 261 |
-| score-certified entries | 72 |
-| score-certified forms | 265 |
-| scored release forms | 257 |
-| speed/debug status | `measured` |
+| score content denominator entries | 73 |
+| score content denominator forms | 249 |
+| score-certified entries | 73 |
+| score-certified forms | 249 |
+| scored release forms | 245 |
+| speed/debug status | `measured_subset` |
 | speed claim allowed | `False` |
-| speed timed rows | 277 |
+| speed timed rows | 17 |
 | baseline status | `ready_for_baseline_runs` |
 | baseline claim allowed | `False` |
 | baseline summary count | 0 |
 | claim gate status | `in_progress` |
-| allowed paper claims | 5 |
-| blocked paper claims | 4 |
-| dual rerun import status | `imported` |
-| dual rerun import stale summary | `False` |
-| seed entries with all requested forms | 28 |
+| allowed paper claims | 7 |
+| blocked paper claims | 2 |
+| dual rerun import status | `partial_imported` |
+| dual rerun import stale summary | `True` |
+| seed entries with all requested forms | 26 |
 | seed entries with missing forms | 0 |
 | selected expansion entries without package dir | 0 |
 | current seed entries without package dir | 0 |
-| certified release entries | 77 |
-| scored release entries | 75 |
+| certified release entries | 73 |
+| scored release entries | 73 |
 
 ## Counts
 
@@ -70,17 +70,17 @@ are complete.
 
 | Level | Count |
 | --- | ---: |
-| L1 | 60 |
-| L2 | 15 |
+| L1 | 57 |
+| L2 | 16 |
 
 ### Package Status
 
 | Status | Count |
 | --- | ---: |
-| current_l1_seed | 27 |
+| current_l1_seed | 25 |
 | current_l1_seed_with_review | 1 |
-| selected_l1_addition | 32 |
-| selected_l2_target | 15 |
+| selected_l1_addition | 31 |
+| selected_l2_target | 16 |
 
 ## Missing Seed Forms
 

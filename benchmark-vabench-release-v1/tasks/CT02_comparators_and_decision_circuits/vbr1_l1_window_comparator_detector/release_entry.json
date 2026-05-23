@@ -14,7 +14,7 @@
   "source_tasks": [
     {
       "form": "dut",
-      "source_path": "dut_companion_from_e2e:cross_hysteresis_window_smoke",
+      "source_path": "dut_companion_from_e2e:window_comparator_smoke",
       "prompt": true,
       "meta": true,
       "checks": true,
@@ -26,7 +26,7 @@
     },
     {
       "form": "tb",
-      "source_path": "tb_companion_from_e2e:cross_hysteresis_window_smoke",
+      "source_path": "tb_companion_from_e2e:window_comparator_smoke",
       "prompt": true,
       "meta": true,
       "checks": true,
@@ -38,7 +38,7 @@
     },
     {
       "form": "bugfix",
-      "source_path": "bugfix_companion_from_dut:cross_hysteresis_window_ref.va",
+      "source_path": "bugfix_companion_from_dut:window_comparator_ref.va",
       "prompt": true,
       "meta": true,
       "checks": true,
@@ -50,7 +50,7 @@
     },
     {
       "form": "e2e",
-      "source_path": "tasks/end-to-end/voltage/cross_hysteresis_window_smoke",
+      "source_path": "tasks/end-to-end/voltage/window_comparator_smoke",
       "prompt": true,
       "meta": true,
       "checks": true,
@@ -69,12 +69,12 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/cross_hysteresis_window_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_cross_hysteresis_window_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/window_comparator_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_window_comparator_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
-      "source_path": "dut_companion_from_e2e:cross_hysteresis_window_smoke",
+      "source_path": "dut_companion_from_e2e:window_comparator_smoke",
       "static_status": "pass",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/dut/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/dut/result.json",
@@ -93,12 +93,12 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/gold/cross_hysteresis_window_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/gold/tb_cross_hysteresis_window_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/gold/window_comparator_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/gold/tb_window_comparator_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
-      "source_path": "tb_companion_from_e2e:cross_hysteresis_window_smoke",
+      "source_path": "tb_companion_from_e2e:window_comparator_smoke",
       "static_status": "pass",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/tb/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/tb/result.json",
@@ -119,11 +119,11 @@
       "gold": [
         "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/gold/dut_buggy.va",
         "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/gold/tb_cross_hysteresis_window_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/gold/tb_window_comparator_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
-      "source_path": "bugfix_companion_from_dut:cross_hysteresis_window_ref.va",
+      "source_path": "bugfix_companion_from_dut:window_comparator_ref.va",
       "static_status": "pass",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/bugfix/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/bugfix/result.json",
@@ -142,12 +142,12 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/gold/cross_hysteresis_window_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/gold/tb_cross_hysteresis_window_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/gold/window_comparator_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/gold/tb_window_comparator_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
-      "source_path": "tasks/end-to-end/voltage/cross_hysteresis_window_smoke",
+      "source_path": "tasks/end-to-end/voltage/window_comparator_smoke",
       "static_status": "pass",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/e2e/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_window_comparator_detector/e2e/result.json",
@@ -156,8 +156,8 @@
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_window_comparator_detector/e2e/evidence.json",
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_window_comparator_detector/e2e/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_window_comparator_detector/e2e/spectre_result.json",
-      "release_source_task_id": "cross_hysteresis_window_smoke",
-      "historical_source_task_id": "cross_hysteresis_window_smoke"
+      "release_source_task_id": "window_comparator_smoke",
+      "historical_source_task_id": "window_comparator_smoke"
     }
   ],
   "missing_forms": [],

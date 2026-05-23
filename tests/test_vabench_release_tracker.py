@@ -12,13 +12,13 @@ TRACKER = ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv"
 def test_release_tracker_has_expected_top_level_counts() -> None:
     rows = list(csv.DictReader(TRACKER.open(encoding="utf-8")))
 
-    assert len(rows) == 75
-    assert Counter(row["level"] for row in rows) == {"L1": 60, "L2": 15}
+    assert len(rows) == 73
+    assert Counter(row["level"] for row in rows) == {"L1": 57, "L2": 16}
     assert Counter(row["package_status"] for row in rows) == {
-        "current_l1_seed": 27,
+        "current_l1_seed": 25,
         "current_l1_seed_with_review": 1,
-        "selected_l1_addition": 32,
-        "selected_l2_target": 15,
+        "selected_l1_addition": 31,
+        "selected_l2_target": 16,
     }
 
 
@@ -27,5 +27,5 @@ def test_release_tracker_does_not_score_uncertified_rows() -> None:
 
     assert rows
     assert {row["certification_status"] for row in rows} == {"not_certified"}
-    assert {row["evas_status"] for row in rows} == {"pending"}
-    assert {row["spectre_status"] for row in rows} == {"pending"}
+    assert Counter(row["evas_status"] for row in rows) == {"pending": 73}
+    assert Counter(row["spectre_status"] for row in rows) == {"pending": 73}

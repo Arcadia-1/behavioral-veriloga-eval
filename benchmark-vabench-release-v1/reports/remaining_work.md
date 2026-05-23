@@ -11,11 +11,11 @@ from the frozen score denominator, not inferred from source presence alone.
 
 | Metric | Value |
 | --- | ---: |
-| planned entries | 75 |
-| source-linked entries | 77 |
-| entries with copied assets | 77 |
-| static-certified release forms | 265 |
-| dual-certified release forms | 265 |
+| planned entries | 73 |
+| source-linked entries | 73 |
+| entries with copied assets | 73 |
+| static-certified release forms | 249 |
+| dual-certified release forms | 249 |
 | dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -25,7 +25,7 @@ from the frozen score denominator, not inferred from source presence alone.
 | fresh dual rerun queue forms | 0 |
 | missing required-form entries | 0 |
 | current seed missing-form entries | 0 |
-| scored release entries | 75 |
+| scored release entries | 73 |
 
 ## Source Design Pending
 

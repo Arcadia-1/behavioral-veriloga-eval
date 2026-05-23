@@ -201,7 +201,7 @@ def build_report() -> dict[str, object]:
         "selected_entries_without_package_dir": selected_missing,
         "seed_entries_with_missing_forms": missing_forms,
         "seed_entries_all_forms_present": len(seeds) - len(missing_forms),
-        "scored_release_entries": sum(1 for entry in entries if release_entry_scored(entry)),
+        "scored_release_entries": score_summary.get("scored_entry_count", "missing"),
         "certified_release_entries": sum(1 for entry in entries if release_entry_certified(entry)),
         "stop_condition": {
             "ready_to_score": score_ready,

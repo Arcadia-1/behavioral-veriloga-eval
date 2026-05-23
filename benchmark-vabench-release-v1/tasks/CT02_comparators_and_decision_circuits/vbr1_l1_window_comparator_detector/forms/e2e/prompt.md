@@ -7,18 +7,18 @@
 - Category: Comparators and Decision Circuits
 - Base function: Window comparator/detector
 - Domain: `voltage`
-- Target artifact(s): `cross_hysteresis_window_ref.va`, `tb_cross_hysteresis_window_ref.scs`
+- Target artifact(s): `window_comparator_ref.va`, `tb_window_comparator_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
 ## Form-Specific Requirements
 
-- Generate all target artifacts: `cross_hysteresis_window_ref.va`, `tb_cross_hysteresis_window_ref.scs`.
+- Generate all target artifacts: `window_comparator_ref.va`, `tb_window_comparator_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
 
 ## Public Verilog-A Interface
 
-- `cross_hysteresis_window_ref.va` declares module `cross_hysteresis_window_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.
+- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.
 
 ## Public Testbench And Observable Contract
 
@@ -43,41 +43,49 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `cross_hysteresis_window`
+- `true_window_comparator`
 
 ## Output Contract
 
 Return exactly these source artifacts:
 
-- `cross_hysteresis_window_ref.va`
-- `tb_cross_hysteresis_window_ref.scs`
+- `window_comparator_ref.va`
+- `tb_window_comparator_ref.scs`
 
 Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a Verilog-A module named `cross_hysteresis_window_ref`.
+Write a Verilog-A module named `window_comparator_ref` and a Spectre testbench named `tb_window_comparator_ref.scs`.
 
-# Task: cross_hysteresis_window_smoke
+# Task: window_comparator_smoke
 
 ## Objective
 
-Write a Verilog-A hysteresis element that uses directional `cross()` events to switch HIGH and LOW at different thresholds.
+Implement a true window comparator: the output is HIGH only while the input voltage lies between a lower and an upper threshold, and LOW outside that range.
 
 ## Specification
 
-- **Module name**: `cross_hysteresis_window_ref`
+- **Module name**: `window_comparator_ref`
 - **Ports**: `vin`, `out`, `VDD`, `VSS` - all `electrical`
+- **Thresholds**: `vlow = 0.3 V`, `vhigh = 0.6 V`
 - **Behavior**:
-  - Output starts LOW.
-  - When `vin` rises above `0.6 V`, output becomes HIGH.
-  - When `vin` falls below `0.3 V`, output becomes LOW.
-  - Between thresholds, hold the previous state.
-  - Drive output with `transition(...)`.
+  - Initialize the decision from the initial value of `V(vin,VSS)`.
+  - Drive `out` HIGH only when `vlow < V(vin,VSS) < vhigh`.
+  - Drive `out` LOW when `V(vin,VSS) <= vlow` or `V(vin,VSS) >= vhigh`.
+  - Use directional `@(cross(...))` events for both thresholds and both ramp directions.
+  - Drive the output decision with `transition(...)`, multiplying by the rail voltage outside the `transition(...)` call.
+
+## Testbench Requirements
+
+- Use a single triangular PWL stimulus on `vin` that sweeps below the lower threshold, through the window, above the upper threshold, and back down through the window.
+- Use `VDD = 0.9 V`, `VSS = 0 V`.
+- Include the DUT with `ahdl_include "./window_comparator_ref.va"`.
+- Run `tran tran stop=90n maxstep=20p errpreset=conservative`.
+- Save plain scalar observables `vin` and `out`.
 
 ## Constraints
 
-- .., +1))`, `@(cross(..., -1))`, and `@(initial_step)`.
 - Pure voltage-domain only.
 - No `I() <+`, `ddt()`, or `idt()`.
 

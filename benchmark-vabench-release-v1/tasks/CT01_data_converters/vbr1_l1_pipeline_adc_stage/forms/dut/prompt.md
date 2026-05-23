@@ -38,6 +38,8 @@ The release harness expects these exact public scalar observables:
 - `d1`
 - `d0`
 
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+
 ## Public Behavior Checks
 
 - `upper_middle_lower_regions_exercised`

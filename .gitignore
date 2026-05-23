@@ -1,4 +1,5 @@
 results/
+logs/
 generated-table2/
 generated-table2-*/
 generated-experiment/
@@ -19,9 +20,15 @@ generated/
 results-*/
 results_*/
 runlogs/
+experiment-logs/
 scratch/
 refine-logs/
 tmp/
+_archive/
+_archives/
+*.tar.gz
+*.tgz
+*.zip
 *.log
 *.tmp
 **/repair_prompt.md
@@ -29,6 +36,7 @@ tmp/
 **/result.json
 **/tran.csv
 .pytest_cache/
+.pycache/
 .DS_Store
 **/__pycache__/
 

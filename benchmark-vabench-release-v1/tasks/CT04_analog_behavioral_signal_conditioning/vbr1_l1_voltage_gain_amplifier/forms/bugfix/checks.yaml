@@ -11,9 +11,10 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "gain_applied"
+    - "sampled_gain_tracks_input"
     - "common_mode_offset"
-    - "output_clamped"
+    - "rail_clamps"
+    - "saturation_metric_marks_clipping"
 parity:
   reference: "spectre"
   status: "pass"

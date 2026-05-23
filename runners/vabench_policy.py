@@ -18,9 +18,7 @@ BADCASE_ORIGINS = ("original", "recovered", "reconstructed")
 COUNT_KEYS = ("model_capability", "benchmark_coverage", "bugfix_claim")
 
 
-CONTENT_DENOMINATOR_EXCLUDED_ENTRIES: dict[str, list[str]] = {
-    "vbr1_l1_clocked_comparator": ["duplicate_strongarm_clocked_comparator"],
-}
+CONTENT_DENOMINATOR_EXCLUDED_ENTRIES: dict[str, list[str]] = {}
 
 
 def task_id_from_meta(meta: dict[str, Any], task_dir: Path | None = None) -> str:

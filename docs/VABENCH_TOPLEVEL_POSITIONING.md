@@ -57,7 +57,7 @@ scored tasks.
 | --- | --- |
 | Binary DAC versus thermometer DAC | Use "simple 4-bit binary-coded DAC" for the current mathematical code-to-voltage model. Use "unit-element thermometer DAC" only when thermometer-coded unit cells are modeled. |
 | Decoder versus DAC | A thermometer-code decoder is digital/code-format logic for converter control. It is distinct from a DAC only when no analog reconstruction is claimed. |
-| Clocked comparator versus StrongARM-style latch comparator | Keep both only if the generic clocked comparator tests reset/evaluate decision timing and the StrongARM-style task tests latch/reset-priority behavior. Otherwise merge. |
+| StrongARM-style latch comparator | Keep the latch-style comparator as the clocked comparator coverage point; avoid a separate generic clocked comparator unless it adds independently checked behavior beyond reset/evaluate timing. |
 | DEM pointer variants | Count separate tasks only when the selection rule differs: rotating pointer, windowed pointer, no-overlap DWA, or full thermo-DWA encoder. Pure wraparound edge cases are L0/checker cases. |
 | Clamp versus limiter | `voltage_clamp` covers hard saturation. Add a new limiter only if it is soft, hysteretic, or otherwise behaviorally distinct. |
 | Sample/hold droop versus leaky hold | Treat as one function unless reset, aperture, or noise behavior is central and separately checked. |

@@ -46,8 +46,9 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `smooth_limiting`
+- `soft_compression`
 - `hysteresis_state_memory`
+- `state_metric_tracks_memory`
 - `bounded_output`
 
 ## Output Contract
@@ -67,7 +68,8 @@ Write both the Verilog-A behavioral module and a Spectre transient testbench.
 
 Behavioral intent:
 
-Limit a voltage signal with smooth compression and stateful hysteresis around thresholds.
+Limit a voltage signal with soft compression and stateful hysteresis around thresholds.
+The auxiliary metric reports the retained hysteresis state.
 
 Module name: `soft_hysteretic_limiter`.
 Domain: pure voltage-domain behavioral Verilog-A.
@@ -85,7 +87,7 @@ electrical clk, rst, vin, out, metric
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.
+clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded, softly limited voltage. metric exposes the retained hysteresis state so neutral input after a high excursion differs from neutral input after a low excursion.
 
 Saved waveform columns:
 

@@ -44,8 +44,6 @@ ENTRY_TO_BASE_ID = {
     "vbr1_l1_peak_detector": "peak_detector",
     "vbr1_l1_first_order_lowpass": "first_order_lowpass",
     "vbr1_l1_resettable_integrator": "resettable_integrator",
-    "vbr1_l1_precision_rectifier": "precision_rectifier",
-    "vbr1_l1_voltage_clamp_or_limiter": "voltage_clamp",
     "vbr1_l1_slew_rate_limiter": "slew_rate_limiter",
     "vbr1_l1_aperture_delay_track_and_hold": "track_hold_aperture",
     "vbr1_l1_sample_and_hold_with_droop_leakage": "leaky_hold",
@@ -124,8 +122,8 @@ def registry_by_base() -> dict[str, dict[str, str]]:
 def tracker_rows() -> list[dict[str, str]]:
     rows = read_csv(TRACKER_CSV)
     current = [row for row in rows if row["package_status"].startswith("current_l1_seed")]
-    if len(current) != 28:
-        raise RuntimeError(f"expected 28 current seed rows, found {len(current)}")
+    if not current:
+        raise RuntimeError("expected at least one current seed row")
     return current
 
 

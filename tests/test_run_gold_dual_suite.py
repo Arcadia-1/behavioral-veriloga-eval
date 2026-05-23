@@ -84,10 +84,12 @@ def test_run_spectre_case_passes_bridge_profile(monkeypatch, tmp_path: Path) -> 
         return SimpleNamespace(stdout="", stderr="", returncode=0)
 
     monkeypatch.setattr(dual, "run_cmd", fake_run_cmd)
+    tb_path = tmp_path / "tb.scs"
+    tb_path.write_text("simulator lang=spectre\n", encoding="utf-8")
 
     result = dual.run_spectre_case(
         task_id="case",
-        tb_path=tmp_path / "tb.scs",
+        tb_path=tb_path,
         include_paths=[],
         output_dir=output_dir,
         bridge_repo=bridge_repo,
@@ -118,10 +120,12 @@ def test_run_spectre_case_can_request_side_output_downloads(monkeypatch, tmp_pat
         return SimpleNamespace(stdout="", stderr="", returncode=0)
 
     monkeypatch.setattr(dual, "run_cmd", fake_run_cmd)
+    tb_path = tmp_path / "tb.scs"
+    tb_path.write_text("simulator lang=spectre\n", encoding="utf-8")
 
     result = dual.run_spectre_case(
         task_id="case",
-        tb_path=tmp_path / "tb.scs",
+        tb_path=tb_path,
         include_paths=[],
         output_dir=output_dir,
         bridge_repo=bridge_repo,

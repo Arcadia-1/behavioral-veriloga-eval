@@ -11,6 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "claim_gate.json"
 REPORT_MD = REPORTS_ROOT / "claim_gate.md"
+PLANNED_ENTRY_TARGET = 73
 
 
 def rel(path: Path) -> str:
@@ -100,7 +101,7 @@ def build_report() -> dict[str, object]:
     fresh_dual_rerun_queue_forms = as_int(remaining.get("fresh_dual_rerun_queue_form_count"))
 
     assets_static_clean = (
-        planned_entries == 75
+        planned_entries == PLANNED_ENTRY_TARGET
         and source_linked_entries >= planned_entries
         and materialized_entries >= planned_entries
         and asset.get("status") == "pass"
@@ -132,16 +133,18 @@ def build_report() -> dict[str, object]:
     claims = [
         claim(
             claim_id="C1_coverage_target_defined",
-            allowed=planned_entries == 75,
+            allowed=planned_entries == PLANNED_ENTRY_TARGET,
             completion_required=True,
-            claim_text="The release target defines a 75-entry L1/L2 vaBench coverage plan.",
-            safe_wording="The current release package defines 75 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
+            claim_text=f"The release target defines a {PLANNED_ENTRY_TARGET}-entry L1/L2 vaBench coverage plan.",
+            safe_wording=f"The current release package defines {PLANNED_ENTRY_TARGET} planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
             unsafe_wording=[
-                "vaBench is fully certified because it has 75 rows.",
-                "The 75-entry table alone proves benchmark correctness.",
+                f"vaBench is fully certified because it has {PLANNED_ENTRY_TARGET} rows.",
+                f"The {PLANNED_ENTRY_TARGET}-entry table alone proves benchmark correctness.",
             ],
             evidence=[rel(REPORTS_ROOT / "release_status.json"), rel(ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv")],
-            required_before_allowed=[] if planned_entries == 75 else ["release_status.planned_entries must equal 75"],
+            required_before_allowed=[]
+            if planned_entries == PLANNED_ENTRY_TARGET
+            else [f"release_status.planned_entries must equal {PLANNED_ENTRY_TARGET}"],
             numbers={"planned_entries": planned_entries},
         ),
         claim(
@@ -150,7 +153,7 @@ def build_report() -> dict[str, object]:
             completion_required=True,
             claim_text="All release entries have materialized source-task assets and pass static checks.",
             safe_wording=(
-                f"The release has {materialized_entries} materialized entries for the 75-entry plan "
+                f"The release has {materialized_entries} materialized entries for the {PLANNED_ENTRY_TARGET}-entry plan "
                 f"and {static_forms} static-certified forms with zero asset issues."
             ),
             unsafe_wording=[
@@ -166,7 +169,7 @@ def build_report() -> dict[str, object]:
             if assets_static_clean
             else [
                 "asset_integrity and static_certification must pass for all release forms",
-                "source_linked/materialized entry counts must cover the 75-entry release plan",
+                f"source_linked/materialized entry counts must cover the {PLANNED_ENTRY_TARGET}-entry release plan",
             ],
             numbers={
                 "source_linked_entries": source_linked_entries,
@@ -254,7 +257,7 @@ def build_report() -> dict[str, object]:
             ),
             unsafe_wording=[
                 "Current baseline percentages are release benchmark scores.",
-                "The 75 planned entries are already the scored denominator.",
+                f"The {PLANNED_ENTRY_TARGET} planned entries are already the scored denominator.",
             ],
             evidence=[
                 rel(REPORTS_ROOT / "score_denominator_manifest.json"),
@@ -336,7 +339,7 @@ def build_report() -> dict[str, object]:
             claim_text="L0 EVAS/Spectre conformance cases are kept outside the L1/L2 benchmark denominator.",
             safe_wording=f"L0 conformance has {conformance.get('conformance_case_count', 0)} cases and contributes {conformance.get('benchmark_coverage_count', 'missing')} entries to benchmark coverage.",
             unsafe_wording=[
-                "L0 conformance cases increase the 75-entry benchmark size.",
+                f"L0 conformance cases increase the {PLANNED_ENTRY_TARGET}-entry benchmark size.",
                 "Conformance regressions are scored release tasks.",
             ],
             evidence=[rel(REPORTS_ROOT / "conformance_manifest.json")],

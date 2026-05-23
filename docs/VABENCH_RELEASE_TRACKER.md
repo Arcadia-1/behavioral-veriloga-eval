@@ -33,17 +33,18 @@ and Spectre are all marked complete/pass.
 | vbr1_l1_capacitive_weighted_sar_feedback_dac | L1 | Data Converters | Capacitive/weighted SAR feedback DAC | selected_l1_addition | not_certified |
 | vbr1_l1_dac_mismatch_unit_weighting_model | L1 | Data Converters | DAC mismatch/unit-weighting model | selected_l1_addition | not_certified |
 | vbr1_l1_sar_logic | L1 | Data Converters | SAR logic | current_l1_seed | not_certified |
+| vbr1_l1_pipeline_adc_stage | L1 | Data Converters | Pipeline ADC MDAC stage | selected_l1_addition | not_certified |
 | vbr1_l2_adc_dac_reconstruction_chain | L2 | Data Converters | ADC/DAC reconstruction chain | selected_l2_target | not_certified |
 | vbr1_l2_weighted_sar_adc_dac_loop | L2 | Data Converters | Weighted SAR ADC/DAC loop | selected_l2_target | not_certified |
 | vbr1_l2_flash_adc_mini_array | L2 | Data Converters | Flash ADC mini-array | selected_l2_target | not_certified |
+| vbr1_l2_pipeline_adc_chain | L2 | Data Converters | Pipeline ADC chain | selected_l2_target | not_certified |
 | vbr1_l1_threshold_comparator | L1 | Comparators and Decision Circuits | Threshold comparator | selected_l1_addition | not_certified |
 | vbr1_l1_propagation_delay_comparator | L1 | Comparators and Decision Circuits | Propagation-delay comparator | selected_l1_addition | not_certified |
 | vbr1_l1_hysteresis_comparator | L1 | Comparators and Decision Circuits | Hysteresis comparator | selected_l1_addition | not_certified |
 | vbr1_l1_window_comparator_detector | L1 | Comparators and Decision Circuits | Window comparator/detector | selected_l1_addition | not_certified |
 | vbr1_l1_offset_comparator | L1 | Comparators and Decision Circuits | Offset comparator | current_l1_seed | not_certified |
-| vbr1_l1_clocked_comparator | L1 | Comparators and Decision Circuits | Clocked comparator | selected_l1_addition | not_certified |
 | vbr1_l1_strongarm_style_latch_comparator | L1 | Comparators and Decision Circuits | StrongARM-style latch comparator | current_l1_seed | not_certified |
-| vbr1_l2_comparator_measurement_flow | L2 | Comparators and Decision Circuits | Comparator measurement flow | selected_l2_target | not_certified |
+| vbr1_l2_comparator_measurement_flow | L2 | Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | selected_l2_target | not_certified |
 | vbr1_l1_vco_phase_integrator | L1 | PLL / Clock / Event Timing | VCO phase integrator | current_l1_seed | not_certified |
 | vbr1_l1_pfd_up_dn_logic | L1 | PLL / Clock / Event Timing | PFD UP/DN logic | current_l1_seed | not_certified |
 | vbr1_l1_pfd_small_phase_error_response | L1 | PLL / Clock / Event Timing | PFD small phase-error response | selected_l1_addition | not_certified |
@@ -88,11 +89,8 @@ and Spectre are all marked complete/pass.
 | vbr1_l2_adc_dac_source_sweep_flow | L2 | Stimulus and Sources | ADC/DAC source sweep flow | selected_l2_target | not_certified |
 | vbr1_l1_first_order_lowpass | L1 | Analog Behavioral Signal Conditioning | First-order lowpass | current_l1_seed | not_certified |
 | vbr1_l1_resettable_integrator | L1 | Analog Behavioral Signal Conditioning | Resettable integrator | current_l1_seed | not_certified |
-| vbr1_l1_precision_rectifier | L1 | Analog Behavioral Signal Conditioning | Precision rectifier | current_l1_seed | not_certified |
-| vbr1_l1_voltage_clamp_or_limiter | L1 | Analog Behavioral Signal Conditioning | Voltage clamp or limiter | current_l1_seed | not_certified |
 | vbr1_l1_soft_hysteretic_limiter | L1 | Analog Behavioral Signal Conditioning | Soft/hysteretic limiter | selected_l1_addition | not_certified |
 | vbr1_l1_voltage_gain_amplifier | L1 | Analog Behavioral Signal Conditioning | Voltage gain amplifier | selected_l1_addition | not_certified |
-| vbr1_l1_differential_output_driver | L1 | Analog Behavioral Signal Conditioning | Differential output driver | selected_l1_addition | not_certified |
 | vbr1_l1_higher_order_filter | L1 | Analog Behavioral Signal Conditioning | Higher-order filter | selected_l1_addition | not_certified |
 | vbr1_l1_slew_rate_limiter | L1 | Analog Behavioral Signal Conditioning | Slew-rate limiter | current_l1_seed | not_certified |
 | vbr1_l2_amplifier_filter_chain | L2 | Analog Behavioral Signal Conditioning | Amplifier/filter chain | selected_l2_target | not_certified |

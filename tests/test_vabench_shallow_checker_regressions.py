@@ -17,17 +17,19 @@ PROMOTED_FUNCTION_CHECKED_DUTS = {
     "vbr1_l1_clocked_adc_quantizer",
     "vbr1_l1_clocked_sample_and_hold",
     "vbr1_l1_sample_and_hold_with_droop_leakage",
-    "vbr1_l1_differential_output_driver",
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
     "vbr1_l1_dwa_dem_encoder",
+    "vbr1_l1_higher_order_filter",
     "vbr1_l1_hysteresis_comparator",
     "vbr1_l1_pfd_small_phase_error_response",
     "vbr1_l1_propagation_delay_comparator",
     "vbr1_l1_ramp_or_step_source",
     "vbr1_l1_serializer_frame_aligner",
+    "vbr1_l1_soft_hysteretic_limiter",
     "vbr1_l1_threshold_comparator",
     "vbr1_l1_unit_element_thermometer_dac",
+    "vbr1_l1_voltage_gain_amplifier",
     "vbr1_l1_window_comparator_detector",
     "vbr1_l1_xor_phase_detector",
 }
@@ -92,10 +94,12 @@ def test_promoted_function_checked_duts_have_specific_public_contracts() -> None
         assert "sim_correct:" in checks
 
 
-def test_duplicate_clocked_comparator_is_content_excluded_not_shallow_claim() -> None:
+def test_duplicate_clocked_comparator_is_removed_from_release_package() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     excluded = report["content_excluded_entries"]
     shallow_ids = {item["entry_id"] for item in report["findings"] if item["kind"] == "shallow_generic_checker"}
+    task_dir = PACKAGE_ROOT / "tasks" / "CT02_comparators_and_decision_circuits" / "vbr1_l1_clocked_comparator"
 
-    assert excluded["vbr1_l1_clocked_comparator"] == ["duplicate_strongarm_clocked_comparator"]
+    assert not task_dir.exists()
+    assert "vbr1_l1_clocked_comparator" not in excluded
     assert "vbr1_l1_clocked_comparator" not in shallow_ids

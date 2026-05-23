@@ -105,12 +105,15 @@ def build_report() -> dict[str, object]:
     rerun_pending = int(remaining.get("selected_rerun_pending_form_count", 0) or 0)
     missing_required = int(remaining.get("missing_required_form_entry_count", 0) or 0)
     current_seed_missing = int(remaining.get("current_seed_missing_form_entry_count", 0) or 0)
+    planned_entries = int(status.get("planned_entries", 0) or 0)
+    source_linked_entries = int(status.get("source_linked_entry_count", 0) or 0)
+    materialized_entries = int(status.get("asset_materialized_entry_count", 0) or 0)
     materialization_complete = (
         source_pending == 0
         and missing_required == 0
         and current_seed_missing == 0
-        and int(status.get("source_linked_entry_count", 0) or 0) == 75
-        and int(status.get("asset_materialized_entry_count", 0) or 0) == 75
+        and source_linked_entries >= planned_entries
+        and materialized_entries >= planned_entries
         and asset_issues == 0
         and asset_warnings == 0
         and static_failed == 0

@@ -22,8 +22,9 @@
     "sim_correct"
   ],
   "behavior_checks": [
-    "smooth_limiting",
+    "soft_compression",
     "hysteresis_state_memory",
+    "state_metric_tracks_memory",
     "bounded_output"
   ],
   "designed_source": true

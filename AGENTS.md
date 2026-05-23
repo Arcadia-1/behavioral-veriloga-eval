@@ -25,11 +25,17 @@ Benchmark/evaluator split policy:
 ## Project Structure & Module Organization
 `tasks/` holds benchmark cases, organized as `tasks/<family>/voltage/<category>/<case>/` with `prompt.md`, `meta.json`, `checks.yaml`, and optional `gold/`. `examples/` contains runnable reference designs, grouped by intent such as `digital-logic/`, `data-converter/`, and `stimulus/`; each example usually includes `.va`, `tb_*.scs`, `analyze_*.py`, and `validate_*.py` files. `runners/` contains harness scripts for migration and EVAS execution. `schemas/` defines the task and result JSON formats.
 
+## Repository Layout Policy
+Follow `docs/REPO_LAYOUT_POLICY.md` for top-level directory placement. Keep speed experiments under `speed-optimization/`, compact reports under `speed-optimization/reports/` or `benchmark-vabench-release-v1/reports/`, and raw simulator output under `results/<run-id>/` only while it is active. Archive historical raw results outside the repo under `_archives/behavioral-veriloga-eval/` and record them in a `docs/RESULT_ARCHIVE_MANIFEST_*.md` file.
+
+Do not add new top-level `generated-*`, `results-*`, `results_*`, `runlogs/`, `experiment-logs/`, `refine-logs/`, `scratch/`, or `tmp/` directories. Run `python3 scripts/check_repo_layout.py` after cleanup or experiment-structure changes.
+
 ## Build, Test, and Development Commands
 Use `python3` for repository tooling.
 
 - `python3 runners/run_examples_suite.py --output-root results/examples-suite` - runs the manifest-driven smoke suite for the example library.
 - `python3 runners/simulate_evas.py tasks/end-to-end/voltage/clk_div_smoke examples/digital-logic/clk_div/clk_div.va examples/digital-logic/clk_div/tb_clk_div.scs` - executes one DUT/testbench pair through EVAS.
+- `python3 scripts/check_repo_layout.py` - checks the top-level layout policy before cleanup or experiment-structure changes are committed.
 - `python3 examples/digital-logic/clk_div/validate_clk_div.py` - runs a case-specific validation script when present.
 - `python3 runners/migrate_veriloga_evals.py` - regenerates structured task directories from the legacy eval list; only use when the upstream source repo is available.
 

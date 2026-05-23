@@ -10,7 +10,7 @@
   "source_base_id": "offset_comparator",
   "canonical_kernel": "threshold_with_offset",
   "source_registry_status": "release_seed",
-  "source_evidence_status": "main120_dual_pass",
+  "source_evidence_status": "selected_source_pending_dual",
   "source_tasks": [
     {
       "form": "dut",
@@ -70,7 +70,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/dut/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/dut/spectre_result.json",
       "release_source_task_id": "vbm1_offset_comparator_dut",
-      "historical_source_task_id": "vbm1_offset_comparator_dut"
+      "historical_source_task_id": "vbm1_offset_comparator_dut",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "tb",
@@ -92,7 +93,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/tb/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/tb/spectre_result.json",
       "release_source_task_id": "vbm1_offset_comparator_tb",
-      "historical_source_task_id": "vbm1_offset_comparator_tb"
+      "historical_source_task_id": "vbm1_offset_comparator_tb",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "bugfix",
@@ -116,7 +118,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/bugfix/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/bugfix/spectre_result.json",
       "release_source_task_id": "vbm1_offset_comparator_bugfix",
-      "historical_source_task_id": "vbm1_offset_comparator_bugfix"
+      "historical_source_task_id": "vbm1_offset_comparator_bugfix",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "e2e",
@@ -138,7 +141,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/e2e/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/e2e/spectre_result.json",
       "release_source_task_id": "vbm1_offset_comparator_e2e",
-      "historical_source_task_id": "vbm1_offset_comparator_e2e"
+      "historical_source_task_id": "vbm1_offset_comparator_e2e",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     }
   ],
   "missing_forms": [],

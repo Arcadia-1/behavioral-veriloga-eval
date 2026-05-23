@@ -52,9 +52,6 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
-The validation testbench steps through all 16 unsigned input codes from `0`
-through `15`; the fix must preserve each binary bit weight and the endpoint
-scaling denominator of `15`.
 
 ## Output Contract
 

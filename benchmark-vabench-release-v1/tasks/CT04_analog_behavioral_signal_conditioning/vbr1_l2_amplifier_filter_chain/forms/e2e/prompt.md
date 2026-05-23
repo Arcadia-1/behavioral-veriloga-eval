@@ -46,9 +46,9 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `amplified_input`
-- `filtered_output_lags_input`
-- `metric_tracks_settling`
+- `amplifier_target_metric`
+- `filtered_output_lags_target`
+- `bounded_chain_response`
 
 ## Output Contract
 
@@ -67,7 +67,8 @@ Write both the Verilog-A behavioral module and a Spectre transient testbench.
 
 Behavioral intent:
 
-Combine a gain block and low-pass filter and expose the filtered response metric.
+Combine a sampled gain block and a low-pass filter into one chain.
+The auxiliary metric exposes the clamped gain-block target before filtering, while the output exposes the filtered response.
 
 Module name: `amplifier_filter_chain`.
 Domain: pure voltage-domain behavioral Verilog-A.
@@ -85,7 +86,7 @@ electrical clk, rst, vin, out, metric
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.
+clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. metric exposes the bounded gain-block target before filtering. out is the bounded filtered voltage that lags the metric after input steps.
 
 Saved waveform columns:
 

@@ -18,7 +18,7 @@
 
 ## Public Verilog-A Interface
 
-- `charge_pump_abstraction.va` declares module `charge_pump_abstraction` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- `charge_pump_abstraction.va` declares module `charge_pump_abstraction` with positional ports: `clk`, `rst`, `up`, `dn`, `vctrl`, `metric`.
 
 ## Public Testbench And Observable Contract
 
@@ -32,8 +32,9 @@ The release harness expects these exact public scalar observables:
 
 - `clk`
 - `rst`
-- `vin`
-- `out`
+- `up`
+- `dn`
+- `vctrl`
 - `metric`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
@@ -42,7 +43,8 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `clk`
 - `rst`
-- `vin`
+- `up`
+- `dn`
 
 ## Public Behavior Checks
 
@@ -77,20 +79,20 @@ or KCL/KVL solving assumptions.
 Public port contract:
 
 ```verilog
-module charge_pump_abstraction(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric
+module charge_pump_abstraction(clk, rst, up, dn, vctrl, metric);
+input clk, rst, up, dn;
+output vctrl, metric;
+electrical clk, rst, up, dn, vctrl, metric
 ```
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed error stimulus around 0.45 V. out is a bounded trim/control voltage. metric is a voltage-coded status or completion observable.
+clk, rst, up, and dn are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. On each rising clk edge, an UP-only pulse increases vctrl, a DN-only pulse decreases vctrl, simultaneous or absent pulses hold the control voltage, and rst high resets vctrl to midscale. vctrl is a bounded loop-control voltage. metric is a voltage-coded UP/DN/hold status observable.
 
 Saved waveform columns:
 
 ```text
-clk rst vin out metric
+clk rst up dn vctrl metric
 ```
 
 Public transient contract:

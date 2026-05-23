@@ -1,6 +1,6 @@
 # vaBench Release Paper Tables
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 These tables are generated from the release reports and claim gate. They
 are designed for paper drafting without turning pending evidence into
@@ -20,37 +20,37 @@ claims.
 
 | metric | value | scope | claim_status |
 | --- | --- | --- | --- |
-| planned_l1_l2_entries | 75 | coverage target | allowed |
-| l1_entries | 60 | coverage target | allowed |
-| l2_entries | 15 | coverage target | allowed |
-| source_linked_entries | 75 | source package | allowed |
-| asset_materialized_entries | 75 | source package | allowed |
-| static_certified_forms | 259 | static checks | allowed |
-| scored_entries | 74 | score denominator | allowed |
+| planned_l1_l2_entries | 73 | coverage target | allowed |
+| l1_entries | 57 | coverage target | allowed |
+| l2_entries | 16 | coverage target | allowed |
+| source_linked_entries | 73 | source package | allowed |
+| asset_materialized_entries | 73 | source package | allowed |
+| static_certified_forms | 249 | static checks | allowed |
+| scored_entries | 73 | score denominator | allowed |
 
 ## Parity
 
 | metric | value | scope | claim_status |
 | --- | --- | --- | --- |
-| dual_certified_release_forms | 259 | full certified release | allowed |
-| fully_certified_entries | 75 | full certified release | allowed |
+| dual_certified_release_forms | 249 | full certified release | allowed |
+| fully_certified_entries | 73 | full certified release | allowed |
 | evas_pass_spectre_fail_count | 0 | full certified release | allowed |
 | dual_pending_release_forms | 0 | fresh full-release rerun | allowed |
 | fresh_rerun_queue_rows | 0 | fresh full-release rerun | allowed |
 | ready_rerun_bundles | 0 | fresh full-release rerun | allowed |
 | bridge_status | ready | external bridge diagnostics | allowed |
-| main120_gold_evas_pass | 120/120 | historical supporting evidence | supporting_only |
-| main120_gold_spectre_pass | 120/120 | historical supporting evidence | supporting_only |
+| main120_gold_evas_pass | 0/0 | historical supporting evidence | supporting_only |
+| main120_gold_spectre_pass | 0/0 | historical supporting evidence | supporting_only |
 
 ## Claims
 
 | claim_id | status | completion_required | safe_wording |
 | --- | --- | --- | --- |
-| C1_coverage_target_defined | allowed | True | The current release package defines 75 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
-| C2_source_assets_static_clean | allowed | True | The release has 75/75 materialized entries and 259 static-certified forms with zero asset issues. |
-| C3_imported_dual_subset_clean | allowed | False | On the full imported release evidence (259 forms), EVAS PASS / Spectre FAIL count is 0. |
-| C4_full_release_dual_certified | allowed | True | The full release package has EVAS/Spectre certification for 259 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
-| C5_score_denominator_enabled | allowed | True | The release benchmark score denominator is enabled for 74 certified content-denominator entries and 255 forms. |
+| C1_coverage_target_defined | allowed | True | The current release package defines 73 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
+| C2_source_assets_static_clean | allowed | True | The release has 73 materialized entries for the 73-entry plan and 249 static-certified forms with zero asset issues. |
+| C3_imported_dual_subset_clean | allowed | False | On the full imported release evidence (249 forms), EVAS PASS / Spectre FAIL count is 0. |
+| C4_full_release_dual_certified | allowed | True | The full release package has EVAS/Spectre certification for 249 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
+| C5_score_denominator_enabled | allowed | True | The release benchmark score denominator is enabled for 73 certified content-denominator entries and 245 forms. |
 | C6_speed_debug_claim | blocked | True | Speed/debug has subset timing evidence, but release-wide speedup remains blocked until the dedicated artifact marks the speed claim allowed. |
 | C7_model_baseline_claim | blocked | True | Model baseline reporting is pending until baseline runs report against the enabled score denominator. |
 | C8_l0_conformance_separate | allowed | True | L0 conformance has 4 cases and contributes 0 entries to benchmark coverage. |

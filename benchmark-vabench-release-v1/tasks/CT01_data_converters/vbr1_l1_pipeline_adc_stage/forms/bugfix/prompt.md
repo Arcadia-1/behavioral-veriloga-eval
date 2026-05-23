@@ -20,7 +20,8 @@
 ## Public Interface To Preserve
 
 - `dut_buggy.va` declares module `pipeline_stage` with positional ports: `VDD`, `VSS`, `PHI1`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`.
-- `dut_fixed.va` must declare module `pipeline_stage` with the same positional ports.
+- `dut_fixed.va` declares module `pipeline_stage` with positional ports: `VDD`, `VSS`, `PHI1`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`.
+- `pipeline_stage.va` declares module `pipeline_stage` with positional ports: `VDD`, `VSS`, `PHI1`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`.
 
 ## Public Testbench And Observable Contract
 
@@ -39,6 +40,8 @@ The release harness expects these exact public scalar observables:
 - `d1`
 - `d0`
 
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+
 ## Public Behavior Checks
 
 - `upper_middle_lower_regions_exercised`
@@ -48,9 +51,8 @@ The release harness expects these exact public scalar observables:
 
 ## Observed Mismatch Framing
 
-The supplied buggy artifact violates the public residue behavior under the
-release validation testbench. Repair the observable behavior without renaming
-the module, changing ports, or weakening the public testbench contract.
+The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
+Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
 
 ## Output Contract
 

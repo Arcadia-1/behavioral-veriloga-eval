@@ -123,17 +123,13 @@ good public benchmark surface.
 
 | Level | Function | Forms |
 | --- | --- | --- |
-| L1 | Differential output driver | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | First-order lowpass | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Higher-order filter | `dut`, `tb`, `bugfix`, `e2e` |
-| L1 | Precision rectifier | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Resettable integrator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Slew-rate limiter | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Soft/hysteretic limiter | `dut`, `tb`, `bugfix`, `e2e` |
-| L1 | Voltage clamp or limiter | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Voltage gain amplifier | `dut`, `tb`, `bugfix`, `e2e` |
 | L2 | Amplifier/filter chain | `e2e`, `tb` |
-| L2 | Signal-conditioning chain | `e2e`, `tb` content-excluded pending rewrite |
 
 ### Calibration, DEM, and Control
 
@@ -154,14 +150,13 @@ good public benchmark surface.
 
 | Level | Function | Forms |
 | --- | --- | --- |
-| L1 | Clocked comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Hysteresis comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Offset comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Propagation-delay comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | StrongARM-style latch comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Threshold comparator | `dut`, `tb`, `bugfix`, `e2e` |
 | L1 | Window comparator/detector | `dut`, `tb`, `bugfix`, `e2e` |
-| L2 | Comparator measurement flow | `tb`, `e2e` |
+| L2 | Single-ramp comparator offset measurement flow | `tb`, `e2e` |
 
 ### Digital and Event-Driven Logic
 

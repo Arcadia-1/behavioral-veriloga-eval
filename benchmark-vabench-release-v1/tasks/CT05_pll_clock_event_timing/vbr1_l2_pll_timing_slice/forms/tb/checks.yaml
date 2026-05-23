@@ -7,11 +7,11 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "cppll_tracks_reference_frequency"
+    - "lock_asserts_in_late_tracking_window"
+    - "vctrl_stays_bounded"
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_until_evas_spectre_rerun"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Pending dual refresh after CT05 PLL timing checker now requires late-window lock assertion."

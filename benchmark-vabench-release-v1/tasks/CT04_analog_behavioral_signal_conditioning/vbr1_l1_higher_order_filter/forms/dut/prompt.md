@@ -22,8 +22,9 @@
 
 ## Public Behavior Checks
 
-- `two_filter_states`
-- `step_response_is_smoothed`
+- `two_distinct_filter_states`
+- `lagged_second_order_step_response`
+- `state_difference_metric`
 - `reset_clears_states`
 
 ## Output Contract
@@ -40,6 +41,7 @@ Write the Verilog-A behavioral module only.
 Behavioral intent:
 
 Approximate a second-order low-pass response with two sampled internal filter states.
+The output follows the second state; the auxiliary metric exposes the separation between the first and second states.
 
 Module name: `higher_order_filter`.
 Domain: pure voltage-domain behavioral Verilog-A.
@@ -57,7 +59,7 @@ electrical clk, rst, vin, out, metric
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.
+clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded second filter state. metric exposes a bounded state-difference diagnostic between the faster first state and the slower second state.
 
 Saved waveform columns:
 

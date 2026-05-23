@@ -13,11 +13,11 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_charge_pump_abstraction/tb/gold",
-    "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/vbr1_l1_charge_pump_abstraction/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold",
+    "results/ct05-dual-rerun-20260523-final/vbr1_l1_charge_pump_abstraction/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -27,9 +27,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_charge_pump_abstraction/tb/gold",
-    "result_root": "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/vbr1_l1_charge_pump_abstraction/tb/gold",
+    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold",
+    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l1_charge_pump_abstraction/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -38,36 +38,39 @@
         0.0,
         8e-08
       ],
-      "signals_compared": 5,
+      "signals_compared": 6,
       "samples": 1200,
-      "max_rmse_v": 0.15811388300841897,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.0050122774219023,
-      "p95_nrmse": 0.025,
-      "max_nrmse": 0.025,
+      "max_rmse_v": 2.6516703399692365e-06,
+      "max_abs_v": 3.7503896733070974e-05,
+      "mean_nrmse": 1.159662274361092e-06,
+      "p95_nrmse": 4.419450566615394e-06,
+      "max_nrmse": 4.419450566615394e-06,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.15811388300841897,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.025
+          "mismatch_ratio": 0.0
+        },
+        "dn": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
         },
         "metric": {
-          "rmse_v": 1.9077710734667307e-05,
-          "max_abs_v": 0.00029619722112361746,
+          "rmse_v": 2.6516703399692365e-06,
+          "max_abs_v": 3.7503896733070974e-05,
           "span_v": 0.6,
-          "nrmse": 3.179618455777885e-05,
-          "kind": "analog"
-        },
-        "out": {
-          "rmse_v": 1.6557004431849863e-05,
-          "max_abs_v": 0.0003159262988117195,
-          "span_v": 0.56,
-          "nrmse": 2.956607934258904e-05,
+          "nrmse": 4.419450566615394e-06,
           "kind": "analog"
         },
         "rst": {
@@ -80,11 +83,21 @@
           "best_lag_s": 0.0,
           "mismatch_ratio": 0.0
         },
-        "vin": {
-          "rmse_v": 1.4883743661979904e-08,
-          "max_abs_v": 4.843777401397631e-08,
-          "span_v": 0.5990492076730612,
-          "nrmse": 2.4845611130668412e-08,
+        "up": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vctrl": {
+          "rmse_v": 1.0154092318204634e-06,
+          "max_abs_v": 1.2500027777639922e-05,
+          "span_v": 0.39999999999999997,
+          "nrmse": 2.5385230795511587e-06,
           "kind": "analog"
         }
       }
@@ -95,7 +108,7 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
     ]
   },
   "failures": [],

@@ -7,8 +7,8 @@
 - Category: Comparators and Decision Circuits
 - Base function: Window comparator/detector
 - Domain: `voltage`
-- Target artifact(s): `tb_cross_hysteresis_window_ref.scs`
-- Supplied/reference support artifact(s): `cross_hysteresis_window_ref.va`
+- Target artifact(s): `tb_window_comparator_ref.scs`
+- Supplied/reference support artifact(s): `window_comparator_ref.va`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
@@ -19,7 +19,7 @@
 
 ## Public DUT Interface To Instantiate
 
-- `cross_hysteresis_window_ref.va` declares module `cross_hysteresis_window_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.
+- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.
 
 ## Public Testbench And Observable Contract
 
@@ -50,7 +50,7 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Output Contract
 
-Return exactly one source artifact named `tb_cross_hysteresis_window_ref.scs`.
+Return exactly one source artifact named `tb_window_comparator_ref.scs`.
 Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
@@ -73,5 +73,7 @@ Public requirements:
 - include a transient `tran` analysis
 - save the public observables needed by the checker
 - include or instantiate the Verilog-A behavioral module under test
+- drive `vin` with a triangular PWL waveform that visits below `0.3 V`,
+  between `0.3 V` and `0.6 V`, above `0.6 V`, then back through the window
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

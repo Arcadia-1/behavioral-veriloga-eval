@@ -20,11 +20,11 @@ It is not simulator certification evidence.
 
 | ID | Status | Safe wording |
 | --- | --- | --- |
-| `C1_coverage_target_defined` | `allowed` | The current release package defines 75 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
-| `C2_source_assets_static_clean` | `allowed` | The release has 77 materialized entries for the 75-entry plan and 265 static-certified forms with zero asset issues. |
-| `C3_imported_dual_subset_clean` | `allowed` | On the full imported release evidence (265 forms), EVAS PASS / Spectre FAIL count is 0. |
-| `C4_full_release_dual_certified` | `allowed` | The full release package has EVAS/Spectre certification for 265 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
-| `C5_score_denominator_enabled` | `allowed` | The release benchmark score denominator is enabled for 75 certified content-denominator entries and 257 forms. |
+| `C1_coverage_target_defined` | `allowed` | The current release package defines 73 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
+| `C2_source_assets_static_clean` | `allowed` | The release has 73 materialized entries for the 73-entry plan and 249 static-certified forms with zero asset issues. |
+| `C3_imported_dual_subset_clean` | `allowed` | On the full imported release evidence (249 forms), EVAS PASS / Spectre FAIL count is 0. |
+| `C4_full_release_dual_certified` | `allowed` | The full release package has EVAS/Spectre certification for 249 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
+| `C5_score_denominator_enabled` | `allowed` | The release benchmark score denominator is enabled for 73 certified content-denominator entries and 245 forms. |
 | `C6_speed_debug_claim` | `blocked` | Speed/debug has subset timing evidence, but release-wide speedup remains blocked until the dedicated artifact marks the speed claim allowed. |
 | `C7_model_baseline_claim` | `blocked` | Model baseline reporting is pending until baseline runs report against the enabled score denominator. |
 | `C8_l0_conformance_separate` | `allowed` | L0 conformance has 4 cases and contributes 0 entries to benchmark coverage. |

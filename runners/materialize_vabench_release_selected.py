@@ -60,13 +60,10 @@ SELECTED_SOURCE_LINKS: dict[str, list[str]] = {
         "tasks/end-to-end/voltage/comparator_hysteresis_smoke",
     ],
     "vbr1_l1_window_comparator_detector": [
-        "tasks/end-to-end/voltage/cross_hysteresis_window_smoke",
-    ],
-    "vbr1_l1_clocked_comparator": [
-        "tasks/end-to-end/voltage/cmp_strongarm_smoke",
+        "tasks/end-to-end/voltage/window_comparator_smoke",
     ],
     "vbr1_l2_comparator_measurement_flow": [
-        "tasks/end-to-end/voltage/comparator_offset_search_smoke",
+        "tasks/end-to-end/voltage/comparator_measurement_flow_smoke",
     ],
     "vbr1_l1_pfd_small_phase_error_response": [
         "tasks/spec-to-va/voltage/pll-clock/vbm1_pfd_small_phase_error_response_dut",
@@ -130,9 +127,6 @@ SELECTED_SOURCE_LINKS: dict[str, list[str]] = {
     ],
     "vbr1_l1_sine_periodic_voltage_source": [
         "tasks/spec-to-va/voltage/signal-source/multitone",
-    ],
-    "vbr1_l1_differential_output_driver": [
-        "tasks/end-to-end/voltage/differential_voltage_output_smoke",
     ],
     "vbr1_l1_clocked_sample_and_hold": [
         "tasks/end-to-end/voltage/sample_hold_smoke",

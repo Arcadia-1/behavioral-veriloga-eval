@@ -84,7 +84,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/dut/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/dut/spectre_result.json",
       "release_source_task_id": "vbr1_l1_threshold_comparator_dut",
-      "historical_source_task_id": "vbr1_l1_threshold_comparator_dut"
+      "historical_source_task_id": "vbr1_l1_threshold_comparator_dut",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "tb",
@@ -108,7 +109,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/tb/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/tb/spectre_result.json",
       "release_source_task_id": "vbr1_l1_threshold_comparator_tb",
-      "historical_source_task_id": "vbr1_l1_threshold_comparator_tb"
+      "historical_source_task_id": "vbr1_l1_threshold_comparator_tb",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "bugfix",
@@ -133,7 +135,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/bugfix/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/bugfix/spectre_result.json",
       "release_source_task_id": "vbr1_l1_threshold_comparator_bugfix",
-      "historical_source_task_id": "vbr1_l1_threshold_comparator_bugfix"
+      "historical_source_task_id": "vbr1_l1_threshold_comparator_bugfix",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     },
     {
       "form": "e2e",
@@ -157,7 +160,8 @@
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/e2e/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/e2e/spectre_result.json",
       "release_source_task_id": "comparator_smoke",
-      "historical_source_task_id": "comparator_smoke"
+      "historical_source_task_id": "comparator_smoke",
+      "simulator_rerun_source": "pending_after_ct02_prompt_checker_gold_tightening"
     }
   ],
   "missing_forms": [],

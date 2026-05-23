@@ -27,7 +27,7 @@
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=30n maxstep=0.5n
+tran tran stop=30n maxstep=0.1n
 ```
 
 The release harness expects these exact public scalar observables:
@@ -40,8 +40,10 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `output_low_before_threshold`
-- `output_high_after_threshold`
+- `low_for_negative_diff`
+- `high_for_positive_diff`
+- `rising_trip_near_zero_diff`
+- `falling_trip_near_zero_diff`
 - `polarity_matches_vinp_minus_vinn`
 
 ## Observed Mismatch Framing
@@ -64,3 +66,7 @@ The fixed implementation must preserve the public module name and ports used by
 the reference Spectre testbench. Domain: pure voltage-domain behavioral
 Verilog-A. Do not use current contributions, transistor-level devices,
 AC/noise analysis, or KCL/KVL solving assumptions.
+
+The repaired behavior is bidirectional: `OUT_P` must be low for negative
+`VINP - VINN`, high for positive `VINP - VINN`, and must switch correctly on
+both rising and falling zero-differential crossings.

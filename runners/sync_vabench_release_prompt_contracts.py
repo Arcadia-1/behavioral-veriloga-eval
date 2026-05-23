@@ -25,7 +25,10 @@ ROOT = Path(__file__).resolve().parents[1]
 RELEASE_ROOT = ROOT / "benchmark-vabench-release-v1"
 TASKS_ROOT = RELEASE_ROOT / "tasks"
 
-SECTION_RE = re.compile(r"\n## (?:Output Contract|Deliverables|Public Evaluation Contract \(Non-Gold\))\n.*?(?=\n## |\Z)", re.DOTALL)
+SECTION_RE = re.compile(
+    r"\n## (?:Output Contract(?:\s*\([^)]*\))?|Deliverables?|Public Evaluation Contract \(Non-Gold\))\n.*?(?=\n## |\Z)",
+    re.DOTALL,
+)
 REFERENCE_LINE_RE = re.compile(r"^Reference (?:testbench )?artifact name\(s\):.*$\n?", re.MULTILINE)
 REFERENCE_NAMES_RE = re.compile(r"^Reference (?:testbench )?artifact names:.*$\n?", re.MULTILINE)
 BUG_TO_FIX_RE = re.compile(r"^Bug to fix:.*$\n?", re.MULTILINE)
@@ -336,10 +339,21 @@ def build_prompt(form_dir: Path) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Normalize vaBench release public prompts.")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--entry-prefix",
+        action="append",
+        default=[],
+        help="Only normalize entries whose release_entry_id starts with this prefix. May be repeated.",
+    )
     args = parser.parse_args()
 
     changed: list[str] = []
     for form_dir in task_dirs():
+        if args.entry_prefix:
+            release_task = read_json(form_dir / "release_task.json")
+            entry_id = str(release_task.get("release_entry_id", ""))
+            if not any(entry_id.startswith(prefix) for prefix in args.entry_prefix):
+                continue
         prompt_path = form_dir / "prompt.md"
         old = prompt_path.read_text(encoding="utf-8", errors="ignore")
         new = build_prompt(form_dir)

@@ -242,7 +242,7 @@ def build_rows() -> list[dict[str, str]]:
 
 def write_csv(rows: list[dict[str, str]]) -> None:
     with QUEUE_CSV.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

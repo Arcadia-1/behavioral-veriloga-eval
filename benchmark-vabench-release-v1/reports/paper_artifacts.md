@@ -9,15 +9,15 @@ cited from the current release package and what must remain pending.
 
 | Metric | Value |
 | --- | ---: |
-| planned L1/L2 entries | 75 |
-| source-linked entries | 77 |
-| entries with copied assets | 77 |
-| static-certified release forms | 265 |
-| dual-certified release forms | 265 |
-| fully certified entries | 77 |
+| planned L1/L2 entries | 73 |
+| source-linked entries | 73 |
+| entries with copied assets | 73 |
+| static-certified release forms | 249 |
+| dual-certified release forms | 249 |
+| fully certified entries | 73 |
 | certification matrix | `complete` |
-| scored release entries | 75 |
-| scored release forms | 257 |
+| scored release entries | 73 |
+| scored release forms | 245 |
 | score denominator status | `score_enabled` |
 
 ## Parity
@@ -25,7 +25,7 @@ cited from the current release package and what must remain pending.
 | Metric | Value |
 | --- | ---: |
 | release dual status | `pass` |
-| dual-certified release forms | 265 |
+| dual-certified release forms | 249 |
 | dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -34,8 +34,8 @@ cited from the current release package and what must remain pending.
 | rerun rows with ready primary bundle | 0 |
 | ready rerun bundles | 0 |
 | latest dual rerun attempt | `complete` |
-| bridge diagnostics | `blocked` |
-| bridge ready profiles | `none` |
+| bridge diagnostics | `ready` |
+| bridge ready profiles | `default, ci, jin` |
 | main120 EVAS gold pass | 0/0 |
 | main120 Spectre gold pass | 0/0 |
 | L0 conformance cases | 4 |
@@ -45,24 +45,24 @@ cited from the current release package and what must remain pending.
 
 | Gate | Value |
 | --- | --- |
-| assets materialized | `False` |
+| assets materialized | `True` |
 | static certification complete | `True` |
 | fresh dual rerun queue ready | `True` |
 | fresh dual rerun queue rows | 0 |
 | ready rerun bundles | 0 |
 | dual-pending release forms | 0 |
-| bridge ready | `False` |
+| bridge ready | `True` |
 | external blockers | `pending` |
 | external blocked count | 0 |
 | external pending count | 1 |
-| stale rerun summary rejected | `False` |
-| import status | `imported` |
+| stale rerun summary rejected | `True` |
+| import status | `partial_imported` |
 
 ## Speed / Debug
 
-- Status: `measured`
+- Status: `measured_subset`
 - Claim allowed: `False`
-- Reason: Timing exists, but this slice does not show an EVAS speedup over Spectre.
+- Reason: Timing exists for a subset only: 17 timed rows cover 17/257 scored forms. Wrapper aggregate Spectre/EVAS speedup is 1.835; do not claim release-wide EVAS speedup yet.
 
 ## Baselines
 
@@ -74,9 +74,9 @@ cited from the current release package and what must remain pending.
 
 | Claim | Allowed |
 | --- | --- |
-| `can_claim_release_assets_materialized` | `False` |
-| `can_claim_top_level_coverage_plan` | `True` |
-| `can_claim_release_package_complete` | `False` |
+| `can_claim_release_assets_materialized` | `True` |
+| `can_claim_top_level_coverage_plan` | `False` |
+| `can_claim_release_package_complete` | `True` |
 | `can_claim_scored_benchmark` | `True` |
 | `can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence` | `True` |
 | `can_claim_speedup` | `False` |

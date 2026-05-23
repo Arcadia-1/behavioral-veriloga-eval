@@ -20,5 +20,7 @@
     "tb_compile",
     "sim_correct"
   ],
-  "source": "tb_companion_from_e2e"
+  "source": "tb_companion_from_e2e",
+  "verification_status": "fresh_dual_pending_after_l2_redesign",
+  "notes": "Companion testbench now saves trip_v, offset_est, and valid for the L2 single-ramp comparator offset measurement-flow checker."
 }

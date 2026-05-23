@@ -1,6 +1,6 @@
 # vaBench Release Score Denominator Enablement
 
-Date: 2026-05-19
+Date: 2026-05-23
 
 This report records the P1 write step that freezes `counts.benchmark_score`
 for the release package before the score denominator manifest is rebuilt.
@@ -10,14 +10,14 @@ for the release package before the score denominator manifest is rebuilt.
 | Metric | Value |
 | --- | ---: |
 | status | `enabled` |
-| release entries | 75 |
-| release forms | 259 |
-| score-enabled entries | 74 |
-| score-enabled forms | 255 |
-| disabled entries | 1 |
-| disabled forms | 4 |
-| content-excluded entries | 1 |
-| content-excluded forms | 4 |
+| release entries | 73 |
+| release forms | 249 |
+| score-enabled entries | 73 |
+| score-enabled forms | 249 |
+| disabled entries | 0 |
+| disabled forms | 0 |
+| content-excluded entries | 0 |
+| content-excluded forms | 0 |
 | dual certification ready | `True` |
 
 ## Policy
@@ -29,4 +29,4 @@ for the release package before the score denominator manifest is rebuilt.
 
 ## Disabled Reasons
 
-- `duplicate_strongarm_clocked_comparator`: 1
+- none

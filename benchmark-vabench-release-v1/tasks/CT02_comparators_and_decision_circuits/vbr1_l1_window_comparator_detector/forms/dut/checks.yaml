@@ -14,7 +14,7 @@ sim_correct:
   dut_companion_role: "function_checked_dut"
   strong_benchmark_claim: true
   checks:
-    - "cross_hysteresis_window"
+    - "true_window_comparator"
   public_observables:
     - "time"
     - "vin"

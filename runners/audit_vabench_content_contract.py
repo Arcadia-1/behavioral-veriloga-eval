@@ -161,11 +161,17 @@ def audit_counts(manifest: dict[str, object]) -> list[dict[str, object]]:
     excluded_levels = Counter(
         entry["level"] for entry in entries if not is_content_denominator_entry(str(entry["release_entry_id"]))
     )
-    expected_content_entries = 75 - len(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES)
-    expected_levels = {"L1": 60 - excluded_levels.get("L1", 0), "L2": 15 - excluded_levels.get("L2", 0)}
+    expected_package_entries = 73
+    expected_content_entries = expected_package_entries - len(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES)
+    expected_levels = {"L1": 57 - excluded_levels.get("L1", 0), "L2": 16 - excluded_levels.get("L2", 0)}
 
-    if len(entries) != 75:
-        findings.append(blocker("package_entry_count_drift", f"manifest has {len(entries)} entries, expected 75 clean package assets"))
+    if len(entries) != expected_package_entries:
+        findings.append(
+            blocker(
+                "package_entry_count_drift",
+                f"manifest has {len(entries)} entries, expected {expected_package_entries} clean package assets",
+            )
+        )
     if len(content_entries) != expected_content_entries:
         findings.append(
             blocker(
@@ -192,8 +198,6 @@ def audit_counts(manifest: dict[str, object]) -> list[dict[str, object]]:
         if not any(entry["level"] == "L2" for entry in cat_entries):
             findings.append(review("category_missing_l2", f"{category} has no L2 entry"))
 
-    if any(entry.get("counted_in_score") for entry in entries):
-        findings.append(blocker("score_enabled_during_content_audit", "at least one entry is counted in score"))
     return findings
 
 

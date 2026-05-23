@@ -10,8 +10,10 @@ sim_correct:
     - "transient_analysis_present"
     - "public_observables_saved"
     - "dut_or_system_instantiated"
+    - "stimulus_exercises_negative_positive_negative_differential"
+    - "out_p_has_rising_and_falling_decisions"
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Fresh dual evidence required after bidirectional threshold stimulus/checker tightening."

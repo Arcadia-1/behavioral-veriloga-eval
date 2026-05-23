@@ -17,11 +17,13 @@ from pathlib import Path
 from run_gold_dual_suite import compare_waveforms
 from run_gold_suite import ahdl_includes, checker_task_id, choose_gold_tb, read_meta
 from simulate_evas import run_case
+from vabench_release_paths import release_form_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
-REPORTS_ROOT = PACKAGE_ROOT / "reports"
+SPEED_OPT_ROOT = ROOT / "speed-optimization"
+REPORTS_ROOT = SPEED_OPT_ROOT / "reports"
 SPEED_ARTIFACT_JSON = REPORTS_ROOT / "speed_debug_artifact.json"
 REPORT_JSON = REPORTS_ROOT / "evas_speed_experiment_p0_p3.json"
 REPORT_MD = REPORTS_ROOT / "evas_speed_experiment_p0_p3.md"
@@ -123,7 +125,7 @@ def geomean(values: list[float]) -> float | None:
 
 
 def task_dir_for(row: dict[str, object]) -> Path:
-    return PACKAGE_ROOT / "tasks" / str(row["entry_id"]) / "forms" / str(row["form"])
+    return release_form_dir(PACKAGE_ROOT / "tasks", str(row["entry_id"]), str(row["form"]))
 
 
 def load_speed_rows(path: Path) -> list[dict[str, object]]:

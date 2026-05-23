@@ -204,42 +204,43 @@ end
 endmodule
 """
     if profile == "charge_pump":
-        up_update = "state = state - step;" if buggy else "state = state + step;"
-        down_update = "state = state + step;" if buggy else "state = state - step;"
+        up_update = "ctrl = ctrl - step;" if buggy else "ctrl = ctrl + step;"
+        down_update = "ctrl = ctrl + step;" if buggy else "ctrl = ctrl - step;"
         return f"""`include "constants.vams"
 `include "disciplines.vams"
 
-module {module}(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+module {module}(clk, rst, up, dn, vctrl, metric);
+input clk, rst, up, dn;
+output vctrl, metric;
+electrical clk, rst, up, dn, vctrl, metric;
 parameter real tr = 100p;
-parameter real deadband = 0.05;
-real state, step, errv, metricv;
+parameter real vth = 0.45;
+parameter real step = 0.06;
+parameter real vmin = 0.05;
+parameter real vmax = 0.85;
+real ctrl, metricv;
 analog begin
     @(initial_step) begin
-        state = 0.45;
-        step = 0.08;
+        ctrl = 0.45;
         metricv = 0.45;
     end
-    @(cross(V(clk) - 0.45, +1)) begin
-        errv = V(vin) - 0.45;
-        if (V(rst) > 0.45) begin
-            state = 0.45;
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            ctrl = 0.45;
             metricv = 0.45;
-        end else if (errv > deadband) begin
+        end else if (V(up) > vth && V(dn) <= vth) begin
             {up_update}
             metricv = 0.75;
-        end else if (errv < -deadband) begin
+        end else if (V(dn) > vth && V(up) <= vth) begin
             {down_update}
             metricv = 0.15;
         end else begin
             metricv = 0.45;
         end
-        if (state > 0.85) state = 0.85;
-        if (state < 0.05) state = 0.05;
+        if (ctrl > vmax) ctrl = vmax;
+        if (ctrl < vmin) ctrl = vmin;
     end
-    V(out) <+ transition(state, 0, tr, tr);
+    V(vctrl) <+ transition(ctrl, 0, tr, tr);
     V(metric) <+ transition(metricv, 0, tr, tr);
 end
 endmodule
@@ -457,6 +458,13 @@ Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]
 Vvin (vin 0) vsource type=pwl wave=[0 0.05 10n 0.1 30n 0.7 60n 0.35 80n 0.85]
 Vaux (aux 0) vsource dc=0.45"""
         saves = "save clk rst vin out metric"
+    elif module == "charge_pump_abstraction":
+        instance = f"XDUT (clk rst up dn vctrl metric) {module}"
+        sources = """Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 62n 0 62.1n 0.9 66n 0.9 66.1n 0 80n 0]
+Vup (up 0) vsource type=pwl wave=[0 0 5.8n 0 5.85n 0.9 6.35n 0.9 6.4n 0 7.8n 0 7.85n 0.9 8.35n 0.9 8.4n 0 9.8n 0 9.85n 0.9 10.35n 0.9 10.4n 0 11.8n 0 11.85n 0.9 12.35n 0.9 12.4n 0 13.8n 0 13.85n 0.9 14.35n 0.9 14.4n 0 15.8n 0 15.85n 0.9 16.35n 0.9 16.4n 0 17.8n 0 17.85n 0.9 18.35n 0.9 18.4n 0 80n 0]
+Vdn (dn 0) vsource type=pwl wave=[0 0 31.8n 0 31.85n 0.9 32.35n 0.9 32.4n 0 33.8n 0 33.85n 0.9 34.35n 0.9 34.4n 0 35.8n 0 35.85n 0.9 36.35n 0.9 36.4n 0 37.8n 0 37.85n 0.9 38.35n 0.9 38.4n 0 39.8n 0 39.85n 0.9 40.35n 0.9 40.4n 0 80n 0]"""
+        saves = "save clk rst up dn vctrl metric"
     elif module in calibration_modules:
         instance = f"XDUT (clk rst vin out metric) {module}"
         sources = """Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
@@ -516,6 +524,14 @@ def port_contract(spec: DesignedSpec) -> dict[str, str]:
             "disciplines": "electrical clk, rst, vin, out, metric",
             "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed loop-error stimulus around 0.45 V. out is a bounded loop-control voltage. metric is a voltage-coded update/convergence observable.",
             "saved": "clk rst vin out metric",
+        }
+    if spec.profile == "charge_pump":
+        return {
+            "module": f"module {spec.module}(clk, rst, up, dn, vctrl, metric);",
+            "directions": "input clk, rst, up, dn;\noutput vctrl, metric;",
+            "disciplines": "electrical clk, rst, up, dn, vctrl, metric",
+            "signals": "clk, rst, up, and dn are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. A sampled UP-only pulse increases vctrl, a sampled DN-only pulse decreases vctrl, simultaneous or absent pulses hold the control voltage, and rst high resets vctrl to midscale. metric is a voltage-coded UP/DN/hold status observable.",
+            "saved": "clk rst up dn vctrl metric",
         }
     if spec.profile in {"charge_pump", "deadband_cal", "sar_cal_fsm", "cal_loop", "gain_cal_loop"}:
         return {

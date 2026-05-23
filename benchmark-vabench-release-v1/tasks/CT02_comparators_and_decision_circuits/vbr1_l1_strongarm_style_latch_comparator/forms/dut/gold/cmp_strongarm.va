@@ -60,6 +60,8 @@ analog begin
 
     V(DCMPP) <+ vdd * transition(xoutp, td_cmp, tedge, tedge);
     V(DCMPN) <+ vdd * transition(xoutn, td_cmp, tedge, tedge);
+    V(LP) <+ vdd * transition(xoutp, td_cmp, tedge, tedge);
+    V(LM) <+ vdd * transition(xoutn, td_cmp, tedge, tedge);
 
 end
 

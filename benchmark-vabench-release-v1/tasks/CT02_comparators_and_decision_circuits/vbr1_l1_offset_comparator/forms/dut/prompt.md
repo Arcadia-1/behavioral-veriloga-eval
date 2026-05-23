@@ -40,8 +40,11 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `clocked_output_sequence_LHHHLLL`
-- `offset_threshold_affects_borderline_decisions`
+- `clocked_output_sequence_LLLHHLL`
+- `negative_diff_latches_low`
+- `positive_diff_below_5mV_offset_latches_low`
+- `positive_diff_above_5mV_offset_latches_high`
+- `decisions_sampled_after_rising_clk_edges`
 
 ## Output Contract
 
@@ -57,7 +60,10 @@ Write a pure voltage-domain Verilog-A module for a clocked comparator with input
 The DUT module is `cmp_offset_ref` with ports `VDD, VSS, CLK, VINP, VINN, OUT_P`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
 
 Required behavior:
-- On each rising `CLK` edge, compare `VINP - VINN` against an internal positive offset threshold.
+- On each rising `CLK` edge, compare `VINP - VINN` against an internal positive
+  offset threshold of about 5 mV.
+- Borderline positive inputs below the offset, such as +3 mV, must still latch
+  low; inputs above the offset, such as +7 mV or +20 mV, must latch high.
 - Drive `OUT_P` to the supply level for a high decision and to `VSS` for a low decision.
 - Use smoothed voltage-domain output transitions.
 

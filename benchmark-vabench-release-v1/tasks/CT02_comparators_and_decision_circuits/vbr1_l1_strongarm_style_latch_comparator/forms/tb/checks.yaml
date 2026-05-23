@@ -10,7 +10,10 @@ tb_compile:
 sim_correct:
   checks:
     - "outputs_toggle_nontrivially"
-    - "decision_samples_at_0p75_1p75_2p75_3p75ns_match_PPNN"
+    - "stimulus_exercises_positive_and_negative_edge_decisions"
+    - "stimulus_swaps_inputs_during_evaluate_phase"
+    - "falling_clk_reset_windows_are_observable"
 parity:
   required: true
-  tolerance_notes: "Use fixed decision sample points; normal benchmark stop time is kept away from source-edge final-boundary behavior."
+  status: "pending"
+  tolerance_notes: "Fresh dual evidence required after latch-hold/reset stimulus and checker tightening."

@@ -24,13 +24,13 @@ def test_checker_evidence_workplan_preserves_dual_parity_boundary() -> None:
     summary = report["summary"]
     work_items = {item["id"]: item for item in report["work_items"]}
 
-    assert summary["dual_status"] == "pass"
-    assert summary["dual_certified_release_task_count"] == 259
+    assert summary["dual_status"] == "partial"
+    assert summary["dual_certified_release_task_count"] == 255
     assert summary["evas_pass_spectre_fail_count"] == 0
     assert summary["targeted_l2_checker_tightening_status"] == "pass"
     assert summary["targeted_l2_checker_tightening_pass_count"] == 2
     assert summary["targeted_l2_checker_tightening_fail_count"] == 0
-    assert work_items["W3_evas_spectre_parity_evidence"]["status"] == "done"
+    assert work_items["W3_evas_spectre_parity_evidence"]["status"] == "blocked"
     assert (
         "benchmark-vabench-release-v1/reports/targeted_l2_checker_tightening_20260522.json"
         in work_items["W3_evas_spectre_parity_evidence"]["evidence"]
@@ -44,9 +44,9 @@ def test_checker_evidence_workplan_identifies_l2_checker_review_queue() -> None:
     rows = {row["release_entry_id"]: row for row in report["l2_e2e_rows"]}
     work_items = {item["id"]: item for item in report["work_items"]}
 
-    assert summary["l2_e2e_count"] == 15
+    assert summary["l2_e2e_count"] == 16
     assert summary["l2_checker_strength_counts"] == {
-        "multi_behavior_check": 15,
+        "multi_behavior_check": 16,
     }
     assert work_items["W2_l2_checker_strength_audit"]["status"] == "ready_for_claim_mapping"
     assert work_items["W2_l2_checker_strength_audit"]["weak_or_needs_review_count"] == 0

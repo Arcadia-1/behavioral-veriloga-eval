@@ -1,0 +1,56 @@
+{
+  "date": "2026-05-23",
+  "release": "vabench-release-v1",
+  "scope": "CT05_pll_clock_event_timing",
+  "status": "complete",
+  "queue": {
+    "path": "benchmark-vabench-release-v1/reports/ct05_dual_rerun_queue_20260523.json",
+    "forms": 46,
+    "bundles": 56,
+    "workers": 8
+  },
+  "dual_rerun": {
+    "summary_path": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "status": "complete",
+    "expected_met_count": 56,
+    "expected_miss_count": 0,
+    "pass_count": 46,
+    "nonpass_count": 10,
+    "raw_status_counts": {
+      "FAIL_EVAS": 10,
+      "PASS": 46
+    },
+    "primary_result_count": 46,
+    "primary_pass_count": 46,
+    "buggy_companion_count": 10,
+    "buggy_expected_fail_met_count": 10,
+    "evas_pass_spectre_fail_count": 0
+  },
+  "import": {
+    "import_report": "benchmark-vabench-release-v1/reports/dual_rerun_import.json",
+    "imported_primary_results": 46,
+    "dual_certification_ct05_forms": 46,
+    "dual_certification_ct05_status_counts": {
+      "pass": 46
+    },
+    "ct05_evas_pass_spectre_fail_count": 0
+  },
+  "checker_closure": {
+    "changed_file": "runners/simulate_evas.py",
+    "reason": "BBPD bugfix companion swapped UP/DOWN outputs; prior checker only required pulse presence and non-overlap.",
+    "new_requirement": "At data edges, clk high with retimed low must assert UP, and clk low with retimed high must assert DOWN within the response window.",
+    "regression_test": "tests/test_vabench_function_checker_regressions.py::test_bbpd_checker_rejects_swapped_up_down_direction"
+  },
+  "refreshed_reports": [
+    "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "benchmark-vabench-release-v1/reports/certification_matrix.json",
+    "benchmark-vabench-release-v1/reports/claim_gate.json",
+    "benchmark-vabench-release-v1/reports/completion_audit.json",
+    "benchmark-vabench-release-v1/reports/finish_readiness.json",
+    "benchmark-vabench-release-v1/reports/remaining_work.json",
+    "benchmark-vabench-release-v1/reports/paper_artifacts.json",
+    "benchmark-vabench-release-v1/reports/paper_tables.json",
+    "benchmark-vabench-release-v1/reports/artifact_index.json",
+    "benchmark-vabench-release-v1/reports/checksum_manifest.json"
+  ]
+}

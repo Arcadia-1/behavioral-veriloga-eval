@@ -10,10 +10,19 @@ dut_compile:
 tb_compile:
   backend: "evas"
 sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
   checks:
-    - "smooth_limiting"
+    - "soft_compression"
     - "hysteresis_state_memory"
+    - "state_metric_tracks_memory"
     - "bounded_output"
+  public_observables:
+    - "clk"
+    - "rst"
+    - "vin"
+    - "out"
+    - "metric"
 parity:
   reference: "spectre"
   status: "pass"

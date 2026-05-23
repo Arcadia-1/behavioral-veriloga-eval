@@ -13,11 +13,11 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_loop_filter_abstraction/tb/gold",
-    "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/vbr1_l1_loop_filter_abstraction/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold",
+    "results/ct05-dual-rerun-20260523-final/vbr1_l1_loop_filter_abstraction/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -27,9 +27,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_loop_filter_abstraction/tb/gold",
-    "result_root": "results/vabench-release-v1-dual-rerun-20260516-full-after-fixes/vbr1_l1_loop_filter_abstraction/tb/gold",
+    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold",
+    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l1_loop_filter_abstraction/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -40,21 +40,21 @@
       ],
       "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.15811388300841897,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.005008682975220383,
-      "p95_nrmse": 0.025,
-      "max_nrmse": 0.025,
+      "max_rmse_v": 1.931911312522137e-05,
+      "max_abs_v": 0.0004334664410167166,
+      "mean_nrmse": 8.68315720541335e-06,
+      "p95_nrmse": 4.339041878833234e-05,
+      "max_nrmse": 4.339041878833234e-05,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.15811388300841897,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.025
+          "mismatch_ratio": 0.0
         },
         "metric": {
           "rmse_v": 0.0,
@@ -67,10 +67,10 @@
           "mismatch_ratio": 0.0
         },
         "out": {
-          "rmse_v": 1.9318957604020463e-05,
-          "max_abs_v": 0.00043348646617358266,
+          "rmse_v": 1.931911312522137e-05,
+          "max_abs_v": 0.0004334664410167166,
           "span_v": 0.44523914874996023,
-          "nrmse": 4.339006949020493e-05,
+          "nrmse": 4.339041878833234e-05,
           "kind": "analog"
         },
         "rst": {
@@ -84,10 +84,10 @@
           "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 1.4860381090471504e-08,
-          "max_abs_v": 4.843777401397631e-08,
+          "rmse_v": 1.5196224264701248e-08,
+          "max_abs_v": 4.698940675451624e-08,
           "span_v": 0.5990492076730612,
-          "nrmse": 2.480661171090597e-08,
+          "nrmse": 2.5367238734409247e-08,
           "kind": "analog"
         }
       }
@@ -98,7 +98,7 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
     ]
   },
   "failures": [],

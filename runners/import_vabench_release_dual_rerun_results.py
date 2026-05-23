@@ -312,18 +312,29 @@ def write_task_evidence(
 
 
 def recompute_dual_report(current: dict[str, object], updates: dict[tuple[str, str], dict[str, object]]) -> dict[str, object]:
+    entries = read_entries()
+    active_keys = {
+        (entry_id, str(task.get("form")))
+        for entry_id, (_, entry) in entries.items()
+        for task in entry.get("release_tasks", [])
+        if isinstance(task, dict)
+    }
     task_reports: list[dict[str, object]] = []
     for report in current.get("task_reports", []):
         if not isinstance(report, dict):
             continue
         key = (str(report["entry_id"]), str(report["form"]))
+        if key not in active_keys:
+            continue
         task_reports.append(updates.get(key, report))
+    for key, report in sorted(updates.items()):
+        if key in active_keys and key not in {(str(row["entry_id"]), str(row["form"])) for row in task_reports}:
+            task_reports.append(report)
 
     per_entry: dict[str, list[dict[str, object]]] = defaultdict(list)
     for report in task_reports:
         per_entry[str(report["entry_id"])].append(report)
 
-    entries = read_entries()
     entry_reports: list[dict[str, object]] = []
     for entry_id, (_, entry) in sorted(entries.items()):
         reports = per_entry.get(entry_id, [])
@@ -505,9 +516,11 @@ def write_dual_markdown(report: dict[str, object]) -> None:
 
 def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]], merged_report: dict[str, object]) -> None:
     reports_by_entry: dict[str, list[dict[str, object]]] = defaultdict(list)
+    reports_by_key: dict[tuple[str, str], dict[str, object]] = {}
     for report in merged_report.get("task_reports", []):
         if isinstance(report, dict):
             reports_by_entry[str(report["entry_id"])].append(report)
+            reports_by_key[(str(report["entry_id"]), str(report["form"]))] = report
 
     for entry_path, entry in read_entries().values():
         entry_id = str(entry["release_entry_id"])
@@ -516,8 +529,8 @@ def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]
             if not isinstance(task, dict):
                 continue
             key = (entry_id, str(task.get("form")))
-            if key in updates:
-                task_report = updates[key]
+            if key in reports_by_key:
+                task_report = reports_by_key[key]
                 task["evas_status"] = task_report["backend_status"]["evas"]
                 task["spectre_status"] = task_report["backend_status"]["spectre"]
                 task["dual_evidence"] = task_report["evidence"]
@@ -551,6 +564,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
     summary = read_json(summary_path)
     current = read_json(DUAL_REPORT_JSON)
     queue_count = current_queue_count()
+    explicit_primary_rows = primary_result_rows(summary) if summary else []
     current_dual_complete = (
         current.get("status") == "pass"
         and int(current.get("dual_pending_release_task_count", 0) or 0) == 0
@@ -558,7 +572,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         and int(current.get("evas_pass_spectre_fail_count", 0) or 0) == 0
         and current.get("simulator_rerun") is True
     )
-    if queue_count == 0 and current_dual_complete:
+    if queue_count == 0 and current_dual_complete and not explicit_primary_rows:
         merged = recompute_dual_report(current, {})
         if write:
             write_json(DUAL_REPORT_JSON, merged)

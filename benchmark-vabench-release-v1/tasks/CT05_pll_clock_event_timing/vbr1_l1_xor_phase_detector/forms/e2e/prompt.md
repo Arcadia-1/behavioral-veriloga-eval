@@ -59,44 +59,23 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a Verilog-A module named `xor_phase_detector`.
+Create an XOR phase detector behavioral model and matching transient testbench.
 
-# Task: xor_pd_smoke
+Artifact `xor_phase_detector_ref.va` must declare module `xor_phase_detector`.
 
-## Objective
+Required DUT behavior:
 
-Create an XOR Phase Detector behavioral model in Verilog-A and a minimal EVAS-compatible Spectre testbench.
+- Ports are exactly `VDD`, `VSS`, `REF`, `DIV`, `PD_OUT`.
+- `PD_OUT` is high when `REF` and `DIV` are at different logic levels and low
+  when they match.
+- Update output state on both rising and falling edges of `REF` and `DIV`.
+- Drive output with `transition()` between the current supply rails.
+- Do not use `idt()`, `ddt()`, or current contributions.
 
-## Specification
+Required testbench behavior:
 
-- **Module name**: `xor_phase_detector`
-- **Ports** (all `electrical`, exactly as named): `vdd`, `vss`, `ref`, `div`, `pd_out`
-- **Parameters**: `vth` (real, default 0.45), `tedge` (real, default 50p)
-- **Behavior**:
-  - `pd_out` is HIGH when `ref` and `div` are at **different** logic levels (XOR logic).
-  - Updates on every edge of both `ref` and `div`.
-  - Average `pd_out` duty cycle is proportional to phase difference.
-  - Output HIGH = V(vdd), LOW = V(vss) - read dynamically.
-- **Output**: use `transition()` only. No `idt`, `ddt`, or `I() <+`.
-
-## Testbench requirements
-
-Create a minimal Spectre testbench that:
-- Includes `xor_phase_detector.va` via `ahdl_include`
-- Provides vdd=0.9V, vss=0V
-- Generates two clocks (ref and div) with phase offset
-- Saves signals: `ref`, `div`, `pd_out`
-- Runs transient for ~200ns
-
-## Deliverable
-
-Two files:
-1. `xor_phase_detector.va` - the Verilog-A behavioral model
-2. `tb_xor_phase_detector.scs` - the Spectre testbench
-
-Ports:
-- `VDD`: inout electrical
-- `VSS`: inout electrical
-- `REF`: input electrical
-- `DIV`: input electrical
-- `PD_OUT`: output electrical
+- Include `xor_phase_detector_ref.va` with `ahdl_include`.
+- Generate two clocks with a fixed phase offset so `pd_out` has a measurable
+  duty cycle rather than a stuck value.
+- Save plain scalar observables `ref`, `div`, and `pd_out`.
+- Run the public transient for about 200 ns.

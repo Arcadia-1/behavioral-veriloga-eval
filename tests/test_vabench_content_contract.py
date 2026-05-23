@@ -13,11 +13,11 @@ def test_content_contract_locks_clean_function_denominator() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     assert report["status"] == "pass"
-    assert report["entry_count"] == 75
-    assert report["form_count"] == 259
-    assert report["content_denominator_entry_count"] == 74
-    assert report["content_denominator_form_count"] == 255
-    assert report["content_excluded_entry_count"] == 1
+    assert report["entry_count"] == 73
+    assert report["form_count"] == 249
+    assert report["content_denominator_entry_count"] == 73
+    assert report["content_denominator_form_count"] == 249
+    assert report["content_excluded_entry_count"] == 0
     assert report["severity_counts"].get("BLOCKER", 0) == 0
     assert report["duplicate_groups"] == []
 
@@ -35,9 +35,7 @@ def test_content_contract_deletes_known_duplicate_l2_entries() -> None:
     entry_ids = {entry["release_entry_id"] for entry in manifest["entries"]}
 
     assert deleted_duplicates.isdisjoint(entry_ids)
-    assert report["content_excluded_entries"] == {
-        "vbr1_l1_clocked_comparator": ["duplicate_strongarm_clocked_comparator"]
-    }
+    assert report["content_excluded_entries"] == {}
 
 
 def test_content_contract_tracks_shallow_checker_review_queue() -> None:

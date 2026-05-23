@@ -8,10 +8,10 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "cross_hysteresis_window"
+    - "true_window_comparator"
 parity:
   required: true
-  tolerance_notes: "Task-aware parity compares interpolated rise/fall trip times for the hysteresis window."
+  tolerance_notes: "Task-aware parity compares the two in-window output pulses against the lower and upper threshold crossings."
 time_refinement:
   method: bound_step_guard
   guards:

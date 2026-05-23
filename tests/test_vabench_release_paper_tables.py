@@ -38,13 +38,13 @@ def test_coverage_and_parity_tables_keep_scope_boundaries() -> None:
     coverage = {row["metric"]: row for row in read_csv("coverage.csv")}
     parity = {row["metric"]: row for row in read_csv("parity.csv")}
 
-    assert coverage["planned_l1_l2_entries"]["value"] == "75"
+    assert coverage["planned_l1_l2_entries"]["value"] == "73"
     assert coverage["planned_l1_l2_entries"]["claim_status"] == "allowed"
-    assert coverage["scored_entries"]["value"] == "74"
+    assert coverage["scored_entries"]["value"] == "73"
     assert coverage["scored_entries"]["claim_status"] == "allowed"
     assert "not a scored denominator" in coverage["planned_l1_l2_entries"]["safe_caption_note"]
 
-    assert parity["dual_certified_release_forms"]["value"] == "259"
+    assert parity["dual_certified_release_forms"]["value"] == "249"
     assert parity["dual_certified_release_forms"]["claim_status"] == "allowed"
     assert parity["dual_pending_release_forms"]["value"] == "0"
     assert parity["dual_pending_release_forms"]["claim_status"] == "allowed"
@@ -73,5 +73,5 @@ def test_paper_table_report_declares_it_is_not_certification_evidence() -> None:
 
     assert any("do not create new certification evidence" in item for item in report["claim_boundary"])
     assert report["source_reports"]["claim_gate"].endswith("claim_gate.json")
-    assert report["matrix_summary_snapshot"]["entry_count"] == 75
+    assert report["matrix_summary_snapshot"]["entry_count"] == 73
     assert report["matrix_summary_snapshot"]["pending_form_count"] == 0

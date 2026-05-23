@@ -49,7 +49,10 @@ Public stimulus/source nodes visible in the reference harness include:
 ## Public Behavior Checks
 
 - `outputs_toggle_nontrivially`
-- `decision_samples_at_0p75_1p75_2p75_3p75ns_match_PPNN`
+- `rising_clk_edge_latches_positive_decision`
+- `rising_clk_edge_latches_negative_decision`
+- `falling_clk_resets_both_outputs_low`
+- `latched_decision_holds_through_input_swap`
 
 ## Output Contract
 
@@ -73,9 +76,15 @@ edges, compare `VINP - VINN` with optional `voffset`; on falling clock edges,
 reset both comparator outputs low. Drive `DCMPP` and `DCMPN` as complementary
 0/0.9 V logic outputs.
 
+The comparator must be edge-latched rather than transparent: once a rising edge
+sets the decision, input polarity changes during that evaluate-high phase must
+not change `DCMPP`/`DCMPN` until the next clock edge. `LP` and `LM` should track
+the internal latch state consistently with the main outputs.
+
 The testbench should use 0.9 V supplies, a 1 GHz clock, and a small differential
-input that produces two positive decisions followed by two negative decisions.
-Save the clock, inputs, and outputs. Keep the transient stop time away from a
-source transition boundary.
+input that produces positive and negative edge decisions, falling-edge reset
+windows, and within-evaluate input swaps that prove latch hold. Save the clock,
+inputs, and outputs. Keep the transient stop time away from a source transition
+boundary.
 
 Return exactly two files: `cmp_strongarm.va` and `tb_cmp_strongarm_ref.scs`.

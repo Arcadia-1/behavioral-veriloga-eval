@@ -29,11 +29,13 @@ from run_vabench_release_evas_speed_experiment import (
 )
 from run_gold_dual_suite import compare_waveforms
 from simulate_evas import evaluate_behavior_with_timeout, has_behavior_check, run_case
+from vabench_release_paths import release_entry_dir
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
-REPORTS_ROOT = PACKAGE_ROOT / "reports"
+SPEED_OPT_ROOT = ROOT / "speed-optimization"
+REPORTS_ROOT = SPEED_OPT_ROOT / "reports"
 DEFAULT_OUTPUT_ROOT = ROOT / "results" / f"same-server-speed-{date.today().isoformat().replace('-', '')}"
 DEFAULT_REPORT_JSON = REPORTS_ROOT / "same_server_speed_smoke.json"
 DEFAULT_REPORT_MD = REPORTS_ROOT / "same_server_speed_smoke.md"
@@ -341,7 +343,7 @@ def prepare_selection(row: dict[str, object]) -> Selection:
 
 
 def entry_forms_dir(selection: Selection) -> Path:
-    return PACKAGE_ROOT / "tasks" / str(selection.row["entry_id"]) / "forms"
+    return release_entry_dir(PACKAGE_ROOT / "tasks", str(selection.row["entry_id"])) / "forms"
 
 
 def form_gold_dir(selection: Selection, form: str) -> Path:

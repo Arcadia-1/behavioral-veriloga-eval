@@ -26,7 +26,7 @@
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=30n maxstep=0.5n
+tran tran stop=30n maxstep=0.1n
 ```
 
 The release harness expects these exact public scalar observables:
@@ -49,6 +49,8 @@ Public stimulus/source nodes visible in the reference harness include:
 - `transient_analysis_present`
 - `public_observables_saved`
 - `dut_or_system_instantiated`
+- `stimulus_exercises_negative_positive_negative_differential`
+- `out_p_has_rising_and_falling_decisions`
 
 ## Output Contract
 
@@ -75,5 +77,7 @@ Public requirements:
 - include a transient `tran` analysis
 - save the public observables needed by the checker
 - include or instantiate the Verilog-A behavioral module under test
+- drive `vinp - vinn` through a negative, positive, and negative sequence so
+  both comparator output edges are visible in one run
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

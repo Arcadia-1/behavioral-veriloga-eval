@@ -1,37 +1,38 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-module charge_pump_abstraction(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+module charge_pump_abstraction(clk, rst, up, dn, vctrl, metric);
+input clk, rst, up, dn;
+output vctrl, metric;
+electrical clk, rst, up, dn, vctrl, metric;
 parameter real tr = 100p;
-parameter real deadband = 0.05;
-real state, step, errv, metricv;
+parameter real vth = 0.45;
+parameter real step = 0.06;
+parameter real vmin = 0.05;
+parameter real vmax = 0.85;
+real ctrl, metricv;
 analog begin
     @(initial_step) begin
-        state = 0.45;
-        step = 0.08;
+        ctrl = 0.45;
         metricv = 0.45;
     end
-    @(cross(V(clk) - 0.45, +1)) begin
-        errv = V(vin) - 0.45;
-        if (V(rst) > 0.45) begin
-            state = 0.45;
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            ctrl = 0.45;
             metricv = 0.45;
-        end else if (errv > deadband) begin
-            state = state - step;
+        end else if (V(up) > vth && V(dn) <= vth) begin
+            ctrl = ctrl - step;
             metricv = 0.75;
-        end else if (errv < -deadband) begin
-            state = state + step;
+        end else if (V(dn) > vth && V(up) <= vth) begin
+            ctrl = ctrl + step;
             metricv = 0.15;
         end else begin
             metricv = 0.45;
         end
-        if (state > 0.85) state = 0.85;
-        if (state < 0.05) state = 0.05;
+        if (ctrl > vmax) ctrl = vmax;
+        if (ctrl < vmin) ctrl = vmin;
     end
-    V(out) <+ transition(state, 0, tr, tr);
+    V(vctrl) <+ transition(ctrl, 0, tr, tr);
     V(metric) <+ transition(metricv, 0, tr, tr);
 end
 endmodule

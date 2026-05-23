@@ -90,24 +90,6 @@ DUT_FUNCTION_CONTRACTS: dict[str, dict[str, object]] = {
         "syntax": ["@(timer(", "transition("],
         "checks": ["phase_accumulator_timer_wrap"],
     },
-    "vbr1_l1_differential_output_driver": {
-        "module": "differential_voltage_output_ref(VDD, VSS, din, en, outp, outn)",
-        "ports": [
-            "`VDD`, `VSS`: electrical supply rails",
-            "`din`: input electrical logic-like data control, 0 V low and 0.9 V high",
-            "`en`: input electrical enable control, 0 V disabled and 0.9 V enabled",
-            "`outp`, `outn`: output electrical differential driver outputs",
-        ],
-        "behavior": [
-            "when `en` is low, drive both outputs to the common-mode level",
-            "when `en` is high and `din` is low, drive `outp-outn` negative",
-            "when `en` is high and `din` is high, drive `outp-outn` positive",
-            "keep both outputs bounded between `VSS` and `VDD` with finite `transition(...)` edges",
-        ],
-        "observables": ["din", "en", "outp", "outn"],
-        "syntax": ["din", "en", "transition("],
-        "checks": ["driver_disabled_common_mode", "driver_polarity_tracks_din", "driver_common_mode_stable"],
-    },
     "vbr1_l1_dither_or_noise_like_deterministic_source": {
         "module": "noise_gen(vin_i, vout_o)",
         "ports": [
@@ -230,21 +212,21 @@ DUT_FUNCTION_CONTRACTS: dict[str, dict[str, object]] = {
         "checks": ["output_high_when_vinp_above_vinn", "output_low_when_vinp_below_vinn"],
     },
     "vbr1_l1_window_comparator_detector": {
-        "module": "cross_hysteresis_window_ref(VDD, VSS, vin, out)",
+        "module": "window_comparator_ref(VDD, VSS, vin, out)",
         "ports": [
             "`VDD`, `VSS`: electrical supply rails",
             "`vin`: input electrical waveform",
-            "`out`: output electrical window/hysteresis state",
+            "`out`: output electrical in-window decision",
         ],
         "behavior": [
-            "start low",
-            "switch high when `vin` rises above 0.6 V",
-            "switch low when `vin` falls below 0.3 V",
-            "hold state between thresholds and drive output with `transition(...)`",
+            "drive `out` high only when `0.3 V < V(vin,VSS) < 0.6 V`",
+            "drive `out` low below the lower threshold and above the upper threshold",
+            "use directional `@(cross(...))` events on both thresholds and both ramp directions",
+            "drive the rail-scaled decision with `transition(...)`",
         ],
         "observables": ["time", "vin", "out"],
         "syntax": ["@(cross(", "transition("],
-        "checks": ["cross_hysteresis_window"],
+        "checks": ["true_window_comparator"],
     },
     "vbr1_l1_xor_phase_detector": {
         "module": "xor_phase_detector(vdd, vss, ref, div, pd_out)",

@@ -1,20 +1,14 @@
 {
-  "date": "2026-05-18",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "pass",
-  "entry_count": 75,
-  "form_count": 259,
-  "content_denominator_entry_count": 74,
-  "content_denominator_form_count": 255,
-  "content_excluded_entry_count": 1,
-  "content_excluded_entries": {
-    "vbr1_l1_clocked_comparator": [
-      "duplicate_strongarm_clocked_comparator"
-    ]
-  },
-  "severity_counts": {
-    "INFO": 1
-  },
+  "entry_count": 73,
+  "form_count": 249,
+  "content_denominator_entry_count": 73,
+  "content_denominator_form_count": 249,
+  "content_excluded_entry_count": 0,
+  "content_excluded_entries": {},
+  "severity_counts": {},
   "duplicate_groups": [],
   "l2_review_table": [
     {
@@ -44,24 +38,135 @@
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "entry_id": "vbr1_l2_flash_adc_mini_array",
       "content_denominator_included": true,
       "content_exclusion_reasons": [],
-      "category": "Stimulus and Sources",
-      "base_function": "ADC/DAC source sweep flow",
+      "category": "Data Converters",
+      "base_function": "Flash ADC mini-array",
       "gold_va_modules": [
-        "adc_dac_source_sweep_flow"
+        "flash_adc_3b"
       ],
       "sim_checks": [
-        "code_monotonic_with_input",
-        "reconstruction_follows_code",
-        "saturation_at_rails"
+        "all_8_flash_codes_present",
+        "comparator_threshold_ladder_matches_vin_bins",
+        "comparator_outputs_form_thermometer_prefix",
+        "binary_code_matches_comparator_count"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_pipeline_adc_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converters",
+      "base_function": "Pipeline ADC chain",
+      "gold_va_modules": [
+        "pipeline_adc_chain_4b"
+      ],
+      "sim_checks": [
+        "all_16_pipeline_codes_present",
+        "stage1_residue_matches_coarse_decision",
+        "stage2_residue_matches_backend_decision",
+        "final_code_matches_stage_concatenation",
+        "final_code_monotonic_with_vin"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/pipeline_adc_chain_4b.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converters",
+      "base_function": "Weighted SAR ADC/DAC loop",
+      "gold_va_modules": [
+        "dac_weighted_8b",
+        "sar_adc_weighted_8b",
+        "sh_ideal"
+      ],
+      "sim_checks": [
+        "sar_adc_code_range_sufficient",
+        "sar_adc_unique_code_count",
+        "dac_output_in_range"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sar_adc_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sh_ideal.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_comparator_measurement_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Comparators and Decision Circuits",
+      "base_function": "Single-ramp comparator offset measurement flow",
+      "gold_va_modules": [
+        "comparator_offset_search_ref"
+      ],
+      "sim_checks": [
+        "comparator_output_low_before_trip",
+        "comparator_output_high_after_trip",
+        "measurement_valid_latches_after_trip",
+        "trip_voltage_near_inn_plus_offset",
+        "offset_estimate_near_static_offset",
+        "measurement_outputs_hold_after_valid"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_converter_front_end",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Sample, Hold, and Analog Memory",
+      "base_function": "Converter front-end",
+      "gold_va_modules": [
+        "sample_hold_droop_ref"
+      ],
+      "sim_checks": [
+        "aperture_delayed_sample_tracks_vin",
+        "hold_windows_show_bounded_droop",
+        "coarse_decision_matches_held_sample",
+        "valid_pulses_mark_completed_samples"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Analog Behavioral Signal Conditioning",
+      "base_function": "Amplifier/filter chain",
+      "gold_va_modules": [
+        "amplifier_filter_chain"
+      ],
+      "sim_checks": [
+        "amplifier_target_metric",
+        "filtered_output_lags_target",
+        "bounded_chain_response"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
@@ -82,86 +187,6 @@
       ],
       "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_amplifier_filter_chain",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Analog Behavioral Signal Conditioning",
-      "base_function": "Amplifier/filter chain",
-      "gold_va_modules": [
-        "amplifier_filter_chain"
-      ],
-      "sim_checks": [
-        "amplified_input",
-        "filtered_output_lags_input",
-        "metric_tracks_settling"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_comparator_measurement_flow",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Comparators and Decision Circuits",
-      "base_function": "Comparator measurement flow",
-      "gold_va_modules": [
-        "comparator_offset_search_ref"
-      ],
-      "sim_checks": [
-        "switching_point_at_offset",
-        "output_low_below_offset",
-        "output_high_above_offset"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_complete_calibration_loop",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Calibration, DEM, and Control",
-      "base_function": "Complete calibration loop",
-      "gold_va_modules": [
-        "complete_calibration_loop"
-      ],
-      "sim_checks": [
-        "error_drives_trim",
-        "actuator_moves_opposite_error",
-        "loop_converges_toward_target"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/gold/complete_calibration_loop.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_converter_front_end",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Sample, Hold, and Analog Memory",
-      "base_function": "Converter front-end",
-      "gold_va_modules": [
-        "sample_hold_droop_ref"
-      ],
-      "sim_checks": [
-        "sample_tracks_input_after_clk_edge",
-        "hold_windows_show_bounded_droop",
-        "droop_not_excessive_between_samples"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
@@ -186,6 +211,25 @@
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md"
     },
     {
+      "entry_id": "vbr1_l2_pll_timing_slice",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "PLL / Clock / Event Timing",
+      "base_function": "PLL timing slice",
+      "gold_va_modules": [
+        "cppll_timer_ref"
+      ],
+      "sim_checks": [
+        "cppll_tracks_reference_frequency",
+        "vctrl_stays_bounded"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md"
+    },
+    {
       "entry_id": "vbr1_l2_event_controller",
       "content_denominator_included": true,
       "content_exclusion_reasons": [],
@@ -195,6 +239,8 @@
         "simultaneous_event_order_ref"
       ],
       "sim_checks": [
+        "ref_edges_align_with_absolute_timer_grid",
+        "plateau_levels_encode_cross_after_timer_order",
         "simultaneous_event_order"
       ],
       "gold_va": [
@@ -204,23 +250,44 @@
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/prompt.md"
     },
     {
-      "entry_id": "vbr1_l2_flash_adc_mini_array",
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
       "content_denominator_included": true,
       "content_exclusion_reasons": [],
-      "category": "Data Converters",
-      "base_function": "Flash ADC mini-array",
+      "category": "Digital and Event-Driven Logic",
+      "base_function": "Serializer frame-alignment flow",
       "gold_va_modules": [
-        "flash_adc_3b"
+        "serializer_frame_alignment_ref"
       ],
       "sim_checks": [
-        "flash_adc_all_8_codes_present",
-        "flash_adc_monotonic_with_ramp"
+        "frame_pulse_present_for_each_loaded_word",
+        "serialized_bits_match_word0xA5_then_0x3C",
+        "frame_pulse_width_is_single_bit_window"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va"
+        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_complete_calibration_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Calibration, DEM, and Control",
+      "base_function": "Complete calibration loop",
+      "gold_va_modules": [
+        "complete_calibration_loop"
+      ],
+      "sim_checks": [
+        "error_drives_trim",
+        "actuator_moves_opposite_error",
+        "loop_converges_toward_target"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/gold/complete_calibration_loop.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
@@ -257,7 +324,9 @@
         "final_step_file_metric_ref"
       ],
       "sim_checks": [
-        "final_step_file_metric"
+        "ref_edges_counted_on_expected_grid",
+        "metric_out_normalizes_final_edge_count",
+        "final_step_writes_candidate_metric_file"
       ],
       "gold_va": [
         "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/gold/final_step_file_metric_ref.va"
@@ -266,81 +335,27 @@
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/prompt.md"
     },
     {
-      "entry_id": "vbr1_l2_pll_timing_slice",
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
       "content_denominator_included": true,
       "content_exclusion_reasons": [],
-      "category": "PLL / Clock / Event Timing",
-      "base_function": "PLL timing slice",
+      "category": "Stimulus and Sources",
+      "base_function": "ADC/DAC source sweep flow",
       "gold_va_modules": [
-        "cppll_timer_ref"
+        "adc_dac_source_sweep_flow"
       ],
       "sim_checks": [
-        "cppll_tracks_reference_frequency",
-        "vctrl_stays_bounded"
+        "code_monotonic_with_input",
+        "reconstruction_follows_code",
+        "saturation_at_rails"
       ],
       "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
       ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Digital and Event-Driven Logic",
-      "base_function": "Serializer frame-alignment flow",
-      "gold_va_modules": [
-        "serializer_frame_alignment_ref"
-      ],
-      "sim_checks": [
-        "frame_pulse_present_for_each_loaded_word",
-        "serialized_bits_match_word0xA5_then_0x3C",
-        "frame_pulse_width_is_single_bit_window"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Data Converters",
-      "base_function": "Weighted SAR ADC/DAC loop",
-      "gold_va_modules": [
-        "dac_weighted_8b",
-        "sar_adc_weighted_8b",
-        "sh_ideal"
-      ],
-      "sim_checks": [
-        "sar_adc_code_range_sufficient",
-        "sar_adc_unique_code_count",
-        "dac_output_in_range"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
-        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sar_adc_weighted_8b.va",
-        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sh_ideal.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md"
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/prompt.md"
     }
   ],
-  "findings": [
-    {
-      "severity": "INFO",
-      "kind": "content_denominator_excluded_entry",
-      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "base_function": "Clocked comparator",
-      "reasons": [
-        "duplicate_strongarm_clocked_comparator"
-      ]
-    }
-  ],
+  "findings": [],
   "recommended_policy": [
     "Do not retain exact duplicate L2 kernels in the clean release package; rewrite them before re-admission.",
     "Keep score disabled; allow only unweighted pass-rate reporting after content review.",

@@ -10,10 +10,11 @@ tb_compile:
 sim_correct:
   checks:
     - "cppll_tracks_reference_frequency"
+    - "lock_asserts_in_late_tracking_window"
     - "vctrl_stays_bounded"
 
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_until_evas_spectre_rerun"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Pending dual refresh after CT05 PLL timing checker now requires late-window lock assertion."

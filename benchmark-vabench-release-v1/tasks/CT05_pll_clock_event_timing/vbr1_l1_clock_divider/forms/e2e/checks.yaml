@@ -19,8 +19,11 @@ sim_correct:
     - "output_period_matches_five_input_edges"
     - "lock_asserts_after_first_complete_output_period"
 parity:
-  required: true
-  tolerance_notes: "Measure edge intervals after startup; ignore the legacy auxiliary `clk_divider.va` file."
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."
+    - "Measure edge intervals after startup; ignore the legacy auxiliary `clk_divider.va` file."
 semantic_review:
   risk: "The staged directory contains a legacy auxiliary source that is not instantiated by the public testbench."
   release_decision: "Release the normal divider task against `clk_divider_ref`; do not treat legacy `clk_divider.va` as a badcase."

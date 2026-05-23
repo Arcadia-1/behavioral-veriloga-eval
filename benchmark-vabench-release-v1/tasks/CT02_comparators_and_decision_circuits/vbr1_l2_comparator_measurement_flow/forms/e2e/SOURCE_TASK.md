@@ -1,6 +1,6 @@
-# Selected Source Task: comparator_offset_search_smoke
+# Selected Source Task: comparator_measurement_flow_smoke
 
-- Source path: `tasks/end-to-end/voltage/comparator_offset_search_smoke`
+- Source path: `tasks/end-to-end/voltage/comparator_measurement_flow_smoke`
 - Form: `e2e`
 - prompt.md: `True`
 - meta.json: `True`
@@ -11,4 +11,4 @@
 - release-ready checks: `True`
 
 This selected release form is copied from an existing source task.
-Release copy is certified by current static, EVAS, and Spectre evidence.
+Fresh EVAS/Spectre dual validation is pending after the L2 prompt/checker/gold redesign.

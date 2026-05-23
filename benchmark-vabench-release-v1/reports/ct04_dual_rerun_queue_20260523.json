@@ -1,0 +1,93 @@
+{
+  "date": "2026-05-23",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "scope": "CT04 analog behavioral signal-conditioning prompt/gold/checker tightening",
+  "queue_count": 14,
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_dut",
+      "queue_reason": "gold/checker split voltage-gain behavior from generic filter-chain template and require saturation metric"
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_tb",
+      "queue_reason": "checker split voltage-gain behavior from generic filter-chain template and require saturation metric"
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_bugfix",
+      "queue_reason": "bugfix now rejects unclamped gain output and missing saturation metric"
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_e2e",
+      "queue_reason": "gold/checker split voltage-gain behavior from generic filter-chain template and require saturation metric"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_higher_order_filter_dut",
+      "queue_reason": "gold/checker split true two-state second-order response from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_higher_order_filter_tb",
+      "queue_reason": "checker split true two-state second-order response from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "queue_reason": "bugfix now rejects single-pole collapse and flat state-difference metric"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_higher_order_filter_e2e",
+      "queue_reason": "gold/checker split true two-state second-order response from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
+      "queue_reason": "gold/checker split stateful soft limiter from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_tb",
+      "queue_reason": "checker split stateful soft limiter from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "queue_reason": "bugfix now rejects memoryless soft limiting and flat metric"
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e",
+      "queue_reason": "gold/checker split stateful soft limiter from generic filter-chain template"
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "tb",
+      "source_task_id": "vbr1_l2_amplifier_filter_chain_tb",
+      "queue_reason": "checker now requires L2 composition with pre-filter gain metric and lagged filtered output"
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "e2e",
+      "source_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
+      "queue_reason": "gold/checker now require L2 composition with pre-filter gain metric and lagged filtered output"
+    }
+  ]
+}

@@ -16,7 +16,7 @@
   "artifacts": [
     "dut_buggy.va",
     "dut_fixed.va",
-    "tb_cross_hysteresis_window_ref.scs"
+    "tb_window_comparator_ref.scs"
   ],
   "scoring": [
     "dut_compile",
@@ -24,9 +24,9 @@
     "sim_correct"
   ],
   "behavior_checks": [
-    "rising_crossing_uses_upper_threshold",
-    "falling_crossing_uses_lower_threshold",
-    "output_retains_state_between_thresholds"
+    "inside_window_high_on_rising_and_falling_sweeps",
+    "below_lower_threshold_low",
+    "above_upper_threshold_low"
   ],
   "source": "bugfix_companion_from_dut"
 }

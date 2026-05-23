@@ -55,24 +55,24 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a Verilog-A module named `phase_accumulator_timer_wrap_ref`.
+Write a timer-driven digital phase accumulator and matching transient testbench.
 
-# Task: phase_accumulator_timer_wrap_smoke
+Module name: `phase_accumulator_timer_wrap_ref`.
 
-## Objective
+Required DUT behavior:
 
-Write a Verilog-A phase accumulator that advances on an absolute timer, wraps manually at phase 1.0, and derives both a phase monitor and a clock output from that wrapped state.
+- Ports are exactly `VDD`, `VSS`, `clk_out`, `phase_out`.
+- Advance the internal phase state on an EVAS-compatible `timer()` schedule.
+- Wrap phase manually at 1.0 rather than relying on unsupported analog
+  integration.
+- Drive `phase_out` as a voltage-domain monitor of the wrapped phase state.
+- Derive `clk_out` from the wrapped phase state so clock edges are observable
+  across multiple wraps.
+- Use voltage contributions and `transition()` only.
 
-Ports:
-- `VDD`: inout electrical
-- `VSS`: inout electrical
-- `clk_out`: output electrical
-- `phase_out`: output electrical
+Required testbench behavior:
 
-## Output Contract (MANDATORY)
-
-- Return exactly two fenced code blocks:
-  - first block: Verilog-A DUT (` ```verilog-a ... ``` `)
-  - second block: Spectre testbench (` ```spectre ... ``` `)
-- The Spectre testbench must include the DUT with `ahdl_include "<module>.va"`.
-- Use a single `tran` analysis and include the required `save` signals for checker evaluation.
+- Provide supply rails and save plain scalar observables `clk_out` and
+  `phase_out`.
+- Run long enough to show at least three phase wraps and corresponding clock
+  transitions.

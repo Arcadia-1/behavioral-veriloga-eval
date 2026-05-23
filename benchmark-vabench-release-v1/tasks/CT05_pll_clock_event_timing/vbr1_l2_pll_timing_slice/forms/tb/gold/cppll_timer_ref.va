@@ -30,8 +30,10 @@ module cppll_timer_ref (
     real vth;
     real t_ref_prev;
     real t_ref_last;
+    real t_fb_prev;
     real t_fb_last;
     real ref_period;
+    real fb_period;
     real phase_err;
     real integ;
     real vctrl;
@@ -54,8 +56,10 @@ module cppll_timer_ref (
         @(initial_step) begin
             t_ref_prev = -1.0;
             t_ref_last = -1.0;
+            t_fb_prev = -1.0;
             t_fb_last = -1.0;
             ref_period = 20e-9;
+            fb_period = 20e-9;
             phase_err = 0.0;
             integ = 0.0;
             vctrl = vctrl_init;
@@ -63,7 +67,7 @@ module cppll_timer_ref (
             if (vctrl > vh) vctrl = vh;
 
             dco_state = 0;
-            fb_state = 0;
+            fb_state = 1;
             div_cnt = 0;
             lock_state = 0;
             lock_streak = 0;
@@ -98,7 +102,8 @@ module cppll_timer_ref (
                 if (vctrl < vl) vctrl = vl;
                 if (vctrl > vh) vctrl = vh;
 
-                if (abs(phase_err) <= lock_tol) begin
+                if (t_fb_prev >= 0.0 && ref_period > 1e-15 && fb_period > 1e-15
+                    && abs(fb_period - ref_period) <= 0.04 * ref_period) begin
                     lock_streak = lock_streak + 1;
                 end else begin
                     lock_streak = 0;
@@ -115,6 +120,13 @@ module cppll_timer_ref (
                 if (div_cnt >= div_ratio) begin
                     div_cnt = 0;
                     fb_state = 1 - fb_state;
+                    if (fb_state == 1) begin
+                        t_fb_prev = t_fb_last;
+                        t_fb_last = $abstime;
+                        if (t_fb_prev >= 0.0) begin
+                            fb_period = t_fb_last - t_fb_prev;
+                        end
+                    end
                 end
             end
 
@@ -126,10 +138,6 @@ module cppll_timer_ref (
 
             dco_half_period = 0.5 / dco_freq;
             t_next_toggle = t_next_toggle + dco_half_period;
-        end
-
-        @(cross(V(fb_clk) - vth, +1)) begin
-            t_fb_last = $abstime;
         end
 
         V(dco_clk) <+ vl + (vh - vl) * transition(dco_state ? 1.0 : 0.0, 0.0, tedge, tedge);

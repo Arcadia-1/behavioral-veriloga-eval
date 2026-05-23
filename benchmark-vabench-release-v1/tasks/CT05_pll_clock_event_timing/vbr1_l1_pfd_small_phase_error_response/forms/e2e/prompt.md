@@ -60,41 +60,23 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Task: pfd_small_phase_response_smoke
+Create a phase-frequency detector behavioral model and matching transient
+testbench focused on small REF/DIV phase-error response.
 
-## Objective
+Module name: `pfd_updn`.
 
-Create a phase-frequency detector behavioral model in Verilog-A and a minimal EVAS-compatible Spectre testbench. The task focuses on small REF/DIV phase-error response: short, bounded UP/DN pulses should be visible without sustained overlap.
+Required DUT behavior:
 
-## Specification
+- Ports are exactly `VDD`, `VSS`, `REF`, `DIV`, `UP`, `DN`.
+- Rising `REF` edges assert `UP`; rising `DIV` edges assert `DN`.
+- When both internal states are high, reset both outputs to low.
+- For small phase offsets, generate short bounded pulses without sustained
+  `UP`/`DN` overlap.
+- Drive output high as `V(VDD)` and low as `V(VSS)` through `transition()`.
 
-- **Module name**: `pfd_updn`
-- **Ports** (all `electrical`, exactly as named): `VDD`, `VSS`, `REF`, `DIV`, `UP`, `DN`
-- **Parameters**:
-  - `vth` (real, default `0.45`)
-  - `tedge` (real, default `20p`)
-- **Behavior**:
-  - Rising edge of `ref` sets `up` high.
-  - Rising edge of `div` sets `dn` high.
-  - When both states are high, reset both to 0.
-  - For small phase offsets, pulses should remain short and bounded with no sustained UP/DN overlap.
-  - Output HIGH = V(vdd), LOW = V(vss) - read dynamically.
+Required testbench behavior:
 
-## Testbench requirements
-
-Create a minimal Spectre testbench that:
-- Includes `pfd_updn.va` via `ahdl_include`
-- Provides vdd=0.9V, vss=0V
-- Generates ref and div clocks with small phase offsets (~ps level)
-- Saves signals: `ref`, `div`, `up`, `dn`
-- Runs transient long enough to show several small phase-error UP/DN pulses
-
-## Deliverable
-
-Two files:
-1. `pfd_updn.va` - the Verilog-A behavioral model
-2. `tb_pfd_small_phase_ref.scs` - the Spectre testbench
-
-Expected behavior:
-- PFD should generate bounded pulses for small phase differences
-- UP and DN should not remain high together after both input edges have arrived
+- Include `pfd_updn.va` with `ahdl_include`.
+- Generate `REF` and `DIV` clocks with small phase offsets.
+- Save plain scalar observables `ref`, `div`, `up`, and `dn`.
+- Run long enough to expose multiple small phase-error pulses.

@@ -11,30 +11,30 @@ simulator certification evidence.
 | Metric | Value |
 | --- | ---: |
 | status | `complete` |
-| entries | 77 |
-| forms | 265 |
-| fully certified entries | 77 |
+| entries | 73 |
+| forms | 249 |
+| fully certified entries | 73 |
 | pending entries | 0 |
-| certified forms | 265 |
+| certified forms | 249 |
 | pending forms | 0 |
 | fresh dual-rerun pending forms | 0 |
 | source-equivalence blocked forms | 0 |
 | dual-failure forms | 0 |
 | EVAS PASS / Spectre FAIL | 0 |
-| scored entries | 75 |
-| scored forms | 257 |
+| scored entries | 73 |
+| scored forms | 245 |
 
 ## Entry Pending Cause Counts
 
-- `fully_certified`: 77
+- `fully_certified`: 73
 
 ## Form Pending Cause Counts
 
-- `certified`: 265
+- `certified`: 249
 
 ## Form Disposition Counts
 
-- `none`: 265
+- `none`: 249
 
 ## Source-Equivalence Blocked Forms
 

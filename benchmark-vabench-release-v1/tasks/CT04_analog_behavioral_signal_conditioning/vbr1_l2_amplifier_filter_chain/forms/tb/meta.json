@@ -21,9 +21,9 @@
     "sim_correct"
   ],
   "behavior_checks": [
-    "amplified_input",
-    "filtered_output_lags_input",
-    "metric_tracks_settling"
+    "amplifier_target_metric",
+    "filtered_output_lags_target",
+    "bounded_chain_response"
   ],
   "designed_source": true
 }

@@ -47,6 +47,7 @@ Public stimulus/source nodes visible in the reference harness include:
 ## Public Behavior Checks
 
 - `cppll_tracks_reference_frequency`
+- `lock_asserts_in_late_tracking_window`
 - `vctrl_stays_bounded`
 
 ## Output Contract
@@ -64,7 +65,12 @@ Write a Verilog-A module named `cppll_timer_ref`.
 
 Create a timer-based voltage-domain charge-pump style PLL (CPPLL) behavioral
 model in Verilog-A, then produce a minimal EVAS-compatible Spectre testbench
-and run a smoke simulation.
+for a steady tracking slice.
+
+This L2 task is the base closed-loop timing slice. It should demonstrate
+stable reference tracking under a fixed reference clock. It should not include
+the reference-frequency step or reacquire scenario used by
+`vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow`.
 
 Behavioral intent:
 
@@ -89,6 +95,8 @@ Minimum simulation goal:
 - the generated testbench should stimulate a 50 MHz reference clock
 - the late-window `fb_clk` frequency should match the reference within a few
   percent
+- `lock` should assert after the loop has accumulated enough stable late
+  tracking windows
 - `vctrl_mon` should stay bounded by the supply rails throughout the transient
 
 Ports:

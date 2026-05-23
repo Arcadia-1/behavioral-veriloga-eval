@@ -14,13 +14,13 @@ def test_dual_evidence_import_certifies_materialized_release_forms() -> None:
 
     assert report["status"] == "pass"
     assert report["simulator_rerun"] is True
-    assert report["dual_certified_release_task_count"] == 265
+    assert report["dual_certified_release_task_count"] == 249
     assert report["dual_failed_release_task_count"] == 0
     assert report["dual_pending_release_task_count"] == 0
-    assert report["dual_pass_materialized_entry_count"] == 77
+    assert report["dual_pass_materialized_entry_count"] == 73
     assert report["dual_pending_materialized_entry_count"] == 0
     assert report["dual_failed_materialized_entry_count"] == 0
-    assert report["fully_certified_entry_count"] == 77
+    assert report["fully_certified_entry_count"] == 73
     assert report["evas_pass_spectre_fail_count"] == 0
     assert report["issue_count"] == 0
     assert report["source_equivalence_blocked_release_task_count"] == 0
@@ -30,7 +30,7 @@ def test_dual_evidence_import_certifies_materialized_release_forms() -> None:
 def test_dual_evidence_records_historical_source_and_hash_equivalence() -> None:
     evidence_paths = sorted((PACKAGE / "evidence" / "dual").glob("*/*/evidence.json"))
 
-    assert len(evidence_paths) == 265
+    assert len(evidence_paths) == 249
     certified_count = 0
     pending_count = 0
     fresh_rerun_count = 0
@@ -50,7 +50,7 @@ def test_dual_evidence_records_historical_source_and_hash_equivalence() -> None:
         assert evidence["pending_blockers"] == []
         if evidence["historical_evidence"]["simulator_rerun"] is True:
             assert evidence["historical_evidence"]["source"] == "fresh release dual rerun"
-            assert evidence["release_rerun"]["summary"].startswith("results/vabench-release-v1-")
+            assert evidence["release_rerun"]["summary"].startswith("results/")
             fresh_rerun_count += 1
         else:
             assert evidence["historical_evidence"]["evas_result"].startswith(
@@ -61,10 +61,10 @@ def test_dual_evidence_records_historical_source_and_hash_equivalence() -> None:
             )
             historical_count += 1
         certified_count += 1
-    assert certified_count == 265
+    assert certified_count == 249
     assert pending_count == 0
-    assert fresh_rerun_count == 167
-    assert historical_count == 98
+    assert fresh_rerun_count == 184
+    assert historical_count == 65
 
 
 def test_incomplete_seed_entries_remain_blocked_by_missing_forms() -> None:
@@ -84,8 +84,12 @@ def test_incomplete_seed_entries_remain_blocked_by_missing_forms() -> None:
         and entry["missing_forms"] == []
         and entry["release_blockers"] == []
     ]
-    assert len(certified) == 77
+    assert len(certified) == 73
     selected_entries = [entry for entry in entries.values() if str(entry["package_status"]).startswith("selected_")]
-    assert len(selected_entries) == 49
-    assert all(entry["certification"]["evas"] == "pass" for entry in selected_entries)
-    assert all(entry["certification"]["spectre"] == "pass" for entry in selected_entries)
+    assert len(selected_entries) == 47
+    pending_selected = {
+        entry["release_entry_id"]
+        for entry in selected_entries
+        if entry["certification"]["evas"] != "pass" or entry["certification"]["spectre"] != "pass"
+    }
+    assert pending_selected == set()

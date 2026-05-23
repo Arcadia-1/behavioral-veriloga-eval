@@ -42,13 +42,13 @@ plus 15 L2 complete-circuit targets.
 | Category | L0 conformance themes | Current L1 concrete circuits | Promoted L1 additions from examples/history | L2 complete-circuit targets |
 | --- | --- | --- | --- | --- |
 | Data Converters | Bus width guards; code saturation; decoder monotonicity; transition timing. | Simple 4-bit binary-coded DAC; segmented DAC; guarded thermometer-code decoder; 4-bit SAR logic. | Clocked ADC quantizer; unit-element thermometer DAC; capacitive/weighted SAR feedback DAC; DAC mismatch/unit-weighting model. | ADC/DAC reconstruction chain; weighted SAR ADC/DAC loop; flash ADC mini-array. |
-| Comparators and Decision Circuits | `cross()` threshold touch; clock/reset ordering; output transition placement. | Offset comparator; StrongARM-style latch comparator behavior. | Ideal threshold comparator; propagation-delay comparator; hysteresis comparator; window comparator/detector. | Comparator measurement flow: stimulus + comparator + offset/delay/hysteresis metric. |
+| Comparators and Decision Circuits | `cross()` threshold touch; clock/reset ordering; output transition placement. | Offset comparator; StrongARM-style latch comparator behavior. | Ideal threshold comparator; propagation-delay comparator; hysteresis comparator; window comparator/detector. | Single-ramp offset measurement flow: ramp stimulus + comparator + offset metric. |
 | PLL / Clock / Event Timing | `timer()` startup semantics; coincident events; `$abstime` sampling; divider edge ordering. | VCO phase integrator; PFD UP/DN reset-race behavior; resettable clock divider; lock detector. | PFD UP/DN core; PFD small phase-error response; XOR phase detector; bang-bang phase detector; digital phase accumulator with modulo wrap; voltage-domain charge-pump control abstraction; sampled loop-filter abstraction. | PLL timing slice; ADPLL lock/ratio-hop/timer flow; CPPLL tracking and frequency-step reacquire flow. |
 | Calibration, DEM, and Control | Update ordering at clock edges; clamp bounds; pointer wrap boundaries. | Trim-voltage generator; gain trim controller; rotating DEM selector; windowed DEM pointer; deterministic element shuffler. | DWA/DEM encoder; calibration deadband controller; successive-approximation calibration/search FSM. | Complete calibration loop. |
 | Digital and Event-Driven Logic | Empty branch legality; event initialization; reset precedence; one-shot pulse scheduling. | Edge detector; debounce latch; one-shot timer. | LFSR/PRBS generator; serializer/frame aligner; retriggerable one-shot pulse stretcher. | Event controller; serializer frame-alignment flow. |
 | Measurement and Testbench Instrumentation | File I/O parsing; final-row sampling; CSV metric schema; tolerance-window semantics. | Crossing metric writer; settling-time measurement testbench; peak detector. | Gain estimator; edge interval timer. | Measurement flow; gain extraction/convergence measurement flow. |
 | Stimulus and Sources | PWL/source continuation legality; breakpoint insertion; source row sampling. | No current countable release seed after clamp/slew are mapped to signal conditioning. | Ramp/step source; burst-clock source; deterministic noise/dither source; sine/periodic voltage source. | ADC/DAC source sweep flow. |
-| Analog Behavioral Signal Conditioning | Continuous update timestep; transition smoothing; saturation edge cases; resettable state. | First-order lowpass; resettable integrator; precision rectifier; voltage clamp/limiter; slew-rate limiter. | Soft/hysteretic limiter; voltage gain amplifier; differential output driver; higher-order filter. | Amplifier/filter chain. |
+| Analog Behavioral Signal Conditioning | Continuous update timestep; transition smoothing; saturation/limiting edge cases; resettable state. | First-order lowpass; resettable integrator; slew-rate limiter. | Soft/hysteretic limiter; voltage gain amplifier; higher-order filter. | Amplifier/filter chain. |
 | Sample, Hold, and Analog Memory | Track/sample edge timing; aperture delay; leakage/decay timestep semantics. | Aperture-delay track-and-hold; sample-and-hold with droop/leakage. | Clocked sample-and-hold. | Converter front-end. |
 
 Promoted additions in this table are part of the top-level release coverage
@@ -81,7 +81,7 @@ can enter a release package.
 | Digital and Event-Driven Logic | `edge_detector`; `debounce_latch`; `one_shot_timer`. |
 | Measurement and Testbench Instrumentation | `file_metric_writer`; `settling_time_measurement_tb`; `peak_detector`. |
 | Stimulus and Sources | None currently counted after remapping clamp/slew to signal conditioning. |
-| Analog Behavioral Signal Conditioning | `first_order_lowpass`; `resettable_integrator`; `precision_rectifier`; `voltage_clamp`; `slew_rate_limiter`. |
+| Analog Behavioral Signal Conditioning | `first_order_lowpass`; `resettable_integrator`; `slew_rate_limiter`. |
 | Sample, Hold, and Analog Memory | `track_hold_aperture`; `leaky_hold` as sample-and-hold droop/leakage behavior. |
 
 Current promoted countable L1 seeds: 28.
@@ -110,7 +110,7 @@ Excluded current historical bases:
 | Data Converters | ADC/DAC reconstruction chain | ADC quantizer + DAC reconstruction + source/checker flow. |
 | Data Converters | Weighted SAR ADC/DAC loop | SAR controller + weighted feedback DAC + comparator interaction. |
 | Data Converters | Flash ADC mini-array | Multiple threshold comparators + thermometer/code output behavior. |
-| Comparators and Decision Circuits | Comparator measurement flow | Stimulus + comparator + offset/delay measurement. |
+| Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | Ramp stimulus + comparator + input-referred offset measurement. |
 | PLL / Clock / Event Timing | PLL timing slice | PFD + divider + VCO or loop-control interaction. |
 | PLL / Clock / Event Timing | ADPLL lock/ratio-hop/timer flow | Digital phase/timer control + divider/VCO timing response. |
 | PLL / Clock / Event Timing | CPPLL tracking and frequency-step reacquire flow | PFD + voltage-domain charge-pump/filter abstraction + VCO response to a frequency step. |

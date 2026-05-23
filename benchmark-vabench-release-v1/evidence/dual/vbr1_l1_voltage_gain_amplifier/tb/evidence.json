@@ -13,11 +13,11 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_voltage_gain_amplifier/tb/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_voltage_gain_amplifier/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold",
+    "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/vbr1_l1_voltage_gain_amplifier/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_gain_amplifier/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_gain_amplifier/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_gain_amplifier/forms/tb/gold/tb_voltage_gain_amplifier.scs"
+    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/tb/gold/tb_voltage_gain_amplifier.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -27,9 +27,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_voltage_gain_amplifier/tb/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_voltage_gain_amplifier/tb/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/vbr1_l1_voltage_gain_amplifier/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -40,34 +40,37 @@
       ],
       "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.15811388300841897,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.0050058786159471996,
-      "p95_nrmse": 0.025,
-      "max_nrmse": 0.025,
+      "max_rmse_v": 1.915838782548297e-05,
+      "max_abs_v": 0.0002745094930635128,
+      "mean_nrmse": 4.259190093011498e-06,
+      "p95_nrmse": 2.1287097583869965e-05,
+      "max_nrmse": 2.1287097583869965e-05,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.15811388300841897,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.025
+          "mismatch_ratio": 0.0
         },
         "metric": {
-          "rmse_v": 7.070076284207187e-06,
-          "max_abs_v": 0.00013094177598649281,
-          "span_v": 0.49481916420294664,
-          "nrmse": 1.4288202227566603e-05,
-          "kind": "analog"
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
         },
         "out": {
-          "rmse_v": 1.3586280952592437e-05,
-          "max_abs_v": 0.0001783975187628073,
+          "rmse_v": 1.915838782548297e-05,
+          "max_abs_v": 0.0002745094930635128,
           "span_v": 0.9,
-          "nrmse": 1.5095867725102707e-05,
+          "nrmse": 2.1287097583869965e-05,
           "kind": "analog"
         },
         "rst": {
@@ -81,10 +84,10 @@
           "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 7.207826661252404e-09,
-          "max_abs_v": 4.6157712429995e-08,
+          "rmse_v": 7.082304950021588e-09,
+          "max_abs_v": 4.882205117962002e-08,
           "span_v": 0.8,
-          "nrmse": 9.009783326565506e-09,
+          "nrmse": 8.852881187526985e-09,
           "kind": "analog"
         }
       }
@@ -95,7 +98,7 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_voltage_gain_amplifier/forms/tb/gold/tb_voltage_gain_amplifier.scs"
+      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/tb/gold/tb_voltage_gain_amplifier.scs"
     ]
   },
   "failures": [],

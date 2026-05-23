@@ -69,6 +69,10 @@ model in Verilog-A, then produce a minimal EVAS-compatible Spectre testbench
 that demonstrates unlock and reacquire behavior after a reference-frequency
 step.
 
+This L2 task is intentionally stronger than the steady
+`vbr1_l2_pll_timing_slice`: it must show pre-step lock, disturbance-induced
+unlock or lock drop, and late-window relock to the new reference frequency.
+
 Behavioral intent:
 
 - one reference clock input `ref_clk`
@@ -86,6 +90,7 @@ Implementation constraints:
 - EVAS-compatible syntax
 - use `@(timer(...))` for the DCO timing loop
 - `fb_clk`, `dco_clk`, and `lock` should be driven as voltage outputs
+- use the public `ref_step_clk` source artifact to create the reference step
 - `ref_clk`, `fb_clk`, `lock`, and `vctrl_mon` must appear in the waveform CSV
 
 Minimum simulation goal:

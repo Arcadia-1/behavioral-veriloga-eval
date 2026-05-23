@@ -50,7 +50,7 @@ the scored benchmark denominator.
 | Digital and Event-Driven Logic | Does event-driven logic preserve the requested state transition, pulse width, sequence, or frame relation? | Digital-voltage inputs, reset/clock, output state or serialized stream. | Reset behavior, edge qualification, pulse duration, legal sequence progression, frame alignment, and rejection of missing events. |
 | Measurement and Testbench Instrumentation | Does the generated measurement match the waveform quantity it claims to report? | Waveform columns, metric files, crossing/settling/peak/gain outputs. | Numeric metric-to-waveform agreement, one-record artifact format where required, tolerance-window semantics, and no final-row or missing-file artifact passing. |
 | Stimulus and Sources | Does the source generate the specified waveform schedule or deterministic sequence? | Source output waveform, clock/burst edges, seed/state when present. | Amplitude/range, timing, burst count, periodicity or deterministic variation, and reproducibility. |
-| Analog Behavioral Signal Conditioning | Does the analog transform implement the intended gain, filter, clamp, rectification, or slew behavior? | Input/output waveforms, reset/control signals, metric outputs when present. | Gain/slope/lag estimates, bounded output, rectification polarity, clamp/slew limits, and representative transient response. |
+| Analog Behavioral Signal Conditioning | Does the analog transform implement the intended gain, filter, limiting, integration, or slew behavior? | Input/output waveforms, reset/control signals, metric outputs when present. | Gain/slope/lag estimates, bounded output, state/reset behavior, limiting/slew constraints, and representative transient response. |
 | Sample, Hold, and Analog Memory | Does the sampled value, held value, droop/leakage, or aperture timing match the contract? | Input waveform, sampling clock, held output, reset when present. | Sample instant alignment, hold stability, droop/leakage slope, aperture delay, and rejection of transparent-through behavior. |
 
 ## Coverage Counts
@@ -82,9 +82,8 @@ the scored benchmark denominator.
 | Comparators and Decision Circuits | Hysteresis comparator | L1 | Comparator with separate rising/falling thresholds and state memory | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Window comparator/detector | L1 | In-window or out-of-window binary decision on analog input | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Offset comparator | L1 | Comparator with explicit offset threshold | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Comparators and Decision Circuits | Clocked comparator | L1 | Reset/evaluate comparator with clocked decision timing | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | StrongARM-style latch comparator | L1 | Clocked latch-like comparator abstraction | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Comparators and Decision Circuits | Comparator measurement flow | L2 | Stimulus + comparator + measurement result | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
+| Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | L2 | Single-ramp stimulus + comparator + offset measurement result | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | VCO phase integrator | L1 | Voltage-controlled phase/frequency accumulation | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | PFD UP/DN logic | L1 | UP/DN event relation with reset-race handling | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | PFD small phase-error response | L1 | Small REF/DIV phase error produces bounded UP/DN pulses with overlap reset | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
@@ -129,11 +128,8 @@ the scored benchmark denominator.
 | Stimulus and Sources | ADC/DAC source sweep flow | L2 | Source sweep + converter response + code or reconstruction checker | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | First-order lowpass | L1 | Voltage-domain filter abstraction | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Resettable integrator | L1 | Integrator with reset or decay semantics | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Analog Behavioral Signal Conditioning | Precision rectifier | L1 | Absolute-value or half-wave style signal transform | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Analog Behavioral Signal Conditioning | Voltage clamp or limiter | L1 | Saturating continuous-valued transform | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Soft/hysteretic limiter | L1 | Smooth or stateful limiting distinct from hard voltage clamp | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Voltage gain amplifier | L1 | Voltage-domain gain block with bounded output behavior | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
-| Analog Behavioral Signal Conditioning | Differential output driver | L1 | Complementary differential voltage outputs with common-mode behavior | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Higher-order filter | L1 | Multi-pole or second-order voltage-domain filter abstraction | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Slew-rate limiter | L1 | Bounded slope transform | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Analog Behavioral Signal Conditioning | Amplifier/filter chain | L2 | Gain block + filter or limiter with measured chain response | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
@@ -159,7 +155,7 @@ checker, and EVAS/Spectre certification evidence.
 | Digital and Event-Driven Logic | Inverter/not/and/or gates; DFF with reset; mux 4-to-1; gray counter; LFSR/PRBS; serializer and frame alignment; retriggerable one-shot pulse stretcher. | Event-controller flow; serializer frame-alignment flow. |
 | Measurement and Testbench Instrumentation | Gain estimator; gain extraction metric; edge interval timer; waveform metric aggregator. | Gain extraction and convergence measurement flow; DUT plus metric-artifact flow. |
 | Stimulus and Sources | Ramp source; burst-clock source; deterministic noise source; voltage/sine input source; dither source. | ADC/DAC source sweep flow. |
-| Analog Behavioral Signal Conditioning | Hysteretic or soft limiter; gain amplifier; fixed-gain amplifier; differential output driver; higher-order filter; piecewise-linear transfer block. | Amplifier/filter chain. |
+| Analog Behavioral Signal Conditioning | Soft/hysteretic limiter; gain amplifier; higher-order filter; slew-rate limiter; resettable integrator. | Amplifier/filter chain. |
 | Sample, Hold, and Analog Memory | Ideal sample-and-hold; clocked sample-and-hold; aperture/noise hold variant. | Converter front-end with sample/hold plus quantizer or comparator. |
 
 ## Non-Scored Conformance Surface

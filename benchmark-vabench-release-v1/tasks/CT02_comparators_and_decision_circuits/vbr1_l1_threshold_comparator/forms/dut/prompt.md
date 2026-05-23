@@ -26,7 +26,7 @@
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=30n maxstep=0.5n
+tran tran stop=30n maxstep=0.1n
 ```
 
 The release harness expects these exact public scalar observables:
@@ -39,8 +39,11 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `output_high_when_vinp_above_vinn`
-- `output_low_when_vinp_below_vinn`
+- `low_for_negative_diff`
+- `high_for_positive_diff`
+- `rising_trip_near_zero_diff`
+- `falling_trip_near_zero_diff`
+- `rail_referenced_output_levels`
 
 ## Output Contract
 
@@ -73,6 +76,8 @@ Ports:
 
 - drive `out_p` high when `V(vinp) > V(vinn)` by a visible margin
 - drive `out_p` low when `V(vinp) < V(vinn)` by a visible margin
+- respond to both rising and falling zero-differential crossings, not only a
+  single low-to-high threshold event
 - use rail-referenced output levels and finite `transition(...)` edges
 
 ## Public Evaluation Observables

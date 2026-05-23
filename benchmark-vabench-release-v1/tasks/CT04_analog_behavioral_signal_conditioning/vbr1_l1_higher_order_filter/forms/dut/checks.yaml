@@ -10,10 +10,19 @@ dut_compile:
 tb_compile:
   backend: "evas"
 sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
   checks:
-    - "two_filter_states"
-    - "step_response_is_smoothed"
+    - "two_distinct_filter_states"
+    - "lagged_second_order_step_response"
+    - "state_difference_metric"
     - "reset_clears_states"
+  public_observables:
+    - "clk"
+    - "rst"
+    - "vin"
+    - "out"
+    - "metric"
 parity:
   reference: "spectre"
   status: "pass"

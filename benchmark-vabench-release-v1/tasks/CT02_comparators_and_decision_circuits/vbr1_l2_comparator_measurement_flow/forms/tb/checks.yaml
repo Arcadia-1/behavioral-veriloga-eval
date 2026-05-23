@@ -10,8 +10,9 @@ sim_correct:
     - "transient_analysis_present"
     - "public_observables_saved"
     - "dut_or_system_instantiated"
+    - "measurement_observables_saved"
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Fresh EVAS/Spectre dual rerun required after L2 measurement-flow prompt/checker/gold redesign."

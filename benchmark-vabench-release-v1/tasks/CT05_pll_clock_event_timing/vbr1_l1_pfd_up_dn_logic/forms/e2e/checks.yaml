@@ -19,5 +19,8 @@ sim_correct:
     - "overlap_window_is_bounded"
     - "outputs_clear_after_race"
 parity:
-  required: true
-  tolerance_notes: "Bound overlap and pulse windows instead of requiring a single raw event ordering."
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."
+    - "Bound overlap and pulse windows instead of requiring a single raw event ordering."

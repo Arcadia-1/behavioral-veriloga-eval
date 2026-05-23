@@ -8,6 +8,7 @@ from runners.vabench_release_paths import release_form_dir
 
 ROOT = Path(__file__).resolve().parents[1]
 TASKS_ROOT = ROOT / "benchmark-vabench-release-v1" / "tasks"
+MANIFEST = ROOT / "benchmark-vabench-release-v1" / "MANIFEST.json"
 
 
 def _read_json(path: Path) -> dict:
@@ -33,7 +34,8 @@ def _release_form_dirs() -> list[Path]:
 
 def test_release_prompts_have_public_contract_scaffold() -> None:
     form_dirs = _release_form_dirs()
-    assert len(form_dirs) == 265
+    manifest = _read_json(MANIFEST)
+    assert len(form_dirs) == manifest["summary"]["form_count"]
 
     for form_dir in form_dirs:
         release_task = _read_json(form_dir / "release_task.json")

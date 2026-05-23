@@ -49,8 +49,8 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `vdd`
 - `vss`
-- `vin`
 - `clk`
+- `vin`
 
 ## Public Behavior Checks
 

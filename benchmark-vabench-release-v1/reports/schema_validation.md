@@ -5,7 +5,7 @@ Date: 2026-05-23
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| validated files | 1693 |
+| validated files | 1593 |
 | schema issues | 0 |
 | count issues | 0 |
 
@@ -39,7 +39,7 @@ Date: 2026-05-23
 | `dual_certification` | 1 | 0 |
 | `certification_matrix` | 1 | 0 |
 | `remaining_work` | 1 | 0 |
-| `release_entry` | 77 | 0 |
-| `release_task` | 265 | 0 |
-| `evidence` | 530 | 0 |
-| `result` | 795 | 0 |
+| `release_entry` | 73 | 0 |
+| `release_task` | 249 | 0 |
+| `evidence` | 498 | 0 |
+| `result` | 747 | 0 |

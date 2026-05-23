@@ -15,17 +15,19 @@ PROMOTED_DUTS = {
     "vbr1_l1_clocked_adc_quantizer",
     "vbr1_l1_clocked_sample_and_hold",
     "vbr1_l1_sample_and_hold_with_droop_leakage",
-    "vbr1_l1_differential_output_driver",
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
     "vbr1_l1_dwa_dem_encoder",
+    "vbr1_l1_higher_order_filter",
     "vbr1_l1_hysteresis_comparator",
     "vbr1_l1_pfd_small_phase_error_response",
     "vbr1_l1_propagation_delay_comparator",
     "vbr1_l1_ramp_or_step_source",
     "vbr1_l1_serializer_frame_aligner",
+    "vbr1_l1_soft_hysteretic_limiter",
     "vbr1_l1_threshold_comparator",
     "vbr1_l1_unit_element_thermometer_dac",
+    "vbr1_l1_voltage_gain_amplifier",
     "vbr1_l1_window_comparator_detector",
     "vbr1_l1_xor_phase_detector",
 }
@@ -65,6 +67,74 @@ def test_threshold_comparator_checker_rejects_inverted_polarity() -> None:
     assert not sim.check_comparator(_threshold_comparator_rows(inverted=True))[0]
 
 
+def _window_comparator_rows(*, mode: str = "true_window") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    schmitt_state = False
+    previous_vin = 0.0
+    for idx in range(91):
+        time = idx * 1.0e-9
+        vin = 0.9 * (idx / 45.0) if idx <= 45 else 0.9 * ((90 - idx) / 45.0)
+        if mode == "true_window":
+            high = 0.3 < vin < 0.6
+        elif mode == "above_high_stuck":
+            high = vin > 0.3
+        elif mode == "old_hysteresis":
+            if previous_vin < 0.6 <= vin:
+                schmitt_state = True
+            if previous_vin > 0.3 >= vin:
+                schmitt_state = False
+            high = schmitt_state
+        else:
+            raise ValueError(mode)
+        rows.append({"time": time, "vin": vin, "out": 0.9 if high else 0.0})
+        previous_vin = vin
+    return rows
+
+
+def test_true_window_comparator_checker_rejects_hysteresis_semantics() -> None:
+    assert sim.check_true_window_comparator(_window_comparator_rows())[0]
+    assert not sim.check_true_window_comparator(_window_comparator_rows(mode="old_hysteresis"))[0]
+    assert not sim.check_true_window_comparator(_window_comparator_rows(mode="above_high_stuck"))[0]
+
+
+def _comparator_measurement_flow_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(101):
+        time = idx * 1.0e-9
+        inp = 0.490 + 0.030 * min(time / 80e-9, 1.0)
+        inn = 0.500
+        tripped = inp >= 0.505
+        outp = 0.9 if tripped else 0.0
+        valid = 0.9 if tripped else 0.0
+        trip_v = 0.505 if tripped else 0.0
+        offset_est = 0.005 if tripped else 0.0
+        if mode == "wrong_trip" and tripped:
+            trip_v = 0.510
+            offset_est = 0.010
+        row = {
+            "time": time,
+            "inp": inp,
+            "inn": inn,
+            "outp": outp,
+            "trip_v": trip_v,
+            "offset_est": offset_est,
+            "valid": valid,
+        }
+        if mode == "missing_metric":
+            row.pop("trip_v")
+        if mode == "shallow_output_only":
+            row = {"time": time, "inp": inp, "inn": inn, "outp": outp}
+        rows.append(row)
+    return rows
+
+
+def test_comparator_measurement_flow_checker_requires_latched_metrics() -> None:
+    assert sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows())[0]
+    assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="missing_metric"))[0]
+    assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="wrong_trip"))[0]
+    assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="shallow_output_only"))[0]
+
+
 def _xor_pd_rows(*, and_gate: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     for idx in range(240):
@@ -86,6 +156,69 @@ def _xor_pd_rows(*, and_gate: bool = False) -> list[dict[str, float]]:
 def test_xor_pd_checker_rejects_non_xor_logic() -> None:
     assert sim.check_xor_pd(_xor_pd_rows())[0]
     assert not sim.check_xor_pd(_xor_pd_rows(and_gate=True))[0]
+
+
+def _bbpd_rows(*, swapped_outputs: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    data_high = False
+    for idx in range(12):
+        edge_t = idx * 1.0e-9 + 0.2e-9
+        expect_up = idx < 6
+        clk = 0.9 if expect_up else 0.0
+        retimed_data = 0.0 if expect_up else 0.9
+        rows.append(
+            {
+                "time": edge_t - 0.02e-9,
+                "data": 0.9 if data_high else 0.0,
+                "clk": clk,
+                "retimed_data": retimed_data,
+                "up": 0.0,
+                "down": 0.0,
+            }
+        )
+        data_high = not data_high
+        correct_signal = "up" if expect_up else "down"
+        if swapped_outputs:
+            observed_signal = "down" if correct_signal == "up" else "up"
+        else:
+            observed_signal = correct_signal
+        pulse = {"up": 0.0, "down": 0.0}
+        pulse[observed_signal] = 0.9
+        rows.append(
+            {
+                "time": edge_t,
+                "data": 0.9 if data_high else 0.0,
+                "clk": clk,
+                "retimed_data": retimed_data,
+                "up": 0.0,
+                "down": 0.0,
+            }
+        )
+        rows.append(
+            {
+                "time": edge_t + 0.02e-9,
+                "data": 0.9 if data_high else 0.0,
+                "clk": clk,
+                "retimed_data": retimed_data,
+                **pulse,
+            }
+        )
+        rows.append(
+            {
+                "time": edge_t + 0.12e-9,
+                "data": 0.9 if data_high else 0.0,
+                "clk": clk,
+                "retimed_data": retimed_data,
+                "up": 0.0,
+                "down": 0.0,
+            }
+        )
+    return rows
+
+
+def test_bbpd_checker_rejects_swapped_up_down_direction() -> None:
+    assert sim.check_bbpd(_bbpd_rows())[0]
+    assert not sim.check_bbpd(_bbpd_rows(swapped_outputs=True))[0]
 
 
 def _dwa_rows(*, corrupt_cell_span: bool = False) -> list[dict[str, float]]:
@@ -211,6 +344,79 @@ def test_release_loop_filter_checker_requires_metric_and_pi_semantics() -> None:
     ok, note = sim.check_release_loop_filter(_release_loop_filter_rows(metric_stuck_low=True))
     assert not ok
     assert "metric_timing" in note
+
+
+def _release_charge_pump_rows(*, swapped: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    ctrl = 0.45
+    previous_clk = 0.0
+    up_edges = {6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0}
+    dn_edges = {32.0, 34.0, 36.0, 38.0, 40.0}
+
+    for idx in range(161):
+        time_s = idx * 0.5e-9
+        t_ns = time_s * 1e9
+        clk = 0.9 if (t_ns % 2.0) < 1.0 else 0.0
+        rst = 0.9 if time_s <= 2.0e-9 or 62.1e-9 <= time_s <= 66.0e-9 else 0.0
+        up = 0.9 if any(abs(t_ns - edge) <= 0.25 for edge in up_edges) else 0.0
+        dn = 0.9 if any(abs(t_ns - edge) <= 0.25 for edge in dn_edges) else 0.0
+        metric = 0.45
+        if previous_clk <= 0.45 < clk:
+            if rst > 0.45:
+                ctrl = 0.45
+                metric = 0.45
+            elif up > 0.45 and dn <= 0.45:
+                ctrl += -0.06 if swapped else 0.06
+                metric = 0.75
+            elif dn > 0.45 and up <= 0.45:
+                ctrl += 0.06 if swapped else -0.06
+                metric = 0.15
+            ctrl = min(max(ctrl, 0.05), 0.85)
+        previous_clk = clk
+        rows.append(
+            {
+                "time": time_s,
+                "clk": clk,
+                "rst": rst,
+                "up": up,
+                "dn": dn,
+                "vctrl": ctrl,
+                "metric": metric,
+            }
+        )
+    return rows
+
+
+def test_release_charge_pump_checker_requires_up_dn_pulse_polarity() -> None:
+    assert sim.check_release_charge_pump(_release_charge_pump_rows())[0]
+    ok, note = sim.check_release_charge_pump(_release_charge_pump_rows(swapped=True))
+    assert not ok
+    assert "charge_pump_polarity" in note
+
+
+def _cppll_tracking_rows(*, lock_low: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(int(5.0e-6 / 5.0e-9) + 1):
+        time_s = idx * 5.0e-9
+        ref = 0.9 if idx % 4 < 2 else 0.0
+        fb = 0.9 if idx % 4 < 2 else 0.0
+        rows.append(
+            {
+                "time": time_s,
+                "ref_clk": ref,
+                "fb_clk": fb,
+                "lock": 0.0 if lock_low else (0.9 if time_s >= 1.0e-6 else 0.0),
+                "vctrl_mon": 0.45,
+            }
+        )
+    return rows
+
+
+def test_cppll_tracking_checker_requires_late_lock_assertion() -> None:
+    assert sim.check_cppll_tracking(_cppll_tracking_rows())[0]
+    ok, note = sim.check_cppll_tracking(_cppll_tracking_rows(lock_low=True))
+    assert not ok
+    assert "late_lock_frac" in note
 
 
 def _simultaneous_event_rows(*, bad_levels: bool = False, shifted_ref: bool = False) -> list[dict[str, float]]:
@@ -627,4 +833,116 @@ def test_converter_front_end_checker_requires_aperture_coarse_valid_and_droop() 
     )[0]
     assert not sim.check_release_converter_front_end_chain(
         _converter_front_end_chain_rows(mode="no_hold_droop")
+    )[0]
+
+
+def _ct04_common_vin(time_ns: float) -> float:
+    if time_ns < 8.0:
+        return 0.45
+    if time_ns < 12.0:
+        return 0.45 + (0.9 - 0.45) * (time_ns - 8.0) / 4.0
+    if time_ns < 28.0:
+        return 0.9
+    if time_ns < 31.0:
+        return 0.9 + (0.45 - 0.9) * (time_ns - 28.0) / 3.0
+    if time_ns < 37.0:
+        return 0.45
+    if time_ns < 42.0:
+        return 0.45 + (0.1 - 0.45) * (time_ns - 37.0) / 5.0
+    if time_ns < 58.0:
+        return 0.1
+    if time_ns < 61.0:
+        return 0.1 + (0.45 - 0.1) * (time_ns - 58.0) / 3.0
+    if time_ns < 67.0:
+        return 0.45
+    if time_ns < 72.0:
+        return 0.45 + (0.85 - 0.45) * (time_ns - 67.0) / 5.0
+    return 0.85
+
+
+def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(161):
+        time_ns = idx * 0.5
+        clk = 0.9 if (time_ns % 2.0) < 1.0 else 0.0
+        rst = 0.9 if time_ns <= 2.0 else 0.0
+        vin = _ct04_common_vin(time_ns)
+        out = 0.45
+        metric = 0.45
+
+        if kind == "gain":
+            target = 1.8 * (vin - 0.45) + 0.45
+            clipped = max(0.0, min(0.9, target))
+            out = target if mode == "unclamped" else clipped
+            metric = 0.0 if mode == "flat_metric" else (0.9 if clipped != target else 0.0)
+            if rst > 0.45:
+                out = 0.45
+                metric = 0.0
+        elif kind == "two_pole":
+            if 14.0 <= time_ns <= 16.0:
+                out, metric = 0.56, 0.62
+            elif 24.0 <= time_ns <= 28.0:
+                out, metric = 0.76, 0.54
+            elif 44.0 <= time_ns <= 52.0:
+                out, metric = 0.40, 0.32
+            elif 54.0 <= time_ns <= 58.0:
+                out, metric = 0.22, 0.36
+            if mode == "single_pole":
+                if 14.0 <= time_ns <= 16.0:
+                    out = 0.78
+                metric = 0.45
+        elif kind == "soft_limiter":
+            if 16.0 <= time_ns <= 24.0:
+                out, metric = 0.80, 0.65
+            elif 31.0 <= time_ns <= 36.0:
+                out, metric = 0.51, 0.65
+            elif 46.0 <= time_ns <= 55.0:
+                out, metric = 0.12, 0.25
+            elif 61.0 <= time_ns <= 66.0:
+                out, metric = 0.39, 0.25
+            if mode == "memoryless":
+                if 31.0 <= time_ns <= 36.0 or 61.0 <= time_ns <= 66.0:
+                    out, metric = 0.45, 0.45
+        elif kind == "amp_filter":
+            if 12.5 <= time_ns <= 15.0:
+                out, metric = 0.62, 0.90
+            elif 24.0 <= time_ns <= 28.0:
+                out, metric = 0.84, 0.90
+            elif 33.0 <= time_ns <= 36.0:
+                out, metric = 0.70, 0.45
+            elif 46.0 <= time_ns <= 53.5:
+                out, metric = 0.42, 0.0
+            elif 54.0 <= time_ns <= 58.0:
+                out, metric = 0.25, 0.0
+            if mode == "direct_gain":
+                out = metric
+        else:
+            raise ValueError(kind)
+
+        rows.append({"time": time_ns * 1e-9, "clk": clk, "rst": rst, "vin": vin, "out": out, "metric": metric})
+    return rows
+
+
+def test_voltage_gain_amplifier_checker_requires_clamps_and_saturation_metric() -> None:
+    assert sim.check_release_voltage_gain_amplifier(_ct04_rows("gain"))[0]
+    assert not sim.check_release_voltage_gain_amplifier(_ct04_rows("gain", mode="unclamped"))[0]
+    assert not sim.check_release_voltage_gain_amplifier(_ct04_rows("gain", mode="flat_metric"))[0]
+
+
+def test_two_pole_filter_checker_requires_lag_and_state_difference_metric() -> None:
+    assert sim.check_release_two_pole_filter(_ct04_rows("two_pole"))[0]
+    assert not sim.check_release_two_pole_filter(_ct04_rows("two_pole", mode="single_pole"))[0]
+
+
+def test_soft_hysteretic_limiter_checker_requires_memory_state() -> None:
+    assert sim.check_release_soft_hysteretic_limiter(_ct04_rows("soft_limiter"))[0]
+    assert not sim.check_release_soft_hysteretic_limiter(
+        _ct04_rows("soft_limiter", mode="memoryless")
+    )[0]
+
+
+def test_amplifier_filter_chain_checker_requires_preamp_metric_and_lagged_output() -> None:
+    assert sim.check_release_amplifier_filter_chain(_ct04_rows("amp_filter"))[0]
+    assert not sim.check_release_amplifier_filter_chain(
+        _ct04_rows("amp_filter", mode="direct_gain")
     )[0]

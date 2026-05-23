@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_xor_phase_detector/tb/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_xor_phase_detector/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold",
+    "results/ct05-dual-rerun-20260523-final/vbr1_l1_xor_phase_detector/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_xor_phase_detector/tb/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_xor_phase_detector/tb/gold",
+    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold",
+    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l1_xor_phase_detector/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -41,41 +41,41 @@
       ],
       "signals_compared": 3,
       "samples": 1200,
-      "max_rmse_v": 0.1,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.006666666666666667,
-      "p95_nrmse": 0.01,
-      "max_nrmse": 0.01,
+      "max_rmse_v": 0.0,
+      "max_abs_v": 0.0,
+      "mean_nrmse": 0.0,
+      "p95_nrmse": 0.0,
+      "max_nrmse": 0.0,
       "per_signal": {
         "div": {
-          "rmse_v": 0.07071067811865475,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.005,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.005
+          "mismatch_ratio": 0.0
         },
         "pd_out": {
-          "rmse_v": 0.1,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9000000000232724,
-          "nrmse": 0.01,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.01
+          "mismatch_ratio": 0.0
         },
         "ref": {
-          "rmse_v": 0.07071067811865475,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.005,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.005
+          "mismatch_ratio": 0.0
         }
       }
     }
@@ -85,8 +85,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
     ]
   },
   "failures": [],

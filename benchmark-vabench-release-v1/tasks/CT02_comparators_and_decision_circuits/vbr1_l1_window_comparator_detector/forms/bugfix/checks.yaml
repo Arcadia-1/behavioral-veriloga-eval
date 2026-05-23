@@ -1,5 +1,6 @@
 syntax:
   must_include:
+    - "@(cross("
     - "transition("
   must_not_include:
     - "I("
@@ -10,9 +11,9 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "rising_crossing_uses_upper_threshold"
-    - "falling_crossing_uses_lower_threshold"
-    - "output_retains_state_between_thresholds"
+    - "inside_window_high_on_rising_and_falling_sweeps"
+    - "below_lower_threshold_low"
+    - "above_upper_threshold_low"
 parity:
   reference: "spectre"
   status: "pass"

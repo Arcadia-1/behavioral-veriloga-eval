@@ -1,6 +1,6 @@
 {
-  "id": "cross_hysteresis_window_smoke",
-  "task_id": "cross_hysteresis_window_smoke",
+  "id": "window_comparator_smoke",
+  "task_id": "window_comparator_smoke",
   "task_name": "Cross Hysteresis Window Smoke Test",
   "family": "end-to-end",
   "category": "comparator",
@@ -28,8 +28,8 @@
     "prompt.md"
   ],
   "artifacts": [
-    "cross_hysteresis_window_ref.va",
-    "tb_cross_hysteresis_window_ref.scs",
+    "window_comparator_ref.va",
+    "tb_window_comparator_ref.scs",
     "tran.csv"
   ],
   "scoring": [
@@ -45,7 +45,7 @@
     "parity_required": true
   },
   "evidence": {
-    "result_path": "behavioral-veriloga-eval/results/gold-dual-r14-r18-2026-04-20/cross_hysteresis_window_smoke",
+    "result_path": "behavioral-veriloga-eval/results/gold-dual-r14-r18-2026-04-20/window_comparator_smoke",
     "pr_link": "[TODO]",
     "notes": "Added on 2026-04-20 as R014. EVAS-only and Spectre dual validation passed; task-aware parity measured rise/fall deltas of about 115 ps."
   },

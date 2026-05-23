@@ -1,37 +1,28 @@
 {
-  "date": "2026-05-21",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "ready",
-  "reason": "bridge profile ci is ready for release rerun",
+  "reason": "bridge profile default is ready for release rerun",
   "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
   "profile_count": 3,
   "ready_profiles": [
-    "ci"
-  ],
-  "ssh_ok_profiles": [
     "default",
     "ci",
     "jin"
   ],
-  "ssh_config_jump_ok_profiles": [
-    "default",
-    "ci"
-  ],
+  "ssh_ok_profiles": [],
+  "ssh_config_jump_ok_profiles": [],
   "ssh_failure_code_counts": {
-    "ok": 3
+    "failed_unknown": 3
   },
   "alternate_ssh_failure_code_counts": {
-    "ok": 2
+    "failed_unknown": 2
   },
   "hop_ssh_failure_code_counts": {
-    "connect_timeout": 3,
-    "ok": 2
+    "failed_unknown": 5
   },
-  "hop_ssh_ok_routes": [
-    "default:explicit_jump:thu-sui",
-    "ci:explicit_jump:thu-sui"
-  ],
-  "ssh_timeout_s": 8,
+  "hop_ssh_ok_routes": [],
+  "ssh_timeout_s": 5,
   "skip_ssh": false,
   "profiles": [
     {
@@ -60,14 +51,14 @@
           "target_host": "thu-sui",
           "target_user": "jinzhihong",
           "ssh_smoke": {
-            "status": "ok",
-            "returncode": 0,
+            "status": "failed",
+            "returncode": 255,
             "command": [
               "ssh",
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -79,11 +70,13 @@
               "j***@thu-sui",
               "echo ok"
             ],
-            "stdout_tail": "on thu-sui\nok\n",
-            "stderr_tail": "",
-            "failure_code": "ok",
-            "failure_summary": "ssh echo smoke succeeded",
-            "remediation": []
+            "stdout_tail": "",
+            "stderr_tail": "Control socket connect(/Users/bucketsran/.ssh/cm-jinzhihong@166.111.78.23:22): Operation not permitted\nssh: connect to host 166.111.78.23 port 22: Operation not permitted\n",
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
+            "remediation": [
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+            ]
           }
         },
         {
@@ -98,7 +91,7 @@
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -111,25 +104,24 @@
               "echo ok"
             ],
             "stdout_tail": "",
-            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
-            "failure_code": "connect_timeout",
-            "failure_summary": "SSH connection timed out before authentication",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation not permitted\n",
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
             "remediation": [
-              "Check network/VPN reachability to the target or jump host.",
-              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
             ]
           }
         }
       ],
       "ssh_smoke": {
-        "status": "ok",
-        "returncode": 0,
+        "status": "failed",
+        "returncode": 255,
         "command": [
           "ssh",
           "-o",
           "BatchMode=yes",
           "-o",
-          "ConnectTimeout=8",
+          "ConnectTimeout=5",
           "-o",
           "ServerAliveInterval=2",
           "-o",
@@ -143,25 +135,27 @@
           "j***@thu-wei",
           "echo ok"
         ],
-        "stdout_tail": "ok\n",
+        "stdout_tail": "",
         "stderr_tail": "",
-        "failure_code": "ok",
-        "failure_summary": "ssh echo smoke succeeded",
-        "remediation": []
+        "failure_code": "failed_unknown",
+        "failure_summary": "SSH smoke failed with an unclassified error",
+        "remediation": [
+          "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+        ]
       },
       "alternate_ssh_smokes": [
         {
           "route": "ssh_config_proxyjump",
           "env": "VB_USE_SSH_CONFIG_JUMP=1",
           "ssh_smoke": {
-            "status": "ok",
-            "returncode": 0,
+            "status": "failed",
+            "returncode": 255,
             "command": [
               "ssh",
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -173,50 +167,38 @@
               "j***@thu-wei",
               "echo ok"
             ],
-            "stdout_tail": "ok\n",
+            "stdout_tail": "",
             "stderr_tail": "",
-            "failure_code": "ok",
-            "failure_summary": "ssh echo smoke succeeded",
-            "remediation": []
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
+            "remediation": [
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+            ]
           }
         }
       ],
       "preflight": {
-        "status": "blocked",
+        "status": "ok",
         "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
         "bridge_profile": "",
         "bridge_cli": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge",
         "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
         "require_daemon": false,
-        "issue_codes": [
-          "tunnel_not_running"
-        ],
-        "issues": [
-          "virtuoso-bridge tunnel is not running"
-        ],
-        "note_codes": [
-          "daemon_disconnected"
-        ],
-        "notes": [
-          "Virtuoso daemon is not connected to the bridge"
-        ],
-        "remediation": [
-          "cd /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval && ./scripts/start_bridge_tunnel.sh",
-          "cd /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite && ./.venv/bin/virtuoso-bridge start",
-          "in remote Virtuoso CIW run: load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")",
-          "add load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\") to remote ~/.cdsinit for auto-load on startup"
-        ],
-        "tunnel_running": false,
-        "daemon_ok": false,
-        "spectre_ok": true,
-        "load_path": "/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il",
-        "spectre_path": "/home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre",
-        "spectre_version": "@(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $",
-        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65082\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================\n\n  Virtuoso Bridge v0.7.0 [ci]\n\n[tunnel] running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65182\n\n[daemon] OK - connected to Virtuoso CIW\n  hostname  : thu-wei\n  time      : May 21 14:19:08 2026\n  version   : @(#)$CDS: virtuoso version 6.1.8-64b 06/22/2022 16:25 (sjfhw316) $\n  workdir   : /home/jinzhihong\n\n[spectre] probing...\n[spectre] OK\n  path    : /home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre\n  version : @(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $\n\n========================================================================\n\n  Virtuoso Bridge v0.7.0 [jin]\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  local port  : 65084\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================",
-        "status_exit_code": 0,
-        "reason": "virtuoso-bridge tunnel is not running"
+        "issue_codes": [],
+        "issues": [],
+        "note_codes": [],
+        "notes": [],
+        "remediation": [],
+        "tunnel_running": null,
+        "daemon_ok": null,
+        "spectre_ok": null,
+        "load_path": null,
+        "spectre_path": null,
+        "spectre_version": null,
+        "status_output_tail": "Traceback (most recent call last):\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge\", line 4, in <module>\n    from virtuoso_bridge.cli import main\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/__init__.py\", line 13, in <module>\n    from virtuoso_bridge.transport.tunnel import SSHClient\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/__init__.py\", line 8, in <module>\n    from virtuoso_bridge.transport.ssh import (\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 54, in <module>\n    _setup_command_log()\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 46, in _setup_command_log\n    fh = logging.FileHandler(_LOG_FILE, encoding=\"utf-8\")\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1146, in __init__\n    StreamHandler.__init__(self, self._open())\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1175, in _open\n    return open(self.baseFilename, self.mode, encoding=self.encoding,\nPermissionError: [Errno 1] Operation not permitted: '/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/logs/commands.log'",
+        "status_exit_code": 1
       },
-      "ready_for_release_rerun": false
+      "ready_for_release_rerun": true
     },
     {
       "profile": "ci",
@@ -244,14 +226,14 @@
           "target_host": "thu-sui",
           "target_user": "jinzhihong",
           "ssh_smoke": {
-            "status": "ok",
-            "returncode": 0,
+            "status": "failed",
+            "returncode": 255,
             "command": [
               "ssh",
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -263,11 +245,13 @@
               "j***@thu-sui",
               "echo ok"
             ],
-            "stdout_tail": "on thu-sui\nok\n",
-            "stderr_tail": "",
-            "failure_code": "ok",
-            "failure_summary": "ssh echo smoke succeeded",
-            "remediation": []
+            "stdout_tail": "",
+            "stderr_tail": "Control socket connect(/Users/bucketsran/.ssh/cm-jinzhihong@166.111.78.23:22): Operation not permitted\nssh: connect to host 166.111.78.23 port 22: Operation not permitted\n",
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
+            "remediation": [
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+            ]
           }
         },
         {
@@ -282,7 +266,7 @@
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -295,25 +279,24 @@
               "echo ok"
             ],
             "stdout_tail": "",
-            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
-            "failure_code": "connect_timeout",
-            "failure_summary": "SSH connection timed out before authentication",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation not permitted\n",
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
             "remediation": [
-              "Check network/VPN reachability to the target or jump host.",
-              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
             ]
           }
         }
       ],
       "ssh_smoke": {
-        "status": "ok",
-        "returncode": 0,
+        "status": "failed",
+        "returncode": 255,
         "command": [
           "ssh",
           "-o",
           "BatchMode=yes",
           "-o",
-          "ConnectTimeout=8",
+          "ConnectTimeout=5",
           "-o",
           "ServerAliveInterval=2",
           "-o",
@@ -327,25 +310,27 @@
           "j***@thu-wei",
           "echo ok"
         ],
-        "stdout_tail": "ok\n",
+        "stdout_tail": "",
         "stderr_tail": "",
-        "failure_code": "ok",
-        "failure_summary": "ssh echo smoke succeeded",
-        "remediation": []
+        "failure_code": "failed_unknown",
+        "failure_summary": "SSH smoke failed with an unclassified error",
+        "remediation": [
+          "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+        ]
       },
       "alternate_ssh_smokes": [
         {
           "route": "ssh_config_proxyjump",
           "env": "VB_USE_SSH_CONFIG_JUMP=1",
           "ssh_smoke": {
-            "status": "ok",
-            "returncode": 0,
+            "status": "failed",
+            "returncode": 255,
             "command": [
               "ssh",
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -357,11 +342,13 @@
               "j***@thu-wei",
               "echo ok"
             ],
-            "stdout_tail": "ok\n",
+            "stdout_tail": "",
             "stderr_tail": "",
-            "failure_code": "ok",
-            "failure_summary": "ssh echo smoke succeeded",
-            "remediation": []
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
+            "remediation": [
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+            ]
           }
         }
       ],
@@ -377,14 +364,14 @@
         "note_codes": [],
         "notes": [],
         "remediation": [],
-        "tunnel_running": true,
-        "daemon_ok": true,
-        "spectre_ok": true,
+        "tunnel_running": null,
+        "daemon_ok": null,
+        "spectre_ok": null,
         "load_path": null,
-        "spectre_path": "/home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre",
-        "spectre_version": "@(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $",
-        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0 [ci]\n\n[tunnel] running\n  remote host : thu-wei\n  remote user : jinzhihong\n  jump host   : thu-sui\n  local port  : 65182\n\n[daemon] OK - connected to Virtuoso CIW\n  hostname  : thu-wei\n  time      : May 21 14:19:21 2026\n  version   : @(#)$CDS: virtuoso version 6.1.8-64b 06/22/2022 16:25 (sjfhw316) $\n  workdir   : /home/jinzhihong\n\n[spectre] probing...\n[spectre] OK\n  path    : /home/cadence/spectre/SPECTRE211Hotfix/tools/bin/spectre\n  version : @(#)$CDS: spectre  version 21.1.0 64bit 09/24/2022 08:00 (csvcm36c-4) $\n\n========================================================================",
-        "status_exit_code": 0
+        "spectre_path": null,
+        "spectre_version": null,
+        "status_output_tail": "Traceback (most recent call last):\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge\", line 4, in <module>\n    from virtuoso_bridge.cli import main\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/__init__.py\", line 13, in <module>\n    from virtuoso_bridge.transport.tunnel import SSHClient\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/__init__.py\", line 8, in <module>\n    from virtuoso_bridge.transport.ssh import (\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 54, in <module>\n    _setup_command_log()\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 46, in _setup_command_log\n    fh = logging.FileHandler(_LOG_FILE, encoding=\"utf-8\")\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1146, in __init__\n    StreamHandler.__init__(self, self._open())\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1175, in _open\n    return open(self.baseFilename, self.mode, encoding=self.encoding,\nPermissionError: [Errno 1] Operation not permitted: '/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/logs/commands.log'",
+        "status_exit_code": 1
       },
       "ready_for_release_rerun": true
     },
@@ -421,7 +408,7 @@
               "-o",
               "BatchMode=yes",
               "-o",
-              "ConnectTimeout=8",
+              "ConnectTimeout=5",
               "-o",
               "ServerAliveInterval=2",
               "-o",
@@ -434,25 +421,24 @@
               "echo ok"
             ],
             "stdout_tail": "",
-            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation timed out\n",
-            "failure_code": "connect_timeout",
-            "failure_summary": "SSH connection timed out before authentication",
+            "stderr_tail": "ssh: connect to host 101.6.70.7 port 22: Operation not permitted\n",
+            "failure_code": "failed_unknown",
+            "failure_summary": "SSH smoke failed with an unclassified error",
             "remediation": [
-              "Check network/VPN reachability to the target or jump host.",
-              "Compare explicit VB_JUMP_HOST routing with the local ssh_config ProxyJump route."
+              "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
             ]
           }
         }
       ],
       "ssh_smoke": {
-        "status": "ok",
-        "returncode": 0,
+        "status": "failed",
+        "returncode": 255,
         "command": [
           "ssh",
           "-o",
           "BatchMode=yes",
           "-o",
-          "ConnectTimeout=8",
+          "ConnectTimeout=5",
           "-o",
           "ServerAliveInterval=2",
           "-o",
@@ -464,49 +450,37 @@
           "j***@thu-wei",
           "echo ok"
         ],
-        "stdout_tail": "ok\n",
+        "stdout_tail": "",
         "stderr_tail": "",
-        "failure_code": "ok",
-        "failure_summary": "ssh echo smoke succeeded",
-        "remediation": []
+        "failure_code": "failed_unknown",
+        "failure_summary": "SSH smoke failed with an unclassified error",
+        "remediation": [
+          "Inspect stdout_tail/stderr_tail in bridge_profile_diagnostics.json."
+        ]
       },
       "alternate_ssh_smokes": [],
       "preflight": {
-        "status": "blocked",
+        "status": "ok",
         "bridge_repo": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite",
         "bridge_profile": "jin",
         "bridge_cli": "/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge",
         "cadence_cshrc": "/home/cshrc/.cshrc.cadence.IC618SP201",
         "require_daemon": false,
-        "issue_codes": [
-          "tunnel_not_running"
-        ],
-        "issues": [
-          "virtuoso-bridge tunnel is not running"
-        ],
-        "note_codes": [
-          "daemon_disconnected"
-        ],
-        "notes": [
-          "Virtuoso daemon is not connected to the bridge"
-        ],
-        "remediation": [
-          "cd /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval && ./scripts/start_bridge_tunnel.sh",
-          "cd /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite && ./.venv/bin/virtuoso-bridge start",
-          "in remote Virtuoso CIW run: load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")",
-          "add load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\") to remote ~/.cdsinit for auto-load on startup"
-        ],
-        "tunnel_running": false,
-        "daemon_ok": false,
+        "issue_codes": [],
+        "issues": [],
+        "note_codes": [],
+        "notes": [],
+        "remediation": [],
+        "tunnel_running": null,
+        "daemon_ok": null,
         "spectre_ok": null,
-        "load_path": "/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il",
+        "load_path": null,
         "spectre_path": null,
         "spectre_version": null,
-        "status_output_tail": "using .env: /Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.env\n  Virtuoso Bridge v0.7.0 [jin]\n\n[tunnel] NOT running\n  remote host : thu-wei\n  remote user : jinzhihong\n  local port  : 65084\n\n[daemon] cannot check (tunnel not running)\n\n  Load in Virtuoso CIW:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n  To auto-load on every Virtuoso startup, add to your .cdsinit:\n    load(\"/tmp/virtuoso_bridge_jinzhihong/virtuoso_bridge/virtuoso_setup.il\")\n\n========================================================================",
-        "status_exit_code": 1,
-        "reason": "virtuoso-bridge tunnel is not running"
+        "status_output_tail": "Traceback (most recent call last):\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/.venv/bin/virtuoso-bridge\", line 4, in <module>\n    from virtuoso_bridge.cli import main\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/__init__.py\", line 13, in <module>\n    from virtuoso_bridge.transport.tunnel import SSHClient\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/__init__.py\", line 8, in <module>\n    from virtuoso_bridge.transport.ssh import (\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 54, in <module>\n    _setup_command_log()\n  File \"/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/src/virtuoso_bridge/transport/ssh.py\", line 46, in _setup_command_log\n    fh = logging.FileHandler(_LOG_FILE, encoding=\"utf-8\")\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1146, in __init__\n    StreamHandler.__init__(self, self._open())\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/logging/__init__.py\", line 1175, in _open\n    return open(self.baseFilename, self.mode, encoding=self.encoding,\nPermissionError: [Errno 1] Operation not permitted: '/Users/bucketsran/Documents/TsingProject/iccad/virtuoso-bridge-lite/logs/commands.log'",
+        "status_exit_code": 1
       },
-      "ready_for_release_rerun": false
+      "ready_for_release_rerun": true
     }
   ],
   "notes": [

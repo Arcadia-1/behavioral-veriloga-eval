@@ -16,6 +16,6 @@ sim_correct:
     - "control_voltage_clamped"
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_until_evas_spectre_rerun"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Pending dual refresh after CT05 charge-pump public interface changed from signed vin/out to sampled UP/DN/vctrl."

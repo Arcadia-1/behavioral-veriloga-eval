@@ -24,8 +24,8 @@ cannot prove that the public task wording is the right circuit problem.
 | `docs/VABENCH_BASE_FUNCTION_REGISTRY.md` | Current-seed merge/remove decisions and high-risk wording decisions. |
 | `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md` | Completed content inventory by category, level, and form. |
 | `benchmark-vabench-release-v1/MANIFEST.json` | Machine-readable release package manifest. |
-| `benchmark-vabench-release-v1/tasks/*/release_entry.json` | Per-entry category, level, base function, forms, assets, and evidence links. |
-| `benchmark-vabench-release-v1/tasks/*/forms/*/{prompt.md,meta.json,checks.yaml,gold/}` | Public task contracts, checkers, and reference assets. |
+| `benchmark-vabench-release-v1/tasks/CT*/vbr1_*/release_entry.json` | Per-entry category, level, base function, forms, assets, and evidence links. |
+| `benchmark-vabench-release-v1/tasks/CT*/vbr1_*/forms/*/{prompt.md,meta.json,checks.yaml,gold/}` | Public task contracts, checkers, and reference assets. |
 | `benchmark-vabench-release-v1/evidence/{static,dual}/...` | Certification evidence for packaged forms. |
 
 ## Audit Gate A: Top-Level Function Table and L1/L2 Design
@@ -338,13 +338,11 @@ rewriting public prompts with explicit module/port/observable contracts.
 
 Resolved in this pass: `vbr1_l1_burst_clock_source`,
 `vbr1_l1_clocked_adc_quantizer`, `vbr1_l1_resettable_sample_and_hold`
-(historical ID; public function is now clocked sample-and-hold), and the 14
-entries below now expose function-level DUT prompts and checks.
+(historical ID; public function is now clocked sample-and-hold), and the
+active entries below now expose function-level DUT prompts and checks.
 
 | Entry | Current status | Strong-checker direction |
 | --- | --- | --- |
-| `vbr1_l1_clocked_comparator` | Function-checked DUT. | Check reset/evaluate phases, threshold decision, and output transition timing. |
-| `vbr1_l1_differential_output_driver` | Function-checked DUT. | Check complementary outputs, common-mode, swing, and sign relation. |
 | `vbr1_l1_digital_phase_accumulator_with_modulo_wrap` | Function-checked DUT. | Check phase increment, wrap, and output event relation. |
 | `vbr1_l1_dither_or_noise_like_deterministic_source` | Function-checked DUT. | Check nonconstant dither/noise deviation from input. |
 | `vbr1_l1_dwa_dem_encoder` | Function-checked DUT. | Check one-hot pointer rotation, latched-code cell span, and wrap behavior. |

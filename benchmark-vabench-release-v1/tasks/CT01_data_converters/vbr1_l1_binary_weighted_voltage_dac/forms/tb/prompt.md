@@ -48,15 +48,6 @@ Public stimulus/source nodes visible in the reference harness include:
 - `code_2`
 - `code_3`
 
-Required public stimulus pattern for this benchmark form:
-
-- Drive `vref` at 0.9 V and `vss` at 0 V.
-- Step `code_3 code_2 code_1 code_0` through every unsigned 4-bit code
-  from `0` to `15` in increasing order.
-- Code windows are 10 ns long; stable sample points are centered at
-  `5, 15, 25, ..., 155 ns`.
-- Use 0.9 V for logic high and 0 V for logic low on all code inputs.
-
 ## Public Behavior Checks
 
 - `all_16_binary_codes_match_ideal_levels`

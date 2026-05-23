@@ -12,13 +12,13 @@ def test_release_asset_integrity_has_no_blocking_issues() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     assert report["status"] == "pass"
-    assert report["audited_release_task_count"] == 259
+    assert report["audited_release_task_count"] == 249
     assert report["issue_count"] == 0
     assert report["form_counts"] == {
-        "bugfix": 52,
-        "dut": 57,
-        "e2e": 75,
-        "tb": 75,
+        "bugfix": 49,
+        "dut": 54,
+        "e2e": 73,
+        "tb": 73,
     }
 
 

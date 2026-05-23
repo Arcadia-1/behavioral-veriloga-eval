@@ -25,7 +25,7 @@
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=30n maxstep=0.5n
+tran tran stop=30n maxstep=0.1n
 ```
 
 The release harness expects these exact public scalar observables:
@@ -45,7 +45,11 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `output_flips_with_input_order`
+- `low_for_negative_diff`
+- `high_for_positive_diff`
+- `rising_trip_near_zero_diff`
+- `falling_trip_near_zero_diff`
+- `rail_referenced_output_levels`
 
 ## Output Contract
 
@@ -65,10 +69,11 @@ testbench and run a smoke simulation.
 
 Behavioral intent:
 
-- differential comparison
+- differential comparison around `VINP - VINN = 0`
 - output toggles high/low with supply-referenced logic levels
 - finite output edge transition
-- threshold crossing should be visible in the waveform
+- both low-to-high and high-to-low threshold crossings should be visible in the
+  waveform under a negative-positive-negative input sweep
 
 Ports:
 - `VDD`: inout electrical

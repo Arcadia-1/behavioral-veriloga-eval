@@ -3,6 +3,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "runners"))
@@ -13,6 +15,15 @@ from simulate_evas import check_cmp_strongarm, load_csv, normalize_rows_for_task
 
 EVAS_MAIN120 = ROOT / "results/vabench-main-v1-main120-gold-evas-2026-05-08"
 SPECTRE_MAIN120 = ROOT / "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08"
+RAW_EVIDENCE_MANIFEST = ROOT / "docs/RESULT_ARCHIVE_MANIFEST_2026-05-22.md"
+
+pytestmark = pytest.mark.skipif(
+    not EVAS_MAIN120.exists() or not SPECTRE_MAIN120.exists(),
+    reason=(
+        "main120 raw EVAS/Spectre evidence is archived; restore it from "
+        f"{RAW_EVIDENCE_MANIFEST} to run these waveform-level checks"
+    ),
+)
 
 
 def _main120_csv(task_id: str, backend: str) -> Path:

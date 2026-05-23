@@ -5,7 +5,7 @@
 - Form: `tb`
 - Level: `L2`
 - Category: Comparators and Decision Circuits
-- Base function: Comparator measurement flow
+- Base function: Single-ramp comparator offset measurement flow
 - Domain: `voltage`
 - Target artifact(s): `tb_comparator_offset_search_ref.scs`
 - Supplied/reference support artifact(s): `comparator_offset_search_ref.va`
@@ -19,14 +19,14 @@
 
 ## Public DUT Interface To Instantiate
 
-- `comparator_offset_search_ref.va` declares module `comparator_offset_search_ref` with positional ports: `vdd`, `vss`, `inp`, `inn`, `outp`.
+- `comparator_offset_search_ref.va` declares module `comparator_offset_search_ref` with positional ports: `vdd`, `vss`, `inp`, `inn`, `outp`, `trip_v`, `offset_est`, `valid`.
 
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=100n maxstep=100p errpreset=conservative
+tran tran stop=100n maxstep=50p errpreset=conservative
 ```
 
 The release harness expects these exact public scalar observables:
@@ -34,6 +34,9 @@ The release harness expects these exact public scalar observables:
 - `inp`
 - `inn`
 - `outp`
+- `trip_v`
+- `offset_est`
+- `valid`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -49,6 +52,7 @@ Public stimulus/source nodes visible in the reference harness include:
 - `transient_analysis_present`
 - `public_observables_saved`
 - `dut_or_system_instantiated`
+- `measurement_observables_saved`
 
 ## Output Contract
 
@@ -57,9 +61,9 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-# Comparator measurement flow Testbench Companion
+# Single-ramp comparator offset measurement flow Testbench Companion
 
-Write a Spectre transient testbench for the `Comparator measurement flow` behavioral
+Write a Spectre transient testbench for the `Single-ramp comparator offset measurement flow` behavioral
 Verilog-A release task. This is the testbench-generation companion for an
 already materialized end-to-end task.
 
@@ -73,7 +77,9 @@ Domain: pure voltage-domain behavioral Verilog-A.
 Public requirements:
 
 - include a transient `tran` analysis
-- save the public observables needed by the checker
-- include or instantiate the Verilog-A behavioral module under test
+- instantiate `comparator_offset_search_ref` with ports `vdd vss inp inn outp trip_v offset_est valid`
+- drive `inn` at 0.500 V and perform a single ramp of `inp` from 0.490 V to 0.520 V over the transient
+- save exactly the public scalar observables needed by the checker: `inp`, `inn`, `outp`, `trip_v`, `offset_est`, and `valid`
+- include the Verilog-A behavioral module under test
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

@@ -11,9 +11,9 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "amplified_input"
-    - "filtered_output_lags_input"
-    - "metric_tracks_settling"
+    - "amplifier_target_metric"
+    - "filtered_output_lags_target"
+    - "bounded_chain_response"
 parity:
   reference: "spectre"
   status: "pass"

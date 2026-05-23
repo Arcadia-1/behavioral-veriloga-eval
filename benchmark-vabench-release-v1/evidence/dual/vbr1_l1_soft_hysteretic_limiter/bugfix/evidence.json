@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
+    "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
+    "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/bugfix/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/bugfix/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
+    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
+    "summary": "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct04-20260523-r5-include-buggy/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -41,34 +41,34 @@
       ],
       "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.15811388300841897,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.005003219059513558,
-      "p95_nrmse": 0.025,
-      "max_nrmse": 0.025,
+      "max_rmse_v": 1.449826705617127e-05,
+      "max_abs_v": 0.00028252938661871285,
+      "mean_nrmse": 1.1281533297766034e-05,
+      "p95_nrmse": 3.6245667640428175e-05,
+      "max_nrmse": 3.6245667640428175e-05,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.15811388300841897,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.025
+          "mismatch_ratio": 0.0
         },
         "metric": {
-          "rmse_v": 8.147445407731275e-06,
-          "max_abs_v": 0.00010446734927782586,
-          "span_v": 0.7716656142868641,
-          "nrmse": 1.0558258987943565e-05,
+          "rmse_v": 1.449826705617127e-05,
+          "max_abs_v": 0.00028252938661871285,
+          "span_v": 0.4,
+          "nrmse": 3.6245667640428175e-05,
           "kind": "analog"
         },
         "out": {
-          "rmse_v": 4.941226610380744e-06,
-          "max_abs_v": 5.918387658121471e-05,
-          "span_v": 0.8938496509810046,
-          "nrmse": 5.528028796518209e-06,
+          "rmse_v": 1.3703891453843167e-05,
+          "max_abs_v": 0.00019403858134914298,
+          "span_v": 0.6799999999999999,
+          "nrmse": 2.0152781549769366e-05,
           "kind": "analog"
         },
         "rst": {
@@ -82,10 +82,10 @@
           "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 7.207826661252404e-09,
-          "max_abs_v": 4.6157712429995e-08,
+          "rmse_v": 7.373838906103801e-09,
+          "max_abs_v": 4.882205117962002e-08,
           "span_v": 0.8,
-          "nrmse": 9.009783326565506e-09,
+          "nrmse": 9.21729863262975e-09,
           "kind": "analog"
         }
       }
@@ -96,8 +96,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
+      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
     ]
   },
   "failures": [],

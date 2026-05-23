@@ -101,7 +101,7 @@ def test_finish_after_bridge_writes_fresh_bridge_diagnostics(monkeypatch, tmp_pa
     assert report["rerun_scope"]["primary_ready_count"] == 0
     assert report["rerun_scope"]["staging_bundle_count"] == 0
     assert report["rerun_scope"]["staging_ready_bundle_count"] == 0
-    assert report["rerun_scope"]["latest_import_stale_summary"] is False
+    assert report["rerun_scope"]["latest_import_stale_summary"] is True
 
 
 def test_finish_after_bridge_skips_profile_attempts_when_diagnostics_blocked(monkeypatch, tmp_path) -> None:

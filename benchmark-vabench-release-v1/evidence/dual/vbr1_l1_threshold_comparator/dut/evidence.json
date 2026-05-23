@@ -14,11 +14,11 @@
   "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_threshold_comparator/dut/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_threshold_comparator/dut/gold",
+    "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_threshold_comparator/dut/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/dut/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_threshold_comparator/dut/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_threshold_comparator/forms/dut/gold/comparator.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_threshold_comparator/forms/dut/gold/tb_comparator_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/gold/comparator.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/gold/tb_comparator_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "summary": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_threshold_comparator/dut/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_threshold_comparator/dut/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_threshold_comparator/dut/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -50,7 +50,7 @@
         "out_p": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
-          "span_v": 0.9000000000000057,
+          "span_v": 0.9,
           "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
@@ -70,7 +70,7 @@
         "vinp": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
-          "span_v": 0.9,
+          "span_v": 0.06,
           "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
@@ -85,8 +85,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_threshold_comparator/forms/dut/gold/comparator.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_threshold_comparator/forms/dut/gold/tb_comparator_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/gold/comparator.va",
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/gold/tb_comparator_ref.scs"
     ]
   },
   "failures": [],

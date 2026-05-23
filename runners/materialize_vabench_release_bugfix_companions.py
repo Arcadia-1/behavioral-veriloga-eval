@@ -78,24 +78,6 @@ BUGFIX_SPECS: dict[str, BugfixSpec] = {
         behavior_checks=("ratio_code_selects_output_period", "odd_ratio_uses_floor_and_ceil_half_cycles", "lock_asserts_after_complete_output_period"),
         replacements=(("high_len = ratio - low_len;", "high_len = low_len;"),),
     ),
-    "vbr1_l1_clocked_comparator": BugfixSpec(
-        entry_id="vbr1_l1_clocked_comparator",
-        source_form="dut",
-        fixed_va_name="cmp_strongarm.va",
-        tb_name="tb_cmp_strongarm_ref.scs",
-        bug_summary="The buggy clocked comparator never asserts the negative-side decision output.",
-        behavior_checks=("positive_input_difference_asserts_dcmpp", "negative_input_difference_asserts_dcmpn", "outputs_reset_when_clock_falls"),
-        replacements=(("xoutn = (v_diff_offset < 0);", "xoutn = 0;"),),
-    ),
-    "vbr1_l1_differential_output_driver": BugfixSpec(
-        entry_id="vbr1_l1_differential_output_driver",
-        source_form="dut",
-        fixed_va_name="differential_voltage_output_ref.va",
-        tb_name="tb_differential_voltage_output_ref.scs",
-        bug_summary="The buggy differential output driver ignores the enable input and continues driving a nonzero differential output while disabled.",
-        behavior_checks=("disabled_window_returns_to_common_mode", "enabled_output_polarity_tracks_din", "output_common_mode_stays_bounded"),
-        replacements=(("if (V(en, VSS) > vth) begin", "if (1) begin"),),
-    ),
     "vbr1_l1_dwa_dem_encoder": BugfixSpec(
         entry_id="vbr1_l1_dwa_dem_encoder",
         source_form="dut",
@@ -198,11 +180,20 @@ BUGFIX_SPECS: dict[str, BugfixSpec] = {
     "vbr1_l1_window_comparator_detector": BugfixSpec(
         entry_id="vbr1_l1_window_comparator_detector",
         source_form="dut",
-        fixed_va_name="cross_hysteresis_window_ref.va",
-        tb_name="tb_cross_hysteresis_window_ref.scs",
-        bug_summary="The buggy window comparator collapses the falling threshold onto the rising threshold.",
-        behavior_checks=("rising_crossing_uses_upper_threshold", "falling_crossing_uses_lower_threshold", "output_retains_state_between_thresholds"),
-        replacements=(("@(cross(V(vin, VSS) - vth_fall, -1))", "@(cross(V(vin, VSS) - vth_rise, -1))"),),
+        fixed_va_name="window_comparator_ref.va",
+        tb_name="tb_window_comparator_ref.scs",
+        bug_summary="The buggy window comparator ignores the upper threshold and treats all vin > vlow values as in-window.",
+        behavior_checks=("inside_window_high_on_rising_and_falling_sweeps", "below_lower_threshold_low", "above_upper_threshold_low"),
+        replacements=(
+            (
+                "inside_window = (V(vin, VSS) > vlow && V(vin, VSS) < vhigh);",
+                "inside_window = (V(vin, VSS) > vlow);",
+            ),
+            (
+                "@(cross(V(vin, VSS) - vhigh, +1)) begin\n        inside_window = 0;\n    end",
+                "@(cross(V(vin, VSS) - vhigh, +1)) begin\n        inside_window = 1;\n    end",
+            ),
+        ),
     ),
     "vbr1_l1_xor_phase_detector": BugfixSpec(
         entry_id="vbr1_l1_xor_phase_detector",

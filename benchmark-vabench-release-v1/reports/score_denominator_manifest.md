@@ -11,26 +11,23 @@ denominator, score-enabled, and certified by static, EVAS, and Spectre checks.
 | Metric | Value |
 | --- | ---: |
 | status | `score_enabled` |
-| planned entries | 77 |
-| release forms | 265 |
-| content denominator entries | 76 |
-| content-excluded entries | 1 |
-| content denominator forms | 261 |
-| content-excluded forms | 4 |
-| certified entries | 77 |
-| certified forms | 265 |
-| score-enabled entries | 75 |
-| score-enabled forms | 257 |
-| scored entries | 75 |
-| scored forms | 257 |
+| planned entries | 73 |
+| release forms | 249 |
+| content denominator entries | 73 |
+| content-excluded entries | 0 |
+| content denominator forms | 249 |
+| content-excluded forms | 0 |
+| certified entries | 73 |
+| certified forms | 249 |
+| score-enabled entries | 73 |
+| score-enabled forms | 245 |
+| scored entries | 73 |
+| scored forms | 245 |
 | L0 conformance counted | 0 |
 
 ## Entry Exclusion Reasons
 
-- `benchmark_score_disabled`: 2
-- `content_denominator_excluded:duplicate_strongarm_clocked_comparator`: 1
 
 ## Form Exclusion Reasons
 
-- `benchmark_score_disabled`: 8
-- `content_denominator_excluded:duplicate_strongarm_clocked_comparator`: 4
+- `benchmark_score_disabled`: 4

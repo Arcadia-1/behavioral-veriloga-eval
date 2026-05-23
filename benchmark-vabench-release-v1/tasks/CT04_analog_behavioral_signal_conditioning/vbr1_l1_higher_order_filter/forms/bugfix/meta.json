@@ -22,8 +22,9 @@
     "sim_correct"
   ],
   "behavior_checks": [
-    "two_filter_states",
-    "step_response_is_smoothed",
+    "two_distinct_filter_states",
+    "lagged_second_order_step_response",
+    "state_difference_metric",
     "reset_clears_states"
   ],
   "designed_source": true,

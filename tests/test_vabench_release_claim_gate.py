@@ -37,7 +37,7 @@ def test_claim_gate_prevents_subset_evidence_from_being_overclaimed() -> None:
     full = claims["C4_full_release_dual_certified"]
     complete = claims["C9_release_package_complete"]
 
-    assert subset["numbers"]["dual_certified_forms"] == 259
+    assert subset["numbers"]["dual_certified_forms"] == 249
     assert subset["numbers"]["evas_pass_spectre_fail_count"] == 0
     assert subset["numbers"]["dual_pending_forms"] == 0
     assert subset["notes"] == []
@@ -47,8 +47,10 @@ def test_claim_gate_prevents_subset_evidence_from_being_overclaimed() -> None:
     assert full["numbers"]["bridge_status"] == "ready"
     assert full["numbers"]["bridge_required_for_current_claim"] is False
     assert full["required_before_allowed"] == []
-    assert "C4_full_release_dual_certified" not in report["blocked_completion_required_claim_ids"]
-    assert "C9_release_package_complete" not in report["blocked_completion_required_claim_ids"]
+    assert report["blocked_completion_required_claim_ids"] == [
+        "C6_speed_debug_claim",
+        "C7_model_baseline_claim",
+    ]
     assert complete["allowed"] is True
 
 

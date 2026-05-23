@@ -10,18 +10,19 @@ or still-running summaries.
 
 | Metric | Value |
 | --- | ---: |
-| status | `imported` |
-| stale summary | `False` |
-| summary tasks total | 16 |
+| status | `partial_imported` |
+| stale summary | `True` |
+| summary tasks total | 56 |
 | current queue count | 0 |
-| imported primary results | 0 |
+| imported primary results | 46 |
 | skipped results | 0 |
-| imported pass | 0 |
+| imported pass | 46 |
 | imported fail | 0 |
 
-Reason: No current dual rerun queue remains; dual_certification.json already reflects imported fresh rerun evidence.
+Reason: Stale-count dual rerun summary was partially imported by exact entry/form match; unmatched rows remain skipped and missing rows remain pending.
 
 ## Notes
 
-- The import step is idempotent once the current rerun queue is empty and dual certification is complete.
-- Rerun timing and model-baseline claims remain separate gates.
+- Only primary gold/fixed pass bundles are imported into the release denominator.
+- Bugfix buggy companion bundles remain separate badcase evidence and are not scored here.
+- Partial stale-count import is conservative: it imports only exact current release entry/form matches.

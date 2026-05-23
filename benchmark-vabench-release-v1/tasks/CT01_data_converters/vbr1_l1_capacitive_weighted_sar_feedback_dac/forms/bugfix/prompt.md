@@ -50,9 +50,6 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
-The validation testbench exercises a sparse 10-bit code sequence, including
-high-bit codes up to 1023, with repeated calibration states; the repair must
-preserve all `D9`...`D0` bit weights rather than fitting only low-bit activity.
 
 ## Output Contract
 

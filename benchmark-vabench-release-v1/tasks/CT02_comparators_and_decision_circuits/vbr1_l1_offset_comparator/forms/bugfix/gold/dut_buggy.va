@@ -7,7 +7,7 @@ module cmp_offset_ref(VDD, VSS, CLK, VINP, VINN, OUT_P);
     output OUT_P;
     electrical VDD, VSS, CLK, VINP, VINN, OUT_P;
 
-    parameter real vos = 1m;
+    parameter real vos = 5m;
     parameter real tt = 20p;
 
     integer q;

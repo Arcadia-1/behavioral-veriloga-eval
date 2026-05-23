@@ -20,8 +20,7 @@ def test_dual_rerun_queue_tracks_all_pending_release_forms() -> None:
     assert report["blocked_count"] == 0
     assert sum(report["reason_counts"].values()) == report["queue_count"]
     assert sum(report["form_counts"].values()) == report["queue_count"]
-    assert all(row["evas_status"] == "pending" for row in report["rows"])
-    assert all(row["spectre_status"] == "pending" for row in report["rows"])
+    assert report["rows"] == []
 
 
 def test_dual_rerun_queue_has_machine_readable_csv_and_gold_links() -> None:

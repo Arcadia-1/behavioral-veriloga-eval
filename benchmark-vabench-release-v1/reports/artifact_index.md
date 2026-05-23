@@ -1,6 +1,6 @@
 # vaBench Release Artifact Index
 
-Date: 2026-05-22
+Date: 2026-05-23
 
 This index maps the release package artifacts to their role in the
 paper-facing claim surface. It is a navigation layer, not new
@@ -18,8 +18,8 @@ certification evidence.
 
 | ID | Status | Claim role | Certification evidence | Path |
 | --- | --- | --- | --- | --- |
-| `release_tracker` | `ready` | `coverage_plan` | `False` | `docs/VABENCH_RELEASE_TRACKER.csv` |
-| `release_package_root` | `ready` | `release_structure` | `False` | `benchmark-vabench-release-v1` |
+| `release_tracker` | `incomplete` | `coverage_plan` | `False` | `docs/VABENCH_RELEASE_TRACKER.csv` |
+| `release_package_root` | `incomplete` | `release_structure` | `False` | `benchmark-vabench-release-v1` |
 | `release_package_readme` | `ready` | `reproducibility` | `False` | `benchmark-vabench-release-v1/README.md` |
 | `release_package_manifest` | `in_progress` | `reproducibility` | `False` | `benchmark-vabench-release-v1/MANIFEST.json` |
 | `release_evaluator_contract` | `ready` | `reproducibility` | `False` | `benchmark-vabench-release-v1/EVALUATOR.json` |
@@ -33,12 +33,12 @@ certification evidence.
 | `l0_conformance_manifest` | `ready` | `evaluator_health` | `False` | `benchmark-vabench-release-v1/reports/conformance_manifest.json` |
 | `dual_rerun_queue` | `complete` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_queue.json` |
 | `dual_rerun_staging` | `complete` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json` |
-| `dual_rerun_import` | `imported` | `certification_import_gate` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_import.json` |
+| `dual_rerun_import` | `partial_imported` | `certification_import_gate` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_import.json` |
 | `bridge_profile_diagnostics` | `ready` | `external_blocker` | `False` | `benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json` |
 | `external_blockers` | `pending` | `external_blocker` | `False` | `benchmark-vabench-release-v1/reports/external_blockers.json` |
-| `finish_readiness` | `ready_to_finish` | `recovery_path` | `False` | `benchmark-vabench-release-v1/reports/finish_readiness.json` |
+| `finish_readiness` | `blocked` | `recovery_path` | `False` | `benchmark-vabench-release-v1/reports/finish_readiness.json` |
 | `finish_after_bridge_attempt` | `dry_run` | `recovery_path` | `False` | `benchmark-vabench-release-v1/reports/finish_after_bridge_attempt.json` |
-| `speed_debug_artifact` | `measured` | `speed_debug` | `False` | `benchmark-vabench-release-v1/reports/speed_debug_artifact.json` |
+| `speed_debug_artifact` | `measured_subset` | `speed_debug` | `False` | `benchmark-vabench-release-v1/reports/speed_debug_artifact.json` |
 | `baseline_artifact` | `ready_for_baseline_runs` | `baseline` | `False` | `benchmark-vabench-release-v1/reports/baseline_artifact.json` |
 | `score_denominator_enablement` | `enabled` | `scoring_denominator` | `False` | `benchmark-vabench-release-v1/reports/score_denominator_enablement.json` |
 | `score_denominator_manifest` | `score_enabled` | `scoring_denominator` | `False` | `benchmark-vabench-release-v1/reports/score_denominator_manifest.json` |

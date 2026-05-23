@@ -1,14 +1,15 @@
 # vaBench Release Package v1
 
 This directory is the clean paper-facing benchmark package for the 75-entry L1/L2
-vaBench content target. The current materialized working package has 76 entries:
+vaBench release target. The current materialized working package has 76 entries:
 the added pipeline ADC stage is pending fresh dual validation and is excluded
 from the strong content denominator until that decision is finalized. It is intentionally claim-gated: source assets,
 static checks, imported EVAS/Spectre evidence, fresh rerun staging, score
 denominators, speed/debug measurements, and model baselines are reported as
 separate surfaces.
 
-The package can be cited only through the current reports in `reports/`. A row
+This package is the current vaBench release target. It can be cited only through
+the current reports in `reports/`. A row
 is not part of the scored benchmark until its score-denominator report marks it
 as counted, and no pending or blocked simulator run is certification evidence.
 

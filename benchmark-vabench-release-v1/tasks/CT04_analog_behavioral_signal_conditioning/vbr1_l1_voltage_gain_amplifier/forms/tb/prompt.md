@@ -42,9 +42,10 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `gain_applied`
+- `sampled_gain_tracks_input`
 - `common_mode_offset`
-- `output_clamped`
+- `rail_clamps`
+- `saturation_metric_marks_clipping`
 
 ## Output Contract
 
@@ -59,7 +60,8 @@ Write a Spectre transient testbench for the described behavioral Verilog-A modul
 
 Behavioral intent:
 
-Apply a voltage-domain gain with output common-mode offset and rail clamps.
+Apply a sampled voltage-domain gain with output common-mode offset and rail clamps.
+The auxiliary metric reports whether the unclamped gain target hit a rail.
 
 Module name: `voltage_gain_amplifier`.
 Domain: pure voltage-domain behavioral Verilog-A.
@@ -77,7 +79,7 @@ electrical clk, rst, vin, out, metric
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.
+clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes a saturation flag that is high when the gained target clips to either rail and low otherwise.
 
 Saved waveform columns:
 

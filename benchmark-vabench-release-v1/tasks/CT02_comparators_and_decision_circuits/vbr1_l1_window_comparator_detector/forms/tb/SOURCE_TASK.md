@@ -1,7 +1,7 @@
 # TB Companion From E2E: vbr1_l1_window_comparator_detector
 
 - Source E2E form: `benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e`
-- Source E2E task id: `cross_hysteresis_window_smoke`
+- Source E2E task id: `window_comparator_smoke`
 - EVAS/Spectre status: pass in release dual evidence
 
 This tb-generation form is materialized by promoting the

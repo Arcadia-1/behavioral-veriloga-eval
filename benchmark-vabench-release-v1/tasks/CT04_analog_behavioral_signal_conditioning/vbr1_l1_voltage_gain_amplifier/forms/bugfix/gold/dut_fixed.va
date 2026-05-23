@@ -7,30 +7,32 @@ output out, metric;
 electrical clk, rst, vin, out, metric;
 parameter real tr = 100p;
 parameter real gain = 1.8;
-parameter real alpha = 0.45;
-real s1, s2, y, hys;
+parameter real vcm = 0.45;
+real y, target, sat_flag;
 analog begin
     @(initial_step) begin
-        s1 = 0.0;
-        s2 = 0.0;
-        hys = 0.0;
+        y = vcm;
+        sat_flag = 0.0;
     end
     @(cross(V(clk) - 0.45, +1)) begin
         if (V(rst) > 0.45) begin
-            s1 = 0.0;
-            s2 = 0.0;
-            hys = 0.0;
+            y = vcm;
+            sat_flag = 0.0;
         end else begin
-            y = gain * (V(vin) - 0.45) + 0.45;
-            if (V(vin) > 0.62) hys = 0.04;
-            if (V(vin) < 0.38) hys = -0.04;
-            s1 = s1 + alpha * (y + hys - s1);
-            s2 = s2 + alpha * (s1 - s2);
-            y = s2;
-            if (y > 0.9) y = 0.9; if (y < 0.0) y = 0.0;
+            target = gain * (V(vin) - vcm) + vcm;
+            sat_flag = 0.0;
+            if (target > 0.9) begin
+                y = 0.9;
+                sat_flag = 0.9;
+            end else if (target < 0.0) begin
+                y = 0.0;
+                sat_flag = 0.9;
+            end else begin
+                y = target;
+            end
         end
     end
     V(out) <+ transition(y, 0, tr, tr);
-    V(metric) <+ transition(s1 - s2 + 0.45, 0, tr, tr);
+    V(metric) <+ transition(sat_flag, 0, tr, tr);
 end
 endmodule

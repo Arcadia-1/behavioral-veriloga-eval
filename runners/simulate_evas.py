@@ -1201,6 +1201,201 @@ def check_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return ok, f"high_frac={high_frac:.3f} low_frac={low_frac:.3f} span={span:.3f}"
 
 
+def _threshold_crossings(
+    values: list[float],
+    times: list[float],
+    *,
+    threshold: float = 0.0,
+    direction: str,
+) -> list[float]:
+    edges: list[float] = []
+    for idx in range(1, len(values)):
+        v0 = values[idx - 1]
+        v1 = values[idx]
+        if direction == "rising":
+            hit = v0 <= threshold < v1
+        elif direction == "falling":
+            hit = v0 >= threshold > v1
+        else:
+            raise ValueError(f"unsupported direction={direction!r}")
+        if not hit:
+            continue
+        t0 = times[idx - 1]
+        t1 = times[idx]
+        if v1 == v0:
+            edges.append(t1)
+        else:
+            alpha = (threshold - v0) / (v1 - v0)
+            edges.append(t0 + alpha * (t1 - t0))
+    return edges
+
+
+def _logic_state(value: float, threshold: float = 0.45) -> str:
+    return "H" if value > threshold else "L"
+
+
+def _differential_output_state(out_p: float, out_n: float, threshold: float = 0.45) -> str:
+    if out_p > threshold and out_n < threshold:
+        return "P"
+    if out_p < threshold and out_n > threshold:
+        return "N"
+    if out_p < threshold and out_n < threshold:
+        return "Z"
+    return "X"
+
+
+def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinn", "out_p"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vinp/vinn/out_p"
+
+    times = [r["time"] for r in rows]
+    diff = [r["vinp"] - r["vinn"] for r in rows]
+    out_vals = [r["out_p"] for r in rows]
+    out_lo = min(out_vals)
+    out_hi = max(out_vals)
+    span = out_hi - out_lo
+    if span < 0.60:
+        return False, f"output_span_too_small={span:.3f}"
+
+    vth = out_lo + 0.5 * span
+    margin = 20e-3
+    high_rows = [r for r in rows if r["vinp"] - r["vinn"] >= margin]
+    low_rows = [r for r in rows if r["vinn"] - r["vinp"] >= margin]
+    if len(high_rows) < 5 or len(low_rows) < 5:
+        return False, "insufficient_positive_negative_input_windows"
+
+    high_frac = sum(1 for r in high_rows if r["out_p"] > vth) / len(high_rows)
+    low_frac = sum(1 for r in low_rows if r["out_p"] < vth) / len(low_rows)
+
+    diff_rises = _threshold_crossings(diff, times, threshold=0.0, direction="rising")
+    diff_falls = _threshold_crossings(diff, times, threshold=0.0, direction="falling")
+    out_rises = _threshold_crossings(out_vals, times, threshold=vth, direction="rising")
+    out_falls = _threshold_crossings(out_vals, times, threshold=vth, direction="falling")
+    if not diff_rises or not diff_falls:
+        return False, "missing_rising_or_falling_input_crossing"
+    if not out_rises or not out_falls:
+        return False, "missing_rising_or_falling_output_transition"
+
+    settle_s = 2.0e-9
+    rising_aligned = any(abs(ot - dt) <= settle_s for dt in diff_rises for ot in out_rises)
+    falling_aligned = any(abs(ot - dt) <= settle_s for dt in diff_falls for ot in out_falls)
+    ok = high_frac > 0.90 and low_frac > 0.90 and rising_aligned and falling_aligned
+    return ok, (
+        f"high_frac={high_frac:.3f} low_frac={low_frac:.3f} span={span:.3f} "
+        f"diff_rises={len(diff_rises)} diff_falls={len(diff_falls)} "
+        f"out_rises={len(out_rises)} out_falls={len(out_falls)} "
+        f"rising_aligned={rising_aligned} falling_aligned={falling_aligned}"
+    )
+
+
+def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "out_p"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vinp/vinn/out_p"
+
+    times = [r["time"] for r in rows]
+    clk_vals = [r["clk"] for r in rows]
+    out_vals = [r["out_p"] for r in rows]
+    out_span = max(out_vals) - min(out_vals)
+    if out_span < 0.60:
+        return False, f"output_span_too_small={out_span:.3f}"
+
+    edge_times = rising_edges(clk_vals, times, threshold=0.45)
+    if len(edge_times) < 7:
+        return False, f"too_few_clock_edges={len(edge_times)}"
+
+    vos = 5e-3
+    sample_delay = 0.50e-9
+    expected: list[str] = []
+    observed: list[str] = []
+    diffs_mv: list[float] = []
+    mismatches = 0
+    for edge_t in edge_times[:7]:
+        sample_t = edge_t + sample_delay
+        vinp = sample_signal_at(rows, "vinp", edge_t)
+        vinn = sample_signal_at(rows, "vinn", edge_t)
+        out_p = sample_signal_at(rows, "out_p", sample_t)
+        if vinp is None or vinn is None or out_p is None:
+            return False, f"missing_sample_near_edge={edge_t * 1e9:.2f}ns"
+        diff_v = vinp - vinn
+        diffs_mv.append(diff_v * 1e3)
+        want = "H" if diff_v > vos else "L"
+        got = _logic_state(out_p)
+        expected.append(want)
+        observed.append(got)
+        if got != want:
+            mismatches += 1
+
+    sequence = "".join(observed)
+    expected_sequence = "".join(expected)
+    has_below_offset_positive = any(0.0 <= mv < vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "L")
+    has_above_offset_positive = any(mv > vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "H")
+    has_negative_low = any(mv < -1.0 for mv, want in zip(diffs_mv, expected) if want == "L")
+    ok = (
+        mismatches == 0
+        and sequence == "LLLHHLL"
+        and has_below_offset_positive
+        and has_above_offset_positive
+        and has_negative_low
+    )
+    diff_text = ",".join(f"{mv:.1f}" for mv in diffs_mv)
+    return ok, (
+        f"offset_decisions={sequence} expected={expected_sequence} "
+        f"diffs_mv=[{diff_text}] mismatches={mismatches} "
+        f"below_offset_positive={has_below_offset_positive} "
+        f"above_offset_positive={has_above_offset_positive}"
+    )
+
+
+def check_release_strongarm_latch_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "out_p", "out_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vinp/vinn/out_p/out_n"
+
+    out_p_vals = [r["out_p"] for r in rows]
+    out_n_vals = [r["out_n"] for r in rows]
+    out_p_span = max(out_p_vals) - min(out_p_vals)
+    out_n_span = max(out_n_vals) - min(out_n_vals)
+    if out_p_span < 0.60 or out_n_span < 0.60:
+        return False, f"insufficient_toggle out_p_span={out_p_span:.3f} out_n_span={out_n_span:.3f}"
+
+    sample_plan = [
+        ("p_decision", 0.66e-9, "P", "positive"),
+        ("p_hold_after_input_swap", 0.88e-9, "P", "negative"),
+        ("reset_after_p", 1.12e-9, "Z", "negative"),
+        ("n_decision", 1.66e-9, "N", "negative"),
+        ("n_hold_after_input_swap", 1.88e-9, "N", "positive"),
+        ("reset_after_n", 2.12e-9, "Z", "positive"),
+        ("second_p_decision", 2.70e-9, "P", "positive"),
+        ("second_n_decision", 3.70e-9, "N", "negative"),
+    ]
+
+    states: list[str] = []
+    diff_signs: list[str] = []
+    mismatches: list[str] = []
+    for label, sample_t, expected_state, expected_diff_sign in sample_plan:
+        out_p = sample_signal_at(rows, "out_p", sample_t)
+        out_n = sample_signal_at(rows, "out_n", sample_t)
+        vinp = sample_signal_at(rows, "vinp", sample_t)
+        vinn = sample_signal_at(rows, "vinn", sample_t)
+        if out_p is None or out_n is None or vinp is None or vinn is None:
+            return False, f"missing_sample:{label}"
+        state = _differential_output_state(out_p, out_n)
+        diff = vinp - vinn
+        diff_sign = "positive" if diff > 0.2e-3 else ("negative" if diff < -0.2e-3 else "near_zero")
+        states.append(state)
+        diff_signs.append(diff_sign)
+        if state != expected_state or diff_sign != expected_diff_sign:
+            mismatches.append(f"{label}:{state}/{diff_sign}")
+
+    ok = not mismatches
+    return ok, (
+        f"latch_states={''.join(states)} expected=PPZNNZPN "
+        f"diff_signs={','.join(diff_signs)} mismatches={';'.join(mismatches) or 'none'}"
+    )
+
+
 def check_cmp_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "out_p"}
     if not rows or not required.issubset(rows[0]):
@@ -1785,25 +1980,80 @@ def check_multimod_divider_ratio_switch(rows: list[dict[str, float]]) -> tuple[b
 
 
 def check_bbpd(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"data", "clk", "retimed_data", "up", "down"}
+    required = {"time", "data", "clk", "retimed_data", "up", "down"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing data/clk/retimed_data/up/down"
+        return False, "missing time/data/clk/retimed_data/up/down"
 
-    data_edges = [i for i in range(1, len(rows)) if rows[i - 1]["data"] < 0.45 <= rows[i]["data"] or rows[i - 1]["data"] > 0.45 >= rows[i]["data"]]
-    up_edges = [i for i in range(1, len(rows)) if rows[i - 1]["up"] < 0.45 <= rows[i]["up"]]
-    down_edges = [i for i in range(1, len(rows)) if rows[i - 1]["down"] < 0.45 <= rows[i]["down"]]
+    vth = 0.45
+    data_edges = [
+        i
+        for i in range(1, len(rows))
+        if rows[i - 1]["data"] < vth <= rows[i]["data"] or rows[i - 1]["data"] > vth >= rows[i]["data"]
+    ]
+    up_edges = [i for i in range(1, len(rows)) if rows[i - 1]["up"] < vth <= rows[i]["up"]]
+    down_edges = [i for i in range(1, len(rows)) if rows[i - 1]["down"] < vth <= rows[i]["down"]]
 
     if len(data_edges) < 6:
         return False, "not enough data edges"
 
-    overlap = sum(1 for r in rows if r["up"] > 0.45 and r["down"] > 0.45)
+    overlap = sum(1 for r in rows if r["up"] > vth and r["down"] > vth)
     overlap_frac = overlap / max(len(rows), 1)
 
     edge_trigger_ok = len(up_edges) + len(down_edges) >= max(4, len(data_edges) // 4)
     pulse_presence_ok = len(up_edges) >= 2 and len(down_edges) >= 2
     non_overlap_ok = overlap_frac < 0.02
-    ok = edge_trigger_ok and pulse_presence_ok and non_overlap_ok
-    return ok, f"data_edges={len(data_edges)} up_edges={len(up_edges)} down_edges={len(down_edges)} overlap_frac={overlap_frac:.4f}"
+
+    directional_counts = {
+        "up_expected": 0,
+        "down_expected": 0,
+        "up_correct": 0,
+        "down_correct": 0,
+        "wrong": 0,
+        "missing": 0,
+    }
+    response_window_s = 0.2e-9
+    for edge_idx in data_edges:
+        clk_high = rows[edge_idx]["clk"] > vth
+        retimed_high = rows[edge_idx]["retimed_data"] > vth
+        if clk_high and not retimed_high:
+            expected = "up"
+        elif not clk_high and retimed_high:
+            expected = "down"
+        else:
+            continue
+
+        directional_counts[f"{expected}_expected"] += 1
+        wrong = "down" if expected == "up" else "up"
+        edge_time = rows[edge_idx]["time"]
+        window_rows = []
+        for row in rows[edge_idx:]:
+            if row["time"] > edge_time + response_window_s:
+                break
+            window_rows.append(row)
+        expected_hit = any(row[expected] > vth for row in window_rows)
+        wrong_hit = any(row[wrong] > vth for row in window_rows)
+        if expected_hit and not wrong_hit:
+            directional_counts[f"{expected}_correct"] += 1
+        elif wrong_hit:
+            directional_counts["wrong"] += 1
+        else:
+            directional_counts["missing"] += 1
+
+    directional_ok = (
+        directional_counts["up_expected"] >= 2
+        and directional_counts["down_expected"] >= 2
+        and directional_counts["up_correct"] >= max(2, int(0.75 * directional_counts["up_expected"]))
+        and directional_counts["down_correct"] >= max(2, int(0.75 * directional_counts["down_expected"]))
+        and directional_counts["wrong"] == 0
+    )
+    ok = edge_trigger_ok and pulse_presence_ok and non_overlap_ok and directional_ok
+    return ok, (
+        f"data_edges={len(data_edges)} up_edges={len(up_edges)} down_edges={len(down_edges)} "
+        f"overlap_frac={overlap_frac:.4f} "
+        f"direction_up={directional_counts['up_correct']}/{directional_counts['up_expected']} "
+        f"direction_down={directional_counts['down_correct']}/{directional_counts['down_expected']} "
+        f"wrong_direction={directional_counts['wrong']} missing_direction={directional_counts['missing']}"
+    )
 
 
 def check_bbpd_data_edge_alignment(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -2435,12 +2685,17 @@ def check_cppll_tracking(rows: list[dict[str, float]]) -> tuple[bool, str]:
     vctrl_min = min(vctrl_vals)
     vctrl_max = max(vctrl_vals)
     vctrl_in_range = all(-1e-6 <= v <= 0.95 for v in vctrl_vals)
+    lock_vmax = max(r["lock"] for r in rows)
+    lock_vth = max(0.45, lock_vmax * 0.5)
+    late_lock_frac = weighted_logic_high_fraction_window(rows, "lock", lock_vth, t_start, t_end)
     freq_ok = 0.97 <= freq_ratio <= 1.03
     stability_ok = fb_jitter_frac <= 0.10
-    ok = freq_ok and stability_ok and vctrl_in_range
+    late_lock_ok = late_lock_frac >= 0.75
+    ok = freq_ok and stability_ok and late_lock_ok and vctrl_in_range
     return ok, (
         f"freq_ratio={freq_ratio:.4f} "
         f"fb_jitter_frac={fb_jitter_frac:.4f} "
+        f"late_lock_frac={late_lock_frac:.3f} "
         f"lock_time={(lock_edges[0] if lock_edges else float('nan')):.3e} "
         f"vctrl_min={vctrl_min:.3f} "
         f"vctrl_max={vctrl_max:.3f}"
@@ -2550,7 +2805,7 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
         return False, "missing time/sample/rst/vin/vout"
 
     times = [r["time"] for r in rows]
-    sample_edges = rising_edges([r["sample"] for r in rows], times, threshold=0.45)
+    sample_edges = _threshold_crossings([r["sample"] for r in rows], times, threshold=0.45, direction="rising")
     if len(sample_edges) < 3:
         return False, f"too_few_sample_edges={len(sample_edges)}"
 
@@ -2574,7 +2829,7 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
     # Use the high second sample as the droop window; reset begins well after it.
     second_edge = sample_edges[1]
     droop_start_t = second_edge + 2.0e-9
-    reset_edges = rising_edges([r["rst"] for r in rows], times, threshold=0.45)
+    reset_edges = _threshold_crossings([r["rst"] for r in rows], times, threshold=0.45, direction="rising")
     droop_end_t = (reset_edges[0] - 2.0e-9) if reset_edges else (second_edge + 35.0e-9)
     droop_values = [r["vout"] for r in rows if droop_start_t <= r["time"] <= droop_end_t]
     if len(droop_values) < 8:
@@ -2604,7 +2859,7 @@ def check_release_converter_front_end_chain(rows: list[dict[str, float]]) -> tup
         return False, "missing time/vin/clk/vout/valid/coarse"
 
     times = [r["time"] for r in rows]
-    clk_edges = rising_edges([r["clk"] for r in rows], times, threshold=0.45)
+    clk_edges = _threshold_crossings([r["clk"] for r in rows], times, threshold=0.45, direction="rising")
     if len(clk_edges) < 6:
         return False, f"too_few_clk_edges={len(clk_edges)}"
 
@@ -3587,6 +3842,66 @@ def check_comparator_offset_search(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def check_comparator_measurement_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "inn", "outp", "trip_v", "offset_est", "valid"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/inp/inn/outp/trip_v/offset_est/valid"
+
+    threshold = 0.45
+    outp = [r["outp"] for r in rows]
+    valid = [r["valid"] for r in rows]
+    if max(outp) - min(outp) < 0.3:
+        return False, f"outp_range={max(outp) - min(outp):.3f}"
+    if max(valid) - min(valid) < 0.3:
+        return False, f"valid_range={max(valid) - min(valid):.3f}"
+
+    low_window = [r for r in rows if r["inp"] <= r["inn"] + 0.001]
+    high_window = [r for r in rows if r["inp"] >= r["inn"] + 0.009]
+    if not low_window or not high_window:
+        return False, "insufficient_pre_post_trip_windows"
+
+    low_frac = sum(1 for r in low_window if r["outp"] < threshold) / len(low_window)
+    high_frac = sum(1 for r in high_window if r["outp"] > threshold) / len(high_window)
+    pre_valid_low_frac = sum(1 for r in low_window if r["valid"] < threshold) / len(low_window)
+    if low_frac < 0.9 or high_frac < 0.9 or pre_valid_low_frac < 0.9:
+        return False, (
+            f"output_or_valid_window_fail low_frac={low_frac:.3f} "
+            f"high_frac={high_frac:.3f} pre_valid_low_frac={pre_valid_low_frac:.3f}"
+        )
+
+    valid_rows = [r for r in rows if r["valid"] > threshold]
+    if not valid_rows:
+        return False, "valid_never_asserts"
+
+    first_valid = valid_rows[0]
+    final_valid_rows = [r for r in valid_rows if r["time"] >= first_valid["time"] + 2e-9]
+    if len(final_valid_rows) < 3:
+        final_valid_rows = valid_rows[-min(5, len(valid_rows)) :]
+
+    trip_vals = [r["trip_v"] for r in final_valid_rows]
+    offset_vals = [r["offset_est"] for r in final_valid_rows]
+    trip_avg = sum(trip_vals) / len(trip_vals)
+    offset_avg = sum(offset_vals) / len(offset_vals)
+    inn_avg = sum(r["inn"] for r in final_valid_rows) / len(final_valid_rows)
+    expected_trip = inn_avg + 0.005
+    expected_offset = 0.005
+    trip_span = max(trip_vals) - min(trip_vals)
+    offset_span = max(offset_vals) - min(offset_vals)
+
+    ok = (
+        abs(trip_avg - expected_trip) <= 0.0015
+        and abs(offset_avg - expected_offset) <= 0.0015
+        and trip_span <= 0.002
+        and offset_span <= 0.002
+    )
+    return ok, (
+        f"trip_avg={trip_avg:.4f} expected_trip={expected_trip:.4f} "
+        f"offset_avg={offset_avg:.4f} low_frac={low_frac:.3f} "
+        f"high_frac={high_frac:.3f} trip_span={trip_span:.4f} "
+        f"offset_span={offset_span:.4f}"
+    )
+
+
 def check_cdac_cal(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """CDAC with cal: check differential output varies with control bits."""
     if not rows:
@@ -3994,6 +4309,49 @@ def check_cross_hysteresis_window(rows: list[dict[str, float]]) -> tuple[bool, s
     return ok, f"low1={m_low1:.3f} high={m_high:.3f} low2={m_low2:.3f} span={span:.3f}"
 
 
+def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/out"
+    out_vals = [r["out"] for r in rows]
+    lo = min(out_vals)
+    hi = max(out_vals)
+    span = hi - lo
+    if span < 0.3:
+        return False, f"out_span_too_small={span:.3f}"
+
+    vth = lo + 0.5 * span
+    t_mid = 0.5 * (rows[0]["time"] + rows[-1]["time"])
+
+    def frac_high(selected: list[dict[str, float]]) -> float:
+        if not selected:
+            return 0.0
+        return sum(1 for row in selected if row["out"] > vth) / len(selected)
+
+    below = [r for r in rows if r["vin"] <= 0.18]
+    above = [r for r in rows if r["vin"] >= 0.72]
+    inside_rise = [r for r in rows if r["time"] <= t_mid and 0.34 <= r["vin"] <= 0.56]
+    inside_fall = [r for r in rows if r["time"] > t_mid and 0.34 <= r["vin"] <= 0.56]
+
+    if min(len(below), len(above), len(inside_rise), len(inside_fall)) < 3:
+        return (
+            False,
+            "insufficient_window_samples "
+            f"below={len(below)} above={len(above)} rise={len(inside_rise)} fall={len(inside_fall)}",
+        )
+
+    below_hi = frac_high(below)
+    above_hi = frac_high(above)
+    rise_hi = frac_high(inside_rise)
+    fall_hi = frac_high(inside_fall)
+    ok = below_hi < 0.10 and above_hi < 0.10 and rise_hi > 0.80 and fall_hi > 0.80
+    return (
+        ok,
+        f"below_hi={below_hi:.3f} above_hi={above_hi:.3f} "
+        f"inside_rise_hi={rise_hi:.3f} inside_fall_hi={fall_hi:.3f} span={span:.3f}",
+    )
+
+
 def check_cross_interval_163p333(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "delay_out", "seen_out"}
     if not rows or not required.issubset(rows[0]):
@@ -4315,29 +4673,47 @@ def edge_settled_values(rows: list[dict[str, float]], key: str, *, clk_key: str 
 
 
 def check_release_charge_pump(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_calibration_loop(rows)
-    if not ok:
-        return ok, note
-    samples = edge_settled_values(rows, "out")
+    required = {"time", "clk", "rst", "up", "dn", "vctrl", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/up/dn/vctrl/metric"
+
+    ctrl_vals = [r["vctrl"] for r in rows]
+    ctrl_min = min(ctrl_vals)
+    ctrl_max = max(ctrl_vals)
+    if not (0.0 <= ctrl_min <= ctrl_max <= 0.95):
+        return False, f"charge_pump_vctrl_range=({ctrl_min:.3f},{ctrl_max:.3f})"
+
+    reset_vals = [r["vctrl"] for r in rows if r["rst"] > 0.45 and r["time"] <= 3.0e-9]
+    if not reset_vals:
+        return False, "charge_pump_missing_reset_window"
+    reset_mean = sum(reset_vals) / len(reset_vals)
+    if abs(reset_mean - 0.45) > 0.12:
+        return False, f"charge_pump_reset_mean={reset_mean:.3f}"
+    ctrl_span = ctrl_max - ctrl_min
+    if ctrl_span < 0.12:
+        return False, f"charge_pump_vctrl_span_too_small={ctrl_span:.3f}"
+
+    samples = edge_settled_values(rows, "vctrl")
     up_checks = down_checks = up_ok = down_ok = 0
     previous: float | None = None
-    for edge_row, out in samples:
+    for edge_row, ctrl in samples:
         if previous is None:
-            previous = out
+            previous = ctrl
             continue
-        errv = edge_row.get("vin", edge_row.get("err", 0.45)) - 0.45
         previous_out = previous
-        delta = out - previous_out
-        previous = out
+        delta = ctrl - previous_out
+        previous = ctrl
         if edge_row["time"] > 60e-9:
             continue
-        if out < 0.08 or out > 0.82 or previous_out < 0.08 or previous_out > 0.82:
+        if ctrl < 0.08 or ctrl > 0.82 or previous_out < 0.08 or previous_out > 0.82:
             continue
-        if errv > 0.12:
+        up_high = edge_row["up"] > 0.45
+        dn_high = edge_row["dn"] > 0.45
+        if up_high and not dn_high:
             up_checks += 1
             if delta > 0.004:
                 up_ok += 1
-        if errv < -0.12:
+        elif dn_high and not up_high:
             down_checks += 1
             if delta < -0.004:
                 down_ok += 1
@@ -4345,7 +4721,10 @@ def check_release_charge_pump(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, f"charge_pump_missing_polarity_windows up={up_checks} down={down_checks}"
     if up_ok < up_checks - 1 or down_ok < down_checks - 1:
         return False, f"charge_pump_polarity up={up_ok}/{up_checks} down={down_ok}/{down_checks}"
-    return True, f"{note}; charge_pump_polarity up={up_ok}/{up_checks} down={down_ok}/{down_checks}"
+    return True, (
+        f"release_charge_pump reset={reset_mean:.3f} span={ctrl_span:.3f} "
+        f"polarity up={up_ok}/{up_checks} down={down_ok}/{down_checks}"
+    )
 
 
 def check_release_loop_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -4508,50 +4887,151 @@ def check_release_filter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]
 
 
 def check_release_voltage_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_filter_chain(rows)
-    if not ok:
-        return ok, note
-    high_rows = [r for r in rows if r["rst"] <= 0.45 and r["vin"] > 0.80]
-    if not high_rows:
-        return False, "gain_amp_missing_high_rail_window"
-    high_max = max(r["out"] for r in high_rows)
-    if high_max > 0.92:
-        return False, f"gain_amp_unclamped_high={high_max:.3f}"
-    if high_max < 0.55:
-        return False, f"gain_amp_gain_too_small high_max={high_max:.3f}"
-    return True, f"{note}; gain_amp_high_max={high_max:.3f}"
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    reset_out = mean_in_window(rows, "out", 0.5e-9, 2.0e-9)
+    high_out = mean_in_window(rows, "out", 16.0e-9, 24.0e-9)
+    mid_out = mean_in_window(rows, "out", 33.0e-9, 36.0e-9)
+    low_out = mean_in_window(rows, "out", 46.0e-9, 55.0e-9)
+    late_high_out = mean_in_window(rows, "out", 74.0e-9, 79.0e-9)
+    high_metric = mean_in_window(rows, "metric", 16.0e-9, 24.0e-9)
+    mid_metric = mean_in_window(rows, "metric", 33.0e-9, 36.0e-9)
+    low_metric = mean_in_window(rows, "metric", 46.0e-9, 55.0e-9)
+    if None in (reset_out, high_out, mid_out, low_out, late_high_out, high_metric, mid_metric, low_metric):
+        return False, "gain_amp_missing_sample_windows"
+    assert reset_out is not None
+    assert high_out is not None
+    assert mid_out is not None
+    assert low_out is not None
+    assert late_high_out is not None
+    assert high_metric is not None
+    assert mid_metric is not None
+    assert low_metric is not None
+
+    out_vals = [r["out"] for r in rows if r["rst"] <= 0.45 and r["time"] > 3e-9]
+    if not out_vals:
+        return False, "gain_amp_no_post_reset_rows"
+    out_min = min(out_vals)
+    out_max = max(out_vals)
+    if not (-0.02 <= out_min <= out_max <= 0.92):
+        return False, f"gain_amp_unclamped_range=({out_min:.3f},{out_max:.3f})"
+    if abs(reset_out - 0.45) > 0.12 or abs(mid_out - 0.45) > 0.08:
+        return False, f"gain_amp_common_mode reset={reset_out:.3f} mid={mid_out:.3f}"
+    if high_out < 0.84 or late_high_out < 0.80:
+        return False, f"gain_amp_high_not_railed high={high_out:.3f} late={late_high_out:.3f}"
+    if low_out > 0.08:
+        return False, f"gain_amp_low_not_railed low={low_out:.3f}"
+    if high_metric < 0.65 or low_metric < 0.65 or mid_metric > 0.18:
+        return False, (
+            "gain_amp_saturation_metric_wrong "
+            f"high={high_metric:.3f} mid={mid_metric:.3f} low={low_metric:.3f}"
+        )
+    return True, (
+        "release_voltage_gain_amplifier "
+        f"out_high_mid_low={high_out:.3f}/{mid_out:.3f}/{low_out:.3f} "
+        f"sat_metric={high_metric:.3f}/{mid_metric:.3f}/{low_metric:.3f}"
+    )
 
 
 def check_release_two_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_filter_chain(rows)
-    if not ok:
-        return ok, note
-    post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 60e-9]
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    reset_out = mean_in_window(rows, "out", 0.5e-9, 2.0e-9)
+    early_high = mean_in_window(rows, "out", 14.0e-9, 16.0e-9)
+    late_high = mean_in_window(rows, "out", 24.0e-9, 28.0e-9)
+    early_low = mean_in_window(rows, "out", 44.0e-9, 47.0e-9)
+    late_low = mean_in_window(rows, "out", 54.0e-9, 58.0e-9)
+    metric_high = mean_in_window(rows, "metric", 14.0e-9, 20.0e-9)
+    metric_low = mean_in_window(rows, "metric", 44.0e-9, 52.0e-9)
+    if None in (reset_out, early_high, late_high, early_low, late_low, metric_high, metric_low):
+        return False, "two_pole_missing_sample_windows"
+    assert reset_out is not None
+    assert early_high is not None
+    assert late_high is not None
+    assert early_low is not None
+    assert late_low is not None
+    assert metric_high is not None
+    assert metric_low is not None
+
+    post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 70e-9]
+    if len(post_rows) < 10:
+        return False, f"two_pole_too_few_post_reset_rows={len(post_rows)}"
+    out_vals = [r["out"] for r in post_rows]
     metric_vals = [r["metric"] for r in post_rows]
     metric_span = max(metric_vals) - min(metric_vals)
-    if metric_span < 0.035:
-        return False, f"two_pole_metric_span_too_small={metric_span:.3f}"
-    return True, f"{note}; two_pole_metric_span={metric_span:.3f}"
+    if not (-0.02 <= min(out_vals) <= max(out_vals) <= 0.92):
+        return False, f"two_pole_out_range=({min(out_vals):.3f},{max(out_vals):.3f})"
+    if abs(reset_out - 0.45) > 0.12:
+        return False, f"two_pole_reset_out={reset_out:.3f}"
+    if late_high <= early_high + 0.10 or early_high > 0.68:
+        return False, f"two_pole_missing_lagged_rise early={early_high:.3f} late={late_high:.3f}"
+    if late_low >= early_low - 0.06 or early_low < 0.20:
+        return False, f"two_pole_missing_lagged_fall early={early_low:.3f} late={late_low:.3f}"
+    if metric_span < 0.09 or metric_high <= 0.50 or metric_low >= 0.40:
+        return False, (
+            "two_pole_metric_not_state_difference "
+            f"span={metric_span:.3f} high={metric_high:.3f} low={metric_low:.3f}"
+        )
+    return True, (
+        "release_two_pole_filter "
+        f"rise={early_high:.3f}->{late_high:.3f} "
+        f"fall={early_low:.3f}->{late_low:.3f} metric_span={metric_span:.3f}"
+    )
 
 
 def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_filter_chain(rows)
-    if not ok:
-        return ok, note
-    early_high = mean_in_window(rows, "out", 12.5e-9, 15.0e-9)
-    late_high = mean_in_window(rows, "out", 24.0e-9, 28.0e-9)
-    if early_high is None or late_high is None:
-        return False, "amp_filter_missing_high_step_windows"
-    if late_high <= early_high + 0.06:
-        return False, f"amp_filter_missing_lagged_settling early={early_high:.3f} late={late_high:.3f}"
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    early_high_out = mean_in_window(rows, "out", 12.5e-9, 15.0e-9)
+    late_high_out = mean_in_window(rows, "out", 24.0e-9, 28.0e-9)
+    early_high_metric = mean_in_window(rows, "metric", 12.5e-9, 15.0e-9)
+    late_high_metric = mean_in_window(rows, "metric", 24.0e-9, 28.0e-9)
+    mid_metric = mean_in_window(rows, "metric", 33.0e-9, 36.0e-9)
+    low_metric = mean_in_window(rows, "metric", 46.0e-9, 55.0e-9)
+    low_out = mean_in_window(rows, "out", 54.0e-9, 58.0e-9)
+    if None in (early_high_out, late_high_out, early_high_metric, late_high_metric, mid_metric, low_metric, low_out):
+        return False, "amp_filter_missing_sample_windows"
+    assert early_high_out is not None
+    assert late_high_out is not None
+    assert early_high_metric is not None
+    assert late_high_metric is not None
+    assert mid_metric is not None
+    assert low_metric is not None
+    assert low_out is not None
+
     post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 70e-9]
+    if len(post_rows) < 10:
+        return False, f"amp_filter_too_few_post_reset_rows={len(post_rows)}"
+    out_vals = [r["out"] for r in post_rows]
     metric_vals = [r["metric"] for r in post_rows]
-    metric_span = max(metric_vals) - min(metric_vals)
-    if metric_span < 0.035:
-        return False, f"amp_filter_metric_span_too_small={metric_span:.3f}"
-    if max(metric_vals) > 0.98 or min(metric_vals) < -0.08:
-        return False, f"amp_filter_metric_out_of_range=({min(metric_vals):.3f},{max(metric_vals):.3f})"
-    return True, f"{note}; amp_filter_settling={early_high:.3f}/{late_high:.3f} metric_span={metric_span:.3f}"
+    if not (-0.02 <= min(out_vals) <= max(out_vals) <= 0.92):
+        return False, f"amp_filter_out_range=({min(out_vals):.3f},{max(out_vals):.3f})"
+    if not (-0.02 <= min(metric_vals) <= max(metric_vals) <= 0.92):
+        return False, f"amp_filter_metric_range=({min(metric_vals):.3f},{max(metric_vals):.3f})"
+    if early_high_metric < 0.84 or late_high_metric < 0.84 or low_metric > 0.08:
+        return False, (
+            "amp_filter_metric_not_preamp_target "
+            f"early={early_high_metric:.3f} late={late_high_metric:.3f} low={low_metric:.3f}"
+        )
+    if abs(mid_metric - 0.45) > 0.08:
+        return False, f"amp_filter_mid_metric_not_common_mode={mid_metric:.3f}"
+    if late_high_out <= early_high_out + 0.09:
+        return False, f"amp_filter_missing_lagged_settling early={early_high_out:.3f} late={late_high_out:.3f}"
+    if early_high_metric - early_high_out < 0.12:
+        return False, f"amp_filter_output_not_lagging_metric gap={early_high_metric - early_high_out:.3f}"
+    if low_out > 0.35:
+        return False, f"amp_filter_output_not_falling low={low_out:.3f}"
+    return True, (
+        "release_amplifier_filter_chain "
+        f"metric_high_low={early_high_metric:.3f}/{low_metric:.3f} "
+        f"out_lag={early_high_out:.3f}->{late_high_out:.3f}"
+    )
 
 
 def check_release_signal_conditioning_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -4575,23 +5055,64 @@ def check_release_signal_conditioning_chain(rows: list[dict[str, float]]) -> tup
 
 
 def check_release_soft_hysteretic_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_filter_chain(rows)
-    if not ok:
-        return ok, note
-    high_memory = mean_in_window(rows, "out", 31e-9, 36e-9)
-    low_memory = mean_in_window(rows, "out", 61e-9, 66e-9)
-    if high_memory is None or low_memory is None:
-        return False, "soft_limiter_missing_memory_windows"
-    if high_memory <= low_memory + 0.035:
-        return False, f"soft_limiter_hysteresis_not_visible high={high_memory:.3f} low={low_memory:.3f}"
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    high_limited = mean_in_window(rows, "out", 16.0e-9, 24.0e-9)
+    low_limited = mean_in_window(rows, "out", 46.0e-9, 55.0e-9)
+    high_memory = mean_in_window(rows, "out", 31.0e-9, 36.0e-9)
+    low_memory = mean_in_window(rows, "out", 61.0e-9, 66.0e-9)
+    high_metric = mean_in_window(rows, "metric", 16.0e-9, 24.0e-9)
+    low_metric = mean_in_window(rows, "metric", 46.0e-9, 55.0e-9)
+    high_memory_metric = mean_in_window(rows, "metric", 31.0e-9, 36.0e-9)
+    low_memory_metric = mean_in_window(rows, "metric", 61.0e-9, 66.0e-9)
+    if None in (
+        high_limited,
+        low_limited,
+        high_memory,
+        low_memory,
+        high_metric,
+        low_metric,
+        high_memory_metric,
+        low_memory_metric,
+    ):
+        return False, "soft_limiter_missing_sample_windows"
+    assert high_limited is not None
+    assert low_limited is not None
+    assert high_memory is not None
+    assert low_memory is not None
+    assert high_metric is not None
+    assert low_metric is not None
+    assert high_memory_metric is not None
+    assert low_memory_metric is not None
+
     post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 70e-9]
+    if len(post_rows) < 10:
+        return False, f"soft_limiter_too_few_post_reset_rows={len(post_rows)}"
+    out_min = min(r["out"] for r in post_rows)
+    out_max = max(r["out"] for r in post_rows)
     metric_span = max(r["metric"] for r in post_rows) - min(r["metric"] for r in post_rows)
-    if metric_span < 0.035:
+    if not (-0.02 <= out_min <= out_max <= 0.92):
+        return False, f"soft_limiter_out_range=({out_min:.3f},{out_max:.3f})"
+    if high_limited > 0.84 or high_limited < 0.70:
+        return False, f"soft_limiter_high_compression={high_limited:.3f}"
+    if low_limited < 0.08 or low_limited > 0.22:
+        return False, f"soft_limiter_low_compression={low_limited:.3f}"
+    if high_memory <= low_memory + 0.08:
+        return False, f"soft_limiter_hysteresis_not_visible high={high_memory:.3f} low={low_memory:.3f}"
+    if high_metric < 0.58 or high_memory_metric < 0.58 or low_metric > 0.32 or low_memory_metric > 0.32:
+        return False, (
+            "soft_limiter_metric_not_stateful "
+            f"high={high_metric:.3f}/{high_memory_metric:.3f} low={low_metric:.3f}/{low_memory_metric:.3f}"
+        )
+    if metric_span < 0.30:
         return False, f"soft_limiter_metric_span_too_small={metric_span:.3f}"
-    out_max = max(r["out"] for r in rows if r["rst"] <= 0.45)
-    if out_max > 0.92:
-        return False, f"soft_limiter_unbounded_out={out_max:.3f}"
-    return True, f"{note}; hysteresis_memory={high_memory:.3f}/{low_memory:.3f} metric_span={metric_span:.3f}"
+    return True, (
+        "release_soft_hysteretic_limiter "
+        f"limited={low_limited:.3f}/{high_limited:.3f} "
+        f"memory={low_memory:.3f}/{high_memory:.3f} metric_span={metric_span:.3f}"
+    )
 
 
 def check_release_quantized_reconstruction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -4721,6 +5242,7 @@ CHECKS = {
     "dff_rst_smoke": check_dff_rst,
     "bound_step_period_guard_smoke": check_bound_step_period_guard,
     "cross_hysteresis_window_smoke": check_cross_hysteresis_window,
+    "window_comparator_smoke": check_true_window_comparator,
     "cross_interval_163p333_smoke": check_cross_interval_163p333,
     "cross_sine_precision_smoke": check_cross_sine_precision,
     "differential_voltage_output_smoke": check_differential_voltage_output,
@@ -4733,6 +5255,7 @@ CHECKS = {
     "clk_div_smoke": check_clk_div,
     "cmp_delay_smoke": check_cmp_delay,
     "comparator_hysteresis_smoke": check_cmp_hysteresis,
+    "comparator_measurement_flow_smoke": check_comparator_measurement_flow,
     "comparator_offset_search_smoke": check_comparator_offset_search,
     "cmp_strongarm_smoke": check_cmp_strongarm,
     "comparator_smoke": check_comparator,
@@ -4925,12 +5448,11 @@ RELEASE_CHECK_ALIASES = {
     # The first group reuses stronger existing waveform checkers.
     "vbr1_l1_burst_clock_source": check_clk_burst_gen,
     "vbr1_l1_clocked_adc_quantizer": check_flash_adc_3b,
-    "vbr1_l1_clocked_comparator": check_cmp_strongarm,
-    "vbr1_l1_differential_output_driver": check_differential_voltage_output,
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap": check_phase_accumulator_timer_wrap,
     "vbr1_l1_dither_or_noise_like_deterministic_source": check_noise_gen,
     "vbr1_l1_dwa_dem_encoder": check_dwa_dem_encoder_release,
     "vbr1_l1_hysteresis_comparator": check_cmp_hysteresis,
+    "vbr1_l1_offset_comparator": check_release_offset_comparator,
     "vbr1_l1_binary_weighted_voltage_dac": check_simple_binary_dac_4b,
     "vbr1_l1_pipeline_adc_stage": check_pipeline_stage,
     "vbr1_l2_pipeline_adc_chain": check_release_pipeline_adc_chain,
@@ -4940,10 +5462,11 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_clocked_sample_and_hold": check_sample_hold,
     "vbr1_l1_sample_and_hold_with_droop_leakage": check_release_vin_sampled_droop_hold,
     "vbr1_l1_serializer_frame_aligner": check_serializer_frame_alignment,
-    "vbr1_l1_threshold_comparator": check_comparator,
+    "vbr1_l1_strongarm_style_latch_comparator": check_release_strongarm_latch_comparator,
+    "vbr1_l1_threshold_comparator": check_release_threshold_comparator,
     "vbr1_l1_unit_element_thermometer_dac": check_vbm1_thermometer_dac_15seg,
     "vbr1_l1_vco_phase_integrator": check_vbm1_vco_phase_integrator,
-    "vbr1_l1_window_comparator_detector": check_cross_hysteresis_window,
+    "vbr1_l1_window_comparator_detector": check_true_window_comparator,
     "vbr1_l1_xor_phase_detector": check_xor_pd,
     # Release-generic checks are intentionally conservative behavior guards for
     # newly designed source tasks. They prove reset/range/response properties,
@@ -4970,6 +5493,7 @@ for _entry_id, _checker in RELEASE_CHECK_ALIASES.items():
 
 
 RELEASE_FORM_CHECK_ALIASES = {
+    "vbr1_l1_strongarm_style_latch_comparator_bugfix": check_strongarm_reset_priority_bug,
     "vbr1_l2_gain_extraction_convergence_measurement_flow_tb": check_gain_extraction,
     "vbr1_l1_gain_estimator_tb": check_gain_extraction,
     "vbr1_l2_weighted_sar_adc_dac_loop_tb": check_sar_adc_dac_weighted_8b,
@@ -4993,7 +5517,8 @@ RELEASE_FORM_CHECK_ALIASES = {
     "vbr1_l2_flash_adc_mini_array_tb": check_release_flash_adc_mini_array,
     "vbr1_l2_pipeline_adc_chain_e2e": check_release_pipeline_adc_chain,
     "vbr1_l2_pipeline_adc_chain_tb": check_release_pipeline_adc_chain,
-    "vbr1_l2_comparator_measurement_flow_tb": check_comparator_offset_search,
+    "vbr1_l2_comparator_measurement_flow_e2e": check_comparator_measurement_flow,
+    "vbr1_l2_comparator_measurement_flow_tb": check_comparator_measurement_flow,
     "vbr1_l1_sine_periodic_voltage_source_e2e": check_multitone,
     "vbr1_l1_sine_periodic_voltage_source_tb": check_multitone,
 }

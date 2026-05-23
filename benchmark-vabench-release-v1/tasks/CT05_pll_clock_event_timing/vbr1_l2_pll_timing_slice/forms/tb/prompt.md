@@ -47,9 +47,9 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `transient_analysis_present`
-- `public_observables_saved`
-- `dut_or_system_instantiated`
+- `cppll_tracks_reference_frequency`
+- `lock_asserts_in_late_tracking_window`
+- `vctrl_stays_bounded`
 
 ## Output Contract
 

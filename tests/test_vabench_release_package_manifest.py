@@ -18,21 +18,21 @@ def test_package_manifest_indexes_all_entries_and_forms_without_scoring_pending_
 
     assert manifest["status"] == "in_progress"
     assert manifest["package_root"] == "benchmark-vabench-release-v1"
-    assert summary["planned_entry_count"] == 75
-    assert summary["entry_count"] == 75
-    assert summary["form_count"] == 259
-    assert summary["content_denominator_entry_count"] == 74
-    assert summary["content_excluded_entry_count"] == 1
-    assert summary["content_denominator_form_count"] == 255
-    assert summary["content_excluded_form_count"] == 4
-    assert summary["certified_entry_count"] == summary["entry_count"]
-    assert summary["certified_form_count"] == summary["form_count"]
+    assert summary["planned_entry_count"] == 73
+    assert summary["entry_count"] == 73
+    assert summary["form_count"] == 249
+    assert summary["content_denominator_entry_count"] == 73
+    assert summary["content_excluded_entry_count"] == 0
+    assert summary["content_denominator_form_count"] == 249
+    assert summary["content_excluded_form_count"] == 0
+    assert summary["certified_entry_count"] == 73
+    assert summary["certified_form_count"] == 249
     assert summary["pending_entry_count"] == 0
     assert summary["pending_form_count"] == 0
     assert sum(summary["entry_status_counts"].values()) == summary["entry_count"]
     assert sum(summary["form_status_counts"].values()) == summary["form_count"]
-    assert summary["scored_entry_count"] == 74
-    assert summary["scored_form_count"] == 255
+    assert summary["scored_entry_count"] == 73
+    assert summary["scored_form_count"] == 245
     assert summary["l0_conformance_case_count"] == 4
     assert summary["l0_conformance_counted_in_denominator"] == 0
 
@@ -41,23 +41,18 @@ def test_package_manifest_form_rows_link_assets_evidence_and_score_status() -> N
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     forms = manifest["forms"]
 
-    assert len(forms) == 259
+    assert len(forms) == 249
     assert all(row["release_task_manifest"].endswith("release_task.json") for row in forms)
     assert all(row["prompt"].endswith("prompt.md") for row in forms)
     assert all(row["meta"].endswith("meta.json") for row in forms)
     assert all(row["checks"].endswith("checks.yaml") for row in forms)
     assert all(row["gold_count"] >= 1 for row in forms)
     assert all(row["static"] == "pass" for row in forms)
-    assert sum(row["counted_in_score"] is True for row in forms) == 255
+    assert sum(row["counted_in_score"] is True for row in forms) == 245
     assert sum(row["counted_in_score"] is False for row in forms) == 4
-    assert sum(row["content_denominator_included"] is True for row in forms) == 255
-    assert sum(row["content_denominator_included"] is False for row in forms) == 4
-    assert {
-        reason
-        for row in forms
-        if row["release_entry_id"] == "vbr1_l1_clocked_comparator"
-        for reason in row["content_exclusion_reasons"]
-    } == {"duplicate_strongarm_clocked_comparator"}
+    assert sum(row["content_denominator_included"] is True for row in forms) == 249
+    assert sum(row["content_denominator_included"] is False for row in forms) == 0
+    assert all(row["release_entry_id"] != "vbr1_l1_clocked_comparator" for row in forms)
     summary = manifest["summary"]
     assert sum(1 for row in forms if row["certification"] == "certified") == summary["certified_form_count"]
     assert sum(1 for row in forms if row["certification"] == "pending") == summary["pending_form_count"]
@@ -69,7 +64,7 @@ def test_package_manifest_csv_and_markdown_are_written() -> None:
     assert MANIFEST_MD.exists()
     with MANIFEST_CSV.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert len(rows) == 259
+    assert len(rows) == 249
     assert {"task_id", "release_entry_id", "form", "certification", "counted_in_score"} <= set(rows[0])
     text = MANIFEST_MD.read_text(encoding="utf-8")
     assert "vaBench Release Package Manifest" in text

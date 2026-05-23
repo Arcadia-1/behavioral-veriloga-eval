@@ -4,14 +4,14 @@
   "status": "pass",
   "source": "historical main120 import plus fresh release dual rerun",
   "simulator_rerun": true,
-  "dual_certified_release_task_count": 265,
+  "dual_certified_release_task_count": 249,
   "dual_failed_release_task_count": 0,
   "dual_pending_release_task_count": 0,
-  "dual_pass_materialized_entry_count": 77,
+  "dual_pass_materialized_entry_count": 73,
   "dual_pending_materialized_entry_count": 0,
   "dual_failed_materialized_entry_count": 0,
-  "fully_certified_entry_count": 77,
-  "entry_count": 77,
+  "fully_certified_entry_count": 73,
+  "entry_count": 73,
   "issue_count": 0,
   "source_equivalence_failure_count": 0,
   "source_equivalence_blocked_release_task_count": 0,
@@ -480,7 +480,6 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "dut",
       "source_task_id": "vbm1_resettable_counter_divider_dut",
-      "release_source_task_id": "vbm1_resettable_counter_divider_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -491,13 +490,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_clock_divider",
       "form": "tb",
       "source_task_id": "vbm1_resettable_counter_divider_tb",
-      "release_source_task_id": "vbm1_resettable_counter_divider_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -508,7 +507,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_clock_divider",
@@ -531,7 +531,6 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "e2e",
       "source_task_id": "vbm1_resettable_counter_divider_e2e",
-      "release_source_task_id": "vbm1_resettable_counter_divider_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -542,7 +541,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_clocked_adc_quantizer",
@@ -610,74 +610,6 @@
       "failures": [],
       "pending_blockers": [],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_adc_quantizer/e2e/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "form": "dut",
-      "source_task_id": "vbr1_l1_clocked_comparator_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_comparator/dut/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "form": "tb",
-      "source_task_id": "vbr1_l1_clocked_comparator_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_comparator/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "form": "bugfix",
-      "source_task_id": "vbr1_l1_clocked_comparator_bugfix_fixed",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_comparator/bugfix/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "form": "e2e",
-      "source_task_id": "cmp_strongarm_smoke",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_comparator/e2e/evidence.json",
       "simulator_rerun": true
     },
     {
@@ -934,74 +866,6 @@
       "failures": [],
       "pending_blockers": [],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_debounce_latch/e2e/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_differential_output_driver",
-      "form": "dut",
-      "source_task_id": "vbr1_l1_differential_output_driver_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/dut/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_differential_output_driver",
-      "form": "tb",
-      "source_task_id": "vbr1_l1_differential_output_driver_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_differential_output_driver",
-      "form": "bugfix",
-      "source_task_id": "vbr1_l1_differential_output_driver_bugfix_fixed",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/bugfix/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_differential_output_driver",
-      "form": "e2e",
-      "source_task_id": "differential_voltage_output_smoke",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/evidence.json",
-      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
@@ -1806,7 +1670,6 @@
       "entry_id": "vbr1_l1_lock_detector",
       "form": "dut",
       "source_task_id": "vbm1_lock_detector_dut",
-      "release_source_task_id": "vbm1_lock_detector_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1817,13 +1680,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_lock_detector",
       "form": "tb",
       "source_task_id": "vbm1_lock_detector_tb",
-      "release_source_task_id": "vbm1_lock_detector_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1834,13 +1697,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_lock_detector",
       "form": "bugfix",
-      "source_task_id": "vbm1_lock_detector_bugfix",
-      "release_source_task_id": "vbm1_lock_detector_bugfix",
+      "source_task_id": "vbm1_lock_detector_bugfix_fixed",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1851,13 +1714,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/bugfix/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/bugfix/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_lock_detector",
       "form": "e2e",
       "source_task_id": "vbm1_lock_detector_e2e",
-      "release_source_task_id": "vbm1_lock_detector_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1868,7 +1731,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_loop_filter_abstraction",
@@ -1942,7 +1806,6 @@
       "entry_id": "vbr1_l1_offset_comparator",
       "form": "dut",
       "source_task_id": "vbm1_offset_comparator_dut",
-      "release_source_task_id": "vbm1_offset_comparator_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1953,13 +1816,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_offset_comparator",
       "form": "tb",
       "source_task_id": "vbm1_offset_comparator_tb",
-      "release_source_task_id": "vbm1_offset_comparator_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1970,13 +1833,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_offset_comparator",
       "form": "bugfix",
-      "source_task_id": "vbm1_offset_comparator_bugfix",
-      "release_source_task_id": "vbm1_offset_comparator_bugfix",
+      "source_task_id": "vbm1_offset_comparator_bugfix_fixed",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1987,13 +1850,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/bugfix/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/bugfix/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_offset_comparator",
       "form": "e2e",
       "source_task_id": "vbm1_offset_comparator_e2e",
-      "release_source_task_id": "vbm1_offset_comparator_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2004,7 +1867,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_offset_comparator/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_one_shot_timer",
@@ -2214,7 +2078,6 @@
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "dut",
       "source_task_id": "vbm1_pfd_reset_race_dut",
-      "release_source_task_id": "vbm1_pfd_reset_race_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2225,13 +2088,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "tb",
       "source_task_id": "vbm1_pfd_reset_race_tb",
-      "release_source_task_id": "vbm1_pfd_reset_race_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2242,13 +2105,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "bugfix",
-      "source_task_id": "vbm1_pfd_reset_race_bugfix",
-      "release_source_task_id": "vbm1_pfd_reset_race_bugfix",
+      "source_task_id": "vbm1_pfd_reset_race_bugfix_fixed",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2259,13 +2122,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/bugfix/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/bugfix/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "e2e",
       "source_task_id": "vbm1_pfd_reset_race_e2e",
-      "release_source_task_id": "vbm1_pfd_reset_race_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2276,7 +2139,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_pipeline_adc_stage",
@@ -2345,74 +2209,6 @@
       "pending_blockers": [],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/e2e/evidence.json",
       "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_precision_rectifier",
-      "form": "dut",
-      "source_task_id": "vbm1_precision_rectifier_dut",
-      "release_source_task_id": "vbm1_precision_rectifier_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_precision_rectifier/dut/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_precision_rectifier",
-      "form": "tb",
-      "source_task_id": "vbm1_precision_rectifier_tb",
-      "release_source_task_id": "vbm1_precision_rectifier_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_precision_rectifier/tb/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_precision_rectifier",
-      "form": "bugfix",
-      "source_task_id": "vbm1_precision_rectifier_bugfix",
-      "release_source_task_id": "vbm1_precision_rectifier_bugfix",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_precision_rectifier/bugfix/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_precision_rectifier",
-      "form": "e2e",
-      "source_task_id": "vbm1_precision_rectifier_e2e",
-      "release_source_task_id": "vbm1_precision_rectifier_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_precision_rectifier/e2e/evidence.json"
     },
     {
       "entry_id": "vbr1_l1_propagation_delay_comparator",
@@ -3166,7 +2962,6 @@
       "entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "dut",
       "source_task_id": "vbm1_strongarm_comparator_behavior_dut",
-      "release_source_task_id": "vbm1_strongarm_comparator_behavior_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3177,13 +2972,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "tb",
       "source_task_id": "vbm1_strongarm_comparator_behavior_tb",
-      "release_source_task_id": "vbm1_strongarm_comparator_behavior_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3194,7 +2989,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_strongarm_style_latch_comparator",
@@ -3217,7 +3013,6 @@
       "entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "e2e",
       "source_task_id": "vbm1_strongarm_comparator_behavior_e2e",
-      "release_source_task_id": "vbm1_strongarm_comparator_behavior_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3228,7 +3023,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
@@ -3574,7 +3370,6 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "dut",
       "source_task_id": "vbm1_vco_phase_integrator_dut",
-      "release_source_task_id": "vbm1_vco_phase_integrator_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3585,13 +3380,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "tb",
       "source_task_id": "vbm1_vco_phase_integrator_tb",
-      "release_source_task_id": "vbm1_vco_phase_integrator_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3602,7 +3397,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_vco_phase_integrator",
@@ -3625,7 +3421,6 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "e2e",
       "source_task_id": "vbm1_vco_phase_integrator_e2e",
-      "release_source_task_id": "vbm1_vco_phase_integrator_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -3636,75 +3431,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/e2e/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "dut",
-      "source_task_id": "vbm1_voltage_clamp_dut",
-      "release_source_task_id": "vbm1_voltage_clamp_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/dut/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "tb",
-      "source_task_id": "vbm1_voltage_clamp_tb",
-      "release_source_task_id": "vbm1_voltage_clamp_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/tb/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "bugfix",
-      "source_task_id": "vbm1_voltage_clamp_bugfix",
-      "release_source_task_id": "vbm1_voltage_clamp_bugfix",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/bugfix/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "e2e",
-      "source_task_id": "vbm1_voltage_clamp_e2e",
-      "release_source_task_id": "vbm1_voltage_clamp_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_voltage_clamp_or_limiter/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_voltage_gain_amplifier",
@@ -3828,7 +3556,7 @@
     {
       "entry_id": "vbr1_l1_window_comparator_detector",
       "form": "e2e",
-      "source_task_id": "cross_hysteresis_window_smoke",
+      "source_task_id": "window_comparator_smoke",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -4134,7 +3862,7 @@
     {
       "entry_id": "vbr1_l2_comparator_measurement_flow",
       "form": "e2e",
-      "source_task_id": "comparator_offset_search_smoke",
+      "source_task_id": "comparator_measurement_flow_smoke",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -4597,14 +4325,6 @@
       "release_blockers": []
     },
     {
-      "entry_id": "vbr1_l1_clocked_comparator",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
       "entry_id": "vbr1_l1_clocked_sample_and_hold",
       "release_task_count": 4,
       "dual": "pass",
@@ -4630,14 +4350,6 @@
     },
     {
       "entry_id": "vbr1_l1_debounce_latch",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
-      "entry_id": "vbr1_l1_differential_output_driver",
       "release_task_count": 4,
       "dual": "pass",
       "fully_certified": true,
@@ -4813,14 +4525,6 @@
       "release_blockers": []
     },
     {
-      "entry_id": "vbr1_l1_precision_rectifier",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
       "entry_id": "vbr1_l1_propagation_delay_comparator",
       "release_task_count": 4,
       "dual": "pass",
@@ -4966,14 +4670,6 @@
     },
     {
       "entry_id": "vbr1_l1_vco_phase_integrator",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_clamp_or_limiter",
       "release_task_count": 4,
       "dual": "pass",
       "fully_certified": true,

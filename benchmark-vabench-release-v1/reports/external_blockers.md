@@ -15,11 +15,11 @@ and claim-boundary artifact, not simulator certification evidence.
 | blocked | 0 |
 | pending | 1 |
 | ready-to-continue | 0 |
-| bridge status | `blocked` |
+| bridge status | `ready` |
 | primary rerun queue rows | 0 |
 | ready staging bundles | 0 |
 | latest rerun summary | `complete` |
-| latest import | `imported` |
+| latest import | `partial_imported` |
 
 ## Blockers
 
@@ -29,9 +29,10 @@ and claim-boundary artifact, not simulator certification evidence.
 
 ## Recovery Sequence
 
-- Keep the imported full EVAS/Spectre rerun as the release certification evidence.
-- Use the enabled score denominator gate for scored benchmark rows/forms.
-- Enable speed/debug and model baseline claims only after their dedicated artifacts support them.
+- Fix external SSH/VPN/jump-host reachability until bridge diagnostics reports a ready profile.
+- Run finish_after_bridge without --dry-run to execute the fresh release dual rerun.
+- Import only a complete current rerun summary, then regenerate paper artifacts and completion audit.
+- Enable scored benchmark and baseline artifacts only after dual certification has no pending release forms.
 
 ## Claim Boundary
 

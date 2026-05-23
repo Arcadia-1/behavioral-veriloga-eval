@@ -2,7 +2,6 @@
   "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
   "task_id": "vbr1_l1_strongarm_style_latch_comparator:tb",
   "source_task_id": "vbm1_strongarm_comparator_behavior_tb",
-  "release_source_task_id": "vbm1_strongarm_comparator_behavior_tb",
   "task_form": "tb",
   "taxonomy": {
     "level": "L1",
@@ -14,45 +13,103 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_strongarm_comparator_behavior_tb/evas_result.json",
-    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_strongarm_comparator_behavior_tb/spectre_result.json",
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_strongarm_style_latch_comparator/tb/gold",
+    "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_strongarm_style_latch_comparator/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_strongarm_style_latch_comparator/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/cmp_strongarm.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/tb_cmp_strongarm_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/cmp_strongarm.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/tb_cmp_strongarm_ref.scs"
   ],
   "historical_evidence": {
-    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_strongarm_comparator_behavior_tb/evas_result.json",
-    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_strongarm_comparator_behavior_tb/spectre_result.json",
-    "source": "main120 gold dual evidence from 2026-05-08",
-    "source_equivalence_source": "main120_staged_sources",
-    "simulator_rerun": false
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_strongarm_style_latch_comparator/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_strongarm_style_latch_comparator/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        4e-09
+      ],
+      "signals_compared": 5,
+      "samples": 1200,
+      "max_rmse_v": 0.0,
+      "max_abs_v": 0.0,
+      "mean_nrmse": 0.0,
+      "p95_nrmse": 0.0,
+      "max_nrmse": 0.0,
+      "per_signal": {
+        "clk": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "out_n": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "out_p": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vinn": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.0020000000000000018,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "vinp": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.0020000000000000018,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        }
+      }
+    }
   },
   "source_equivalence": {
     "pass": true,
-    "source": "main120_staged_sources",
-    "normalization": "Verilog-A token stream; Spectre ahdl_include path plus trailing whitespace",
+    "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/cmp_strongarm.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/tb_cmp_strongarm_ref.scs"
-    ],
-    "evas_staged_sources": [
-      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_strongarm_comparator_behavior_tb/staged/cmp_strongarm.va",
-      "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_strongarm_comparator_behavior_tb/staged/tb_cmp_strongarm_ref.scs"
-    ],
-    "spectre_staged_sources": [
-      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_strongarm_comparator_behavior_tb/staged/cmp_strongarm.va",
-      "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_strongarm_comparator_behavior_tb/staged/tb_cmp_strongarm_ref.scs"
-    ],
-    "release_va_hash_count": 1,
-    "release_scs_hash_count": 1,
-    "evas_va_hash_count": 1,
-    "evas_scs_hash_count": 1,
-    "spectre_va_hash_count": 1,
-    "spectre_scs_hash_count": 1
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/cmp_strongarm.va",
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/gold/tb_cmp_strongarm_ref.scs"
+    ]
   },
   "failures": [],
   "pending_blockers": [],
-  "notes": "EVAS/Spectre evidence imported from historical main120 gold run and linked to release gold by source hash equivalence."
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
 }

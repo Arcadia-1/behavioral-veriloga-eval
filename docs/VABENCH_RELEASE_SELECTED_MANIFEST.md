@@ -10,8 +10,8 @@ as explicit pending package entries rather than hidden missing work.
 
 | Metric | Count |
 | --- | ---: |
-| selected entries | 47 |
-| entries with copied or designed source assets | 47 |
+| selected entries | 46 |
+| entries with copied or designed source assets | 46 |
 | entries pending source design | 0 |
 
 ## Rows
@@ -28,9 +28,8 @@ as explicit pending package entries rather than hidden missing work.
 | `vbr1_l1_threshold_comparator` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/comparator_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
 | `vbr1_l1_propagation_delay_comparator` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/cmp_delay_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
 | `vbr1_l1_hysteresis_comparator` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/comparator_hysteresis_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
-| `vbr1_l1_window_comparator_detector` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/cross_hysteresis_window_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
-| `vbr1_l1_clocked_comparator` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/cmp_strongarm_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
-| `vbr1_l2_comparator_measurement_flow` | `tb|e2e` | `` | `tasks/end-to-end/voltage/comparator_offset_search_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold |
+| `vbr1_l1_window_comparator_detector` | `dut|tb|bugfix|e2e` | `` | `manual_release_spec:vbr1_l1_window_comparator_detector` | manual release spec corrected to true window semantics; fresh dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
+| `vbr1_l2_comparator_measurement_flow` | `tb|e2e` | `` | `tasks/end-to-end/voltage/comparator_measurement_flow_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold |
 | `vbr1_l1_pfd_small_phase_error_response` | `dut|tb|bugfix|e2e` | `` | `tasks/spec-to-va/voltage/pll-clock/vbm1_pfd_small_phase_error_response_dut|tasks/end-to-end/voltage/pfd_small_phase_response_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
 | `vbr1_l1_xor_phase_detector` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/xor_pd_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
 | `vbr1_l1_bang_bang_phase_detector` | `dut|tb|bugfix|e2e` | `` | `tasks/spec-to-va/voltage/pll-clock/bbpd|tasks/end-to-end/voltage/bbpd_data_edge_alignment_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
@@ -60,7 +59,6 @@ as explicit pending package entries rather than hidden missing work.
 | `vbr1_l2_adc_dac_source_sweep_flow` | `e2e|tb` | `` | `designed_release_spec:vbr1_l2_adc_dac_source_sweep_flow` | designed release source generated; dual evidence pending rerun |
 | `vbr1_l1_soft_hysteretic_limiter` | `dut|tb|bugfix|e2e` | `` | `designed_release_spec:vbr1_l1_soft_hysteretic_limiter` | designed release source generated; dual evidence pending rerun |
 | `vbr1_l1_voltage_gain_amplifier` | `dut|tb|bugfix|e2e` | `` | `designed_release_spec:vbr1_l1_voltage_gain_amplifier` | designed release source generated; dual evidence pending rerun |
-| `vbr1_l1_differential_output_driver` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/differential_voltage_output_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |
 | `vbr1_l1_higher_order_filter` | `dut|tb|bugfix|e2e` | `` | `designed_release_spec:vbr1_l1_higher_order_filter` | designed release source generated; dual evidence pending rerun |
 | `vbr1_l2_amplifier_filter_chain` | `e2e|tb` | `` | `designed_release_spec:vbr1_l2_amplifier_filter_chain` | designed release source generated; dual evidence pending rerun |
 | `vbr1_l1_clocked_sample_and_hold` | `dut|tb|bugfix|e2e` | `` | `tasks/end-to-end/voltage/sample_hold_smoke` | selected source copied; release checks normalized when needed; dual evidence pending rerun; companion forms generated from existing release gold; true-bugfix companion generated from existing release gold |

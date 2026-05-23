@@ -41,10 +41,11 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `clocked_low_vinp_phase_latches_low_output`
-- `clocked_high_vinp_phase_latches_high_output`
+- `clocked_negative_diff_latches_low_output`
+- `clocked_below_offset_positive_diff_latches_low_output`
+- `clocked_above_offset_positive_diff_latches_high_output`
 - `output_decisions_match_positive_offset_polarity`
-- `expected_safe_window_sequence_LHHHLLL`
+- `expected_safe_window_sequence_LLLHHLL`
 
 ## Observed Mismatch Framing
 
@@ -62,12 +63,17 @@ Do not include explanatory prose outside the source artifact contents.
 
 The provided voltage-domain offset comparator applies the decision polarity
 incorrectly around its input offset threshold. Fix the comparator so the output
-goes high only when `VINP - VINN` exceeds the positive offset value.
+goes high only when `VINP - VINN` exceeds the positive offset value. Treat a
+small positive differential below the offset as a low decision.
 
 The fixed module must be named `cmp_offset_ref` and use electrical ports `VDD`,
 `VSS`, `CLK`, `VINP`, `VINN`, and `OUT_P`. On each rising clock crossing, the
 model should latch the comparator decision and drive `OUT_P` between `VSS` and
 `VDD` using a smoothed voltage transition.
+
+The public validation sequence includes negative, zero, +3 mV, +7 mV, +20 mV,
+zero, and negative input-difference samples; for a 5 mV positive offset the
+settled output sequence after rising clock edges is `LLLHHLL`.
 
 Use voltage contributions and event-driven state updates. Do not use current
 contributions, `ddt()`, or `idt()`.

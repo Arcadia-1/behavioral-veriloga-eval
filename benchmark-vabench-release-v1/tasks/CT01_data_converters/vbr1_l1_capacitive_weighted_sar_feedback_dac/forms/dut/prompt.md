@@ -37,7 +37,7 @@ The release harness expects these exact public scalar observables:
 - `VDAC_P`
 - `VDAC_N`
 
-The supplied release testbench uses plain scalar save names for these observables; do not depend on instance-qualified or aliased save names in the DUT behavior.
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 ## Public Behavior Checks
 

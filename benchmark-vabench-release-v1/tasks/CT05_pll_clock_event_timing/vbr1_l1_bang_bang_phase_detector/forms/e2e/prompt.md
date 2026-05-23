@@ -62,45 +62,26 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a voltage-domain Alexander-style bang-bang phase detector (BBPD) that captures
-near-edge data/clock alignment behavior.
+Write a voltage-domain Alexander-style bang-bang phase detector (BBPD) and
+matching transient testbench that expose data/clock edge-alignment behavior.
 
 Module name: `bbpd_data_edge_alignment_ref`.
 
-Requirements:
+Required DUT behavior:
 
-1. Ports: `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`
-2. Use event-driven edge handling with EVAS-compatible `cross()`
-3. Emit bounded UP/DN pulses according to data-edge alignment around the clock
-4. Keep UP and DN mostly non-overlapping
-5.  Stay in pure electrical voltage domain
+- Ports are exactly `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`.
+- `vdd` and `vss` are supply rails; `clk` and `data` are voltage-coded logic inputs.
+- `up`, `dn`, and `retimed_data` are voltage outputs driven between the supply rails.
+- Use EVAS-compatible event handling with `cross()` for clock/data edges.
+- Emit bounded `up` pulses when data edges lead the clock and bounded `dn`
+  pulses when data edges lag the clock.
+- Keep `up` and `dn` mostly non-overlapping; do not leave both asserted after
+  the alignment decision.
+- Update `retimed_data` on clock edges to the sampled data value.
 
-Expected behavior:
-- up pulse should fire when data edge leads clock edge
-- dn pulse should fire when data edge lags clock edge
-- up and dn should NOT overlap (overlap_frac < 2%)
-- At least 6 data edges should generate up/dn pulses
-Ports:
-- `vdd`: electrical
-- `vss`: electrical
-- `clk`: electrical
-- `data`: electrical
-- `up`: electrical
-- `dn`: electrical
-- `retimed_data`: electrical (power rail)
-- `vss`: inout electrical (power rail)
-- `clk`: input electrical
-- `data`: input electrical
-- `up`: output electrical
-- `dn`: output electrical
-- `retimed_data`: output electrical
+Required testbench behavior:
 
-Implement this in Verilog-A behavioral modeling.
-
-## Output Contract (MANDATORY)
-
-- Return exactly two fenced code blocks:
-  - first block: Verilog-A DUT (` ```verilog-a ... ``` `)
-  - second block: Spectre testbench (` ```spectre ... ``` `)
-- The Spectre testbench must include the DUT with `ahdl_include "<module>.va"`.
-- Use a single `tran` analysis and include the required `save` signals for checker evaluation.
+- Generate lead and lag windows with at least six observable data transitions.
+- Save plain scalar observables `clk`, `data`, `up`, `dn`, and `retimed_data`.
+- Run the public transient long enough for both lead-dominated and
+  lag-dominated windows to appear.

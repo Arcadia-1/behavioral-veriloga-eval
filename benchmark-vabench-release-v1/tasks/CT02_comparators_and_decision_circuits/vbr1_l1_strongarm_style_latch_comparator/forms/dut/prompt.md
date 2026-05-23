@@ -42,7 +42,10 @@ When this form generates a testbench, use plain scalar save names for these obse
 ## Public Behavior Checks
 
 - `outputs_toggle_nontrivially`
-- `decision_samples_at_0p75_1p75_2p75_3p75ns_match_PPNN`
+- `rising_clk_edge_latches_positive_decision`
+- `rising_clk_edge_latches_negative_decision`
+- `falling_clk_resets_both_outputs_low`
+- `latched_decision_holds_through_input_swap`
 
 ## Output Contract
 
@@ -61,6 +64,11 @@ rising edge of `CLK`, compare `VINP - VINN` after applying the optional
 `voffset` parameter. Drive `DCMPP` high and `DCMPN` low when the offset-adjusted
 differential input is positive; drive `DCMPN` high and `DCMPP` low when it is
 negative. On falling clock edges, reset both comparator outputs low.
+
+The model must be edge-latched, not transparent during the high clock phase:
+after a rising edge decision, later input polarity swaps must not change
+`DCMPP`/`DCMPN` until the next rising clock edge. Drive `LP` and `LM` as
+observable latch-state nodes consistent with `DCMPP` and `DCMPN`.
 
 Use voltage contributions and smoothed output transitions. Do not use current
 contributions, `ddt()`, or `idt()`.

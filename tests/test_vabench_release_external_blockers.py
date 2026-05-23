@@ -23,7 +23,7 @@ def test_external_blockers_explain_current_bridge_and_rerun_chain() -> None:
 
     assert report["bridge_status"] in {"ready", "blocked"}
     assert report["latest_rerun_summary_status"] in {"complete", "dry_run"}
-    assert report["latest_import_status"] == "imported"
+    assert report["latest_import_status"] == "partial_imported"
     assert report["queue_count"] == 0
     assert report["ready_staging_bundle_count"] == 0
     assert "B1_bridge_ssh_or_tunnel_reachability" not in blockers

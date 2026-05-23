@@ -16,20 +16,20 @@ def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
     assert contract["status"] == "ready"
     assert contract["release"] == "vabench-release-v1"
     assert contract["contract_version"] == "v1"
-    assert selection["package_entry_count"] == 75
-    assert selection["package_form_count"] == 259
-    assert selection["certified_entries"] == 75
-    assert selection["certified_forms"] == 259
+    assert selection["package_entry_count"] == 73
+    assert selection["package_form_count"] == 249
+    assert selection["certified_entries"] == 73
+    assert selection["certified_forms"] == 249
     assert selection["pending_entries"] == 0
     assert selection["pending_forms"] == 0
-    assert selection["scored_entries"] == 74
-    assert selection["scored_forms"] == 255
+    assert selection["scored_entries"] == 73
+    assert selection["scored_forms"] == 245
     assert selection["score_enabled"] is True
     assert selection["l0_conformance_excluded"] is True
     assert selection["unscored_rows_excluded"] is True
     assert score_gate["status"] == "score_enabled"
     assert score_gate["score_claim_allowed"] is True
-    assert score_gate["ready_to_finish_release"] is True
+    assert score_gate["ready_to_finish_release"] is False
 
 
 def test_evaluator_contract_declares_backend_and_result_semantics() -> None:

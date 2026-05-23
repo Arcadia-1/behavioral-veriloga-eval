@@ -50,7 +50,9 @@ Public stimulus/source nodes visible in the reference harness include:
 ## Public Behavior Checks
 
 - `outputs_toggle_nontrivially`
-- `decision_samples_at_0p75_1p75_2p75_3p75ns_match_PPNN`
+- `stimulus_exercises_positive_and_negative_edge_decisions`
+- `stimulus_swaps_inputs_during_evaluate_phase`
+- `falling_clk_reset_windows_are_observable`
 
 ## Output Contract
 
@@ -65,9 +67,18 @@ Write a Spectre testbench for a Verilog-A module named `cmp_strongarm` with
 ports `CLK VINN VINP DCMPN DCMPP LP LM VSS VDD`.
 
 The testbench should provide 0.9 V supply rails, a 1 GHz clock, and a small
-differential input around common-mode 0.45 V. The input polarity should be
-positive for the first two clock decisions and negative for the next two. Save
-the clock, differential inputs, and comparator outputs using plain signal names.
-Use a transient stop time that is not exactly on the final input transition.
+differential input around common-mode 0.45 V. It must demonstrate three
+properties in one run:
+
+- a positive differential sampled on a rising clock edge drives `out_p` high
+  and `out_n` low
+- a negative differential sampled on a rising clock edge drives `out_n` high
+  and `out_p` low
+- if the differential input polarity swaps while `CLK` remains high, the
+  already-latched decision holds until the falling clock reset
+
+Save the clock, differential inputs, and comparator outputs using plain signal
+names. Use a transient stop time that is not exactly on the final input
+transition.
 
 Return exactly one Spectre testbench file named `tb_cmp_strongarm_ref.scs`.

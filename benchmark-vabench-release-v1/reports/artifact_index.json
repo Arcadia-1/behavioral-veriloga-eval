@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-22",
+  "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "artifact_count": 29,
@@ -7,7 +7,7 @@
   "missing_artifacts": [],
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
-    "can_claim_top_level_coverage_plan": true,
+    "can_claim_top_level_coverage_plan": false,
     "can_claim_release_package_complete": true,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
@@ -27,7 +27,7 @@
       "kind": "tracker",
       "purpose": "75-entry L1/L2 release coverage target.",
       "claim_role": "coverage_plan",
-      "status": "ready",
+      "status": "incomplete",
       "certification_evidence": false,
       "notes": []
     },
@@ -38,7 +38,7 @@
       "kind": "package",
       "purpose": "Clean release package root with tasks, conformance, evidence, and reports.",
       "claim_role": "release_structure",
-      "status": "ready",
+      "status": "incomplete",
       "certification_evidence": false,
       "notes": []
     },
@@ -178,7 +178,7 @@
       "status": "pass",
       "certification_evidence": true,
       "notes": [
-        "dual_certified_release_task_count=259",
+        "dual_certified_release_task_count=249",
         "dual_pending_release_task_count=0",
         "evas_pass_spectre_fail_count=0"
       ]
@@ -240,7 +240,7 @@
       "kind": "report",
       "purpose": "Import gate for fresh dual rerun summaries.",
       "claim_role": "certification_import_gate",
-      "status": "imported",
+      "status": "partial_imported",
       "certification_evidence": false,
       "notes": [
         "Blocked, dry-run, or running summaries are not imported as certification evidence."
@@ -279,7 +279,7 @@
       "kind": "readiness_gate",
       "purpose": "Preflight gate for safely starting, importing, and finishing the fresh EVAS/Spectre release rerun.",
       "claim_role": "recovery_path",
-      "status": "ready_to_finish",
+      "status": "blocked",
       "certification_evidence": false,
       "notes": [
         "Readiness does not imply simulator certification evidence."
@@ -303,7 +303,7 @@
       "kind": "report",
       "purpose": "Same-slice EVAS/Spectre timing and debug evidence gate.",
       "claim_role": "speed_debug",
-      "status": "measured",
+      "status": "measured_subset",
       "certification_evidence": false,
       "notes": []
     },

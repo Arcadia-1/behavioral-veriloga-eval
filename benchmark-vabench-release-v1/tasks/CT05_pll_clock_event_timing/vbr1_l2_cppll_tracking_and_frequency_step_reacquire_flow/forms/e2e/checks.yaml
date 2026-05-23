@@ -14,6 +14,8 @@ sim_correct:
     - "vctrl_stays_bounded"
 
 parity:
-  required: true
-  spectre_result_path: "behavioral-veriloga-eval/results/gold-dual-suite-expansion-2026-04-19/cppll_freq_step_reacquire_smoke/spectre/tran_spectre.csv"
-  tolerance_notes: "Requires EVAS/Spectre dual validation on pre-lock, disturbance, and late-window relock behavior."
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."
+    - "Checks pre-lock, disturbance, post-step relock, and late-window tracking."

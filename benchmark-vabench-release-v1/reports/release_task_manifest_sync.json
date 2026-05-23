@@ -2,7 +2,7 @@
   "date": "2026-05-23",
   "release": "vabench-release-v1",
   "status": "pass",
-  "release_task_manifest_count": 265,
+  "release_task_manifest_count": 249,
   "rows": [
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
@@ -357,38 +357,6 @@
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l1_clocked_comparator",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_clocked_comparator/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_clocked_comparator",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_clocked_comparator/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_clocked_comparator",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_clocked_comparator/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_clocked_comparator",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_clocked_comparator/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
       "release_entry_id": "vbr1_l1_hysteresis_comparator",
       "form": "dut",
       "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/dut/release_task.json",
@@ -709,38 +677,6 @@
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l1_differential_output_driver",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_differential_output_driver",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_differential_output_driver",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_differential_output_driver",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
       "release_entry_id": "vbr1_l1_first_order_lowpass",
       "form": "dut",
       "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/dut/release_task.json",
@@ -800,38 +736,6 @@
       "release_entry_id": "vbr1_l1_higher_order_filter",
       "form": "e2e",
       "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_precision_rectifier",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_precision_rectifier",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_precision_rectifier",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_precision_rectifier",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -928,38 +832,6 @@
       "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
       "form": "e2e",
       "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"

@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
+    "results/ct05-dual-rerun-20260523-final/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
+    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
+    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -41,21 +41,21 @@
       ],
       "signals_compared": 4,
       "samples": 1200,
-      "max_rmse_v": 0.02886751345948129,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.0004166666666666667,
-      "p95_nrmse": 0.0008333333333333334,
-      "max_nrmse": 0.0008333333333333334,
+      "max_rmse_v": 0.0,
+      "max_abs_v": 0.0,
+      "mean_nrmse": 0.0,
+      "p95_nrmse": 0.0,
+      "max_nrmse": 0.0,
       "per_signal": {
         "div": {
-          "rmse_v": 0.02886751345948129,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.0008333333333333334,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.0008333333333333334
+          "mismatch_ratio": 0.0
         },
         "dn": {
           "rmse_v": 0.0,
@@ -68,14 +68,14 @@
           "mismatch_ratio": 0.0
         },
         "ref": {
-          "rmse_v": 0.02886751345948129,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.0008333333333333334,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.0008333333333333334
+          "mismatch_ratio": 0.0
         },
         "up": {
           "rmse_v": 0.0,
@@ -95,8 +95,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
     ]
   },
   "failures": [],

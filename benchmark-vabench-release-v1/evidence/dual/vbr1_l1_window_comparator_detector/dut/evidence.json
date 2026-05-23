@@ -14,11 +14,11 @@
   "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_window_comparator_detector/dut/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_window_comparator_detector/dut/gold",
+    "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_window_comparator_detector/dut/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_window_comparator_detector/dut/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_window_comparator_detector/dut/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/cross_hysteresis_window_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_cross_hysteresis_window_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/window_comparator_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_window_comparator_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "summary": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_window_comparator_detector/dut/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_window_comparator_detector/dut/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/vbr1_l1_window_comparator_detector/dut/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -43,7 +43,7 @@
       "samples": 1200,
       "max_rmse_v": 0.02886751345948129,
       "max_abs_v": 1.0,
-      "mean_nrmse": 0.00041666666666733223,
+      "mean_nrmse": 0.0004166666666673313,
       "p95_nrmse": 0.0008333333333333334,
       "max_nrmse": 0.0008333333333333334,
       "per_signal": {
@@ -58,10 +58,10 @@
           "mismatch_ratio": 0.0008333333333333334
         },
         "vin": {
-          "rmse_v": 1.1969406396357178e-15,
+          "rmse_v": 1.1953506292078772e-15,
           "max_abs_v": 4.1078249888657123e-14,
           "span_v": 0.8992493744787324,
-          "nrmse": 1.3310441726240266e-15,
+          "nrmse": 1.3292760196811764e-15,
           "kind": "analog"
         }
       }
@@ -72,8 +72,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/cross_hysteresis_window_ref.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_cross_hysteresis_window_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/window_comparator_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_window_comparator_ref.scs"
     ]
   },
   "failures": [],

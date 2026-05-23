@@ -5,7 +5,7 @@
 - Form: `e2e`
 - Level: `L2`
 - Category: Comparators and Decision Circuits
-- Base function: Comparator measurement flow
+- Base function: Single-ramp comparator offset measurement flow
 - Domain: `voltage`
 - Target artifact(s): `comparator_offset_search_ref.va`, `tb_comparator_offset_search_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
@@ -18,14 +18,14 @@
 
 ## Public Verilog-A Interface
 
-- `comparator_offset_search_ref.va` declares module `comparator_offset_search_ref` with positional ports: `vdd`, `vss`, `inp`, `inn`, `outp`.
+- `comparator_offset_search_ref.va` declares module `comparator_offset_search_ref` with positional ports: `vdd`, `vss`, `inp`, `inn`, `outp`, `trip_v`, `offset_est`, `valid`.
 
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=100n maxstep=100p errpreset=conservative
+tran tran stop=100n maxstep=50p errpreset=conservative
 ```
 
 The release harness expects these exact public scalar observables:
@@ -33,6 +33,9 @@ The release harness expects these exact public scalar observables:
 - `inp`
 - `inn`
 - `outp`
+- `trip_v`
+- `offset_est`
+- `valid`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -45,9 +48,12 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `switching_point_at_offset`
-- `output_low_below_offset`
-- `output_high_above_offset`
+- `comparator_output_low_before_trip`
+- `comparator_output_high_after_trip`
+- `measurement_valid_latches_after_trip`
+- `trip_voltage_near_inn_plus_offset`
+- `offset_estimate_near_static_offset`
+- `measurement_outputs_hold_after_valid`
 
 ## Output Contract
 
@@ -60,17 +66,23 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a pure voltage-domain Verilog-A comparator with a built-in static offset.
+Write a pure voltage-domain Verilog-A single-ramp comparator offset
+measurement flow. This is an L2 task: the generated artifact must include both
+the comparator decision and measurement observables that latch the detected
+trip voltage and offset estimate during one controlled transient input ramp.
 
 Module name: `comparator_offset_search_ref`.
 
 Requirements:
 
-1. Ports: `vdd`, `vss`, `inp`, `inn`, `outp`
+1. Ports, in order: `vdd`, `vss`, `inp`, `inn`, `outp`, `trip_v`, `offset_est`, `valid`
 2. Built-in offset parameter `vos = 5m`
-3. Output should switch high when `V(inp) - V(inn) > vos`
-4. Use EVAS-compatible `cross()` events and `transition()`
-5. The benchmark testbench will ramp `inp` and verify that the crossing occurs near `inn + vos`
+3. Comparator output `outp` switches high when `V(inp, vss) - V(inn, vss) > vos`
+4. On the rising threshold crossing, latch `trip_v = V(inp, vss)` and `offset_est = V(inp, vss) - V(inn, vss)`
+5. Drive `valid` low before the first rising crossing and high after the measurement latches
+6. Keep `trip_v` and `offset_est` stable after `valid` goes high
+7. Use EVAS-compatible `@(initial_step)`, directional `cross()` events, and `transition()`
+8. The benchmark testbench performs a single ramp of `inp` from 0.490 V toward 0.520 V with `inn = 0.500 V`; the expected latched trip voltage is near 0.505 V and the expected offset estimate is near 0.005 V
 
 Ports:
 - `vdd`: electrical
@@ -78,7 +90,6 @@ Ports:
 - `inp`: electrical
 - `inn`: electrical
 - `outp`: electrical (power rail)
-- `vss`: inout electrical (power rail)
-- `inp`: input electrical
-- `inn`: input electrical
-- `outp`: output electrical
+- `trip_v`: electrical measurement voltage
+- `offset_est`: electrical measurement voltage
+- `valid`: electrical validity flag on the power rail

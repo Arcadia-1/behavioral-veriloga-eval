@@ -1,6 +1,6 @@
-# Selected Source Task: cross_hysteresis_window_smoke
+# Selected Source Task: window_comparator_smoke
 
-- Source path: `tasks/end-to-end/voltage/cross_hysteresis_window_smoke`
+- Source path: `tasks/end-to-end/voltage/window_comparator_smoke`
 - Form: `e2e`
 - prompt.md: `True`
 - meta.json: `True`
