@@ -1,6 +1,6 @@
 # vaBench Release External Blockers
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report isolates the non-certification blockers that prevent the
 release package from becoming fully paper-claimable. It is a recovery

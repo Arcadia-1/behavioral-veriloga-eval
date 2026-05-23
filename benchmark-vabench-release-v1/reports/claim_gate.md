@@ -1,6 +1,6 @@
 # vaBench Release Claim Gate
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report is the paper-facing claim ledger. It separates what may be
 claimed from the current release artifacts from what is still blocked.

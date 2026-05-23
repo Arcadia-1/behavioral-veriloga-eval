@@ -1,6 +1,6 @@
 # vaBench Release Paper Tables
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 These tables are generated from the release reports and claim gate. They
 are designed for paper drafting without turning pending evidence into

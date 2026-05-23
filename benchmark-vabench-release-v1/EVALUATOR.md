@@ -1,6 +1,6 @@
 # vaBench Release Evaluator Contract
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This contract describes how the release package is consumed by evaluators
 and paper-facing baselines. It does not create certification evidence.

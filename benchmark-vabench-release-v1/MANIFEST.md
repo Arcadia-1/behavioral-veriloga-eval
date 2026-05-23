@@ -1,6 +1,6 @@
 # vaBench Release Package Manifest
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This package-level manifest indexes every release entry and materialized
 form. It is a navigation and machine-consumption layer, not simulator

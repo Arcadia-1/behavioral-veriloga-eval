@@ -1,6 +1,6 @@
 # vaBench Release Finish Readiness
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report states whether it is safe to start or import the fresh
 EVAS/Spectre release rerun. It is a readiness gate, not simulator
