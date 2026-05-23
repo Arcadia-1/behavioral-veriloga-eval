@@ -1,0 +1,17 @@
+syntax:
+  must_include:
+    - "@(timer("
+    - "@(cross("
+    - "transition("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "sample_phase_after_start_edges"
+    - "compare_phase_ends_on_cmp_done_or_timeout"
+    - "readout_and_done_follow_compare_phase"
+parity:
+  required: true
+  tolerance_notes: "Task-aware parity compares sample, compare, readout, done, and state-monitor timing across normal and timeout transactions."

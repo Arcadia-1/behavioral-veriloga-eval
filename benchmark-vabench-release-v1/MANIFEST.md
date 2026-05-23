@@ -11,18 +11,18 @@ certification evidence.
 | Metric | Value |
 | --- | ---: |
 | status | `in_progress` |
-| planned entries | 73 |
-| entries | 73 |
-| forms | 249 |
-| content denominator entries | 73 |
+| planned entries | 72 |
+| entries | 72 |
+| forms | 245 |
+| content denominator entries | 72 |
 | content-excluded entries | 0 |
-| content denominator forms | 249 |
+| content denominator forms | 245 |
 | content-excluded forms | 0 |
-| certified entries | 73 |
-| certified forms | 249 |
+| certified entries | 72 |
+| certified forms | 245 |
 | pending entries | 0 |
 | pending forms | 0 |
-| scored entries | 73 |
+| scored entries | 72 |
 | scored forms | 245 |
 | L0 conformance cases | 4 |
 
@@ -30,13 +30,13 @@ certification evidence.
 
 | Status | Count |
 | --- | ---: |
-| `certified` | 73 |
+| `certified` | 72 |
 
 ## Form Status Counts
 
 | Status | Count |
 | --- | ---: |
-| `certified` | 249 |
+| `certified` | 245 |
 
 ## Claim Boundary
 

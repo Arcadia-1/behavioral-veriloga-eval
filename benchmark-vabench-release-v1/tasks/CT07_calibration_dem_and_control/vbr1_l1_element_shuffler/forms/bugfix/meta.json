@@ -42,8 +42,8 @@
     "fixed_source": "gold/dut_fixed.va",
     "buggy_testbench": "gold/tb_element_shuffler_buggy.scs",
     "fixed_testbench": "gold/tb_element_shuffler_ref.scs",
-    "defect": "The buggy implementation drives outputs directly from the internal state and omits the intended shuffled output mapping.",
-    "repair": "Restore the shuffled mapping so the public active-output sequence is 1,2,3,0,1,2 after reset release."
+    "defect": "The buggy implementation drives outputs directly from the internal state and omits the intended non-monotonic shuffled output mapping.",
+    "repair": "Restore the shuffled mapping so the public active-output sequence is 2,0,3,1,2,0 after reset release."
   },
   "evidence": {
     "historical_evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_element_shuffler_bugfix/evas_result.json",

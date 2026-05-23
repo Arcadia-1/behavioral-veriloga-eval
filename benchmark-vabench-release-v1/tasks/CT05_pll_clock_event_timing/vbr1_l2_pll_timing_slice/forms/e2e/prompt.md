@@ -63,8 +63,8 @@ Do not include explanatory prose outside the source artifact contents.
 
 Write a Verilog-A module named `cppll_timer_ref`.
 
-Create a timer-based voltage-domain charge-pump style PLL (CPPLL) behavioral
-model in Verilog-A, then produce a minimal EVAS-compatible Spectre testbench
+Create a voltage-domain charge-pump style PLL (CPPLL) behavioral
+model in Verilog-A with a behavioral DCO timing loop, then produce a minimal Spectre transient testbench
 for a steady tracking slice.
 
 This L2 task is the base closed-loop timing slice. It should demonstrate
@@ -85,7 +85,7 @@ Behavioral intent:
 Implementation constraints:
 
 - pure voltage-domain Verilog-A only
-- EVAS-compatible syntax
+- portable voltage-domain behavioral Verilog-A syntax
 - use `@(timer(...))` for the DCO timing loop
 - `fb_clk`, `dco_clk`, and `lock` should be driven as voltage outputs
 - `ref_clk`, `fb_clk`, `lock`, and `vctrl_mon` must appear in the waveform CSV

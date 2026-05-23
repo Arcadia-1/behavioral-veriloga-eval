@@ -57,7 +57,7 @@ and sample/hold memory. Existing experimental assets are only implementation
 inputs that can be accepted, rewritten, or rejected against this contract.
 
 External references can support individual circuit ingredients, but not this
-exact nine-way split:
+exact eight-way split:
 
 - Accellera Verilog-AMS LRM defines the language as a behavioral language for
   analog/mixed-signal systems, but does not prescribe a benchmark taxonomy.
@@ -69,7 +69,7 @@ exact nine-way split:
   complete systems assembled from components such as comparator, DAC, VCO,
   divider, PFD/charge pump, loop filter, and sample/hold.
 
-Why these nine categories belong in the release:
+Why these eight categories belong in the release:
 
 | Category | Why it exists in vaBench | Design rationale |
 | --- | --- | --- |
@@ -77,7 +77,6 @@ Why these nine categories belong in the release:
 | Comparators and Decision Circuits | Comparators are core mixed-signal decision elements and appear inside ADCs, detectors, and calibration loops. | Covers threshold, offset, delay, clocked reset, and event-decision behavior. |
 | PLL / Clock / Event Timing | PLL-like blocks stress timers, edge ordering, phase accumulation, dividers, and lock logic. | Covers event scheduling and phase/frequency behavior within voltage-domain modeling. |
 | Calibration, DEM, and Control | Calibration controllers and DEM pointers are common behavioral abstractions. | Covers feedback update, bounded control, pointer scheduling, and calibration loops. |
-| Digital and Event-Driven Logic | Verilog-A behavioral models often encode voltage-domain digital state machines using `cross()` and `timer()`. | Covers stateful logic, reset, counters, pulses, and deterministic sequences. |
 | Measurement and Testbench Instrumentation | Benchmark tasks need measurable outputs, metrics, and side effects such as file outputs. | Covers measurement helpers, metric generation, and testbench observability. |
 | Stimulus and Sources | Testbench-generation tasks need reusable ramps, clocks, dither, and PWL-like sources. | Covers deterministic stimulus generation and source-driven verification flows. |
 | Analog Behavioral Signal Conditioning | Filters, clamps, rectifiers, slew limiters, and integrators are simple but important voltage-domain blocks. | Covers continuous-valued transformations without expanding into KCL/KVL simulation. |
@@ -308,27 +307,23 @@ the same "clocked signed update and clamp" kernel. They may be useful tasks, but
 the paper should not count them as unrelated circuit functions without redesign
 or explicit role separation.
 
-### 5. Digital and Event-Driven Logic
+### Former Control/Readout Bucket Split
 
-Internal implementation notes, not release rationale: reusable source traces exist
-for clock division, basic digital behavior, and deterministic sequences.
+The previous standalone control/readout bucket has been removed from the release taxonomy. Its useful analog-facing tasks now live in concrete circuit families:
 
-| Required function | Complete circuit form | Implementation source trace | Release action |
-| --- | --- | --- | --- |
-| Basic gates and DFFs | simple combinational/sequential voltage-domain logic. | Prototype coverage exists but is not release-ready. | Add only if low-level coverage is needed. |
-| Edge detector / pulse generator | crossing event emits pulse. | `edge_detector`. | Keep. |
-| Debounce latch | edge arms timer, stable input qualifies output. | `debounce_latch`. | Keep. |
-| One-shot timer | trigger schedules fixed pulse and reset cancels. | `one_shot_timer`. | Keep. |
-| Retriggerable one-shot pulse stretcher | trigger burst refreshes the active pulse deadline; output stays high until the latest trigger plus width. | `vbr1_l1_event_pulse_stretcher`. | Keep as a one-shot-family expansion distinct from non-overlap one-shot timer. |
-| Programmable divider | code-driven stateful divider. | `resettable_counter_divider`. | Keep. |
-| LFSR / PRBS | deterministic pseudo-random sequence. | Prototype coverage exists but is not release-ready. | Add as digital/event expansion. |
-| Complete event controller | sequencer orchestrates multiple outputs under reset and timing. | Partly covered by selector/shuffler/SAR. | Add protocol-like event controller later. |
+| Function | Current category | Rationale |
+| --- | --- | --- |
+| Comparator debounce latch | Comparators and Decision Circuits | It qualifies comparator decisions and reset behavior. |
+| ADC code capture register | Data Converters | It captures conversion-result code and overrange state at the ADC readout boundary. |
+| ADC/readout serializer frame aligner | Data Converters | It serializes converter/readout words with frame alignment. |
+| Serial readout deserializer | Data Converters | It reconstructs framed converter/readout words. |
+| Conversion event controller | Data Converters | It sequences sample, compare, readout, and done phases. |
+| Readout frame-monitor flow | Data Converters | It checks serializer/readout reconstruction as a converter flow. |
+| PRBS stimulus/dither generator | Stimulus and Sources | It is reusable deterministic stimulus support. |
 
-Audit note: digital/event tasks are valuable for EVAS because they stress
-`cross()`, `timer()`, state updates, and voltage-domain logic without needing
-KCL/KVL.
+Pure edge detector, pulse stretcher, one-shot, and parity-only readout helpers are not release functions in this package.
 
-### 6. Measurement and Testbench Instrumentation
+### 5. Measurement and Testbench Instrumentation
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for gain extraction, file I/O, and timing-boundary checks.
@@ -345,7 +340,7 @@ Audit note: measurement tasks should specify both waveform observables and
 metric side effects. Pure file or exact final-step semantics should be
 conformance unless tied to a measurement circuit role.
 
-### 7. Stimulus and Sources
+### 6. Stimulus and Sources
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for burst clocks, deterministic noise-like stimulus, and ramps.
@@ -362,7 +357,7 @@ Audit note: source/stimulus functions are important for testbench generation
 and EVAS debug value, but the final release should include them only when the
 public task contract is deterministic.
 
-### 8. Analog Behavioral Signal Conditioning
+### 7. Analog Behavioral Signal Conditioning
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for simple signal-conditioning L1 blocks.
@@ -379,7 +374,7 @@ for simple signal-conditioning L1 blocks.
 Audit note: these are simple but valuable because they test continuous-valued
 behavior using only voltage-domain assignments and event/timer updates.
 
-### 9. Sample, Hold, and Analog Memory
+### 8. Sample, Hold, and Analog Memory
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for ideal sample/hold behavior in converter flows.

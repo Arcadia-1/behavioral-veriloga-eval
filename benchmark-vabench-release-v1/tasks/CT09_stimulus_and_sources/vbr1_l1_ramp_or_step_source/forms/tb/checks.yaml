@@ -7,9 +7,9 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "periodic_phase_ramp_wraps"
+    - "guard_pulse_repeats_each_period"
+    - "guard_pulse_width_fraction"
 parity:
   reference: "spectre"
   status: "pass"

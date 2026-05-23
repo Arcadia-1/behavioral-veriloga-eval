@@ -64,8 +64,8 @@ Do not include explanatory prose outside the source artifact contents.
 
 Write a Verilog-A module named `comparator`.
 
-Create a voltage-domain comparator in Verilog-A, then produce a minimal EVAS
-testbench and run a smoke simulation.
+Create a voltage-domain comparator in Verilog-A, then produce a minimal Spectre
+transient testbench and run a smoke simulation.
 
 Behavioral intent:
 

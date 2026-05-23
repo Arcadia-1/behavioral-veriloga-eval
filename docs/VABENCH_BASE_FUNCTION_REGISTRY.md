@@ -9,7 +9,8 @@ Source table: `docs/VABENCH_BASE_FUNCTION_REGISTRY.csv`.
 
 Selected top-level additions are tracked in
 `docs/VABENCH_LEVEL_COVERAGE_TABLE.md`. The current clean release package has
-materialized 75 L1/L2 package entries after removing duplicate L2 kernels, but
+materialized 72 L1/L2 package entries after removing duplicate kernels and the
+standalone control/readout bucket, but
 EVAS/Spectre release certification is still partial. The detailed
 completed-content inventory is `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md`.
 
@@ -35,7 +36,7 @@ This registry adds one explicit decision per base:
 | Removed pending redesign | 1 | `offset_calibration_fsm` is removed from the release count for now. It can return only as a true multi-state offset-search controller. |
 
 These numbers are registry decisions, not final benchmark scores. The current
-release package has materialized the selected 75-entry target, but release
+release package has materialized the selected 72-entry target, but release
 certification is still partial. Score, speed, and model-baseline claims remain
 disabled until their own claim gates are explicitly enabled.
 
@@ -43,10 +44,10 @@ The package asset target is larger than this current-seed registry:
 
 | Pool | Count | Where tracked |
 | --- | ---: | --- |
-| Current promoted L1 seed functions | 28 | This registry. |
+| Current promoted L1 seed functions | 24 | `docs/VABENCH_RELEASE_SEED_MANIFEST.csv`. |
 | Promoted top-level L1 additions | 32 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Selected L2 package targets | 15 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Top-level L1/L2 package target | 75 | 28 current L1 seeds + 32 promoted L1 additions + 15 L2 package targets. |
+| Selected L2 package targets | 16 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
+| Top-level L1/L2 package target | 72 | 24 current L1 seeds + 32 promoted L1 additions + 16 L2 package targets. |
 
 ## Identifier Policy
 
@@ -89,7 +90,8 @@ by category and form.
 | `file_metric_writer` | Count with stronger checker. | Require a one-line `metric.out` value and compare it to waveform crossing time. |
 | `settling_time_measurement_tb` | Count with explicit metric semantics. | Define tolerance band, settle window, and metric artifact behavior. |
 | `vco_phase_integrator` | Count with tolerance policy. | Public prompt should describe final phase/frequency behavior; startup-sample parity belongs in evaluator policy. |
-| `retriggerable_one_shot_pulse_stretcher` | Count as a promoted L1 addition, not as part of the original 28-seed registry. | One-shot-family pulse stretcher; unlike `one_shot_timer`, trigger edges during an active pulse refresh the falling deadline. |
+| `adc_code_capture_register` | Count after fresh dual validation. | Data-converter readout-boundary capture of conversion code plus overrange state. |
+| `serial_readout_deserializer` | Count after fresh dual validation. | Data-converter readout reconstruction of framed serial conversion bits into a parallel word. |
 
 ## Function-Level Review Contract
 
@@ -109,7 +111,6 @@ the top-level review lens for future manual audits.
 | DEM / selector / shuffler | Legal pointer, rotation, or element-selection sequence. | Clock/reset, pointer bits, cell enables, selected element outputs. | Non-rotating selection, illegal one-hot/window width, missing wrap, or unchanged element stress pattern. |
 | Measurement/testbench tasks | Metric artifact agrees with waveform semantics. | Waveform columns, `metric.out` or measurement output, crossing/settling windows. | Missing artifact, multiple/ambiguous records, metric-waveform mismatch, or final-row artifact passing. |
 | Source/stimulus tasks | Requested waveform schedule or deterministic sequence is produced. | Source waveform, burst edges, seed/state outputs. | Wrong amplitude, wrong burst count, non-reproducible sequence, or underspecified timing. |
-| Retriggerable one-shot pulse stretcher | Active pulse remains high until the most recent trigger plus the specified width; reset cancels the active pulse. | `trig`, `rst`, `pulse`, burst trigger timing. | Ignoring retriggers while active, falling after the first trigger deadline, missing reset cancellation, or checking only one isolated trigger. |
 | Signal conditioning | Analog transform has expected gain, filtering, clamping, rectification, or slew behavior. | Input/output waveforms and optional control/reset. | Pass-through behavior, wrong gain sign/magnitude, missing lag, clamp/slew violations, or unbounded output. |
 | Sample/hold memory | Sample instant, hold behavior, and droop/aperture semantics. | Input waveform, sampling clock, held output. | Transparent-through behavior during hold, missing droop/leakage when required, or wrong aperture delay. |
 | L2 chains | Interaction between named L1 blocks, not only individual module compilation. | Cross-block signals, final output, chain metric if present. | Generic L1-only checks, missing inter-block dependency, or metrics inconsistent with the composed flow. |
@@ -118,7 +119,7 @@ the top-level review lens for future manual audits.
 
 | Historical hint | Registry mapping |
 | --- | --- |
-| `analog-events` | `Digital and Event-Driven Logic` unless extracted as L0 conformance. |
+| `analog-events` | Map to the concrete analog-facing circuit family, such as Data Converters, Comparators, PLL Timing, Stimulus, or L0 conformance. |
 | `phase-detector` | `PLL / Clock / Event Timing`. |
 | `signal-source` for clamp/slew behavior | `Analog Behavioral Signal Conditioning`. |
 | `measurement` helper rows | `Measurement and Testbench Instrumentation`, not generic `tb-generation`. |

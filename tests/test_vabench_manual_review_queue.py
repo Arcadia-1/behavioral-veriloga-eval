@@ -15,7 +15,7 @@ def test_manual_review_queue_covers_every_clean_release_entry_once() -> None:
     expected_ids = {entry["release_entry_id"] for entry in manifest["entries"]}
     rows = list(csv.DictReader(QUEUE.open(encoding="utf-8")))
 
-    assert len(rows) == 73
+    assert len(rows) == 72
     assert {row["entry_id"] for row in rows} == expected_ids
     assert all(row["risk"] in {"P0", "P1", "P2", "P3"} for row in rows)
     assert all(row["human_review_question"] for row in rows)

@@ -1,12 +1,12 @@
 # vaBench Release Checksum Manifest
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| files | 3434 |
-| total bytes | 89104515 |
+| files | 3401 |
+| total bytes | 89307923 |
 
 ## Category Counts
 
@@ -15,7 +15,7 @@ Date: 2026-05-23
 | `l0_conformance` | 22 |
 | `other` | 6 |
 | `release_docs` | 3 |
-| `release_evidence` | 1246 |
-| `release_reports` | 144 |
-| `release_tasks` | 1980 |
+| `release_evidence` | 1226 |
+| `release_reports` | 156 |
+| `release_tasks` | 1955 |
 | `schemas` | 33 |

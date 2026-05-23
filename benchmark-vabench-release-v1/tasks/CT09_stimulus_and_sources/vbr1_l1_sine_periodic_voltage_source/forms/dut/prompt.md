@@ -37,7 +37,7 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `check_multitone`
+- `multitone_waveform_matches_public_samples`
 
 ## Output Contract
 

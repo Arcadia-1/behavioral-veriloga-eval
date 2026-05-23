@@ -38,7 +38,8 @@ The release harness expects these exact public scalar observables:
 - `code_2`
 - `code_1`
 - `code_0`
-- `\`
+- `cell_en_15` through `cell_en_0`
+- `ptr_15` through `ptr_0`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -50,9 +51,10 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `transient_analysis_present`
-- `public_observables_saved`
-- `dut_or_system_instantiated`
+- `pointer_advances_by_sampled_input_code`
+- `cell_enable_window_matches_effective_code_plus_lsb_boundary`
+- `pointer_output_is_one_hot`
+- `wraparound_and_multi_code_coverage`
 
 ## Output Contract
 

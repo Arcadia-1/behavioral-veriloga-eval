@@ -10,7 +10,7 @@ README = ROOT / "benchmark-vabench-release-v1" / "README.md"
 def test_package_readme_documents_claim_boundaries_and_entry_reports() -> None:
     text = README.read_text(encoding="utf-8")
 
-    assert "75-entry L1/L2" in text
+    assert "72-entry L1/L2" in text
     assert "vaBench release target" in text
     assert "not part of the scored benchmark" in text
     assert "reports/claim_gate.json" in text
@@ -20,7 +20,7 @@ def test_package_readme_documents_claim_boundaries_and_entry_reports() -> None:
     assert "reports/finish_readiness.json" in text
     assert "MANIFEST.json" in text
     assert "EVALUATOR.json" in text
-    assert "Do not claim full release certification" in text
+    assert "Do not claim EVAS speedup" in text
 
 
 def test_package_readme_documents_reproducible_commands_and_bridge_gate() -> None:

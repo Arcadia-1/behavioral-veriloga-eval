@@ -3144,6 +3144,143 @@ def check_serializer_frame_alignment(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_serializer_frame_monitor_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "frame", "sout", "word_ok", "frame_error", "word_mon"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing serializer/frame-monitor observables"
+
+    base_ok, base_note = check_serializer_frame_alignment(rows)
+    if not base_ok:
+        return False, f"serializer_alignment_failed:{base_note}"
+
+    vth = 0.45
+    times = [r["time"] for r in rows]
+    word_ok_vals = [r["word_ok"] for r in rows]
+    err_vals = [r["frame_error"] for r in rows]
+    word_mon_vals = [r["word_mon"] for r in rows]
+    ok_edges = rising_edges(word_ok_vals, times, threshold=vth)
+    if len(ok_edges) < 2:
+        return False, f"word_ok_edges={len(ok_edges)}"
+    err_high = sum(1 for val in err_vals if val > vth)
+    if err_high:
+        return False, f"frame_error_high_samples={err_high}"
+
+    expected_words = [0xA5, 0x3C]
+    observed_levels: list[float] = []
+    mismatches = 0
+    for edge_t, word in zip(ok_edges[:2], expected_words):
+        target_t = edge_t + 1.0e-9
+        sample_idx = next((idx for idx, t in enumerate(times) if t >= target_t), len(rows) - 1)
+        observed = word_mon_vals[sample_idx]
+        expected = 0.9 * word / 255.0
+        observed_levels.append(observed)
+        if abs(observed - expected) > 0.08:
+            mismatches += 1
+    if mismatches:
+        return False, (
+            f"word_mon_mismatches={mismatches} "
+            f"levels={[round(v, 3) for v in observed_levels]}"
+        )
+
+    return True, (
+        f"{base_note} word_ok_edges={len(ok_edges)} "
+        f"word_mon={[round(v, 3) for v in observed_levels]} frame_error_high=0"
+    )
+
+
+def _first_row_at_or_after(rows: list[dict[str, float]], target_t: float) -> dict[str, float]:
+    return next((row for row in rows if row.get("time", 0.0) >= target_t), rows[-1])
+
+
+def _clock_edges_with_load(rows: list[dict[str, float]], load_key: str = "load", threshold: float = 0.45) -> list[float]:
+    if not rows or "clk" not in rows[0] or load_key not in rows[0]:
+        return []
+    times = [row["time"] for row in rows]
+    clk = [row["clk"] for row in rows]
+    edges: list[float] = []
+    for idx in range(1, len(rows)):
+        if clk[idx - 1] < threshold <= clk[idx] and rows[idx].get(load_key, 0.0) > threshold:
+            edges.append(times[idx])
+    return edges
+
+
+def check_adc_code_capture_register(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time", "clk", "load", "over_lo", "over_hi",
+        "din3", "din2", "din1", "din0",
+        "bit3", "bit2", "bit1", "bit0", "valid", "overrange", "code_mon",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing adc code capture observables"
+
+    edges = _clock_edges_with_load(rows)
+    if len(edges) < 3:
+        return False, f"load_qualified_clk_edges={len(edges)}"
+
+    expected = [(0x3, False), (0xC, False), (0xF, True)]
+    mismatches: list[str] = []
+    observed: list[str] = []
+    for edge_t, (word, over) in zip(edges[:3], expected):
+        row = _first_row_at_or_after(rows, edge_t + 1.0e-9)
+        level = row["code_mon"]
+        want = 0.9 * word / 15.0
+        observed.append(f"{word:X}:{level:.3f}/{row['overrange']:.1f}")
+        if row["valid"] <= 0.45:
+            mismatches.append(f"word{word:X}_valid_low")
+        if abs(level - want) > 0.08:
+            mismatches.append(f"word{word:X}_code_mon={level:.3f}")
+        if (row["overrange"] > 0.45) != over:
+            mismatches.append(f"word{word:X}_overrange={row['overrange']:.3f}")
+        for bit_idx in range(4):
+            bit_val = row[f"bit{bit_idx}"] > 0.45
+            if bit_val != bool((word >> bit_idx) & 1):
+                mismatches.append(f"word{word:X}_bit{bit_idx}")
+
+    hold_row = _first_row_at_or_after(rows, edges[1] + 15.0e-9)
+    if abs(hold_row["code_mon"] - 0.9 * 0xC / 15.0) > 0.08:
+        mismatches.append(f"hold_drift_after_second_load={hold_row['code_mon']:.3f}")
+
+    if mismatches:
+        return False, ";".join(mismatches)
+    return True, f"adc_code_capture_register ok {' '.join(observed)}"
+
+
+def check_serial_readout_deserializer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    serial_key = "serial_in" if rows and "serial_in" in rows[0] else "sin"
+    required = {
+        "time", "clk", "frame", serial_key, "bit3", "bit2", "bit1", "bit0", "word_valid", "word_mon",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing serial readout deserializer observables"
+
+    times = [row["time"] for row in rows]
+    valid_edges = rising_edges([row["word_valid"] for row in rows], times)
+    if len(valid_edges) < 2:
+        return False, f"word_valid_edges={len(valid_edges)}"
+
+    expected = [0x9, 0x6]
+    mismatches: list[str] = []
+    observed: list[str] = []
+    for edge_t, word in zip(valid_edges[:2], expected):
+        row = _first_row_at_or_after(rows, edge_t + 1.0e-9)
+        level = row["word_mon"]
+        observed.append(f"{word:X}:{level:.3f}")
+        if abs(level - 0.9 * word / 15.0) > 0.08:
+            mismatches.append(f"word{word:X}_word_mon={level:.3f}")
+        for bit_idx in range(4):
+            bit_val = row[f"bit{bit_idx}"] > 0.45
+            if bit_val != bool((word >> bit_idx) & 1):
+                mismatches.append(f"word{word:X}_bit{bit_idx}")
+
+    frame_edges = rising_edges([row["frame"] for row in rows], times)
+    if len(frame_edges) < 2:
+        mismatches.append(f"frame_edges={len(frame_edges)}")
+
+    if mismatches:
+        return False, ";".join(mismatches)
+    return True, f"serial_readout_deserializer ok {' '.join(observed)}"
+
+
 def check_xor_pd(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not {"ref", "div", "pd_out"}.issubset(rows[0]):
         return False, "missing ref/div/pd_out"
@@ -3539,20 +3676,70 @@ def check_gray_counter_one_bit_change(rows: list[dict[str, float]]) -> tuple[boo
 
 
 def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    """PRBS-7: check serial output has many transitions and ~50% high fraction."""
+    """PRBS-7: require the exposed state bus to follow the public tap relation."""
     if not rows:
         return False, "empty"
-    serial_col = next((k for k in rows[0] if k.lower() in {"prbs_out", "serial", "serial_out", "dout", "q_out", "q"}), None)
-    if serial_col is None:
-        return False, f"missing serial column; keys={list(rows[0].keys())[:8]}"
-    post = [r[serial_col] for r in rows if r["time"] > 2e-8]
+    required = {"clk", "rst_n", "en", "serial_out"} | {f"state_{idx}" for idx in range(7)}
+    missing = required - set(rows[0])
+    if missing:
+        return False, f"missing_columns={','.join(sorted(missing))}"
+
+    def logic(row: dict[str, float], name: str) -> int | None:
+        value = row[name]
+        if value >= 0.7:
+            return 1
+        if value <= 0.2:
+            return 0
+        return None
+
+    def state_code(row: dict[str, float]) -> int | None:
+        code = 0
+        for idx in range(7):
+            bit = logic(row, f"state_{idx}")
+            if bit is None:
+                return None
+            code |= bit << idx
+        return code
+
+    post = [row for row in rows if row["time"] > 2e-9 and row["rst_n"] > 0.7 and row["en"] > 0.7]
     if len(post) < 20:
         return False, "too_few_post_init_samples"
-    binary = [1 if v > 0.45 else 0 for v in post]
-    transitions = sum(1 for i in range(len(binary) - 1) if binary[i] != binary[i + 1])
-    hi_frac = sum(binary) / len(binary)
-    ok = transitions >= 20 and 0.2 < hi_frac < 0.8
-    return ok, f"transitions={transitions} hi_frac={hi_frac:.3f}"
+
+    stable_codes: list[int] = []
+    serial_bits: list[int] = []
+    for row in post:
+        code = state_code(row)
+        serial = logic(row, "serial_out")
+        if code is None or serial is None:
+            continue
+        if serial != ((code >> 6) & 1):
+            return False, f"serial_state_mismatch code={code}"
+        if not stable_codes or stable_codes[-1] != code:
+            stable_codes.append(code)
+            serial_bits.append(serial)
+
+    if len(stable_codes) < 10:
+        return False, f"unique_state_steps={len(stable_codes)}"
+    if 0 in stable_codes:
+        return False, "entered_zero_state"
+
+    mismatches = 0
+    checked = 0
+    for current, observed_next in zip(stable_codes, stable_codes[1:]):
+        # Public reference recurrence used by the release gold:
+        # new state_0 = old state_6 XOR old state_5; higher bits shift up.
+        feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
+        expected_next = ((current & 0x3F) << 1) | feedback
+        checked += 1
+        if observed_next != expected_next:
+            mismatches += 1
+
+    serial_transitions = sum(1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1])
+    ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
+    return ok, (
+        f"state_steps={len(stable_codes)} checked_transitions={checked} "
+        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+    )
 
 
 def check_therm2bin(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -4561,6 +4748,81 @@ def check_simultaneous_event_order(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def check_conversion_event_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "rst",
+        "start",
+        "cmp_done",
+        "sample_en",
+        "compare_en",
+        "readout_en",
+        "done",
+        "state_mon",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing conversion-controller observables"
+
+    vth = 0.45
+    times = [r["time"] for r in rows]
+    start_edges = rising_edges([r["start"] for r in rows], times, threshold=vth)
+    cmp_edges = rising_edges([r["cmp_done"] for r in rows], times, threshold=vth)
+    if len(start_edges) != 2:
+        return False, f"start_edges={len(start_edges)} expected=2"
+    if len(cmp_edges) != 1:
+        return False, f"cmp_done_edges={len(cmp_edges)} expected=1"
+
+    failures: list[str] = []
+    notes: list[str] = []
+
+    def expect_level(key: str, start: float, stop: float, high: bool, label: str) -> None:
+        avg = mean_in_window(rows, key, start, stop)
+        if avg is None:
+            failures.append(f"{label}=missing")
+            return
+        is_high = avg > vth
+        notes.append(f"{label}:{avg:.3f}")
+        if is_high != high:
+            failures.append(f"{label}:{avg:.3f}")
+
+    def expect_state(start: float, stop: float, target: float, label: str, tol: float = 0.12) -> None:
+        avg = mean_in_window(rows, "state_mon", start, stop)
+        if avg is None:
+            failures.append(f"{label}=missing")
+            return
+        notes.append(f"{label}:{avg:.3f}")
+        if abs(avg - target) > tol:
+            failures.append(f"{label}:{avg:.3f}")
+
+    for key in ("sample_en", "compare_en", "readout_en", "done"):
+        expect_level(key, 1e-9, 4e-9, False, f"reset_{key}_low")
+
+    # Transaction 1: compare is terminated by cmp_done.
+    expect_level("sample_en", 12e-9, 20e-9, True, "cycle1_sample_high")
+    expect_level("sample_en", 24e-9, 30e-9, False, "cycle1_sample_low_after_window")
+    expect_level("compare_en", 24e-9, 34e-9, True, "cycle1_compare_high")
+    expect_level("compare_en", 39e-9, 48e-9, False, "cycle1_compare_low_after_cmp_done")
+    expect_level("readout_en", 40e-9, 50e-9, True, "cycle1_readout_high")
+    expect_level("done", 54e-9, 58e-9, True, "cycle1_done_high")
+    expect_state(14e-9, 20e-9, 0.225, "cycle1_state_sample")
+    expect_state(26e-9, 34e-9, 0.450, "cycle1_state_compare")
+    expect_state(41e-9, 49e-9, 0.675, "cycle1_state_readout")
+    expect_state(54e-9, 58e-9, 0.900, "cycle1_state_done")
+
+    # Transaction 2: compare exits by timeout because there is no second cmp_done.
+    expect_level("sample_en", 92e-9, 100e-9, True, "cycle2_sample_high")
+    expect_level("compare_en", 104e-9, 128e-9, True, "cycle2_compare_high_until_timeout")
+    expect_level("compare_en", 132e-9, 142e-9, False, "cycle2_compare_low_after_timeout")
+    expect_level("readout_en", 132e-9, 144e-9, True, "cycle2_readout_high")
+    expect_level("done", 148e-9, 152e-9, True, "cycle2_done_high")
+    expect_state(106e-9, 126e-9, 0.450, "cycle2_state_compare")
+    expect_state(134e-9, 142e-9, 0.675, "cycle2_state_readout")
+
+    if failures:
+        return False, " ".join(failures)
+    return True, f"conversion_event_controller ok {' '.join(notes[:10])}"
+
+
 def check_timer_absolute_grid(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_out"}
     if not rows or not required.issubset(rows[0]):
@@ -5210,6 +5472,34 @@ def check_release_dac_mismatch_unit_weighting(rows: list[dict[str, float]]) -> t
     return True, f"dac_weight_samples {' '.join(details)}"
 
 
+def check_release_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "out0", "out1", "out2", "out3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/out0/out1/out2/out3"
+
+    signals = ["out0", "out1", "out2", "out3"]
+    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0]
+    expected = [2, 0, 3, 1, 2, 0]
+    observed: list[int | None] = []
+    failures: list[str] = []
+    for sample_t_ns, expected_idx in zip(sample_times_ns, expected):
+        values = [sample_signal_at(rows, signal, sample_t_ns * 1e-9) for signal in signals]
+        if any(value is None for value in values):
+            failures.append(f"missing_sample_at={sample_t_ns:g}ns")
+            observed.append(None)
+            continue
+        active = [idx for idx, value in enumerate(values) if value is not None and value > 0.45]
+        observed.append(active[0] if len(active) == 1 else None)
+        if active != [expected_idx]:
+            failures.append(f"{sample_t_ns:g}ns_active={active}_expected={expected_idx}")
+
+    observed_text = ",".join("-" if item is None else str(item) for item in observed)
+    expected_text = ",".join(str(item) for item in expected)
+    if failures:
+        return False, f"active_sequence={observed_text} expected={expected_text} failures={' '.join(failures)}"
+    return True, f"active_sequence={observed_text} expected={expected_text}"
+
+
 CHECKS = {
     # legacy short IDs (example-level names)
     "adc_dac_ideal_4b": check_adc_dac_ideal_4b,
@@ -5250,6 +5540,7 @@ CHECKS = {
     "parameter_type_override_smoke": check_parameter_type_override,
     "phase_accumulator_timer_wrap_smoke": check_phase_accumulator_timer_wrap,
     "simultaneous_event_order_smoke": check_simultaneous_event_order,
+    "conversion_event_controller_flow": check_conversion_event_controller,
     "timer_absolute_grid_smoke": check_timer_absolute_grid,
     "transition_branch_target_smoke": check_transition_branch_target,
     "clk_div_smoke": check_clk_div,
@@ -5283,6 +5574,9 @@ CHECKS = {
     "pipeline_adc_chain_e2e": check_release_pipeline_adc_chain,
     "serializer_8b_smoke": check_serializer_8b,
     "serializer_frame_alignment_smoke": check_serializer_frame_alignment,
+    "serializer_frame_monitor_flow": check_serializer_frame_monitor_flow,
+    "adc_code_capture_register": check_adc_code_capture_register,
+    "serial_readout_deserializer": check_serial_readout_deserializer,
     "xor_pd_smoke": check_xor_pd,
     "pfd_updn_smoke": check_pfd_updn,
     "pfd_deadzone_smoke": check_pfd_deadzone,
@@ -5473,6 +5767,7 @@ RELEASE_CHECK_ALIASES = {
     # but should be replaced by stronger per-function checkers before paper claims.
     "vbr1_l1_calibration_deadband_controller": check_release_deadband_calibration,
     "vbr1_l1_charge_pump_abstraction": check_release_charge_pump,
+    "vbr1_l1_element_shuffler": check_release_element_shuffler,
     "vbr1_l1_loop_filter_abstraction": check_release_loop_filter,
     "vbr1_l1_successive_approximation_calibration_search_fsm": check_release_sar_calibration_fsm,
     "vbr1_l2_complete_calibration_loop": check_release_calibration_loop,
@@ -5481,7 +5776,8 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_voltage_gain_amplifier": check_release_voltage_gain_amplifier,
     "vbr1_l2_amplifier_filter_chain": check_release_amplifier_filter_chain,
     "vbr1_l1_dac_mismatch_unit_weighting_model": check_release_dac_mismatch_unit_weighting,
-    "vbr1_l1_event_pulse_stretcher": check_release_event_pulse_stretcher,
+    "vbr1_l1_adc_code_capture_register": check_adc_code_capture_register,
+    "vbr1_l1_serial_readout_deserializer": check_serial_readout_deserializer,
     "vbr1_l2_adc_dac_source_sweep_flow": check_release_quantized_reconstruction,
     "vbr1_l2_converter_front_end": check_release_converter_front_end_chain,
 }
@@ -5509,9 +5805,11 @@ RELEASE_FORM_CHECK_ALIASES = {
     "vbr1_l1_capacitive_weighted_sar_feedback_dac_e2e": check_release_cdac_feedback_dac,
     "vbr1_l1_capacitive_weighted_sar_feedback_dac_tb": check_release_cdac_feedback_dac,
     "vbr1_l1_lfsr_prbs_generator_tb": check_lfsr,
-    "vbr1_l2_event_controller_tb": check_simultaneous_event_order,
+    "vbr1_l2_event_controller_tb": check_conversion_event_controller,
+    "vbr1_l2_event_controller_e2e": check_conversion_event_controller,
     "vbr1_l2_measurement_flow_tb": check_final_step_file_metric,
-    "vbr1_l2_serializer_frame_alignment_flow_tb": check_serializer_frame_alignment,
+    "vbr1_l2_serializer_frame_alignment_flow_tb": check_serializer_frame_monitor_flow,
+    "vbr1_l2_serializer_frame_alignment_flow_e2e": check_serializer_frame_monitor_flow,
     "vbr1_l1_bang_bang_phase_detector_tb": check_bbpd_data_edge_alignment,
     "vbr1_l2_flash_adc_mini_array_e2e": check_release_flash_adc_mini_array,
     "vbr1_l2_flash_adc_mini_array_tb": check_release_flash_adc_mini_array,
@@ -5521,6 +5819,12 @@ RELEASE_FORM_CHECK_ALIASES = {
     "vbr1_l2_comparator_measurement_flow_tb": check_comparator_measurement_flow,
     "vbr1_l1_sine_periodic_voltage_source_e2e": check_multitone,
     "vbr1_l1_sine_periodic_voltage_source_tb": check_multitone,
+    "vbr1_l1_sine_periodic_voltage_source_dut": check_multitone,
+    "vbr1_l1_edge_interval_timer_e2e": check_cross_interval_163p333,
+    "vbr1_l1_gain_estimator_e2e": check_gain_extraction,
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e": check_gain_extraction,
+    "vbr1_l2_measurement_flow_e2e": check_final_step_file_metric,
+    "vbr1_l1_lfsr_prbs_generator_e2e": check_lfsr,
 }
 
 CHECKS.update(RELEASE_FORM_CHECK_ALIASES)

@@ -27,17 +27,17 @@ gold promotion and paper-facing claims.
 
 | Pool | Count | Meaning |
 | --- | ---: | --- |
-| Current promoted L1 seed functions | 28 | Countable functions inherited from current main120 after duplicate/removal policy. |
+| Current promoted L1 seed functions | 24 | Countable current-seed functions retained in the release package after duplicate/removal policy. |
 | Promoted top-level L1 additions | 32 | Additional L1 functions selected into the release coverage contract. |
-| Selected L2 complete-circuit targets | 15 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
-| Top-level L1/L2 coverage target | 75 | 28 current L1 seeds + 32 selected L1 additions + 15 selected L2 targets, before task-form multiplication. |
+| Selected L2 complete-circuit targets | 16 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
+| Top-level L1/L2 coverage target | 72 | 24 current L1 seeds + 32 selected L1 additions + 16 selected L2 targets, before task-form multiplication. |
 | Excluded historical bases | 2 | `background_calibration_accumulator` is merged; `offset_calibration_fsm` is removed pending redesign. |
 
 The release score should only count materialized, certified tasks. The 32 L1
-additions and 15 L2 targets are top-level coverage commitments, not current
-scored tasks.
+additions and 16 L2 targets are top-level coverage commitments; rows still
+pending fresh dual validation stay out of certification claims.
 
-## Nine Top-Level Categories
+## Eight Top-Level Categories
 
 | Category | Role in benchmark | Review decision |
 | --- | --- | --- |
@@ -45,7 +45,6 @@ scored tasks.
 | Comparators and Decision Circuits | Threshold, offset, clocked, StrongARM-style, hysteresis, delay, and window-decision behavior. | Core. Keep detector tasks here when output is a binary decision. |
 | PLL / Clock / Event Timing | VCO, PFD, divider, lock detector, phase accumulator, voltage-domain charge-pump abstraction, sampled loop-filter abstraction, and PLL flows. | Core. Important for event scheduling and mixed-signal timing behavior. |
 | Calibration, DEM, and Control | Trim controllers, DEM/DWA, pointer selection, element shuffling, gain calibration, and calibration loops. | Core. Must aggressively deduplicate pointer variants. |
-| Digital and Event-Driven Logic | Voltage-domain logic, counters, LFSR, serializer, pulse/event logic. | Useful but lower priority. Keep it from dominating the release. |
 | Measurement and Testbench Instrumentation | Crossing metrics, settling time, gain estimation, peak detection, and artifact-generating measurement flows. | Auxiliary scored. Valid benchmark content, but separate from main circuit-function claims. |
 | Stimulus and Sources | Ramp, burst clock, deterministic noise, dither, and source-driven flows. | Auxiliary scored. Count only reusable source models, not source syntax/conformance cases. |
 | Analog Behavioral Signal Conditioning | Lowpass, integrator, rectifier, clamp, slew limiter, gain amplifier, soft limiter, and signal chains. | Core. Avoid duplicate limiter/clamp variants unless transfer behavior differs. |
@@ -80,8 +79,8 @@ Avoid this wording:
 
 > vaBench has 28 functions.
 
-Reason: 28 is only the current promoted L1 seed count. The top-level expansion
-pool is larger and should be reported separately.
+Reason: the current-seed count and the full 72-entry release target are
+different quantities and should be reported separately.
 
 Also avoid:
 
@@ -92,14 +91,15 @@ definition.
 
 ## Next Experimental Direction
 
-1. Promote current 28 L1 seeds into clean release tasks.
+1. Keep the current 72-entry package aligned with the score denominator and
+   certification reports.
 2. Materialize selected core L1 additions first: unit-element thermometer DAC,
    clocked ADC quantizer, threshold/delay/hysteresis/window comparators,
    PFD variants, DWA/DEM encoder, ramp/burst/noise/sine sources, gain
    estimator, edge interval timer, resettable sample/hold, and distinct
    signal-conditioning blocks.
-3. Materialize selected L2 flows second: ADC/DAC chain, weighted SAR loop,
-   flash ADC mini-array, PLL timing slices, calibration loop, event and
-   serializer flows, measurement and gain-extraction flows, ADC/DAC source
-   sweep flow, amplifier/filter chain, and converter front-end.
+3. Materialize and validate selected L2 flows: ADC/DAC chain, weighted SAR loop,
+   flash ADC mini-array, pipeline ADC chain, PLL timing slices, calibration loop,
+   measurement and gain-extraction flows, ADC/DAC source sweep flow,
+   amplifier/filter chain, and converter front-end.
 4. Keep L0 conformance growth parallel but separate from benchmark scoring.

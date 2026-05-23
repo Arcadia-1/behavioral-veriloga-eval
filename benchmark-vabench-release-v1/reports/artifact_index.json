@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "artifact_count": 29,
@@ -7,7 +7,7 @@
   "missing_artifacts": [],
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
-    "can_claim_top_level_coverage_plan": false,
+    "can_claim_top_level_coverage_plan": true,
     "can_claim_release_package_complete": true,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
@@ -25,9 +25,9 @@
       "path": "docs/VABENCH_RELEASE_TRACKER.csv",
       "exists": true,
       "kind": "tracker",
-      "purpose": "75-entry L1/L2 release coverage target.",
+      "purpose": "72-entry L1/L2 release coverage target.",
       "claim_role": "coverage_plan",
-      "status": "incomplete",
+      "status": "ready",
       "certification_evidence": false,
       "notes": []
     },
@@ -38,7 +38,7 @@
       "kind": "package",
       "purpose": "Clean release package root with tasks, conformance, evidence, and reports.",
       "claim_role": "release_structure",
-      "status": "incomplete",
+      "status": "ready",
       "certification_evidence": false,
       "notes": []
     },
@@ -178,7 +178,7 @@
       "status": "pass",
       "certification_evidence": true,
       "notes": [
-        "dual_certified_release_task_count=249",
+        "dual_certified_release_task_count=245",
         "dual_pending_release_task_count=0",
         "evas_pass_spectre_fail_count=0"
       ]

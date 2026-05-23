@@ -1,0 +1,2938 @@
+{
+  "combined_accuracy_gated_speedup_stats": [
+    {
+      "cv": 0.5924042690370566,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 5.875046140965524,
+      "max": 26.965347920215674,
+      "mean": 7.250373070356527,
+      "median": 6.81283873251617,
+      "min": 0.2591889810972241,
+      "n": 776,
+      "p10": 3.2338384231890336,
+      "p90": 13.574979163015357,
+      "spectre_mode": "ax",
+      "stdev": 4.295151958990518
+    },
+    {
+      "cv": 0.7710506154912982,
+      "evas_mode": "strict_current",
+      "geomean": 3.6895329546457893,
+      "max": 24.485410490372136,
+      "mean": 5.469567260429987,
+      "median": 4.762109149413484,
+      "min": 0.06374056819785454,
+      "n": 777,
+      "p10": 1.0203214815301735,
+      "p90": 10.708620355501346,
+      "spectre_mode": "ax",
+      "stdev": 4.217313202625595
+    },
+    {
+      "cv": 0.4314728421052805,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 18.326807125701162,
+      "max": 56.951277402523495,
+      "mean": 21.37564943480082,
+      "median": 21.420613706811814,
+      "min": 1.0286674476414888,
+      "n": 776,
+      "p10": 12.038568535400682,
+      "p90": 31.381355572638178,
+      "spectre_mode": "classic",
+      "stdev": 9.223012213479642
+    },
+    {
+      "cv": 0.5463423610841031,
+      "evas_mode": "strict_current",
+      "geomean": 11.512214267542431,
+      "max": 35.93733375354485,
+      "mean": 15.156607984162552,
+      "median": 14.713099331110852,
+      "min": 0.2279369917453144,
+      "n": 777,
+      "p10": 4.598159263036881,
+      "p90": 26.776582604515106,
+      "spectre_mode": "classic",
+      "stdev": 8.280696992093537
+    }
+  ],
+  "combined_mode_time_stats": [
+    {
+      "backend": "evas",
+      "cv": 0.0032428898334456234,
+      "geomean": 1.2484943977272756,
+      "max": 1.253093807931166,
+      "mean": 1.24849876964609,
+      "median": 1.2469472699943072,
+      "min": 1.245455231012797,
+      "mode": "profile_fast_skip_source_error_control",
+      "n": 3,
+      "p10": 1.245753638809099,
+      "p90": 1.2518645003437943,
+      "pass_count": 776,
+      "reports": 3,
+      "runs": 777,
+      "stdev": 0.0040487439671546745
+    },
+    {
+      "backend": "evas",
+      "cv": 0.001060203379867915,
+      "geomean": 1.9884417323430634,
+      "max": 1.9902202919950376,
+      "mean": 1.9884424775595388,
+      "median": 1.9889936546385618,
+      "min": 1.9861134860450171,
+      "mode": "strict_current",
+      "n": 3,
+      "p10": 1.9866895197637262,
+      "p90": 1.9899749645237423,
+      "pass_count": 777,
+      "reports": 3,
+      "runs": 777,
+      "stdev": 0.0021081534353815535
+    },
+    {
+      "backend": "spectre",
+      "cv": 0.006634597164297168,
+      "geomean": 7.336421299872701,
+      "max": 7.3914721455018535,
+      "mean": 7.336528726580631,
+      "median": 7.319311901948374,
+      "min": 7.298802132291663,
+      "mode": "ax",
+      "n": 3,
+      "p10": 7.302904086223006,
+      "p90": 7.377040096791157,
+      "pass_count": 777,
+      "reports": 3,
+      "runs": 777,
+      "stdev": 0.048674912685156564
+    },
+    {
+      "backend": "spectre",
+      "cv": 0.0018660504944310893,
+      "geomean": 22.891367281256667,
+      "max": 22.92411701183624,
+      "mean": 22.891393867360346,
+      "median": 22.90699470999308,
+      "min": 22.843069880251722,
+      "mode": "classic",
+      "n": 3,
+      "p10": 22.855854846199996,
+      "p90": 22.920692551467607,
+      "pass_count": 777,
+      "reports": 3,
+      "runs": 777,
+      "stdev": 0.04271649684440458
+    }
+  ],
+  "combined_raw_speedup_stats": [
+    {
+      "cv": 0.5920669897749683,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 5.876214833825227,
+      "max": 26.965347920215674,
+      "mean": 7.249866738234685,
+      "median": 6.8172397385973,
+      "min": 0.2591889810972241,
+      "n": 777,
+      "p10": 3.2344916413754072,
+      "p90": 13.567824208033867,
+      "spectre_mode": "ax",
+      "stdev": 4.292406775976278
+    },
+    {
+      "cv": 0.7710506154912982,
+      "evas_mode": "strict_current",
+      "geomean": 3.6895329546457893,
+      "max": 24.485410490372136,
+      "mean": 5.469567260429987,
+      "median": 4.762109149413484,
+      "min": 0.06374056819785454,
+      "n": 777,
+      "p10": 1.0203214815301735,
+      "p90": 10.708620355501346,
+      "spectre_mode": "ax",
+      "stdev": 4.217313202625595
+    },
+    {
+      "cv": 0.43114516057761587,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 18.335178213796908,
+      "max": 56.951277402523495,
+      "mean": 21.381771922942427,
+      "median": 21.436573582561756,
+      "min": 1.0286674476414888,
+      "n": 777,
+      "p10": 12.04095696522205,
+      "p90": 31.37641194545847,
+      "spectre_mode": "classic",
+      "stdev": 9.218647489150971
+    },
+    {
+      "cv": 0.5463423610841031,
+      "evas_mode": "strict_current",
+      "geomean": 11.512214267542431,
+      "max": 35.93733375354485,
+      "mean": 15.156607984162552,
+      "median": 14.713099331110852,
+      "min": 0.2279369917453144,
+      "n": 777,
+      "p10": 4.598159263036881,
+      "p90": 26.776582604515106,
+      "spectre_mode": "classic",
+      "stdev": 8.280696992093537
+    }
+  ],
+  "fast_over_strict_stats": {
+    "cv": 0.9118520750327804,
+    "geomean": 1.5923372763971857,
+    "max": 13.923164699122616,
+    "mean": 1.9264559546003246,
+    "median": 1.3745130549053473,
+    "min": 0.6800673199111625,
+    "n": 776,
+    "p10": 0.9964987475801633,
+    "p90": 2.9578240988286444,
+    "stdev": 1.7566428596615618
+  },
+  "generated_at": "2026-05-22T16:47:26",
+  "nonpass_rows": [
+    {
+      "accuracy_gate": {
+        "blocked": [],
+        "reasons": [
+          "candidate_behavior_check_failed"
+        ],
+        "spectre_parity": {
+          "ax": {
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "max_abs_v": 5.4892524476546356e-05,
+            "max_nrmse": 5.761739476117638e-06,
+            "max_rmse_v": 2.5653522749550363e-06,
+            "mean_nrmse": 1.1556888692591349e-06,
+            "p95_nrmse": 5.761739476117638e-06,
+            "per_signal": {
+              "clk": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "metric": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "out": {
+                "kind": "analog",
+                "max_abs_v": 5.4892524476546356e-05,
+                "nrmse": 5.761739476117638e-06,
+                "rmse_v": 2.5653522749550363e-06,
+                "span_v": 0.4452392
+              },
+              "rst": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "vin": {
+                "kind": "analog",
+                "max_abs_v": 3.3333333593343895e-08,
+                "nrmse": 1.6704870178035702e-08,
+                "rmse_v": 1.0007039244433637e-08,
+                "span_v": 0.5990492076730612
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 5,
+            "status": "passed"
+          },
+          "classic": {
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "max_abs_v": 5.4892524476546356e-05,
+            "max_nrmse": 5.76173947612269e-06,
+            "max_rmse_v": 2.5653522749572856e-06,
+            "mean_nrmse": 1.1556888692598015e-06,
+            "p95_nrmse": 5.76173947612269e-06,
+            "per_signal": {
+              "clk": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "metric": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "out": {
+                "kind": "analog",
+                "max_abs_v": 5.4892524476546356e-05,
+                "nrmse": 5.76173947612269e-06,
+                "rmse_v": 2.5653522749572856e-06,
+                "span_v": 0.4452392
+              },
+              "rst": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "vin": {
+                "kind": "analog",
+                "max_abs_v": 3.3333333537832743e-08,
+                "nrmse": 1.670487017631731e-08,
+                "rmse_v": 1.0007039243404232e-08,
+                "span_v": 0.599049207673061
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 5,
+            "status": "passed"
+          }
+        },
+        "status": "FAIL",
+        "strict_evas_parity": {
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "max_abs_v": 0.0004883589653215115,
+          "max_nrmse": 4.909156774694741e-05,
+          "max_rmse_v": 2.1857490350396668e-05,
+          "mean_nrmse": 9.8226655754717e-06,
+          "p95_nrmse": 4.909156774694741e-05,
+          "per_signal": {
+            "clk": {
+              "best_lag_s": 0.0,
+              "best_lag_samples": 0,
+              "kind": "digital",
+              "max_abs_v": 0.0,
+              "mismatch_ratio": 0.0,
+              "nrmse": 0.0,
+              "rmse_v": 0.0,
+              "span_v": 0.9
+            },
+            "metric": {
+              "best_lag_s": 0.0,
+              "best_lag_samples": 0,
+              "kind": "digital",
+              "max_abs_v": 0.0,
+              "mismatch_ratio": 0.0,
+              "nrmse": 0.0,
+              "rmse_v": 0.0,
+              "span_v": 0.9
+            },
+            "out": {
+              "kind": "analog",
+              "max_abs_v": 0.0004883589653215115,
+              "nrmse": 4.909156774694741e-05,
+              "rmse_v": 2.1857490350396668e-05,
+              "span_v": 0.4452392
+            },
+            "rst": {
+              "best_lag_s": 0.0,
+              "best_lag_samples": 0,
+              "kind": "digital",
+              "max_abs_v": 0.0,
+              "mismatch_ratio": 0.0,
+              "nrmse": 0.0,
+              "rmse_v": 0.0,
+              "span_v": 0.9
+            },
+            "vin": {
+              "kind": "analog",
+              "max_abs_v": 7.240192567703474e-08,
+              "nrmse": 2.176013041108823e-08,
+              "rmse_v": 1.3035426701843993e-08,
+              "span_v": 0.5990509457241846
+            }
+          },
+          "samples": 1200,
+          "signals_compared": 5,
+          "status": "passed"
+        }
+      },
+      "backend": "evas",
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "mode": "profile_fast_skip_source_error_control",
+      "notes": [
+        "returncode=0",
+        "behavior_eval_timeout>60s"
+      ],
+      "report": "same_server_speed_repeat_r3_goal_20260522",
+      "status": "FAIL_SIM_CORRECTNESS"
+    }
+  ],
+  "outliers": {
+    "largest_ax_fast_speedups": [
+      {
+        "entry_id": "vbr1_l1_thermometer_code_decoder",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 253.0,
+        "evas_wall_time_s": 0.7178892190568149,
+        "form": "tb",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 26.965347920215674,
+        "spectre_steps": 105.0,
+        "spectre_wall_time_s": 19.35813256003894,
+        "task_id": "vbm1_thermometer_decoder_guarded_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 351.0,
+        "evas_wall_time_s": 0.760907641146332,
+        "form": "e2e",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 24.544527306665167,
+        "spectre_steps": 156.0,
+        "spectre_wall_time_s": 18.676118375966325,
+        "task_id": "vbm1_simple_binary_voltage_dac_4b_e2e",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_debounce_latch",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 283.0,
+        "evas_wall_time_s": 0.8493609160650522,
+        "form": "bugfix",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 23.37525262852118,
+        "spectre_steps": 113.0,
+        "spectre_wall_time_s": 19.85402598581277,
+        "task_id": "vbm1_debounce_latch_bugfix",
+        "variant": "fixed"
+      },
+      {
+        "entry_id": "vbr1_l1_thermometer_code_decoder",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 253.0,
+        "evas_wall_time_s": 0.8241698490455747,
+        "form": "tb",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 23.268864506814896,
+        "spectre_steps": 105.0,
+        "spectre_wall_time_s": 19.177496548043564,
+        "task_id": "vbm1_thermometer_decoder_guarded_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_debounce_latch",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 283.0,
+        "evas_wall_time_s": 0.7674632531125098,
+        "form": "bugfix",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 22.82788849246211,
+        "spectre_steps": 113.0,
+        "spectre_wall_time_s": 17.5195655641146,
+        "task_id": "vbm1_debounce_latch_bugfix",
+        "variant": "fixed"
+      },
+      {
+        "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 351.0,
+        "evas_wall_time_s": 0.8455588410142809,
+        "form": "e2e",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 22.364705150716127,
+        "spectre_steps": 156.0,
+        "spectre_wall_time_s": 18.910674166865647,
+        "task_id": "vbm1_simple_binary_voltage_dac_4b_e2e",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_edge_detector",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 413.0,
+        "evas_wall_time_s": 0.846498906146735,
+        "form": "tb",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 22.179371968097925,
+        "spectre_steps": 129.0,
+        "spectre_wall_time_s": 18.77481411001645,
+        "task_id": "vbm1_edge_detector_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_segmented_dac",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 312.0,
+        "evas_wall_time_s": 0.8700701429042965,
+        "form": "e2e",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 22.03300140631832,
+        "spectre_steps": 103.0,
+        "spectre_wall_time_s": 19.170256682205945,
+        "task_id": "vbm1_segmented_dac_e2e",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_thermometer_code_decoder",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 253.0,
+        "evas_wall_time_s": 0.8131321300752461,
+        "form": "tb",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 21.791574354940014,
+        "spectre_steps": 105.0,
+        "spectre_wall_time_s": 17.71942927292548,
+        "task_id": "vbm1_thermometer_decoder_guarded_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_lock_detector",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 480.0,
+        "evas_wall_time_s": 0.8949536390136927,
+        "form": "e2e",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 20.627770434339457,
+        "spectre_steps": 250.0,
+        "spectre_wall_time_s": 18.460898214951158,
+        "task_id": "vbm1_lock_detector_e2e",
+        "variant": "gold"
+      }
+    ],
+    "slowest_fast_skip_cases": [
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l1_gain_estimator_tb",
+        "csv_path": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_gain_estimator",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "result_root": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "ps = 24383\n    source_breakpoint_clamps = 92688\n    steps_total = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7477.6 ms, elapsed = 7477.6 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.5 s, elapsed = 8.5 s.\n\n",
+        "task_id": "vbr1_l1_gain_estimator_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.5,
+          "tran_elapsed_s": 7.477600000000001
+        },
+        "variant": "gold",
+        "wall_time_s": 38.79070619214326
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "csv_path": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "l = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7322.3 ms, elapsed = 7322.3 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.5 s, elapsed = 8.5 s.\n\n",
+        "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.5,
+          "tran_elapsed_s": 7.3223
+        },
+        "variant": "gold",
+        "wall_time_s": 33.4995403510984
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l1_gain_estimator_tb",
+        "csv_path": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_gain_estimator",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": " = 24383\n    source_breakpoint_clamps = 92688\n    steps_total = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7438.8 ms, elapsed = 7438.8 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.4 s, elapsed = 8.4 s.\n\n",
+        "task_id": "vbr1_l1_gain_estimator_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.4,
+          "tran_elapsed_s": 7.4388000000000005
+        },
+        "variant": "gold",
+        "wall_time_s": 33.26639957400039
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "csv_path": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "result_root": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "tal = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7337.4 ms, elapsed = 7337.4 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.4 s, elapsed = 8.4 s.\n\n",
+        "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.4,
+          "tran_elapsed_s": 7.3374
+        },
+        "variant": "gold",
+        "wall_time_s": 33.01530990214087
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "csv_path": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "l = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7262.0 ms, elapsed = 7262.0 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.3 s, elapsed = 8.3 s.\n\n",
+        "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.3,
+          "tran_elapsed_s": 7.262
+        },
+        "variant": "gold",
+        "wall_time_s": 32.699041958898306
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505415,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.0831647292442511,
+              "p95_nrmse": 0.12783625716505415,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505415,
+                  "rmse_v": 0.013950629804311547,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                0.0002
+              ],
+              "max_abs_v": 0.23154184099250796,
+              "max_nrmse": 0.12783625716505417,
+              "max_rmse_v": 0.06072390598092987,
+              "mean_nrmse": 0.08316472924425111,
+              "p95_nrmse": 0.12783625716505417,
+              "per_signal": {
+                "vamp_n": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092985,
+                  "span_v": 0.5929412891784638
+                },
+                "vamp_p": {
+                  "kind": "analog",
+                  "max_abs_v": 0.23154184099250796,
+                  "nrmse": 0.10241132990597512,
+                  "rmse_v": 0.06072390598092987,
+                  "span_v": 0.5929412891784639
+                },
+                "vinn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "vinp": {
+                  "kind": "analog",
+                  "max_abs_v": 0.048441034457797905,
+                  "nrmse": 0.12783625716505417,
+                  "rmse_v": 0.01395062980431155,
+                  "span_v": 0.10912889749501481
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              0.0002000000010421
+            ],
+            "max_abs_v": 0.12150430000000001,
+            "max_nrmse": 0.00882092433447182,
+            "max_rmse_v": 0.004707731727769778,
+            "mean_nrmse": 0.00441046216723591,
+            "p95_nrmse": 0.00882092433447182,
+            "per_signal": {
+              "vamp_n": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vamp_p": {
+                "kind": "analog",
+                "max_abs_v": 0.12150430000000001,
+                "nrmse": 0.00882092433447182,
+                "rmse_v": 0.004707731727769778,
+                "span_v": 0.5337005
+              },
+              "vinn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "vinp": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0954158
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l1_gain_estimator_tb",
+        "csv_path": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_gain_estimator",
+        "evas_steps": 110493.0,
+        "fixture_notes": [],
+        "form": "tb",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "diff_gain=11.20"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": " = 24383\n    source_breakpoint_clamps = 92688\n    steps_total = 164144\nModel event counters:\n    model[0] vin_src_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[1] lfsr_Model:\n        above_fires = 0\n        cross_fires = 10000\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[2] dither_adder_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n    model[3] gain_amp_fixed_Model:\n        above_fires = 0\n        cross_fires = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 7234.6 ms, elapsed = 7234.6 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 8.2 s, elapsed = 8.2 s.\n\n",
+        "task_id": "vbr1_l1_gain_estimator_tb",
+        "timing": {
+          "accepted_tran_steps": 110493.0,
+          "total_elapsed_s": 8.2,
+          "tran_elapsed_s": 7.2346
+        },
+        "variant": "gold",
+        "wall_time_s": 32.343902554828674
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                3e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                2.99999999999946e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              3.000000012206e-07
+            ],
+            "max_abs_v": 0.0,
+            "max_nrmse": 0.0,
+            "max_rmse_v": 0.0,
+            "mean_nrmse": 0.0,
+            "p95_nrmse": 0.0,
+            "per_signal": {
+              "div": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "dn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "ref": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "up": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "pfd_small_phase_response_smoke",
+        "csv_path": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_steps": 60058.0,
+        "fixture_notes": [],
+        "form": "e2e",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "ch quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 1788.5 ms, elapsed = 1788.5 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\nWriting strobe log: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/strobe.txt (30 lines)\n[pfd] t=0.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=0.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=20.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=20.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=40.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=40.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=60.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=60.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=80.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=80.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=100.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=100.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=120.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=120.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=140.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=140.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=160.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=160.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=180.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=180.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=200.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=200.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=220.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=220.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=240.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=240.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=260.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=260.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=280.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=280.110 ns | DIV_rise | UP=0 DN=0\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.4 s, elapsed = 2.4 s.\n\n",
+        "task_id": "pfd_small_phase_response_smoke",
+        "timing": {
+          "accepted_tran_steps": 60058.0,
+          "total_elapsed_s": 2.4,
+          "tran_elapsed_s": 1.7885
+        },
+        "variant": "gold",
+        "wall_time_s": 16.258386302972212
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                3e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                2.99999999999946e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              3.000000012206e-07
+            ],
+            "max_abs_v": 0.0,
+            "max_nrmse": 0.0,
+            "max_rmse_v": 0.0,
+            "mean_nrmse": 0.0,
+            "p95_nrmse": 0.0,
+            "per_signal": {
+              "div": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "dn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "ref": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "up": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "pfd_small_phase_response_smoke",
+        "csv_path": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_steps": 60058.0,
+        "fixture_notes": [],
+        "form": "e2e",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "ch quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 1771.5 ms, elapsed = 1771.5 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\nWriting strobe log: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r2-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/strobe.txt (30 lines)\n[pfd] t=0.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=0.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=20.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=20.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=40.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=40.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=60.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=60.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=80.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=80.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=100.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=100.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=120.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=120.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=140.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=140.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=160.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=160.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=180.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=180.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=200.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=200.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=220.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=220.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=240.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=240.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=260.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=260.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=280.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=280.110 ns | DIV_rise | UP=0 DN=0\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.3 s, elapsed = 2.3 s.\n\n",
+        "task_id": "pfd_small_phase_response_smoke",
+        "timing": {
+          "accepted_tran_steps": 60058.0,
+          "total_elapsed_s": 2.3,
+          "tran_elapsed_s": 1.7715
+        },
+        "variant": "gold",
+        "wall_time_s": 16.176093984162435
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                3e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                2.99999999999946e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              3.000000012206e-07
+            ],
+            "max_abs_v": 0.0,
+            "max_nrmse": 0.0,
+            "max_rmse_v": 0.0,
+            "mean_nrmse": 0.0,
+            "p95_nrmse": 0.0,
+            "per_signal": {
+              "div": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "dn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "ref": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "up": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "pfd_small_phase_response_smoke",
+        "csv_path": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_steps": 60058.0,
+        "fixture_notes": [],
+        "form": "e2e",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "result_root": "results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "f each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 1765.5 ms, elapsed = 1765.5 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\nWriting strobe log: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-cold-r1-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/e2e/gold/pfd_small_phase_response_smoke/profile_fast_skip_source_error_control/strobe.txt (30 lines)\n[pfd] t=0.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=0.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=20.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=20.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=40.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=40.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=60.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=60.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=80.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=80.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=100.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=100.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=120.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=120.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=140.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=140.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=160.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=160.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=180.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=180.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=200.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=200.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=220.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=220.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=240.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=240.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=260.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=260.110 ns | DIV_rise | UP=0 DN=0\n[pfd] t=280.010 ns | REF_rise | UP=1 DN=0\n[pfd] t=280.110 ns | DIV_rise | UP=0 DN=0\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.3 s, elapsed = 2.3 s.\n\n",
+        "task_id": "pfd_small_phase_response_smoke",
+        "timing": {
+          "accepted_tran_steps": 60058.0,
+          "total_elapsed_s": 2.3,
+          "tran_elapsed_s": 1.7655
+        },
+        "variant": "gold",
+        "wall_time_s": 16.156886701006442
+      },
+      {
+        "accuracy_gate": {
+          "blocked": [],
+          "reasons": [],
+          "spectre_parity": {
+            "ax": {
+              "common_window_s": [
+                0.0,
+                3e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            },
+            "classic": {
+              "common_window_s": [
+                0.0,
+                2.99999999999946e-07
+              ],
+              "max_abs_v": 0.0,
+              "max_nrmse": 0.0,
+              "max_rmse_v": 0.0,
+              "mean_nrmse": 0.0,
+              "p95_nrmse": 0.0,
+              "per_signal": {
+                "div": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "dn": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.0
+                },
+                "ref": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                },
+                "up": {
+                  "best_lag_s": 0.0,
+                  "best_lag_samples": 0,
+                  "kind": "digital",
+                  "max_abs_v": 0.0,
+                  "mismatch_ratio": 0.0,
+                  "nrmse": 0.0,
+                  "rmse_v": 0.0,
+                  "span_v": 0.9
+                }
+              },
+              "samples": 1200,
+              "signals_compared": 4,
+              "status": "passed"
+            }
+          },
+          "status": "PASS",
+          "strict_evas_parity": {
+            "common_window_s": [
+              0.0,
+              3.000000012206e-07
+            ],
+            "max_abs_v": 0.0,
+            "max_nrmse": 0.0,
+            "max_rmse_v": 0.0,
+            "mean_nrmse": 0.0,
+            "p95_nrmse": 0.0,
+            "per_signal": {
+              "div": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "dn": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.0
+              },
+              "ref": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              },
+              "up": {
+                "best_lag_s": 0.0,
+                "best_lag_samples": 0,
+                "kind": "digital",
+                "max_abs_v": 0.0,
+                "mismatch_ratio": 0.0,
+                "nrmse": 0.0,
+                "rmse_v": 0.0,
+                "span_v": 0.9
+              }
+            },
+            "samples": 1200,
+            "signals_compared": 4,
+            "status": "passed"
+          }
+        },
+        "backend": "evas",
+        "behavior_check_available": true,
+        "behavior_ok": true,
+        "behavior_score": 1.0,
+        "checker_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "csv_path": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/vbr1_l1_pfd_small_phase_error_response_bugfix/profile_fast_skip_source_error_control/tran.csv",
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_steps": 60058.0,
+        "fixture_notes": [
+          "materialized ./pfd_updn.va from benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va"
+        ],
+        "form": "bugfix",
+        "mode": "profile_fast_skip_source_error_control",
+        "notes": [
+          "returncode=0",
+          "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+        ],
+        "ok": true,
+        "phase": "P3",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "result_root": "results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/vbr1_l1_pfd_small_phase_error_response_bugfix/profile_fast_skip_source_error_control",
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "simulation_ok": true,
+        "status": "PASS",
+        "stdout_tail": "**************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 300 ns\n    step  = 5 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 30 ns        ( 10 %)\n    tran: time = 60 ns        ( 20 %)\n    tran: time = 90 ns        ( 30 %)\n    tran: time = 120 ns       ( 40 %)\n    tran: time = 150 ns       ( 50 %)\n    tran: time = 180 ns       ( 60 %)\n    tran: time = 210 ns       ( 70 %)\n    tran: time = 240 ns       ( 80 %)\n    tran: time = 270 ns       ( 90 %)\n    tran: time = 300 ns       (100 %)\nNumber of accepted tran steps = 60058\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 30\n    cross_refine_triggers = 20\n    dynamic_step_grows = 61325\n    dynamic_step_shrinks = 3538\n    err_ratio_skipped_outputs = 0\n    err_ratio_skipped_sources = 383492\n    min_step_clamps = 74\n    model_breakpoint_clamps = 142\n    output_step_clamps = 217\n    source_breakpoint_clamps = 102\n    steps_total = 95873\nModel event counters:\n    model[0] pfd_updn_Model:\n        above_fires = 0\n        cross_fires = 30\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 1832.7 ms, elapsed = 1832.7 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-repeat-r3-goal-20260522/evas/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/vbr1_l1_pfd_small_phase_error_response_bugfix/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.4 s, elapsed = 2.4 s.\n\n",
+        "task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "timing": {
+          "accepted_tran_steps": 60058.0,
+          "total_elapsed_s": 2.4,
+          "tran_elapsed_s": 1.8327
+        },
+        "variant": "fixed",
+        "wall_time_s": 16.05649715499021
+      }
+    ],
+    "smallest_ax_fast_speedups": [
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 110493.0,
+        "evas_wall_time_s": 38.79070619214326,
+        "form": "tb",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2591889810972241,
+        "spectre_steps": 150146.0,
+        "spectre_wall_time_s": 10.054123613983393,
+        "task_id": "vbr1_l1_gain_estimator_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 16.043205127120018,
+        "form": "bugfix",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.25928541155364554,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.15976904402487,
+        "task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "variant": "fixed"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 16.176093984162435,
+        "form": "e2e",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.26223427738634114,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.2419263168703765,
+        "task_id": "pfd_small_phase_response_smoke",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 16.041246884968132,
+        "form": "dut",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2748662073841843,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.409196692984551,
+        "task_id": "vbm1_pfd_small_phase_error_response_dut",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 15.64838318596594,
+        "form": "tb",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.27804608970772887,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.350971755106002,
+        "task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 16.156886701006442,
+        "form": "e2e",
+        "report": "same_server_speed_cold_r1_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2789275053629815,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.506600101944059,
+        "task_id": "pfd_small_phase_response_smoke",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 15.772779257036746,
+        "form": "dut",
+        "report": "same_server_speed_repeat_r2_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2838426303276507,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.476987151894718,
+        "task_id": "vbm1_pfd_small_phase_error_response_dut",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 16.05649715499021,
+        "form": "bugfix",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2893813722994714,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.646451181033626,
+        "task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "variant": "fixed"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 15.830629848875105,
+        "form": "dut",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.2901547377950501,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.59333225293085,
+        "task_id": "vbm1_pfd_small_phase_error_response_dut",
+        "variant": "gold"
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "evas_steps": 60058.0,
+        "evas_wall_time_s": 15.817936622072011,
+        "form": "tb",
+        "report": "same_server_speed_repeat_r3_goal_20260522",
+        "spectre_mode": "ax",
+        "spectre_over_evas_speedup": 0.290733408856645,
+        "spectre_steps": 435.0,
+        "spectre_wall_time_s": 4.59880263521336,
+        "task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
+        "variant": "gold"
+      }
+    ]
+  },
+  "per_report_accuracy_gated_speedup_stats": [
+    {
+      "cv": 0.5981673553394035,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 5.927654138523112,
+      "max": 24.544527306665167,
+      "mean": 7.328143076455883,
+      "median": 6.820367424596609,
+      "min": 0.2591889810972241,
+      "n": 259,
+      "p10": 3.3242425545049774,
+      "p90": 13.289555523819175,
+      "report": "same_server_speed_cold_r1_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_cold_r1_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.383455963592375
+    },
+    {
+      "cv": 0.7857398931589737,
+      "evas_mode": "strict_current",
+      "geomean": 3.713896484339675,
+      "max": 23.3441324445301,
+      "mean": 5.521338036585112,
+      "median": 4.834390755440632,
+      "min": 0.06637636351501822,
+      "n": 259,
+      "p10": 1.0709858627361073,
+      "p90": 11.102404817609727,
+      "report": "same_server_speed_cold_r1_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_cold_r1_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.338335558960964
+    },
+    {
+      "cv": 0.4290214681047262,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 18.384191187122806,
+      "max": 53.0895966637367,
+      "mean": 21.434364693517743,
+      "median": 21.261689765346404,
+      "min": 1.092117390851476,
+      "n": 259,
+      "p10": 12.162802074093202,
+      "p90": 31.659642447059248,
+      "report": "same_server_speed_cold_r1_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_cold_r1_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 9.195802608705092
+    },
+    {
+      "cv": 0.5427393198831131,
+      "evas_mode": "strict_current",
+      "geomean": 11.518381710828873,
+      "max": 35.319983731982134,
+      "mean": 15.124313652682401,
+      "median": 15.014580346299642,
+      "min": 0.23550558715750222,
+      "n": 259,
+      "p10": 4.815445872184624,
+      "p90": 26.088668250262792,
+      "report": "same_server_speed_cold_r1_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_cold_r1_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 8.208559705555729
+    },
+    {
+      "cv": 0.5873330614596366,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 5.860348851203847,
+      "max": 23.268864506814896,
+      "mean": 7.237600541658354,
+      "median": 6.882529859196571,
+      "min": 0.25928541155364554,
+      "n": 259,
+      "p10": 3.3115070831055435,
+      "p90": 13.353260487887258,
+      "report": "same_server_speed_repeat_r2_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r2_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.250882083754125
+    },
+    {
+      "cv": 0.757227963233844,
+      "evas_mode": "strict_current",
+      "geomean": 3.669595483761361,
+      "max": 20.228816475444475,
+      "mean": 5.431918023171116,
+      "median": 4.681466206013548,
+      "min": 0.06553643154945703,
+      "n": 259,
+      "p10": 1.125079428326171,
+      "p90": 10.745235830987085,
+      "report": "same_server_speed_repeat_r2_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r2_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.113200221139072
+    },
+    {
+      "cv": 0.44121938014849404,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 18.341140902893752,
+      "max": 56.951277402523495,
+      "mean": 21.475693773544425,
+      "median": 21.549846244081635,
+      "min": 1.0286674476414888,
+      "n": 259,
+      "p10": 11.953314357450594,
+      "p90": 31.67832570218912,
+      "report": "same_server_speed_repeat_r2_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r2_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 9.475492295022145
+    },
+    {
+      "cv": 0.5455005101268721,
+      "evas_mode": "strict_current",
+      "geomean": 11.484737433414686,
+      "max": 34.234397331402086,
+      "mean": 15.133871185942343,
+      "median": 14.659118019497694,
+      "min": 0.2440533335486451,
+      "n": 259,
+      "p10": 4.737549092741672,
+      "p90": 27.05231614399561,
+      "report": "same_server_speed_repeat_r2_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r2_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 8.255534452125918
+    },
+    {
+      "cv": 0.593613737353531,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 5.837363396212257,
+      "max": 26.965347920215674,
+      "mean": 7.185123664748359,
+      "median": 6.773112785660086,
+      "min": 0.2893813722994714,
+      "n": 258,
+      "p10": 3.22862903236285,
+      "p90": 13.626068697085866,
+      "report": "same_server_speed_repeat_r3_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r3_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.265188111978572
+    },
+    {
+      "cv": 0.772295282583489,
+      "evas_mode": "strict_current",
+      "geomean": 3.6852435439242988,
+      "max": 24.485410490372136,
+      "mean": 5.455445721533734,
+      "median": 4.787296420785514,
+      "min": 0.06374056819785454,
+      "n": 259,
+      "p10": 1.1494648264634781,
+      "p90": 9.96295044366932,
+      "report": "same_server_speed_repeat_r3_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r3_goal_20260522.json",
+      "spectre_mode": "ax",
+      "stdev": 4.213214995130781
+    },
+    {
+      "cv": 0.42538098276607395,
+      "evas_mode": "profile_fast_skip_source_error_control",
+      "geomean": 18.25504779076148,
+      "max": 52.490713043633356,
+      "mean": 21.21627449006332,
+      "median": 21.319577068212624,
+      "min": 1.045090871277995,
+      "n": 258,
+      "p10": 12.043345395043415,
+      "p90": 30.72394480417306,
+      "report": "same_server_speed_repeat_r3_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r3_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 9.02499969321792
+    },
+    {
+      "cv": 0.552765947059029,
+      "evas_mode": "strict_current",
+      "geomean": 11.533577950577344,
+      "max": 35.93733375354485,
+      "mean": 15.211639113862907,
+      "median": 14.434102124156057,
+      "min": 0.2279369917453144,
+      "n": 259,
+      "p10": 4.608796662045541,
+      "p90": 26.9261421360604,
+      "report": "same_server_speed_repeat_r3_goal_20260522",
+      "report_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r3_goal_20260522.json",
+      "spectre_mode": "classic",
+      "stdev": 8.4084761010946
+    }
+  ],
+  "reports": [
+    {
+      "_label": "same_server_speed_cold_r1_goal_20260522",
+      "_path": "benchmark-vabench-release-v1/reports/same_server_speed_cold_r1_goal_20260522.json",
+      "created_at": "2026-05-22T13:09:10",
+      "jobs": 8,
+      "selected_rows": 259
+    },
+    {
+      "_label": "same_server_speed_repeat_r2_goal_20260522",
+      "_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r2_goal_20260522.json",
+      "created_at": "2026-05-22T14:43:11",
+      "jobs": 8,
+      "selected_rows": 259
+    },
+    {
+      "_label": "same_server_speed_repeat_r3_goal_20260522",
+      "_path": "benchmark-vabench-release-v1/reports/same_server_speed_repeat_r3_goal_20260522.json",
+      "created_at": "2026-05-22T15:35:23",
+      "jobs": 8,
+      "selected_rows": 259
+    }
+  ],
+  "tolerance_sweep_stats": [
+    {
+      "current_core_p95_0p14_max_0p22": 753,
+      "current_passed_rows": 753,
+      "max_abs_v": 1.0,
+      "max_max_nrmse": 0.12783625716505415,
+      "max_p95_nrmse": 0.12783625716505415,
+      "non_waveform_rows": 24,
+      "relaxed_p95_0p20_max_0p30": 753,
+      "strict_p95_0p05_max_0p10": 729,
+      "strict_p95_0p10_max_0p15": 741,
+      "target": "spectre_ax",
+      "waveform_rows": 753
+    },
+    {
+      "current_core_p95_0p14_max_0p22": 753,
+      "current_passed_rows": 753,
+      "max_abs_v": 1.0,
+      "max_max_nrmse": 0.12951433851307897,
+      "max_p95_nrmse": 0.12951433851307897,
+      "non_waveform_rows": 24,
+      "relaxed_p95_0p20_max_0p30": 753,
+      "strict_p95_0p05_max_0p10": 732,
+      "strict_p95_0p10_max_0p15": 732,
+      "target": "spectre_classic",
+      "waveform_rows": 753
+    },
+    {
+      "current_core_p95_0p14_max_0p22": 753,
+      "current_passed_rows": 753,
+      "max_abs_v": 0.9341542415839896,
+      "max_max_nrmse": 0.051463050296041944,
+      "max_p95_nrmse": 0.051463050296041944,
+      "non_waveform_rows": 24,
+      "relaxed_p95_0p20_max_0p30": 753,
+      "strict_p95_0p05_max_0p10": 741,
+      "strict_p95_0p10_max_0p15": 753,
+      "target": "strict_evas",
+      "waveform_rows": 753
+    }
+  ]
+}

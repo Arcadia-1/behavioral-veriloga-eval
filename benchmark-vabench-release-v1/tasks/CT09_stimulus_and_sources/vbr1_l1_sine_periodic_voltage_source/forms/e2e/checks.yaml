@@ -12,9 +12,7 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "behavioral_module_present"
-    - "transient_analysis_present"
-    - "public_observables_saved"
+    - "multitone_waveform_matches_public_samples"
 parity:
   reference: "spectre"
   status: "pass"

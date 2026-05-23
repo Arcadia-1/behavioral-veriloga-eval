@@ -4,19 +4,19 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L2",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "Event controller"
+    "category": "Data Converters",
+    "base_function": "Conversion event controller"
   },
   "static": "pass",
   "evas": "pending",
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/gold/simultaneous_event_order_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/gold/tb_simultaneous_event_order_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/conversion_event_controller.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/tb_conversion_event_controller.scs"
   ],
   "checks": {
     "must_include": [

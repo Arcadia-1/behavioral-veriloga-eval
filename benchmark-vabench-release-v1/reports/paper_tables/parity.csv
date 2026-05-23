@@ -1,6 +1,6 @@
 table_id,metric,value,scope,claim_status,evidence,safe_caption_note
-parity,dual_certified_release_forms,249,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Full release dual certification evidence; score/speed/baseline claims are still separate.
-parity,fully_certified_entries,73,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Entry-level certification from imported evidence.
+parity,dual_certified_release_forms,245,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Full release dual certification evidence; score/speed/baseline claims are still separate.
+parity,fully_certified_entries,72,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Entry-level certification from imported evidence.
 parity,evas_pass_spectre_fail_count,0,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Zero mismatch applies to the certified release forms.
 parity,dual_pending_release_forms,0,fresh full-release rerun,allowed,benchmark-vabench-release-v1/reports/certification_matrix.json,Pending forms block full release certification when nonzero.
 parity,fresh_rerun_queue_rows,0,fresh full-release rerun,allowed,benchmark-vabench-release-v1/reports/dual_rerun_queue.json,"Queue readiness is execution planning, not pass evidence."

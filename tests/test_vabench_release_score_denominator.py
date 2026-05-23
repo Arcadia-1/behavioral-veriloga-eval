@@ -13,17 +13,17 @@ def test_score_denominator_enables_frozen_certified_content_rows() -> None:
     summary = report["summary"]
 
     assert report["status"] == "score_enabled"
-    assert summary["planned_entry_count"] == 73
-    assert summary["release_form_count"] == 249
-    assert summary["content_denominator_entry_count"] == 73
+    assert summary["planned_entry_count"] == 72
+    assert summary["release_form_count"] == 245
+    assert summary["content_denominator_entry_count"] == 72
     assert summary["content_excluded_entry_count"] == 0
-    assert summary["content_denominator_form_count"] == 249
+    assert summary["content_denominator_form_count"] == 245
     assert summary["content_excluded_form_count"] == 0
-    assert summary["certified_entry_count"] == 73
-    assert summary["certified_form_count"] == 249
-    assert summary["benchmark_score_enabled_entry_count"] == 73
+    assert summary["certified_entry_count"] == 72
+    assert summary["certified_form_count"] == 245
+    assert summary["benchmark_score_enabled_entry_count"] == 72
     assert summary["benchmark_score_enabled_form_count"] == 245
-    assert summary["scored_entry_count"] == 73
+    assert summary["scored_entry_count"] == 72
     assert summary["scored_form_count"] == 245
     assert summary["l0_conformance_counted_in_denominator"] == 0
     assert report["claim_rule"]["score_claim_allowed"] is True
@@ -40,9 +40,9 @@ def test_score_denominator_records_why_rows_are_excluded() -> None:
     assert "entry_missing_required_forms" not in entry_reasons
     assert "entry_not_fully_certified" not in entry_reasons
     assert "entry_blocker:evas_certification" not in entry_reasons
-    assert "entry_blocker:fresh_evas_spectre_dual_refresh_pending" not in entry_reasons
+    assert "entry_blocker:fresh_dual_validation" not in entry_reasons
     assert "entry_blocker:spectre_certification" not in entry_reasons
-    assert form_reasons["benchmark_score_disabled"] == 4
+    assert "benchmark_score_disabled" not in form_reasons
     assert "content_denominator_excluded:duplicate_l2_gold_kernel" not in form_reasons
     assert "task_evas:pending" not in form_reasons
     assert "task_spectre:pending" not in form_reasons

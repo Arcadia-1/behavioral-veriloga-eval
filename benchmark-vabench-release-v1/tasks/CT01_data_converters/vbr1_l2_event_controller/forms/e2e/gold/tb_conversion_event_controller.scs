@@ -1,0 +1,25 @@
+simulator lang=spectre
+global 0
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 5n 0.9 5.1n 0.0 170n 0.0]
+Vstart (start 0) vsource type=pwl wave=[ \
+  0 0.0 \
+  10.0n 0.0 10.1n 0.9 12.0n 0.9 12.1n 0.0 \
+  90.0n 0.0 90.1n 0.9 92.0n 0.9 92.1n 0.0 \
+  170n 0.0 \
+]
+Vcmp (cmp_done 0) vsource type=pwl wave=[ \
+  0 0.0 \
+  36.0n 0.0 36.1n 0.9 39.0n 0.9 39.1n 0.0 \
+  170n 0.0 \
+]
+
+XDUT (vdd vss rst start cmp_done sample_en compare_en readout_en done state_mon) conversion_event_controller
+
+simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12
+tran tran stop=170n maxstep=0.2n errpreset=conservative
+save rst start cmp_done sample_en compare_en readout_en done state_mon
+
+ahdl_include "conversion_event_controller.va"

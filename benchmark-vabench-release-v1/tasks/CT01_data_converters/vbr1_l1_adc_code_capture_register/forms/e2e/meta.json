@@ -1,0 +1,54 @@
+{
+  "id": "vbr1_l1_adc_code_capture_register_e2e",
+  "task_id": "vbr1_l1_adc_code_capture_register_e2e",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l1_adc_code_capture_register",
+  "family": "end-to-end",
+  "category": "Data Converters",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas_spectre",
+  "release_form": "normal",
+  "provenance_status": "designed_release_replacement",
+  "source_main120_id": null,
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": false
+  },
+  "must_include": [
+    "@(cross(",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt(",
+    "idt("
+  ],
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "adc_code_capture_register.va",
+    "tb_adc_code_capture_register.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "behavior_checks": [
+    "load_captures_parallel_conversion_code",
+    "held_code_remains_stable_between_loads",
+    "overrange_flag_tracks_clip_inputs"
+  ],
+  "source_files": [
+    "gold/adc_code_capture_register.va",
+    "gold/tb_adc_code_capture_register.scs"
+  ],
+  "evidence": {
+    "status": "pending_fresh_dual_after_ct06_dedup"
+  },
+  "designed_source": true
+}

@@ -11,7 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "claim_gate.json"
 REPORT_MD = REPORTS_ROOT / "claim_gate.md"
-PLANNED_ENTRY_TARGET = 73
+PLANNED_ENTRY_TARGET = 72
 
 
 def rel(path: Path) -> str:

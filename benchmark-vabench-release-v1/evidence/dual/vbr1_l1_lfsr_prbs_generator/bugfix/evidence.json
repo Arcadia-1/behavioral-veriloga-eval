@@ -5,21 +5,21 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "LFSR/PRBS generator"
+    "category": "Stimulus and Sources",
+    "base_function": "PRBS stimulus/dither generator"
   },
   "static": "pass",
   "evas": "pass",
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
+    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lfsr_prbs_generator/bugfix/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lfsr_prbs_generator/bugfix/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -29,9 +29,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
+    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -42,21 +42,21 @@
       ],
       "signals_compared": 11,
       "samples": 1200,
-      "max_rmse_v": 0.1414213562373095,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.0018181818181818182,
-      "p95_nrmse": 0.02,
-      "max_nrmse": 0.02,
+      "max_rmse_v": 0.0,
+      "max_abs_v": 0.0,
+      "mean_nrmse": 0.0,
+      "p95_nrmse": 0.0,
+      "max_nrmse": 0.0,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.1414213562373095,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.02,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.02
+          "mismatch_ratio": 0.0
         },
         "en": {
           "rmse_v": 0.0,
@@ -166,9 +166,9 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
     ]
   },
   "failures": [],

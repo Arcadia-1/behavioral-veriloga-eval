@@ -5,11 +5,11 @@
 - Category: `Data Converters`
 - Package status: `selected_l1_addition`
 - Score surface: `model-capability`
-- Benchmark score: `pending`
+- Benchmark score: `enabled`
 - Materialized forms: `bugfix, dut, e2e, tb`
 - Missing forms: `none`
-- Certification: static `pending`; EVAS `pending`; Spectre `pending`
+- Certification: static `pass`; EVAS `pass`; Spectre `pass`
 - Evidence: `benchmark-vabench-release-v1/reports/dual_certification.json`
 
-This release entry adds a 1.5-bit pipeline ADC MDAC stage as a reusable data
-converter building block. Fresh EVAS/Spectre evidence is pending.
+This release entry is materialized in the paper-facing vaBench release package.
+`release_entry.json` is the structured source of truth for forms, scoring, and certification status.

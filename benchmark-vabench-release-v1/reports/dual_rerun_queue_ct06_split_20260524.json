@@ -1,0 +1,338 @@
+{
+  "date": "2026-05-24",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_count": 12,
+  "ready_count": 12,
+  "blocked_count": 0,
+  "reason_counts": {
+    "targeted_new_task_fresh_dual_validation": 12
+  },
+  "form_counts": {
+    "bugfix": 2,
+    "dut": 2,
+    "e2e": 4,
+    "tb": 4
+  },
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "dut",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "ADC code capture register",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/gold/adc_code_capture_register.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/gold/tb_adc_code_capture_register.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/dut/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "tb",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "ADC code capture register",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/gold/adc_code_capture_register.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/gold/tb_adc_code_capture_register.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/tb/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "ADC code capture register",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 2,
+      "gold_scs_count": 2,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/bugfix/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "e2e",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "ADC code capture register",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/gold/adc_code_capture_register.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/gold/tb_adc_code_capture_register.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/e2e/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "dut",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "Serial readout deserializer",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/gold/serial_readout_deserializer.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/gold/tb_serial_readout_deserializer.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/dut/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "tb",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "Serial readout deserializer",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/gold/serial_readout_deserializer.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/gold/tb_serial_readout_deserializer.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/tb/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "Serial readout deserializer",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 2,
+      "gold_scs_count": 2,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/bugfix/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "e2e",
+      "level": "L1",
+      "category": "Data Converters",
+      "base_function": "Serial readout deserializer",
+      "source_task_id": "",
+      "historical_source_task_id": "",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/serial_readout_deserializer.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/tb_serial_readout_deserializer.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/e2e/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "tb",
+      "level": "L2",
+      "category": "Data Converters",
+      "base_function": "Conversion event controller",
+      "source_task_id": "",
+      "historical_source_task_id": "vbr1_l2_event_controller_tb",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/conversion_event_controller.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/tb_conversion_event_controller.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_event_controller/tb/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "level": "L2",
+      "category": "Data Converters",
+      "base_function": "Conversion event controller",
+      "source_task_id": "",
+      "historical_source_task_id": "conversion_event_controller_flow",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/gold/conversion_event_controller.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/gold/tb_conversion_event_controller.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_event_controller/e2e/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "tb",
+      "level": "L2",
+      "category": "Data Converters",
+      "base_function": "Readout frame-monitor flow",
+      "source_task_id": "",
+      "historical_source_task_id": "vbr1_l2_serializer_frame_alignment_flow_tb",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/serializer_frame_monitor_flow.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/tb_serializer_frame_monitor_flow.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_serializer_frame_alignment_flow/tb/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "level": "L2",
+      "category": "Data Converters",
+      "base_function": "Readout frame-monitor flow",
+      "source_task_id": "",
+      "historical_source_task_id": "serializer_frame_monitor_flow",
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "static_status": "pass",
+      "evas_status": "pending",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_monitor_flow.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_serializer_frame_alignment_flow/e2e/evidence.json",
+      "pending_blockers": [
+        "fresh_dual_validation",
+        "evas_certification",
+        "spectre_certification"
+      ],
+      "ready_for_dual_rerun": true
+    }
+  ],
+  "notes": [
+    "Targeted queue for CT06 dismantling follow-up: freshly validate newly added/reclassified release tasks only."
+  ]
+}

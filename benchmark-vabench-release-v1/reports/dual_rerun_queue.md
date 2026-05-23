@@ -1,6 +1,6 @@
 # vaBench Release Dual Rerun Queue
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This is the machine-readable queue for converting pending release forms
 into fresh EVAS/Spectre evidence. It is generated from the current

@@ -10,8 +10,8 @@ badcase could be reconstructed from existing release gold.
 
 | Metric | Count |
 | --- | ---: |
-| seed entries | 28 |
-| seed entries with all required forms present | 28 |
+| seed entries | 24 |
+| seed entries with all required forms present | 24 |
 | generated true-bugfix companions in seed rows | 2 |
 
 ## Rows
@@ -33,9 +33,7 @@ badcase could be reconstructed from existing release gold.
 | `vbr1_l1_rotating_dem_selector` | `rotating_element_selector` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_rotating_dem_selector` | release assets copied from source tasks; not scored until certified |
 | `vbr1_l1_windowed_dem_pointer` | `barrel_pointer_window` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_windowed_dem_pointer` | release assets copied from source tasks; not scored until certified |
 | `vbr1_l1_element_shuffler` | `element_shuffler` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler` | release assets copied from source tasks; not scored until certified |
-| `vbr1_l1_edge_detector` | `edge_detector` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector` | release assets copied from source tasks; not scored until certified |
-| `vbr1_l1_debounce_latch` | `debounce_latch` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch` | release assets copied from source tasks; not scored until certified |
-| `vbr1_l1_one_shot_timer` | `one_shot_timer` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer` | release assets copied from source tasks; not scored until certified |
+| `vbr1_l1_debounce_latch` | `debounce_latch` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch` | release assets copied from source tasks; not scored until certified |
 | `vbr1_l1_crossing_metric_writer` | `file_metric_writer` | `tb|dut|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer` | release assets copied from source tasks; not scored until certified |
 | `vbr1_l1_settling_time_detector` | `settling_time_measurement_tb` | `tb|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector` | release assets copied from source tasks; not scored until certified |
 | `vbr1_l1_peak_detector` | `peak_detector` | `dut|tb|bugfix|e2e` | `` | `benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector` | release assets copied from source tasks; not scored until certified |

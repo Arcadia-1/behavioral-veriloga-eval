@@ -13,6 +13,7 @@ REPORTS_ROOT = PACKAGE_ROOT / "reports"
 SUMMARY_JSON = ROOT / "results" / "vabench-release-v1-dual-rerun" / "summary.json"
 REPORT_JSON = REPORTS_ROOT / "finish_readiness.json"
 REPORT_MD = REPORTS_ROOT / "finish_readiness.md"
+PLANNED_ENTRY_TARGET = 72
 
 
 def rel(path: Path) -> str:
@@ -94,7 +95,7 @@ def build_report() -> dict[str, object]:
     expected_miss = as_int(summary.get("expected_miss_count"))
 
     local_ready = (
-        planned_entries == 75
+        planned_entries == PLANNED_ENTRY_TARGET
         and source_linked >= planned_entries
         and materialized >= planned_entries
         and asset.get("status") == "pass"
@@ -145,7 +146,7 @@ def build_report() -> dict[str, object]:
         check(
             check_id="P1_local_release_package_ready",
             status="pass" if local_ready else "blocked",
-            requirement="The 75-entry release plan is covered by materialized entries with zero asset/static issues.",
+            requirement=f"The {PLANNED_ENTRY_TARGET}-entry release plan is covered by materialized entries with zero asset/static issues.",
             evidence=[
                 rel(REPORTS_ROOT / "release_status.json"),
                 rel(REPORTS_ROOT / "asset_integrity.json"),

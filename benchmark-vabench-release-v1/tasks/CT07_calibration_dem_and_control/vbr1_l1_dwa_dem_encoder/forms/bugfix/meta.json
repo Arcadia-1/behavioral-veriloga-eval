@@ -25,9 +25,10 @@
     "sim_correct"
   ],
   "behavior_checks": [
-    "pointer_advances_by_input_code",
-    "cell_enable_mask_wraps_around_sixteen_elements",
-    "pointer_output_is_one_hot"
+    "pointer_advances_by_sampled_input_code",
+    "cell_enable_window_matches_effective_code_plus_lsb_boundary",
+    "pointer_output_is_one_hot",
+    "wraparound_and_multi_code_coverage"
   ],
   "source": "bugfix_companion_from_dut"
 }

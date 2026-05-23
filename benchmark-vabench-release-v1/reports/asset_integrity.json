@@ -1,17 +1,49 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "pass",
-  "audited_release_task_count": 249,
+  "audited_release_task_count": 245,
   "form_counts": {
-    "bugfix": 49,
-    "dut": 54,
-    "e2e": 73,
-    "tb": 73
+    "bugfix": 48,
+    "dut": 53,
+    "e2e": 72,
+    "tb": 72
   },
   "issue_count": 0,
   "warning_count": 0,
   "task_reports": [
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
     {
       "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "dut",
@@ -237,6 +269,70 @@
       "warnings": []
     },
     {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
       "entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "dut",
       "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut",
@@ -317,6 +413,22 @@
       "warnings": []
     },
     {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
       "entry_id": "vbr1_l2_flash_adc_mini_array",
       "form": "tb",
       "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb",
@@ -349,6 +461,22 @@
       "warnings": []
     },
     {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "tb",
       "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb",
@@ -360,6 +488,38 @@
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "e2e",
       "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_debounce_latch",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_debounce_latch",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_debounce_latch",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_debounce_latch",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/e2e",
       "status": "pass",
       "issues": [],
       "warnings": []
@@ -1261,230 +1421,6 @@
       "warnings": []
     },
     {
-      "entry_id": "vbr1_l1_debounce_latch",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_debounce_latch",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_debounce_latch",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_debounce_latch",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l2_event_controller",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l2_event_controller",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/tb",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e",
-      "status": "pass",
-      "issues": [],
-      "warnings": []
-    },
-    {
       "entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "dut",
       "release_path": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut",
@@ -1936,6 +1872,38 @@
       "entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
       "form": "e2e",
       "release_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e",
       "status": "pass",
       "issues": [],
       "warnings": []

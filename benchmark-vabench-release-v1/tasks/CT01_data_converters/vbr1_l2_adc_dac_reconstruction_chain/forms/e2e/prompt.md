@@ -75,7 +75,7 @@ Do not include explanatory prose outside the source artifact contents.
 Write Verilog-A modules named `adc_ideal_4b` and `dac_ideal_4b`.
 
 Create a voltage-domain ideal 4-bit ADC and 4-bit DAC pair in Verilog-A,
-chain them for an ADC→DAC round-trip, then produce a minimal EVAS-compatible
+chain them for an ADC→DAC round-trip, then produce a minimal voltage-domain
 Spectre testbench and run a smoke simulation.
 
 Behavioral intent (ADC):
@@ -95,7 +95,7 @@ Behavioral intent (DAC):
 Implementation constraints:
 
 - pure voltage-domain Verilog-A only
-- EVAS-compatible syntax
+- portable voltage-domain behavioral Verilog-A syntax
 - use `@(cross(...))` for clock edge detection in the ADC
 - use `transition(...)` to drive digital and analog outputs
 - `vin`, `clk`, `vout`, and all `dout` bits must appear in the waveform CSV

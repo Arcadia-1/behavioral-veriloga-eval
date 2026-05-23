@@ -1,6 +1,6 @@
 # vaBench Release Artifact Index
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This index maps the release package artifacts to their role in the
 paper-facing claim surface. It is a navigation layer, not new
@@ -18,8 +18,8 @@ certification evidence.
 
 | ID | Status | Claim role | Certification evidence | Path |
 | --- | --- | --- | --- | --- |
-| `release_tracker` | `incomplete` | `coverage_plan` | `False` | `docs/VABENCH_RELEASE_TRACKER.csv` |
-| `release_package_root` | `incomplete` | `release_structure` | `False` | `benchmark-vabench-release-v1` |
+| `release_tracker` | `ready` | `coverage_plan` | `False` | `docs/VABENCH_RELEASE_TRACKER.csv` |
+| `release_package_root` | `ready` | `release_structure` | `False` | `benchmark-vabench-release-v1` |
 | `release_package_readme` | `ready` | `reproducibility` | `False` | `benchmark-vabench-release-v1/README.md` |
 | `release_package_manifest` | `in_progress` | `reproducibility` | `False` | `benchmark-vabench-release-v1/MANIFEST.json` |
 | `release_evaluator_contract` | `ready` | `reproducibility` | `False` | `benchmark-vabench-release-v1/EVALUATOR.json` |

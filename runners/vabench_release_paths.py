@@ -9,7 +9,6 @@ CATEGORY_DIR_BY_NAME: dict[str, str] = {
     "Sample, Hold, and Analog Memory": "CT03_sample_hold_and_analog_memory",
     "Analog Behavioral Signal Conditioning": "CT04_analog_behavioral_signal_conditioning",
     "PLL / Clock / Event Timing": "CT05_pll_clock_event_timing",
-    "Digital and Event-Driven Logic": "CT06_digital_and_event_driven_logic",
     "Calibration, DEM, and Control": "CT07_calibration_dem_and_control",
     "Measurement and Testbench Instrumentation": "CT08_measurement_and_testbench_instrumentation",
     "Stimulus and Sources": "CT09_stimulus_and_sources",

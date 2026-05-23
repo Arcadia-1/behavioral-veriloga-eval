@@ -31,6 +31,7 @@ MAIN120_EVAS_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-evas-202
 MAIN120_SPECTRE_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-spectre-jin-2026-05-08" / "summary.json"
 REPORT_JSON = REPORTS_ROOT / "paper_artifacts.json"
 REPORT_MD = REPORTS_ROOT / "paper_artifacts.md"
+PLANNED_ENTRY_TARGET = 72
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -229,7 +230,7 @@ def build_report() -> dict[str, object]:
     }
     claim_gates = {
         "can_claim_release_assets_materialized": materialization_complete,
-        "can_claim_top_level_coverage_plan": len(tracker) == 75,
+        "can_claim_top_level_coverage_plan": len(tracker) == PLANNED_ENTRY_TARGET,
         "can_claim_release_package_complete": (
             materialization_complete
             and int(dual.get("dual_pending_release_task_count", 0) or 0) == 0

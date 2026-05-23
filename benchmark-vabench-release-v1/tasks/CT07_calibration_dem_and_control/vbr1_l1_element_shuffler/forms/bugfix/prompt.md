@@ -45,7 +45,7 @@ When this form generates a testbench, use plain scalar save names for these obse
 ## Public Behavior Checks
 
 - `fixed_time_active_output_sequence_at_20_40_60_80_100_120ns`
-- `expected_sequence_1_2_3_0_1_2`
+- `expected_permutation_sequence_2_0_3_1_2_0`
 
 ## Observed Mismatch Framing
 
@@ -65,11 +65,12 @@ Repair the provided Verilog-A element shuffler. The DUT has one clock input
 `clk`, an active-low reset input `rst_n`, and four voltage-domain one-hot
 outputs `out0`, `out1`, `out2`, and `out3`.
 
-After reset is released, each rising edge of `clk` advances the internal state
-through the shuffle order `0 -> 2 -> 1 -> 3 -> 0`. The public output sequence
-sampled after the first six rising edges must therefore be:
+After reset is released, each rising edge of `clk` advances a four-state
+controller. The public output is not the simple rotating order used by a basic
+DEM pointer; it is a fixed non-monotonic shuffle permutation. The sequence
+sampled after the first six rising edges must be:
 
-`out1, out2, out3, out0, out1, out2`.
+`out2, out0, out3, out1, out2, out0`.
 
 Keep outputs voltage-domain only and drive them with `transition`. Do not use
 current contributions.

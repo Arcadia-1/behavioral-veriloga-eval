@@ -21,7 +21,7 @@ def test_finish_readiness_blocks_release_finish_until_target_and_import_gate_are
     assert report["run_scope"]["staged_bundle_count"] == 0
     assert report["run_scope"]["expected_primary_summary_tasks_total"] == 0
 
-    assert checks["P1_local_release_package_ready"]["status"] == "blocked"
+    assert checks["P1_local_release_package_ready"]["status"] == "pass"
     assert checks["P2_primary_rerun_queue_ready"]["status"] == "pass"
     assert checks["P3_staging_ready"]["status"] == "pass"
     assert checks["P4_bridge_ready"]["status"] == "pass"

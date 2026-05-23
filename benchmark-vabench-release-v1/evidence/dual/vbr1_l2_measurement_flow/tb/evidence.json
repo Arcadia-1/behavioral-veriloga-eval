@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_measurement_flow/tb/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_measurement_flow/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_measurement_flow/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_measurement_flow/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_measurement_flow/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_measurement_flow/tb/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_measurement_flow/tb/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_measurement_flow/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -41,11 +41,11 @@
       ],
       "signals_compared": 2,
       "samples": 1200,
-      "max_rmse_v": 0.05,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.001250717234957946,
-      "p95_nrmse": 0.0025,
-      "max_nrmse": 0.0025,
+      "max_rmse_v": 1.2910229243028297e-06,
+      "max_abs_v": 1.4088982593696286e-05,
+      "mean_nrmse": 7.172349579460164e-07,
+      "p95_nrmse": 1.4344699158920329e-06,
+      "max_nrmse": 1.4344699158920329e-06,
       "per_signal": {
         "metric_out": {
           "rmse_v": 1.2910229243028297e-06,
@@ -55,14 +55,14 @@
           "kind": "analog"
         },
         "ref": {
-          "rmse_v": 0.05,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.0025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.0025
+          "mismatch_ratio": 0.0
         }
       }
     }
@@ -72,8 +72,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs"
     ]
   },
   "failures": [],

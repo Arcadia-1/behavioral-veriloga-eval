@@ -81,7 +81,7 @@ Requirements:
 4. On the rising threshold crossing, latch `trip_v = V(inp, vss)` and `offset_est = V(inp, vss) - V(inn, vss)`
 5. Drive `valid` low before the first rising crossing and high after the measurement latches
 6. Keep `trip_v` and `offset_est` stable after `valid` goes high
-7. Use EVAS-compatible `@(initial_step)`, directional `cross()` events, and `transition()`
+7. Use portable Verilog-A event constructs: `@(initial_step)`, directional `cross()` events, and `transition()`
 8. The benchmark testbench performs a single ramp of `inp` from 0.490 V toward 0.520 V with `inn = 0.500 V`; the expected latched trip voltage is near 0.505 V and the expected offset estimate is near 0.005 V
 
 Ports:

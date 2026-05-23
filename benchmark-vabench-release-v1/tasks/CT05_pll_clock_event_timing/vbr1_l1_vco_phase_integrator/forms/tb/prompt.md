@@ -56,7 +56,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 # Task: vbm1_vco_phase_integrator_tb
 
-Write a Spectre testbench for a timer-driven VCO phase integrator DUT.
+Write a Spectre testbench for a voltage-controlled VCO phase integrator DUT with periodic phase updates.
 
 The DUT module is `vco_phase_integrator` with ports `vctrl, phase, clk`. All ports are electrical; digital-control ports use 0/0.9 V logic levels. The candidate DUT file will be available as `vco_phase_integrator.va`; include it with `ahdl_include` and instantiate the DUT using the exact module and port names.
 

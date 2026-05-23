@@ -16,10 +16,11 @@ MANIFEST_JSON = PACKAGE_ROOT / "reports" / "dual_rerun_staging_manifest.json"
 DEFAULT_OUTPUT_ROOT = ROOT / "results" / "vabench-release-v1-evas-targeted-gate"
 
 DEFAULT_ENTRIES = (
+    "vbr1_l1_adc_code_capture_register",
     "vbr1_l1_calibration_deadband_controller",
     "vbr1_l1_charge_pump_abstraction",
     "vbr1_l1_dac_mismatch_unit_weighting_model",
-    "vbr1_l1_event_pulse_stretcher",
+    "vbr1_l1_serial_readout_deserializer",
     "vbr1_l1_loop_filter_abstraction",
     "vbr1_l2_amplifier_filter_chain",
 )

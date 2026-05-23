@@ -71,7 +71,7 @@ Write a Verilog-A module named `cmp_delay`.
 
 ## Objective
 
-Create a clocked comparator behavioral model in Verilog-A and a minimal EVAS-compatible Spectre testbench, then run a smoke simulation.
+Create a clocked comparator behavioral model in Verilog-A and a minimal voltage-domain Spectre transient testbench, then run a smoke simulation.
 
 ## Specification
 

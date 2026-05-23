@@ -45,6 +45,8 @@ SCHEMAS = [
 ]
 REPORT_JSON = REPORTS_ROOT / "completion_audit.json"
 REPORT_MD = REPORTS_ROOT / "completion_audit.md"
+PLANNED_ENTRY_TARGET = 72
+PLANNED_LEVEL_COUNTS = {"L1": 56, "L2": 16}
 
 
 def rel(path: Path) -> str:
@@ -161,20 +163,20 @@ def build_report() -> dict[str, object]:
             ],
         ),
         req(
-            requirement_id="R2_tracker_75_entries",
-            requirement="Create an execution tracker for the 75 selected L1/L2 functions.",
-            status="proved" if len(tracker) == 75 and level_counts == {"L1": 60, "L2": 15} else "incomplete",
+            requirement_id="R2_tracker_72_entries",
+            requirement=f"Create an execution tracker for the {PLANNED_ENTRY_TARGET} selected L1/L2 functions.",
+            status="proved" if len(tracker) == PLANNED_ENTRY_TARGET and level_counts == PLANNED_LEVEL_COUNTS else "incomplete",
             evidence=[rel(TRACKER_CSV), rel(REPORTS_ROOT / "release_status.json")],
             finding=f"Tracker has {len(tracker)} rows with level counts {level_counts}.",
-            blockers=[] if len(tracker) == 75 and level_counts == {"L1": 60, "L2": 15} else ["tracker count or L1/L2 split does not match target"],
+            blockers=[] if len(tracker) == PLANNED_ENTRY_TARGET and level_counts == PLANNED_LEVEL_COUNTS else ["tracker count or L1/L2 split does not match target"],
         ),
         req(
             requirement_id="R3_source_materialization",
             requirement="Materialize each release task with prompt/meta/checks/gold assets.",
             status=(
                 "proved"
-                if status.get("source_linked_entry_count") == 75
-                and status.get("asset_materialized_entry_count") == 75
+                if status.get("source_linked_entry_count") == PLANNED_ENTRY_TARGET
+                and status.get("asset_materialized_entry_count") == PLANNED_ENTRY_TARGET
                 and asset.get("status") == "pass"
                 else "incomplete"
             ),

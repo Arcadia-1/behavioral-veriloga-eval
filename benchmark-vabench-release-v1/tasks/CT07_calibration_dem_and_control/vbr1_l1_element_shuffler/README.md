@@ -3,9 +3,13 @@
 - Entry: `vbr1_l1_element_shuffler`
 - Level: `L1`
 - Category: `Calibration, DEM, and Control`
-- Source base: `element_shuffler`
 - Package status: `current_l1_seed`
-- Certification: `not_certified`
+- Score surface: `model-capability`
+- Benchmark score: `enabled`
+- Materialized forms: `bugfix, dut, e2e, tb`
+- Missing forms: `none`
+- Certification: static `pass`; EVAS `pass`; Spectre `pass`
+- Evidence: `benchmark-vabench-release-v1/reports/dual_certification.json`
 
-This directory is a source-linked release-entry skeleton.
-It intentionally does not count in benchmark scores yet.
+This release entry is materialized in the paper-facing vaBench release package.
+`release_entry.json` is the structured source of truth for forms, scoring, and certification status.

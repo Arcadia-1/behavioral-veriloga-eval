@@ -1,11 +1,11 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "pass",
-  "entry_count": 73,
-  "form_count": 249,
-  "content_denominator_entry_count": 73,
-  "content_denominator_form_count": 249,
+  "entry_count": 72,
+  "form_count": 245,
+  "content_denominator_entry_count": 72,
+  "content_denominator_form_count": 245,
   "content_excluded_entry_count": 0,
   "content_excluded_entries": {},
   "severity_counts": {},
@@ -36,6 +36,26 @@
       ],
       "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/checks.yaml",
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converters",
+      "base_function": "Conversion event controller",
+      "gold_va_modules": [
+        "conversion_event_controller"
+      ],
+      "sim_checks": [
+        "sample_phase_after_start_edges",
+        "compare_phase_ends_on_cmp_done_or_timeout",
+        "readout_and_done_follow_compare_phase"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/gold/conversion_event_controller.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_flash_adc_mini_array",
@@ -79,6 +99,26 @@
       ],
       "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/checks.yaml",
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converters",
+      "base_function": "Readout frame-monitor flow",
+      "gold_va_modules": [
+        "serializer_frame_monitor_flow"
+      ],
+      "sim_checks": [
+        "frame_pulse_present_for_each_loaded_word",
+        "serialized_bits_and_word_monitor_match_expected_words",
+        "word_ok_pulses_and_frame_error_stays_low"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
@@ -221,6 +261,7 @@
       ],
       "sim_checks": [
         "cppll_tracks_reference_frequency",
+        "lock_asserts_in_late_tracking_window",
         "vctrl_stays_bounded"
       ],
       "gold_va": [
@@ -228,46 +269,6 @@
       ],
       "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/checks.yaml",
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_event_controller",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Digital and Event-Driven Logic",
-      "base_function": "Event controller",
-      "gold_va_modules": [
-        "simultaneous_event_order_ref"
-      ],
-      "sim_checks": [
-        "ref_edges_align_with_absolute_timer_grid",
-        "plateau_levels_encode_cross_after_timer_order",
-        "simultaneous_event_order"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/gold/simultaneous_event_order_ref.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/prompt.md"
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "content_denominator_included": true,
-      "content_exclusion_reasons": [],
-      "category": "Digital and Event-Driven Logic",
-      "base_function": "Serializer frame-alignment flow",
-      "gold_va_modules": [
-        "serializer_frame_alignment_ref"
-      ],
-      "sim_checks": [
-        "frame_pulse_present_for_each_loaded_word",
-        "serialized_bits_match_word0xA5_then_0x3C",
-        "frame_pulse_width_is_single_bit_window"
-      ],
-      "gold_va": [
-        "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va"
-      ],
-      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
-      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_complete_calibration_loop",

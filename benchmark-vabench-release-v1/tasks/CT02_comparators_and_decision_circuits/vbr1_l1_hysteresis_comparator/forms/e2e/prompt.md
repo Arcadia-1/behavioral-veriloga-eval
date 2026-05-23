@@ -60,7 +60,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a Verilog-A module named `cmp_hysteresis` and one minimal EVAS-compatible Spectre testbench.
+Write a Verilog-A module named `cmp_hysteresis` and one minimal voltage-domain Spectre transient testbench.
 
 # Task: comparator_hysteresis_smoke
 

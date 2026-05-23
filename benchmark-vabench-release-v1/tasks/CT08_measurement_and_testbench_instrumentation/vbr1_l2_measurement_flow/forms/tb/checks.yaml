@@ -7,9 +7,9 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "ref_edges_counted_on_expected_grid"
+    - "metric_out_normalizes_final_edge_count"
+    - "final_step_writes_candidate_metric_file"
 parity:
   reference: "spectre"
   status: "pass"

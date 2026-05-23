@@ -18,11 +18,13 @@ PROMOTED_DUTS = {
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
     "vbr1_l1_dwa_dem_encoder",
+    "vbr1_l1_adc_code_capture_register",
     "vbr1_l1_higher_order_filter",
     "vbr1_l1_hysteresis_comparator",
     "vbr1_l1_pfd_small_phase_error_response",
     "vbr1_l1_propagation_delay_comparator",
     "vbr1_l1_ramp_or_step_source",
+    "vbr1_l1_serial_readout_deserializer",
     "vbr1_l1_serializer_frame_aligner",
     "vbr1_l1_soft_hysteretic_limiter",
     "vbr1_l1_threshold_comparator",
@@ -47,6 +49,30 @@ def test_noise_source_checker_rejects_flat_passthrough() -> None:
 
     assert sim.check_noise_gen(ok_rows)[0]
     assert not sim.check_noise_gen(bad_rows)[0]
+
+
+def _prbs7_rows(*, tap: tuple[int, int] = (6, 5)) -> list[dict[str, float]]:
+    state = 127
+    rows: list[dict[str, float]] = []
+    for step in range(24):
+        row = {
+            "time": step * 1e-9 + 3e-9,
+            "clk": 0.9,
+            "rst_n": 0.9,
+            "en": 0.9,
+            "serial_out": 0.9 if ((state >> 6) & 1) else 0.0,
+        }
+        for idx in range(7):
+            row[f"state_{idx}"] = 0.9 if ((state >> idx) & 1) else 0.0
+        rows.append(row)
+        feedback = ((state >> tap[0]) & 1) ^ ((state >> tap[1]) & 1)
+        state = ((state & 0x3F) << 1) | feedback
+    return rows
+
+
+def test_prbs7_checker_rejects_wrong_feedback_tap() -> None:
+    assert sim.check_prbs7(_prbs7_rows())[0]
+    assert not sim.check_prbs7(_prbs7_rows(tap=(6, 4)))[0]
 
 
 def _threshold_comparator_rows(*, inverted: bool = False) -> list[dict[str, float]]:
@@ -254,6 +280,22 @@ def test_dwa_release_checker_rejects_wrong_cell_span() -> None:
     assert not sim.check_dwa_dem_encoder_release(_dwa_rows(corrupt_cell_span=True))[0]
 
 
+def _element_shuffler_rows(sequence: list[int]) -> list[dict[str, float]]:
+    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0]
+    rows: list[dict[str, float]] = []
+    for time_ns, active in zip(sample_times_ns, sequence):
+        row = {"time": time_ns * 1e-9}
+        for idx in range(4):
+            row[f"out{idx}"] = 0.9 if idx == active else 0.0
+        rows.append(row)
+    return rows
+
+
+def test_release_element_shuffler_checker_rejects_plain_rotation() -> None:
+    assert sim.check_release_element_shuffler(_element_shuffler_rows([2, 0, 3, 1, 2, 0]))[0]
+    assert not sim.check_release_element_shuffler(_element_shuffler_rows([1, 2, 3, 0, 1, 2]))[0]
+
+
 def _ramp_rows(*, flat_phase: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     period = 8.0
@@ -439,6 +481,113 @@ def test_simultaneous_event_order_checker_requires_timed_ref_edges_and_encoded_p
     assert sim.check_simultaneous_event_order(_simultaneous_event_rows())[0]
     assert not sim.check_simultaneous_event_order(_simultaneous_event_rows(bad_levels=True))[0]
     assert not sim.check_simultaneous_event_order(_simultaneous_event_rows(shifted_ref=True))[0]
+
+
+def _conversion_event_controller_rows(*, missing_timeout_readout: bool = False, extra_cmp_done: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(171):
+        t = idx * 1.0e-9
+        rst = 0.9 if t <= 5e-9 else 0.0
+        start = 0.9 if (10e-9 <= t <= 12e-9 or 90e-9 <= t <= 92e-9) else 0.0
+        cmp_done = 0.9 if 36e-9 <= t <= 39e-9 else 0.0
+        if extra_cmp_done and 118e-9 <= t <= 121e-9:
+            cmp_done = 0.9
+        sample = 0.9 if (10e-9 <= t < 22e-9 or 90e-9 <= t < 102e-9) else 0.0
+        compare = 0.9 if (22e-9 <= t < 36e-9 or 102e-9 <= t < 130e-9) else 0.0
+        readout = 0.9 if (36e-9 <= t < 52e-9 or 130e-9 <= t < 146e-9) else 0.0
+        if missing_timeout_readout and t >= 120e-9:
+            readout = 0.0
+        done = 0.9 if (52e-9 <= t < 60e-9 or 146e-9 <= t < 154e-9) else 0.0
+        if rst > 0.45:
+            sample = compare = readout = done = 0.0
+        if sample > 0.45:
+            state = 0.225
+        elif compare > 0.45:
+            state = 0.450
+        elif readout > 0.45:
+            state = 0.675
+        elif done > 0.45:
+            state = 0.900
+        else:
+            state = 0.0
+        rows.append(
+            {
+                "time": t,
+                "rst": rst,
+                "start": start,
+                "cmp_done": cmp_done,
+                "sample_en": sample,
+                "compare_en": compare,
+                "readout_en": readout,
+                "done": done,
+                "state_mon": state,
+            }
+        )
+    return rows
+
+
+def test_conversion_event_controller_checker_requires_normal_and_timeout_transactions() -> None:
+    assert sim.check_conversion_event_controller(_conversion_event_controller_rows())[0]
+    assert not sim.check_conversion_event_controller(_conversion_event_controller_rows(missing_timeout_readout=True))[0]
+    assert not sim.check_conversion_event_controller(_conversion_event_controller_rows(extra_cmp_done=True))[0]
+
+
+def _serializer_frame_monitor_rows(*, bad_word_mon: bool = False, frame_error: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    bit_events = []
+    for base_t, word in ((16e-9, 0xA5), (86e-9, 0x3C)):
+        bits = [(word >> bit) & 1 for bit in range(7, -1, -1)]
+        for offset, bit in enumerate(bits):
+            bit_events.append((base_t + offset * 5e-9, bit, offset == 0, word, offset == 7))
+    for idx in range(281):
+        t = idx * 0.5e-9
+        phase = (t - 1e-9) % 5e-9
+        clk = 0.9 if t >= 1e-9 and phase < 2.5e-9 else 0.0
+        load = 0.9 if (2e-9 <= t <= 12e-9 or 72e-9 <= t <= 82e-9) else 0.0
+        sout = 0.0
+        frame = 0.0
+        word_ok = 0.0
+        word_mon = 0.0
+        for edge_t, bit, is_frame, word, is_last in bit_events:
+            if edge_t <= t < edge_t + 5e-9:
+                sout = 0.9 if bit else 0.0
+                frame = 0.9 if is_frame else 0.0
+            if is_last and edge_t <= t < edge_t + 5e-9:
+                word_ok = 0.9
+                word_mon = 0.9 * word / 255.0
+        if t >= 121e-9:
+            word_mon = 0.9 * 0x3C / 255.0
+        elif t >= 51e-9:
+            word_mon = 0.9 * 0xA5 / 255.0
+        if bad_word_mon and t >= 51e-9:
+            word_mon = 0.05
+        rows.append(
+            {
+                "time": t,
+                "clk": clk,
+                "load": load,
+                "frame": frame,
+                "sout": sout,
+                "word_ok": word_ok,
+                "frame_error": 0.9 if frame_error and 100e-9 <= t <= 102e-9 else 0.0,
+                "word_mon": word_mon,
+                "din7": 0.9 if t < 70e-9 else 0.0,
+                "din6": 0.0,
+                "din5": 0.9,
+                "din4": 0.0 if t < 70e-9 else 0.9,
+                "din3": 0.0 if t < 70e-9 else 0.9,
+                "din2": 0.9,
+                "din1": 0.0,
+                "din0": 0.9 if t < 70e-9 else 0.0,
+            }
+        )
+    return rows
+
+
+def test_serializer_frame_monitor_checker_requires_word_monitor_and_error_flag() -> None:
+    assert sim.check_serializer_frame_monitor_flow(_serializer_frame_monitor_rows())[0]
+    assert not sim.check_serializer_frame_monitor_flow(_serializer_frame_monitor_rows(bad_word_mon=True))[0]
+    assert not sim.check_serializer_frame_monitor_flow(_serializer_frame_monitor_rows(frame_error=True))[0]
 
 
 def _final_step_metric_rows(*, bad_levels: bool = False, missing_edge: bool = False) -> list[dict[str, float]]:
@@ -706,6 +855,87 @@ def test_retriggerable_pulse_stretcher_checker_requires_burst_extension() -> Non
     assert not sim.check_release_event_pulse_stretcher(
         _retriggerable_stretcher_rows(ignore_retrigger=True)
     )[0]
+
+
+def _code_capture_row(time_ns: float, *, clk: bool = False, load: bool = False, word: int = 0, over: bool = False) -> dict[str, float]:
+    row = {
+        "time": time_ns * 1e-9,
+        "clk": 0.9 if clk else 0.0,
+        "load": 0.9 if load else 0.0,
+        "over_lo": 0.0,
+        "over_hi": 0.9 if over else 0.0,
+        "valid": 0.9 if time_ns >= 21.0 else 0.0,
+        "overrange": 0.9 if over else 0.0,
+        "code_mon": 0.9 * word / 15.0,
+    }
+    for bit in range(4):
+        row[f"din{bit}"] = 0.9 if (word >> bit) & 1 else 0.0
+        row[f"bit{bit}"] = 0.9 if (word >> bit) & 1 else 0.0
+    return row
+
+
+def _adc_code_capture_rows(*, drift_between_loads: bool = False) -> list[dict[str, float]]:
+    rows = [
+        _code_capture_row(0.0, word=0),
+        _code_capture_row(19.9, word=0),
+        _code_capture_row(20.0, clk=True, load=True, word=3),
+        _code_capture_row(21.0, word=3),
+        _code_capture_row(35.0, word=3),
+        _code_capture_row(59.9, word=3),
+        _code_capture_row(60.0, clk=True, load=True, word=12),
+        _code_capture_row(61.0, word=12),
+        _code_capture_row(75.0, word=2 if drift_between_loads else 12),
+        _code_capture_row(99.9, word=12),
+        _code_capture_row(100.0, clk=True, load=True, word=15, over=True),
+        _code_capture_row(101.0, word=15, over=True),
+    ]
+    return rows
+
+
+def test_adc_code_capture_checker_requires_load_gated_hold_and_overrange() -> None:
+    assert sim.check_adc_code_capture_register(_adc_code_capture_rows())[0]
+    assert not sim.check_adc_code_capture_register(
+        _adc_code_capture_rows(drift_between_loads=True)
+    )[0]
+
+
+def _deser_row(time_ns: float, *, clk: bool = False, frame: bool = False, sin: bool = False, word: int = 0, valid: bool = False) -> dict[str, float]:
+    row = {
+        "time": time_ns * 1e-9,
+        "clk": 0.9 if clk else 0.0,
+        "frame": 0.9 if frame else 0.0,
+        "sin": 0.9 if sin else 0.0,
+        "word_valid": 0.9 if valid else 0.0,
+        "word_mon": 0.9 * word / 15.0,
+    }
+    for bit in range(4):
+        row[f"bit{bit}"] = 0.9 if (word >> bit) & 1 else 0.0
+    return row
+
+
+def _serial_deserializer_rows(*, wrong_word: bool = False) -> list[dict[str, float]]:
+    first = 0x6 if wrong_word else 0x9
+    return [
+        _deser_row(0.0),
+        _deser_row(19.9),
+        _deser_row(20.0, clk=True, frame=True, sin=True),
+        _deser_row(30.0, clk=True, sin=False),
+        _deser_row(40.0, clk=True, sin=False),
+        _deser_row(50.0, clk=True, sin=True, word=first, valid=True),
+        _deser_row(51.0, word=first, valid=True),
+        _deser_row(60.0, word=first),
+        _deser_row(69.9, word=first),
+        _deser_row(70.0, clk=True, frame=True, sin=False, word=first),
+        _deser_row(80.0, clk=True, sin=True, word=first),
+        _deser_row(90.0, clk=True, sin=True, word=first),
+        _deser_row(100.0, clk=True, sin=False, word=0x6, valid=True),
+        _deser_row(101.0, word=0x6, valid=True),
+    ]
+
+
+def test_serial_readout_deserializer_checker_requires_msb_first_words() -> None:
+    assert sim.check_serial_readout_deserializer(_serial_deserializer_rows())[0]
+    assert not sim.check_serial_readout_deserializer(_serial_deserializer_rows(wrong_word=True))[0]
 
 
 def _vin_sampled_droop_hold_rows(*, mode: str = "good") -> list[dict[str, float]]:

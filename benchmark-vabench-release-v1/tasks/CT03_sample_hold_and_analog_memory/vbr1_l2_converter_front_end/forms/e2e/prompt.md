@@ -64,7 +64,7 @@ Do not include explanatory prose outside the source artifact contents.
 ## Task-Specific Public Description
 
 Write a Verilog-A module named `sample_hold_droop_ref` and one minimal
-EVAS-compatible Spectre testbench.
+voltage-domain Spectre transient testbench.
 
 # Task: converter_front_end_chain_e2e
 

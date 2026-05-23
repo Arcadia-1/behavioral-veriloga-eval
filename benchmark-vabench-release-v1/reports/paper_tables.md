@@ -10,7 +10,7 @@ claims.
 
 | ID | Rows | CSV | Caption |
 | --- | ---: | --- | --- |
-| `coverage` | 7 | `benchmark-vabench-release-v1/reports/paper_tables/coverage.csv` | Coverage/materialization status for the 75-entry L1/L2 release target; score denominator claims remain disabled while certification is pending. |
+| `coverage` | 7 | `benchmark-vabench-release-v1/reports/paper_tables/coverage.csv` | Coverage/materialization status for the 72-entry L1/L2 release target; score denominator claims are governed by the score denominator manifest. |
 | `parity` | 9 | `benchmark-vabench-release-v1/reports/paper_tables/parity.csv` | EVAS/Spectre parity status for certified release forms; score, speed/debug, and model baselines are separate gates. |
 | `claim_gate` | 9 | `benchmark-vabench-release-v1/reports/paper_tables/claim_gate.csv` | Use only safe_wording for allowed claims; blocked claims must not be used as conclusions. |
 | `external_blockers` | 1 | `benchmark-vabench-release-v1/reports/paper_tables/external_blockers.csv` | External blockers explain unavailable fresh Spectre evidence; they are not certification evidence. |
@@ -20,20 +20,20 @@ claims.
 
 | metric | value | scope | claim_status |
 | --- | --- | --- | --- |
-| planned_l1_l2_entries | 73 | coverage target | allowed |
-| l1_entries | 57 | coverage target | allowed |
+| planned_l1_l2_entries | 72 | coverage target | allowed |
+| l1_entries | 56 | coverage target | allowed |
 | l2_entries | 16 | coverage target | allowed |
-| source_linked_entries | 73 | source package | allowed |
-| asset_materialized_entries | 73 | source package | allowed |
-| static_certified_forms | 249 | static checks | allowed |
-| scored_entries | 73 | score denominator | allowed |
+| source_linked_entries | 72 | source package | allowed |
+| asset_materialized_entries | 72 | source package | allowed |
+| static_certified_forms | 245 | static checks | allowed |
+| scored_entries | 72 | score denominator | allowed |
 
 ## Parity
 
 | metric | value | scope | claim_status |
 | --- | --- | --- | --- |
-| dual_certified_release_forms | 249 | full certified release | allowed |
-| fully_certified_entries | 73 | full certified release | allowed |
+| dual_certified_release_forms | 245 | full certified release | allowed |
+| fully_certified_entries | 72 | full certified release | allowed |
 | evas_pass_spectre_fail_count | 0 | full certified release | allowed |
 | dual_pending_release_forms | 0 | fresh full-release rerun | allowed |
 | fresh_rerun_queue_rows | 0 | fresh full-release rerun | allowed |
@@ -46,11 +46,11 @@ claims.
 
 | claim_id | status | completion_required | safe_wording |
 | --- | --- | --- | --- |
-| C1_coverage_target_defined | allowed | True | The current release package defines 73 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
-| C2_source_assets_static_clean | allowed | True | The release has 73 materialized entries for the 73-entry plan and 249 static-certified forms with zero asset issues. |
-| C3_imported_dual_subset_clean | allowed | False | On the full imported release evidence (249 forms), EVAS PASS / Spectre FAIL count is 0. |
-| C4_full_release_dual_certified | allowed | True | The full release package has EVAS/Spectre certification for 249 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
-| C5_score_denominator_enabled | allowed | True | The release benchmark score denominator is enabled for 73 certified content-denominator entries and 245 forms. |
+| C1_coverage_target_defined | allowed | True | The current release package defines 72 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result. |
+| C2_source_assets_static_clean | allowed | True | The release has 72 materialized entries for the 72-entry plan and 245 static-certified forms with zero asset issues. |
+| C3_imported_dual_subset_clean | allowed | False | On the full imported release evidence (245 forms), EVAS PASS / Spectre FAIL count is 0. |
+| C4_full_release_dual_certified | allowed | True | The full release package has EVAS/Spectre certification for 245 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
+| C5_score_denominator_enabled | allowed | True | The release benchmark score denominator is enabled for 72 certified content-denominator entries and 245 forms. |
 | C6_speed_debug_claim | blocked | True | Speed/debug has subset timing evidence, but release-wide speedup remains blocked until the dedicated artifact marks the speed claim allowed. |
 | C7_model_baseline_claim | blocked | True | Model baseline reporting is pending until baseline runs report against the enabled score denominator. |
 | C8_l0_conformance_separate | allowed | True | L0 conformance has 4 cases and contributes 0 entries to benchmark coverage. |

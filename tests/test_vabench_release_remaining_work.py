@@ -14,12 +14,12 @@ def test_remaining_work_report_separates_pending_causes() -> None:
 
     assert report["status"] == "in_progress"
     assert report["ready_to_score"] is True
-    assert report["planned_entries"] == 73
-    assert report["source_linked_entry_count"] == 73
-    assert report["asset_materialized_entry_count"] == 73
+    assert report["planned_entries"] == 72
+    assert report["source_linked_entry_count"] == 72
+    assert report["asset_materialized_entry_count"] == 72
     assert report["dual_failed_release_task_count"] == 0
     assert report["evas_pass_spectre_fail_count"] == 0
-    assert report["scored_release_entries"] == 73
+    assert report["scored_release_entries"] == 72
     assert report["source_design_pending_entry_count"] == 0
     assert report["selected_rerun_pending_form_count"] == 0
     assert report["source_equivalence_blocked_form_count"] == 0

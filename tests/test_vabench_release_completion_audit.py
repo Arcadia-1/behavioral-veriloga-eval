@@ -42,9 +42,9 @@ def test_completion_audit_maps_goal_requirements_to_evidence() -> None:
     assert "schemas/vabench-dual-certification.schema.json" in requirements["R1_schema_package"]["evidence"]
     assert "schemas/vabench-certification-matrix.schema.json" in requirements["R1_schema_package"]["evidence"]
     assert "schemas/vabench-remaining-work.schema.json" in requirements["R1_schema_package"]["evidence"]
-    assert requirements["R2_tracker_75_entries"]["status"] == "incomplete"
-    assert "tracker count or L1/L2 split does not match target" in requirements["R2_tracker_75_entries"]["blockers"]
-    assert requirements["R3_source_materialization"]["status"] == "incomplete"
+    assert requirements["R2_tracker_72_entries"]["status"] == "proved"
+    assert requirements["R2_tracker_72_entries"]["blockers"] == []
+    assert requirements["R3_source_materialization"]["status"] == "proved"
     assert requirements["R4_static_certification"]["status"] == "proved"
     assert requirements["R6_l0_conformance_separate"]["status"] == "proved"
     assert requirements["R8_no_overclaiming"]["status"] == "proved"

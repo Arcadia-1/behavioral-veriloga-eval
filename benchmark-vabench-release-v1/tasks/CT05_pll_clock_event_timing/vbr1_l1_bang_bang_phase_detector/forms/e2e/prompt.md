@@ -72,7 +72,7 @@ Required DUT behavior:
 - Ports are exactly `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`.
 - `vdd` and `vss` are supply rails; `clk` and `data` are voltage-coded logic inputs.
 - `up`, `dn`, and `retimed_data` are voltage outputs driven between the supply rails.
-- Use EVAS-compatible event handling with `cross()` for clock/data edges.
+- Use Verilog-A event handling with `cross()` for clock/data edges.
 - Emit bounded `up` pulses when data edges lead the clock and bounded `dn`
   pulses when data edges lag the clock.
 - Keep `up` and `dn` mostly non-overlapping; do not leave both asserted after

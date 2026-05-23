@@ -1,9 +1,9 @@
 # vaBench Manual Review Queue
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This is the human-review queue for task 2 and task 3 after locking the
-clean 75-entry function table. Every entry requires manual semantic
+clean 72-entry function table. Every entry requires manual semantic
 sign-off; risk level only decides review order.
 
 ## Review Contract
@@ -17,25 +17,24 @@ sign-off; risk level only decides review order.
 
 | Metric | Count |
 | --- | ---: |
-| total review entries | 73 |
+| total review entries | 72 |
 | P0 entries | 0 |
 | P1 entries | 16 |
-| P2 entries | 9 |
-| P3 entries | 48 |
+| P2 entries | 10 |
+| P3 entries | 46 |
 
 ## Batch Order
 
 | Batch | Entries |
 | --- | ---: |
-| A Data converters | 13 |
+| A Data converters | 18 |
 | B Clocking and PLL | 13 |
-| C Comparators | 7 |
+| C Comparators | 8 |
 | D Calibration and DEM | 9 |
 | E Measurement and TB | 7 |
-| F Stimulus and sources | 5 |
+| F Stimulus and sources | 6 |
 | G Signal conditioning | 7 |
-| H Digital/event logic | 8 |
-| I Sample/hold memory | 4 |
+| H Sample/hold memory | 4 |
 
 Recommended manual order: finish all P0 entries first, then P1 checker/composition entries, then P2 auxiliary or pending-certification entries, then P3 sign-off.
 
@@ -43,18 +42,23 @@ Recommended manual order: finish all P0 entries first, then P1 checker/compositi
 
 | Risk | Entry | Level | Function | Forms | Rep prompt | Gold modules | Review question |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| P3 | `vbr1_l1_adc_code_capture_register` | L1 | ADC code capture register | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: ADC code capture register - Domain: `voltage` - Target artifact(s): `adc_code_capture_register.va` - Supplied/reference support artifact(s): `tb_adc_code_capture_register.scs` | `adc_code_capture_register` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
+| P3 | `vbr1_l1_serializer_frame_aligner` | L1 | ADC/readout serializer frame aligner | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: ADC/readout serializer frame aligner - Domain: `voltage` - Target artifact(s): `serializer_frame_alignment_ref.va` - Supplied/reference support artifact(s): `tb_serializer_frame_alignment... | `serializer_frame_alignment_ref` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_capacitive_weighted_sar_feedback_dac` | L1 | Capacitive/weighted SAR feedback DAC | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Capacitive/weighted SAR feedback DAC - Domain: `voltage` - Target artifact(s): `cdac_cal.va` - Supplied/reference support artifact(s): `tb_cdac_cal_ref.scs` | `cdac_cal` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_clocked_adc_quantizer` | L1 | Clocked ADC quantizer | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Clocked ADC quantizer - Domain: `voltage` - Target artifact(s): `flash_adc_3b.va` - Supplied/reference support artifact(s): `tb_flash_adc_3b_ref.scs` | `flash_adc_3b` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_dac_mismatch_unit_weighting_model` | L1 | DAC mismatch/unit-weighting model | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: DAC mismatch/unit-weighting model - Domain: `voltage` - Target artifact(s): `dac_mismatch_unit_weighting_model.va` - Visible context: public task, interface, artifact, stimulus, and obser... | `dac_mismatch_unit_weighting_model` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_pipeline_adc_stage` | L1 | Pipeline ADC MDAC stage | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Pipeline ADC MDAC stage - Domain: `voltage` - Target artifact(s): `pipeline_stage.va` - Supplied/reference support artifact(s): `tb_pipeline_stage_ref.scs` | `pipeline_stage` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_sar_logic` | L1 | SAR logic | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: SAR logic - Domain: `voltage` - Target artifact(s): `sar_logic_4b.va` - Supplied/reference support artifact(s): `tb_sar_logic_4b_ref.scs` - Visible context: public task, interface, artifa... | `sar_logic_4b` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_segmented_dac` | L1 | Segmented DAC | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Segmented DAC - Domain: `voltage` - Target artifact(s): `segmented_dac.va` - Supplied/reference support artifact(s): `tb_segmented_dac_ref.scs` - Visible context: public task, interface, ... | `segmented_dac` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
+| P3 | `vbr1_l1_serial_readout_deserializer` | L1 | Serial readout deserializer | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Serial readout deserializer - Domain: `voltage` - Target artifact(s): `serial_readout_deserializer.va` - Supplied/reference support artifact(s): `tb_serial_readout_deserializer.scs` | `serial_readout_deserializer` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_binary_weighted_voltage_dac` | L1 | Simple 4-bit binary-coded DAC | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Simple 4-bit binary-coded DAC - Domain: `voltage` - Target artifact(s): `simple_binary_voltage_dac_4b.va` - Supplied/reference support artifact(s): `tb_simple_binary_voltage_dac_4b_ref.sc... | `simple_binary_voltage_dac_4b` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_thermometer_code_decoder` | L1 | Thermometer-code decoder | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Thermometer-code decoder - Domain: `voltage` - Target artifact(s): `thermometer_decoder_guarded.va` - Supplied/reference support artifact(s): `tb_thermometer_decoder_guarded_ref.scs` | `thermometer_decoder_guarded` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_unit_element_thermometer_dac` | L1 | Unit-element thermometer DAC | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Data Converters - Base function: Unit-element thermometer DAC - Domain: `voltage` - Target artifact(s): `thermometer_dac_15seg.va` - Supplied/reference support artifact(s): `tb_thermometer_dac_15seg_ref.scs` | `thermometer_dac_15seg` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P1 | `vbr1_l2_adc_dac_reconstruction_chain` | L2 | ADC/DAC reconstruction chain | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: ADC/DAC reconstruction chain - Domain: `voltage` - Target artifact(s): `adc_ideal_4b.va`, `adc_ideal_4b_ref.va`, `dac_ideal_4b.va`, `dac_ideal_4b_ref.va`, `tb_adc_dac_ideal_4b_ref.scs` | `adc_ideal_4b, dac_ideal_4b` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
+| P1 | `vbr1_l2_event_controller` | L2 | Conversion event controller | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: Conversion event controller - Domain: `voltage` - Target artifact(s): `conversion_event_controller.va`, `tb_conversion_event_controller.scs` - Visible context: public task, interface, art... | `conversion_event_controller` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
 | P1 | `vbr1_l2_flash_adc_mini_array` | L2 | Flash ADC mini-array | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: Flash ADC mini-array - Domain: `voltage` - Target artifact(s): `flash_adc_3b.va`, `tb_flash_adc_3b_ref.scs` - Visible context: public task, interface, artifact, stimulus, and observable c... | `flash_adc_3b` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
 | P1 | `vbr1_l2_pipeline_adc_chain` | L2 | Pipeline ADC chain | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: Pipeline ADC chain - Domain: `voltage` - Target artifact(s): `pipeline_adc_chain_4b.va`, `tb_pipeline_adc_chain_4b_ref.scs` - Visible context: public task, interface, artifact, stimulus, ... | `pipeline_adc_chain_4b` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
+| P1 | `vbr1_l2_serializer_frame_alignment_flow` | L2 | Readout frame-monitor flow | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: Readout frame-monitor flow - Domain: `voltage` - Target artifact(s): `serializer_frame_monitor_flow.va`, `tb_serializer_frame_monitor_flow.scs` - Visible context: public task, interface, ... | `serializer_frame_monitor_flow` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
 | P1 | `vbr1_l2_weighted_sar_adc_dac_loop` | L2 | Weighted SAR ADC/DAC loop | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Data Converters - Base function: Weighted SAR ADC/DAC loop - Domain: `voltage` - Target artifact(s): `dac_weighted_8b.va`, `sar_adc_weighted_8b.va`, `sh_ideal.va`, `tb_sar_adc_dac_weighted_8b_ref.scs` | `dac_weighted_8b, sar_adc_weighted_8b, sh_ideal` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
 
 ## B Clocking and PLL
@@ -79,6 +83,7 @@ Recommended manual order: finish all P0 entries first, then P1 checker/compositi
 
 | Risk | Entry | Level | Function | Forms | Rep prompt | Gold modules | Review question |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| P3 | `vbr1_l1_debounce_latch` | L1 | Comparator debounce latch | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Comparators and Decision Circuits - Base function: Comparator debounce latch - Domain: `voltage` - Target artifact(s): `debounce_latch.va` - Supplied/reference support artifact(s): `tb_debounce_latch_ref.scs` | `debounce_latch` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_hysteresis_comparator` | L1 | Hysteresis comparator | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Comparators and Decision Circuits - Base function: Hysteresis comparator - Domain: `voltage` - Target artifact(s): `cmp_hysteresis.va` - Supplied/reference support artifact(s): `tb_cmp_hysteresis_ref.scs` | `cmp_hysteresis` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_offset_comparator` | L1 | Offset comparator | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Comparators and Decision Circuits - Base function: Offset comparator - Domain: `voltage` - Target artifact(s): `cmp_offset_ref.va` - Supplied/reference support artifact(s): `tb_comparator_offset_ref.scs` | `cmp_offset_ref` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P3 | `vbr1_l1_propagation_delay_comparator` | L1 | Propagation-delay comparator | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Comparators and Decision Circuits - Base function: Propagation-delay comparator - Domain: `voltage` - Target artifact(s): `cmp_delay.va`, `edge_interval_timer.va` - Supplied/reference support artifact(s): `tb_cmp_delay_r... | `cmp_delay, edge_interval_timer` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
@@ -119,6 +124,7 @@ Recommended manual order: finish all P0 entries first, then P1 checker/compositi
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | P2 | `vbr1_l1_burst_clock_source` | L1 | Burst clock source | `dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Stimulus and Sources - Base function: Burst clock source - Domain: `voltage` - Target artifact(s): `clk_burst_gen.va` - Supplied/reference support artifact(s): `tb_clk_burst_gen_ref.scs` | `clk_burst_gen` | Confirm this is a reusable testbench/source function rather than checker syntax or simulator conformance. |
 | P2 | `vbr1_l1_dither_or_noise_like_deterministic_source` | L1 | Dither or noise-like deterministic source | `dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Stimulus and Sources - Base function: Dither or noise-like deterministic source - Domain: `voltage` - Target artifact(s): `noise_gen.va`, `noise_gen_ref.va` - Supplied/reference support artifact(s): `tb_noise_gen_ref.scs... | `noise_gen` | Confirm this is a reusable testbench/source function rather than checker syntax or simulator conformance. |
+| P2 | `vbr1_l1_lfsr_prbs_generator` | L1 | PRBS stimulus/dither generator | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Stimulus and Sources - Base function: PRBS stimulus/dither generator - Domain: `voltage` - Target artifact(s): `prbs7.va`, `prbs7_ref.va` - Supplied/reference support artifact(s): `tb_prbs7_ref.scs` | `prbs7, prbs7_ref` | Confirm this is a reusable testbench/source function rather than checker syntax or simulator conformance. |
 | P2 | `vbr1_l1_ramp_or_step_source` | L1 | Periodic phase-ramp guard source | `dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Stimulus and Sources - Base function: Periodic phase-ramp guard source - Domain: `voltage` - Target artifact(s): `bound_step_period_guard_ref.va` - Supplied/reference support artifact(s): `tb_bound_step_period_guard_ref.... | `bound_step_period_guard_ref` | Confirm this is a reusable testbench/source function rather than checker syntax or simulator conformance. |
 | P2 | `vbr1_l1_sine_periodic_voltage_source` | L1 | Sine/periodic voltage source | `dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Stimulus and Sources - Base function: Sine/periodic voltage source - Domain: `voltage` - Target artifact(s): `multitone.va` - Supplied/reference support artifact(s): `tb_multitone_ref.scs` | `multitone` | Confirm this is a reusable testbench/source function rather than checker syntax or simulator conformance. |
 | P1 | `vbr1_l2_adc_dac_source_sweep_flow` | L2 | ADC/DAC source sweep flow | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Stimulus and Sources - Base function: ADC/DAC source sweep flow - Domain: `voltage` - Target artifact(s): `adc_dac_source_sweep_flow.va`, `tb_adc_dac_source_sweep_flow.scs` - Visible context: public task, interface, arti... | `adc_dac_source_sweep_flow` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
@@ -135,20 +141,7 @@ Recommended manual order: finish all P0 entries first, then P1 checker/compositi
 | P3 | `vbr1_l1_voltage_gain_amplifier` | L1 | Voltage gain amplifier | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Analog Behavioral Signal Conditioning - Base function: Voltage gain amplifier - Domain: `voltage` - Target artifact(s): `voltage_gain_amplifier.va` - Visible context: public task, interface, artifact, stimulus, and obser... | `voltage_gain_amplifier` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
 | P1 | `vbr1_l2_amplifier_filter_chain` | L2 | Amplifier/filter chain | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Analog Behavioral Signal Conditioning - Base function: Amplifier/filter chain - Domain: `voltage` - Target artifact(s): `amplifier_filter_chain.va`, `tb_amplifier_filter_chain.scs` - Visible context: public task, interfa... | `amplifier_filter_chain` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
 
-## H Digital/event logic
-
-| Risk | Entry | Level | Function | Forms | Rep prompt | Gold modules | Review question |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| P3 | `vbr1_l1_debounce_latch` | L1 | Debounce latch | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: Debounce latch - Domain: `voltage` - Target artifact(s): `debounce_latch.va` - Supplied/reference support artifact(s): `tb_debounce_latch_ref.scs` | `debounce_latch` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P3 | `vbr1_l1_edge_detector` | L1 | Edge detector | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: Edge detector - Domain: `voltage` - Target artifact(s): `edge_detector.va` - Supplied/reference support artifact(s): `tb_edge_detector_ref.scs` | `edge_detector` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P3 | `vbr1_l1_lfsr_prbs_generator` | L1 | LFSR/PRBS generator | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: LFSR/PRBS generator - Domain: `voltage` - Target artifact(s): `prbs7.va`, `prbs7_ref.va` - Supplied/reference support artifact(s): `tb_prbs7_ref.scs` | `prbs7, prbs7_ref` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P3 | `vbr1_l1_one_shot_timer` | L1 | One-shot timer | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: One-shot timer - Domain: `voltage` - Target artifact(s): `one_shot_timer.va` - Supplied/reference support artifact(s): `tb_one_shot_timer_ref.scs` | `one_shot_timer` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P3 | `vbr1_l1_event_pulse_stretcher` | L1 | Retriggerable one-shot pulse stretcher | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: Retriggerable one-shot pulse stretcher - Domain: `voltage` - Target artifact(s): `event_pulse_stretcher.va` - Visible context: public task, interface, artifact, stimulus, a... | `event_pulse_stretcher` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P3 | `vbr1_l1_serializer_frame_aligner` | L1 | Serializer/frame aligner | `bugfix,dut,e2e,tb` | - Form: `dut` - Level: `L1` - Category: Digital and Event-Driven Logic - Base function: Serializer/frame aligner - Domain: `voltage` - Target artifact(s): `serializer_frame_alignment_ref.va` - Supplied/reference support artifact(s): `tb_serializer_frame_alignm... | `serializer_frame_alignment_ref` | Confirm naming, prompt, checker, and gold describe the same circuit function. |
-| P1 | `vbr1_l2_event_controller` | L2 | Event controller | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Digital and Event-Driven Logic - Base function: Event controller - Domain: `voltage` - Target artifact(s): `simultaneous_event_order_ref.va`, `tb_simultaneous_event_order_ref.scs` - Visible context: public task, interfac... | `simultaneous_event_order_ref` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
-| P1 | `vbr1_l2_serializer_frame_alignment_flow` | L2 | Serializer frame-alignment flow | `e2e,tb` | - Form: `e2e` - Level: `L2` - Category: Digital and Event-Driven Logic - Base function: Serializer frame-alignment flow - Domain: `voltage` - Target artifact(s): `serializer_frame_alignment_ref.va`, `tb_serializer_frame_alignment_ref.scs` | `serializer_frame_alignment_ref` | Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke. |
-
-## I Sample/hold memory
+## H Sample/hold memory
 
 | Risk | Entry | Level | Function | Forms | Rep prompt | Gold modules | Review question |
 | --- | --- | --- | --- | --- | --- | --- | --- |

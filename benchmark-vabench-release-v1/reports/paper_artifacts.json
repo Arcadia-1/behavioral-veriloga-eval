@@ -1,44 +1,43 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "coverage_summary": {
-    "planned_entries": 73,
+    "planned_entries": 72,
     "level_counts": {
-      "L1": 57,
+      "L1": 56,
       "L2": 16
     },
     "category_counts": {
       "Analog Behavioral Signal Conditioning": 7,
       "Calibration, DEM, and Control": 9,
-      "Comparators and Decision Circuits": 7,
-      "Data Converters": 13,
-      "Digital and Event-Driven Logic": 8,
+      "Comparators and Decision Circuits": 8,
+      "Data Converters": 18,
       "Measurement and Testbench Instrumentation": 7,
       "PLL / Clock / Event Timing": 13,
       "Sample, Hold, and Analog Memory": 4,
-      "Stimulus and Sources": 5
+      "Stimulus and Sources": 6
     },
     "package_status_counts": {
-      "current_l1_seed": 25,
+      "current_l1_seed": 23,
       "current_l1_seed_with_review": 1,
-      "selected_l1_addition": 31,
+      "selected_l1_addition": 32,
       "selected_l2_target": 16
     },
-    "source_linked_entry_count": 73,
-    "asset_materialized_entry_count": 73,
-    "static_certified_release_task_count": 249,
-    "dual_certified_release_task_count": 249,
-    "fully_certified_entry_count": 73,
+    "source_linked_entry_count": 72,
+    "asset_materialized_entry_count": 72,
+    "static_certified_release_task_count": 245,
+    "dual_certified_release_task_count": 245,
+    "fully_certified_entry_count": 72,
     "certification_matrix_status": "complete",
-    "scored_release_entries": 73,
+    "scored_release_entries": 72,
     "scored_release_forms": 245,
     "score_denominator_status": "score_enabled",
     "claim_status": "score_enabled"
   },
   "parity_summary": {
     "release_dual_status": "pass",
-    "dual_certified_release_task_count": 249,
+    "dual_certified_release_task_count": 245,
     "dual_pending_release_task_count": 0,
     "dual_failed_release_task_count": 0,
     "evas_pass_spectre_fail_count": 0,
@@ -78,36 +77,52 @@
   "speed_debug_summary": {
     "status": "measured_subset",
     "claim_allowed": false,
-    "reason": "Timing exists for a subset only: 17 timed rows cover 17/257 scored forms. Wrapper aggregate Spectre/EVAS speedup is 1.835; do not claim release-wide EVAS speedup yet.",
+    "reason": "Timing exists for a subset only: 4 timed rows cover 4/245 scored forms. Wrapper aggregate Spectre/EVAS speedup is 2.711; do not claim release-wide EVAS speedup yet.",
     "required_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "measurement_scope": {
-      "summary": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json",
+      "summary": "results/vabench-release-v1-dual-rerun-ct06-split-20260524-r5-l2/summary.json",
       "summaries": [
-        "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json"
+        "results/vabench-release-v1-dual-rerun-ct06-split-20260524-r5-l2/summary.json"
       ],
       "summary_selection": {
         "source": "dual_rerun_import",
-        "imported_summary": "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json",
+        "imported_summary": "results/vabench-release-v1-dual-rerun-ct06-split-20260524-r5-l2/summary.json",
         "imported_summary_rejected_reason": "",
         "selected_summaries": [
-          "results/vabench-release-v1-dual-rerun-ct02-complete-20260523-r2/summary.json"
+          "results/vabench-release-v1-dual-rerun-ct06-split-20260524-r5-l2/summary.json"
         ]
       },
       "staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
       "queue_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
-      "planned_primary_rerun_rows": 17,
+      "planned_primary_rerun_rows": 4,
       "planned_staged_bundles": 0,
-      "timed_rows": 17,
+      "timed_rows": 4,
       "stale_summary_rejected": false,
-      "scored_form_count": 257,
-      "timed_form_count": 17,
-      "timed_scored_form_count": 17,
-      "missing_scored_form_count": 240,
+      "scored_form_count": 245,
+      "timed_form_count": 4,
+      "timed_scored_form_count": 4,
+      "missing_scored_form_count": 241,
       "timed_unscored_form_count": 0,
-      "score_denominator_coverage_fraction": 0.06614785992217899,
+      "score_denominator_coverage_fraction": 0.0163265306122449,
       "full_score_denominator_timed": false,
       "missing_scored_form_examples": [
         {
+          "entry_id": "vbr1_l1_adc_code_capture_register",
+          "form": "bugfix"
+        },
+        {
+          "entry_id": "vbr1_l1_adc_code_capture_register",
+          "form": "dut"
+        },
+        {
+          "entry_id": "vbr1_l1_adc_code_capture_register",
+          "form": "e2e"
+        },
+        {
+          "entry_id": "vbr1_l1_adc_code_capture_register",
+          "form": "tb"
+        },
+        {
           "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
           "form": "bugfix"
         },
@@ -129,37 +144,21 @@
         },
         {
           "entry_id": "vbr1_l1_bang_bang_phase_detector",
-          "form": "dut"
-        },
-        {
-          "entry_id": "vbr1_l1_bang_bang_phase_detector",
-          "form": "e2e"
-        },
-        {
-          "entry_id": "vbr1_l1_bang_bang_phase_detector",
-          "form": "tb"
-        },
-        {
-          "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
-          "form": "bugfix"
-        },
-        {
-          "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
           "form": "dut"
         }
       ],
       "timed_unscored_form_examples": []
     },
     "timing_totals": {
-      "evas_wall_time_s": 55.599428001999996,
-      "spectre_wall_time_s": 102.014595167,
-      "spectre_over_evas_speedup": 1.8348137531798057,
-      "evas_reported_total_elapsed_s": 31.399999999999995,
-      "spectre_reported_total_elapsed_s": 31.8,
-      "reported_total_spectre_over_evas_speedup": 1.012738853503185,
-      "evas_reported_tran_elapsed_s": 30.906299999999998,
-      "spectre_reported_tran_elapsed_s": 0.21093920000000002,
-      "tran_spectre_over_evas_speedup": 0.006825119797581724
+      "evas_wall_time_s": 5.988978543,
+      "spectre_wall_time_s": 16.235006709,
+      "spectre_over_evas_speedup": 2.710813971436865,
+      "evas_reported_total_elapsed_s": 2.8,
+      "spectre_reported_total_elapsed_s": 2.89,
+      "reported_total_spectre_over_evas_speedup": 1.0321428571428573,
+      "evas_reported_tran_elapsed_s": 2.6287000000000003,
+      "spectre_reported_tran_elapsed_s": 0.09609909999999999,
+      "tran_spectre_over_evas_speedup": 0.03655765207136607
     },
     "current_debug_evidence": [
       "benchmark-vabench-release-v1/reports/remaining_work.json",
@@ -173,7 +172,7 @@
     "claim_allowed": false,
     "reason": "Baseline artifact exists but has no claimable baseline summary yet.",
     "required_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
-    "current_scored_release_entries": 73,
+    "current_scored_release_entries": 72,
     "current_scored_release_forms": 245,
     "score_denominator_status": "score_enabled",
     "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
@@ -230,7 +229,7 @@
   },
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
-    "can_claim_top_level_coverage_plan": false,
+    "can_claim_top_level_coverage_plan": true,
     "can_claim_release_package_complete": true,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
@@ -255,7 +254,7 @@
     "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "baseline_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
     "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "latest_dual_rerun_attempt": "results/ct05-dual-rerun-20260523-final/summary.json",
+    "latest_dual_rerun_attempt": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
     "conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
     "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
     "certification_matrix": "benchmark-vabench-release-v1/reports/certification_matrix.json"

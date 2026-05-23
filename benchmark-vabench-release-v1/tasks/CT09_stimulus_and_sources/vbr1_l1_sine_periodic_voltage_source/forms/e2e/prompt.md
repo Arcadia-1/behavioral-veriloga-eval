@@ -36,9 +36,7 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Public Behavior Checks
 
-- `behavioral_module_present`
-- `transient_analysis_present`
-- `public_observables_saved`
+- `multitone_waveform_matches_public_samples`
 
 ## Output Contract
 
@@ -66,6 +64,6 @@ Public requirements:
 
 - include the behavioral Verilog-A module
 - include a transient `tran` analysis
-- save the public observables needed by the checker
+- save the public observables needed by the public behavior checks
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

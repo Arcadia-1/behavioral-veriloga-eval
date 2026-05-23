@@ -10,7 +10,7 @@ tb_compile:
 sim_correct:
   checks:
     - "fixed_time_active_output_sequence_at_20_40_60_80_100_120ns"
-    - "expected_sequence_1_2_3_0_1_2"
+    - "expected_permutation_sequence_2_0_3_1_2_0"
 parity:
   required: true
   tolerance_notes: "Use fixed safe-time one-hot sequence checks, not raw high-row counts."

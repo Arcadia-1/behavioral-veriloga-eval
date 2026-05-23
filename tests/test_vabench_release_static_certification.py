@@ -14,17 +14,17 @@ def test_static_certification_report_passes_all_materialized_release_forms() -> 
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     assert report["status"] == "pass"
-    assert report["static_certified_release_task_count"] == 249
+    assert report["static_certified_release_task_count"] == 245
     assert report["static_failed_release_task_count"] == 0
-    assert report["static_certified_entry_count"] == 73
-    assert report["entry_count"] == 73
+    assert report["static_certified_entry_count"] == 72
+    assert report["entry_count"] == 72
     assert report["issue_count"] == 0
 
 
 def test_static_evidence_keeps_evas_and_spectre_pending() -> None:
     evidence_paths = sorted((PACKAGE / "evidence" / "static").glob("*/*/evidence.json"))
 
-    assert len(evidence_paths) == 249
+    assert len(evidence_paths) == 245
     for path in evidence_paths:
         evidence = json.loads(path.read_text(encoding="utf-8"))
         assert evidence["static"] == "pass"
@@ -37,7 +37,7 @@ def test_static_evidence_keeps_evas_and_spectre_pending() -> None:
 def test_static_results_use_static_backend_without_scoring_rows() -> None:
     result_paths = sorted((PACKAGE / "evidence" / "static").glob("*/*/result.json"))
 
-    assert len(result_paths) == 249
+    assert len(result_paths) == 245
     for path in result_paths:
         result = json.loads(path.read_text(encoding="utf-8"))
         assert result["backend"] == "static"

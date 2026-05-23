@@ -13,10 +13,10 @@ def test_content_contract_locks_clean_function_denominator() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     assert report["status"] == "pass"
-    assert report["entry_count"] == 73
-    assert report["form_count"] == 249
-    assert report["content_denominator_entry_count"] == 73
-    assert report["content_denominator_form_count"] == 249
+    assert report["entry_count"] == 72
+    assert report["form_count"] == 245
+    assert report["content_denominator_entry_count"] == 72
+    assert report["content_denominator_form_count"] == 245
     assert report["content_excluded_entry_count"] == 0
     assert report["severity_counts"].get("BLOCKER", 0) == 0
     assert report["duplicate_groups"] == []

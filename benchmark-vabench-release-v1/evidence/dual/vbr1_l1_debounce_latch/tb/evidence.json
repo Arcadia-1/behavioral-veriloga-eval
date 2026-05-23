@@ -6,8 +6,8 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L1",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "Debounce latch"
+    "category": "Comparators and Decision Circuits",
+    "base_function": "Comparator debounce latch"
   },
   "static": "pass",
   "evas": "pass",
@@ -18,8 +18,8 @@
     "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_debounce_latch_tb/spectre_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_debounce_latch/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_debounce_latch/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_debounce_latch/forms/tb/gold/debounce_latch.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_debounce_latch/forms/tb/gold/tb_debounce_latch_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/gold/debounce_latch.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/gold/tb_debounce_latch_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_debounce_latch_tb/evas_result.json",

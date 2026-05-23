@@ -1,0 +1,141 @@
+{
+  "schema_version": "same-server-speed.v1",
+  "artifact_kind": "candidate_same_server_evas_spectre_timing",
+  "date": "2026-05-21",
+  "created_at": "2026-05-21T17:09:06",
+  "claim_allowed": false,
+  "no_claim_reason": "Same-server timing is measured directly on one host, but this lightweight harness only validates Spectre returncode/log success. Paper-facing claims still need waveform/checker validation and repeated cold/warm runs.",
+  "evas_only_no_claim_reason": "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing.",
+  "host": "thu-sui",
+  "selected_rows": 1,
+  "evas_modes": [
+    "strict_current",
+    "profile_fast_skip_source_error_control"
+  ],
+  "spectre_modes": [
+    "classic"
+  ],
+  "output_root": "results/same-server-speed-sui-smoke-classic-20260521",
+  "results": [
+    {
+      "backend": "spectre",
+      "mode": "classic",
+      "status": "PASS",
+      "ok": true,
+      "wall_time_s": 17.23155369493179,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.822126,
+        "aggregate_elapsed_s": 14.9,
+        "reported_wall_s": 14.9,
+        "accepted_tran_steps": 60084.0,
+        "ahdl_compile_elapsed_s": 12.5
+      },
+      "command": "spectre -64 tb_pfd_small_phase_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-smoke-classic-20260521/spectre/vbm1_pfd_small_phase_error_response_dut/dut/classic/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-smoke-classic-20260521/spectre/vbm1_pfd_small_phase_error_response_dut/dut/classic/tb_pfd_small_phase_ref.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-sui-smoke-classic-20260521/spectre/vbm1_pfd_small_phase_error_response_dut/dut/classic",
+      "stdout_tail": " 27 C\n    tempeffects = all\n    errpreset = conservative\n    method = gear2only\n    lteratio = 10\n    relref = alllocal\n    cmin = 0 F\n    gmin = 1 pS\n\n\nOutput and IC/nodeset summary:\n                 save   4       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             60084\n\nMaximum value achieved for any signal of each quantity: \nV: V(vdd) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n   -   To further speed up simulation, consider\n          add ++aps on command line\n   -   Non-default settings that could significantly slow down simulation\n          errpreset = conservative, default moderate\n          maxstep = 5 ps, default 3 ns (conservative)\n          reltol = 10e-06, default 100e-06 (conservative)\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n        18 (6.6 %)      31 (4.4 %)      33 (1.9 %)      38 (1.8 %)\n        54 (19.6 %)     \n        Total: 50.2%\nInitial condition solution time: CPU = 213 us, elapsed = 216.961 us.\nIntrinsic tran analysis time:    CPU = 817.022 ms, elapsed = 820.267 ms.\nTotal time required for tran analysis `tran': CPU = 817.938 ms, elapsed = 822.126 ms, util. = 99.5%.\nTime accumulated: CPU = 3.80795 s, elapsed = 14.778 s.\nPeak resident memory used = 133 Mbytes.\n\nLicensing Information:\nLic Summary:\n[17:08:18.001256] cdslmd servers: 5280@thu-sui\n[17:08:18.016584] Feature usage summary:\n[17:08:18.141063]   Virtuoso_Multi_mode_Simulation  \n\n\nAggregate audit (5:08:18 PM, Thur May 21, 2026):\nTime used: CPU = 3.81 s, elapsed = 14.9 s, util. = 25.6%.\nTime spent in licensing: elapsed = 946 ms, percentage of total = 6.35%.\nPeak memory used = 133 Mbytes.\nSimulation started at: 5:08:03 PM, Thur May 21, 2026, ended at: 5:08:18 PM, Thur May 21, 2026, with elapsed time (wall clock): 14.9 s.\nspectre completes with 0 errors, 1 warning, and 3 notices.\n",
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "dut",
+      "task_id": "vbm1_pfd_small_phase_error_response_dut"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "wall_time_s": 32.7149304531049,
+      "timing": {
+        "tran_elapsed_s": 18.750799999999998,
+        "total_elapsed_s": 19.3,
+        "accepted_tran_steps": 60112.0
+      },
+      "notes": [
+        "returncode=0",
+        "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+      ],
+      "result_root": "results/same-server-speed-sui-smoke-classic-20260521/evas/vbm1_pfd_small_phase_error_response_dut/dut/strict_current",
+      "stdout_tail": "      vsource 4\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 300 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 300 ns\n    step  = 5 ps\n    reltol = 0.0001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 32\n    refine_steps  = 16\n\n    tran: time = 30 ns        ( 10 %)\n    tran: time = 60 ns        ( 20 %)\n    tran: time = 90 ns        ( 30 %)\n    tran: time = 120 ns       ( 40 %)\n    tran: time = 150 ns       ( 50 %)\n    tran: time = 180 ns       ( 60 %)\n    tran: time = 210 ns       ( 70 %)\n    tran: time = 240 ns       ( 80 %)\n    tran: time = 270 ns       ( 90 %)\n    tran: time = 300 ns       (100 %)\nNumber of accepted tran steps = 60112\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 30\n    cross_refine_triggers = 0\n    dynamic_step_grows = 63000\n    dynamic_step_shrinks = 699961\n    err_ratio_skipped_outputs = 0\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 348\n    model_breakpoint_clamps = 127\n    output_step_clamps = 502\n    source_breakpoint_clamps = 165\n    steps_total = 967877\nModel event counters:\n    model[0] pfd_updn_Model:\n        above_fires = 0\n        cross_fires = 30\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 18750.8 ms, elapsed = 18750.8 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-smoke-classic-20260521/evas/vbm1_pfd_small_phase_error_response_dut/dut/strict_current/tran.csv (signals: ref, div, up, dn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 19.3 s, elapsed = 19.3 s.\n\n",
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "dut",
+      "task_id": "vbm1_pfd_small_phase_error_response_dut"
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "wall_time_s": 15.531372592085972,
+      "timing": {
+        "tran_elapsed_s": 1.7628,
+        "total_elapsed_s": 2.3,
+        "accepted_tran_steps": 60058.0
+      },
+      "notes": [
+        "returncode=0",
+        "up_frac=0.0050 dn_frac=0.0000 up_pulses=15"
+      ],
+      "result_root": "results/same-server-speed-sui-smoke-classic-20260521/evas/vbm1_pfd_small_phase_error_response_dut/dut/profile_fast_skip_source_error_control",
+      "stdout_tail": "ysis `tran': time = (0 s -> 300 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 300 ns\n    step  = 5 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 30 ns        ( 10 %)\n    tran: time = 60 ns        ( 20 %)\n    tran: time = 90 ns        ( 30 %)\n    tran: time = 120 ns       ( 40 %)\n    tran: time = 150 ns       ( 50 %)\n    tran: time = 180 ns       ( 60 %)\n    tran: time = 210 ns       ( 70 %)\n    tran: time = 240 ns       ( 80 %)\n    tran: time = 270 ns       ( 90 %)\n    tran: time = 300 ns       (100 %)\nNumber of accepted tran steps = 60058\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 30\n    cross_refine_triggers = 20\n    dynamic_step_grows = 61325\n    dynamic_step_shrinks = 3538\n    err_ratio_skipped_outputs = 0\n    err_ratio_skipped_sources = 383492\n    min_step_clamps = 74\n    model_breakpoint_clamps = 142\n    output_step_clamps = 217\n    source_breakpoint_clamps = 102\n    steps_total = 95873\nModel event counters:\n    model[0] pfd_updn_Model:\n        above_fires = 0\n        cross_fires = 30\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 1762.8 ms, elapsed = 1762.8 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-sui-smoke-classic-20260521/evas/vbm1_pfd_small_phase_error_response_dut/dut/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.3 s, elapsed = 2.3 s.\n\n",
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "dut",
+      "task_id": "vbm1_pfd_small_phase_error_response_dut"
+    }
+  ],
+  "summary": {
+    "mode_summary": [
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 15.531372592085972,
+        "mean_wall_time_s": 15.531372592085972,
+        "geomean_wall_time_s": 15.531372592085972
+      },
+      {
+        "backend": "evas",
+        "mode": "strict_current",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 32.7149304531049,
+        "mean_wall_time_s": 32.7149304531049,
+        "geomean_wall_time_s": 32.7149304531049
+      },
+      {
+        "backend": "spectre",
+        "mode": "classic",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 17.23155369493179,
+        "mean_wall_time_s": 17.23155369493179,
+        "geomean_wall_time_s": 17.231553694931787
+      }
+    ],
+    "speedups": [
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "form": "dut",
+        "spectre_mode": "classic",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 17.23155369493179,
+        "evas_wall_time_s": 15.531372592085972,
+        "spectre_over_evas_speedup": 1.1094675369330942
+      },
+      {
+        "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+        "form": "dut",
+        "spectre_mode": "classic",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 17.23155369493179,
+        "evas_wall_time_s": 32.7149304531049,
+        "spectre_over_evas_speedup": 0.5267183349092641
+      }
+    ],
+    "geomean_spectre_over_evas_speedup": 0.7644454811752647
+  }
+}

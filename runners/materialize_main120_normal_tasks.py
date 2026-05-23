@@ -698,7 +698,7 @@ def sentence_list(lines: list[str]) -> str:
 def render_prompt(task_id: str, form: str, spec: BaseSpec) -> str:
     module_contract = (
         f"The DUT module is `{spec.module}` with ports `{spec.ports}`. "
-        "All ports are electrical; digital-control ports use 0/0.9 V logic levels."
+        "All ports are electrical; voltage-coded control ports use 0/0.9 V logic levels."
     )
     caveat = f"\n\nReview caveat: {spec.public_caveat}" if spec.public_caveat else ""
     if form == "dut":

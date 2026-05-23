@@ -37,7 +37,7 @@ def test_claim_gate_prevents_subset_evidence_from_being_overclaimed() -> None:
     full = claims["C4_full_release_dual_certified"]
     complete = claims["C9_release_package_complete"]
 
-    assert subset["numbers"]["dual_certified_forms"] == 249
+    assert subset["numbers"]["dual_certified_forms"] == 245
     assert subset["numbers"]["evas_pass_spectre_fail_count"] == 0
     assert subset["numbers"]["dual_pending_forms"] == 0
     assert subset["notes"] == []

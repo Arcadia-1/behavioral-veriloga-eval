@@ -47,7 +47,6 @@ the scored benchmark denominator.
 | Comparators and Decision Circuits | Does the decision block switch at the intended threshold, hysteresis window, clock phase, or delay? | Input differential/single-ended waveform, clock/reset, output decision waveform. | Correct polarity, threshold or hysteresis transitions, bounded delay or evaluate/reset windows, no stuck output. |
 | PLL / Clock / Event Timing | Does the event relation produce the intended phase, pulse, divider, or frequency response? | REF/DIV/clock edges, UP/DN pulses, phase state, divider output, VCO/lock signals. | Edge counts, pulse direction and overlap bounds, phase/frequency trend, wrap behavior, and late-window behavior rather than startup artifacts. |
 | Calibration, DEM, and Control | Does the controller update state in the correct signed direction while respecting bounds and sequence rules? | Error inputs, trim/control state, selector or pointer outputs, actuator response. | Signed movement outside deadband, hold inside deadband, clamp behavior, wrap/rotation correctness, and convergence or monotonic improvement when specified. |
-| Digital and Event-Driven Logic | Does event-driven logic preserve the requested state transition, pulse width, sequence, or frame relation? | Digital-voltage inputs, reset/clock, output state or serialized stream. | Reset behavior, edge qualification, pulse duration, legal sequence progression, frame alignment, and rejection of missing events. |
 | Measurement and Testbench Instrumentation | Does the generated measurement match the waveform quantity it claims to report? | Waveform columns, metric files, crossing/settling/peak/gain outputs. | Numeric metric-to-waveform agreement, one-record artifact format where required, tolerance-window semantics, and no final-row or missing-file artifact passing. |
 | Stimulus and Sources | Does the source generate the specified waveform schedule or deterministic sequence? | Source output waveform, clock/burst edges, seed/state when present. | Amplitude/range, timing, burst count, periodicity or deterministic variation, and reproducibility. |
 | Analog Behavioral Signal Conditioning | Does the analog transform implement the intended gain, filter, limiting, integration, or slew behavior? | Input/output waveforms, reset/control signals, metric outputs when present. | Gain/slope/lag estimates, bounded output, state/reset behavior, limiting/slew constraints, and representative transient response. |
@@ -57,10 +56,10 @@ the scored benchmark denominator.
 
 | Pool | Count | Score status |
 | --- | ---: | --- |
-| Current promoted L1 seeds | 28 | Scored only after release-package certification. |
+| Current promoted L1 seeds | 24 | Scored only after release-package certification. |
 | Promoted top-level L1 additions | 32 | Main-table coverage targets; not scored until materialized and certified. |
-| Selected L2 package targets | 15 | Main-table complete-circuit targets after removing duplicate kernels. |
-| Top-level L1/L2 package target | 75 | 60 L1 + 15 L2 rows; duplicate L2 kernels are not retained in the release denominator. |
+| Selected L2 package targets | 16 | Main-table complete-circuit targets after removing duplicate kernels. |
+| Top-level L1/L2 package target | 72 | 56 L1 + 16 L2 rows; the former standalone control/readout bucket has been split into concrete circuit families. |
 
 ## Release Coverage Table
 
@@ -74,15 +73,23 @@ the scored benchmark denominator.
 | Data Converters | Capacitive/weighted SAR feedback DAC | L1 | Trial-code feedback DAC for SAR-style conversion loops | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Data Converters | DAC mismatch/unit-weighting model | L1 | Code-to-voltage reconstruction with explicit unit weight or mismatch terms | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Data Converters | SAR logic | L1 | Successive approximation state machine | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
+| Data Converters | Pipeline ADC MDAC stage | L1 | Sample/hold residue generation stage with sub-ADC decision and feedback DAC subtraction | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
+| Data Converters | ADC code capture register | L1 | Capture and hold conversion-result code plus overrange status at the readout boundary | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
+| Data Converters | ADC/readout serializer frame aligner | L1 | Parallel ADC/readout word to serial stream with frame marker alignment | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
+| Data Converters | Serial readout deserializer | L1 | Reconstruct framed serial conversion words into parallel readout data | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Data Converters | ADC/DAC reconstruction chain | L2 | ADC quantizer + DAC reconstruction + source/checker flow | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Data Converters | Weighted SAR ADC/DAC loop | L2 | SAR controller + weighted feedback DAC + comparator interaction | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Data Converters | Flash ADC mini-array | L2 | Multiple threshold comparators + thermometer/code output behavior | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
+| Data Converters | Pipeline ADC chain | L2 | Two-stage pipeline conversion flow with residue amplification and final code composition | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
+| Data Converters | Conversion event controller | L2 | Start/comparator-done inputs drive sample/compare/readout/done control phases | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
+| Data Converters | Readout frame-monitor flow | L2 | Serializer + frame monitor reconstructs and validates loaded ADC/readout words | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Threshold comparator | L1 | Voltage decision with bounded output transition | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Propagation-delay comparator | L1 | Threshold decision with input-dependent or fixed output delay | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Hysteresis comparator | L1 | Comparator with separate rising/falling thresholds and state memory | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Window comparator/detector | L1 | In-window or out-of-window binary decision on analog input | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Offset comparator | L1 | Comparator with explicit offset threshold | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | StrongARM-style latch comparator | L1 | Clocked latch-like comparator abstraction | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
+| Comparators and Decision Circuits | Comparator debounce latch | L1 | Comparator decision latch with delayed glitch qualification and reset behavior | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | L2 | Single-ramp stimulus + comparator + offset measurement result | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | VCO phase integrator | L1 | Voltage-controlled phase/frequency accumulation | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | PFD UP/DN logic | L1 | UP/DN event relation with reset-race handling | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
@@ -93,7 +100,7 @@ the scored benchmark denominator.
 | PLL / Clock / Event Timing | Clock divider | L1 | Resettable or programmable divider/counter | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | Lock detector | L1 | Windowed phase/frequency lock decision | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | Voltage-domain charge-pump control abstraction | L1 | Voltage-domain UP/DN current-effect abstraction without transistor-level current solving | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
-| PLL / Clock / Event Timing | Sampled loop-filter abstraction | L1 | EVAS-supported sampled voltage-domain approximation of continuous-time PI loop-filter trend | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
+| PLL / Clock / Event Timing | Sampled loop-filter abstraction | L1 | Sampled voltage-domain approximation of continuous-time PI loop-filter trend | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | PLL timing slice | L2 | PFD + divider + VCO or loop-control interaction | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | ADPLL lock/ratio-hop/timer flow | L2 | Digital phase/timer control + divider/VCO timing response | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | PLL / Clock / Event Timing | CPPLL tracking and frequency-step reacquire flow | L2 | PFD + charge-pump/filter abstraction + VCO response to frequency step | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
@@ -106,14 +113,6 @@ the scored benchmark denominator.
 | Calibration, DEM, and Control | Successive-approximation calibration/search FSM | L1 | Multi-step search controller for trim or offset calibration | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Calibration, DEM, and Control | Element shuffler | L1 | Deterministic element permutation or scramble sequence | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Calibration, DEM, and Control | Complete calibration loop | L2 | Sensor or error source + controller + actuator behavior | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Edge detector | L1 | Event-to-state or event-to-pulse detector | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Debounce latch | L1 | Event-qualified latch with reset behavior | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | One-shot timer | L1 | Event-triggered pulse with finite duration | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | LFSR/PRBS generator | L1 | Deterministic pseudo-random bit sequence in voltage-domain logic | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Serializer/frame aligner | L1 | Parallel-to-serial or frame-alignment event logic | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Retriggerable one-shot pulse stretcher | L1 | One-shot pulse whose falling deadline is refreshed by triggers during an active pulse | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Event controller | L2 | Event inputs + state machine + timed outputs | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
-| Digital and Event-Driven Logic | Serializer frame-alignment flow | L2 | Serializer + framing stimulus + alignment/error checker | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Measurement and Testbench Instrumentation | Crossing metric writer | L1 | Waveform crossing detector with metric artifact | tb; dut; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Measurement and Testbench Instrumentation | Settling response measurement helper | L1 | Testbench measurement for tolerance-entry timing | tb; e2e-form | model-capability | Required | Static + EVAS + Spectre |
 | Measurement and Testbench Instrumentation | Peak detector | L1 | Running extrema or peak metric block | dut; tb; bugfix; e2e-form | model-capability | Required | Static + EVAS + Spectre |
@@ -121,6 +120,7 @@ the scored benchmark denominator.
 | Measurement and Testbench Instrumentation | Edge interval timer | L1 | Measures time interval between event or crossing edges | tb; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Measurement and Testbench Instrumentation | Measurement flow | L2 | Stimulus + DUT + metric artifact + checker | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
 | Measurement and Testbench Instrumentation | Gain extraction/convergence measurement flow | L2 | Stimulus + gain estimator + convergence or trim metric artifact | e2e; tb | benchmark-e2e | Required expansion | Static + EVAS + Spectre |
+| Stimulus and Sources | PRBS stimulus/dither generator | L1 | Deterministic pseudo-random stimulus or dither bit sequence in voltage-domain logic | dut; tb; bugfix; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Stimulus and Sources | Periodic phase-ramp guard source | L1 | Periodic phase-ramp source with guard-pulse timing | tb; dut; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Stimulus and Sources | Burst clock source | L1 | Timed pulse or burst stimulus generator | tb; dut; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
 | Stimulus and Sources | Dither or noise-like deterministic source | L1 | Reproducible pseudo-random stimulus source | tb; dut; e2e-form | model-capability | Required expansion | Static + EVAS + Spectre |
@@ -148,13 +148,12 @@ checker, and EVAS/Spectre certification evidence.
 
 | Category | Source-backed additions and deferred variants | Source-backed L2 additions and deferred variants |
 | --- | --- | --- |
-| Data Converters | Ideal clocked ADC; trim-code decoder for binary/one-hot/thermometer outputs; register-loaded binary-weighted DAC; unit-element thermometer DAC; capacitive/weighted DAC for SAR feedback; flash ADC. | Ideal ADC/DAC chain; weighted SAR ADC/DAC loop; source-swept converter verification flow; flash ADC mini-array. |
-| Comparators and Decision Circuits | Ideal threshold comparator; propagation-delay comparator; hysteresis comparator; threshold detector; window detector; offset-search comparator. | Comparator offset/delay/hysteresis measurement flow. |
+| Data Converters | Ideal clocked ADC; trim-code decoder for binary/one-hot/thermometer outputs; register-loaded binary-weighted DAC; unit-element thermometer DAC; capacitive/weighted DAC for SAR feedback; flash ADC; ADC code capture register; ADC/readout serializer; serial readout deserializer. | Ideal ADC/DAC chain; weighted SAR ADC/DAC loop; source-swept converter verification flow; flash ADC mini-array; conversion event controller flow; readout serializer frame-monitor flow. |
+| Comparators and Decision Circuits | Ideal threshold comparator; propagation-delay comparator; hysteresis comparator; threshold detector; window detector; offset-search comparator; comparator debounce latch. | Comparator offset/delay/hysteresis measurement flow. |
 | PLL / Clock / Event Timing | PFD UP/DN core; PFD small phase-error characterization; XOR phase detector; bang-bang phase detector; digital phase accumulator with modulo wrap; multimode divider ratio switch; voltage-domain charge-pump control abstraction; sampled loop-filter abstraction. | ADPLL lock/ratio-hop/timer flow; CPPLL tracking and frequency-step reacquire flow; PLL timing slice. |
 | Calibration, DEM, and Control | DWA pointer generator; no-overlap DWA pointer; thermo-DWA encoder; gain calibration controller; calibration deadband controller; true offset-search FSM if redesigned. | Complete calibration loop. |
-| Digital and Event-Driven Logic | Inverter/not/and/or gates; DFF with reset; mux 4-to-1; gray counter; LFSR/PRBS; serializer and frame alignment; retriggerable one-shot pulse stretcher. | Event-controller flow; serializer frame-alignment flow. |
 | Measurement and Testbench Instrumentation | Gain estimator; gain extraction metric; edge interval timer; waveform metric aggregator. | Gain extraction and convergence measurement flow; DUT plus metric-artifact flow. |
-| Stimulus and Sources | Ramp source; burst-clock source; deterministic noise source; voltage/sine input source; dither source. | ADC/DAC source sweep flow. |
+| Stimulus and Sources | Ramp source; burst-clock source; deterministic noise source; voltage/sine input source; PRBS/dither source. | ADC/DAC source sweep flow. |
 | Analog Behavioral Signal Conditioning | Soft/hysteretic limiter; gain amplifier; higher-order filter; slew-rate limiter; resettable integrator. | Amplifier/filter chain. |
 | Sample, Hold, and Analog Memory | Ideal sample-and-hold; clocked sample-and-hold; aperture/noise hold variant. | Converter front-end with sample/hold plus quantizer or comparator. |
 

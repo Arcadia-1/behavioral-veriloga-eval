@@ -55,14 +55,14 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a timer-driven digital phase accumulator and matching transient testbench.
+Write an ADPLL-style wrapped phase accumulator and matching transient testbench.
 
 Module name: `phase_accumulator_timer_wrap_ref`.
 
 Required DUT behavior:
 
 - Ports are exactly `VDD`, `VSS`, `clk_out`, `phase_out`.
-- Advance the internal phase state on an EVAS-compatible `timer()` schedule.
+- Advance the internal phase state on a periodic `@(timer(...))` schedule.
 - Wrap phase manually at 1.0 rather than relying on unsupported analog
   integration.
 - Drive `phase_out` as a voltage-domain monitor of the wrapped phase state.

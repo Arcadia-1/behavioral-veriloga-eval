@@ -14,19 +14,19 @@ certification evidence.
 | ready to run fresh dual | `False` |
 | ready to import fresh dual | `True` |
 | ready to finish release | `False` |
-| passed checks | 5 |
-| blocked checks | 2 |
+| passed checks | 6 |
+| blocked checks | 1 |
 
 ## Checks
 
 | ID | Status | Finding |
 | --- | --- | --- |
-| `P1_local_release_package_ready` | `blocked` | planned=73, source_linked=73, materialized=73, asset=pass, static=pass |
+| `P1_local_release_package_ready` | `pass` | planned=72, source_linked=72, materialized=72, asset=pass, static=pass |
 | `P2_primary_rerun_queue_ready` | `pass` | queue_status=complete, queue_count=0, ready=0, blocked=0 |
 | `P3_staging_ready` | `pass` | queue_rows=0, ready_primary_rows=0, bundles=0, ready_bundles=0, blocked_bundles=0 |
 | `P4_bridge_ready` | `pass` | bridge_status=ready, ready_profiles=['default', 'ci', 'jin'], reason=bridge profile default is ready for release rerun |
-| `P5_current_summary_acceptable` | `pass` | summary_status=complete, tasks_total=56, queue_count=0, dry_run=False, expected_miss_count=0 |
-| `P6_import_gate_clear` | `blocked` | import_status=partial_imported, stale_summary=True, imported=46 |
+| `P5_current_summary_acceptable` | `pass` | summary_status=complete, tasks_total=37, queue_count=0, dry_run=False, expected_miss_count=0 |
+| `P6_import_gate_clear` | `blocked` | import_status=partial_imported, stale_summary=True, imported=35 |
 | `P7_full_dual_certification_clear` | `pass` | dual_pending=0, dual_failed=0, evas_pass_spectre_fail=0 |
 
 ## Fresh Summary Acceptance Criteria

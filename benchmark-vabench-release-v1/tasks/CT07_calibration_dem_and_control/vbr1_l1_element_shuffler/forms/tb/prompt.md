@@ -48,7 +48,7 @@ Public stimulus/source nodes visible in the reference harness include:
 ## Public Behavior Checks
 
 - `fixed_time_active_output_sequence_at_20_40_60_80_100_120ns`
-- `expected_sequence_1_2_3_0_1_2`
+- `expected_permutation_sequence_2_0_3_1_2_0`
 
 ## Output Contract
 
@@ -63,8 +63,9 @@ Write a Spectre testbench for a Verilog-A module named `element_shuffler` with
 ports `clk rst_n out0 out1 out2 out3`.
 
 The testbench should apply an active-low reset and then clock the DUT through at
-least six observable post-reset states. Save `clk`, `rst_n`, and all four
-outputs. Use a transient analysis with enough stop time and maxstep resolution
-for fixed-time one-hot sequence checking.
+least six observable post-reset states. The public sequence to expose is
+`out2`, `out0`, `out3`, `out1`, `out2`, `out0`. Save `clk`, `rst_n`, and all
+four outputs. Use a transient analysis with enough stop time and maxstep
+resolution for fixed-time one-hot sequence checking.
 
 Return exactly one Spectre testbench file named `tb_element_shuffler_ref.scs`.

@@ -35,6 +35,12 @@
     "tb_compile",
     "sim_correct"
   ],
+  "behavior_checks": [
+    "pointer_advances_by_sampled_input_code",
+    "cell_enable_window_matches_effective_code_plus_lsb_boundary",
+    "pointer_output_is_one_hot",
+    "wraparound_and_multi_code_coverage"
+  ],
   "checks": {
     "dut_compile": "required",
     "tb_compile": "required",

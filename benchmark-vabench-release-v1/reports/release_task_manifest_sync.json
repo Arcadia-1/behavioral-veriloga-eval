@@ -1,9 +1,41 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "pass",
-  "release_task_manifest_count": 249,
+  "release_task_manifest_count": 245,
   "rows": [
+    {
+      "release_entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "dut",
@@ -229,6 +261,70 @@
       "spectre": "pass"
     },
     {
+      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
       "release_entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "dut",
       "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/release_task.json",
@@ -309,6 +405,22 @@
       "spectre": "pass"
     },
     {
+      "release_entry_id": "vbr1_l2_event_controller",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
       "release_entry_id": "vbr1_l2_flash_adc_mini_array",
       "form": "tb",
       "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/release_task.json",
@@ -341,6 +453,22 @@
       "spectre": "pass"
     },
     {
+      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
       "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "tb",
       "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/release_task.json",
@@ -352,6 +480,38 @@
       "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "e2e",
       "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1253,230 +1413,6 @@
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l1_debounce_latch",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_debounce_latch",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_debounce_latch",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_debounce_latch",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_debounce_latch/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_edge_detector",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_edge_detector",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_edge_detector",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_edge_detector",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_edge_detector/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_event_pulse_stretcher/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_one_shot_timer",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_one_shot_timer",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_one_shot_timer",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_one_shot_timer",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_one_shot_timer/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_event_controller",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_event_controller",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_event_controller/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
       "release_entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "dut",
       "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/release_task.json",
@@ -1928,6 +1864,38 @@
       "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
       "form": "e2e",
       "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"

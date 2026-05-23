@@ -1,17 +1,17 @@
 {
-  "date": "2026-05-23",
+  "date": "2026-05-24",
   "release": "vabench-release-v1",
   "status": "pass",
   "source": "historical main120 import plus fresh release dual rerun",
   "simulator_rerun": true,
-  "dual_certified_release_task_count": 249,
+  "dual_certified_release_task_count": 245,
   "dual_failed_release_task_count": 0,
   "dual_pending_release_task_count": 0,
-  "dual_pass_materialized_entry_count": 73,
+  "dual_pass_materialized_entry_count": 72,
   "dual_pending_materialized_entry_count": 0,
   "dual_failed_materialized_entry_count": 0,
-  "fully_certified_entry_count": 73,
-  "entry_count": 73,
+  "fully_certified_entry_count": 72,
+  "entry_count": 72,
   "issue_count": 0,
   "source_equivalence_failure_count": 0,
   "source_equivalence_blocked_release_task_count": 0,
@@ -684,7 +684,6 @@
       "entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "tb",
       "source_task_id": "vbm1_file_metric_writer_tb",
-      "release_source_task_id": "vbm1_file_metric_writer_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -695,13 +694,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "dut",
       "source_task_id": "vbm1_file_metric_writer_dut",
-      "release_source_task_id": "vbm1_file_metric_writer_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -712,13 +711,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "e2e",
       "source_task_id": "vbm1_file_metric_writer_e2e",
-      "release_source_task_id": "vbm1_file_metric_writer_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -729,7 +728,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_crossing_metric_writer/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
@@ -1055,74 +1055,6 @@
       "simulator_rerun": true
     },
     {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "dut",
-      "source_task_id": "vbm1_edge_detector_dut",
-      "release_source_task_id": "vbm1_edge_detector_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_detector/dut/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "tb",
-      "source_task_id": "vbm1_edge_detector_tb",
-      "release_source_task_id": "vbm1_edge_detector_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_detector/tb/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "bugfix",
-      "source_task_id": "vbm1_edge_detector_bugfix",
-      "release_source_task_id": "vbm1_edge_detector_bugfix",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_detector/bugfix/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_edge_detector",
-      "form": "e2e",
-      "source_task_id": "vbm1_edge_detector_e2e",
-      "release_source_task_id": "vbm1_edge_detector_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_detector/e2e/evidence.json"
-    },
-    {
       "entry_id": "vbr1_l1_edge_interval_timer",
       "form": "tb",
       "source_task_id": "vbr1_l1_edge_interval_timer_tb",
@@ -1160,7 +1092,6 @@
       "entry_id": "vbr1_l1_element_shuffler",
       "form": "dut",
       "source_task_id": "vbm1_element_shuffler_dut",
-      "release_source_task_id": "vbm1_element_shuffler_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1171,13 +1102,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_element_shuffler",
       "form": "tb",
       "source_task_id": "vbm1_element_shuffler_tb",
-      "release_source_task_id": "vbm1_element_shuffler_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1188,13 +1119,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_element_shuffler",
       "form": "bugfix",
-      "source_task_id": "vbm1_element_shuffler_bugfix",
-      "release_source_task_id": "vbm1_element_shuffler_bugfix",
+      "source_task_id": "vbm1_element_shuffler_bugfix_fixed",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1205,13 +1136,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/bugfix/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/bugfix/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_element_shuffler",
       "form": "e2e",
       "source_task_id": "vbm1_element_shuffler_e2e",
-      "release_source_task_id": "vbm1_element_shuffler_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1222,74 +1153,7 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/e2e/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "dut",
-      "source_task_id": "vbr1_l1_event_pulse_stretcher_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_event_pulse_stretcher/dut/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "tb",
-      "source_task_id": "vbr1_l1_event_pulse_stretcher_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_event_pulse_stretcher/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "bugfix",
-      "source_task_id": "vbr1_l1_event_pulse_stretcher_bugfix_fixed",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_event_pulse_stretcher/bugfix/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
-      "form": "e2e",
-      "source_task_id": "vbr1_l1_event_pulse_stretcher_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_event_pulse_stretcher/e2e/evidence.json",
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/e2e/evidence.json",
       "simulator_rerun": true
     },
     {
@@ -1871,78 +1735,9 @@
       "simulator_rerun": true
     },
     {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "dut",
-      "source_task_id": "vbm1_one_shot_timer_dut",
-      "release_source_task_id": "vbm1_one_shot_timer_dut",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/dut/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "tb",
-      "source_task_id": "vbm1_one_shot_timer_tb",
-      "release_source_task_id": "vbm1_one_shot_timer_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/tb/evidence.json"
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "bugfix",
-      "source_task_id": "vbm1_one_shot_timer_bugfix_fixed",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/bugfix/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
-      "form": "e2e",
-      "source_task_id": "vbm1_one_shot_timer_e2e",
-      "release_source_task_id": "vbm1_one_shot_timer_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_one_shot_timer/e2e/evidence.json"
-    },
-    {
       "entry_id": "vbr1_l1_peak_detector",
       "form": "dut",
       "source_task_id": "vbm1_peak_detector_dut",
-      "release_source_task_id": "vbm1_peak_detector_dut",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1953,13 +1748,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/dut/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/dut/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_peak_detector",
       "form": "tb",
       "source_task_id": "vbm1_peak_detector_tb",
-      "release_source_task_id": "vbm1_peak_detector_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1970,13 +1765,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_peak_detector",
       "form": "bugfix",
-      "source_task_id": "vbm1_peak_detector_bugfix",
-      "release_source_task_id": "vbm1_peak_detector_bugfix",
+      "source_task_id": "vbm1_peak_detector_bugfix_fixed",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -1987,13 +1782,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/bugfix/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/bugfix/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_peak_detector",
       "form": "e2e",
       "source_task_id": "vbm1_peak_detector_e2e",
-      "release_source_task_id": "vbm1_peak_detector_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2004,7 +1799,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_peak_detector/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_pfd_small_phase_error_response",
@@ -2741,7 +2537,6 @@
       "entry_id": "vbr1_l1_settling_time_detector",
       "form": "tb",
       "source_task_id": "vbm1_settling_time_measurement_tb_tb",
-      "release_source_task_id": "vbm1_settling_time_measurement_tb_tb",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2752,13 +2547,13 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/tb/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/tb/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_settling_time_detector",
       "form": "e2e",
       "source_task_id": "vbm1_settling_time_measurement_tb_e2e",
-      "release_source_task_id": "vbm1_settling_time_measurement_tb_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -2769,7 +2564,8 @@
       "blocker_count": 0,
       "failures": [],
       "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/e2e/evidence.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/e2e/evidence.json",
+      "simulator_rerun": true
     },
     {
       "entry_id": "vbr1_l1_sine_periodic_voltage_source",
@@ -3998,7 +3794,7 @@
     {
       "entry_id": "vbr1_l2_event_controller",
       "form": "e2e",
-      "source_task_id": "simultaneous_event_order_smoke",
+      "source_task_id": "conversion_event_controller_flow",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -4202,7 +3998,7 @@
     {
       "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
       "form": "e2e",
-      "source_task_id": "serializer_frame_alignment_smoke",
+      "source_task_id": "serializer_frame_monitor_flow",
       "status": "pass",
       "backend_status": {
         "evas": "pass",
@@ -4249,9 +4045,153 @@
       "pending_blockers": [],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/e2e/evidence.json",
       "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_adc_code_capture_register_bugfix_fixed",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/bugfix/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_adc_code_capture_register_dut",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/dut/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_adc_code_capture_register_e2e",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/e2e/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_adc_code_capture_register_tb",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_adc_code_capture_register/tb/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "source_task_id": "vbr1_l1_serial_readout_deserializer_bugfix_fixed",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/bugfix/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "dut",
+      "source_task_id": "vbr1_l1_serial_readout_deserializer_dut",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/dut/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "e2e",
+      "source_task_id": "vbr1_l1_serial_readout_deserializer_e2e",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/e2e/evidence.json",
+      "simulator_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "tb",
+      "source_task_id": "vbr1_l1_serial_readout_deserializer_tb",
+      "status": "pass",
+      "backend_status": {
+        "evas": "pass",
+        "spectre": "pass"
+      },
+      "failure_count": 0,
+      "source_equivalence_failure_count": 0,
+      "blocker_count": 0,
+      "failures": [],
+      "pending_blockers": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serial_readout_deserializer/tb/evidence.json",
+      "simulator_rerun": true
     }
   ],
   "entry_reports": [
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "release_task_count": 4,
+      "dual": "pass",
+      "fully_certified": true,
+      "missing_forms": [],
+      "release_blockers": []
+    },
     {
       "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "release_task_count": 4,
@@ -4381,14 +4321,6 @@
       "release_blockers": []
     },
     {
-      "entry_id": "vbr1_l1_edge_detector",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
       "entry_id": "vbr1_l1_edge_interval_timer",
       "release_task_count": 2,
       "dual": "pass",
@@ -4398,14 +4330,6 @@
     },
     {
       "entry_id": "vbr1_l1_element_shuffler",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
-      "entry_id": "vbr1_l1_event_pulse_stretcher",
       "release_task_count": 4,
       "dual": "pass",
       "fully_certified": true,
@@ -4478,14 +4402,6 @@
     },
     {
       "entry_id": "vbr1_l1_offset_comparator",
-      "release_task_count": 4,
-      "dual": "pass",
-      "fully_certified": true,
-      "missing_forms": [],
-      "release_blockers": []
-    },
-    {
-      "entry_id": "vbr1_l1_one_shot_timer",
       "release_task_count": 4,
       "dual": "pass",
       "fully_certified": true,
@@ -4574,6 +4490,14 @@
     },
     {
       "entry_id": "vbr1_l1_segmented_dac",
+      "release_task_count": 4,
+      "dual": "pass",
+      "fully_certified": true,
+      "missing_forms": [],
+      "release_blockers": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
       "release_task_count": 4,
       "dual": "pass",
       "fully_certified": true,

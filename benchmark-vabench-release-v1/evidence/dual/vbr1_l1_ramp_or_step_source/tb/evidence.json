@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_ramp_or_step_source/tb/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_ramp_or_step_source/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_ramp_or_step_source/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_ramp_or_step_source/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_ramp_or_step_source/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/tb/gold/bound_step_period_guard_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/tb/gold/tb_bound_step_period_guard_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/bound_step_period_guard_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/tb_bound_step_period_guard_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_ramp_or_step_source/tb/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_ramp_or_step_source/tb/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_ramp_or_step_source/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -72,8 +72,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/tb/gold/bound_step_period_guard_ref.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_ramp_or_step_source/forms/tb/gold/tb_bound_step_period_guard_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/bound_step_period_guard_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/tb_bound_step_period_guard_ref.scs"
     ]
   },
   "failures": [],

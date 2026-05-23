@@ -5,15 +5,16 @@
   "backend": "evas",
   "status": "PASS",
   "scores": {
-    "historical_weighted_total": 1.0,
-    "historical_backend_pass": true,
-    "source_equivalence_failure_count": 0
+    "rerun_backend_pass": true,
+    "rerun_expected_result_met": true,
+    "raw_status": "PASS",
+    "behavior_score": null
   },
   "artifacts": [
-    "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_tb/evas_result.json",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_settling_time_detector/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_settling_time_detector/tb/evidence.json"
   ],
   "notes": [
-    "Imported from main120 gold historical result; no simulator rerun was performed in this release step."
+    "Imported from fresh vaBench release EVAS/Spectre dual rerun summary."
   ]
 }

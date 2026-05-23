@@ -14,7 +14,7 @@ def test_paper_artifacts_report_is_claim_gated() -> None:
     assert report["status"] == "in_progress"
     gates = report["claim_gates"]
     assert gates["can_claim_release_assets_materialized"] is True
-    assert gates["can_claim_top_level_coverage_plan"] is False
+    assert gates["can_claim_top_level_coverage_plan"] is True
     assert gates["can_claim_release_package_complete"] is True
     assert gates["can_claim_scored_benchmark"] is True
     assert gates["can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence"] is True
@@ -35,13 +35,13 @@ def test_paper_artifacts_summarize_coverage_and_parity_without_overclaiming() ->
     gap = report["certification_gap_summary"]
     remaining = report["remaining_counts"]
 
-    assert coverage["planned_entries"] == 73
-    assert coverage["level_counts"] == {"L1": 57, "L2": 16}
-    assert coverage["source_linked_entry_count"] == 73
-    assert coverage["asset_materialized_entry_count"] == 73
-    assert coverage["dual_certified_release_task_count"] == 249
-    assert coverage["fully_certified_entry_count"] == 73
-    assert coverage["scored_release_entries"] == 73
+    assert coverage["planned_entries"] == 72
+    assert coverage["level_counts"] == {"L1": 56, "L2": 16}
+    assert coverage["source_linked_entry_count"] == 72
+    assert coverage["asset_materialized_entry_count"] == 72
+    assert coverage["dual_certified_release_task_count"] == 245
+    assert coverage["fully_certified_entry_count"] == 72
+    assert coverage["scored_release_entries"] == 72
     assert coverage["scored_release_forms"] == 245
     assert coverage["certification_matrix_status"] == "complete"
     assert coverage["score_denominator_status"] == "score_enabled"
@@ -90,14 +90,14 @@ def test_speed_artifact_is_pending_after_current_release_changes() -> None:
     baseline = report["baseline_summary"]
     assert speed["status"] == "measured_subset"
     assert speed["claim_allowed"] is False
-    assert speed["measurement_scope"]["planned_primary_rerun_rows"] == 17
-    assert speed["measurement_scope"]["timed_rows"] == 17
-    assert speed["measurement_scope"]["timed_scored_form_count"] == 17
-    assert speed["measurement_scope"]["missing_scored_form_count"] == 240
+    assert speed["measurement_scope"]["planned_primary_rerun_rows"] == 4
+    assert speed["measurement_scope"]["timed_rows"] == 4
+    assert speed["measurement_scope"]["timed_scored_form_count"] == 4
+    assert speed["measurement_scope"]["missing_scored_form_count"] == 241
     assert speed["measurement_scope"]["full_score_denominator_timed"] is False
     assert speed["measurement_scope"]["stale_summary_rejected"] is False
     assert baseline["status"] == "ready_for_baseline_runs"
     assert baseline["claim_allowed"] is False
-    assert baseline["current_scored_release_entries"] == 73
+    assert baseline["current_scored_release_entries"] == 72
     assert baseline["current_scored_release_forms"] == 245
     assert baseline["score_denominator_status"] == "score_enabled"

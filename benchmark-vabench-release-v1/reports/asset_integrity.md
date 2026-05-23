@@ -1,6 +1,6 @@
 # vaBench Release Asset Integrity
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report checks copied release assets for parseability, file presence,
 basic metadata consistency, and obvious prompt/checker guardrails. It is
@@ -11,7 +11,7 @@ not a simulator certification report.
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| audited release forms | 249 |
+| audited release forms | 245 |
 | blocking issues | 0 |
 | review warnings | 0 |
 
@@ -19,10 +19,10 @@ not a simulator certification report.
 
 | Form | Count |
 | --- | ---: |
-| bugfix | 49 |
-| dut | 54 |
-| e2e | 73 |
-| tb | 73 |
+| bugfix | 48 |
+| dut | 53 |
+| e2e | 72 |
+| tb | 72 |
 
 ## Blocking Issues
 

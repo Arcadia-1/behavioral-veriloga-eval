@@ -7,9 +7,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "clk_out_present"
+    - "clk_out_duty_cycle_is_burst"
 parity:
   reference: "spectre"
   status: "pass"

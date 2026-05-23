@@ -1,0 +1,1299 @@
+{
+  "date": "2026-05-24",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 35,
+  "queue_rows_with_ready_primary_bundle": 35,
+  "bundle_count": 37,
+  "ready_bundle_count": 37,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "bugfix": 4,
+    "dut": 7,
+    "e2e": 13,
+    "tb": 13
+  },
+  "variant_counts": {
+    "buggy": 2,
+    "fixed": 2,
+    "gold": 33
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/ct08_ct09_dual_rerun_queue_20260524.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_file_metric_writer_tb",
+      "checker_task_id": "vbm1_file_metric_writer_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_crossing_metric_writer_tb",
+        "vbr1_l1_crossing_metric_writer",
+        "vbm1_file_metric_writer_tb",
+        "vbm1_file_metric_writer_tb"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/tb/gold/tb_file_metric_writer_ref.scs",
+      "source_includes": [
+        "file_metric_writer.va"
+      ],
+      "source_include_origins": {
+        "file_metric_writer.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/tb/gold/file_metric_writer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/tb/gold/gold/tb_file_metric_writer_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/tb/gold/gold/file_metric_writer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_file_metric_writer_dut",
+      "checker_task_id": "vbm1_file_metric_writer_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_crossing_metric_writer_dut",
+        "vbr1_l1_crossing_metric_writer",
+        "vbm1_file_metric_writer_dut",
+        "vbm1_file_metric_writer_dut"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/dut/gold/tb_file_metric_writer_ref.scs",
+      "source_includes": [
+        "file_metric_writer.va"
+      ],
+      "source_include_origins": {
+        "file_metric_writer.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/dut/gold/file_metric_writer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/dut/gold/gold/tb_file_metric_writer_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/dut/gold/gold/file_metric_writer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_file_metric_writer_e2e",
+      "checker_task_id": "vbm1_file_metric_writer_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_crossing_metric_writer_e2e",
+        "vbr1_l1_crossing_metric_writer",
+        "vbm1_file_metric_writer_e2e",
+        "vbm1_file_metric_writer_e2e"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/e2e/gold/tb_file_metric_writer_ref.scs",
+      "source_includes": [
+        "file_metric_writer.va"
+      ],
+      "source_include_origins": {
+        "file_metric_writer.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/e2e/gold/file_metric_writer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/e2e/gold/gold/tb_file_metric_writer_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_crossing_metric_writer/e2e/gold/gold/file_metric_writer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_edge_interval_timer",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_edge_interval_timer_tb",
+      "checker_task_id": "vbr1_l1_edge_interval_timer_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_edge_interval_timer_tb",
+        "vbr1_l1_edge_interval_timer",
+        "vbr1_l1_edge_interval_timer_tb",
+        "vbr1_l1_edge_interval_timer_tb",
+        "cross_interval_163p333_smoke",
+        "cross_interval_163p333_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/tb/gold/tb_cross_interval_163p333_ref.scs",
+      "source_includes": [
+        "./cross_interval_163p333_ref.va"
+      ],
+      "source_include_origins": {
+        "./cross_interval_163p333_ref.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/tb/gold/cross_interval_163p333_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/tb/gold/gold/tb_cross_interval_163p333_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/tb/gold/gold/cross_interval_163p333_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_edge_interval_timer",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "cross_interval_163p333_smoke",
+      "checker_task_id": "vbr1_l1_edge_interval_timer_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_edge_interval_timer_e2e",
+        "vbr1_l1_edge_interval_timer",
+        "cross_interval_163p333_smoke",
+        "cross_interval_163p333_smoke",
+        "cross_interval_163p333_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/tb_cross_interval_163p333_ref.scs",
+      "source_includes": [
+        "./cross_interval_163p333_ref.va"
+      ],
+      "source_include_origins": {
+        "./cross_interval_163p333_ref.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/cross_interval_163p333_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold/gold/tb_cross_interval_163p333_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold/gold/cross_interval_163p333_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_gain_estimator_tb",
+      "checker_task_id": "vbr1_l1_gain_estimator_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_gain_estimator_tb",
+        "vbr1_l1_gain_estimator",
+        "vbr1_l1_gain_estimator_tb",
+        "vbr1_l1_gain_estimator_tb",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/gold/tb_gain_extraction_ref.scs",
+      "source_includes": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "source_include_origins": {
+        "vin_src.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/gold/vin_src.va",
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/gold/lfsr.va",
+        "dither_adder.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/gold/dither_adder.va",
+        "gain_amp_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/gold/gain_amp_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold/tb_gain_extraction_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold/vin_src.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold/lfsr.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/tb/gold/gold/gain_amp_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "gain_extraction_smoke",
+      "checker_task_id": "vbr1_l1_gain_estimator_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_gain_estimator_e2e",
+        "vbr1_l1_gain_estimator",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_extraction_ref.scs",
+      "source_includes": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "source_include_origins": {
+        "vin_src.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/vin_src.va",
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/lfsr.va",
+        "dither_adder.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/dither_adder.va",
+        "gain_amp_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/gain_amp_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold/tb_gain_extraction_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold/vin_src.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold/lfsr.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold/gold/gain_amp_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_peak_detector",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_peak_detector_dut",
+      "checker_task_id": "vbm1_peak_detector_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_peak_detector_dut",
+        "vbr1_l1_peak_detector",
+        "vbm1_peak_detector_dut",
+        "vbm1_peak_detector_dut"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/dut/gold/tb_peak_detector_ref.scs",
+      "source_includes": [
+        "peak_detector.va"
+      ],
+      "source_include_origins": {
+        "peak_detector.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/dut/gold/peak_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/dut/gold/gold/tb_peak_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/dut/gold/gold/peak_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_peak_detector",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_peak_detector_tb",
+      "checker_task_id": "vbm1_peak_detector_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_peak_detector_tb",
+        "vbr1_l1_peak_detector",
+        "vbm1_peak_detector_tb",
+        "vbm1_peak_detector_tb"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/tb/gold/tb_peak_detector_ref.scs",
+      "source_includes": [
+        "peak_detector.va"
+      ],
+      "source_include_origins": {
+        "peak_detector.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/tb/gold/peak_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/tb/gold/gold/tb_peak_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/tb/gold/gold/peak_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_peak_detector",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_peak_detector_bugfix",
+      "checker_task_id": "vbm1_peak_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_peak_detector_bugfix",
+        "vbr1_l1_peak_detector",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_peak_detector_bugfix"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/fixed/gold/tb_peak_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/fixed/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_peak_detector",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbm1_peak_detector_bugfix",
+      "checker_task_id": "vbm1_peak_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_peak_detector_bugfix",
+        "vbr1_l1_peak_detector",
+        "vbm1_peak_detector_bugfix",
+        "vbm1_peak_detector_bugfix"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/tb_peak_detector_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/buggy/gold/tb_peak_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/bugfix/buggy/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_peak_detector",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_peak_detector_e2e",
+      "checker_task_id": "vbm1_peak_detector_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_peak_detector_e2e",
+        "vbr1_l1_peak_detector",
+        "vbm1_peak_detector_e2e",
+        "vbm1_peak_detector_e2e"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/gold/tb_peak_detector_ref.scs",
+      "source_includes": [
+        "peak_detector.va"
+      ],
+      "source_include_origins": {
+        "peak_detector.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/gold/peak_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/e2e/gold/gold/tb_peak_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_peak_detector/e2e/gold/gold/peak_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_settling_time_detector",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_settling_time_measurement_tb_tb",
+      "checker_task_id": "vbm1_settling_time_measurement_tb_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_settling_time_detector_tb",
+        "vbr1_l1_settling_time_detector",
+        "vbm1_settling_time_measurement_tb_tb",
+        "vbm1_settling_time_measurement_tb_tb"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/tb/gold/tb_settling_time_measurement_tb_ref.scs",
+      "source_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "source_include_origins": {
+        "settling_time_measurement_tb.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/tb/gold/settling_time_measurement_tb.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/tb/gold/gold/tb_settling_time_measurement_tb_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/tb/gold/gold/settling_time_measurement_tb.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_settling_time_detector",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_settling_time_measurement_tb_e2e",
+      "checker_task_id": "vbm1_settling_time_measurement_tb_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_settling_time_detector_e2e",
+        "vbr1_l1_settling_time_detector",
+        "vbm1_settling_time_measurement_tb_e2e",
+        "vbm1_settling_time_measurement_tb_e2e"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/e2e/gold/tb_settling_time_measurement_tb_ref.scs",
+      "source_includes": [
+        "settling_time_measurement_tb.va"
+      ],
+      "source_include_origins": {
+        "settling_time_measurement_tb.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/e2e/gold/settling_time_measurement_tb.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/e2e/gold/gold/tb_settling_time_measurement_tb_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_settling_time_detector/e2e/gold/gold/settling_time_measurement_tb.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "checker_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "vbr1_l2_gain_extraction_convergence_measurement_flow",
+        "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/tb_gain_extraction_ref.scs",
+      "source_includes": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "source_include_origins": {
+        "vin_src.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/vin_src.va",
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/lfsr.va",
+        "dither_adder.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+        "gain_amp_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/gain_amp_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold/tb_gain_extraction_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold/vin_src.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold/lfsr.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/gold/gain_amp_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "gain_extraction_smoke",
+      "checker_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+        "vbr1_l2_gain_extraction_convergence_measurement_flow",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke",
+        "gain_extraction_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/tb_gain_extraction_ref.scs",
+      "source_includes": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "source_include_origins": {
+        "vin_src.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va",
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
+        "dither_adder.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
+        "gain_amp_fixed.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold/tb_gain_extraction_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold/vin_src.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold/lfsr.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gold/gain_amp_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_measurement_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_measurement_flow_tb",
+      "checker_task_id": "vbr1_l2_measurement_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_measurement_flow_tb",
+        "vbr1_l2_measurement_flow",
+        "vbr1_l2_measurement_flow_tb",
+        "vbr1_l2_measurement_flow_tb",
+        "final_step_file_metric_smoke",
+        "final_step_file_metric_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/tb_final_step_file_metric_ref.scs",
+      "source_includes": [
+        "./final_step_file_metric_ref.va"
+      ],
+      "source_include_origins": {
+        "./final_step_file_metric_ref.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/gold/final_step_file_metric_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold/gold/tb_final_step_file_metric_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/tb/gold/gold/final_step_file_metric_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_measurement_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "final_step_file_metric_smoke",
+      "checker_task_id": "vbr1_l2_measurement_flow_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_measurement_flow_e2e",
+        "vbr1_l2_measurement_flow",
+        "final_step_file_metric_smoke",
+        "final_step_file_metric_smoke",
+        "final_step_file_metric_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/gold/tb_final_step_file_metric_ref.scs",
+      "source_includes": [
+        "./final_step_file_metric_ref.va"
+      ],
+      "source_include_origins": {
+        "./final_step_file_metric_ref.va": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/gold/final_step_file_metric_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/e2e/gold/gold/tb_final_step_file_metric_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_measurement_flow/e2e/gold/gold/final_step_file_metric_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_burst_clock_source_dut",
+      "checker_task_id": "vbr1_l1_burst_clock_source_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_burst_clock_source_dut",
+        "vbr1_l1_burst_clock_source",
+        "vbr1_l1_burst_clock_source_dut",
+        "vbr1_l1_burst_clock_source_dut",
+        "clk_burst_gen_smoke",
+        "clk_burst_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/gold/tb_clk_burst_gen_ref.scs",
+      "source_includes": [
+        "clk_burst_gen.va"
+      ],
+      "source_include_origins": {
+        "clk_burst_gen.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/gold/clk_burst_gen.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/dut/gold/gold/tb_clk_burst_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/dut/gold/gold/clk_burst_gen.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_burst_clock_source_tb",
+      "checker_task_id": "vbr1_l1_burst_clock_source_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_burst_clock_source_tb",
+        "vbr1_l1_burst_clock_source",
+        "vbr1_l1_burst_clock_source_tb",
+        "vbr1_l1_burst_clock_source_tb",
+        "clk_burst_gen_smoke",
+        "clk_burst_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/gold/tb_clk_burst_gen_ref.scs",
+      "source_includes": [
+        "clk_burst_gen.va"
+      ],
+      "source_include_origins": {
+        "clk_burst_gen.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/gold/clk_burst_gen.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/tb/gold/gold/tb_clk_burst_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/tb/gold/gold/clk_burst_gen.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "clk_burst_gen_smoke",
+      "checker_task_id": "vbr1_l1_burst_clock_source_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_burst_clock_source_e2e",
+        "vbr1_l1_burst_clock_source",
+        "clk_burst_gen_smoke",
+        "clk_burst_gen_smoke",
+        "clk_burst_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/e2e/gold/tb_clk_burst_gen_ref.scs",
+      "source_includes": [
+        "clk_burst_gen.va"
+      ],
+      "source_include_origins": {
+        "clk_burst_gen.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/e2e/gold/clk_burst_gen.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/e2e/gold/gold/tb_clk_burst_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_burst_clock_source/e2e/gold/gold/clk_burst_gen.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+        "vbr1_l1_dither_or_noise_like_deterministic_source",
+        "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+        "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+        "noise_gen_smoke",
+        "noise_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/dut/gold/tb_noise_gen_ref.scs",
+      "source_includes": [
+        "noise_gen_ref.va"
+      ],
+      "source_include_origins": {
+        "noise_gen_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/dut/gold/noise_gen_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/dut/gold/gold/tb_noise_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/dut/gold/gold/noise_gen_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+        "vbr1_l1_dither_or_noise_like_deterministic_source",
+        "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+        "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+        "noise_gen_smoke",
+        "noise_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/tb/gold/tb_noise_gen_ref.scs",
+      "source_includes": [
+        "noise_gen_ref.va"
+      ],
+      "source_include_origins": {
+        "noise_gen_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/tb/gold/noise_gen_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/tb/gold/gold/tb_noise_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/tb/gold/gold/noise_gen_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "noise_gen_smoke",
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_dither_or_noise_like_deterministic_source_e2e",
+        "vbr1_l1_dither_or_noise_like_deterministic_source",
+        "noise_gen_smoke",
+        "noise_gen_smoke",
+        "noise_gen_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/tb_noise_gen_ref.scs",
+      "source_includes": [
+        "noise_gen_ref.va"
+      ],
+      "source_include_origins": {
+        "noise_gen_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/gold/noise_gen_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/e2e/gold/gold/tb_noise_gen_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_dither_or_noise_like_deterministic_source/e2e/gold/gold/noise_gen_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "prbs7",
+      "checker_task_id": "prbs7",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lfsr_prbs_generator_dut",
+        "vbr1_l1_lfsr_prbs_generator",
+        "prbs7",
+        "prbs7",
+        "prbs7"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/dut/gold/tb_prbs7_ref.scs",
+      "source_includes": [
+        "prbs7_ref.va"
+      ],
+      "source_include_origins": {
+        "prbs7_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/dut/gold/prbs7_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/dut/gold/gold/tb_prbs7_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/dut/gold/gold/prbs7_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_lfsr_prbs_generator_tb",
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lfsr_prbs_generator_tb",
+        "vbr1_l1_lfsr_prbs_generator",
+        "vbr1_l1_lfsr_prbs_generator_tb",
+        "vbr1_l1_lfsr_prbs_generator_tb",
+        "lfsr_smoke",
+        "lfsr_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/tb/gold/tb_lfsr_ref.scs",
+      "source_includes": [
+        "lfsr.va"
+      ],
+      "source_include_origins": {
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/tb/gold/lfsr.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/tb/gold/gold/tb_lfsr_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/tb/gold/gold/lfsr.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_lfsr_prbs_generator_bugfix",
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "vbr1_l1_lfsr_prbs_generator",
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "prbs7_ref",
+        "prbs7",
+        "prbs7_ref",
+        "prbs7"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs",
+      "source_includes": [
+        "prbs7_ref.va"
+      ],
+      "source_include_origins": {
+        "prbs7_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed/gold/tb_prbs7_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/fixed/gold/prbs7_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_lfsr_prbs_generator_bugfix",
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "vbr1_l1_lfsr_prbs_generator",
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "vbr1_l1_lfsr_prbs_generator_bugfix",
+        "prbs7_ref",
+        "prbs7",
+        "prbs7_ref",
+        "prbs7"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs",
+      "source_includes": [
+        "prbs7_ref.va"
+      ],
+      "source_include_origins": {
+        "prbs7_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/buggy/gold/tb_prbs7_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/bugfix/buggy/gold/prbs7_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "lfsr_smoke",
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lfsr_prbs_generator_e2e",
+        "vbr1_l1_lfsr_prbs_generator",
+        "lfsr_smoke",
+        "lfsr_smoke",
+        "lfsr_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/tb_lfsr_ref.scs",
+      "source_includes": [
+        "lfsr.va"
+      ],
+      "source_include_origins": {
+        "lfsr.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/lfsr.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/e2e/gold/gold/tb_lfsr_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_lfsr_prbs_generator/e2e/gold/gold/lfsr.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_ramp_or_step_source_dut",
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_ramp_or_step_source_dut",
+        "vbr1_l1_ramp_or_step_source",
+        "vbr1_l1_ramp_or_step_source_dut",
+        "vbr1_l1_ramp_or_step_source_dut",
+        "bound_step_period_guard_smoke",
+        "bound_step_period_guard_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/gold/tb_bound_step_period_guard_ref.scs",
+      "source_includes": [
+        "./bound_step_period_guard_ref.va"
+      ],
+      "source_include_origins": {
+        "./bound_step_period_guard_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/gold/bound_step_period_guard_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/dut/gold/gold/tb_bound_step_period_guard_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/dut/gold/gold/bound_step_period_guard_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_ramp_or_step_source_tb",
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_ramp_or_step_source_tb",
+        "vbr1_l1_ramp_or_step_source",
+        "vbr1_l1_ramp_or_step_source_tb",
+        "vbr1_l1_ramp_or_step_source_tb",
+        "bound_step_period_guard_smoke",
+        "bound_step_period_guard_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/tb_bound_step_period_guard_ref.scs",
+      "source_includes": [
+        "./bound_step_period_guard_ref.va"
+      ],
+      "source_include_origins": {
+        "./bound_step_period_guard_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/gold/bound_step_period_guard_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold/gold/tb_bound_step_period_guard_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/tb/gold/gold/bound_step_period_guard_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "bound_step_period_guard_smoke",
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_ramp_or_step_source_e2e",
+        "vbr1_l1_ramp_or_step_source",
+        "bound_step_period_guard_smoke",
+        "bound_step_period_guard_smoke",
+        "bound_step_period_guard_smoke"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/e2e/gold/tb_bound_step_period_guard_ref.scs",
+      "source_includes": [
+        "./bound_step_period_guard_ref.va"
+      ],
+      "source_include_origins": {
+        "./bound_step_period_guard_ref.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/e2e/gold/bound_step_period_guard_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/e2e/gold/gold/tb_bound_step_period_guard_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_ramp_or_step_source/e2e/gold/gold/bound_step_period_guard_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "multitone",
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_sine_periodic_voltage_source_dut",
+        "vbr1_l1_sine_periodic_voltage_source",
+        "multitone",
+        "multitone",
+        "multitone"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/dut/gold/tb_multitone_ref.scs",
+      "source_includes": [
+        "multitone.va"
+      ],
+      "source_include_origins": {
+        "multitone.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/dut/gold/multitone.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/dut/gold/gold/tb_multitone_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/dut/gold/gold/multitone.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_sine_periodic_voltage_source_tb",
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_sine_periodic_voltage_source_tb",
+        "vbr1_l1_sine_periodic_voltage_source",
+        "vbr1_l1_sine_periodic_voltage_source_tb",
+        "vbr1_l1_sine_periodic_voltage_source_tb",
+        "multitone",
+        "multitone"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/tb/gold/tb_multitone_ref.scs",
+      "source_includes": [
+        "multitone.va"
+      ],
+      "source_include_origins": {
+        "multitone.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/tb/gold/multitone.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/tb/gold/gold/tb_multitone_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/tb/gold/gold/multitone.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_sine_periodic_voltage_source_e2e",
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_sine_periodic_voltage_source_e2e",
+        "vbr1_l1_sine_periodic_voltage_source",
+        "vbr1_l1_sine_periodic_voltage_source_e2e",
+        "vbr1_l1_sine_periodic_voltage_source_e2e",
+        "multitone",
+        "multitone"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/e2e/gold/tb_multitone_ref.scs",
+      "source_includes": [
+        "multitone.va"
+      ],
+      "source_include_origins": {
+        "multitone.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/e2e/gold/multitone.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/e2e/gold/gold/tb_multitone_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_sine_periodic_voltage_source/e2e/gold/gold/multitone.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_adc_dac_source_sweep_flow_e2e",
+      "checker_task_id": "vbr1_l2_adc_dac_source_sweep_flow_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_adc_dac_source_sweep_flow_e2e",
+        "vbr1_l2_adc_dac_source_sweep_flow",
+        "vbr1_l2_adc_dac_source_sweep_flow_e2e",
+        "vbr1_l2_adc_dac_source_sweep_flow_e2e",
+        "vbr1_l2_adc_dac_source_sweep_flow",
+        "vbr1_l2_adc_dac_source_sweep_flow"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/tb_adc_dac_source_sweep_flow.scs",
+      "source_includes": [
+        "adc_dac_source_sweep_flow.va"
+      ],
+      "source_include_origins": {
+        "adc_dac_source_sweep_flow.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/e2e/gold/gold/tb_adc_dac_source_sweep_flow.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/e2e/gold/gold/adc_dac_source_sweep_flow.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "checker_task_id": "vbr1_l2_adc_dac_source_sweep_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "vbr1_l2_adc_dac_source_sweep_flow",
+        "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "vbr1_l2_adc_dac_source_sweep_flow_tb",
+        "vbr1_l2_adc_dac_source_sweep_flow",
+        "vbr1_l2_adc_dac_source_sweep_flow"
+      ],
+      "queue_reason": "ct08_ct09_prompt_checker_contract_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/gold/tb_adc_dac_source_sweep_flow.scs",
+      "source_includes": [
+        "adc_dac_source_sweep_flow.va"
+      ],
+      "source_include_origins": {
+        "adc_dac_source_sweep_flow.va": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/gold/adc_dac_source_sweep_flow.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/gold/tb_adc_dac_source_sweep_flow.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold/gold/adc_dac_source_sweep_flow.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

@@ -56,7 +56,7 @@ DESIGNED_SPECS: dict[str, DesignedSpec] = {
     "vbr1_l1_loop_filter_abstraction": DesignedSpec(
         "vbr1_l1_loop_filter_abstraction",
         "loop_filter_abstraction",
-        "Approximate the continuous-time proportional/integral loop-filter trend with EVAS-supported sampled voltage-domain state updates on clock edges.",
+        "Approximate the continuous-time proportional/integral loop-filter trend with sampled voltage-domain state updates on clock edges.",
         (
             "proportional_step_decays",
             "integral_residual_accumulates",
@@ -90,19 +90,6 @@ DESIGNED_SPECS: dict[str, DesignedSpec] = {
         ("error_drives_trim", "actuator_moves_opposite_error", "loop_converges_toward_target"),
         "cal_loop",
         "The buggy implementation drives the actuator in the same direction as the error.",
-    ),
-    "vbr1_l1_event_pulse_stretcher": DesignedSpec(
-        "vbr1_l1_event_pulse_stretcher",
-        "event_pulse_stretcher",
-        "Convert trigger crossings into a retriggerable one-shot pulse: every trigger while active refreshes the falling deadline.",
-        (
-            "trigger_creates_pulse",
-            "retrigger_refreshes_pulse_deadline",
-            "pulse_stays_high_through_burst",
-            "reset_forces_low",
-        ),
-        "pulse_stretcher",
-        "The buggy implementation ignores triggers while a pulse is already active, so burst triggers do not extend the pulse.",
     ),
     "vbr1_l2_adc_dac_source_sweep_flow": DesignedSpec(
         "vbr1_l2_adc_dac_source_sweep_flow",

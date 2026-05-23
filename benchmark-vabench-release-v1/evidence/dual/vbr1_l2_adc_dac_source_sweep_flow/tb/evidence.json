@@ -13,11 +13,11 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adc_dac_source_sweep_flow/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adc_dac_source_sweep_flow/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/gold/tb_adc_dac_source_sweep_flow.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/gold/tb_adc_dac_source_sweep_flow.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -27,9 +27,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_adc_dac_source_sweep_flow/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -40,21 +40,21 @@
       ],
       "signals_compared": 5,
       "samples": 1200,
-      "max_rmse_v": 0.15811388300841897,
-      "max_abs_v": 1.0,
-      "mean_nrmse": 0.013088395231148273,
-      "p95_nrmse": 0.04044195500950771,
-      "max_nrmse": 0.04044195500950771,
+      "max_rmse_v": 0.0339712480708806,
+      "max_abs_v": 0.060059267780247616,
+      "mean_nrmse": 0.008088396382840635,
+      "p95_nrmse": 0.04044196198914357,
+      "max_nrmse": 0.04044196198914357,
       "per_signal": {
         "clk": {
-          "rmse_v": 0.15811388300841897,
-          "max_abs_v": 1.0,
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
           "span_v": 0.9,
-          "nrmse": 0.025,
+          "nrmse": 0.0,
           "kind": "digital",
           "best_lag_samples": 0,
           "best_lag_s": 0.0,
-          "mismatch_ratio": 0.025
+          "mismatch_ratio": 0.0
         },
         "metric": {
           "rmse_v": 0.0,
@@ -67,10 +67,10 @@
           "mismatch_ratio": 0.0
         },
         "out": {
-          "rmse_v": 0.03397124220798648,
+          "rmse_v": 0.0339712480708806,
           "max_abs_v": 0.060059267780247616,
           "span_v": 0.8400000000000001,
-          "nrmse": 0.04044195500950771,
+          "nrmse": 0.04044196198914357,
           "kind": "analog"
         },
         "rst": {
@@ -84,10 +84,10 @@
           "mismatch_ratio": 0.0
         },
         "vin": {
-          "rmse_v": 1.6916986919397858e-08,
-          "max_abs_v": 4.965910227472392e-08,
+          "rmse_v": 1.5940047682375775e-08,
+          "max_abs_v": 4.845250001217494e-08,
           "span_v": 0.7999999999999999,
-          "nrmse": 2.1146233649247324e-08,
+          "nrmse": 1.992505960296972e-08,
           "kind": "analog"
         }
       }
@@ -98,7 +98,7 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/gold/tb_adc_dac_source_sweep_flow.scs"
+      "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/gold/tb_adc_dac_source_sweep_flow.scs"
     ]
   },
   "failures": [],

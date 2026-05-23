@@ -52,7 +52,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 # Task: vbm1_vco_phase_integrator_dut
 
-Write a pure voltage-domain Verilog-A module for a timer-driven VCO phase integrator.
+Write a pure voltage-domain Verilog-A module for a voltage-controlled VCO phase integrator with periodic phase updates.
 
 The DUT module is `vco_phase_integrator` with ports `vctrl, phase, clk`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
 

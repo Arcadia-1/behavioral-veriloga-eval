@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_edge_interval_timer/e2e/gold",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_edge_interval_timer/e2e/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold",
+    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_edge_interval_timer/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_interval_timer/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_edge_interval_timer/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_edge_interval_timer/forms/e2e/gold/cross_interval_163p333_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_edge_interval_timer/forms/e2e/gold/tb_cross_interval_163p333_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/cross_interval_163p333_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/tb_cross_interval_163p333_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,9 +28,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_edge_interval_timer/e2e/gold",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_edge_interval_timer/e2e/gold",
+    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_edge_interval_timer/e2e/gold",
+    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_edge_interval_timer/e2e/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -95,8 +95,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_edge_interval_timer/forms/e2e/gold/cross_interval_163p333_ref.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_edge_interval_timer/forms/e2e/gold/tb_cross_interval_163p333_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/cross_interval_163p333_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/gold/tb_cross_interval_163p333_ref.scs"
     ]
   },
   "failures": [],

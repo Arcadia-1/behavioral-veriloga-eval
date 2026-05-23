@@ -1,6 +1,6 @@
 # vaBench Release Dual Rerun Import
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report records whether fresh release EVAS/Spectre rerun results
 were imported into release evidence. It does not import blocked, dry-run,
@@ -12,11 +12,11 @@ or still-running summaries.
 | --- | ---: |
 | status | `partial_imported` |
 | stale summary | `True` |
-| summary tasks total | 56 |
+| summary tasks total | 37 |
 | current queue count | 0 |
-| imported primary results | 46 |
+| imported primary results | 35 |
 | skipped results | 0 |
-| imported pass | 46 |
+| imported pass | 35 |
 | imported fail | 0 |
 
 Reason: Stale-count dual rerun summary was partially imported by exact entry/form match; unmatched rows remain skipped and missing rows remain pending.

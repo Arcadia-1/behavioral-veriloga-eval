@@ -22,6 +22,7 @@ PRIMARY_VARIANTS = {"gold", "fixed"}
 DUAL_REFRESH_BLOCKERS = {
     "evas_certification",
     "spectre_certification",
+    "fresh_dual_validation",
     "fresh_evas_spectre_dual_refresh_pending",
 }
 

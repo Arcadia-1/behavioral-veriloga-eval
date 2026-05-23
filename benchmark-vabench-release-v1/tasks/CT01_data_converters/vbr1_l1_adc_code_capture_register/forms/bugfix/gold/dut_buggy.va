@@ -1,0 +1,41 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module adc_code_capture_register(vdd, vss, clk, load, over_lo, over_hi, din3, din2, din1, din0, bit3, bit2, bit1, bit0, valid, overrange, code_mon);
+    inout vdd, vss;
+    input clk, load, over_lo, over_hi, din3, din2, din1, din0;
+    output bit3, bit2, bit1, bit0, valid, overrange, code_mon;
+    electrical vdd, vss, clk, load, over_lo, over_hi, din3, din2, din1, din0;
+    electrical bit3, bit2, bit1, bit0, valid, overrange, code_mon;
+    parameter real vth = 0.45;
+    parameter real tr = 200p;
+    integer code;
+    integer valid_state;
+    integer over_state;
+    real vh;
+    analog begin
+        vh = V(vdd) - V(vss);
+        @(initial_step) begin
+            code = 0;
+            valid_state = 0;
+            over_state = 0;
+        end
+        @(cross(V(clk) - vth, +1)) begin
+            if (1) begin
+                code = 0;
+                if (V(din0) > vth) code = code + 1;
+                if (V(din1) > vth) code = code + 2;
+                if (V(din2) > vth) code = code + 4;
+                if (V(din3) > vth) code = code + 8;
+                valid_state = 1;
+                over_state = (V(over_lo) > vth || V(over_hi) > vth) ? 1 : 0;
+            end
+        end
+        V(bit0) <+ V(vss) + transition((code - 2 * (code / 2)) ? vh : 0.0, 0, tr, tr);
+        V(bit1) <+ V(vss) + transition(((code / 2) - 2 * (code / 4)) ? vh : 0.0, 0, tr, tr);
+        V(bit2) <+ V(vss) + transition(((code / 4) - 2 * (code / 8)) ? vh : 0.0, 0, tr, tr);
+        V(bit3) <+ V(vss) + transition((code >= 8) ? vh : 0.0, 0, tr, tr);
+        V(valid) <+ V(vss) + transition(valid_state ? vh : 0.0, 0, tr, tr);
+        V(overrange) <+ V(vss) + transition(over_state ? vh : 0.0, 0, tr, tr);
+        V(code_mon) <+ V(vss) + transition(vh * code / 15.0, 0, tr, tr);
+    end
+endmodule

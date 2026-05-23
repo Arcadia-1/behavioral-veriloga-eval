@@ -4,7 +4,12 @@
 - Level: `L1`
 - Category: `Stimulus and Sources`
 - Package status: `selected_l1_addition`
-- Materialized forms: `dut`, `tb`, `e2e`
-- Missing forms: none
+- Score surface: `model-capability`
+- Benchmark score: `enabled`
+- Materialized forms: `dut, e2e, tb`
+- Missing forms: `none`
+- Certification: static `pass`; EVAS `pass`; Spectre `pass`
+- Evidence: `benchmark-vabench-release-v1/reports/dual_certification.json`
 
-This entry is kept under the stable release ID but its public function is a periodic phase ramp with a guard pulse, not a generic ramp-or-step source. It remains unscored until static checks and EVAS/Spectre dual certification are complete.
+This release entry is materialized in the paper-facing vaBench release package.
+`release_entry.json` is the structured source of truth for forms, scoring, and certification status.

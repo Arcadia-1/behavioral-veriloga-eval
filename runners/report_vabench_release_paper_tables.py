@@ -344,7 +344,7 @@ def build_report() -> dict[str, object]:
             "title": "vaBench release coverage and materialization status",
             "csv": rel(TABLES_ROOT / "coverage.csv"),
             "row_count": len(coverage_rows),
-            "caption": "Coverage/materialization status for the 75-entry L1/L2 release target; score denominator claims remain disabled while certification is pending.",
+            "caption": "Coverage/materialization status for the 72-entry L1/L2 release target; score denominator claims are governed by the score denominator manifest.",
         },
         {
             "id": "parity",

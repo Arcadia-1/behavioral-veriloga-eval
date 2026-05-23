@@ -1,6 +1,6 @@
 # vaBench Release Remaining Work
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This report is the active queue for finishing the clean vaBench release.
 It separates missing source design from missing simulator evidence and
@@ -11,11 +11,11 @@ from the frozen score denominator, not inferred from source presence alone.
 
 | Metric | Value |
 | --- | ---: |
-| planned entries | 73 |
-| source-linked entries | 73 |
-| entries with copied assets | 73 |
-| static-certified release forms | 249 |
-| dual-certified release forms | 249 |
+| planned entries | 72 |
+| source-linked entries | 72 |
+| entries with copied assets | 72 |
+| static-certified release forms | 245 |
+| dual-certified release forms | 245 |
 | dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -25,7 +25,7 @@ from the frozen score denominator, not inferred from source presence alone.
 | fresh dual rerun queue forms | 0 |
 | missing required-form entries | 0 |
 | current seed missing-form entries | 0 |
-| scored release entries | 73 |
+| scored release entries | 72 |
 
 ## Source Design Pending
 

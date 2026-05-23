@@ -8,11 +8,13 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "ptr_is_one_hot_after_reset"
-    - "cell_en_nonzero_after_reset"
-    - "dwa_rotation_correct"
+    - "pointer_advances_by_sampled_input_code"
+    - "cell_enable_window_matches_effective_code_plus_lsb_boundary"
+    - "pointer_output_is_one_hot"
+    - "wraparound_and_multi_code_coverage"
 
 parity:
-  required: true
-  spectre_result_path: "behavioral-veriloga-eval/results/gold-dual-suite-final/dwa_ptr_gen_smoke/spectre/tran_spectre.csv"
-  tolerance_notes: "dual-validated; Spectre parity artifact path backfilled from final dual-suite run"
+  reference: "spectre"
+  status: "pass"
+  notes:
+    - "Certified by release dual evidence for this form."

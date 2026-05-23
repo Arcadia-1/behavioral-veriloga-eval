@@ -1,6 +1,6 @@
 # vaBench Paper-Facing Artifact Summary
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 This is a claim-gated summary for paper writing. It records what can be
 cited from the current release package and what must remain pending.
@@ -9,14 +9,14 @@ cited from the current release package and what must remain pending.
 
 | Metric | Value |
 | --- | ---: |
-| planned L1/L2 entries | 73 |
-| source-linked entries | 73 |
-| entries with copied assets | 73 |
-| static-certified release forms | 249 |
-| dual-certified release forms | 249 |
-| fully certified entries | 73 |
+| planned L1/L2 entries | 72 |
+| source-linked entries | 72 |
+| entries with copied assets | 72 |
+| static-certified release forms | 245 |
+| dual-certified release forms | 245 |
+| fully certified entries | 72 |
 | certification matrix | `complete` |
-| scored release entries | 73 |
+| scored release entries | 72 |
 | scored release forms | 245 |
 | score denominator status | `score_enabled` |
 
@@ -25,7 +25,7 @@ cited from the current release package and what must remain pending.
 | Metric | Value |
 | --- | ---: |
 | release dual status | `pass` |
-| dual-certified release forms | 249 |
+| dual-certified release forms | 245 |
 | dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -62,7 +62,7 @@ cited from the current release package and what must remain pending.
 
 - Status: `measured_subset`
 - Claim allowed: `False`
-- Reason: Timing exists for a subset only: 17 timed rows cover 17/257 scored forms. Wrapper aggregate Spectre/EVAS speedup is 1.835; do not claim release-wide EVAS speedup yet.
+- Reason: Timing exists for a subset only: 4 timed rows cover 4/245 scored forms. Wrapper aggregate Spectre/EVAS speedup is 2.711; do not claim release-wide EVAS speedup yet.
 
 ## Baselines
 
@@ -75,7 +75,7 @@ cited from the current release package and what must remain pending.
 | Claim | Allowed |
 | --- | --- |
 | `can_claim_release_assets_materialized` | `True` |
-| `can_claim_top_level_coverage_plan` | `False` |
+| `can_claim_top_level_coverage_plan` | `True` |
 | `can_claim_release_package_complete` | `True` |
 | `can_claim_scored_benchmark` | `True` |
 | `can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence` | `True` |

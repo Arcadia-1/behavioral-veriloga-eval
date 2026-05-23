@@ -1,0 +1,15 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "serial_readout_deserializer.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n rise=100p fall=100p width=4.8n period=10n
+Vframe (frame 0) vsource type=pwl wave=[0 0 18n 0 19n 0.9 25n 0.9 26n 0 68n 0 69n 0.9 75n 0.9 76n 0 120n 0]
+Vserial_in (serial_in 0) vsource type=pwl wave=[0 0 18n 0 19n 0.9 25n 0.9 26n 0 35n 0 36n 0 45n 0 46n 0 54n 0 55n 0.9 68n 0.9 69n 0 75n 0 76n 0.9 85n 0.9 86n 0.9 95n 0.9 96n 0 105n 0 106n 0]
+
+XDUT (vdd vss clk frame serial_in bit3 bit2 bit1 bit0 word_valid word_mon) serial_readout_deserializer
+
+tran tran stop=120n maxstep=0.2n errpreset=conservative
+save clk frame serial_in bit3 bit2 bit1 bit0 word_valid word_mon

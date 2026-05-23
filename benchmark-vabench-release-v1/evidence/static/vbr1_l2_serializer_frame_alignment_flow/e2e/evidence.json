@@ -4,19 +4,19 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "Serializer frame-alignment flow"
+    "category": "Data Converters",
+    "base_function": "Readout frame-monitor flow"
   },
   "static": "pass",
   "evas": "pending",
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_alignment_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_alignment_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_monitor_flow.scs"
   ],
   "checks": {
     "must_include": [

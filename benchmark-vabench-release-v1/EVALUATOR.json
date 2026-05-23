@@ -44,13 +44,13 @@
   },
   "task_selection": {
     "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "package_entry_count": 73,
-    "package_form_count": 249,
-    "certified_entries": 73,
-    "certified_forms": 249,
+    "package_entry_count": 72,
+    "package_form_count": 245,
+    "certified_entries": 72,
+    "certified_forms": 245,
     "pending_entries": 0,
     "pending_forms": 0,
-    "scored_entries": 73,
+    "scored_entries": 72,
     "scored_forms": 245,
     "score_enabled": true,
     "l0_conformance_excluded": true,
@@ -105,7 +105,7 @@
   "score_gate": {
     "status": "score_enabled",
     "score_claim_allowed": true,
-    "scored_entries": 73,
+    "scored_entries": 72,
     "scored_forms": 245,
     "blocking_reason": "",
     "finish_readiness_status": "blocked",
@@ -145,7 +145,7 @@
       "raw_result.timing.spectre_wall_time_s",
       "raw_result.timing.combined_wall_time_s"
     ],
-    "timed_rows": 17
+    "timed_rows": 4
   },
   "commands": {
     "refresh_package": "python3 runners/run_vabench_release_longrun.py",

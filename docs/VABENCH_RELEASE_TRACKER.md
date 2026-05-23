@@ -9,11 +9,11 @@ It is the execution queue for the long-run vaBench release goal.
 
 | Status | Count |
 | --- | ---: |
-| current_l1_seed | 27 |
+| current_l1_seed | 23 |
 | current_l1_seed_with_review | 1 |
 | selected_l1_addition | 32 |
-| selected_l2_target | 15 |
-| total | 75 |
+| selected_l2_target | 16 |
+| total | 72 |
 
 ## Certification Rule
 
@@ -34,16 +34,22 @@ and Spectre are all marked complete/pass.
 | vbr1_l1_dac_mismatch_unit_weighting_model | L1 | Data Converters | DAC mismatch/unit-weighting model | selected_l1_addition | not_certified |
 | vbr1_l1_sar_logic | L1 | Data Converters | SAR logic | current_l1_seed | not_certified |
 | vbr1_l1_pipeline_adc_stage | L1 | Data Converters | Pipeline ADC MDAC stage | selected_l1_addition | not_certified |
+| vbr1_l1_adc_code_capture_register | L1 | Data Converters | ADC code capture register | selected_l1_addition | not_certified |
+| vbr1_l1_serializer_frame_aligner | L1 | Data Converters | ADC/readout serializer frame aligner | selected_l1_addition | not_certified |
+| vbr1_l1_serial_readout_deserializer | L1 | Data Converters | Serial readout deserializer | selected_l1_addition | not_certified |
 | vbr1_l2_adc_dac_reconstruction_chain | L2 | Data Converters | ADC/DAC reconstruction chain | selected_l2_target | not_certified |
 | vbr1_l2_weighted_sar_adc_dac_loop | L2 | Data Converters | Weighted SAR ADC/DAC loop | selected_l2_target | not_certified |
 | vbr1_l2_flash_adc_mini_array | L2 | Data Converters | Flash ADC mini-array | selected_l2_target | not_certified |
 | vbr1_l2_pipeline_adc_chain | L2 | Data Converters | Pipeline ADC chain | selected_l2_target | not_certified |
+| vbr1_l2_event_controller | L2 | Data Converters | Conversion event controller | selected_l2_target | not_certified |
+| vbr1_l2_serializer_frame_alignment_flow | L2 | Data Converters | Readout frame-monitor flow | selected_l2_target | not_certified |
 | vbr1_l1_threshold_comparator | L1 | Comparators and Decision Circuits | Threshold comparator | selected_l1_addition | not_certified |
 | vbr1_l1_propagation_delay_comparator | L1 | Comparators and Decision Circuits | Propagation-delay comparator | selected_l1_addition | not_certified |
 | vbr1_l1_hysteresis_comparator | L1 | Comparators and Decision Circuits | Hysteresis comparator | selected_l1_addition | not_certified |
 | vbr1_l1_window_comparator_detector | L1 | Comparators and Decision Circuits | Window comparator/detector | selected_l1_addition | not_certified |
 | vbr1_l1_offset_comparator | L1 | Comparators and Decision Circuits | Offset comparator | current_l1_seed | not_certified |
 | vbr1_l1_strongarm_style_latch_comparator | L1 | Comparators and Decision Circuits | StrongARM-style latch comparator | current_l1_seed | not_certified |
+| vbr1_l1_debounce_latch | L1 | Comparators and Decision Circuits | Comparator debounce latch | current_l1_seed | not_certified |
 | vbr1_l2_comparator_measurement_flow | L2 | Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | selected_l2_target | not_certified |
 | vbr1_l1_vco_phase_integrator | L1 | PLL / Clock / Event Timing | VCO phase integrator | current_l1_seed | not_certified |
 | vbr1_l1_pfd_up_dn_logic | L1 | PLL / Clock / Event Timing | PFD UP/DN logic | current_l1_seed | not_certified |
@@ -67,14 +73,6 @@ and Spectre are all marked complete/pass.
 | vbr1_l1_successive_approximation_calibration_search_fsm | L1 | Calibration, DEM, and Control | Successive-approximation calibration/search FSM | selected_l1_addition | not_certified |
 | vbr1_l1_element_shuffler | L1 | Calibration, DEM, and Control | Element shuffler | current_l1_seed | not_certified |
 | vbr1_l2_complete_calibration_loop | L2 | Calibration, DEM, and Control | Complete calibration loop | selected_l2_target | not_certified |
-| vbr1_l1_edge_detector | L1 | Digital and Event-Driven Logic | Edge detector | current_l1_seed | not_certified |
-| vbr1_l1_debounce_latch | L1 | Digital and Event-Driven Logic | Debounce latch | current_l1_seed | not_certified |
-| vbr1_l1_one_shot_timer | L1 | Digital and Event-Driven Logic | One-shot timer | current_l1_seed | not_certified |
-| vbr1_l1_lfsr_prbs_generator | L1 | Digital and Event-Driven Logic | LFSR/PRBS generator | selected_l1_addition | not_certified |
-| vbr1_l1_serializer_frame_aligner | L1 | Digital and Event-Driven Logic | Serializer/frame aligner | selected_l1_addition | not_certified |
-| vbr1_l1_event_pulse_stretcher | L1 | Digital and Event-Driven Logic | Retriggerable one-shot pulse stretcher | selected_l1_addition | not_certified |
-| vbr1_l2_event_controller | L2 | Digital and Event-Driven Logic | Event controller | selected_l2_target | not_certified |
-| vbr1_l2_serializer_frame_alignment_flow | L2 | Digital and Event-Driven Logic | Serializer frame-alignment flow | selected_l2_target | not_certified |
 | vbr1_l1_crossing_metric_writer | L1 | Measurement and Testbench Instrumentation | Crossing metric writer | current_l1_seed | not_certified |
 | vbr1_l1_settling_time_detector | L1 | Measurement and Testbench Instrumentation | Settling response measurement helper | current_l1_seed | not_certified |
 | vbr1_l1_peak_detector | L1 | Measurement and Testbench Instrumentation | Peak detector | current_l1_seed | not_certified |
@@ -82,6 +80,7 @@ and Spectre are all marked complete/pass.
 | vbr1_l1_edge_interval_timer | L1 | Measurement and Testbench Instrumentation | Edge interval timer | selected_l1_addition | not_certified |
 | vbr1_l2_measurement_flow | L2 | Measurement and Testbench Instrumentation | Measurement flow | selected_l2_target | not_certified |
 | vbr1_l2_gain_extraction_convergence_measurement_flow | L2 | Measurement and Testbench Instrumentation | Gain extraction/convergence measurement flow | selected_l2_target | not_certified |
+| vbr1_l1_lfsr_prbs_generator | L1 | Stimulus and Sources | PRBS stimulus/dither generator | selected_l1_addition | not_certified |
 | vbr1_l1_ramp_or_step_source | L1 | Stimulus and Sources | Periodic phase-ramp guard source | selected_l1_addition | not_certified |
 | vbr1_l1_burst_clock_source | L1 | Stimulus and Sources | Burst clock source | selected_l1_addition | not_certified |
 | vbr1_l1_dither_or_noise_like_deterministic_source | L1 | Stimulus and Sources | Dither or noise-like deterministic source | selected_l1_addition | not_certified |

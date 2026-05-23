@@ -2,16 +2,14 @@ syntax:
   must_include:
     - "tran"
     - "save"
-  must_not_include:[]
+  must_not_include: []
 dut_compile:
   backend: "evas"
 tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "multitone_waveform_matches_public_samples"
 parity:
   reference: "spectre"
   status: "pass"

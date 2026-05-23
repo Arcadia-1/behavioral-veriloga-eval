@@ -5,8 +5,8 @@
   "task_form": "dut",
   "taxonomy": {
     "level": "L1",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "Serializer/frame aligner"
+    "category": "Data Converters",
+    "base_function": "ADC/readout serializer frame aligner"
   },
   "static": "pass",
   "evas": "pass",
@@ -17,8 +17,8 @@
     "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_serializer_frame_aligner/dut/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/dut/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_serializer_frame_aligner/dut/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_serializer_frame_aligner/forms/dut/gold/serializer_frame_alignment_ref.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_serializer_frame_aligner/forms/dut/gold/tb_serializer_frame_alignment_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/dut/gold/serializer_frame_alignment_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/dut/gold/tb_serializer_frame_alignment_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",

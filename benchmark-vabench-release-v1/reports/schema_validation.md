@@ -1,11 +1,11 @@
 # vaBench Release Schema Validation
 
-Date: 2026-05-23
+Date: 2026-05-24
 
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| validated files | 1593 |
+| validated files | 1568 |
 | schema issues | 0 |
 | count issues | 0 |
 
@@ -39,7 +39,7 @@ Date: 2026-05-23
 | `dual_certification` | 1 | 0 |
 | `certification_matrix` | 1 | 0 |
 | `remaining_work` | 1 | 0 |
-| `release_entry` | 73 | 0 |
-| `release_task` | 249 | 0 |
-| `evidence` | 498 | 0 |
-| `result` | 747 | 0 |
+| `release_entry` | 72 | 0 |
+| `release_task` | 245 | 0 |
+| `evidence` | 490 | 0 |
+| `result` | 735 | 0 |

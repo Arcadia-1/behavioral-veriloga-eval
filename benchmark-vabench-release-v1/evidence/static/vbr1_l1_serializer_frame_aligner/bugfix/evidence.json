@@ -4,20 +4,20 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "Serializer/frame aligner"
+    "category": "Data Converters",
+    "base_function": "ADC/readout serializer frame aligner"
   },
   "static": "pass",
   "evas": "pending",
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/tb_serializer_frame_alignment_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/gold/tb_serializer_frame_alignment_ref.scs"
   ],
   "checks": {
     "must_include": [

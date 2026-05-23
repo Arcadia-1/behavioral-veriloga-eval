@@ -26,7 +26,6 @@ EXPECTED_CATEGORIES = {
     "Comparators and Decision Circuits",
     "PLL / Clock / Event Timing",
     "Calibration, DEM, and Control",
-    "Digital and Event-Driven Logic",
     "Measurement and Testbench Instrumentation",
     "Stimulus and Sources",
     "Analog Behavioral Signal Conditioning",
@@ -161,9 +160,9 @@ def audit_counts(manifest: dict[str, object]) -> list[dict[str, object]]:
     excluded_levels = Counter(
         entry["level"] for entry in entries if not is_content_denominator_entry(str(entry["release_entry_id"]))
     )
-    expected_package_entries = 73
+    expected_package_entries = 72
     expected_content_entries = expected_package_entries - len(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES)
-    expected_levels = {"L1": 57 - excluded_levels.get("L1", 0), "L2": 16 - excluded_levels.get("L2", 0)}
+    expected_levels = {"L1": 56 - excluded_levels.get("L1", 0), "L2": 16 - excluded_levels.get("L2", 0)}
 
     if len(entries) != expected_package_entries:
         findings.append(

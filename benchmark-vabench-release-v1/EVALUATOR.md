@@ -9,11 +9,11 @@ and paper-facing baselines. It does not create certification evidence.
 
 | Metric | Value |
 | --- | ---: |
-| package entries | 73 |
-| package forms | 249 |
-| certified entries | 73 |
-| certified forms | 249 |
-| scored entries | 73 |
+| package entries | 72 |
+| package forms | 245 |
+| certified entries | 72 |
+| certified forms | 245 |
+| scored entries | 72 |
 | scored forms | 245 |
 | L0 conformance excluded | `True` |
 
@@ -27,7 +27,7 @@ and paper-facing baselines. It does not create certification evidence.
 
 ## Gates
 
-- Score gate: `score_enabled`; scored entries/forms = 73/245
+- Score gate: `score_enabled`; scored entries/forms = 72/245
 - Finish readiness: `blocked`
 - Baseline gate: `ready_for_baseline_runs`; claim allowed = `False`
 - Speed/debug gate: `measured_subset`; claim allowed = `False`

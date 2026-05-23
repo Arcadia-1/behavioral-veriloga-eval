@@ -75,7 +75,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a voltage-domain 8-bit SAR ADC, matching weighted DAC, sample/hold helper, and one EVAS-compatible Spectre testbench.
+Write a voltage-domain 8-bit SAR ADC, matching weighted DAC, sample/hold helper, and one voltage-domain Spectre transient testbench.
 
 # Task: sar_adc_dac_weighted_8b_smoke
 

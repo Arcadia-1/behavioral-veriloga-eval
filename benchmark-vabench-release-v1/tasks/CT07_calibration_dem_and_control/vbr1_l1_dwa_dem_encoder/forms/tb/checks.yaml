@@ -7,9 +7,10 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "transient_analysis_present"
-    - "public_observables_saved"
-    - "dut_or_system_instantiated"
+    - "pointer_advances_by_sampled_input_code"
+    - "cell_enable_window_matches_effective_code_plus_lsb_boundary"
+    - "pointer_output_is_one_hot"
+    - "wraparound_and_multi_code_coverage"
 parity:
   reference: "spectre"
   status: "pass"

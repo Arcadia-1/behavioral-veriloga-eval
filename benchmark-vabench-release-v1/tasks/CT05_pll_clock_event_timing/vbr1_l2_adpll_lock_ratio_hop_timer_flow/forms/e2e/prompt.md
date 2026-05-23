@@ -96,4 +96,4 @@ Ports:
 - `vctrl_mon`: output electrical
 - `lock`: output electrical
 
-Write EVAS-compatible Verilog-A (pure voltage-domain behavioral model, no current contributions).
+Write pure voltage-domain behavioral Verilog-A with no current contributions.

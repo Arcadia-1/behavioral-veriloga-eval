@@ -4,9 +4,12 @@
 - Level: `L1`
 - Category: `Stimulus and Sources`
 - Package status: `selected_l1_addition`
-- Materialized forms: `dut`
-- Missing forms: `tb, e2e`
+- Score surface: `model-capability`
+- Benchmark score: `enabled`
+- Materialized forms: `dut, e2e, tb`
+- Missing forms: `none`
+- Certification: static `pass`; EVAS `pass`; Spectre `pass`
+- Evidence: `benchmark-vabench-release-v1/reports/dual_certification.json`
 
-This selected release entry is a long-run materialization target.
-It is intentionally unscored until static checks and EVAS/Spectre
-dual certification are complete.
+This release entry is materialized in the paper-facing vaBench release package.
+`release_entry.json` is the structured source of truth for forms, scoring, and certification status.

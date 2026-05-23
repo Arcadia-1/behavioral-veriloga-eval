@@ -154,7 +154,7 @@ Current mismatch:
 | Historical hint | Release mapping |
 | --- | --- |
 | `phase-detector` | `PLL / Clock / Event Timing` |
-| `analog-events` | likely `Digital and Event-Driven Logic`, with conformance-only extraction when it is only a timer/event primitive |
+| `analog-events` | map to the concrete analog-facing circuit family; keep pure timer/event primitives as conformance-only extraction |
 | `signal-source` | split: real source generators go to `Stimulus and Sources`; clamps/slew limiters go to `Analog Behavioral Signal Conditioning` |
 | `dac` | split: converter functions stay in `Data Converters`; CDAC calibration controller should map to calibration/control unless the public task is truly DAC modeling |
 

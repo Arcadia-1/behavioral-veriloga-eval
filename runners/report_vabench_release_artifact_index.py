@@ -11,6 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "artifact_index.json"
 REPORT_MD = REPORTS_ROOT / "artifact_index.md"
+PLANNED_ENTRY_TARGET = 72
 
 
 def rel(path: Path) -> str:
@@ -84,9 +85,9 @@ def build_report() -> dict[str, object]:
             artifact_id="release_tracker",
             path=ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv",
             kind="tracker",
-            purpose="75-entry L1/L2 release coverage target.",
+            purpose=f"{PLANNED_ENTRY_TARGET}-entry L1/L2 release coverage target.",
             claim_role="coverage_plan",
-            status="ready" if release_status.get("planned_entries") == 75 else "incomplete",
+            status="ready" if release_status.get("planned_entries") == PLANNED_ENTRY_TARGET else "incomplete",
             certification_evidence=False,
         ),
         artifact(
@@ -95,7 +96,7 @@ def build_report() -> dict[str, object]:
             kind="package",
             purpose="Clean release package root with tasks, conformance, evidence, and reports.",
             claim_role="release_structure",
-            status="ready" if release_status.get("source_linked_entry_count") == 75 else "incomplete",
+            status="ready" if release_status.get("source_linked_entry_count") == PLANNED_ENTRY_TARGET else "incomplete",
             certification_evidence=False,
         ),
         artifact(

@@ -1,0 +1,99 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module serializer_frame_monitor_flow (
+    vdd, vss, clk, load,
+    din7, din6, din5, din4, din3, din2, din1, din0,
+    sout, frame, word_ok, frame_error, word_mon
+);
+    inout vdd, vss;
+    input clk, load;
+    input din7, din6, din5, din4, din3, din2, din1, din0;
+    output sout, frame, word_ok, frame_error, word_mon;
+    electrical vdd, vss, clk, load;
+    electrical din7, din6, din5, din4, din3, din2, din1, din0;
+    electrical sout, frame, word_ok, frame_error, word_mon;
+
+    parameter real vth = 0.45;
+    parameter real trf = 40p;
+
+    integer shreg;
+    integer expected_word;
+    integer mon_word;
+    integer bit_idx;
+    integer active;
+    integer bit_val;
+    integer mon_next;
+    real sout_val;
+    real frame_val;
+    real word_ok_val;
+    real frame_error_val;
+    real word_mon_val;
+    real vdd_now;
+
+    analog begin
+        @(initial_step) begin
+            shreg = 0;
+            expected_word = 0;
+            mon_word = 0;
+            bit_idx = 7;
+            active = 0;
+            sout_val = 0.0;
+            frame_val = 0.0;
+            word_ok_val = 0.0;
+            frame_error_val = 0.0;
+            word_mon_val = 0.0;
+        end
+
+        @(cross(V(clk, vss) - vth, +1)) begin
+            vdd_now = V(vdd, vss);
+            word_ok_val = 0.0;
+            if (V(load, vss) > vth) begin
+                shreg = 0;
+                if (V(din0, vss) > vth) shreg = shreg + 1;
+                if (V(din1, vss) > vth) shreg = shreg + 2;
+                if (V(din2, vss) > vth) shreg = shreg + 4;
+                if (V(din3, vss) > vth) shreg = shreg + 8;
+                if (V(din4, vss) > vth) shreg = shreg + 16;
+                if (V(din5, vss) > vth) shreg = shreg + 32;
+                if (V(din6, vss) > vth) shreg = shreg + 64;
+                if (V(din7, vss) > vth) shreg = shreg + 128;
+                expected_word = shreg;
+                mon_word = 0;
+                bit_idx = 7;
+                active = 1;
+                frame_val = 0.0;
+                frame_error_val = 0.0;
+            end else if (active == 1) begin
+                bit_val = (shreg >> bit_idx) & 1;
+                sout_val = (bit_val == 1) ? vdd_now : 0.0;
+                frame_val = (bit_idx == 7) ? vdd_now : 0.0;
+                if (bit_idx == 7) begin
+                    mon_word = 0;
+                end
+                mon_next = mon_word * 2 + bit_val;
+                mon_word = mon_next;
+                if (bit_idx == 0) begin
+                    word_mon_val = (mon_word / 255.0) * vdd_now;
+                    if (mon_word == expected_word) begin
+                        word_ok_val = vdd_now;
+                    end else begin
+                        frame_error_val = vdd_now;
+                    end
+                    bit_idx = 7;
+                    active = 0;
+                end else begin
+                    bit_idx = bit_idx - 1;
+                end
+            end else begin
+                frame_val = 0.0;
+            end
+        end
+
+        V(sout, vss) <+ transition(sout_val, 0, trf, trf);
+        V(frame, vss) <+ transition(frame_val, 0, trf, trf);
+        V(word_ok, vss) <+ transition(word_ok_val, 0, trf, trf);
+        V(frame_error, vss) <+ transition(frame_error_val, 0, trf, trf);
+        V(word_mon, vss) <+ transition(word_mon_val, 0, trf, trf);
+    end
+endmodule

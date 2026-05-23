@@ -24,7 +24,7 @@
     "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pipeline_adc_stage/dut/evidence.json"
   },
   "counts": {
-    "benchmark_score": false,
+    "benchmark_score": true,
     "model_capability": false,
     "l0_conformance": false
   },
@@ -36,6 +36,6 @@
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",
-    "benchmark_score remains disabled because this release entry is outside the frozen score denominator."
+    "benchmark_score is enabled because this release entry is in the frozen score denominator."
   ]
 }

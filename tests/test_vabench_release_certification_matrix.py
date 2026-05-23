@@ -17,17 +17,17 @@ def test_certification_matrix_summarizes_entry_and_form_status() -> None:
     summary = report["summary"]
 
     assert report["status"] == "complete"
-    assert summary["entry_count"] == 73
-    assert summary["form_count"] == 249
-    assert summary["fully_certified_entry_count"] == 73
+    assert summary["entry_count"] == 72
+    assert summary["form_count"] == 245
+    assert summary["fully_certified_entry_count"] == 72
     assert summary["pending_entry_count"] == 0
-    assert summary["certified_form_count"] == 249
+    assert summary["certified_form_count"] == 245
     assert summary["pending_form_count"] == 0
     assert summary["fresh_dual_rerun_pending_form_count"] == 0
     assert summary["source_equivalence_blocked_form_count"] == 0
     assert summary["dual_failure_form_count"] == 0
     assert summary["evas_pass_spectre_fail_count"] == 0
-    assert summary["scored_entry_count"] == 73
+    assert summary["scored_entry_count"] == 72
     assert summary["scored_form_count"] == 245
 
 
@@ -35,12 +35,12 @@ def test_certification_matrix_exposes_pending_causes_without_overclaiming() -> N
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     summary = report["summary"]
 
-    assert summary["entry_pending_cause_counts"] == {"fully_certified": 73}
+    assert summary["entry_pending_cause_counts"] == {"fully_certified": 72}
     assert summary["form_pending_cause_counts"] == {
-        "certified": 249,
+        "certified": 245,
     }
     assert summary["form_disposition_counts"] == {
-        "none": 249,
+        "none": 245,
     }
     assert any("does not create new simulator evidence" in item for item in report["claim_boundary"])
     assert any("remain excluded from score" in item for item in report["claim_boundary"])
@@ -60,10 +60,10 @@ def test_certification_matrix_writes_entry_and_form_csvs() -> None:
     entry_rows = list(csv.DictReader(ENTRY_CSV.open(encoding="utf-8")))
     form_rows = list(csv.DictReader(FORM_CSV.open(encoding="utf-8")))
 
-    assert len(entry_rows) == 73
-    assert len(form_rows) == 249
-    assert sum(row["entry_status"] == "fully_certified" for row in entry_rows) == 73
-    assert sum(row["pending_cause"] == "certified" for row in form_rows) == 249
+    assert len(entry_rows) == 72
+    assert len(form_rows) == 245
+    assert sum(row["entry_status"] == "fully_certified" for row in entry_rows) == 72
+    assert sum(row["pending_cause"] == "certified" for row in form_rows) == 245
     assert sum(row["pending_cause"] == "fresh_dual_rerun_pending" for row in form_rows) == 0
     assert sum(row["counted_in_score"] == "True" for row in form_rows) == 245
-    assert sum(row["counted_in_score"] == "False" for row in form_rows) == 4
+    assert sum(row["counted_in_score"] == "False" for row in form_rows) == 0

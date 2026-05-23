@@ -47,9 +47,7 @@ Public stimulus/source nodes visible in the reference harness include:
 
 ## Public Behavior Checks
 
-- `transient_analysis_present`
-- `public_observables_saved`
-- `dut_or_system_instantiated`
+- `cross_interval_163p333`
 
 ## Output Contract
 
@@ -74,7 +72,8 @@ Domain: pure voltage-domain behavioral Verilog-A.
 Public requirements:
 
 - include a transient `tran` analysis
-- save the public observables needed by the checker
+- save the public observables needed by the public behavior checks
 - include or instantiate the Verilog-A behavioral module under test
+- satisfy the named behavior checks using only public waveforms and side outputs
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

@@ -19,7 +19,7 @@ def rows() -> list[dict[str, str]]:
 def test_seed_manifest_links_all_current_l1_seed_entries() -> None:
     manifest = rows()
 
-    assert len(manifest) == 26
+    assert len(manifest) == 24
     assert {row["certification_status"] for row in manifest} == {"not_certified"}
     assert "background_calibration_accumulator" not in {row["base_id"] for row in manifest}
     assert "offset_calibration_fsm" not in {row["base_id"] for row in manifest}

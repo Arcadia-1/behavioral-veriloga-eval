@@ -14,12 +14,12 @@ def test_prompt_contract_manifest_records_public_contract_v2() -> None:
     assert report["status"] == "pass"
     assert report["prompt_version_id"] == "public-contract-v2"
     assert report["previous_prompt_version"] == "pre-public-contract-v2"
-    assert report["prompt_count"] == 249
+    assert report["prompt_count"] == 245
     assert report["form_counts"] == {
-        "bugfix": 49,
-        "dut": 54,
-        "e2e": 73,
-        "tb": 73,
+        "bugfix": 48,
+        "dut": 53,
+        "e2e": 72,
+        "tb": 72,
     }
     assert report["sync_script"] == "runners/sync_vabench_release_prompt_contracts.py"
     assert report["claim_policy"]["baseline_comparison"].startswith("pre-public-contract-v2")

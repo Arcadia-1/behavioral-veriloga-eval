@@ -43,7 +43,7 @@ When this form generates a testbench, use plain scalar save names for these obse
 ## Public Behavior Checks
 
 - `fixed_time_active_output_sequence_at_20_40_60_80_100_120ns`
-- `expected_sequence_1_2_3_0_1_2`
+- `expected_permutation_sequence_2_0_3_1_2_0`
 
 ## Output Contract
 
@@ -57,17 +57,18 @@ Do not include explanatory prose outside the source artifact contents.
 Write a pure voltage-domain Verilog-A module named `element_shuffler`.
 
 The module has electrical ports `clk`, `rst_n`, `out0`, `out1`, `out2`, and
-`out3`. `rst_n` is active low. On reset, return to the initial selection. On
-each rising edge of `clk` while reset is released, advance through a deterministic
-four-step shuffle order. Exactly one output is high at a time, driven as a
-0/0.9 V logic level with smoothed transitions.
+`out3`. `rst_n` is active low. On reset, return to the initial state. On each
+rising edge of `clk` while reset is released, advance through a deterministic
+four-step shuffler whose public order is intentionally non-monotonic. Exactly
+one output is high at a time, driven as a 0/0.9 V logic level with smoothed
+transitions.
 
 The public observable sequence after reset is released is:
 
-- first sampled state: `out1` high
-- then `out2`
-- then `out3`
+- first sampled state: `out2` high
 - then `out0`
+- then `out3`
+- then `out1`
 - then the sequence repeats
 
 Use voltage contributions only. Do not use current contributions, `ddt()`, or

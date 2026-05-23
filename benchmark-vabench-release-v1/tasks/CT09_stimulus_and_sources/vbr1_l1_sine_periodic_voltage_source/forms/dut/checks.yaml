@@ -10,7 +10,7 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "check_multitone"
+    - "multitone_waveform_matches_public_samples"
 
 parity:
   reference: "spectre"

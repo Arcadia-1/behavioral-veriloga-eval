@@ -61,7 +61,7 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
 
-Write a Verilog-A module named `flash_adc_3b` and one minimal EVAS-compatible Spectre testbench.
+Write a Verilog-A module named `flash_adc_3b` and one minimal voltage-domain Spectre transient testbench.
 
 # Task: flash_adc_3b_smoke
 

@@ -1,0 +1,665 @@
+{
+  "schema_version": "same-server-speed.v1",
+  "artifact_kind": "candidate_same_server_evas_spectre_timing",
+  "date": "2026-05-22",
+  "created_at": "2026-05-22T16:18:38",
+  "claim_allowed": false,
+  "no_claim_reason": "Same-server timing is measured directly on one host and the artifact emits checker/waveform accuracy gates. Paper-facing speed claims should use only accuracy-gated rows and still need repeated cold/warm runs.",
+  "evas_only_no_claim_reason": "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing.",
+  "host": "thu-sui",
+  "selected_rows": 1,
+  "jobs": 4,
+  "evas_modes": [
+    "strict_current",
+    "profile_fast_skip_source_error_control"
+  ],
+  "spectre_modes": [
+    "ax",
+    "classic"
+  ],
+  "output_root": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522",
+  "results": [
+    {
+      "backend": "spectre",
+      "mode": "ax",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax/tb_calibration_deadband_controller.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax/tran_spectre.csv",
+        "rows": 532,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 4.569823121884838,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.013662800000000001,
+        "aggregate_elapsed_s": 1.97,
+        "reported_wall_s": 1.97,
+        "accepted_tran_steps": 531.0
+      },
+      "command": "spectre -64 tb_calibration_deadband_controller.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax/tb_calibration_deadband_controller.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/ax",
+      "fixture_notes": [
+        "materialized calibration_deadband_controller.va from benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/gold/calibration_deadband_controller.va"
+      ],
+      "notes": [
+        "release_calibration_loop reset=0.450 span=0.445 direction=4/4; deadband_hold=9/9"
+      ],
+      "stdout_tail": "ects = all\n    errpreset = moderate\n    method = trap\n    lteratio = 3.5\n    relref = sigglobal\n    cmin = 0 F\n    gmin = 1 pS\n    rabsshort = 1 mOhm\n\n\nNotice from spectre during transient analysis `tran'.\n    Multithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   5       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             531\n\nMaximum value achieved for any signal of each quantity: \nV: V(rst) = 900 mV\nI: I(Vclk:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (1.7 %)       4 (1.7 %)       8 (5.1 %)      10 (39.3 %)\n        16 (1.1 %)      18 (1.1 %)      19 (74.3 %)     24 (1.7 %)\n        26 (2.2 %)      38 (2.8 %)      44 (1.7 %)      45 (5.6 %)\n        46 (1.1 %)      48 (1.1 %)      56 (1.7 %)      \n        Total: 148.3%\nInitial condition solution time: CPU = 275 us, elapsed = 275.85 us.\nIntrinsic tran analysis time:    CPU = 21.02 ms, elapsed = 11.8659 ms.\nTotal time required for tran analysis `tran': CPU = 23.861 ms, elapsed = 13.6628 ms, util. = 175%.\nTime accumulated: CPU = 895.776 ms, elapsed = 1.9616 s.\nPeak resident memory used = 133 Mbytes.\n\nLicensing Information:\nLic Summary:\n[16:18:27.304913] Cdslmd servers:5280@thu-sui\n[16:18:27.304934] Feature usage summary:\n[16:18:27.304935] Virtuoso_Multi_mode_Simulation\n[16:18:27.304935] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (4:18:27 PM, Fri May 22, 2026):\nTime used: CPU = 903 ms, elapsed = 1.97 s, util. = 45.9%.\nTime spent in licensing: elapsed = 452 ms, percentage of total = 23%.\nPeak memory used = 133 Mbytes.\nSimulation started at: 4:18:25 PM, Fri May 22, 2026, ended at: 4:18:27 PM, Fri May 22, 2026, with elapsed time (wall clock): 1.97 s.\nspectre completes with 0 errors, 2 warnings, and 9 notices.\n",
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_calibration_deadband_controller_tb"
+    },
+    {
+      "backend": "spectre",
+      "mode": "classic",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic/tb_calibration_deadband_controller.raw/tran.tran.tran",
+        "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic/tran_spectre.csv",
+        "rows": 557,
+        "columns": [
+          "time",
+          "clk",
+          "rst",
+          "vin",
+          "out",
+          "metric"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 15.915719927987084,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.013784900000000001,
+        "aggregate_elapsed_s": 13.4,
+        "reported_wall_s": 13.4,
+        "accepted_tran_steps": 556.0,
+        "ahdl_compile_elapsed_s": 12.4
+      },
+      "command": "spectre -64 tb_calibration_deadband_controller.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic/tb_calibration_deadband_controller.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "result_root": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/spectre/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/classic",
+      "fixture_notes": [
+        "materialized calibration_deadband_controller.va from benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/gold/calibration_deadband_controller.va"
+      ],
+      "notes": [
+        "release_calibration_loop reset=0.450 span=0.445 direction=4/4; deadband_hold=9/9"
+      ],
+      "stdout_tail": "tput and IC/nodeset summary:\n                 save   5       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             556\n\nMaximum value achieved for any signal of each quantity: \nV: V(rst) = 900 mV\nI: I(Vclk:p) = 0 A\nIf your circuit contains signals of the same quantity that are vastly different in size (such as high voltage circuitry combined with low voltage control circuitry), you should consider specifying global option `bin_relref=yes'.\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n   -   To further speed up simulation, consider\n          add ++aps on command line\n   -   Non-default settings that could significantly slow down simulation\n          maxstep = 500 ps, default 1.6 ns\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         4 (1.2 %)       8 (1.2 %)      10 (6.1 %)      18 (1.5 %)\n        19 (20.7 %)     20 (1.1 %)      24 (1.6 %)      38 (2.0 %)\n        46 (4.5 %)      52 (1.8 %)      \n        Total: 55.3%\nInitial condition solution time: CPU = 387 us, elapsed = 388.861 us.\nIntrinsic tran analysis time:    CPU = 9.838 ms, elapsed = 11.8029 ms.\nTotal time required for tran analysis `tran': CPU = 10.924 ms, elapsed = 13.7849 ms, util. = 79.2%.\nTime accumulated: CPU = 2.93877 s, elapsed = 13.4212 s.\nPeak resident memory used = 135 Mbytes.\n\nLicensing Information:\nLic Summary:\n[16:18:38.001272] cdslmd servers: 5280@thu-sui\n[16:18:38.016600] Feature usage summary:\n[16:18:38.141079]   Virtuoso_Multi_mode_Simulation  \n\n\nAggregate audit (4:18:38 PM, Fri May 22, 2026):\nTime used: CPU = 2.94 s, elapsed = 13.4 s, util. = 21.9%.\nTime spent in licensing: elapsed = 41.4 ms.\nPeak memory used = 135 Mbytes.\nSimulation started at: 4:18:25 PM, Fri May 22, 2026, ended at: 4:18:38 PM, Fri May 22, 2026, with elapsed time (wall clock): 13.4 s.\nspectre completes with 0 errors, 1 warning, and 3 notices.\n",
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_calibration_deadband_controller_tb"
+    },
+    {
+      "backend": "evas",
+      "mode": "strict_current",
+      "phase": "P1",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/strict_current/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.5577484560199082,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.7225,
+        "total_elapsed_s": 0.8,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "materialized calibration_deadband_controller.va from benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/gold/calibration_deadband_controller.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "release_calibration_loop reset=0.450 span=0.445 direction=6/6; deadband_hold=10/10"
+      ],
+      "result_root": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/strict_current",
+      "stdout_tail": "alysis `tran': time = (0 s -> 80 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 2266\n    dynamic_step_shrinks = 24313\n    err_ratio_skipped_outputs = 84588\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 155\n    model_breakpoint_clamps = 95\n    output_step_clamps = 145\n    source_breakpoint_clamps = 244\n    steps_total = 42294\nModel event counters:\n    model[0] calibration_deadband_controller_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 722.5 ms, elapsed = 722.5 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/strict_current/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "self"
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 1.931911312522137e-05,
+            "max_abs_v": 0.0004334664410167166,
+            "mean_nrmse": 8.68315720541335e-06,
+            "p95_nrmse": 4.339041878833234e-05,
+            "max_nrmse": 4.339041878833234e-05,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 1.931911312522137e-05,
+                "max_abs_v": 0.0004334664410167166,
+                "span_v": 0.44523914874996023,
+                "nrmse": 4.339041878833234e-05,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.5196224264701248e-08,
+                "max_abs_v": 4.698940675451624e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 2.5367238734409247e-08,
+                "kind": "analog"
+              }
+            }
+          },
+          "classic": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 1.9319113125219064e-05,
+            "max_abs_v": 0.0004334664410167166,
+            "mean_nrmse": 8.683157205412177e-06,
+            "p95_nrmse": 4.339041878832715e-05,
+            "max_nrmse": 4.339041878832715e-05,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 1.9319113125219064e-05,
+                "max_abs_v": 0.0004334664410167166,
+                "span_v": 0.44523914874996023,
+                "nrmse": 4.339041878832715e-05,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.519622426429605e-08,
+                "max_abs_v": 4.698940675451624e-08,
+                "span_v": 0.599049207673061,
+                "nrmse": 2.5367238733732852e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "csv_path": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.8235922609455884,
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.009,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 452.0
+      },
+      "fixture_notes": [
+        "materialized calibration_deadband_controller.va from benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/gold/calibration_deadband_controller.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "release_calibration_loop reset=0.450 span=0.445 direction=4/4; deadband_hold=10/10"
+      ],
+      "result_root": "results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "*************\nImportant parameter values:\n    start = 0 s\n    stop  = 80 ns\n    step  = 500 ps\n    reltol = 0.005\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 8\n    refine_steps  = 4\n    evas_profile = fast\n    evas_skip_source_error_control = true\n\n    tran: time = 8 ns         ( 10 %)\n    tran: time = 16 ns        ( 20 %)\n    tran: time = 24 ns        ( 30 %)\n    tran: time = 32 ns        ( 40 %)\n    tran: time = 40 ns        ( 50 %)\n    tran: time = 48 ns        ( 60 %)\n    tran: time = 56 ns        ( 70 %)\n    tran: time = 64 ns        ( 80 %)\n    tran: time = 72 ns        ( 90 %)\n    tran: time = 80 ns        (100 %)\nNumber of accepted tran steps = 452\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 40\n    cross_refine_triggers = 0\n    dynamic_step_grows = 452\n    dynamic_step_shrinks = 0\n    err_ratio_skipped_outputs = 904\n    err_ratio_skipped_sources = 1356\n    min_step_clamps = 12\n    model_breakpoint_clamps = 95\n    output_step_clamps = 80\n    source_breakpoint_clamps = 214\n    steps_total = 452\nModel event counters:\n    model[0] calibration_deadband_controller_Model:\n        above_fires = 0\n        cross_fires = 40\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 9.0 ms, elapsed = 9.0 ms.\n\nWriting CSV: /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/same-server-speed-targeted-deadband-watchdog-fix-20260522/evas/vbr1_l1_calibration_deadband_controller/tb/gold/vbr1_l1_calibration_deadband_controller_tb/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst, vin, out, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "accuracy_gate": {
+        "status": "PASS",
+        "reasons": [],
+        "blocked": [],
+        "strict_evas_parity": {
+          "status": "passed",
+          "common_window_s": [
+            0.0,
+            8.000012207031e-08
+          ],
+          "signals_compared": 5,
+          "samples": 1200,
+          "max_rmse_v": 2.1857490350396668e-05,
+          "max_abs_v": 0.0004883589653215115,
+          "mean_nrmse": 9.8226655754717e-06,
+          "p95_nrmse": 4.909156774694741e-05,
+          "max_nrmse": 4.909156774694741e-05,
+          "per_signal": {
+            "clk": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "metric": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "out": {
+              "rmse_v": 2.1857490350396668e-05,
+              "max_abs_v": 0.0004883589653215115,
+              "span_v": 0.4452392,
+              "nrmse": 4.909156774694741e-05,
+              "kind": "analog"
+            },
+            "rst": {
+              "rmse_v": 0.0,
+              "max_abs_v": 0.0,
+              "span_v": 0.9,
+              "nrmse": 0.0,
+              "kind": "digital",
+              "best_lag_samples": 0,
+              "best_lag_s": 0.0,
+              "mismatch_ratio": 0.0
+            },
+            "vin": {
+              "rmse_v": 1.3035426701843993e-08,
+              "max_abs_v": 7.240192567703474e-08,
+              "span_v": 0.5990509457241846,
+              "nrmse": 2.176013041108823e-08,
+              "kind": "analog"
+            }
+          }
+        },
+        "spectre_parity": {
+          "ax": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 2.5653522749550363e-06,
+            "max_abs_v": 5.4892524476546356e-05,
+            "mean_nrmse": 1.1556888692591349e-06,
+            "p95_nrmse": 5.761739476117638e-06,
+            "max_nrmse": 5.761739476117638e-06,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 2.5653522749550363e-06,
+                "max_abs_v": 5.4892524476546356e-05,
+                "span_v": 0.4452392,
+                "nrmse": 5.761739476117638e-06,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.0007039244433637e-08,
+                "max_abs_v": 3.3333333593343895e-08,
+                "span_v": 0.5990492076730612,
+                "nrmse": 1.6704870178035702e-08,
+                "kind": "analog"
+              }
+            }
+          },
+          "classic": {
+            "status": "passed",
+            "common_window_s": [
+              0.0,
+              8e-08
+            ],
+            "signals_compared": 5,
+            "samples": 1200,
+            "max_rmse_v": 2.5653522749572856e-06,
+            "max_abs_v": 5.4892524476546356e-05,
+            "mean_nrmse": 1.1556888692598015e-06,
+            "p95_nrmse": 5.76173947612269e-06,
+            "max_nrmse": 5.76173947612269e-06,
+            "per_signal": {
+              "clk": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "metric": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "out": {
+                "rmse_v": 2.5653522749572856e-06,
+                "max_abs_v": 5.4892524476546356e-05,
+                "span_v": 0.4452392,
+                "nrmse": 5.76173947612269e-06,
+                "kind": "analog"
+              },
+              "rst": {
+                "rmse_v": 0.0,
+                "max_abs_v": 0.0,
+                "span_v": 0.9,
+                "nrmse": 0.0,
+                "kind": "digital",
+                "best_lag_samples": 0,
+                "best_lag_s": 0.0,
+                "mismatch_ratio": 0.0
+              },
+              "vin": {
+                "rmse_v": 1.0007039243404232e-08,
+                "max_abs_v": 3.3333333537832743e-08,
+                "span_v": 0.599049207673061,
+                "nrmse": 1.670487017631731e-08,
+                "kind": "analog"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "mode_summary": [
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 0.8235922609455884,
+        "mean_wall_time_s": 0.8235922609455884,
+        "geomean_wall_time_s": 0.8235922609455884
+      },
+      {
+        "backend": "evas",
+        "mode": "strict_current",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 1.5577484560199082,
+        "mean_wall_time_s": 1.5577484560199082,
+        "geomean_wall_time_s": 1.5577484560199082
+      },
+      {
+        "backend": "spectre",
+        "mode": "ax",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 4.569823121884838,
+        "mean_wall_time_s": 4.569823121884838,
+        "geomean_wall_time_s": 4.569823121884838
+      },
+      {
+        "backend": "spectre",
+        "mode": "classic",
+        "runs": 1,
+        "pass_count": 1,
+        "nonpass_count": 0,
+        "total_wall_time_s": 15.915719927987084,
+        "mean_wall_time_s": 15.915719927987084,
+        "geomean_wall_time_s": 15.915719927987087
+      }
+    ],
+    "accuracy_gate_summary": [
+      {
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 1,
+        "pass_count": 1,
+        "fail_count": 0,
+        "blocked_count": 0,
+        "missing_count": 0
+      },
+      {
+        "mode": "strict_current",
+        "runs": 1,
+        "pass_count": 1,
+        "fail_count": 0,
+        "blocked_count": 0,
+        "missing_count": 0
+      }
+    ],
+    "speedups": [
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.569823121884838,
+        "evas_wall_time_s": 0.8235922609455884,
+        "spectre_over_evas_speedup": 5.548647478350636
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.569823121884838,
+        "evas_wall_time_s": 1.5577484560199082,
+        "spectre_over_evas_speedup": 2.933607864751711
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "classic",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 15.915719927987084,
+        "evas_wall_time_s": 0.8235922609455884,
+        "spectre_over_evas_speedup": 19.32475653633974
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "classic",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 15.915719927987084,
+        "evas_wall_time_s": 1.5577484560199082,
+        "spectre_over_evas_speedup": 10.217130927962659
+      }
+    ],
+    "accuracy_gated_speedups": [
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 4.569823121884838,
+        "evas_wall_time_s": 0.8235922609455884,
+        "spectre_over_evas_speedup": 5.548647478350636
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "ax",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 4.569823121884838,
+        "evas_wall_time_s": 1.5577484560199082,
+        "spectre_over_evas_speedup": 2.933607864751711
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "classic",
+        "evas_mode": "profile_fast_skip_source_error_control",
+        "spectre_wall_time_s": 15.915719927987084,
+        "evas_wall_time_s": 0.8235922609455884,
+        "spectre_over_evas_speedup": 19.32475653633974
+      },
+      {
+        "entry_id": "vbr1_l1_calibration_deadband_controller",
+        "form": "tb",
+        "variant": "gold",
+        "task_id": "vbr1_l1_calibration_deadband_controller_tb",
+        "spectre_mode": "classic",
+        "evas_mode": "strict_current",
+        "spectre_wall_time_s": 15.915719927987084,
+        "evas_wall_time_s": 1.5577484560199082,
+        "spectre_over_evas_speedup": 10.217130927962659
+      }
+    ],
+    "geomean_spectre_over_evas_speedup": 7.529359717759427,
+    "geomean_accuracy_gated_spectre_over_evas_speedup": 7.529359717759427
+  }
+}

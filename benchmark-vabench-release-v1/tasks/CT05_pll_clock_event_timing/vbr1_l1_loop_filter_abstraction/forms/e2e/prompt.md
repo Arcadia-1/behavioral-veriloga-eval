@@ -69,7 +69,7 @@ Write both the Verilog-A behavioral module and a Spectre transient testbench.
 
 Behavioral intent:
 
-Approximate the continuous-time proportional/integral loop-filter trend with EVAS-supported sampled voltage-domain state updates on clock edges.
+Approximate the continuous-time proportional/integral loop-filter trend with sampled voltage-domain state updates on clock edges.
 
 Module name: `loop_filter_abstraction`.
 Domain: pure voltage-domain behavioral Verilog-A.

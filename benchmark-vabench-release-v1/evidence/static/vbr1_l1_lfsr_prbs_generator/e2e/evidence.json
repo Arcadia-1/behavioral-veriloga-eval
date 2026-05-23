@@ -4,19 +4,19 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L1",
-    "category": "Digital and Event-Driven Logic",
-    "base_function": "LFSR/PRBS generator"
+    "category": "Stimulus and Sources",
+    "base_function": "PRBS stimulus/dither generator"
   },
   "static": "pass",
   "evas": "pending",
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/lfsr.va",
-    "benchmark-vabench-release-v1/tasks/CT06_digital_and_event_driven_logic/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/tb_lfsr_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/lfsr.va",
+    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/gold/tb_lfsr_ref.scs"
   ],
   "checks": {
     "must_include": [
