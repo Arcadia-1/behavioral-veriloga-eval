@@ -4,7 +4,7 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L1",
-    "category": "Sample, Hold, and Analog Memory",
+    "category": "Sampling and Analog Memory",
     "base_function": "Sample-and-hold with droop/leakage"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/leaky_hold.va",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/tb_leaky_hold_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/leaky_hold.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/tb_leaky_hold_ref.scs"
   ],
   "checks": {
     "must_include": [
@@ -24,7 +24,11 @@
       "tran",
       "save"
     ],
-    "must_not_include": [],
+    "must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
     "failures": []
   },
   "notes": "Static release certification only; EVAS and Spectre remain pending."

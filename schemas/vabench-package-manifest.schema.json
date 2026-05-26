@@ -35,6 +35,10 @@
         "planned_entry_count",
         "entry_count",
         "form_count",
+        "core_entry_count",
+        "support_entry_count",
+        "core_form_count",
+        "support_form_count",
         "certified_entry_count",
         "certified_form_count",
         "scored_entry_count",
@@ -49,6 +53,18 @@
           "type": "integer"
         },
         "form_count": {
+          "type": "integer"
+        },
+        "core_entry_count": {
+          "type": "integer"
+        },
+        "support_entry_count": {
+          "type": "integer"
+        },
+        "core_form_count": {
+          "type": "integer"
+        },
+        "support_form_count": {
           "type": "integer"
         },
         "certified_entry_count": {
@@ -75,6 +91,8 @@
         "required": [
           "release_entry_id",
           "level",
+          "track",
+          "difficulty",
           "category",
           "base_function",
           "release_entry_manifest",
@@ -91,6 +109,19 @@
             "enum": [
               "L1",
               "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
             ]
           },
           "category": {
@@ -135,6 +166,9 @@
           "release_entry_id",
           "form",
           "family",
+          "level",
+          "track",
+          "difficulty",
           "release_task_manifest",
           "static",
           "evas",
@@ -162,6 +196,25 @@
               "tb-generation",
               "bugfix",
               "end-to-end"
+            ]
+          },
+          "level": {
+            "enum": [
+              "L1",
+              "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
             ]
           },
           "release_task_manifest": {

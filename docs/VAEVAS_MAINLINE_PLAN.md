@@ -20,6 +20,14 @@ Paper-safe current wording:
 > remains the reference for row certification, gold promotion, and
 > paper-facing claims.
 
+Precision framing: EVAS should be presented as Spectre-equivalent on the
+supported behavioral subset, not as a higher-precision simulator. Use
+`spectre/classic` as the conservative non-X reference path and `spectre/ax` as
+the fast official speed baseline; AX/classic self-consistency should anchor
+waveform tolerance when evaluating EVAS.
+Current speed-slice evidence for that anchor is
+`speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json`.
+
 ## Release Target And Internal Assets
 
 The paper-facing object is the clean vaBench release package, not any historical

@@ -4,7 +4,7 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L1",
-    "category": "Measurement and Testbench Instrumentation",
+    "category": "Measurement Instrumentation Flows",
     "base_function": "Peak detector"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/gold/peak_detector.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/gold/tb_peak_detector_ref.scs"
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/gold/peak_detector.va",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/gold/tb_peak_detector_ref.scs"
   ],
   "checks": {
     "must_include": [

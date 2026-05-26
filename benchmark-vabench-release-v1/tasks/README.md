@@ -6,14 +6,14 @@ release benchmark with `release_entry.json` and per-form `forms/*` assets.
 
 | ID | Directory | Circuit type | Entries |
 | --- | --- | --- | ---: |
-| CT01 | `CT01_data_converters` | Data Converters | 18 |
-| CT02 | `CT02_comparators_and_decision_circuits` | Comparators and Decision Circuits | 8 |
-| CT03 | `CT03_sample_hold_and_analog_memory` | Sample, Hold, and Analog Memory | 4 |
-| CT04 | `CT04_analog_behavioral_signal_conditioning` | Analog Behavioral Signal Conditioning | 7 |
-| CT05 | `CT05_pll_clock_event_timing` | PLL / Clock / Event Timing | 13 |
-| CT07 | `CT07_calibration_dem_and_control` | Calibration, DEM, and Control | 9 |
-| CT08 | `CT08_measurement_and_testbench_instrumentation` | Measurement and Testbench Instrumentation | 7 |
-| CT09 | `CT09_stimulus_and_sources` | Stimulus and Sources | 6 |
+| CT01 | `CT01_data_converter_models` | Data Converter Models | 18 |
+| CT02 | `CT02_comparator_and_decision_circuits` | Comparator and Decision Circuits | 8 |
+| CT03 | `CT03_sampling_and_analog_memory` | Sampling and Analog Memory | 4 |
+| CT04 | `CT04_baseband_signal_conditioning` | Baseband Signal Conditioning | 7 |
+| CT05 | `CT05_pll_clock_and_timing_systems` | PLL Clock and Timing Systems | 13 |
+| CT06 | `CT06_calibration_dem_and_control` | Calibration, DEM, and Control | 7 |
+| CT07 | `SUP01_measurement_instrumentation_flows` | Measurement Instrumentation Flows | 7 |
+| CT08 | `SUP02_stimulus_and_source_generators` | Stimulus and Source Generators | 6 |
 
 Use the category folders for human review. Machine-readable manifests and
 report paths use the same canonical category layout.

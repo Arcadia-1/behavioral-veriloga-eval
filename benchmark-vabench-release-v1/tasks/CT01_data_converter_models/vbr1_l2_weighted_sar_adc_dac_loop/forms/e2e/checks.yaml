@@ -1,0 +1,21 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "sar_adc_code_range_sufficient"
+    - "sar_adc_unique_code_count"
+    - "sar_code_matches_sampled_input"
+    - "dac_output_matches_weighted_code"
+    - "code_monotonic_with_sampled_input"
+    - "dac_output_in_range"
+
+parity:
+  required: true
+  spectre_result_path: "behavioral-veriloga-eval/results/gold-dual-suite-final/sar_adc_dac_weighted_8b_smoke/spectre/tran_spectre.csv"
+  tolerance_notes: "behavior-mismatch in Spectre behavior; keep task failed until behavior closure"

@@ -12,7 +12,14 @@ from datetime import datetime
 from pathlib import Path
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
-from run_gold_dual_suite import default_bridge_repo, run_dual_case
+from run_gold_dual_suite import (
+    default_bridge_repo,
+    default_sui_cadence_cshrc,
+    default_sui_host,
+    default_sui_work_root,
+    normalize_spectre_backend,
+    run_dual_case,
+)
 from run_gold_suite import benchmark_root
 
 
@@ -129,6 +136,9 @@ def run_one_bundle(
     cadence_cshrc: str | None,
     timeout_s: int,
     dry_run: bool,
+    spectre_backend: str = "bridge",
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
 ) -> tuple[int, dict[str, object]]:
     task_dir = bundle_task_dir(record)
     result_root = output_root / str(record["entry_id"]) / str(record["form"]) / str(record["variant"])
@@ -138,13 +148,37 @@ def run_one_bundle(
     if dry_run:
         raw_result = dry_run_raw_result(task_dir)
     else:
-        raw_result = run_dual_case(
-            task_dir=task_dir,
-            output_root=result_root,
-            bridge_repo=bridge_repo,
-            cadence_cshrc=cadence_cshrc,
-            timeout_s=timeout_s,
-        )
+        try:
+            raw_result = run_dual_case(
+                task_dir=task_dir,
+                output_root=result_root,
+                bridge_repo=bridge_repo,
+                cadence_cshrc=cadence_cshrc,
+                timeout_s=timeout_s,
+                spectre_backend=spectre_backend,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raw_result = {
+                "task_id": record.get("source_task_id") or record.get("task_id") or record["entry_id"],
+                "status": "FAIL_INFRA",
+                "notes": [
+                    f"dual_case_timeout_after_s={timeout_s}",
+                    f"timeout_cmd={getattr(exc, 'cmd', '')}",
+                ],
+                "stdout_tail": (
+                    ((exc.stdout or "") if isinstance(exc.stdout, str) else "")
+                    + "\n"
+                    + ((exc.stderr or "") if isinstance(exc.stderr, str) else "")
+                )[-4000:],
+            }
+        except Exception as exc:
+            raw_result = {
+                "task_id": record.get("source_task_id") or record.get("task_id") or record["entry_id"],
+                "status": "FAIL_INFRA",
+                "notes": [f"dual_case_exception={type(exc).__name__}: {str(exc)[:500]}"],
+            }
     bundle_wall_time_s = time.perf_counter() - bundle_t0
     result = {
         "entry_id": record["entry_id"],
@@ -171,6 +205,9 @@ def run_bundles(
     timeout_s: int,
     dry_run: bool,
     workers: int = 1,
+    spectre_backend: str = "bridge",
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
 ) -> dict[str, object]:
     results_by_index: dict[int, dict[str, object]] = {}
     started = datetime.now().isoformat(timespec="seconds")
@@ -191,6 +228,9 @@ def run_bundles(
             "workers": max(1, workers),
             "pass_expected_met_count": sum(1 for item in results if item["expected_result_met"] is True),
             "expected_miss_count": sum(1 for item in results if item["expected_result_met"] is False),
+            "spectre_backend": spectre_backend,
+            "sui_host": sui_host or "",
+            "sui_work_root": sui_work_root or "",
             "results": results,
         }
         write_summary(partial_path, partial)
@@ -206,6 +246,9 @@ def run_bundles(
                 cadence_cshrc=cadence_cshrc,
                 timeout_s=timeout_s,
                 dry_run=dry_run,
+                spectre_backend=spectre_backend,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
             )
             results_by_index[completed_idx] = result
             write_partial()
@@ -221,6 +264,9 @@ def run_bundles(
                     cadence_cshrc=cadence_cshrc,
                     timeout_s=timeout_s,
                     dry_run=dry_run,
+                    spectre_backend=spectre_backend,
+                    sui_host=sui_host,
+                    sui_work_root=sui_work_root,
                 )
                 for idx, record in enumerate(bundles, start=1)
             ]
@@ -242,6 +288,9 @@ def run_bundles(
         "expected_met_count": sum(1 for item in results if item["expected_result_met"] is True),
         "expected_miss_count": sum(1 for item in results if item["expected_result_met"] is False),
         "dry_run": dry_run,
+        "spectre_backend": spectre_backend,
+        "sui_host": sui_host or "",
+        "sui_work_root": sui_work_root or "",
         "results": results,
     }
     write_summary(summary_path, final)
@@ -258,6 +307,21 @@ def parse_args() -> argparse.Namespace:
         "--bridge-repo",
         default=os.environ.get("VAEVAS_BRIDGE_REPO", str(default_bridge_repo())),
         help="Path to virtuoso-bridge-lite.",
+    )
+    ap.add_argument(
+        "--spectre-backend",
+        default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"),
+        help="Spectre execution backend: bridge (default) or sui-direct.",
+    )
+    ap.add_argument(
+        "--sui-host",
+        default=default_sui_host(),
+        help="SSH host used by --spectre-backend=sui-direct.",
+    )
+    ap.add_argument(
+        "--sui-work-root",
+        default=default_sui_work_root(),
+        help="Remote scratch root used by --spectre-backend=sui-direct.",
     )
     ap.add_argument(
         "--cadence-cshrc",
@@ -280,6 +344,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    spectre_backend = normalize_spectre_backend(args.spectre_backend)
     manifest_path = Path(args.manifest)
     if not manifest_path.is_absolute():
         manifest_path = ROOT / manifest_path
@@ -303,12 +368,15 @@ def main() -> int:
             timeout_s=args.timeout_s,
             dry_run=True,
             workers=args.workers,
+            spectre_backend=spectre_backend,
+            sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
+            sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
         )
         print(json.dumps(summary, indent=2))
         return 0
 
     via_wrapper = os.environ.get("VAEVAS_BRIDGE_WRAPPER") == "1"
-    if not via_wrapper and not args.allow_direct_run:
+    if spectre_backend == "bridge" and not via_wrapper and not args.allow_direct_run:
         bridge_failure_reason = os.environ.get("VAEVAS_BRIDGE_FAILURE_REASON", "").strip()
         summary = {
             "status": "blocked",
@@ -326,15 +394,28 @@ def main() -> int:
         return 2
 
     bridge_repo = Path(args.bridge_repo).resolve()
-    if not bridge_repo.exists():
+    if spectre_backend == "bridge" and not bridge_repo.exists():
         summary = {"status": "blocked", "reason": f"bridge repo not found: {bridge_repo}", "tasks_total": len(bundles)}
         write_summary(output_root / "summary.json", summary)
         print(json.dumps(summary, indent=2))
         return 2
 
     bridge_profile = os.environ.get("VAEVAS_BRIDGE_PROFILE") or os.environ.get("BRIDGE_PROFILE", "")
-    effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc, bridge_profile or None)
-    if args.skip_bridge_preflight:
+    if spectre_backend == "bridge":
+        effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc, bridge_profile or None)
+    else:
+        effective_cshrc = args.cadence_cshrc or default_sui_cadence_cshrc()
+
+    if spectre_backend == "sui-direct":
+        preflight = {
+            "status": "skipped",
+            "reason": "direct SUI backend selected; bridge preflight is not required",
+            "spectre_backend": spectre_backend,
+            "sui_host": args.sui_host,
+            "sui_work_root": args.sui_work_root,
+            "cadence_cshrc": effective_cshrc,
+        }
+    elif args.skip_bridge_preflight:
         preflight = {"status": "skipped", "bridge_repo": str(bridge_repo), "cadence_cshrc": effective_cshrc}
     else:
         preflight = bridge_preflight(
@@ -365,9 +446,15 @@ def main() -> int:
         timeout_s=args.timeout_s,
         dry_run=False,
         workers=args.workers,
+        spectre_backend=spectre_backend,
+        sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
+        sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
     )
+    summary["spectre_backend"] = spectre_backend
     summary["bridge_repo"] = str(bridge_repo)
     summary["bridge_profile"] = bridge_profile
+    summary["sui_host"] = args.sui_host if spectre_backend == "sui-direct" else ""
+    summary["sui_work_root"] = args.sui_work_root if spectre_backend == "sui-direct" else ""
     summary["cadence_cshrc"] = effective_cshrc
     summary["bridge_preflight"] = preflight
     write_summary(output_root / "summary.json", summary)

@@ -1,6 +1,6 @@
 # vaBench Release External Blockers
 
-Date: 2026-05-24
+Date: 2026-05-26
 
 This report isolates the non-certification blockers that prevent the
 release package from becoming fully paper-claimable. It is a recovery
@@ -11,20 +11,21 @@ and claim-boundary artifact, not simulator certification evidence.
 | Metric | Value |
 | --- | ---: |
 | status | `pending` |
-| blockers | 1 |
+| blockers | 2 |
 | blocked | 0 |
 | pending | 1 |
-| ready-to-continue | 0 |
+| ready-to-continue | 1 |
 | bridge status | `ready` |
-| primary rerun queue rows | 0 |
-| ready staging bundles | 0 |
+| primary rerun queue rows | 2 |
+| ready staging bundles | 2 |
 | latest rerun summary | `complete` |
-| latest import | `partial_imported` |
+| latest import | `imported` |
 
 ## Blockers
 
 | ID | Status | Scope | Diagnosis |
 | --- | --- | --- | --- |
+| `B2_fresh_dual_rerun_not_complete` | `ready_to_continue` | 2 primary EVAS/Spectre release rows | dry run: no bridge tunnel or simulator command was executed |
 | `B4_downstream_paper_claims_disabled` | `pending` | speed/debug, model baseline artifacts | downstream paper claims remain disabled until their dedicated artifacts are explicitly enabled |
 
 ## Recovery Sequence

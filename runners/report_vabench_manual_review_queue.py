@@ -19,14 +19,14 @@ QUEUE_MD = ROOT / "docs" / "VABENCH_MANUAL_REVIEW_QUEUE.md"
 
 FORM_PRIORITY = ("dut", "e2e", "tb", "bugfix")
 CATEGORY_BATCH = {
-    "Data Converters": "A Data converters",
-    "PLL / Clock / Event Timing": "B Clocking and PLL",
-    "Comparators and Decision Circuits": "C Comparators",
+    "Data Converter Models": "A Data converters",
+    "PLL Clock and Timing Systems": "B Clocking and PLL",
+    "Comparator and Decision Circuits": "C Comparators",
     "Calibration, DEM, and Control": "D Calibration and DEM",
-    "Measurement and Testbench Instrumentation": "E Measurement and TB",
-    "Stimulus and Sources": "F Stimulus and sources",
-    "Analog Behavioral Signal Conditioning": "G Signal conditioning",
-    "Sample, Hold, and Analog Memory": "H Sample/hold memory",
+    "Measurement Instrumentation Flows": "E Measurement and TB",
+    "Stimulus and Source Generators": "F Stimulus and sources",
+    "Baseband Signal Conditioning": "G Signal conditioning",
+    "Sampling and Analog Memory": "H Sample/hold memory",
 }
 
 FIELDS = [
@@ -165,13 +165,19 @@ def risk_for(entry: dict[str, Any], reasons: list[str]) -> tuple[str, str, str]:
             joined,
             "Review prompt, checker, and gold together and tighten the public observable if the checker is weaker than the task statement.",
         )
+    if category in {"Measurement Instrumentation Flows", "Stimulus and Source Generators"} and level == "L2":
+        return (
+            "P1",
+            "Auxiliary support L2; valid only when it proves reusable measurement/source behavior, not a core signal-path circuit.",
+            "Confirm the composed schedule or measurement semantics are observable and reusable, then report it as support coverage rather than a core circuit-function row.",
+        )
     if level == "L2":
         return (
             "P1",
             "L2 composition task requires manual verification that multiple functions really interact.",
             "Confirm this is a composed circuit flow, not a renamed L1 kernel or single-module smoke.",
         )
-    if category in {"Measurement and Testbench Instrumentation", "Stimulus and Sources"}:
+    if category in {"Measurement Instrumentation Flows", "Stimulus and Source Generators"}:
         return (
             "P2",
             "Auxiliary benchmark category; valid only when it has reusable measurement/source semantics.",
@@ -259,7 +265,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         f"Date: {date.today().isoformat()}",
         "",
         "This is the human-review queue for task 2 and task 3 after locking the",
-        "clean 72-entry function table. Every entry requires manual semantic",
+        "clean 64-entry function table. Every entry requires manual semantic",
         "sign-off; risk level only decides review order.",
         "",
         "## Review Contract",

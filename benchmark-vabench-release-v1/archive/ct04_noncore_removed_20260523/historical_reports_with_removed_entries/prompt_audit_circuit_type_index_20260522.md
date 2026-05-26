@@ -8,19 +8,19 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 
 | Type ID | Circuit Type | L1 | L2 | Audit Focus |
 | --- | --- | ---: | ---: | --- |
-| `CT01` | Data Converters | 8 | 3 | code mapping, quantization, reconstruction, monotonicity, rail saturation |
-| `CT02` | PLL / Clock / Event Timing | 10 | 3 | edge timing, phase/frequency relation, lock/reacquire behavior, timer semantics |
-| `CT03` | Analog Behavioral Signal Conditioning | 9 | 1 | gain/filter/limit dynamics, settling, bounded voltage-domain behavior |
+| `CT01` | Data Converter Models | 8 | 3 | code mapping, quantization, reconstruction, monotonicity, rail saturation |
+| `CT02` | PLL, Clock, and Timing Systems | 10 | 3 | edge timing, phase/frequency relation, lock/reacquire behavior, timer semantics |
+| `CT03` | Baseband Signal Conditioning | 9 | 1 | gain/filter/limit dynamics, settling, bounded voltage-domain behavior |
 | `CT04` | Calibration, DEM, and Control | 8 | 1 | state-machine/control loop behavior, trim direction, convergence, element selection |
-| `CT05` | Comparators and Decision Circuits | 7 | 1 | threshold/offset/hysteresis decisions, clocked decisions, output polarity |
+| `CT05` | Comparator and Decision Circuits | 7 | 1 | threshold/offset/hysteresis decisions, clocked decisions, output polarity |
 | `CT06` | Digital and Event-Driven Logic | 6 | 2 | event ordering, edge detection, pulse/frame timing, digital state progression |
-| `CT07` | Measurement and Testbench Instrumentation | 5 | 2 | metric extraction, final-step/file outputs, edge/settling/gain measurement contracts |
-| `CT08` | Sample, Hold, and Analog Memory | 3 | 1 | track/hold windows, aperture delay, droop/leakage, sampled memory behavior |
-| `CT09` | Stimulus and Sources | 4 | 1 | source waveform shape, clock bursts, deterministic noise/dither, sweep coverage |
+| `CT07` | Measurement Instrumentation Flows | 5 | 2 | metric extraction, final-step/file outputs, edge/settling/gain measurement contracts |
+| `CT08` | Sampling and Analog Memory | 3 | 1 | track/hold windows, aperture delay, droop/leakage, sampled memory behavior |
+| `SUP01` | Stimulus and Source Generators | 4 | 1 | source waveform shape, clock bursts, deterministic noise/dither, sweep coverage |
 
 ## Detailed Entries
 
-### `CT01` Data Converters
+### `CT01` Data Converter Models
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -36,7 +36,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L2 | `vbr1_l2_flash_adc_mini_array` | Flash ADC mini-array |
 | L2 | `vbr1_l2_weighted_sar_adc_dac_loop` | Weighted SAR ADC/DAC loop |
 
-### `CT02` PLL / Clock / Event Timing
+### `CT02` PLL, Clock, and Timing Systems
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -54,7 +54,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L2 | `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` | CPPLL tracking and frequency-step reacquire flow |
 | L2 | `vbr1_l2_pll_timing_slice` | PLL timing slice |
 
-### `CT03` Analog Behavioral Signal Conditioning
+### `CT03` Baseband Signal Conditioning
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -83,7 +83,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L1 | `vbr1_l1_windowed_dem_pointer` | Windowed DEM pointer |
 | L2 | `vbr1_l2_complete_calibration_loop` | Complete calibration loop |
 
-### `CT05` Comparators and Decision Circuits
+### `CT05` Comparator and Decision Circuits
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -109,7 +109,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L2 | `vbr1_l2_event_controller` | Event controller |
 | L2 | `vbr1_l2_serializer_frame_alignment_flow` | Serializer frame-alignment flow |
 
-### `CT07` Measurement and Testbench Instrumentation
+### `CT07` Measurement Instrumentation Flows
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -121,7 +121,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L2 | `vbr1_l2_gain_extraction_convergence_measurement_flow` | Gain extraction/convergence measurement flow |
 | L2 | `vbr1_l2_measurement_flow` | Measurement flow |
 
-### `CT08` Sample, Hold, and Analog Memory
+### `CT08` Sampling and Analog Memory
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -130,7 +130,7 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 | L1 | `vbr1_l1_sample_and_hold_with_droop_leakage` | Sample-and-hold with droop/leakage |
 | L2 | `vbr1_l2_converter_front_end` | Converter front-end |
 
-### `CT09` Stimulus and Sources
+### `SUP01` Stimulus and Source Generators
 
 | Level | Entry | Base Function |
 | --- | --- | --- |
@@ -145,5 +145,5 @@ Scope: `benchmark-vabench-release-v1` prompt audit by circuit type. These IDs ar
 Start with the two recently tightened groups:
 
 1. `CT06` Digital and Event-Driven Logic: inspect `vbr1_l2_event_controller` first.
-2. `CT07` Measurement and Testbench Instrumentation: inspect `vbr1_l2_measurement_flow` first.
+2. `CT07` Measurement Instrumentation Flows: inspect `vbr1_l2_measurement_flow` first.
 3. Then continue with `CT01`, `CT02`, and `CT03`, because they carry the strongest circuit-facing benchmark claims.

@@ -30,7 +30,7 @@ def rel(path: Path) -> str:
 
 def read_entries() -> list[tuple[Path, dict[str, object]]]:
     entries: list[tuple[Path, dict[str, object]]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         entries.append((path, json.loads(path.read_text(encoding="utf-8"))))
     return entries
 
@@ -430,18 +430,99 @@ def certify_task(entry: dict[str, object], task: dict[str, object]) -> dict[str,
     evas_path = EVAS_ROOT / source_task_id / "evas_result.json"
     spectre_path = SPECTRE_ROOT / source_task_id / "spectre_result.json"
     infra_failures: list[str] = []
+    missing_historical_blockers: list[str] = []
     simulator_failures: list[str] = []
 
     if not evas_path.exists():
-        infra_failures.append(f"missing EVAS historical result: {rel(evas_path)}")
+        missing_historical_blockers.append(f"missing EVAS historical result: {rel(evas_path)}")
         evas_result: dict[str, object] = {}
     else:
         evas_result = read_json(evas_path)
     if not spectre_path.exists():
-        infra_failures.append(f"missing Spectre historical result: {rel(spectre_path)}")
+        missing_historical_blockers.append(f"missing Spectre historical result: {rel(spectre_path)}")
         spectre_result: dict[str, object] = {}
     else:
         spectre_result = read_json(spectre_path)
+
+    if missing_historical_blockers:
+        equivalence = {
+            "pass": False,
+            "source": "missing_local_historical_results",
+            "failures": [],
+            "release_gold": task.get("gold", []),
+        }
+        evidence = {
+            "release_entry_id": entry_id,
+            "task_id": f"{entry_id}:{form}",
+            "source_task_id": source_task_id,
+            "release_source_task_id": release_source_task_id,
+            "task_form": form,
+            "taxonomy": {
+                "level": entry["level"],
+                "category": entry["category"],
+                "base_function": entry["base_function"],
+            },
+            "static": task.get("static_status", "pending"),
+            "evas": "pending",
+            "spectre": "pending",
+            "verdict": "not_certified",
+            "artifacts": [rel(evidence_path), rel(evas_path), rel(spectre_path), *task.get("gold", [])],
+            "historical_evidence": {
+                "evas_result": rel(evas_path),
+                "spectre_result": rel(spectre_path),
+                "source": "missing local historical main120 result; fresh EVAS/Spectre rerun required",
+                "source_equivalence_source": "missing_local_historical_results",
+                "simulator_rerun": False,
+            },
+            "source_equivalence": equivalence,
+            "failures": [],
+            "pending_blockers": missing_historical_blockers,
+            "notes": "Historical dual evidence is not available in this checkout, so the release form remains pending rather than failed.",
+        }
+        evidence_path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+        write_pending_backend_result(
+            path=evas_result_path,
+            backend="evas",
+            form=form,
+            task_id=source_task_id,
+            entry_id=entry_id,
+            evidence_path=evidence_path,
+            pending_blockers=missing_historical_blockers,
+        )
+        write_pending_backend_result(
+            path=spectre_result_path,
+            backend="spectre",
+            form=form,
+            task_id=source_task_id,
+            entry_id=entry_id,
+            evidence_path=evidence_path,
+            pending_blockers=missing_historical_blockers,
+        )
+        task["evas_status"] = "pending"
+        task["spectre_status"] = "pending"
+        task["dual_evidence"] = rel(evidence_path)
+        task["evas_result"] = rel(evas_result_path)
+        task["spectre_result"] = rel(spectre_result_path)
+        task["release_source_task_id"] = release_source_task_id
+        task["historical_source_task_id"] = source_task_id
+
+        return {
+            "entry_id": entry_id,
+            "form": form,
+            "source_task_id": source_task_id,
+            "release_source_task_id": release_source_task_id,
+            "status": "pending",
+            "backend_status": {
+                "evas": "pending",
+                "spectre": "pending",
+            },
+            "failure_count": 0,
+            "source_equivalence_failure_count": 0,
+            "blocker_count": len(missing_historical_blockers),
+            "failures": [],
+            "pending_blockers": missing_historical_blockers,
+            "evidence": rel(evidence_path),
+        }
 
     if evas_result and evas_result.get("task_id") != source_task_id:
         infra_failures.append("EVAS result task_id mismatch")

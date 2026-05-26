@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TRACKER_CSV = ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv"
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
+TASKS_ROOT = PACKAGE_ROOT / "tasks"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 STATUS_REPORT_JSON = REPORTS_ROOT / "release_status.json"
 DUAL_REPORT_JSON = REPORTS_ROOT / "dual_certification.json"
@@ -31,7 +32,7 @@ MAIN120_EVAS_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-evas-202
 MAIN120_SPECTRE_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-spectre-jin-2026-05-08" / "summary.json"
 REPORT_JSON = REPORTS_ROOT / "paper_artifacts.json"
 REPORT_MD = REPORTS_ROOT / "paper_artifacts.md"
-PLANNED_ENTRY_TARGET = 72
+PLANNED_ENTRY_TARGET = 64
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -43,6 +44,20 @@ def read_json(path: Path) -> dict[str, object]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def read_release_entries() -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
+        payload = read_json(path)
+        if payload:
+            rows.append(payload)
+    return rows
+
+
+def entry_form_count(entry: dict[str, object]) -> int:
+    tasks = entry.get("release_tasks", [])
+    return len([task for task in tasks if isinstance(task, dict)]) if isinstance(tasks, list) else 0
 
 
 def imported_summary_path(import_report: dict[str, object]) -> Path:
@@ -95,7 +110,19 @@ def build_report() -> dict[str, object]:
     denominator_summary = score_denominator.get("summary", {})
     if not isinstance(denominator_summary, dict):
         denominator_summary = {}
-    scored = int(status.get("scored_release_entries", 0) or 0)
+    release_entries = read_release_entries()
+    track_counts = dict(sorted(Counter(str(entry.get("track", "core")) for entry in release_entries).items()))
+    track_form_counts = dict(
+        sorted(
+            Counter(
+                str(entry.get("track", "core"))
+                for entry in release_entries
+                for _ in range(entry_form_count(entry))
+            ).items()
+        )
+    )
+    difficulty_counts = dict(sorted(Counter(str(entry.get("difficulty", "D2")) for entry in release_entries).items()))
+    scored = int(denominator_summary.get("scored_entry_count", 0) or 0)
     scored_forms = int(denominator_summary.get("scored_form_count", 0) or 0)
     dual_failed = int(status.get("dual_failed_release_task_count", 0) or 0)
     mismatch = int(status.get("evas_pass_spectre_fail_count", 0) or 0)
@@ -141,6 +168,13 @@ def build_report() -> dict[str, object]:
         "planned_entries": status.get("planned_entries", len(tracker)),
         "level_counts": status.get("level_counts", count(tracker, "level")),
         "category_counts": count(tracker, "category"),
+        "track_counts": track_counts,
+        "track_form_counts": track_form_counts,
+        "difficulty_counts": difficulty_counts,
+        "core_entry_count": track_counts.get("core", 0),
+        "support_entry_count": track_counts.get("support", 0),
+        "core_form_count": track_form_counts.get("core", 0),
+        "support_form_count": track_form_counts.get("support", 0),
         "package_status_counts": status.get("package_status_counts", count(tracker, "package_status")),
         "source_linked_entry_count": status.get("source_linked_entry_count", 0),
         "asset_materialized_entry_count": status.get("asset_materialized_entry_count", 0),
@@ -150,8 +184,12 @@ def build_report() -> dict[str, object]:
         "certification_matrix_status": certification_matrix.get("status", "missing"),
         "scored_release_entries": scored,
         "scored_release_forms": scored_forms,
+        "core_scored_release_entries": int(denominator_summary.get("core_scored_entry_count", scored) or 0),
+        "core_scored_release_forms": int(denominator_summary.get("core_scored_form_count", scored_forms) or 0),
+        "support_scored_release_entries": int(denominator_summary.get("support_scored_entry_count", 0) or 0),
+        "support_scored_release_forms": int(denominator_summary.get("support_scored_form_count", 0) or 0),
         "score_denominator_status": score_denominator.get("status", "missing"),
-        "claim_status": "planning_and_full_certified_unscored" if scored == 0 else "score_enabled",
+        "claim_status": "planning_and_full_certified_unscored" if scored == 0 else "core_score_enabled",
     }
     parity_summary = {
         "release_dual_status": dual.get("status", "missing"),
@@ -201,7 +239,7 @@ def build_report() -> dict[str, object]:
         "reason": (
             "No model baseline is scored against the clean release package because scored_release_entries is still zero."
             if scored == 0
-            else "Baseline artifact exists but has no claimable baseline summary yet."
+            else "Score denominator is enabled, but no claimable model baseline summary has been produced yet."
         ),
         "required_artifact": BASLINE_ARTIFACT_JSON.relative_to(ROOT).as_posix(),
         "current_scored_release_entries": scored,
@@ -351,6 +389,9 @@ def write_markdown(report: dict[str, object]) -> None:
         "| Metric | Value |",
         "| --- | ---: |",
         f"| planned L1/L2 entries | {coverage['planned_entries']} |",
+        f"| core circuit entries | {coverage['core_entry_count']} |",
+        f"| support entries | {coverage['support_entry_count']} |",
+        f"| D1/D2/D3 difficulty counts | `{coverage['difficulty_counts']}` |",
         f"| source-linked entries | {coverage['source_linked_entry_count']} |",
         f"| entries with copied assets | {coverage['asset_materialized_entry_count']} |",
         f"| static-certified release forms | {coverage['static_certified_release_task_count']} |",
@@ -359,6 +400,10 @@ def write_markdown(report: dict[str, object]) -> None:
         f"| certification matrix | `{coverage['certification_matrix_status']}` |",
         f"| scored release entries | {coverage['scored_release_entries']} |",
         f"| scored release forms | {coverage['scored_release_forms']} |",
+        f"| core scored release entries | {coverage['core_scored_release_entries']} |",
+        f"| core scored release forms | {coverage['core_scored_release_forms']} |",
+        f"| support scored release entries | {coverage['support_scored_release_entries']} |",
+        f"| support scored release forms | {coverage['support_scored_release_forms']} |",
         f"| score denominator status | `{coverage['score_denominator_status']}` |",
         "",
         "## Parity",

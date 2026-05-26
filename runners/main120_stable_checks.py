@@ -521,9 +521,16 @@ def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_slew_rate_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout"}
+    required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vout"
+        return False, "missing time/vin/vout"
+
+    vin_pre = sample_signal(rows, "vin", 10.0e-9)
+    vin_high = sample_signal(rows, "vin", 80.0e-9)
+    vin_low = sample_signal(rows, "vin", 150.0e-9)
+    if vin_pre is None or vin_high is None or vin_low is None:
+        return False, "missing_vin_step_samples"
+    input_sequence = vin_pre < 0.10 and vin_high > 0.72 and 0.05 <= vin_low <= 0.18
 
     sample_times_ns = [40.0, 80.0, 100.0, 120.0, 150.0]
     samples: list[float] = []
@@ -537,18 +544,28 @@ def check_slew_rate_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     high_reached = samples[1] > 0.74
     falling_limited = samples[2] > samples[3] > samples[4] and samples[2] > 0.65 and 0.34 <= samples[3] <= 0.58
     low_reached = abs(samples[4] - 0.10) <= 0.05
-    ok = rising_limited and high_reached and falling_limited and low_reached
+    not_passthrough = samples[0] < vin_high - 0.30 and samples[2] > vin_low + 0.45
+    ok = input_sequence and rising_limited and high_reached and falling_limited and low_reached and not_passthrough
     values = ",".join(f"{value:.3f}" for value in samples)
     return ok, (
-        f"slew_samples={values} rising_limited={rising_limited} "
-        f"high_reached={high_reached} falling_limited={falling_limited} low_reached={low_reached}"
+        f"slew_samples={values} input_sequence={input_sequence} "
+        f"rising_limited={rising_limited} high_reached={high_reached} "
+        f"falling_limited={falling_limited} low_reached={low_reached} "
+        f"not_passthrough={not_passthrough}"
     )
 
 
 def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout"}
+    required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vout"
+        return False, "missing time/vin/vout"
+
+    vin_pre = sample_signal(rows, "vin", 10.0e-9)
+    vin_post = sample_signal(rows, "vin", 30.0e-9)
+    vin_late = sample_signal(rows, "vin", 150.0e-9)
+    if vin_pre is None or vin_post is None or vin_late is None:
+        return False, "missing_vin_step_samples"
+    input_step = vin_pre < 0.10 and vin_post > 0.72 and vin_late > 0.72
 
     sample_times_ns = [30.0, 50.0, 90.0, 150.0]
     samples: list[float] = []
@@ -561,20 +578,32 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
     monotonic = samples[0] < samples[1] < samples[2] <= samples[3] + 0.03
     response_fast_enough = samples[1] > 0.55 and samples[2] > 0.70 and samples[3] > 0.76
     not_instant = samples[0] < 0.45
-    ok = monotonic and response_fast_enough and not_instant
+    post_rows = [r for r in rows if r.get("time", 0.0) >= 22.0e-9 and "vout" in r]
+    bounded = bool(post_rows) and -0.03 <= min(r["vout"] for r in post_rows) <= max(r["vout"] for r in post_rows) <= 0.88
+    ok = input_step and monotonic and response_fast_enough and not_instant and bounded
     values = ",".join(f"{value:.3f}" for value in samples)
     return ok, (
-        f"lowpass_samples={values} monotonic={monotonic} "
-        f"response_fast_enough={response_fast_enough} not_instant={not_instant}"
+        f"lowpass_samples={values} input_step={input_step} monotonic={monotonic} "
+        f"response_fast_enough={response_fast_enough} not_instant={not_instant} "
+        f"bounded={bounded}"
     )
 
 
 def check_resettable_integrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout"}
+    required = {"time", "vin", "rst", "vout"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vout"
+        return False, "missing time/vin/rst/vout"
 
-    sample_times_ns = [200.0, 230.0, 245.0, 300.0]
+    vin_drive = [sample_signal(rows, "vin", t_ns * 1e-9) for t_ns in (80.0, 200.0, 280.0)]
+    rst_levels = [sample_signal(rows, "rst", t_ns * 1e-9) for t_ns in (10.0, 80.0, 230.0, 280.0)]
+    if any(value is None for value in vin_drive) or any(value is None for value in rst_levels):
+        return False, "missing_vin_or_rst_samples"
+    assert all(value is not None for value in vin_drive)
+    assert all(value is not None for value in rst_levels)
+    input_drive = all(value > 0.001 for value in vin_drive)
+    reset_sequence = rst_levels[0] > 0.80 and rst_levels[1] < 0.10 and rst_levels[2] > 0.80 and rst_levels[3] < 0.10
+
+    sample_times_ns = [80.0, 200.0, 230.0, 245.0, 300.0]
     samples: list[float] = []
     for t_ns in sample_times_ns:
         value = sample_signal(rows, "vout", t_ns * 1e-9)
@@ -582,13 +611,14 @@ def check_resettable_integrator(rows: list[dict[str, float]]) -> tuple[bool, str
             return False, f"missing_sample_at={t_ns:g}ns"
         samples.append(value)
 
-    pre_reset_integrated = samples[0] > 0.30
-    reset_clear = samples[1] < 0.05 and samples[2] < 0.05
-    post_reset_restarts = 0.06 <= samples[3] <= 0.18
-    ok = pre_reset_integrated and reset_clear and post_reset_restarts
+    pre_reset_integrated = 0.06 <= samples[0] < samples[1] and samples[1] > 0.30
+    reset_clear = samples[2] < 0.05 and samples[3] < 0.05
+    post_reset_restarts = 0.06 <= samples[4] <= 0.18
+    ok = input_drive and reset_sequence and pre_reset_integrated and reset_clear and post_reset_restarts
     values = ",".join(f"{value:.3f}" for value in samples)
     return ok, (
-        f"integrator_samples={values} pre_reset_integrated={pre_reset_integrated} "
+        f"integrator_samples={values} input_drive={input_drive} "
+        f"reset_sequence={reset_sequence} pre_reset_integrated={pre_reset_integrated} "
         f"reset_clear={reset_clear} post_reset_restarts={post_reset_restarts}"
     )
 

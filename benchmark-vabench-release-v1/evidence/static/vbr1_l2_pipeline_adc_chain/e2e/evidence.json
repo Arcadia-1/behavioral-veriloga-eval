@@ -4,19 +4,19 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
-    "category": "Data Converters",
-    "base_function": "Pipeline ADC chain"
+    "category": "Data Converter Models",
+    "base_function": "Pipeline ADC residue chain"
   },
   "static": "pass",
   "evas": "pending",
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/pipeline_adc_chain_4b.va",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/tb_pipeline_adc_chain_4b_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/pipeline_adc_chain_4b.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/tb_pipeline_adc_chain_4b_ref.scs"
   ],
   "checks": {
     "must_include": [

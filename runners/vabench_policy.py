@@ -17,8 +17,36 @@ PROVENANCE_STATUSES = (
 BADCASE_ORIGINS = ("original", "recovered", "reconstructed")
 COUNT_KEYS = ("model_capability", "benchmark_coverage", "bugfix_claim")
 
+CORE_TRACK = "core"
+SUPPORT_TRACK = "support"
+TRACKS = (CORE_TRACK, SUPPORT_TRACK)
+DIFFICULTY_LEVELS = ("D1", "D2", "D3")
 
-CONTENT_DENOMINATOR_EXCLUDED_ENTRIES: dict[str, list[str]] = {}
+SUPPORT_SUITE_CATEGORIES = {
+    "Measurement Instrumentation Flows",
+    "Stimulus and Source Generators",
+}
+
+SUPPORT_SUITE_ENTRY_IDS = {
+    "vbr1_l1_burst_clock_source",
+    "vbr1_l1_crossing_metric_writer",
+    "vbr1_l1_dither_or_noise_like_deterministic_source",
+    "vbr1_l1_edge_interval_timer",
+    "vbr1_l1_gain_estimator",
+    "vbr1_l1_lfsr_prbs_generator",
+    "vbr1_l1_peak_detector",
+    "vbr1_l1_ramp_or_step_source",
+    "vbr1_l1_settling_time_detector",
+    "vbr1_l1_sine_periodic_voltage_source",
+    "vbr1_l2_gain_extraction_convergence_measurement_flow",
+    "vbr1_l2_measurement_flow",
+    "vbr1_l2_programmable_stimulus_sequencer",
+}
+
+CONTENT_DENOMINATOR_EXCLUDED_ENTRIES: dict[str, list[str]] = {
+    entry_id: ["support_suite_not_core_circuit_score"]
+    for entry_id in sorted(SUPPORT_SUITE_ENTRY_IDS)
+}
 
 
 def task_id_from_meta(meta: dict[str, Any], task_dir: Path | None = None) -> str:

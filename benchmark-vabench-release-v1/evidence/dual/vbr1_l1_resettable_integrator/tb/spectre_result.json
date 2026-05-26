@@ -5,15 +5,16 @@
   "backend": "spectre",
   "status": "PASS",
   "scores": {
-    "historical_weighted_total": 1.0,
-    "historical_backend_pass": true,
-    "source_equivalence_failure_count": 0
+    "rerun_backend_pass": true,
+    "rerun_expected_result_met": true,
+    "raw_status": "PASS",
+    "behavior_score": 1.0
   },
   "artifacts": [
-    "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_resettable_integrator_tb/spectre_result.json",
+    "results/vabench-release-v1-ct04-dual-20260525_222500/vbr1_l1_resettable_integrator/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_resettable_integrator/tb/evidence.json"
   ],
   "notes": [
-    "Imported from main120 gold historical result; no simulator rerun was performed in this release step."
+    "Imported from fresh vaBench release EVAS/Spectre dual rerun summary."
   ]
 }

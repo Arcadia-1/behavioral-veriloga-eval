@@ -4,7 +4,7 @@
   "task_form": "dut",
   "taxonomy": {
     "level": "L1",
-    "category": "PLL / Clock / Event Timing",
+    "category": "PLL Clock and Timing Systems",
     "base_function": "PFD UP/DN logic"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs"
   ],
   "checks": {
     "must_include": [

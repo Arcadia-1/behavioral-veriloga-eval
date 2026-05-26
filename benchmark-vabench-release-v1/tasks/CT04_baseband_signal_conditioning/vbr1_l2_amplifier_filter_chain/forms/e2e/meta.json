@@ -1,0 +1,31 @@
+{
+  "id": "vbr1_l2_amplifier_filter_chain_e2e",
+  "task_id": "vbr1_l2_amplifier_filter_chain_e2e",
+  "release_entry_id": "vbr1_l2_amplifier_filter_chain",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "family": "end-to-end",
+  "category": "Baseband Signal Conditioning",
+  "domain": "voltage",
+  "track": "core",
+  "difficulty": "D3",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "amplifier_filter_chain.va",
+    "tb_amplifier_filter_chain.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "behavior_checks": [
+    "amplified_input",
+    "filtered_output_lags_input",
+    "metric_tracks_settling"
+  ],
+  "designed_source": true
+}

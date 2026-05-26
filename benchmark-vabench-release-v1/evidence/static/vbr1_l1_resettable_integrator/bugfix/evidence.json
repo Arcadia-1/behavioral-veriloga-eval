@@ -4,7 +4,7 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Analog Behavioral Signal Conditioning",
+    "category": "Baseband Signal Conditioning",
     "base_function": "Resettable integrator"
   },
   "static": "pass",
@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/tb_resettable_integrator_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/tb_resettable_integrator_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/tb_resettable_integrator_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/gold/tb_resettable_integrator_ref.scs"
   ],
   "checks": {
     "must_include": [

@@ -1,9 +1,9 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "in_progress",
-  "proved_count": 7,
-  "blocked_count": 0,
+  "proved_count": 6,
+  "blocked_count": 1,
   "incomplete_count": 1,
   "requirements": [
     {
@@ -50,14 +50,14 @@
       "blockers": []
     },
     {
-      "id": "R2_tracker_72_entries",
-      "requirement": "Create an execution tracker for the 72 selected L1/L2 functions.",
+      "id": "R2_tracker_64_entries",
+      "requirement": "Create an execution tracker for the 64 selected L1/L2 functions.",
       "status": "proved",
       "evidence": [
         "docs/VABENCH_RELEASE_TRACKER.csv",
         "benchmark-vabench-release-v1/reports/release_status.json"
       ],
-      "finding": "Tracker has 72 rows with level counts {'L1': 56, 'L2': 16}.",
+      "finding": "Tracker has 64 rows with level counts {'L1': 51, 'L2': 13}.",
       "blockers": []
     },
     {
@@ -68,7 +68,7 @@
         "benchmark-vabench-release-v1/reports/asset_integrity.json",
         "benchmark-vabench-release-v1/reports/release_status.json"
       ],
-      "finding": "source-linked=72, asset-materialized=72, asset-status=pass",
+      "finding": "source-linked=64, asset-materialized=64, asset-status=pass",
       "blockers": []
     },
     {
@@ -78,13 +78,13 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/static_certification.json"
       ],
-      "finding": "static-status=pass, static-certified-forms=245",
+      "finding": "static-status=pass, static-certified-forms=219",
       "blockers": []
     },
     {
       "id": "R5_dual_certification",
       "requirement": "Certify release tasks with EVAS/Spectre evidence without importing blocked reruns.",
-      "status": "proved",
+      "status": "blocked",
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_certification.json",
         "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
@@ -93,8 +93,11 @@
         "benchmark-vabench-release-v1/reports/external_blockers.json",
         "benchmark-vabench-release-v1/reports/finish_readiness.json"
       ],
-      "finding": "dual-status=pass, dual-certified=245, dual-pending=0, EVAS-pass/Spectre-fail=0, staging=complete, import=partial_imported, bridge=ready, finish-readiness=blocked",
-      "blockers": []
+      "finding": "dual-status=partial, dual-certified=217, dual-pending=2, EVAS-pass/Spectre-fail=0, staging=ready, import=imported, bridge=ready, finish-readiness=ready_to_run",
+      "blockers": [
+        "EVAS/Spectre dual rerun remains pending",
+        "external blockers active: 0 blocked, 1 pending"
+      ]
     },
     {
       "id": "R6_l0_conformance_separate",
@@ -117,7 +120,7 @@
         "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
         "benchmark-vabench-release-v1/reports/baseline_artifact.json"
       ],
-      "finding": "paper-status=in_progress, speed=measured_subset, speed-claim=False, baseline=ready_for_baseline_runs, baseline-claim=False, paper-tables=in_progress",
+      "finding": "paper-status=in_progress, speed=measured_with_failures, speed-claim=False, baseline=pending_release_baselines, baseline-claim=False, paper-tables=in_progress",
       "blockers": [
         "speed/debug timing artifact is not claimable",
         "release model baseline artifact is pending"
@@ -133,11 +136,12 @@
         "benchmark-vabench-release-v1/reports/release_status.json",
         "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
       ],
-      "finding": "scored=72, scored_forms=245, paper-claim-gates={'can_claim_release_assets_materialized': True, 'can_claim_top_level_coverage_plan': True, 'can_claim_release_package_complete': True, 'can_claim_scored_benchmark': True, 'can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence': True, 'can_claim_speedup': False, 'can_claim_model_baseline': False, 'blocking_conditions': ['external blocker report active: 0 blocked, 1 pending', 'speed/debug timing artifact not claimable', 'release model baseline artifact pending']}, blocked-claim-ids=['C6_speed_debug_claim', 'C7_model_baseline_claim']",
+      "finding": "scored=51, scored_forms=184, paper-claim-gates={'can_claim_release_assets_materialized': True, 'can_claim_top_level_coverage_plan': True, 'can_claim_release_package_complete': False, 'can_claim_scored_benchmark': True, 'can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence': True, 'can_claim_speedup': False, 'can_claim_model_baseline': False, 'blocking_conditions': ['selected EVAS/Spectre rerun pending', 'external blocker report active: 0 blocked, 1 pending', 'speed/debug timing artifact not claimable', 'release model baseline artifact pending']}, blocked-claim-ids=['C4_full_release_dual_certified', 'C6_speed_debug_claim', 'C7_model_baseline_claim', 'C9_release_package_complete']",
       "blockers": []
     }
   ],
   "blocking_conditions": [
+    "selected EVAS/Spectre rerun pending",
     "external blocker report active: 0 blocked, 1 pending",
     "speed/debug timing artifact not claimable",
     "release model baseline artifact pending"

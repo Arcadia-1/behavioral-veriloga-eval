@@ -9,9 +9,10 @@ Source table: `docs/VABENCH_BASE_FUNCTION_REGISTRY.csv`.
 
 Selected top-level additions are tracked in
 `docs/VABENCH_LEVEL_COVERAGE_TABLE.md`. The current clean release package has
-materialized 72 L1/L2 package entries after removing duplicate kernels and the
-standalone control/readout bucket, but
-EVAS/Spectre release certification is still partial. The detailed
+materialized 64 L1/L2 package entries after removing duplicate kernels and weak
+readout/control/PLL/DEM rows. The 64-entry target contains both core circuit
+entries and measurement/stimulus support entries, and EVAS/Spectre release
+certification is still partial. The detailed
 completed-content inventory is `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md`.
 
 ## Why This Exists
@@ -36,7 +37,7 @@ This registry adds one explicit decision per base:
 | Removed pending redesign | 1 | `offset_calibration_fsm` is removed from the release count for now. It can return only as a true multi-state offset-search controller. |
 
 These numbers are registry decisions, not final benchmark scores. The current
-release package has materialized the selected 72-entry target, but release
+release package has materialized the selected 64-entry target, but release
 certification is still partial. Score, speed, and model-baseline claims remain
 disabled until their own claim gates are explicitly enabled.
 
@@ -44,10 +45,10 @@ The package asset target is larger than this current-seed registry:
 
 | Pool | Count | Where tracked |
 | --- | ---: | --- |
-| Current promoted L1 seed functions | 24 | `docs/VABENCH_RELEASE_SEED_MANIFEST.csv`. |
-| Promoted top-level L1 additions | 32 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Selected L2 package targets | 16 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Top-level L1/L2 package target | 72 | 24 current L1 seeds + 32 promoted L1 additions + 16 L2 package targets. |
+| Current promoted L1 seed functions | 22 | `docs/VABENCH_RELEASE_SEED_MANIFEST.csv`. |
+| Promoted top-level L1 additions | 29 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
+| Selected L2 package targets | 13 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
+| Top-level L1/L2 package target | 64 | 51 core circuit entries + 13 measurement/stimulus support entries. |
 
 ## Identifier Policy
 
@@ -63,14 +64,14 @@ evidence, and script joins.
 
 | Item | Count | Status |
 | --- | ---: | --- |
-| Release entries | 75 | Materialized. |
-| L1 entries | 60 | Materialized. |
-| L2 entries | 15 | Materialized after duplicate L2 deletion. |
-| Release task forms | 259 | Materialized. |
-| EVAS/Spectre-certified entries | 23 | Partial; current package manifest is the source of truth. |
-| EVAS/Spectre-certified forms | 101 | Partial; full release rerun/import remains pending. |
-| Pending release entries | 52 | Await fresh certification or import. |
-| Pending release forms | 158 | Await fresh certification or import. |
+| Release entries | 64 | Materialized. |
+| L1 entries | 51 | Materialized. |
+| L2 entries | 13 | Materialized after duplicate/weak entry deletion. |
+| Release task forms | 219 | Materialized. |
+| EVAS/Spectre-certified entries | 0 | Fresh release dual validation is pending. |
+| EVAS/Spectre-certified forms | 0 | Fresh release dual validation is pending. |
+| Pending release entries | 64 | Await fresh certification or import. |
+| Pending release forms | 219 | Await fresh certification or import. |
 | Failed release entries/forms | 0 / 0 | No current release failure is countable as certified evidence. |
 | EVAS PASS / Spectre FAIL mismatches | 0 | Clear. |
 | Scored entries/forms | 0 / 0 | Disabled by policy. |
@@ -90,8 +91,8 @@ by category and form.
 | `file_metric_writer` | Count with stronger checker. | Require a one-line `metric.out` value and compare it to waveform crossing time. |
 | `settling_time_measurement_tb` | Count with explicit metric semantics. | Define tolerance band, settle window, and metric artifact behavior. |
 | `vco_phase_integrator` | Count with tolerance policy. | Public prompt should describe final phase/frequency behavior; startup-sample parity belongs in evaluator policy. |
-| `adc_code_capture_register` | Count after fresh dual validation. | Data-converter readout-boundary capture of conversion code plus overrange state. |
-| `serial_readout_deserializer` | Count after fresh dual validation. | Data-converter readout reconstruction of framed serial conversion bits into a parallel word. |
+| `adc_code_capture_register` | Removed from the 64-entry core release. | Weak readout-boundary logic duplicated converter support behavior without adding a strong analog/mixed-signal circuit function. |
+| `serial_readout_deserializer` | Removed from the 64-entry core release. | Readout reconstruction overlapped with serializer/frame-alignment support tasks and was not kept as a distinct core circuit function. |
 
 ## Function-Level Review Contract
 
@@ -119,11 +120,11 @@ the top-level review lens for future manual audits.
 
 | Historical hint | Registry mapping |
 | --- | --- |
-| `analog-events` | Map to the concrete analog-facing circuit family, such as Data Converters, Comparators, PLL Timing, Stimulus, or L0 conformance. |
-| `phase-detector` | `PLL / Clock / Event Timing`. |
-| `signal-source` for clamp/slew behavior | `Analog Behavioral Signal Conditioning`. |
-| `measurement` helper rows | `Measurement and Testbench Instrumentation`, not generic `tb-generation`. |
-| misleading historical `thermometer_dac` provenance | `Data Converters / Simple 4-bit binary-coded DAC`; release-facing base id is `simple_binary_voltage_dac_4b`. |
+| `analog-events` | Map to the concrete analog-facing circuit family, such as Data Converter Models, Comparators, PLL Timing, Stimulus, or L0 conformance. |
+| `phase-detector` | `PLL Clock and Timing Systems`. |
+| `signal-source` for clamp/slew behavior | `Baseband Signal Conditioning`. |
+| `measurement` helper rows | `Measurement Instrumentation Flows`, not generic `tb-generation`. |
+| misleading historical `thermometer_dac` provenance | `Data Converter Models / Simple 4-bit binary-coded DAC`; release-facing base id is `simple_binary_voltage_dac_4b`. |
 
 ## Next Registry Gate
 

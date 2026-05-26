@@ -4,7 +4,7 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L1",
-    "category": "Analog Behavioral Signal Conditioning",
+    "category": "Baseband Signal Conditioning",
     "base_function": "First-order lowpass"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/gold/first_order_lowpass.va",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/gold/tb_first_order_lowpass_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/gold/first_order_lowpass.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/gold/tb_first_order_lowpass_ref.scs"
   ],
   "checks": {
     "must_include": [

@@ -8,6 +8,49 @@ This document defines the validation gates for benchmark promotion and EVAS
 parity work. The core rule is simple: benchmark claims need executable evidence,
 and Spectre remains the final paper-facing judge.
 
+## Reference And Equivalence Policy
+
+EVAS validation targets Spectre-equivalent behavioral results, not
+higher-than-Spectre analog precision. The benchmark-supported subset is pure
+voltage-domain, event-driven Verilog-A; for this scope, the relevant standard is
+whether EVAS preserves task-level behavior and stays within the same practical
+waveform tolerance envelope as official Spectre runs.
+
+Use Spectre modes as follows:
+
+- `spectre/classic` is the conservative non-X reference path for gold
+  promotion and disputed waveform behavior.
+- `spectre/ax` is the fast official Spectre baseline for speed comparisons.
+- AX/classic waveform differences are expected on event-driven behavioral
+  tasks. Treat their self-consistency as the tolerance anchor; do not require
+  EVAS to be more precise than both Spectre modes.
+
+For the 2026-05-22 clean-repeat speed slice, this anchor is materialized in
+`speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json`.
+It compares Spectre AX and Spectre classic directly on the same 1036 row pairs.
+
+The current waveform gate in `run_gold_dual_suite.py` is therefore an
+equivalence acceptance gate: behavior check first, then waveform parity within
+the accepted tolerance. A pass means "Spectre-equivalent for the benchmark
+contract", not "numerically more accurate than Spectre".
+
+Report equivalence with simulator-style checks rather than percentile shorthand:
+
+| Check | Role |
+| --- | --- |
+| Behavior/spec pass | Primary correctness signal; task checkers decide code, lock, edge count, gain, delay, and other observable contracts. |
+| Event consistency | Discrete event order, edge count, and digital/rail-like mismatch must stay compatible with Spectre. |
+| Relative RMS waveform error | Scale-normalized waveform difference, analogous to a reltol-style comparison. |
+| Absolute voltage error | Near-zero or low-swing safeguard, analogous to an abstol-style comparison. |
+| Reference self-consistency | AX/classic agreement defines the practical envelope for speed-mode comparisons. |
+
+Implementation note: the current waveform gate in `run_gold_dual_suite.py` uses
+row-mean relative RMS error plus worst-signal relative RMS error as the relative
+condition, and max RMS voltage plus max point voltage as the absolute condition.
+These constants are acceptance thresholds anchored by Spectre AX/classic
+self-consistency, not a claim that EVAS has higher numeric precision than
+Spectre.
+
 ## Track 1: Static Integrity
 
 Use this before changing benchmark tasks, runners, or promotion docs.

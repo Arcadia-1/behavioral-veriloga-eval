@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import sys
 from pathlib import Path
 
@@ -15,29 +16,167 @@ PROMOTED_DUTS = {
     "vbr1_l1_clocked_adc_quantizer",
     "vbr1_l1_clocked_sample_and_hold",
     "vbr1_l1_sample_and_hold_with_droop_leakage",
+    "vbr1_l1_acquisition_limited_sample_and_hold",
+    "vbr1_l1_aperture_delay_track_and_hold",
     "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
     "vbr1_l1_dither_or_noise_like_deterministic_source",
     "vbr1_l1_dwa_dem_encoder",
-    "vbr1_l1_adc_code_capture_register",
+    "vbr1_l1_first_order_lowpass",
     "vbr1_l1_higher_order_filter",
     "vbr1_l1_hysteresis_comparator",
-    "vbr1_l1_pfd_small_phase_error_response",
     "vbr1_l1_propagation_delay_comparator",
+    "vbr1_l1_programmable_gain_amplifier",
     "vbr1_l1_ramp_or_step_source",
-    "vbr1_l1_serial_readout_deserializer",
-    "vbr1_l1_serializer_frame_aligner",
+    "vbr1_l1_resettable_integrator",
+    "vbr1_l1_slew_rate_limiter",
     "vbr1_l1_soft_hysteretic_limiter",
     "vbr1_l1_threshold_comparator",
     "vbr1_l1_unit_element_thermometer_dac",
-    "vbr1_l1_voltage_gain_amplifier",
+    "vbr1_l1_precision_rectifier_envelope_detector",
     "vbr1_l1_window_comparator_detector",
-    "vbr1_l1_xor_phase_detector",
 }
 
 
 def test_promoted_duts_have_release_behavior_aliases() -> None:
     for entry_id in PROMOTED_DUTS:
         assert sim.has_behavior_check(f"{entry_id}_dut"), entry_id
+
+
+def _cmp_delay_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    phases = [
+        (0.0e-9, 4.0e-9, 10e-3),
+        (4.0e-9, 8.0e-9, 1e-3),
+        (8.0e-9, 12.0e-9, 0.1e-3),
+        (12.0e-9, 16.0e-9, 0.01e-3),
+    ]
+    delays_ns = [0.055, 0.070, 0.085, 0.100]
+    if mode == "flat_delay":
+        delays_ns = [0.055, 0.055, 0.055, 0.055]
+
+    rows: list[dict[str, float]] = []
+    step = 10e-12
+    for idx in range(int(16e-9 / step) + 1):
+        time = idx * step
+        phase_idx = min(int(time // 4.0e-9), 3)
+        start_t, _end_t, diff = phases[phase_idx]
+        search_start = start_t + 0.1e-9
+        delay = delays_ns[phase_idx] * 1e-9
+        pulse_start = search_start + delay
+        pulse_end = pulse_start + 0.25e-9
+        out_high = pulse_start <= time < pulse_end
+        if mode == "stuck_high":
+            out_high = True
+        rows.append(
+            {
+                "time": time,
+                "clk": 0.9 if search_start <= time < search_start + 0.45e-9 else 0.0,
+                "vinp": 0.45 + diff / 2,
+                "vinn": 0.45 - diff / 2,
+                "out_p": 0.9 if out_high else 0.0,
+                "out_n": 0.0 if out_high else 0.9,
+                "delay_ps": delays_ns[phase_idx] * 1000 if time >= pulse_start else 0.0,
+            }
+        )
+    return rows
+
+
+def test_cmp_delay_checker_requires_real_delay_growth() -> None:
+    assert sim.check_cmp_delay(_cmp_delay_rows())[0]
+    assert not sim.check_cmp_delay(_cmp_delay_rows(mode="flat_delay"))[0]
+    assert not sim.check_cmp_delay(_cmp_delay_rows(mode="stuck_high"))[0]
+
+
+def test_cmp_delay_checker_accepts_sparse_spectre_like_samples() -> None:
+    dense_rows = _cmp_delay_rows()
+    keep_times = {
+        0.0,
+        16.0e-9,
+        *[start + offset for start in (0.0e-9, 4.0e-9, 8.0e-9, 12.0e-9) for offset in (0.0, 0.08e-9, 0.10e-9, 0.18e-9, 0.36e-9, 3.90e-9)],
+    }
+    sparse_rows = [
+        row
+        for row in dense_rows
+        if any(math.isclose(row["time"], keep, rel_tol=0.0, abs_tol=0.5e-12) for keep in keep_times)
+    ]
+
+    assert sim.check_cmp_delay(sparse_rows)[0]
+
+
+def _first_order_lowpass_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    tau = 18.0e-9
+    for idx in range(0, 161):
+        time = idx * 1.0e-9
+        vin = 0.8 if time >= 21.0e-9 else 0.0
+        if mode == "no_input_step":
+            vin = 0.0
+        if mode == "passthrough":
+            vout = vin
+        elif time < 21.0e-9:
+            vout = 0.0
+        else:
+            vout = 0.8 * (1.0 - math.exp(-(time - 21.0e-9) / tau))
+        rows.append({"time": time, "vin": vin, "vout": vout})
+    return rows
+
+
+def test_first_order_lowpass_checker_requires_input_step_and_lag() -> None:
+    assert sim.check_vbm1_first_order_lowpass(_first_order_lowpass_rows())[0]
+    assert not sim.check_vbm1_first_order_lowpass(_first_order_lowpass_rows(mode="no_input_step"))[0]
+    assert not sim.check_vbm1_first_order_lowpass(_first_order_lowpass_rows(mode="passthrough"))[0]
+
+
+def _resettable_integrator_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(0, 321):
+        time = idx * 1.0e-9
+        t_ns = float(idx)
+        rst = 0.9 if t_ns <= 25.0 or 221.0 <= t_ns <= 250.0 else 0.0
+        vin = 0.002
+        if mode == "no_reset_stimulus":
+            rst = 0.0
+        if rst > 0.45:
+            vout = 0.0 if mode != "stale_reset" else 0.34
+        elif t_ns < 221.0:
+            vout = max(0.0, min(0.85, (t_ns - 26.0) * 0.002))
+        else:
+            vout = max(0.0, min(0.85, (t_ns - 251.0) * 0.002))
+        rows.append({"time": time, "vin": vin, "rst": rst, "vout": vout})
+    return rows
+
+
+def test_resettable_integrator_checker_requires_reset_stimulus_and_restart() -> None:
+    assert sim.check_vbm1_resettable_integrator(_resettable_integrator_rows())[0]
+    assert not sim.check_vbm1_resettable_integrator(_resettable_integrator_rows(mode="no_reset_stimulus"))[0]
+    assert not sim.check_vbm1_resettable_integrator(_resettable_integrator_rows(mode="stale_reset"))[0]
+
+
+def _slew_rate_limiter_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(0, 171):
+        time = idx * 1.0e-9
+        t_ns = float(idx)
+        if t_ns < 21.0:
+            vin = 0.0
+            vout = 0.0
+        elif t_ns < 96.0:
+            vin = 0.8
+            vout = min(0.8, (t_ns - 21.0) * 0.015)
+        else:
+            vin = 0.1
+            vout = max(0.1, 0.8 - (t_ns - 96.0) * 0.015)
+        if mode == "no_input_sequence":
+            vin = 0.0
+        if mode == "passthrough":
+            vout = vin
+        rows.append({"time": time, "vin": vin, "vout": vout})
+    return rows
+
+
+def test_slew_rate_limiter_checker_requires_input_sequence_and_limited_edges() -> None:
+    assert sim.check_vbm1_slew_rate_limiter(_slew_rate_limiter_rows())[0]
+    assert not sim.check_vbm1_slew_rate_limiter(_slew_rate_limiter_rows(mode="no_input_sequence"))[0]
+    assert not sim.check_vbm1_slew_rate_limiter(_slew_rate_limiter_rows(mode="passthrough"))[0]
 
 
 def test_noise_source_checker_rejects_flat_passthrough() -> None:
@@ -134,6 +273,13 @@ def _comparator_measurement_flow_rows(*, mode: str = "good") -> list[dict[str, f
         valid = 0.9 if tripped else 0.0
         trip_v = 0.505 if tripped else 0.0
         offset_est = 0.005 if tripped else 0.0
+        if mode == "early_output":
+            outp = 0.9 if inp >= 0.502 else 0.0
+        if mode == "early_valid":
+            valid = 0.9 if inp >= 0.502 else 0.0
+            if valid > 0.45:
+                trip_v = 0.505
+                offset_est = 0.005
         if mode == "wrong_trip" and tripped:
             trip_v = 0.510
             offset_est = 0.010
@@ -159,6 +305,8 @@ def test_comparator_measurement_flow_checker_requires_latched_metrics() -> None:
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="missing_metric"))[0]
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="wrong_trip"))[0]
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="shallow_output_only"))[0]
+    assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="early_output"))[0]
+    assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="early_valid"))[0]
 
 
 def _xor_pd_rows(*, and_gate: bool = False) -> list[dict[str, float]]:
@@ -614,6 +762,35 @@ def test_final_step_metric_checker_requires_exact_edge_count_and_normalized_plat
     assert not sim.check_final_step_file_metric(_final_step_metric_rows(missing_edge=True))[0]
 
 
+def _gain_estimator_rows(*, bad_gain_out: bool = False, missing_valid: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(240):
+        time = idx * 1e-9
+        phase = 2.0 * math.pi * idx / 40.0
+        vin_diff = 0.03 * math.sin(phase)
+        vout_diff = 0.18 * math.sin(phase)
+        valid = 0.9 if time >= 60e-9 and not missing_valid else 0.0
+        gain = 2.0 if bad_gain_out else 6.0
+        rows.append(
+            {
+                "time": time,
+                "vinp": 0.45 + 0.5 * vin_diff,
+                "vinn": 0.45 - 0.5 * vin_diff,
+                "voutp": 0.45 + 0.5 * vout_diff,
+                "voutn": 0.45 - 0.5 * vout_diff,
+                "gain_out": 0.9 * gain / 10.0,
+                "valid": valid,
+            }
+        )
+    return rows
+
+
+def test_gain_estimator_checker_requires_late_valid_and_gain_output() -> None:
+    assert sim.check_gain_estimator(_gain_estimator_rows())[0]
+    assert not sim.check_gain_estimator(_gain_estimator_rows(bad_gain_out=True))[0]
+    assert not sim.check_gain_estimator(_gain_estimator_rows(missing_valid=True))[0]
+
+
 def test_final_step_metric_side_output_requires_candidate_file(tmp_path: Path) -> None:
     csv_path = tmp_path / "out" / "tran.csv"
     csv_path.parent.mkdir()
@@ -995,6 +1172,53 @@ def test_vin_sampled_droop_hold_checker_requires_input_capture_droop_and_reset()
     )[0]
 
 
+def _acquisition_limited_sample_hold_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    held = 0.45
+    tracking = False
+    for idx in range(181):
+        time_ns = idx * 0.5
+        rst = time_ns <= 2.0
+        sample = 5.0 <= time_ns < 10.0
+        vin = 0.25
+        if rst:
+            held = 0.45
+            tracking = False
+        elif sample and not tracking:
+            tracking = True
+            if mode == "instantaneous":
+                held = vin
+        elif not sample:
+            tracking = False
+
+        if sample and mode != "instantaneous" and abs(time_ns - round(time_ns)) < 1e-12:
+            held = held + 0.42 * (vin - held)
+        if not sample and mode == "hold_drift" and time_ns > 10.0:
+            held += 0.003
+
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "sample": 0.9 if sample else 0.0,
+                "rst": 0.9 if rst else 0.0,
+                "vin": vin,
+                "vout": held,
+                "metric": 0.9 if sample else 0.0,
+            }
+        )
+    return rows
+
+
+def test_acquisition_limited_sample_hold_checker_rejects_ideal_jump_and_hold_drift() -> None:
+    assert sim.check_acquisition_limited_sample_hold(_acquisition_limited_sample_hold_rows())[0]
+    assert not sim.check_acquisition_limited_sample_hold(
+        _acquisition_limited_sample_hold_rows(mode="instantaneous")
+    )[0]
+    assert not sim.check_acquisition_limited_sample_hold(
+        _acquisition_limited_sample_hold_rows(mode="hold_drift")
+    )[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
@@ -1153,10 +1377,329 @@ def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
     return rows
 
 
-def test_voltage_gain_amplifier_checker_requires_clamps_and_saturation_metric() -> None:
-    assert sim.check_release_voltage_gain_amplifier(_ct04_rows("gain"))[0]
-    assert not sim.check_release_voltage_gain_amplifier(_ct04_rows("gain", mode="unclamped"))[0]
-    assert not sim.check_release_voltage_gain_amplifier(_ct04_rows("gain", mode="flat_metric"))[0]
+def _rectifier_envelope_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    knots = [
+        (0.0, 0.45),
+        (8.0, 0.75),
+        (16.0, 0.45),
+        (24.0, 0.15),
+        (32.0, 0.45),
+        (42.0, 0.85),
+        (54.0, 0.45),
+        (66.0, 0.35),
+        (78.0, 0.45),
+        (90.0, 0.45),
+    ]
+
+    def interp(time_ns: float) -> float:
+        for (t0, v0), (t1, v1) in zip(knots, knots[1:]):
+            if t0 <= time_ns <= t1:
+                frac = (time_ns - t0) / (t1 - t0)
+                return v0 + frac * (v1 - v0)
+        return knots[-1][1]
+
+    rows: list[dict[str, float]] = []
+    env = 0.45
+    for idx in range(181):
+        time_ns = idx * 0.5
+        rst = 0.9 if time_ns <= 2.0 else 0.0
+        clk = 0.9 if (time_ns % 2.0) < 1.0 else 0.0
+        vin = interp(time_ns)
+        rect = min(0.9, 0.45 + abs(vin - 0.45))
+        if mode == "half_wave":
+            rect = vin if vin > 0.45 else 0.45
+
+        if rst > 0.45:
+            env = 0.45
+        elif mode == "no_envelope":
+            env = rect
+        else:
+            env = max(rect, max(0.45, env - 0.006))
+        metric = 0.9 if env - rect > 0.03 else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "vin": vin,
+                "rect": rect,
+                "env": env,
+                "metric": metric,
+            }
+        )
+    return rows
+
+
+def test_precision_rectifier_envelope_checker_requires_full_wave_and_hold() -> None:
+    assert sim.check_precision_rectifier_envelope_detector(_rectifier_envelope_rows())[0]
+    assert not sim.check_precision_rectifier_envelope_detector(_rectifier_envelope_rows(mode="half_wave"))[0]
+    assert not sim.check_precision_rectifier_envelope_detector(_rectifier_envelope_rows(mode="no_envelope"))[0]
+
+
+def _sar_adc_dac_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vdd = 0.9
+
+    def append_row(time_s: float, clks: float, rst_n: float, vin: float, vin_sh: float, code: int, vout: float) -> None:
+        row = {
+            "time": time_s,
+            "vin": vin,
+            "vin_sh": vin_sh,
+            "clks": clks,
+            "rst_n": rst_n,
+            "vout": vout,
+        }
+        for bit in range(8):
+            row[f"dout_{bit}"] = vdd if (code >> bit) & 1 else 0.0
+        rows.append(row)
+
+    for cycle in range(502):
+        base = cycle * 20.0e-9
+        rst_n = vdd if cycle >= 4 else 0.0
+        sample_time = base + 1.0e-9
+        vin = 0.45 + 0.45 * math.sin(2.0 * math.pi * 100.0e3 * sample_time)
+        vin = max(0.0, min(vdd, vin))
+        code = max(0, min(255, int(math.floor(vin / vdd * 255.0))))
+        vout = code / 255.0 * vdd
+
+        if mode == "vout_tracks_input_but_code_fake":
+            code = (cycle * 37) % 256
+            vout = vin
+        elif mode == "code_offset":
+            code = max(0, min(255, code + 40))
+            vout = code / 255.0 * vdd
+        elif mode != "good":
+            raise ValueError(mode)
+
+        append_row(base + 0.2e-9, 0.0, rst_n, vin, vin, code, vout)
+        append_row(base + 1.0e-9, vdd, rst_n, vin, vin, code, vout)
+        append_row(base + 2.5e-9, vdd, rst_n, vin, vin, code, vout)
+        append_row(base + 11.0e-9, 0.0, rst_n, vin, vin, code, vout)
+
+    return rows
+
+
+def test_sar_adc_dac_checker_requires_code_dac_sample_alignment() -> None:
+    assert sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_rows())[0]
+    assert not sim.check_sar_adc_dac_weighted_8b(
+        _sar_adc_dac_rows(mode="vout_tracks_input_but_code_fake")
+    )[0]
+    assert not sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_rows(mode="code_offset"))[0]
+
+
+def _converter_static_linearity_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    recon_table = {
+        0: 0.000,
+        1: 0.055,
+        2: 0.118,
+        3: 0.182,
+        4: 0.245,
+        5: 0.303,
+        6: 0.366,
+        7: 0.428,
+        8: 0.491,
+        9: 0.553,
+        10: 0.612,
+        11: 0.674,
+        12: 0.735,
+        13: 0.798,
+        14: 0.855,
+        15: 0.900,
+    }
+    rows: list[dict[str, float]] = []
+    code_int = 0
+    recon = 0.0
+    dnl = 0.45
+    inl = 0.45
+    prev_valid = False
+    prev_code = 0
+    prev_recon = 0.0
+    prev_clk = 0.0
+    for idx in range(385):
+        time_ns = idx * 0.25
+        rst = 0.9 if time_ns <= 2.0 else 0.0
+        clk_phase = (time_ns - 1.0) % 4.0
+        clk = 0.9 if 0.0 <= clk_phase < 2.0 else 0.0
+        vin = min(0.9, max(0.0, 0.9 * max(time_ns - 4.0, 0.0) / 84.0))
+        if prev_clk <= 0.45 < clk:
+            if rst > 0.45:
+                code_int = 0
+                recon = 0.0
+                dnl = 0.45
+                inl = 0.45
+                prev_valid = False
+                prev_code = 0
+                prev_recon = 0.0
+            else:
+                code_int = max(0, min(15, round((vin / 0.9) * 15.0)))
+                recon = 0.06 * code_int if mode == "ideal_converter" else recon_table[code_int]
+                inl = max(0.05, min(0.85, 0.45 + 3.0 * (recon - 0.06 * code_int)))
+                if prev_valid and code_int > prev_code:
+                    ideal_step = 0.06 * (code_int - prev_code)
+                    dnl = max(0.05, min(0.85, 0.45 + 4.0 * ((recon - prev_recon) - ideal_step)))
+                else:
+                    dnl = 0.45
+                if mode == "flat_metrics":
+                    dnl = 0.45
+                    inl = 0.45
+                elif mode == "fake_metrics":
+                    dnl = 0.30 + 0.015 * code_int
+                    inl = 0.60 - 0.008 * code_int
+                prev_code = code_int
+                prev_recon = recon
+                prev_valid = True
+        prev_clk = clk
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "vin": vin,
+                "code": 0.06 * code_int,
+                "recon": recon,
+                "dnl": dnl,
+                "inl": inl,
+            }
+        )
+    return rows
+
+
+def test_converter_static_linearity_checker_requires_linearity_metrics() -> None:
+    assert sim.check_converter_static_linearity_measurement_flow(_converter_static_linearity_rows())[0]
+    assert not sim.check_converter_static_linearity_measurement_flow(
+        _converter_static_linearity_rows(mode="ideal_converter")
+    )[0]
+    assert not sim.check_converter_static_linearity_measurement_flow(
+        _converter_static_linearity_rows(mode="flat_metrics")
+    )[0]
+    assert not sim.check_converter_static_linearity_measurement_flow(
+        _converter_static_linearity_rows(mode="fake_metrics")
+    )[0]
+
+
+def _programmable_stimulus_sequencer_rows(*, mode: str = "chirp") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    prbs_state = 7
+    burst_level = 0.45
+    for idx in range(361):
+        time_ns = idx * 0.25
+        time_s = time_ns * 1e-9
+        rst = 0.9 if time_ns <= 2.0 else 0.0
+        clk = 0.9 if (time_ns % 2.0) < 1.0 else 0.0
+        mode_v = 0.0 if time_ns < 26.0 else 0.45 if time_ns < 62.0 else 0.9
+        gate = 0.9 if 66.0 <= time_ns < 76.0 or 79.5 <= time_ns <= 88.0 else 0.0
+
+        if mode_v < 0.30:
+            ramp_frac = min(1.0, max(0.0, (time_s - 3.0e-9) / 23.0e-9))
+            out = 0.18 + 0.27 * ramp_frac
+            metric = 0.20
+        elif mode_v < 0.60:
+            sweep_t = min(36.0e-9, max(0.0, time_s - 26.0e-9))
+            if mode == "fixed_sine":
+                phase = 2.0 * math.pi * 82.0e6 * sweep_t
+            else:
+                sweep_k = (116.666666e6 - 50.0e6) / 36.0e-9
+                phase = 2.0 * math.pi * (50.0e6 * sweep_t + 0.5 * sweep_k * sweep_t * sweep_t)
+            out = 0.45 + 0.15 * math.sin(phase)
+            metric = 0.50
+        elif gate > 0.45:
+            if idx % 8 == 0:
+                feedback = ((prbs_state >> 2) & 1) ^ ((prbs_state >> 1) & 1)
+                prbs_state = ((prbs_state & 3) << 1) | feedback
+                burst_level = 0.62 if (prbs_state & 1) else 0.28
+            out = burst_level
+            metric = 0.80
+        else:
+            out = 0.45
+            metric = 0.65
+        if rst > 0.45:
+            out = 0.45
+            metric = 0.0
+        rows.append(
+            {
+                "time": time_s,
+                "clk": clk,
+                "rst": rst,
+                "mode": mode_v,
+                "gate": gate,
+                "out": out,
+                "metric": metric,
+            }
+        )
+    return rows
+
+
+def test_programmable_stimulus_checker_requires_chirp_sweep_not_fixed_sine() -> None:
+    assert sim.check_programmable_stimulus_sequencer(_programmable_stimulus_sequencer_rows())[0]
+    assert not sim.check_programmable_stimulus_sequencer(
+        _programmable_stimulus_sequencer_rows(mode="fixed_sine")
+    )[0]
+
+
+def _programmable_gain_amplifier_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(181):
+        time_ns = idx * 0.5
+        rst = time_ns <= 2.0
+        clk = 0.9 if (time_ns % 8.0) < 4.0 else 0.0
+        gain_sel = 0.9 if (20.0 <= time_ns < 48.0 or time_ns >= 72.0) else 0.0
+        if time_ns < 8.0:
+            vin = 0.45
+        elif time_ns < 16.0:
+            vin = 0.60
+        elif time_ns < 28.0:
+            vin = 0.30
+        elif time_ns < 38.0:
+            vin = 0.72
+        elif time_ns < 50.0:
+            vin = 0.20
+        elif time_ns < 70.0:
+            vin = 0.55
+        elif time_ns < 83.0:
+            vin = 0.85
+        else:
+            vin = 0.45
+
+        if rst:
+            gain = 1.0
+        elif mode == "unity_gain":
+            gain = 1.0
+        elif gain_sel > 0.45:
+            gain = 2.4
+        else:
+            gain = 0.8
+        raw = 0.45 + gain * (vin - 0.45)
+        if rst:
+            out = 0.45
+            metric = 0.0
+        elif mode == "unbounded":
+            out = raw
+            metric = 0.0
+        else:
+            out = max(0.0, min(0.9, raw))
+            metric = 0.9 if out != raw else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": 0.9 if rst else 0.0,
+                "gain_sel": gain_sel,
+                "vin": vin,
+                "out": out,
+                "metric": metric,
+            }
+        )
+    return rows
+
+
+def test_programmable_gain_amplifier_checker_requires_gain_select_and_clamps() -> None:
+    assert sim.check_programmable_gain_amplifier(_programmable_gain_amplifier_rows())[0]
+    assert not sim.check_programmable_gain_amplifier(
+        _programmable_gain_amplifier_rows(mode="unity_gain")
+    )[0]
+    assert not sim.check_programmable_gain_amplifier(
+        _programmable_gain_amplifier_rows(mode="unbounded")
+    )[0]
 
 
 def test_two_pole_filter_checker_requires_lag_and_state_difference_metric() -> None:

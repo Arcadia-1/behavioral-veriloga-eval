@@ -87,17 +87,22 @@ DESIGNED_SPECS: dict[str, DesignedSpec] = {
         "vbr1_l2_complete_calibration_loop",
         "complete_calibration_loop",
         "Close a simple calibration loop from error stimulus through controller and actuator output.",
-        ("error_drives_trim", "actuator_moves_opposite_error", "loop_converges_toward_target"),
+        ("raw_error_is_corrected", "bounded_negative_feedback_response", "metric_tracks_convergence"),
         "cal_loop",
-        "The buggy implementation drives the actuator in the same direction as the error.",
+        "The buggy implementation updates correction in the same direction as the residual error.",
     ),
-    "vbr1_l2_adc_dac_source_sweep_flow": DesignedSpec(
-        "vbr1_l2_adc_dac_source_sweep_flow",
-        "adc_dac_source_sweep_flow",
-        "Sweep an analog input through a small quantizer and DAC reconstruction path.",
-        ("code_monotonic_with_input", "reconstruction_follows_code", "saturation_at_rails"),
-        "adc_dac_sweep",
-        "The buggy implementation omits output saturation at the top code.",
+    "vbr1_l2_programmable_stimulus_sequencer": DesignedSpec(
+        "vbr1_l2_programmable_stimulus_sequencer",
+        "programmable_stimulus_sequencer",
+        "Generate a programmable ramp, swept/chirp sine, and gated burst/PRBS stimulus schedule.",
+        (
+            "ramp_segment_monotonic",
+            "swept_chirp_segment_frequency_increases",
+            "burst_prbs_gate_schedule",
+            "mode_switch_continuity",
+        ),
+        "stimulus_sequencer",
+        "The buggy implementation ignores the burst gate.",
     ),
     "vbr1_l1_soft_hysteretic_limiter": DesignedSpec(
         "vbr1_l1_soft_hysteretic_limiter",
@@ -106,14 +111,6 @@ DESIGNED_SPECS: dict[str, DesignedSpec] = {
         ("smooth_limiting", "hysteresis_state_memory", "bounded_output"),
         "soft_limiter",
         "The buggy implementation collapses the hysteresis thresholds into a single threshold.",
-    ),
-    "vbr1_l1_voltage_gain_amplifier": DesignedSpec(
-        "vbr1_l1_voltage_gain_amplifier",
-        "voltage_gain_amplifier",
-        "Apply a voltage-domain gain with output common-mode offset and rail clamps.",
-        ("gain_applied", "common_mode_offset", "output_clamped"),
-        "gain_amp",
-        "The buggy implementation omits the rail clamp.",
     ),
     "vbr1_l1_higher_order_filter": DesignedSpec(
         "vbr1_l1_higher_order_filter",
@@ -232,7 +229,163 @@ analog begin
 end
 endmodule
 """
-    if profile in {"charge_pump", "loop_filter", "deadband_cal", "sar_cal_fsm", "cal_loop", "gain_cal_loop"}:
+    if profile == "deadband_cal":
+        if buggy:
+            update_block = """else if (errv < deadband && errv > -deadband) begin
+            if (errv >= 0.0) begin
+                trimv = trimv + step_size;
+            end else begin
+                trimv = trimv - step_size;
+            end
+            metricv = 0.9;
+        end else begin
+            metricv = 0.0;
+        end"""
+        else:
+            update_block = """else if (errv > deadband) begin
+            trimv = trimv + step_size;
+            metricv = 0.9;
+        end else if (errv < -deadband) begin
+            trimv = trimv - step_size;
+            metricv = 0.9;
+        end else begin
+            metricv = 0.0;
+        end"""
+        return f"""`include "constants.vams"
+`include "disciplines.vams"
+
+module {module}(clk, rst, vin, out, metric);
+input clk, rst, vin;
+output out, metric;
+electrical clk, rst, vin, out, metric;
+parameter real tr = 100p;
+parameter real vth = 0.45;
+parameter real target = 0.45;
+parameter real deadband = 0.05;
+parameter real step_size = 0.06;
+parameter real vmin = 0.05;
+parameter real vmax = 0.85;
+real trimv, errv, metricv;
+analog begin
+    @(initial_step) begin
+        trimv = target;
+        metricv = 0.0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        errv = V(vin) - target;
+        if (V(rst) > vth) begin
+            trimv = target;
+            metricv = 0.0;
+        end {update_block}
+        if (trimv > vmax) trimv = vmax;
+        if (trimv < vmin) trimv = vmin;
+    end
+    V(out) <+ transition(trimv, 0, tr, tr);
+    V(metric) <+ transition(metricv, 0, tr, tr);
+end
+endmodule
+"""
+    if profile == "sar_cal_fsm":
+        halve = "stepv = stepv * 0.5;" if not buggy else "stepv = stepv;"
+        return f"""`include "constants.vams"
+`include "disciplines.vams"
+
+module {module}(clk, rst, vin, out, metric);
+input clk, rst, vin;
+output out, metric;
+electrical clk, rst, vin, out, metric;
+parameter real tr = 100p;
+parameter real vth = 0.45;
+parameter real target = 0.45;
+parameter real step_init = 0.18;
+parameter real vmin = 0.05;
+parameter real vmax = 0.85;
+real trialv, stepv, errv, donev;
+integer cycle;
+analog begin
+    @(initial_step) begin
+        trialv = target;
+        stepv = step_init;
+        cycle = 0;
+        donev = 0.0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        errv = V(vin) - target;
+        if (V(rst) > vth) begin
+            trialv = target;
+            stepv = step_init;
+            cycle = 0;
+            donev = 0.0;
+        end else if (donev < 0.45) begin
+            if (errv > 0.0) begin
+                trialv = trialv + stepv;
+            end else if (errv < 0.0) begin
+                trialv = trialv - stepv;
+            end
+            {halve}
+            cycle = cycle + 1;
+            if (cycle >= 4) donev = 0.9;
+        end
+        if (trialv > vmax) trialv = vmax;
+        if (trialv < vmin) trialv = vmin;
+    end
+    V(out) <+ transition(trialv, 0, tr, tr);
+    V(metric) <+ transition(donev, 0, tr, tr);
+end
+endmodule
+"""
+    if profile == "cal_loop":
+        trim_update = "trimv = trimv + loop_gain * residualv;" if buggy else "trimv = trimv - loop_gain * residualv;"
+        return f"""`include "constants.vams"
+`include "disciplines.vams"
+
+module {module}(clk, rst, vin, out, metric);
+input clk, rst, vin;
+output out, metric;
+electrical clk, rst, vin, out, metric;
+parameter real tr = 100p;
+parameter real vth = 0.45;
+parameter real target = 0.45;
+parameter real loop_gain = 0.40;
+parameter real plant_alpha = 0.35;
+parameter real vmin = 0.05;
+parameter real vmax = 0.85;
+real trimv, plantv, rawerrv, residualv, desiredv, abserr, metricv;
+analog begin
+    @(initial_step) begin
+        trimv = target;
+        plantv = target;
+        metricv = 0.9;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            trimv = target;
+            plantv = target;
+            metricv = 0.9;
+        end else begin
+            rawerrv = V(vin) - target;
+            residualv = rawerrv + (trimv - target);
+            {trim_update}
+            if (trimv > vmax) trimv = vmax;
+            if (trimv < vmin) trimv = vmin;
+            residualv = rawerrv + (trimv - target);
+            desiredv = target + residualv;
+            plantv = plantv + plant_alpha * (desiredv - plantv);
+            if (plantv > vmax) plantv = vmax;
+            if (plantv < vmin) plantv = vmin;
+            abserr = plantv - target;
+            if (abserr < 0.0) abserr = -abserr;
+            metricv = 0.9 - 1.5 * abserr;
+            if (metricv > 0.9) metricv = 0.9;
+            if (metricv < 0.0) metricv = 0.0;
+        end
+    end
+    V(out) <+ transition(plantv, 0, tr, tr);
+    V(metric) <+ transition(metricv, 0, tr, tr);
+end
+endmodule
+"""
+    if profile in {"charge_pump", "loop_filter", "gain_cal_loop"}:
         update = "state = state - step;" if (buggy and profile in {"charge_pump", "cal_loop", "gain_cal_loop"}) else "state = state + step;"
         deadband_condition = "(errv > deadband || errv < -deadband)"
         if buggy and profile == "deadband_cal":
@@ -370,6 +523,65 @@ analog begin
 end
 endmodule
 """
+    if profile == "stimulus_sequencer":
+        gate_condition = "V(gate) > 0.45" if not buggy else "V(gate) <= 0.45"
+        return f"""`include "constants.vams"
+`include "disciplines.vams"
+
+module {module}(clk, rst, mode, gate, out, metric);
+input clk, rst, mode, gate;
+output out, metric;
+electrical clk, rst, mode, gate, out, metric;
+parameter real tr = 80p;
+real y, metricv, ramp_frac, burst_level;
+real sweep_t, sweep_k, phase;
+integer prbs_state, feedback;
+analog begin
+    @(initial_step) begin
+        y = 0.45;
+        metricv = 0.0;
+        burst_level = 0.45;
+        prbs_state = 7;
+    end
+    @(cross(V(clk) - 0.45, +1)) begin
+        if (V(rst) > 0.45) begin
+            prbs_state = 7;
+            burst_level = 0.45;
+        end else if (V(mode) > 0.60 && {gate_condition}) begin
+            feedback = ((prbs_state >> 2) & 1) ^ ((prbs_state >> 1) & 1);
+            prbs_state = ((prbs_state & 3) << 1) | feedback;
+            burst_level = ((prbs_state & 1) > 0) ? 0.62 : 0.28;
+        end
+    end
+    if (V(rst) > 0.45) begin
+        y = 0.45;
+        metricv = 0.0;
+    end else if (V(mode) < 0.30) begin
+        ramp_frac = ($abstime - 3.0e-9) / 23.0e-9;
+        if (ramp_frac < 0.0) ramp_frac = 0.0;
+        if (ramp_frac > 1.0) ramp_frac = 1.0;
+        y = 0.18 + 0.27 * ramp_frac;
+        metricv = 0.20;
+    end else if (V(mode) < 0.60) begin
+        sweep_t = $abstime - 26.0e-9;
+        if (sweep_t < 0.0) sweep_t = 0.0;
+        if (sweep_t > 36.0e-9) sweep_t = 36.0e-9;
+        sweep_k = (116.666666e6 - 50.0e6) / 36.0e-9;
+        phase = 2.0 * `M_PI * (50.0e6 * sweep_t + 0.5 * sweep_k * sweep_t * sweep_t);
+        y = 0.45 + 0.15 * sin(phase);
+        metricv = 0.50;
+    end else if (V(gate) > 0.45) begin
+        y = burst_level;
+        metricv = 0.80;
+    end else begin
+        y = 0.45;
+        metricv = 0.65;
+    end
+    V(out) <+ transition(y, 0, tr, tr);
+    V(metric) <+ transition(metricv, 0, tr, tr);
+end
+endmodule
+"""
     return f"""`include "constants.vams"
 `include "disciplines.vams"
 
@@ -436,15 +648,13 @@ Vb3 (b3 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]"""
         sources = """Vtrig (trig 0) vsource type=pwl wave=[0 0 1n 0 1.1n 0.9 1.3n 0 3n 0 3.1n 0.9 3.3n 0 16n 0 16.1n 0.9 16.3n 0 18n 0 18.1n 0.9 18.3n 0 24n 0 24.1n 0.9 24.3n 0 50n 0]
 Vrst  (rst  0) vsource type=pwl wave=[0 0 25n 0 25.1n 0.9 28n 0.9 28.1n 0]"""
         saves = "save trig rst pulse"
-    elif module in {
-        "adc_dac_source_sweep_flow",
-    }:
-        instance = f"XDUT (clk rst vin aux out metric) {module}"
+    elif module == "programmable_stimulus_sequencer":
+        instance = f"XDUT (clk rst mode gate out metric) {module}"
         sources = """Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
-Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]
-Vvin (vin 0) vsource type=pwl wave=[0 0.05 10n 0.1 30n 0.7 60n 0.35 80n 0.85]
-Vaux (aux 0) vsource dc=0.45"""
-        saves = "save clk rst vin out metric"
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 90n 0]
+Vmode (mode 0) vsource type=pwl wave=[0 0 25.9n 0 26n 0.45 61.9n 0.45 62n 0.9 90n 0.9]
+Vgate (gate 0) vsource type=pwl wave=[0 0 65.9n 0 66n 0.9 75.9n 0.9 76n 0 79.9n 0 80n 0.9 88n 0.9 88.1n 0 90n 0]"""
+        saves = "save clk rst mode gate out metric"
     elif module == "charge_pump_abstraction":
         instance = f"XDUT (clk rst up dn vctrl metric) {module}"
         sources = """Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
@@ -473,6 +683,7 @@ Vvin (vin 0) vsource type=pwl wave=[0 0.2 10n 0.25 25n 0.75 55n 0.35 80n 0.65]""
     include = f'ahdl_include "{module}.va"'
     if form == "bugfix":
         include = 'ahdl_include "dut_fixed.va"'
+    tran_line = "tran tran stop=90n maxstep=0.25n" if module == "programmable_stimulus_sequencer" else "tran tran stop=80n maxstep=0.5n"
     return f"""simulator lang=spectre
 global 0
 
@@ -482,7 +693,7 @@ global 0
 
 {instance}
 
-tran tran stop=80n maxstep=0.5n
+{tran_line}
 {saves}
 """
 
@@ -520,7 +731,31 @@ def port_contract(spec: DesignedSpec) -> dict[str, str]:
             "signals": "clk, rst, up, and dn are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. A sampled UP-only pulse increases vctrl, a sampled DN-only pulse decreases vctrl, simultaneous or absent pulses hold the control voltage, and rst high resets vctrl to midscale. metric is a voltage-coded UP/DN/hold status observable.",
             "saved": "clk rst up dn vctrl metric",
         }
-    if spec.profile in {"charge_pump", "deadband_cal", "sar_cal_fsm", "cal_loop", "gain_cal_loop"}:
+    if spec.profile == "deadband_cal":
+        return {
+            "module": f"module {spec.module}(clk, rst, vin, out, metric);",
+            "directions": "input clk, rst, vin;\noutput out, metric;",
+            "disciplines": "electrical clk, rst, vin, out, metric",
+            "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed calibration error around 0.45 V. out is a bounded trim voltage that holds inside the deadband and steps only outside it. metric is high only on an accepted trim update.",
+            "saved": "clk rst vin out metric",
+        }
+    if spec.profile == "sar_cal_fsm":
+        return {
+            "module": f"module {spec.module}(clk, rst, vin, out, metric);",
+            "directions": "input clk, rst, vin;\noutput out, metric;",
+            "disciplines": "electrical clk, rst, vin, out, metric",
+            "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed calibration decision stimulus around 0.45 V. out is the bounded SAR trial trim voltage. metric is a voltage-coded done flag asserted after the search window.",
+            "saved": "clk rst vin out metric",
+        }
+    if spec.profile == "cal_loop":
+        return {
+            "module": f"module {spec.module}(clk, rst, vin, out, metric);",
+            "directions": "input clk, rst, vin;\noutput out, metric;",
+            "disciplines": "electrical clk, rst, vin, out, metric",
+            "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is the external offset/error stimulus around 0.45 V. The internal controller drives correction opposite the measured residual error, out is the bounded corrected plant response, and metric is high when out is close to 0.45 V.",
+            "saved": "clk rst vin out metric",
+        }
+    if spec.profile in {"charge_pump", "gain_cal_loop"}:
         return {
             "module": f"module {spec.module}(clk, rst, vin, out, metric);",
             "directions": "input clk, rst, vin;\noutput out, metric;",
@@ -536,6 +771,14 @@ def port_contract(spec: DesignedSpec) -> dict[str, str]:
             "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.",
             "saved": "clk rst vin out metric",
         }
+    if spec.profile == "stimulus_sequencer":
+        return {
+            "module": f"module {spec.module}(clk, rst, mode, gate, out, metric);",
+            "directions": "input clk, rst, mode, gate;\noutput out, metric;",
+            "disciplines": "electrical clk, rst, mode, gate, out, metric",
+            "signals": "clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. mode selects ramp, sine, or burst/PRBS behavior. gate enables the burst segment. out is the generated stimulus waveform. metric is a voltage-coded segment-status observable.",
+            "saved": "clk rst mode gate out metric",
+        }
     return {
         "module": f"module {spec.module}(clk, rst, vin, aux, out, metric);",
         "directions": "input clk, rst, vin, aux;\noutput out, metric;",
@@ -547,20 +790,44 @@ def port_contract(spec: DesignedSpec) -> dict[str, str]:
 
 def prompt_text(row: dict[str, str], spec: DesignedSpec, form: str) -> str:
     family = FORM_TO_FAMILY[form]
+    tran_line = "tran tran stop=90n maxstep=0.25n" if spec.profile == "stimulus_sequencer" else "tran tran stop=80n maxstep=0.5n"
+    target_artifacts = {
+        "dut": [f"{spec.module}.va"],
+        "tb": [f"tb_{spec.module}.scs"],
+        "bugfix": ["dut_fixed.va"],
+        "e2e": [f"{spec.module}.va", f"tb_{spec.module}.scs"],
+    }[form]
+    target_list = ", ".join(f"`{name}`" for name in target_artifacts)
+    output_lines = "\n".join(f"- `{name}`" for name in target_artifacts)
     if form == "tb":
-        artifact = "the Spectre testbench file"
         task_line = "Write a Spectre transient testbench for the described behavioral Verilog-A module."
+        form_requirements = (
+            f"- Generate the target artifact: {target_list}.\n"
+            "- The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic."
+        )
     elif form == "bugfix":
-        artifact = "the repaired Verilog-A artifact"
-        task_line = f"Repair the supplied buggy Verilog-A implementation. Bug to fix: {spec.bug}"
+        task_line = f"Repair the supplied buggy Verilog-A implementation. Known defect: {spec.bug}"
+        form_requirements = (
+            f"- Generate the repaired target artifact: {target_list}.\n"
+            "- Preserve the public module name, positional ports, voltage-domain behavior, and observable contract."
+        )
     elif form == "e2e":
-        artifact = "the Verilog-A module and Spectre testbench artifacts"
         task_line = "Write both the Verilog-A behavioral module and a Spectre transient testbench."
+        form_requirements = (
+            f"- Generate all target artifacts: {target_list}.\n"
+            "- The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic."
+        )
     else:
-        artifact = "the Verilog-A DUT artifact"
         task_line = "Write the Verilog-A behavioral module only."
+        form_requirements = (
+            f"- Generate the target artifact: {target_list}.\n"
+            "- The module must satisfy the public interface and observable behavior contract."
+        )
     checks = "\n".join(f"- {item}" for item in spec.behavior_checks)
     ports = port_contract(spec)
+    disciplines = ports["disciplines"]
+    if not disciplines.rstrip().endswith(";"):
+        disciplines = disciplines.rstrip() + ";"
     abstraction_note = ""
     if spec.profile == "loop_filter":
         abstraction_note = (
@@ -568,7 +835,58 @@ def prompt_text(row: dict[str, str], spec: DesignedSpec, form: str) -> str:
             "control trend. It must not require current-domain charge storage, true "
             "continuous-time RC integration, or KCL/KVL solving.\n"
         )
-    return f"""# {row['base_function']} ({family})
+    return f"""# Task: {row['entry_id']}:{form}
+
+## Release Task Contract
+
+- Form: `{form}`
+- Level: `{row['level']}`
+- Category: {row['category']}
+- Base function: {row['base_function']}
+- Domain: `voltage`
+- Target artifact(s): {target_list}
+- Visible context: public task, interface, artifact, stimulus, and observable contract only.
+- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+
+## Form-Specific Requirements
+
+{form_requirements}
+
+## Public Verilog-A Interface
+
+- `{spec.module}.va` declares module `{spec.module}` with positional ports from the public port contract below.
+
+## Public Testbench And Observable Contract
+
+Public transient setting used by the release harness:
+
+```spectre
+{tran_line}
+```
+
+The release harness expects these exact public scalar observables:
+
+```text
+{ports['saved']}
+```
+
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+
+## Public Behavior Checks
+
+{checks}
+
+## Output Contract
+
+Return exactly these source artifacts:
+
+{output_lines}
+
+Do not include explanatory prose outside the source artifact contents.
+
+## Task-Specific Public Description
+
+### {row['base_function']} ({family})
 
 {task_line}
 
@@ -587,7 +905,7 @@ Public port contract:
 ```verilog
 {ports['module']}
 {ports['directions']}
-{ports['disciplines']}
+{disciplines}
 ```
 
 Signal contract:
@@ -607,14 +925,8 @@ Public behavior checks:
 Public transient contract:
 
 ```spectre
-tran tran stop=80n maxstep=0.5n
+{tran_line}
 ```
-
-## Output Contract
-
-Return exactly {artifact}. Do not include explanatory prose outside the source
-file contents. Preserve the module names, ports, saved waveform columns, and
-transient simulation contract specified above.
 """
 
 
@@ -664,12 +976,16 @@ def checks_text(spec: DesignedSpec, form: str) -> str:
             must_include.append('"@(cross("')
     checks = "\n".join(f"    - {token}" for token in must_include)
     behavior = "\n".join(f"    - \"{item}\"" for item in spec.behavior_checks)
+    role_lines = ""
+    if form == "dut":
+        role_lines = 'dut_companion_role: "function_checked_dut"\nstrong_benchmark_claim: true\n'
     return f"""syntax:
   must_include:
 {checks}
   must_not_include:
     - "I("
     - "ddt("
+{role_lines}\
 dut_compile:
   backend: "evas"
 tb_compile:

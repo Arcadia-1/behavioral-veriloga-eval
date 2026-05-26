@@ -1,6 +1,6 @@
 # vaBench Checker and EVAS/Spectre Evidence Workplan
 
-Date: 2026-05-23
+Date: 2026-05-25
 
 ## Summary
 
@@ -8,7 +8,7 @@ Date: 2026-05-23
 | --- | ---: |
 | prompt version | `public-contract-v2` |
 | prompt manifest status | `pass` |
-| L2 e2e rows | 16 |
+| L2 e2e rows | 13 |
 | EVAS PASS / Spectre FAIL | 0 |
 | targeted L2 tightening status | `pass` |
 | targeted L2 tightening pass/fail | 2 / 0 |
@@ -28,19 +28,16 @@ Date: 2026-05-23
 
 | Entry | Category | Checks | Strength | Action |
 | --- | --- | ---: | --- | --- |
-| `vbr1_l2_adc_dac_reconstruction_chain` | Data Converters | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_flash_adc_mini_array` | Data Converters | 4 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_pipeline_adc_chain` | Data Converters | 5 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_weighted_sar_adc_dac_loop` | Data Converters | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_comparator_measurement_flow` | Comparators and Decision Circuits | 6 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_converter_front_end` | Sample, Hold, and Analog Memory | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_amplifier_filter_chain` | Analog Behavioral Signal Conditioning | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_adpll_lock_ratio_hop_timer_flow` | PLL / Clock / Event Timing | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` | PLL / Clock / Event Timing | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_pll_timing_slice` | PLL / Clock / Event Timing | 2 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_event_controller` | Digital and Event-Driven Logic | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_serializer_frame_alignment_flow` | Digital and Event-Driven Logic | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_converter_static_linearity_measurement_flow` | Data Converter Models | 5 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_flash_adc_mini_array` | Data Converter Models | 4 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_pipeline_adc_chain` | Data Converter Models | 5 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_weighted_sar_adc_dac_loop` | Data Converter Models | 6 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_comparator_measurement_flow` | Comparator and Decision Circuits | 8 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_converter_front_end` | Sampling and Analog Memory | 4 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_amplifier_filter_chain` | Baseband Signal Conditioning | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_adpll_lock_ratio_hop_timer_flow` | PLL Clock and Timing Systems | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` | PLL Clock and Timing Systems | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
 | `vbr1_l2_complete_calibration_loop` | Calibration, DEM, and Control | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_gain_extraction_convergence_measurement_flow` | Measurement and Testbench Instrumentation | 2 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_measurement_flow` | Measurement and Testbench Instrumentation | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
-| `vbr1_l2_adc_dac_source_sweep_flow` | Stimulus and Sources | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_gain_extraction_convergence_measurement_flow` | Measurement Instrumentation Flows | 2 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_measurement_flow` | Measurement Instrumentation Flows | 3 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |
+| `vbr1_l2_programmable_stimulus_sequencer` | Stimulus and Source Generators | 4 | `multi_behavior_check` | `confirm_checker_maps_to_composition_claim` |

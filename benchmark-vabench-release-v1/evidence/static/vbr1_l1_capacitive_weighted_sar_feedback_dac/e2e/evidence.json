@@ -4,7 +4,7 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L1",
-    "category": "Data Converters",
+    "category": "Data Converter Models",
     "base_function": "Capacitive/weighted SAR feedback DAC"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/gold/cdac_cal.va",
-    "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/gold/tb_cdac_cal_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/gold/cdac_cal.va",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/gold/tb_cdac_cal_ref.scs"
   ],
   "checks": {
     "must_include": [

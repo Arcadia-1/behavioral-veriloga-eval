@@ -3,18 +3,18 @@
   "benchmark": "vabench-release-v1",
   "release_entry_id": "vbr1_l1_precision_rectifier",
   "level": "L1",
-  "category": "Analog Behavioral Signal Conditioning",
+  "category": "Baseband Signal Conditioning",
   "base_function": "Precision rectifier",
   "family": "spec-to-va",
   "domain": "voltage",
   "score_surface": "model-capability",
   "artifacts": {
-    "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/prompt.md",
-    "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/meta.json",
-    "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/checks.yaml",
+    "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/prompt.md",
+    "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/meta.json",
+    "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/checks.yaml",
     "gold": [
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/gold/precision_rectifier.va",
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/gold/tb_precision_rectifier_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/gold/precision_rectifier.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut/gold/tb_precision_rectifier_ref.scs"
     ]
   },
   "certification": {
@@ -32,7 +32,7 @@
     "source_base_id": "precision_rectifier",
     "source_task_id": "vbm1_precision_rectifier_dut",
     "historical_source_task_id": "vbm1_precision_rectifier_dut",
-    "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut"
+    "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/dut"
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",

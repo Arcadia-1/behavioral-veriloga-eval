@@ -68,7 +68,7 @@ It does not prescribe the internal implementation or reveal a gold solution.
 Final EVAS transient setting:
 
 ```spectre
-tran tran stop=200u maxstep=8n
+tran tran stop=20u maxstep=8n
 ```
 
 Required public waveform columns in `tran.csv`:

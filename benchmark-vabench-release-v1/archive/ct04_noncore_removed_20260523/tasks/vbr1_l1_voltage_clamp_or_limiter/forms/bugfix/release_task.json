@@ -3,20 +3,20 @@
   "benchmark": "vabench-release-v1",
   "release_entry_id": "vbr1_l1_voltage_clamp_or_limiter",
   "level": "L1",
-  "category": "Analog Behavioral Signal Conditioning",
+  "category": "Baseband Signal Conditioning",
   "base_function": "Voltage clamp or limiter",
   "family": "bugfix",
   "domain": "voltage",
   "score_surface": "model-capability",
   "artifacts": {
-    "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/prompt.md",
-    "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/meta.json",
-    "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/checks.yaml",
+    "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/prompt.md",
+    "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/meta.json",
+    "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/checks.yaml",
     "gold": [
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/dut_fixed.va",
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/tb_voltage_clamp_buggy.scs",
-      "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/tb_voltage_clamp_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/tb_voltage_clamp_buggy.scs",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix/gold/tb_voltage_clamp_ref.scs"
     ]
   },
   "certification": {
@@ -34,7 +34,7 @@
     "source_base_id": "voltage_clamp",
     "source_task_id": "vbm1_voltage_clamp_bugfix",
     "historical_source_task_id": "vbm1_voltage_clamp_bugfix",
-    "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix"
+    "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_clamp_or_limiter/forms/bugfix"
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",

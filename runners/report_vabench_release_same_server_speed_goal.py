@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORTS_ROOT = ROOT / "speed-optimization" / "reports"
 DEFAULT_REPORT_MD = REPORTS_ROOT / f"same_server_speed_goal_summary_{date.today().isoformat().replace('-', '')}.md"
 DEFAULT_REPORT_JSON = REPORTS_ROOT / f"same_server_speed_goal_summary_{date.today().isoformat().replace('-', '')}.json"
+DEFAULT_SELF_CONSISTENCY_JSON = (
+    REPORTS_ROOT / "spectre_ax_classic_self_consistency_clean_repeats_20260522.json"
+)
 
 
 def rel(path: Path) -> str:
@@ -32,6 +35,16 @@ def float_or_none(value: object) -> float | None:
     except (TypeError, ValueError):
         return None
     return out if math.isfinite(out) else None
+
+
+def relative_rms_value(row: dict[str, object], aggregate: str) -> float | None:
+    if aggregate == "max":
+        value = float_or_none(row.get("max_relative_rms_error"))
+        return value if value is not None else float_or_none(row.get("max_nrmse"))
+    if aggregate == "mean":
+        value = float_or_none(row.get("mean_relative_rms_error"))
+        return value if value is not None else float_or_none(row.get("mean_nrmse"))
+    raise ValueError(f"unknown aggregate: {aggregate}")
 
 
 def geomean(values: Iterable[float]) -> float | None:
@@ -107,6 +120,52 @@ def load_report(path: Path) -> dict[str, object]:
     return data
 
 
+def load_self_consistency_anchor(path: Path | None) -> dict[str, object] | None:
+    if path is None:
+        return None
+    resolved = path if path.is_absolute() else ROOT / path
+    if not resolved.exists():
+        return None
+    data = json.loads(resolved.read_text(encoding="utf-8"))
+    summary = data.get("summary", {})
+    if not isinstance(summary, dict):
+        return None
+    simulator_summary = summary.get("simulator_style_summary", {})
+    rel_info = simulator_summary.get("relative_rms_error", {}) if isinstance(simulator_summary, dict) else {}
+    abs_v = simulator_summary.get("absolute_voltage_error", {}) if isinstance(simulator_summary, dict) else {}
+    metrics = summary.get("metrics", {})
+    if isinstance(metrics, dict):
+        max_relative = metrics.get("max_relative_rms_error", {}) or metrics.get("max_nrmse", {})
+    else:
+        max_relative = {}
+    max_rms = metrics.get("max_rmse_v", {}) if isinstance(metrics, dict) else {}
+    max_abs = metrics.get("max_abs_v", {}) if isinstance(metrics, dict) else {}
+    return {
+        "path": rel(resolved),
+        "mode_a": data.get("mode_a"),
+        "mode_b": data.get("mode_b"),
+        "total_pairs": summary.get("total_pairs"),
+        "passed_pairs": summary.get("passed_pairs"),
+        "needs_review_pairs": summary.get("needs_review_pairs"),
+        "blocked_pairs": summary.get("blocked_pairs"),
+        "relative_rms_worst_signal_max": rel_info.get("worst_signal_max")
+        if isinstance(rel_info, dict)
+        else max_relative.get("max")
+        if isinstance(max_relative, dict)
+        else None,
+        "absolute_rms_error_max_v": abs_v.get("max_rms_v")
+        if isinstance(abs_v, dict)
+        else max_rms.get("max")
+        if isinstance(max_rms, dict)
+        else None,
+        "absolute_point_error_max_v": abs_v.get("max_point_v")
+        if isinstance(abs_v, dict)
+        else max_abs.get("max")
+        if isinstance(max_abs, dict)
+        else None,
+    }
+
+
 def report_mode_summary(report: dict[str, object]) -> dict[tuple[str, str], dict[str, object]]:
     summary = report.get("summary", {})
     if not isinstance(summary, dict):
@@ -125,7 +184,7 @@ def report_gate_summary(report: dict[str, object]) -> dict[str, dict[str, object
     summary = report.get("summary", {})
     if not isinstance(summary, dict):
         return {}
-    rows = summary.get("accuracy_gate_summary", [])
+    rows = summary.get("equivalence_gate_summary") or summary.get("accuracy_gate_summary", [])
     out: dict[str, dict[str, object]] = {}
     if isinstance(rows, list):
         for row in rows:
@@ -138,8 +197,10 @@ def speedup_rows(report: dict[str, object], gated: bool) -> list[dict[str, objec
     summary = report.get("summary", {})
     if not isinstance(summary, dict):
         return []
-    key = "accuracy_gated_speedups" if gated else "speedups"
-    rows = summary.get(key, [])
+    if gated:
+        rows = summary.get("equivalence_gated_speedups") or summary.get("accuracy_gated_speedups", [])
+    else:
+        rows = summary.get("speedups", [])
     return [row for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
 
 
@@ -251,6 +312,7 @@ def nonpass_rows(reports: list[dict[str, object]]) -> list[dict[str, object]]:
         for row in result_rows(report):
             if row.get("ok") is True:
                 continue
+            gate = row.get("equivalence_gate") or row.get("accuracy_gate", {})
             rows.append(
                 {
                     "report": report["_label"],
@@ -260,18 +322,11 @@ def nonpass_rows(reports: list[dict[str, object]]) -> list[dict[str, object]]:
                     "mode": row.get("mode"),
                     "status": row.get("status"),
                     "notes": row.get("notes", []),
-                    "accuracy_gate": row.get("accuracy_gate", {}),
+                    "equivalence_gate": gate,
+                    "accuracy_gate": gate,
                 }
             )
     return rows
-
-
-WAVEFORM_TOLERANCE_GATES: tuple[tuple[str, float, float], ...] = (
-    ("strict_p95_0p05_max_0p10", 0.05, 0.10),
-    ("strict_p95_0p10_max_0p15", 0.10, 0.15),
-    ("current_core_p95_0p14_max_0p22", 0.14, 0.22),
-    ("relaxed_p95_0p20_max_0p30", 0.20, 0.30),
-)
 
 
 def iter_waveform_parities(
@@ -283,7 +338,7 @@ def iter_waveform_parities(
         for row in result_rows(report):
             if row.get("backend") != "evas" or row.get("mode") != evas_mode:
                 continue
-            gate = row.get("accuracy_gate", {})
+            gate = row.get("equivalence_gate") or row.get("accuracy_gate", {})
             if not isinstance(gate, dict):
                 continue
             strict = gate.get("strict_evas_parity")
@@ -310,14 +365,14 @@ def iter_waveform_parities(
                         }
 
 
-def tolerance_sweep_stats(reports: list[dict[str, object]]) -> list[dict[str, object]]:
+def waveform_diagnostic_stats(reports: list[dict[str, object]]) -> list[dict[str, object]]:
     grouped: dict[str, list[dict[str, object]]] = defaultdict(list)
     non_waveform: dict[str, int] = defaultdict(int)
     for item in iter_waveform_parities(reports):
         parity = item["parity"]
         if not isinstance(parity, dict):
             continue
-        if float_or_none(parity.get("p95_nrmse")) is None or float_or_none(parity.get("max_nrmse")) is None:
+        if relative_rms_value(parity, "max") is None:
             non_waveform[str(item["target"])] += 1
             continue
         grouped[str(item["target"])].append(parity)
@@ -330,18 +385,23 @@ def tolerance_sweep_stats(reports: list[dict[str, object]]) -> list[dict[str, ob
             "waveform_rows": len(rows),
             "non_waveform_rows": non_waveform.get(target, 0),
             "current_passed_rows": sum(1 for row in rows if row.get("status") == "passed"),
-            "max_p95_nrmse": max((float(row["p95_nrmse"]) for row in rows), default=None),
-            "max_max_nrmse": max((float(row["max_nrmse"]) for row in rows), default=None),
-            "max_abs_v": max((float(row["max_abs_v"]) for row in rows), default=None),
+            "max_relative_rms": max(
+                (value for row in rows if (value := relative_rms_value(row, "max")) is not None),
+                default=None,
+            ),
+            "max_row_mean_relative_rms": max(
+                (value for row in rows if (value := relative_rms_value(row, "mean")) is not None),
+                default=None,
+            ),
+            "max_rms_v": max(
+                (float(row["max_rmse_v"]) for row in rows if float_or_none(row.get("max_rmse_v")) is not None),
+                default=None,
+            ),
+            "max_abs_v": max(
+                (float(row["max_abs_v"]) for row in rows if float_or_none(row.get("max_abs_v")) is not None),
+                default=None,
+            ),
         }
-        for name, p95_limit, max_limit in WAVEFORM_TOLERANCE_GATES:
-            passed = 0
-            for row in rows:
-                p95 = float_or_none(row.get("p95_nrmse"))
-                max_nrmse = float_or_none(row.get("max_nrmse"))
-                if p95 is not None and max_nrmse is not None and p95 <= p95_limit and max_nrmse <= max_limit:
-                    passed += 1
-            base[name] = passed
         out.append(base)
     return out
 
@@ -428,29 +488,59 @@ def outlier_rows(reports: list[dict[str, object]], limit: int) -> dict[str, list
 def write_markdown(payload: dict[str, object], path: Path) -> None:
     reports = payload["reports"]
     mode_stats = payload["combined_mode_time_stats"]
-    gated_stats = payload["combined_accuracy_gated_speedup_stats"]
+    gated_stats = payload["combined_equivalence_gated_speedup_stats"]
     raw_stats = payload["combined_raw_speedup_stats"]
-    per_report = payload["per_report_accuracy_gated_speedup_stats"]
+    per_report = payload["per_report_equivalence_gated_speedup_stats"]
     nonpasses = payload["nonpass_rows"]
     outliers = payload["outliers"]
     fast_vs_strict = payload["fast_over_strict_stats"]
-    tolerance = payload["tolerance_sweep_stats"]
+    tolerance = payload["waveform_diagnostic_stats"]
 
     lines: list[str] = []
-    lines.append("# vaBench Same-Server Speed Goal Summary")
+    lines.append("# vaBench 同服务器速度目标汇总")
     lines.append("")
-    lines.append(f"- Generated: {payload['generated_at']}")
-    lines.append(f"- Reports: {len(reports)}")
+    lines.append(f"- 生成时间: {payload['generated_at']}")
+    lines.append(f"- 输入报告数: {len(reports)}")
     for report in reports:
         lines.append(
-            f"  - `{report['_label']}`: rows={report.get('selected_rows')} "
-            f"jobs={report.get('jobs')} path=`{report['_path']}`"
+            f"  - `{report['_label']}`: 行数={report.get('selected_rows')} "
+            f"并发任务={report.get('jobs')} 路径=`{report['_path']}`"
+        )
+    lines.append("")
+    lines.append("## 等价性策略")
+    lines.append("")
+    lines.append(
+        "速度统计行先由任务行为检查门控，再与 Spectre 参考结果做波形等价性检查。"
+        "这是 Spectre 等价性接受准则，不是说 EVAS 要比 Spectre 更精确。"
+    )
+    lines.append("")
+    lines.append(
+        "实现注释：波形等价性用仿真器常见条件报告：row-mean relative RMS error、"
+        "worst-signal relative RMS error、max RMS voltage error、max point voltage error，"
+        "以及 event/digital mismatch。这些指标替代面向论文报告里的百分位简写。"
+    )
+    lines.append("")
+    lines.append(
+        "`spectre/ax` 是主要的官方快速 Spectre 速度基线；`spectre/classic` 是更保守的 "
+        "non-X reference path。AX/classic 在事件驱动 behavioral 任务上出现波形差异是正常的，"
+        "因此 EVAS 的容差应锚定 Spectre 自身一致性，而不是单一“绝对真值波形”。"
+    )
+    anchor = payload.get("spectre_self_consistency_anchor")
+    if isinstance(anchor, dict):
+        lines.append("")
+        lines.append(
+            f"配套自一致性报告 `{anchor.get('path')}` 在同一 row 集合上直接比较 "
+            f"Spectre {anchor.get('mode_a')}/Spectre {anchor.get('mode_b')}："
+            f"{anchor.get('passed_pairs')}/{anchor.get('total_pairs')} row pairs 通过，"
+            f"{anchor.get('needs_review_pairs')} 个 needs-review，{anchor.get('blocked_pairs')} 个 blocked。"
+            f"最差 signal relative RMS error 为 {fmt(anchor.get('relative_rms_worst_signal_max'))}；"
+            f"max RMS voltage error 为 {fmt(anchor.get('absolute_rms_error_max_v'))} V。"
         )
 
     lines.append("")
-    lines.append("## Combined Wall-Time Geomean By Mode")
+    lines.append("## 按模式汇总的 Wall-Time")
     lines.append("")
-    lines.append("| Backend | Mode | Reports | PASS/Runs | Geomean s | Mean s | CV |")
+    lines.append("| 后端 | 模式 | 报告数 | PASS/Runs | 几何均值 s | 算术均值 s | CV |")
     lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |")
     for row in mode_stats:
         lines.append(
@@ -460,33 +550,33 @@ def write_markdown(payload: dict[str, object], path: Path) -> None:
         )
 
     lines.append("")
-    lines.append("## Combined Accuracy-Gated Speedups")
+    lines.append("## Spectre-Equivalence 门控后的总体加速比")
     lines.append("")
-    lines.append("| Spectre | EVAS | N | Geomean x | Mean x | Median x | P10 x | P90 x | Min x | Max x |")
-    lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+    lines.append("| Spectre | EVAS | N | 几何均值 x | 算术均值 x | 中位数 x | 最慢行 x | 最快行 x |")
+    lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |")
     for row in gated_stats:
         lines.append(
             f"| `{row['spectre_mode']}` | `{row['evas_mode']}` | {row['n']} | "
             f"{fmt(row['geomean'])} | {fmt(row['mean'])} | {fmt(row['median'])} | "
-            f"{fmt(row['p10'])} | {fmt(row['p90'])} | {fmt(row['min'])} | {fmt(row['max'])} |"
+            f"{fmt(row['min'])} | {fmt(row['max'])} |"
         )
 
     lines.append("")
-    lines.append("## Per-Repeat Accuracy-Gated Speedups")
+    lines.append("## 每轮 Repeat 的 Spectre-Equivalence 门控加速比")
     lines.append("")
-    lines.append("| Report | Spectre | EVAS | N | Geomean x | Median x | P10 x | P90 x |")
+    lines.append("| 报告 | Spectre | EVAS | N | 几何均值 x | 中位数 x | 最慢行 x | 最快行 x |")
     lines.append("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |")
     for row in per_report:
         lines.append(
             f"| `{row['report']}` | `{row['spectre_mode']}` | `{row['evas_mode']}` | "
             f"{row['n']} | {fmt(row['geomean'])} | {fmt(row['median'])} | "
-            f"{fmt(row['p10'])} | {fmt(row['p90'])} |"
+            f"{fmt(row['min'])} | {fmt(row['max'])} |"
         )
 
     lines.append("")
-    lines.append("## Raw Speedups")
+    lines.append("## 原始加速比")
     lines.append("")
-    lines.append("| Spectre | EVAS | N | Geomean x | Mean x | Median x |")
+    lines.append("| Spectre | EVAS | N | 几何均值 x | 算术均值 x | 中位数 x |")
     lines.append("| --- | --- | ---: | ---: | ---: | ---: |")
     for row in raw_stats:
         lines.append(
@@ -495,42 +585,41 @@ def write_markdown(payload: dict[str, object], path: Path) -> None:
         )
 
     lines.append("")
-    lines.append("## EVAS Fast-Skip Versus Strict")
+    lines.append("## EVAS Fast-Skip 相对 Strict")
     lines.append("")
     lines.append(
-        "Across paired EVAS rows, `strict_current_wall / profile_fast_skip_source_error_control_wall` "
-        f"has geomean {fmt(fast_vs_strict.get('geomean'))}x, median {fmt(fast_vs_strict.get('median'))}x, "
-        f"n={fast_vs_strict.get('n')}."
+        "在成对 EVAS rows 上，`strict_current_wall / profile_fast_skip_source_error_control_wall` "
+        f"的几何均值为 {fmt(fast_vs_strict.get('geomean'))}x，中位数为 "
+        f"{fmt(fast_vs_strict.get('median'))}x，n={fast_vs_strict.get('n')}。"
     )
 
     lines.append("")
-    lines.append("## Waveform Tolerance Sweep")
+    lines.append("## 波形等价性诊断")
     lines.append("")
     lines.append(
-        "This sweep reuses saved waveform parity metrics for `profile_fast_skip_source_error_control`; "
-        "task-specific semantic comparators are counted as non-waveform rows and are not threshold-scanned."
+        "这里复用 `profile_fast_skip_source_error_control` 已保存的 waveform parity metrics；"
+        "task-specific semantic comparator 计为 non-waveform rows。指标采用仿真器式表述："
+        "relative RMS error 描述尺度归一化波形偏差，absolute voltage error 约束低摆幅或近零信号。"
     )
     lines.append("")
     lines.append(
-        "| Target | Waveform Rows | Non-Waveform Rows | Current PASS | "
-        "P95<=0.05 Max<=0.10 | P95<=0.10 Max<=0.15 | P95<=0.14 Max<=0.22 | P95<=0.20 Max<=0.30 | "
-        "Worst P95 | Worst Max | Worst Abs V |"
+        "| 目标 | 波形行 | 非波形行 | 当前 PASS | "
+        "最差 relative RMS | 最差 row-mean relative RMS | 最差 RMS V | 最差 Abs V |"
     )
-    lines.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
+    lines.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
     for row in tolerance:
         lines.append(
             f"| `{row['target']}` | {row['waveform_rows']} | {row['non_waveform_rows']} | "
-            f"{row['current_passed_rows']} | {row['strict_p95_0p05_max_0p10']} | "
-            f"{row['strict_p95_0p10_max_0p15']} | {row['current_core_p95_0p14_max_0p22']} | "
-            f"{row['relaxed_p95_0p20_max_0p30']} | {fmt(row['max_p95_nrmse'])} | "
-            f"{fmt(row['max_max_nrmse'])} | {fmt(row['max_abs_v'])} |"
+            f"{row['current_passed_rows']} | {fmt(row['max_relative_rms'])} | "
+            f"{fmt(row['max_row_mean_relative_rms'])} | {fmt(row['max_rms_v'])} | "
+            f"{fmt(row['max_abs_v'])} |"
         )
 
     lines.append("")
-    lines.append("## Non-PASS Rows")
+    lines.append("## Non-PASS 行")
     lines.append("")
     if nonpasses:
-        lines.append("| Report | Entry | Form | Backend | Mode | Status | Notes |")
+        lines.append("| 报告 | Entry | Form | Backend | Mode | Status | Notes |")
         lines.append("| --- | --- | --- | --- | --- | --- | --- |")
         for row in nonpasses:
             notes = "; ".join(str(item) for item in row.get("notes", []))
@@ -539,24 +628,24 @@ def write_markdown(payload: dict[str, object], path: Path) -> None:
                 f"{row['backend']} | `{row['mode']}` | {row['status']} | {notes} |"
             )
     else:
-        lines.append("No non-PASS rows in the included reports.")
+        lines.append("包含的报告中没有 non-PASS rows。")
 
     lines.append("")
-    lines.append("## Outliers")
+    lines.append("## 离群行")
     lines.append("")
     for title, key in [
-        ("Smallest Spectre-AX / Fast-Skip Speedups", "smallest_ax_fast_speedups"),
-        ("Largest Spectre-AX / Fast-Skip Speedups", "largest_ax_fast_speedups"),
-        ("Slowest Fast-Skip Cases", "slowest_fast_skip_cases"),
+        ("Spectre-AX / Fast-Skip 最小加速比", "smallest_ax_fast_speedups"),
+        ("Spectre-AX / Fast-Skip 最大加速比", "largest_ax_fast_speedups"),
+        ("Fast-Skip 最慢样例", "slowest_fast_skip_cases"),
     ]:
         lines.append(f"### {title}")
         lines.append("")
         rows = outliers[key]
         if not rows:
-            lines.append("No rows.")
+            lines.append("无 rows。")
             lines.append("")
             continue
-        lines.append("| Report | Entry | Form | Task | Value | EVAS s | Spectre s | EVAS steps | Spectre steps |")
+        lines.append("| 报告 | Entry | Form | Task | 数值 | EVAS s | Spectre s | EVAS steps | Spectre steps |")
         lines.append("| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |")
         for row in rows:
             value = row.get("spectre_over_evas_speedup", row.get("wall_time_s"))
@@ -569,12 +658,21 @@ def write_markdown(payload: dict[str, object], path: Path) -> None:
             )
         lines.append("")
 
+    while lines and lines[-1] == "":
+        lines.pop()
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def build_payload(paths: list[Path], outlier_limit: int) -> dict[str, object]:
+def build_payload(
+    paths: list[Path],
+    outlier_limit: int,
+    *,
+    self_consistency_json: Path | None = None,
+) -> dict[str, object]:
     reports = [load_report(path) for path in paths]
+    combined_equivalence_gated = combined_speedup_stats(reports, gated=True)
+    per_report_equivalence_gated = per_report_speedup_stats(reports, gated=True)
     return {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "reports": [
@@ -588,11 +686,15 @@ def build_payload(paths: list[Path], outlier_limit: int) -> dict[str, object]:
             for report in reports
         ],
         "combined_mode_time_stats": combined_mode_time_stats(reports),
-        "combined_accuracy_gated_speedup_stats": combined_speedup_stats(reports, gated=True),
+        "combined_equivalence_gated_speedup_stats": combined_equivalence_gated,
+        "combined_accuracy_gated_speedup_stats": combined_equivalence_gated,
         "combined_raw_speedup_stats": combined_speedup_stats(reports, gated=False),
-        "per_report_accuracy_gated_speedup_stats": per_report_speedup_stats(reports, gated=True),
+        "per_report_equivalence_gated_speedup_stats": per_report_equivalence_gated,
+        "per_report_accuracy_gated_speedup_stats": per_report_equivalence_gated,
         "fast_over_strict_stats": fast_over_strict_stats(reports),
-        "tolerance_sweep_stats": tolerance_sweep_stats(reports),
+        "waveform_diagnostic_stats": waveform_diagnostic_stats(reports),
+        "tolerance_sweep_stats": waveform_diagnostic_stats(reports),
+        "spectre_self_consistency_anchor": load_self_consistency_anchor(self_consistency_json),
         "nonpass_rows": nonpass_rows(reports),
         "outliers": outlier_rows(reports, outlier_limit),
     }
@@ -604,6 +706,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--out-md", type=Path, default=DEFAULT_REPORT_MD)
     parser.add_argument("--out-json", type=Path, default=DEFAULT_REPORT_JSON)
     parser.add_argument("--outlier-limit", type=int, default=10)
+    parser.add_argument(
+        "--self-consistency-json",
+        type=Path,
+        default=DEFAULT_SELF_CONSISTENCY_JSON,
+        help="optional Spectre mode self-consistency artifact to cite",
+    )
     return parser.parse_args()
 
 
@@ -613,7 +721,16 @@ def main() -> int:
     missing = [path for path in paths if not path.exists()]
     if missing:
         raise SystemExit("missing reports: " + ", ".join(rel(path) for path in missing))
-    payload = build_payload(paths, args.outlier_limit)
+    self_consistency_json = (
+        args.self_consistency_json
+        if args.self_consistency_json.is_absolute()
+        else ROOT / args.self_consistency_json
+    )
+    payload = build_payload(
+        paths,
+        args.outlier_limit,
+        self_consistency_json=self_consistency_json,
+    )
 
     out_json = args.out_json if args.out_json.is_absolute() else ROOT / args.out_json
     out_md = args.out_md if args.out_md.is_absolute() else ROOT / args.out_md

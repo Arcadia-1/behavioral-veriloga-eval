@@ -43,14 +43,61 @@ SCHEMA_VERSION = "same-server-speed.v1"
 ARTIFACT_KIND = "candidate_same_server_evas_spectre_timing"
 NO_CLAIM_REASON = (
     "Same-server timing is measured directly on one host and the artifact emits "
-    "checker/waveform accuracy gates. Paper-facing speed claims should use only "
-    "accuracy-gated rows and still need repeated cold/warm runs."
+    "checker/waveform Spectre-equivalence gates. Paper-facing speed claims should use only "
+    "equivalence-gated rows and still need repeated cold/warm runs."
 )
 
 
-SPECTRE_MODES: dict[str, tuple[str, ...]] = {
-    "classic": (),
-    "ax": ("+preset=ax", "+mt"),
+@dataclass(frozen=True)
+class SpectreMode:
+    cli_args: tuple[str, ...]
+    label: str
+    normalize_settings: bool = False
+    half_maxstep: bool = False
+
+
+NORMALIZED_SPECTRE_SIMULATOR_OPTIONS = {
+    "reltol": "1e-5",
+    "vabstol": "1e-8",
+    "iabstol": "1e-12",
+    "gmin": "1e-12",
+}
+NORMALIZED_SPECTRE_TRAN_OPTIONS = {
+    "errpreset": "conservative",
+}
+
+
+SPECTRE_MODES: dict[str, SpectreMode] = {
+    "classic": SpectreMode((), "legacy non-AX Spectre path"),
+    "ax": SpectreMode(("+preset=ax", "+mt"), "legacy alias for ax_speed"),
+    "ax_speed": SpectreMode(("+preset=ax", "+mt"), "fast Spectre AX preset speed baseline"),
+    "spectre_ax_default_speed": SpectreMode(("+preset=ax", "+mt"), "fast Spectre AX preset speed baseline"),
+    "ax_normalized": SpectreMode(
+        ("+preset=ax", "+mt"),
+        "AX preset with explicit shared tran/options settings for precision ranking",
+        normalize_settings=True,
+    ),
+    "spectre_ax_equalized_precision": SpectreMode(
+        ("+preset=ax", "+mt"),
+        "AX preset with explicit shared tran/options settings for precision ranking",
+        normalize_settings=True,
+    ),
+    "reference_strict_primary": SpectreMode(
+        (),
+        "non-AX Spectre reference with explicit shared tran/options settings",
+        normalize_settings=True,
+    ),
+    "spectre_reference_strict_primary": SpectreMode(
+        (),
+        "non-AX Spectre reference with explicit shared tran/options settings",
+        normalize_settings=True,
+    ),
+    "reference_strict_halfstep": SpectreMode(
+        (),
+        "non-AX Spectre reference sensitivity run with explicit half maxstep when present",
+        normalize_settings=True,
+        half_maxstep=True,
+    ),
 }
 
 
@@ -513,6 +560,184 @@ def materialize_runnable_gold(
     return tb_path, notes
 
 
+def is_spectre_tran_line(line: str) -> bool:
+    stripped = line.strip()
+    return bool(stripped) and not stripped.startswith(("//", "*")) and re.match(r"^tran\b", stripped) is not None
+
+
+def is_spectre_simulator_options_line(line: str) -> bool:
+    stripped = line.strip()
+    return (
+        bool(stripped)
+        and not stripped.startswith(("//", "*"))
+        and re.match(r"^simulatorOptions\s+options\b", stripped) is not None
+    )
+
+
+def strip_line_for_manifest(line: str | None) -> str | None:
+    if line is None:
+        return None
+    return line.strip() or None
+
+
+def split_spectre_inline_comment(line: str) -> tuple[str, str, str]:
+    newline = "\n" if line.endswith("\n") else ""
+    body = line[:-1] if newline else line
+    marker = body.find("//")
+    if marker < 0:
+        return body, "", newline
+    return body[:marker].rstrip(), body[marker:], newline
+
+
+def upsert_spectre_assignment(line: str, key: str, value: str) -> str:
+    body, comment, newline = split_spectre_inline_comment(line)
+    pattern = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(key)}\s*=\s*[^ \t]+")
+    replacement = f"{key}={value}"
+    if pattern.search(body):
+        body = pattern.sub(replacement, body, count=1)
+    else:
+        body = body.rstrip() + f" {replacement}"
+    if comment:
+        body = f"{body.rstrip()} {comment}"
+    return body + newline
+
+
+def extract_spectre_assignment(line: str | None, key: str) -> str | None:
+    if line is None:
+        return None
+    match = re.search(rf"(?<![A-Za-z0-9_]){re.escape(key)}\s*=\s*([^ \t\n]+)", line)
+    if match is None:
+        return None
+    return match.group(1).strip()
+
+
+def halve_spectre_duration_token(token: str) -> str | None:
+    match = re.fullmatch(
+        r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)([A-Za-zµ]*)",
+        token.strip(),
+    )
+    if match is None:
+        return None
+    value = float(match.group(1))
+    return f"{value / 2.0:.12g}{match.group(2)}"
+
+
+def extract_spectre_run_settings(tb_path: Path) -> dict[str, object]:
+    lines = tb_path.read_text(encoding="utf-8").splitlines()
+    tran_lines = [line.strip() for line in lines if is_spectre_tran_line(line)]
+    option_lines = [line.strip() for line in lines if is_spectre_simulator_options_line(line)]
+    tran_line = tran_lines[0] if tran_lines else None
+    option_line = option_lines[0] if option_lines else None
+    return {
+        "tran_line": strip_line_for_manifest(tran_line),
+        "tran_lines": tran_lines,
+        "simulator_options_line": strip_line_for_manifest(option_line),
+        "simulator_options_lines": option_lines,
+        "maxstep": extract_spectre_assignment(tran_line, "maxstep"),
+        "stop": extract_spectre_assignment(tran_line, "stop"),
+        "errpreset": extract_spectre_assignment(tran_line, "errpreset"),
+        "reltol": extract_spectre_assignment(option_line, "reltol"),
+        "vabstol": extract_spectre_assignment(option_line, "vabstol"),
+        "iabstol": extract_spectre_assignment(option_line, "iabstol"),
+        "gmin": extract_spectre_assignment(option_line, "gmin"),
+    }
+
+
+def normalize_spectre_run_settings(tb_path: Path, *, half_maxstep: bool) -> dict[str, object]:
+    lines = tb_path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original_settings = extract_spectre_run_settings(tb_path)
+    tran_index: int | None = None
+    option_index: int | None = None
+    for index, line in enumerate(lines):
+        if tran_index is None and is_spectre_tran_line(line):
+            tran_index = index
+        if option_index is None and is_spectre_simulator_options_line(line):
+            option_index = index
+
+    half_maxstep_applied = False
+    half_maxstep_from = None
+    half_maxstep_to = None
+    if tran_index is not None:
+        line = lines[tran_index]
+        for key, value in NORMALIZED_SPECTRE_TRAN_OPTIONS.items():
+            line = upsert_spectre_assignment(line, key, value)
+        if half_maxstep:
+            maxstep = extract_spectre_assignment(line, "maxstep")
+            if maxstep is not None:
+                halved = halve_spectre_duration_token(maxstep)
+                if halved is not None:
+                    line = upsert_spectre_assignment(line, "maxstep", halved)
+                    half_maxstep_applied = True
+                    half_maxstep_from = maxstep
+                    half_maxstep_to = halved
+        lines[tran_index] = line
+
+    if option_index is None:
+        option_line = "simulatorOptions options " + " ".join(
+            f"{key}={value}" for key, value in NORMALIZED_SPECTRE_SIMULATOR_OPTIONS.items()
+        )
+        option_line += "\n"
+        insert_at = tran_index if tran_index is not None else len(lines)
+        lines.insert(insert_at, option_line)
+    else:
+        option_line = lines[option_index]
+        for key, value in NORMALIZED_SPECTRE_SIMULATOR_OPTIONS.items():
+            option_line = upsert_spectre_assignment(option_line, key, value)
+        lines[option_index] = option_line
+
+    tb_path.write_text("".join(lines), encoding="utf-8")
+    normalized_settings = extract_spectre_run_settings(tb_path)
+    return {
+        **normalized_settings,
+        "normalized_settings": True,
+        "normalization_profile": "spectre_shared_tran_options_v1",
+        "requested_tran_options": NORMALIZED_SPECTRE_TRAN_OPTIONS,
+        "requested_simulator_options": NORMALIZED_SPECTRE_SIMULATOR_OPTIONS,
+        "original_tran_line": original_settings.get("tran_line"),
+        "original_simulator_options_line": original_settings.get("simulator_options_line"),
+        "half_maxstep_requested": half_maxstep,
+        "half_maxstep_applied": half_maxstep_applied,
+        "half_maxstep_from": half_maxstep_from,
+        "half_maxstep_to": half_maxstep_to,
+    }
+
+
+def build_spectre_settings_manifest(
+    selection: Selection,
+    spectre_mode: str,
+    mode: SpectreMode,
+    *,
+    tb_path: Path,
+    fixture_notes: list[str],
+) -> dict[str, object]:
+    if mode.normalize_settings:
+        settings = normalize_spectre_run_settings(tb_path, half_maxstep=mode.half_maxstep)
+    else:
+        settings = {
+            **extract_spectre_run_settings(tb_path),
+            "normalized_settings": False,
+            "normalization_profile": None,
+            "requested_tran_options": {},
+            "requested_simulator_options": {},
+            "half_maxstep_requested": mode.half_maxstep,
+            "half_maxstep_applied": False,
+            "half_maxstep_from": None,
+            "half_maxstep_to": None,
+        }
+    return {
+        "entry_id": selection.row["entry_id"],
+        "form": selection.row["form"],
+        "variant": selection.row.get("variant") or "gold",
+        "task_id": selection.task_id,
+        "mode": spectre_mode,
+        "mode_label": mode.label,
+        "cli_args": list(mode.cli_args),
+        "testbench_path": rel(tb_path),
+        "fixture_notes": fixture_notes,
+        **settings,
+    }
+
+
 def stage_selected_mode_task(
     selection: Selection,
     mode_id: str,
@@ -603,12 +828,25 @@ def run_evas_mode(
     }
 
 
-def copy_gold_to_run_dir(selection: Selection, run_dir: Path) -> tuple[Path, list[str]]:
+def copy_gold_to_run_dir(
+    selection: Selection,
+    run_dir: Path,
+    *,
+    spectre_mode: str,
+    mode: SpectreMode,
+) -> tuple[Path, list[str], dict[str, object]]:
     if run_dir.exists():
         shutil.rmtree(run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
     tb_path, fixture_notes = materialize_runnable_gold(selection, run_dir)
-    return tb_path, fixture_notes
+    settings_manifest = build_spectre_settings_manifest(
+        selection,
+        spectre_mode,
+        mode,
+        tb_path=tb_path,
+        fixture_notes=fixture_notes,
+    )
+    return tb_path, fixture_notes, settings_manifest
 
 
 def run_spectre_direct(
@@ -620,8 +858,14 @@ def run_spectre_direct(
 ) -> dict[str, object]:
     if spectre_mode not in SPECTRE_MODES:
         raise ValueError(f"unknown Spectre mode: {spectre_mode}")
+    mode = SPECTRE_MODES[spectre_mode]
     run_dir = selection_output_root(output_root, selection, "spectre") / spectre_mode
-    tb_path, fixture_notes = copy_gold_to_run_dir(selection, run_dir)
+    tb_path, fixture_notes, settings_manifest = copy_gold_to_run_dir(
+        selection,
+        run_dir,
+        spectre_mode=spectre_mode,
+        mode=mode,
+    )
     raw_dir = run_dir / f"{tb_path.stem}.raw"
     log_path = run_dir / "spectre.out"
     cmd = [
@@ -635,7 +879,7 @@ def run_spectre_direct(
         "psfascii",
         "-raw",
         str(raw_dir),
-        *SPECTRE_MODES[spectre_mode],
+        *mode.cli_args,
         "+lqtimeout",
         "900",
         "-maxw",
@@ -644,6 +888,7 @@ def run_spectre_direct(
         "5",
         "+logstatus",
     ]
+    settings_manifest["command"] = " ".join(cmd)
     t0 = time.perf_counter()
     try:
         proc = subprocess.run(
@@ -667,6 +912,8 @@ def run_spectre_direct(
             "returncode": None,
             "timing": {},
             "command": " ".join(cmd),
+            "spectre_settings": settings_manifest,
+            "fixture_notes": fixture_notes,
             "result_root": rel(run_dir),
             "stdout_tail": ((exc.stdout or "") + "\n" + (exc.stderr or ""))[-2000:],
         }
@@ -706,6 +953,7 @@ def run_spectre_direct(
         "returncode": proc.returncode,
         "timing": timing,
         "command": " ".join(cmd),
+        "spectre_settings": settings_manifest,
         "result_root": rel(run_dir),
         "fixture_notes": fixture_notes,
         "notes": parse_notes + list(behavior["notes"]),
@@ -868,7 +1116,18 @@ def classify_parity(parity: dict[str, object]) -> tuple[str, str | None]:
     return "fail", reason
 
 
-def apply_accuracy_gates(results: list[dict[str, object]], spectre_modes: list[str]) -> None:
+REFERENCE_SPECTRE_MODE_PRIORITY = (
+    "spectre_reference_strict_primary",
+    "reference_strict_primary",
+    "classic",
+)
+
+
+def result_mode_label(result: dict[str, object]) -> str:
+    return f"{result.get('backend')}/{result.get('mode')}"
+
+
+def apply_equivalence_gates(results: list[dict[str, object]], spectre_modes: list[str]) -> None:
     grouped: dict[tuple[str, str, str], dict[tuple[str, str], dict[str, object]]] = defaultdict(dict)
     for result in results:
         key = (
@@ -947,13 +1206,100 @@ def apply_accuracy_gates(results: list[dict[str, object]], spectre_modes: list[s
                 status = "FAIL"
             elif blocked:
                 status = "BLOCKED"
-            result["accuracy_gate"] = {
+            gate = {
                 "status": status,
                 "reasons": reasons,
                 "blocked": blocked,
                 "strict_evas_parity": strict_parity,
                 "spectre_parity": spectre_parity,
             }
+            result["equivalence_gate"] = gate
+            result["accuracy_gate"] = gate  # Legacy artifact key; prefer equivalence_gate.
+
+
+def reference_comparisons(results: list[dict[str, object]]) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    rows: list[dict[str, object]] = []
+    summary: list[dict[str, object]] = []
+    grouped: dict[tuple[str, str, str, str], dict[tuple[str, str], dict[str, object]]] = defaultdict(dict)
+    for result in results:
+        key = (
+            str(result["entry_id"]),
+            str(result["form"]),
+            str(result.get("variant") or "gold"),
+            str(result["task_id"]),
+        )
+        grouped[key][(str(result["backend"]), str(result["mode"]))] = result
+
+    for (entry_id, form, variant, task_id), cells in sorted(grouped.items()):
+        reference: dict[str, object] | None = None
+        for mode in REFERENCE_SPECTRE_MODE_PRIORITY:
+            candidate = cells.get(("spectre", mode))
+            if candidate is not None:
+                reference = candidate
+                break
+        if reference is None:
+            continue
+        reference_csv = resolve_artifact_path(reference.get("csv_path"))
+        if reference.get("simulation_ok") is not True or reference_csv is None:
+            continue
+
+        for (_backend, _mode), candidate in sorted(cells.items()):
+            if candidate is reference:
+                continue
+            candidate_csv = resolve_artifact_path(candidate.get("csv_path"))
+            comparison = compare_csv_pair(task_id, candidate_csv, reference_csv)
+            status = str(comparison.get("status", "blocked"))
+            rows.append(
+                {
+                    "entry_id": entry_id,
+                    "form": form,
+                    "variant": variant,
+                    "task_id": task_id,
+                    "candidate": result_mode_label(candidate),
+                    "reference": result_mode_label(reference),
+                    "candidate_simulation_ok": candidate.get("simulation_ok") is True,
+                    "candidate_behavior_ok": candidate.get("behavior_ok"),
+                    "reference_behavior_ok": reference.get("behavior_ok"),
+                    "status": status,
+                    "max_abs_v": comparison.get("max_abs_v"),
+                    "max_rmse_v": comparison.get("max_rmse_v"),
+                    "mean_relative_rms_error": comparison.get("mean_relative_rms_error"),
+                    "max_relative_rms_error": comparison.get("max_relative_rms_error"),
+                    "signals_compared": comparison.get("signals_compared"),
+                    "reason": comparison.get("reason"),
+                    "comparison": comparison,
+                }
+            )
+
+    by_candidate: dict[str, list[dict[str, object]]] = defaultdict(list)
+    for row in rows:
+        by_candidate[str(row["candidate"])].append(row)
+    for candidate, candidate_rows in sorted(by_candidate.items()):
+        comparable = [
+            row for row in candidate_rows if str(row.get("status")) in {"passed", "needs_review"}
+        ]
+        max_abs_values = [
+            float(row["max_abs_v"])
+            for row in comparable
+            if float_or_none(row.get("max_abs_v")) is not None
+        ]
+        max_rel_values = [
+            float(row["max_relative_rms_error"])
+            for row in comparable
+            if float_or_none(row.get("max_relative_rms_error")) is not None
+        ]
+        summary.append(
+            {
+                "candidate": candidate,
+                "runs": len(candidate_rows),
+                "passed_count": sum(1 for row in candidate_rows if row.get("status") == "passed"),
+                "needs_review_count": sum(1 for row in candidate_rows if row.get("status") == "needs_review"),
+                "blocked_count": sum(1 for row in candidate_rows if row.get("status") == "blocked"),
+                "max_abs_v_worst": max(max_abs_values) if max_abs_values else None,
+                "max_relative_rms_error_worst": max(max_rel_values) if max_rel_values else None,
+            }
+        )
+    return rows, summary
 
 
 def summarize(results: list[dict[str, object]]) -> dict[str, object]:
@@ -969,6 +1315,7 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
                 "backend": backend,
                 "mode": mode,
                 "runs": len(rows),
+                "simulation_ok_count": sum(1 for row in rows if row.get("simulation_ok") is True),
                 "pass_count": sum(1 for row in rows if row.get("ok") is True),
                 "nonpass_count": sum(1 for row in rows if row.get("ok") is not True),
                 "total_wall_time_s": sum(walls),
@@ -978,7 +1325,7 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
         )
 
     speedups: list[dict[str, object]] = []
-    accuracy_gated_speedups: list[dict[str, object]] = []
+    equivalence_gated_speedups: list[dict[str, object]] = []
     grouped: dict[tuple[str, str, str, str], dict[tuple[str, str], dict[str, object]]] = defaultdict(dict)
     for result in results:
         key = (
@@ -1012,8 +1359,9 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
                         "spectre_over_evas_speedup": spectre_wall / evas_wall if evas_wall > 0 else None,
                     }
                 )
-                if evas.get("accuracy_gate", {}).get("status") == "PASS":
-                    accuracy_gated_speedups.append(speedups[-1])
+                gate = evas.get("equivalence_gate", evas.get("accuracy_gate", {}))
+                if isinstance(gate, dict) and gate.get("status") == "PASS":
+                    equivalence_gated_speedups.append(speedups[-1])
 
     gate_summary: list[dict[str, object]] = []
     by_evas_mode: dict[str, list[dict[str, object]]] = defaultdict(list)
@@ -1021,7 +1369,10 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
         if result.get("backend") == "evas":
             by_evas_mode[str(result["mode"])].append(result)
     for mode, rows in sorted(by_evas_mode.items()):
-        statuses = [str(row.get("accuracy_gate", {}).get("status", "MISSING")) for row in rows]
+        statuses = []
+        for row in rows:
+            gate = row.get("equivalence_gate", row.get("accuracy_gate", {}))
+            statuses.append(str(gate.get("status", "MISSING")) if isinstance(gate, dict) else "MISSING")
         gate_summary.append(
             {
                 "mode": mode,
@@ -1033,11 +1384,21 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
             }
         )
 
+    equivalence_gated_geomean = geomean(
+        [
+            float(row["spectre_over_evas_speedup"])
+            for row in equivalence_gated_speedups
+            if float_or_none(row.get("spectre_over_evas_speedup")) is not None
+        ]
+    )
+    ref_comparison_rows, ref_comparison_summary = reference_comparisons(results)
     return {
         "mode_summary": mode_summary,
+        "equivalence_gate_summary": gate_summary,
         "accuracy_gate_summary": gate_summary,
         "speedups": speedups,
-        "accuracy_gated_speedups": accuracy_gated_speedups,
+        "equivalence_gated_speedups": equivalence_gated_speedups,
+        "accuracy_gated_speedups": equivalence_gated_speedups,
         "geomean_spectre_over_evas_speedup": geomean(
             [
                 float(row["spectre_over_evas_speedup"])
@@ -1045,13 +1406,10 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
                 if float_or_none(row.get("spectre_over_evas_speedup")) is not None
             ]
         ),
-        "geomean_accuracy_gated_spectre_over_evas_speedup": geomean(
-            [
-                float(row["spectre_over_evas_speedup"])
-                for row in accuracy_gated_speedups
-                if float_or_none(row.get("spectre_over_evas_speedup")) is not None
-            ]
-        ),
+        "geomean_equivalence_gated_spectre_over_evas_speedup": equivalence_gated_geomean,
+        "geomean_accuracy_gated_spectre_over_evas_speedup": equivalence_gated_geomean,
+        "reference_comparisons": ref_comparison_rows,
+        "reference_comparison_summary": ref_comparison_summary,
     }
 
 
@@ -1136,6 +1494,15 @@ def write_fixture_audit_markdown(path: Path, artifact: dict[str, object]) -> Non
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def markdown_table_cell(value: object, *, code: bool = False) -> str:
+    if value is None:
+        return "-"
+    text = str(value).replace("\n", "<br>").replace("|", "\\|").strip()
+    if not text:
+        return "-"
+    return f"`{text}`" if code else text
+
+
 def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     summary = artifact["summary"]
     lines = [
@@ -1156,15 +1523,16 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
         "",
         "## Mode Summary",
         "",
-        "| Backend | Mode | Runs | PASS | Non-PASS | Total wall s | Mean wall s |",
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+        "| Backend | Mode | Runs | Sim OK | Behavior PASS | Behavior non-PASS | Total wall s | Mean wall s |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in summary["mode_summary"]:
         lines.append(
-            "| {backend} | {mode} | {runs} | {pass_count} | {nonpass_count} | {total:.3f} | {mean} |".format(
+            "| {backend} | {mode} | {runs} | {simulation_ok_count} | {pass_count} | {nonpass_count} | {total:.3f} | {mean} |".format(
                 backend=row["backend"],
                 mode=row["mode"],
                 runs=row["runs"],
+                simulation_ok_count=row.get("simulation_ok_count", "-"),
                 pass_count=row["pass_count"],
                 nonpass_count=row["nonpass_count"],
                 total=float(row["total_wall_time_s"]),
@@ -1172,16 +1540,113 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
             )
         )
 
+    if summary.get("reference_comparison_summary"):
+        lines.extend(
+            [
+                "",
+                "## Reference Comparison Summary",
+                "",
+                "Each candidate is compared against the same-row strict Spectre reference. "
+                "The waveform status uses the simulator-equivalence policy from `run_gold_dual_suite.py`.",
+                "",
+                "| Candidate | Runs | Passed | Needs review | Blocked | Worst max abs V | Worst max relative RMS error |",
+                "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for row in summary["reference_comparison_summary"]:
+            lines.append(
+                "| {candidate} | {runs} | {passed} | {review} | {blocked} | {max_abs} | {max_rel} |".format(
+                    candidate=markdown_table_cell(row["candidate"], code=True),
+                    runs=row["runs"],
+                    passed=row["passed_count"],
+                    review=row["needs_review_count"],
+                    blocked=row["blocked_count"],
+                    max_abs="-"
+                    if row["max_abs_v_worst"] is None
+                    else f"{float(row['max_abs_v_worst']):.6g}",
+                    max_rel="-"
+                    if row["max_relative_rms_error_worst"] is None
+                    else f"{float(row['max_relative_rms_error_worst']):.6g}",
+                )
+            )
+
+    if summary.get("reference_comparisons"):
+        lines.extend(
+            [
+                "",
+                "## Per-Row Reference Comparisons",
+                "",
+                "| Entry | Form | Variant | Candidate | Reference | Behavior OK | Waveform | Max abs V | Max relative RMS error | Signals |",
+                "| --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: |",
+            ]
+        )
+        for row in summary["reference_comparisons"]:
+            lines.append(
+                "| `{entry}` | `{form}` | `{variant}` | {candidate} | {reference} | `{behavior}` | `{status}` | {max_abs} | {max_rel} | {signals} |".format(
+                    entry=row["entry_id"],
+                    form=row["form"],
+                    variant=row.get("variant") or "gold",
+                    candidate=markdown_table_cell(row["candidate"], code=True),
+                    reference=markdown_table_cell(row["reference"], code=True),
+                    behavior=row.get("candidate_behavior_ok"),
+                    status=row["status"],
+                    max_abs="-"
+                    if row["max_abs_v"] is None
+                    else f"{float(row['max_abs_v']):.6g}",
+                    max_rel="-"
+                    if row["max_relative_rms_error"] is None
+                    else f"{float(row['max_relative_rms_error']):.6g}",
+                    signals=row.get("signals_compared") or "-",
+                )
+            )
+
+    spectre_results = [row for row in artifact["results"] if row.get("backend") == "spectre"]
+    if spectre_results:
+        lines.extend(
+            [
+                "",
+                "## Spectre Run Settings",
+                "",
+                "This table records the final staged testbench settings used by Spectre. "
+                "For normalized precision-ranking modes, `tran` and `simulatorOptions` are rewritten "
+                "before Spectre is launched; speed-baseline modes keep the staged testbench unchanged.",
+                "",
+                "| Entry | Form | Variant | Mode | Normalized | CLI args | tran line | simulatorOptions line | Result root |",
+                "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            ]
+        )
+        for result in spectre_results:
+            settings = result.get("spectre_settings", {})
+            if not isinstance(settings, dict):
+                settings = {}
+            lines.append(
+                "| `{entry}` | `{form}` | `{variant}` | `{mode}` | `{normalized}` | {cli_args} | {tran_line} | {options_line} | {result_root} |".format(
+                    entry=result["entry_id"],
+                    form=result["form"],
+                    variant=result.get("variant") or "gold",
+                    mode=result["mode"],
+                    normalized=settings.get("normalized_settings"),
+                    cli_args=markdown_table_cell(" ".join(str(item) for item in settings.get("cli_args", [])), code=True),
+                    tran_line=markdown_table_cell(settings.get("tran_line"), code=True),
+                    options_line=markdown_table_cell(settings.get("simulator_options_line"), code=True),
+                    result_root=markdown_table_cell(result.get("result_root"), code=True),
+                )
+            )
+
     lines.extend(
         [
             "",
-            "## Accuracy Gate Summary",
+            "## Spectre-Equivalence Gate Summary",
+            "",
+            "These gates check whether EVAS preserves task behavior and stays within "
+            "accepted Spectre-equivalent waveform tolerance. They are not a higher-than-Spectre "
+            "precision target.",
             "",
             "| EVAS mode | Runs | Gate PASS | Gate FAIL | Gate BLOCKED | Gate missing |",
             "| --- | ---: | ---: | ---: | ---: | ---: |",
         ]
     )
-    for row in summary["accuracy_gate_summary"]:
+    for row in summary.get("equivalence_gate_summary") or summary.get("accuracy_gate_summary", []):
         lines.append(
             "| {mode} | {runs} | {passed} | {failed} | {blocked} | {missing} |".format(
                 mode=row["mode"],
@@ -1196,7 +1661,7 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     lines.extend(
         [
             "",
-            "## Per-Row Accuracy Gates",
+            "## Per-Row Spectre-Equivalence Gates",
             "",
             "| Entry | Form | Variant | EVAS mode | Gate | Reasons | Blocked |",
             "| --- | --- | --- | --- | --- | --- | --- |",
@@ -1205,7 +1670,7 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     for result in artifact["results"]:
         if result.get("backend") != "evas":
             continue
-        gate = result.get("accuracy_gate", {})
+        gate = result.get("equivalence_gate", result.get("accuracy_gate", {}))
         if not isinstance(gate, dict):
             gate = {}
         reasons = ", ".join(str(item) for item in gate.get("reasons", []))
@@ -1249,13 +1714,13 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     lines.extend(
         [
             "",
-            "## Accuracy-Gated Speedups",
+            "## Spectre-Equivalence-Gated Speedups",
             "",
             "| Entry | Form | Variant | Spectre mode | EVAS mode | Spectre wall s | EVAS wall s | Spectre/EVAS |",
             "| --- | --- | --- | --- | --- | ---: | ---: | ---: |",
         ]
     )
-    for row in summary["accuracy_gated_speedups"]:
+    for row in summary.get("equivalence_gated_speedups") or summary.get("accuracy_gated_speedups", []):
         speedup = row["spectre_over_evas_speedup"]
         lines.append(
             "| `{entry}` | `{form}` | `{variant}` | `{smode}` | `{emode}` | {sw:.3f} | {ew:.3f} | {sp} |".format(
@@ -1276,9 +1741,12 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
             "## Interpretation Guardrails",
             "",
             "- Speedups use `simulation_ok`, so rows without a behavior checker can still contribute timing if the simulator produced waveforms.",
-            "- Accuracy-gated speedups require candidate behavior pass, strict-EVAS parity, and parity to every selected Spectre mode.",
-            "- `spectre/ax` matches the previous bridge default but Spectre X may ignore `errpreset` and `maxstep` from the testbench.",
-            "- `spectre/classic` is available to measure the stricter non-X path when requested.",
+            "- Equivalence-gated speedups require candidate behavior pass, strict-EVAS parity, and parity to every selected Spectre mode.",
+            "- `spectre/ax_speed` is the main fast Spectre speed baseline; `spectre/ax` remains a legacy alias for the same command-line preset.",
+            "- `spectre/ax_normalized` keeps `+preset=ax +mt` but rewrites the staged testbench to the shared precision settings before launch.",
+            "- `spectre/reference_strict_primary` uses the same staged `tran`/`simulatorOptions` settings without runner-added AX preset.",
+            "- `spectre/classic` is the stricter non-X reference path; AX/classic waveform differences are expected and should anchor EVAS tolerance rather than imply a single exact waveform truth.",
+            "- The waveform gate is an acceptance tolerance for Spectre-equivalent behavioral output, not a requirement that EVAS exceed Spectre precision.",
             "- Cold Spectre runs include AHDL CMI compilation; warm-cache repetitions should be reported separately.",
             "- A `BLOCKED` gate is not evidence of wrong behavior; it means the checker or reference evidence is incomplete.",
         ]
@@ -1298,6 +1766,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--limit", type=int, default=2)
     ap.add_argument("--evas-mode", action="append", choices=tuple(EVAS_MODES), default=[])
     ap.add_argument("--spectre-mode", action="append", choices=tuple(SPECTRE_MODES), default=[])
+    ap.add_argument("--skip-evas", action="store_true", help="Run Spectre modes only; useful for settings smoke tests.")
     ap.add_argument("--timeout-s", type=int, default=300)
     ap.add_argument("--jobs", type=int, default=1, help="Parallel backend/mode jobs. Use 8 for matrix runs on thu-sui.")
     ap.add_argument(
@@ -1330,7 +1799,7 @@ def main() -> int:
         limit=args.limit,
     )
     selections = [prepare_selection(row) for row in selected_rows]
-    evas_modes = args.evas_mode or ["strict_current", "profile_fast_skip_source_error_control"]
+    evas_modes = [] if args.skip_evas else (args.evas_mode or ["strict_current", "profile_fast_skip_source_error_control"])
     spectre_modes = args.spectre_mode or ["ax"]
 
     if args.audit_fixtures_only:
@@ -1355,7 +1824,7 @@ def main() -> int:
         timeout_s=args.timeout_s,
         jobs=max(1, args.jobs),
     )
-    apply_accuracy_gates(results, spectre_modes)
+    apply_equivalence_gates(results, spectre_modes)
 
     artifact = {
         "schema_version": SCHEMA_VERSION,

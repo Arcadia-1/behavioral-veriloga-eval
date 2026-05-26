@@ -34,7 +34,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def read_entries() -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         if payload:
             payload["_manifest"] = rel(path)

@@ -13,42 +13,70 @@ organized by circuit function and certified with EVAS/Spectre evidence; EVAS is
 the fast debug evaluator, while Spectre remains the reference simulator for
 gold promotion and paper-facing claims.
 
+Reference simulator should be read as a Spectre-equivalence target, not a demand
+for EVAS to exceed Spectre numerical precision. `spectre/classic` is the
+conservative non-X reference path, while `spectre/ax` is the fast official
+baseline for speed comparisons; EVAS should match the task behavior and remain
+within the practical AX/classic waveform tolerance envelope.
+
+## Benchmark Selection Principle
+
+The benchmark is selected for circuit-function completeness first. Verilog-A
+simulation acceleration is an important motivation for behavioral modeling, but
+it is not the only reason an entry belongs in vaBench. A task can be valuable
+when it covers a common analog/mixed-signal function, macro helper,
+measurement/testbench behavior, source model, or composed circuit flow that
+designers would plausibly use in system-level IC modeling.
+
+EVAS compatibility is the certification and execution boundary: scored entries
+must stay within the supported voltage-domain/event-driven subset and expose
+observable behavior that deterministic checkers can validate. Pure evaluator
+feature tests remain L0 conformance rather than L1/L2 benchmark content.
+
 ## Scoring Surface
 
 | Surface | What it contains | Counted in vaBench score | Paper role |
 | --- | --- | --- | --- |
 | L1 core circuit functions | Reusable behavioral IC blocks such as DACs, ADC quantizers, comparators, VCO/PFD/dividers, calibration/DEM, filters, limiters, and sample/hold blocks. | Yes | Main model-capability score. |
-| L2 complete circuit flows | Multi-block or closed-loop flows such as converter chains, PLL slices, calibration loops, measurement flows, and converter front-end flows. | Yes | Higher-level composition score. |
-| Auxiliary scored functions | Measurement and stimulus models when they have a real reusable circuit/testbench contract. | Yes, but report separately or with a smaller slice. | Shows benchmark can evaluate testbench and instrumentation tasks without letting them dominate. |
+| L2 core circuit flows | Multi-block or closed-loop flows such as converter chains, PLL slices, calibration loops, analog signal chains, and converter front-end flows. | Yes | Higher-level composition score. |
+| Support measurement/stimulus functions | Measurement and stimulus models when they have a real reusable circuit/testbench contract. | No for the core circuit score; report as a separate support suite. | Shows benchmark can evaluate testbench and instrumentation tasks without letting them inflate core circuit coverage. |
 | L0 conformance | Syntax legality, source parsing, event scheduling, sampling, and checker semantics. | No | EVAS/Spectre health and regression evidence. |
 | Historical evidence | main120, benchmark-v2, benchmark-balanced, smoke tasks, examples. | No, unless materialized into a certified task. | Discovery source and provenance. |
+
+Paper-facing coverage should keep two denominators visible: core circuit
+coverage for analog/mixed-signal blocks and flows, and support coverage for
+measurement/stimulus entries. The support suite tests whether a model can write
+reusable measurement artifacts and source/schedule behavior, but it must not be
+used to inflate the count of core signal-path or decision-circuit functions.
 
 ## Current Count Vocabulary
 
 | Pool | Count | Meaning |
 | --- | ---: | --- |
-| Current promoted L1 seed functions | 24 | Countable current-seed functions retained in the release package after duplicate/removal policy. |
-| Promoted top-level L1 additions | 32 | Additional L1 functions selected into the release coverage contract. |
-| Selected L2 complete-circuit targets | 16 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
-| Top-level L1/L2 coverage target | 72 | 24 current L1 seeds + 32 selected L1 additions + 16 selected L2 targets, before task-form multiplication. |
-| Excluded historical bases | 2 | `background_calibration_accumulator` is merged; `offset_calibration_fsm` is removed pending redesign. |
+| Current promoted L1 seed functions | 22 | Countable current-seed functions retained in the release package after duplicate/removal policy. |
+| Promoted top-level L1 additions | 29 | Additional L1 functions selected into the release coverage contract. |
+| Selected L2 complete-circuit targets | 13 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
+| Top-level L1/L2 coverage target | 64 | 51 core circuit entries plus 13 measurement/stimulus support entries, before task-form multiplication. |
+| Core score denominator | 51 entries / 184 forms | Certified `track=core` rows currently counted by `score_denominator_manifest.json`. |
+| Support suite | 13 entries / 35 forms | Measurement/stimulus rows reported separately from the main circuit-function score. |
+| Removed weak/duplicate entries in the rebalance | 10 | Readout/control/PLL/DEM duplicates were removed from the core release set. |
 
-The release score should only count materialized, certified tasks. The 32 L1
-additions and 16 L2 targets are top-level coverage commitments; rows still
+The release score should only count materialized, certified tasks. The 29 L1
+additions and 13 L2 targets are top-level coverage commitments; rows still
 pending fresh dual validation stay out of certification claims.
 
 ## Eight Top-Level Categories
 
 | Category | Role in benchmark | Review decision |
 | --- | --- | --- |
-| Data Converters | DAC, ADC, decoder, SAR, and converter-loop behavior. | Core. This should be one of the largest categories. |
-| Comparators and Decision Circuits | Threshold, offset, clocked, StrongARM-style, hysteresis, delay, and window-decision behavior. | Core. Keep detector tasks here when output is a binary decision. |
-| PLL / Clock / Event Timing | VCO, PFD, divider, lock detector, phase accumulator, voltage-domain charge-pump abstraction, sampled loop-filter abstraction, and PLL flows. | Core. Important for event scheduling and mixed-signal timing behavior. |
+| Data Converter Models | DAC, ADC, decoder, SAR, and converter-loop behavior. | Core. This should be one of the largest categories. |
+| Comparator and Decision Circuits | Threshold, offset, clocked, StrongARM-style, hysteresis, delay, and window-decision behavior. | Core. Keep detector tasks here when output is a binary decision. |
+| PLL Clock and Timing Systems | VCO, PFD, divider, lock detector, phase accumulator, voltage-domain charge-pump abstraction, sampled loop-filter abstraction, and PLL flows. | Core. Important for event scheduling and mixed-signal timing behavior. |
 | Calibration, DEM, and Control | Trim controllers, DEM/DWA, pointer selection, element shuffling, gain calibration, and calibration loops. | Core. Must aggressively deduplicate pointer variants. |
-| Measurement and Testbench Instrumentation | Crossing metrics, settling time, gain estimation, peak detection, and artifact-generating measurement flows. | Auxiliary scored. Valid benchmark content, but separate from main circuit-function claims. |
-| Stimulus and Sources | Ramp, burst clock, deterministic noise, dither, and source-driven flows. | Auxiliary scored. Count only reusable source models, not source syntax/conformance cases. |
-| Analog Behavioral Signal Conditioning | Lowpass, integrator, rectifier, clamp, slew limiter, gain amplifier, soft limiter, and signal chains. | Core. Avoid duplicate limiter/clamp variants unless transfer behavior differs. |
-| Sample, Hold, and Analog Memory | Track/hold, aperture, droop/leakage, resettable hold, and converter front-end sampling. | Core. Important converter-front-end primitive. |
+| Measurement Instrumentation Flows | Crossing metrics, settling time, gain estimation, peak detection, and artifact-generating measurement flows. | Support suite. Valid benchmark content, but excluded from main circuit-function score claims. |
+| Stimulus and Source Generators | Ramp, burst clock, deterministic noise, dither, and source-driven flows. | Support suite. Count only reusable source models, not source syntax/conformance cases; exclude from main circuit-function score. |
+| Baseband Signal Conditioning | Lowpass, integrator, rectifier, clamp, slew limiter, gain amplifier, soft limiter, and signal chains. | Core. Avoid duplicate limiter/clamp variants unless transfer behavior differs. |
+| Sampling and Analog Memory | Track/hold, aperture, droop/leakage, resettable hold, and converter front-end sampling. | Core. Important converter-front-end primitive. |
 
 ## Duplicate and Naming Policy
 
@@ -69,9 +97,10 @@ Use this wording:
 
 > vaBench organizes behavioral Verilog-A tasks by analog/mixed-signal IC circuit
 > function. Scored tasks are L1 reusable circuit functions or L2 composed
-> circuit flows. A separate L0 conformance suite isolates EVAS/Spectre syntax,
-> source, event, sampling, and checker semantics. Historical task trees and
-> examples provide source traces and provenance, but a task enters the
+> circuit flows, with reusable measurement and stimulus entries reported as a
+> separate support slice. A separate L0 conformance suite isolates EVAS/Spectre
+> syntax, source, event, sampling, and checker semantics. Historical task trees
+> and examples provide source traces and provenance, but a task enters the
 > release score only after prompt, metadata, checker, gold assets, and
 > EVAS/Spectre certification are reviewed.
 
@@ -79,7 +108,7 @@ Avoid this wording:
 
 > vaBench has 28 functions.
 
-Reason: the current-seed count and the full 72-entry release target are
+Reason: the current-seed count and the full 64-entry release target are
 different quantities and should be reported separately.
 
 Also avoid:
@@ -91,15 +120,15 @@ definition.
 
 ## Next Experimental Direction
 
-1. Keep the current 72-entry package aligned with the score denominator and
+1. Keep the current 64-entry package aligned with the score denominator and
    certification reports.
 2. Materialize selected core L1 additions first: unit-element thermometer DAC,
    clocked ADC quantizer, threshold/delay/hysteresis/window comparators,
    PFD variants, DWA/DEM encoder, ramp/burst/noise/sine sources, gain
    estimator, edge interval timer, resettable sample/hold, and distinct
    signal-conditioning blocks.
-3. Materialize and validate selected L2 flows: ADC/DAC chain, weighted SAR loop,
-   flash ADC mini-array, pipeline ADC chain, PLL timing slices, calibration loop,
-   measurement and gain-extraction flows, ADC/DAC source sweep flow,
+3. Materialize and validate selected L2 flows: converter static-linearity flow, weighted SAR loop,
+   flash ADC mini-array, compact pipeline ADC residue chain, ADPLL/CPPLL flows, calibration loop,
+   measurement and gain-extraction support flows, programmable stimulus sequencer support flow,
    amplifier/filter chain, and converter front-end.
 4. Keep L0 conformance growth parallel but separate from benchmark scoring.

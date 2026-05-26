@@ -153,10 +153,10 @@ Current mismatch:
 
 | Historical hint | Release mapping |
 | --- | --- |
-| `phase-detector` | `PLL / Clock / Event Timing` |
+| `phase-detector` | `PLL Clock and Timing Systems` |
 | `analog-events` | map to the concrete analog-facing circuit family; keep pure timer/event primitives as conformance-only extraction |
-| `signal-source` | split: real source generators go to `Stimulus and Sources`; clamps/slew limiters go to `Analog Behavioral Signal Conditioning` |
-| `dac` | split: converter functions stay in `Data Converters`; CDAC calibration controller should map to calibration/control unless the public task is truly DAC modeling |
+| `signal-source` | split: real source generators go to `Stimulus and Source Generators`; clamps/slew limiters go to `Baseband Signal Conditioning` |
+| `dac` | split: converter functions stay in `Data Converter Models`; CDAC calibration controller should map to calibration/control unless the public task is truly DAC modeling |
 
 ### T004: Do not count every e2e row as L2
 

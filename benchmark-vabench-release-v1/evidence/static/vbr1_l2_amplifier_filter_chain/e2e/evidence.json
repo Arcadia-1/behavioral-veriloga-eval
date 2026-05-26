@@ -4,7 +4,7 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
-    "category": "Analog Behavioral Signal Conditioning",
+    "category": "Baseband Signal Conditioning",
     "base_function": "Amplifier/filter chain"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va",
-    "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/tb_amplifier_filter_chain.scs"
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/tb_amplifier_filter_chain.scs"
   ],
   "checks": {
     "must_include": [

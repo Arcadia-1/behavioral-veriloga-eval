@@ -35,7 +35,7 @@ def read_release_entries() -> list[dict[str, object]]:
     entries: list[dict[str, object]] = []
     if not TASKS_ROOT.exists():
         return entries
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         entries.append(json.loads(path.read_text(encoding="utf-8")))
     return entries
 

@@ -51,7 +51,7 @@ def score_rows_by_id() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
 
 def read_entries() -> list[tuple[Path, dict[str, Any]]]:
     rows: list[tuple[Path, dict[str, Any]]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         rows.append((path, read_json(path)))
     return rows
 
@@ -104,6 +104,8 @@ def build_report() -> dict[str, Any]:
                     "form": form,
                     "family": str(task_manifest.get("family", "")),
                     "level": str(entry.get("level", "")),
+                    "track": str(entry.get("track", "core")),
+                    "difficulty": str(entry.get("difficulty", "D2")),
                     "category": str(entry.get("category", "")),
                     "base_function": str(entry.get("base_function", "")),
                     "release_task_manifest": rel(manifest_path),
@@ -131,6 +133,8 @@ def build_report() -> dict[str, Any]:
             {
                 "release_entry_id": release_entry_id,
                 "level": str(entry.get("level", "")),
+                "track": str(entry.get("track", "core")),
+                "difficulty": str(entry.get("difficulty", "D2")),
                 "category": str(entry.get("category", "")),
                 "base_function": str(entry.get("base_function", "")),
                 "package_status": str(entry.get("package_status", "")),
@@ -161,6 +165,10 @@ def build_report() -> dict[str, Any]:
     scored_forms = sum(1 for row in form_rows if row["counted_in_score"])
     content_denominator_entries = [row for row in entry_rows if row["content_denominator_included"]]
     content_denominator_forms = [row for row in form_rows if row["content_denominator_included"]]
+    track_entry_counts = dict(sorted(Counter(row["track"] for row in entry_rows).items()))
+    track_form_counts = dict(sorted(Counter(row["track"] for row in form_rows).items()))
+    difficulty_entry_counts = dict(sorted(Counter(row["difficulty"] for row in entry_rows).items()))
+    difficulty_form_counts = dict(sorted(Counter(row["difficulty"] for row in form_rows).items()))
     status = "complete" if completion.get("status") == "complete" else "in_progress"
     return {
         "date": date.today().isoformat(),
@@ -171,6 +179,14 @@ def build_report() -> dict[str, Any]:
             "planned_entry_count": int(release_status.get("planned_entries", len(entry_rows)) or 0),
             "entry_count": len(entry_rows),
             "form_count": len(form_rows),
+            "track_entry_counts": track_entry_counts,
+            "track_form_counts": track_form_counts,
+            "difficulty_entry_counts": difficulty_entry_counts,
+            "difficulty_form_counts": difficulty_form_counts,
+            "core_entry_count": track_entry_counts.get("core", 0),
+            "support_entry_count": track_entry_counts.get("support", 0),
+            "core_form_count": track_form_counts.get("core", 0),
+            "support_form_count": track_form_counts.get("support", 0),
             "content_denominator_entry_count": len(content_denominator_entries),
             "content_excluded_entry_count": len(entry_rows) - len(content_denominator_entries),
             "content_denominator_form_count": len(content_denominator_forms),
@@ -183,6 +199,16 @@ def build_report() -> dict[str, Any]:
             "pending_form_count": sum(1 for row in form_rows if row["certification"] == "pending"),
             "scored_entry_count": scored_entries,
             "scored_form_count": scored_forms,
+            "core_scored_entry_count": sum(
+                1 for row in entry_rows if row["track"] == "core" and row["counted_in_score"]
+            ),
+            "core_scored_form_count": sum(1 for row in form_rows if row["track"] == "core" and row["counted_in_score"]),
+            "support_scored_entry_count": sum(
+                1 for row in entry_rows if row["track"] == "support" and row["counted_in_score"]
+            ),
+            "support_scored_form_count": sum(
+                1 for row in form_rows if row["track"] == "support" and row["counted_in_score"]
+            ),
             "l0_conformance_case_count": int(conformance.get("conformance_case_count", 0) or 0),
             "l0_conformance_counted_in_denominator": int(conformance.get("benchmark_coverage_count", 0) or 0),
         },
@@ -204,6 +230,7 @@ def build_report() -> dict[str, Any]:
             "This manifest is an index over package assets and reports; it is not simulator certification evidence.",
             "Rows with counted_in_score=false must not enter benchmark score denominators.",
             "Rows with content_denominator_included=false remain package assets but are excluded from strong benchmark content claims.",
+            "Rows with track=support are auxiliary measurement/stimulus assets and must be reported separately from the core circuit score.",
             "Imported subset certification must not be phrased as full release certification.",
             f"claim_gate_status={claim_gate.get('status', 'missing')}",
         ],
@@ -217,6 +244,8 @@ def write_csv(report: dict[str, Any]) -> None:
         "form",
         "family",
         "level",
+        "track",
+        "difficulty",
         "category",
         "base_function",
         "certification",
@@ -254,6 +283,10 @@ def write_markdown(report: dict[str, Any]) -> None:
         f"| planned entries | {summary['planned_entry_count']} |",
         f"| entries | {summary['entry_count']} |",
         f"| forms | {summary['form_count']} |",
+        f"| core entries | {summary['core_entry_count']} |",
+        f"| support entries | {summary['support_entry_count']} |",
+        f"| core forms | {summary['core_form_count']} |",
+        f"| support forms | {summary['support_form_count']} |",
         f"| content denominator entries | {summary['content_denominator_entry_count']} |",
         f"| content-excluded entries | {summary['content_excluded_entry_count']} |",
         f"| content denominator forms | {summary['content_denominator_form_count']} |",
@@ -264,6 +297,10 @@ def write_markdown(report: dict[str, Any]) -> None:
         f"| pending forms | {summary['pending_form_count']} |",
         f"| scored entries | {summary['scored_entry_count']} |",
         f"| scored forms | {summary['scored_form_count']} |",
+        f"| core scored entries | {summary['core_scored_entry_count']} |",
+        f"| core scored forms | {summary['core_scored_form_count']} |",
+        f"| support scored entries | {summary['support_scored_entry_count']} |",
+        f"| support scored forms | {summary['support_scored_form_count']} |",
         f"| L0 conformance cases | {summary['l0_conformance_case_count']} |",
         "",
         "## Entry Status Counts",

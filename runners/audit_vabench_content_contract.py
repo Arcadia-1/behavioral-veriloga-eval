@@ -22,14 +22,12 @@ REPORT_JSON = PACKAGE_ROOT / "reports" / "content_contract_audit.json"
 REPORT_MD = PACKAGE_ROOT / "reports" / "content_contract_audit.md"
 
 EXPECTED_CATEGORIES = {
-    "Data Converters",
-    "Comparators and Decision Circuits",
-    "PLL / Clock / Event Timing",
+    "Data Converter Models",
+    "Comparator and Decision Circuits",
+    "PLL Clock and Timing Systems",
     "Calibration, DEM, and Control",
-    "Measurement and Testbench Instrumentation",
-    "Stimulus and Sources",
-    "Analog Behavioral Signal Conditioning",
-    "Sample, Hold, and Analog Memory",
+    "Baseband Signal Conditioning",
+    "Sampling and Analog Memory",
 }
 
 GENERIC_CHECKS = {
@@ -75,16 +73,32 @@ def extract_modules(text: str) -> list[str]:
 def extract_sim_checks(checks_text: str) -> list[str]:
     checks: list[str] = []
     in_sim = False
+    in_checks = False
+    sim_indent = 0
+    checks_indent = 0
     for line in checks_text.splitlines():
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip())
         stripped = line.strip()
         if stripped.startswith("sim_correct:"):
             in_sim = True
+            in_checks = False
+            sim_indent = indent
             continue
-        if in_sim and stripped == "checks:":
-            continue
-        if in_sim and stripped and re.match(r"^[A-Za-z_][A-Za-z0-9_-]*:", stripped):
+
+        if in_sim and indent <= sim_indent and re.match(r"^[A-Za-z_][A-Za-z0-9_-]*:", stripped):
             break
-        if in_sim and stripped.startswith("-"):
+
+        if in_sim and stripped == "checks:":
+            in_checks = True
+            checks_indent = indent
+            continue
+
+        if in_checks and indent <= checks_indent and re.match(r"^[A-Za-z_][A-Za-z0-9_-]*:", stripped):
+            in_checks = False
+
+        if in_checks and stripped.startswith("-"):
             checks.append(stripped.lstrip("- ").strip().strip('"').strip("'"))
     return checks
 
@@ -160,9 +174,9 @@ def audit_counts(manifest: dict[str, object]) -> list[dict[str, object]]:
     excluded_levels = Counter(
         entry["level"] for entry in entries if not is_content_denominator_entry(str(entry["release_entry_id"]))
     )
-    expected_package_entries = 72
+    expected_package_entries = 64
     expected_content_entries = expected_package_entries - len(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES)
-    expected_levels = {"L1": 56 - excluded_levels.get("L1", 0), "L2": 16 - excluded_levels.get("L2", 0)}
+    expected_levels = {"L1": 51 - excluded_levels.get("L1", 0), "L2": 13 - excluded_levels.get("L2", 0)}
 
     if len(entries) != expected_package_entries:
         findings.append(
@@ -383,6 +397,8 @@ def build_report() -> dict[str, object]:
     entries = manifest["entries"]
     content_entries = [entry for entry in entries if is_content_denominator_entry(str(entry["release_entry_id"]))]
     content_forms = [form for form in manifest["forms"] if is_content_denominator_entry(str(form["release_entry_id"]))]
+    track_entry_counts = dict(sorted(Counter(str(entry.get("track", "core")) for entry in entries).items()))
+    track_form_counts = dict(sorted(Counter(str(form.get("track", "core")) for form in manifest["forms"]).items()))
     entry_payloads = [
         read_json(ROOT / str(entry["release_entry_manifest"]))
         for entry in entries
@@ -404,6 +420,8 @@ def build_report() -> dict[str, object]:
         "status": status,
         "entry_count": len(entries),
         "form_count": len(manifest["forms"]),
+        "track_entry_counts": track_entry_counts,
+        "track_form_counts": track_form_counts,
         "content_denominator_entry_count": len(content_entries),
         "content_denominator_form_count": len(content_forms),
         "content_excluded_entry_count": len(entries) - len(content_entries),
@@ -459,6 +477,8 @@ def write_markdown(report: dict[str, object]) -> None:
         f"| status | `{report['status']}` |",
         f"| release entries | {report['entry_count']} |",
         f"| release forms | {report['form_count']} |",
+        f"| core entries | {dict(report['track_entry_counts']).get('core', 0)} |",
+        f"| support entries | {dict(report['track_entry_counts']).get('support', 0)} |",
         f"| content denominator entries | {report['content_denominator_entry_count']} |",
         f"| content denominator forms | {report['content_denominator_form_count']} |",
         f"| content-excluded entries | {report['content_excluded_entry_count']} |",

@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "ready",
   "contract_version": "v1",
@@ -44,14 +44,14 @@
   },
   "task_selection": {
     "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "package_entry_count": 72,
-    "package_form_count": 245,
-    "certified_entries": 72,
-    "certified_forms": 245,
-    "pending_entries": 0,
-    "pending_forms": 0,
-    "scored_entries": 72,
-    "scored_forms": 245,
+    "package_entry_count": 64,
+    "package_form_count": 219,
+    "certified_entries": 63,
+    "certified_forms": 217,
+    "pending_entries": 1,
+    "pending_forms": 2,
+    "scored_entries": 51,
+    "scored_forms": 184,
     "score_enabled": true,
     "l0_conformance_excluded": true,
     "unscored_rows_excluded": true,
@@ -105,15 +105,15 @@
   "score_gate": {
     "status": "score_enabled",
     "score_claim_allowed": true,
-    "scored_entries": 72,
-    "scored_forms": 245,
+    "scored_entries": 51,
+    "scored_forms": 184,
     "blocking_reason": "",
-    "finish_readiness_status": "blocked",
+    "finish_readiness_status": "ready_to_run",
     "ready_to_finish_release": false
   },
   "baseline_protocol": {
-    "status": "ready_for_baseline_runs",
-    "ready_for_baseline_runs": true,
+    "status": "pending_release_baselines",
+    "ready_for_baseline_runs": false,
     "claim_allowed": false,
     "minimal_lanes": [
       "prompt_only_generation",
@@ -138,14 +138,14 @@
     "unscored_rows_excluded": true
   },
   "speed_debug_protocol": {
-    "status": "measured_subset",
+    "status": "measured_with_failures",
     "claim_allowed": false,
     "required_timing_fields": [
       "raw_result.timing.evas_wall_time_s",
       "raw_result.timing.spectre_wall_time_s",
       "raw_result.timing.combined_wall_time_s"
     ],
-    "timed_rows": 4
+    "timed_rows": 2
   },
   "commands": {
     "refresh_package": "python3 runners/run_vabench_release_longrun.py",

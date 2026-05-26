@@ -64,7 +64,7 @@ def sha256_text(text: str) -> str:
 
 
 def release_form_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json"))
+    return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
 
 
 def target_artifacts(form: str, gold_names: list[str]) -> list[str]:

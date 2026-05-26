@@ -73,14 +73,14 @@ Why these eight categories belong in the release:
 
 | Category | Why it exists in vaBench | Design rationale |
 | --- | --- | --- |
-| Data Converters | ADC/DAC/SAR tasks are central mixed-signal behavioral models and have clear subfunctions. | Covers code/voltage conversion, quantization, decoder, and SAR loop behavior. |
-| Comparators and Decision Circuits | Comparators are core mixed-signal decision elements and appear inside ADCs, detectors, and calibration loops. | Covers threshold, offset, delay, clocked reset, and event-decision behavior. |
-| PLL / Clock / Event Timing | PLL-like blocks stress timers, edge ordering, phase accumulation, dividers, and lock logic. | Covers event scheduling and phase/frequency behavior within voltage-domain modeling. |
+| Data Converter Models | ADC/DAC/SAR tasks are central mixed-signal behavioral models and have clear subfunctions. | Covers code/voltage conversion, quantization, decoder, and SAR loop behavior. |
+| Comparator and Decision Circuits | Comparators are core mixed-signal decision elements and appear inside ADCs, detectors, and calibration loops. | Covers threshold, offset, delay, clocked reset, and event-decision behavior. |
+| PLL Clock and Timing Systems | PLL-like blocks stress timers, edge ordering, phase accumulation, dividers, and lock logic. | Covers event scheduling and phase/frequency behavior within voltage-domain modeling. |
 | Calibration, DEM, and Control | Calibration controllers and DEM pointers are common behavioral abstractions. | Covers feedback update, bounded control, pointer scheduling, and calibration loops. |
-| Measurement and Testbench Instrumentation | Benchmark tasks need measurable outputs, metrics, and side effects such as file outputs. | Covers measurement helpers, metric generation, and testbench observability. |
-| Stimulus and Sources | Testbench-generation tasks need reusable ramps, clocks, dither, and PWL-like sources. | Covers deterministic stimulus generation and source-driven verification flows. |
-| Analog Behavioral Signal Conditioning | Filters, clamps, rectifiers, slew limiters, and integrators are simple but important voltage-domain blocks. | Covers continuous-valued transformations without expanding into KCL/KVL simulation. |
-| Sample, Hold, and Analog Memory | S/H is a recurring converter front-end primitive and deserves separation from generic filters or converters. | Covers sampled analog memory, aperture behavior, leakage, and converter front ends. |
+| Measurement Instrumentation Flows | Benchmark tasks need measurable outputs, metrics, and side effects such as file outputs. | Covers measurement helpers, metric generation, and testbench observability. |
+| Stimulus and Source Generators | Testbench-generation tasks need reusable ramps, clocks, dither, and PWL-like sources. | Covers deterministic stimulus generation and source-driven verification flows. |
+| Baseband Signal Conditioning | Filters, clamps, rectifiers, slew limiters, and integrators are simple but important voltage-domain blocks. | Covers continuous-valued transformations without expanding into KCL/KVL simulation. |
+| Sampling and Analog Memory | S/H is a recurring converter front-end primitive and deserves separation from generic filters or converters. | Covers sampled analog memory, aperture behavior, leakage, and converter front ends. |
 
 If this taxonomy is used in paper text, the safe wording is:
 
@@ -229,7 +229,7 @@ paper-facing benchmark should describe the required functions, complete circuit
 forms, task forms, and certification evidence, not the experimental source from
 which a function was first noticed.
 
-### 1. Data Converters
+### 1. Data Converter Models
 
 Internal implementation notes, not release rationale:
 `adc_dac_ideal_4b`, `d2b_4b`, `dac_binary_clk_4b`,
@@ -250,7 +250,7 @@ Audit note: data converters should not be one bucket called "DAC". Binary,
 thermometer, segmented, quantizer, SAR logic, and full SAR loop are different
 benchmark functions.
 
-### 2. Comparators and Decision Circuits
+### 2. Comparator and Decision Circuits
 
 Internal implementation notes, not release rationale: `cmp_ideal`, `cmp_delay`, `cmp_offset_search`,
 `cmp_strongarm`, `edge_interval_timer`.
@@ -268,7 +268,7 @@ Audit note: comparator tasks should separate threshold, offset, delay, reset
 phase, and timing measurement. These are distinct behaviors and should not be
 collapsed into one "comparator" label.
 
-### 3. PLL / Clock / Event Timing
+### 3. PLL Clock and Timing Systems
 
 Internal implementation notes, not release rationale: no complete local PLL
 prototype exists; nearest reusable source traces are comparator timing, clock
@@ -313,17 +313,17 @@ The previous standalone control/readout bucket has been removed from the release
 
 | Function | Current category | Rationale |
 | --- | --- | --- |
-| Comparator debounce latch | Comparators and Decision Circuits | It qualifies comparator decisions and reset behavior. |
-| ADC code capture register | Data Converters | It captures conversion-result code and overrange state at the ADC readout boundary. |
-| ADC/readout serializer frame aligner | Data Converters | It serializes converter/readout words with frame alignment. |
-| Serial readout deserializer | Data Converters | It reconstructs framed converter/readout words. |
-| Conversion event controller | Data Converters | It sequences sample, compare, readout, and done phases. |
-| Readout frame-monitor flow | Data Converters | It checks serializer/readout reconstruction as a converter flow. |
-| PRBS stimulus/dither generator | Stimulus and Sources | It is reusable deterministic stimulus support. |
+| Comparator debounce latch | Comparator and Decision Circuits | It qualifies comparator decisions and reset behavior. |
+| ADC code capture register | Data Converter Models | It captures conversion-result code and overrange state at the ADC readout boundary. |
+| ADC/readout serializer frame aligner | Data Converter Models | It serializes converter/readout words with frame alignment. |
+| Serial readout deserializer | Data Converter Models | It reconstructs framed converter/readout words. |
+| Conversion event controller | Data Converter Models | It sequences sample, compare, readout, and done phases. |
+| Readout frame-monitor flow | Data Converter Models | It checks serializer/readout reconstruction as a converter flow. |
+| PRBS stimulus/dither generator | Stimulus and Source Generators | It is reusable deterministic stimulus support. |
 
 Pure edge detector, pulse stretcher, one-shot, and parity-only readout helpers are not release functions in this package.
 
-### 5. Measurement and Testbench Instrumentation
+### 5. Measurement Instrumentation Flows
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for gain extraction, file I/O, and timing-boundary checks.
@@ -340,7 +340,7 @@ Audit note: measurement tasks should specify both waveform observables and
 metric side effects. Pure file or exact final-step semantics should be
 conformance unless tied to a measurement circuit role.
 
-### 6. Stimulus and Sources
+### 6. Stimulus and Source Generators
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for burst clocks, deterministic noise-like stimulus, and ramps.
@@ -357,7 +357,7 @@ Audit note: source/stimulus functions are important for testbench generation
 and EVAS debug value, but the final release should include them only when the
 public task contract is deterministic.
 
-### 7. Analog Behavioral Signal Conditioning
+### 7. Baseband Signal Conditioning
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for simple signal-conditioning L1 blocks.
@@ -374,7 +374,7 @@ for simple signal-conditioning L1 blocks.
 Audit note: these are simple but valuable because they test continuous-valued
 behavior using only voltage-domain assignments and event/timer updates.
 
-### 8. Sample, Hold, and Analog Memory
+### 8. Sampling and Analog Memory
 
 Internal implementation notes, not release rationale: reusable source traces exist
 for ideal sample/hold behavior in converter flows.

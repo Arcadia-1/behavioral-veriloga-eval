@@ -124,8 +124,8 @@ def build_report() -> dict[str, object]:
         "dual_certification": [REPORTS_ROOT / "dual_certification.json"] if (REPORTS_ROOT / "dual_certification.json").exists() else [],
         "certification_matrix": [REPORTS_ROOT / "certification_matrix.json"] if (REPORTS_ROOT / "certification_matrix.json").exists() else [],
         "remaining_work": [REPORTS_ROOT / "remaining_work.json"] if (REPORTS_ROOT / "remaining_work.json").exists() else [],
-        "release_entry": sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")),
-        "release_task": sorted(TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json")),
+        "release_entry": sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")),
+        "release_task": sorted(TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json")),
         "evidence": sorted(EVIDENCE_ROOT.glob("*/*/*/evidence.json")),
         "result": sorted(EVIDENCE_ROOT.glob("*/*/*/*result.json")),
     }

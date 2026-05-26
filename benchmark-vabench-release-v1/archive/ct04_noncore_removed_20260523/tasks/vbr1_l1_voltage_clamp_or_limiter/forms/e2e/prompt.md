@@ -4,7 +4,7 @@
 
 - Form: `e2e`
 - Level: `L1`
-- Category: Analog Behavioral Signal Conditioning
+- Category: Baseband Signal Conditioning
 - Base function: Voltage clamp or limiter
 - Domain: `voltage`
 - Target artifact(s): `dut.va`, `tb_ref.scs`

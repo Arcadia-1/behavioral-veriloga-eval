@@ -13,15 +13,15 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed",
-    "results/vabench-release-v1-dual-rerun-ct07-20260524/vbr1_l1_element_shuffler/bugfix/fixed",
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_element_shuffler/bugfix/fixed",
+    "results/vabench-release-v1-ct06-dual-20260526_ci_r3/vbr1_l1_element_shuffler/bugfix/fixed",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/bugfix/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/bugfix/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
-    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -31,13 +31,20 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rerun-ct07-20260524/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed",
-    "result_root": "results/vabench-release-v1-dual-rerun-ct07-20260524/vbr1_l1_element_shuffler/bugfix/fixed",
+    "summary": "results/vabench-release-v1-ct06-dual-20260526_ci_r3/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_element_shuffler/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-ct06-dual-20260526_ci_r3/vbr1_l1_element_shuffler/bugfix/fixed",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
       "status": "passed",
+      "policy": {
+        "policy": "spectre_equivalence_core_v1",
+        "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
+        "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
+        "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
+        "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25"
+      },
       "common_window_s": [
         0.0,
         1.3e-07
@@ -46,8 +53,9 @@
       "samples": 1200,
       "max_rmse_v": 0.0,
       "max_abs_v": 0.0,
+      "mean_relative_rms_error": 0.0,
+      "max_relative_rms_error": 0.0,
       "mean_nrmse": 0.0,
-      "p95_nrmse": 0.0,
       "max_nrmse": 0.0,
       "per_signal": {
         "clk": {
@@ -118,11 +126,11 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
-      "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
-      "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
-      "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
     ]
   },
   "failures": [],

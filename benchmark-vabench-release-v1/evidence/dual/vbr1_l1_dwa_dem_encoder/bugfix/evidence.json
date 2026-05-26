@@ -14,13 +14,13 @@
   "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
-    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
+    "results/vabench-release-v1-ct06-dual-20260526_ci_r3/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_dwa_dem_encoder/bugfix/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_dwa_dem_encoder/bugfix/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
-    "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -30,24 +30,32 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "summary": "results/vabench-release-v1-ct06-dual-20260526_ci_r3/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
-    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
+    "result_root": "results/vabench-release-v1-ct06-dual-20260526_ci_r3/vbr1_l1_dwa_dem_encoder/bugfix/fixed",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
       "status": "passed",
+      "policy": {
+        "policy": "spectre_equivalence_core_v1",
+        "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
+        "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
+        "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
+        "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25"
+      },
       "common_window_s": [
         0.0,
         1e-07
       ],
       "signals_compared": 38,
       "samples": 1200,
-      "max_rmse_v": 0.16421721305456224,
-      "max_abs_v": 0.8946309938911554,
-      "mean_nrmse": 0.00480167289633223,
-      "p95_nrmse": 0.0,
-      "max_nrmse": 0.18246357006062472,
+      "max_rmse_v": 5.977951164073011e-05,
+      "max_abs_v": 0.0006601104361185217,
+      "mean_relative_rms_error": 1.7479389368634536e-06,
+      "max_relative_rms_error": 6.642167960081123e-05,
+      "mean_nrmse": 1.7479389368634536e-06,
+      "max_nrmse": 6.642167960081123e-05,
       "per_signal": {
         "cell_en_0": {
           "rmse_v": 0.0,
@@ -210,10 +218,10 @@
           "mismatch_ratio": 0.0
         },
         "clk_i": {
-          "rmse_v": 0.16421721305456224,
-          "max_abs_v": 0.8946309938911554,
+          "rmse_v": 5.977951164073011e-05,
+          "max_abs_v": 0.0006601104361185217,
           "span_v": 0.9,
-          "nrmse": 0.18246357006062472,
+          "nrmse": 6.642167960081123e-05,
           "kind": "analog"
         },
         "code_0": {
@@ -434,10 +442,10 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
-      "benchmark-vabench-release-v1/tasks/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_buggy.va",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/tb_dwa_ptr_gen_ref.scs",
+      "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/gold/v2b_4b.va"
     ]
   },
   "failures": [],

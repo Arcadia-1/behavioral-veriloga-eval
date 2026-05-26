@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "scope": "CT05_pll_clock_event_timing",
+  "scope": "CT05_pll_clock_and_timing_systems",
   "queue_count": 46,
   "primary_expected_pass_count": 46,
   "generated_for": "ct05_closure_dual_refresh",
@@ -9,7 +9,7 @@
       "entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Bang-bang phase detector",
       "source_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
       "historical_source_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
@@ -20,9 +20,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/bugfix/evidence.json",
       "pending_blockers": [
@@ -34,7 +34,7 @@
       "entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Bang-bang phase detector",
       "source_task_id": "bbpd",
       "historical_source_task_id": "bbpd",
@@ -45,8 +45,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/bbpd_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/tb_bbpd_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/bbpd_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/tb_bbpd_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/dut/evidence.json",
       "pending_blockers": [
@@ -58,7 +58,7 @@
       "entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Bang-bang phase detector",
       "source_task_id": "bbpd_data_edge_alignment_smoke",
       "historical_source_task_id": "bbpd_data_edge_alignment_smoke",
@@ -69,8 +69,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/bbpd_data_edge_alignment_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/tb_bbpd_data_edge_alignment_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/bbpd_data_edge_alignment_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/tb_bbpd_data_edge_alignment_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/e2e/evidence.json",
       "pending_blockers": [
@@ -82,7 +82,7 @@
       "entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Bang-bang phase detector",
       "source_task_id": "vbr1_l1_bang_bang_phase_detector_tb",
       "historical_source_task_id": "vbr1_l1_bang_bang_phase_detector_tb",
@@ -93,8 +93,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/tb/evidence.json",
       "pending_blockers": [
@@ -106,7 +106,7 @@
       "entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Voltage-domain charge-pump control abstraction",
       "source_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
       "historical_source_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
@@ -117,8 +117,8 @@
       "gold_va_count": 2,
       "gold_scs_count": 0,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_fixed.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/bugfix/evidence.json",
       "pending_blockers": [
@@ -130,7 +130,7 @@
       "entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Voltage-domain charge-pump control abstraction",
       "source_task_id": "vbr1_l1_charge_pump_abstraction_dut",
       "historical_source_task_id": "vbr1_l1_charge_pump_abstraction_dut",
@@ -141,7 +141,7 @@
       "gold_va_count": 1,
       "gold_scs_count": 0,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/dut/evidence.json",
       "pending_blockers": [
@@ -153,7 +153,7 @@
       "entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Voltage-domain charge-pump control abstraction",
       "source_task_id": "vbr1_l1_charge_pump_abstraction_e2e",
       "historical_source_task_id": "vbr1_l1_charge_pump_abstraction_e2e",
@@ -164,8 +164,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/charge_pump_abstraction.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/charge_pump_abstraction.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/e2e/evidence.json",
       "pending_blockers": [
@@ -177,7 +177,7 @@
       "entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Voltage-domain charge-pump control abstraction",
       "source_task_id": "vbr1_l1_charge_pump_abstraction_tb",
       "historical_source_task_id": "vbr1_l1_charge_pump_abstraction_tb",
@@ -188,7 +188,7 @@
       "gold_va_count": 0,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_charge_pump_abstraction/tb/evidence.json",
       "pending_blockers": [
@@ -200,7 +200,7 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Clock divider",
       "source_task_id": "vbr1_l1_clock_divider_bugfix",
       "historical_source_task_id": "vbr1_l1_clock_divider_bugfix",
@@ -211,9 +211,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/bugfix/evidence.json",
       "pending_blockers": [
@@ -225,7 +225,7 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Clock divider",
       "source_task_id": "vbm1_resettable_counter_divider_dut",
       "historical_source_task_id": "vbm1_resettable_counter_divider_dut",
@@ -236,9 +236,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/clk_divider.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/dut/evidence.json",
       "pending_blockers": [
@@ -250,7 +250,7 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Clock divider",
       "source_task_id": "vbm1_resettable_counter_divider_e2e",
       "historical_source_task_id": "vbm1_resettable_counter_divider_e2e",
@@ -261,9 +261,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/gold/tb_clk_divider_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/tb_clk_divider_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/e2e/evidence.json",
       "pending_blockers": [
@@ -275,7 +275,7 @@
       "entry_id": "vbr1_l1_clock_divider",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Clock divider",
       "source_task_id": "vbm1_resettable_counter_divider_tb",
       "historical_source_task_id": "vbm1_resettable_counter_divider_tb",
@@ -286,9 +286,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/gold/clk_divider.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/gold/clk_divider_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/gold/tb_clk_divider_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/clk_divider.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/clk_divider_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/tb_clk_divider_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clock_divider/tb/evidence.json",
       "pending_blockers": [
@@ -300,7 +300,7 @@
       "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Digital phase accumulator with modulo wrap",
       "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
       "historical_source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
@@ -311,9 +311,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/evidence.json",
       "pending_blockers": [
@@ -325,7 +325,7 @@
       "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Digital phase accumulator with modulo wrap",
       "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
       "historical_source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
@@ -336,8 +336,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/evidence.json",
       "pending_blockers": [
@@ -349,7 +349,7 @@
       "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Digital phase accumulator with modulo wrap",
       "source_task_id": "phase_accumulator_timer_wrap_smoke",
       "historical_source_task_id": "phase_accumulator_timer_wrap_smoke",
@@ -360,8 +360,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/evidence.json",
       "pending_blockers": [
@@ -373,7 +373,7 @@
       "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Digital phase accumulator with modulo wrap",
       "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
       "historical_source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
@@ -384,8 +384,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/phase_accumulator_timer_wrap_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/tb_phase_accumulator_timer_wrap_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/phase_accumulator_timer_wrap_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/tb_phase_accumulator_timer_wrap_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/evidence.json",
       "pending_blockers": [
@@ -397,7 +397,7 @@
       "entry_id": "vbr1_l1_lock_detector",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Lock detector",
       "source_task_id": "vbm1_lock_detector_bugfix",
       "historical_source_task_id": "vbm1_lock_detector_bugfix",
@@ -408,10 +408,10 @@
       "gold_va_count": 2,
       "gold_scs_count": 2,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_buggy.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/bugfix/evidence.json",
       "pending_blockers": [
@@ -423,7 +423,7 @@
       "entry_id": "vbr1_l1_lock_detector",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Lock detector",
       "source_task_id": "vbm1_lock_detector_dut",
       "historical_source_task_id": "vbm1_lock_detector_dut",
@@ -434,8 +434,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/dut/gold/lock_detector.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/dut/gold/tb_lock_detector_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/lock_detector.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/tb_lock_detector_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/dut/evidence.json",
       "pending_blockers": [
@@ -447,7 +447,7 @@
       "entry_id": "vbr1_l1_lock_detector",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Lock detector",
       "source_task_id": "vbm1_lock_detector_e2e",
       "historical_source_task_id": "vbm1_lock_detector_e2e",
@@ -458,8 +458,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/e2e/gold/lock_detector.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/e2e/gold/tb_lock_detector_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/lock_detector.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/tb_lock_detector_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/e2e/evidence.json",
       "pending_blockers": [
@@ -471,7 +471,7 @@
       "entry_id": "vbr1_l1_lock_detector",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Lock detector",
       "source_task_id": "vbm1_lock_detector_tb",
       "historical_source_task_id": "vbm1_lock_detector_tb",
@@ -482,8 +482,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/tb/gold/lock_detector.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/tb/gold/tb_lock_detector_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/lock_detector.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/tb_lock_detector_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_lock_detector/tb/evidence.json",
       "pending_blockers": [
@@ -495,7 +495,7 @@
       "entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Sampled loop-filter abstraction",
       "source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
       "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
@@ -506,8 +506,8 @@
       "gold_va_count": 2,
       "gold_scs_count": 0,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/bugfix/evidence.json",
       "pending_blockers": [
@@ -519,7 +519,7 @@
       "entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Sampled loop-filter abstraction",
       "source_task_id": "vbr1_l1_loop_filter_abstraction_dut",
       "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_dut",
@@ -530,7 +530,7 @@
       "gold_va_count": 1,
       "gold_scs_count": 0,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/dut/evidence.json",
       "pending_blockers": [
@@ -542,7 +542,7 @@
       "entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Sampled loop-filter abstraction",
       "source_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
       "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
@@ -553,8 +553,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/e2e/evidence.json",
       "pending_blockers": [
@@ -566,7 +566,7 @@
       "entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "Sampled loop-filter abstraction",
       "source_task_id": "vbr1_l1_loop_filter_abstraction_tb",
       "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_tb",
@@ -577,7 +577,7 @@
       "gold_va_count": 0,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/tb/evidence.json",
       "pending_blockers": [
@@ -589,7 +589,7 @@
       "entry_id": "vbr1_l1_pfd_small_phase_error_response",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD small phase-error response",
       "source_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
       "historical_source_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
@@ -600,9 +600,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/bugfix/evidence.json",
       "pending_blockers": [
@@ -614,7 +614,7 @@
       "entry_id": "vbr1_l1_pfd_small_phase_error_response",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD small phase-error response",
       "source_task_id": "vbm1_pfd_small_phase_error_response_dut",
       "historical_source_task_id": "vbm1_pfd_small_phase_error_response_dut",
@@ -625,8 +625,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/tb_pfd_small_phase_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/tb_pfd_small_phase_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/dut/evidence.json",
       "pending_blockers": [
@@ -638,7 +638,7 @@
       "entry_id": "vbr1_l1_pfd_small_phase_error_response",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD small phase-error response",
       "source_task_id": "pfd_small_phase_response_smoke",
       "historical_source_task_id": "pfd_small_phase_response_smoke",
@@ -649,8 +649,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/e2e/evidence.json",
       "pending_blockers": [
@@ -662,7 +662,7 @@
       "entry_id": "vbr1_l1_pfd_small_phase_error_response",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD small phase-error response",
       "source_task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
       "historical_source_task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
@@ -673,8 +673,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/tb_pfd_small_phase_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/tb_pfd_small_phase_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_small_phase_error_response/tb/evidence.json",
       "pending_blockers": [
@@ -686,7 +686,7 @@
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD UP/DN logic",
       "source_task_id": "vbm1_pfd_reset_race_bugfix",
       "historical_source_task_id": "vbm1_pfd_reset_race_bugfix",
@@ -697,10 +697,10 @@
       "gold_va_count": 2,
       "gold_scs_count": 2,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_buggy.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/bugfix/evidence.json",
       "pending_blockers": [
@@ -712,7 +712,7 @@
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD UP/DN logic",
       "source_task_id": "vbm1_pfd_reset_race_dut",
       "historical_source_task_id": "vbm1_pfd_reset_race_dut",
@@ -723,8 +723,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/dut/evidence.json",
       "pending_blockers": [
@@ -736,7 +736,7 @@
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD UP/DN logic",
       "source_task_id": "vbm1_pfd_reset_race_e2e",
       "historical_source_task_id": "vbm1_pfd_reset_race_e2e",
@@ -747,8 +747,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/tb_pfd_reset_race_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/tb_pfd_reset_race_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/e2e/evidence.json",
       "pending_blockers": [
@@ -760,7 +760,7 @@
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PFD UP/DN logic",
       "source_task_id": "vbm1_pfd_reset_race_tb",
       "historical_source_task_id": "vbm1_pfd_reset_race_tb",
@@ -771,8 +771,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_pfd_up_dn_logic/tb/evidence.json",
       "pending_blockers": [
@@ -784,7 +784,7 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "VCO phase integrator",
       "source_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
       "historical_source_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
@@ -795,9 +795,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/bugfix/evidence.json",
       "pending_blockers": [
@@ -809,7 +809,7 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "VCO phase integrator",
       "source_task_id": "vbm1_vco_phase_integrator_dut",
       "historical_source_task_id": "vbm1_vco_phase_integrator_dut",
@@ -820,8 +820,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/dut/gold/tb_vco_phase_integrator_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/dut/gold/vco_phase_integrator.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/tb_vco_phase_integrator_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/vco_phase_integrator.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/dut/evidence.json",
       "pending_blockers": [
@@ -833,7 +833,7 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "VCO phase integrator",
       "source_task_id": "vbm1_vco_phase_integrator_e2e",
       "historical_source_task_id": "vbm1_vco_phase_integrator_e2e",
@@ -844,8 +844,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/e2e/evidence.json",
       "pending_blockers": [
@@ -857,7 +857,7 @@
       "entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "VCO phase integrator",
       "source_task_id": "vbm1_vco_phase_integrator_tb",
       "historical_source_task_id": "vbm1_vco_phase_integrator_tb",
@@ -868,8 +868,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/tb/gold/tb_vco_phase_integrator_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/tb/gold/vco_phase_integrator.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/tb_vco_phase_integrator_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/vco_phase_integrator.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_vco_phase_integrator/tb/evidence.json",
       "pending_blockers": [
@@ -881,7 +881,7 @@
       "entry_id": "vbr1_l1_xor_phase_detector",
       "form": "bugfix",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "XOR phase detector",
       "source_task_id": "vbr1_l1_xor_phase_detector_bugfix",
       "historical_source_task_id": "vbr1_l1_xor_phase_detector_bugfix",
@@ -892,9 +892,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/bugfix/evidence.json",
       "pending_blockers": [
@@ -906,7 +906,7 @@
       "entry_id": "vbr1_l1_xor_phase_detector",
       "form": "dut",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "XOR phase detector",
       "source_task_id": "vbr1_l1_xor_phase_detector_dut",
       "historical_source_task_id": "vbr1_l1_xor_phase_detector_dut",
@@ -917,8 +917,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/dut/gold/tb_xor_phase_detector_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/dut/gold/xor_phase_detector_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/tb_xor_phase_detector_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/xor_phase_detector_ref.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/dut/evidence.json",
       "pending_blockers": [
@@ -930,7 +930,7 @@
       "entry_id": "vbr1_l1_xor_phase_detector",
       "form": "e2e",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "XOR phase detector",
       "source_task_id": "xor_pd_smoke",
       "historical_source_task_id": "xor_pd_smoke",
@@ -941,8 +941,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/e2e/gold/tb_xor_phase_detector_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/e2e/gold/xor_phase_detector_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/tb_xor_phase_detector_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/xor_phase_detector_ref.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/e2e/evidence.json",
       "pending_blockers": [
@@ -954,7 +954,7 @@
       "entry_id": "vbr1_l1_xor_phase_detector",
       "form": "tb",
       "level": "L1",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "XOR phase detector",
       "source_task_id": "vbr1_l1_xor_phase_detector_tb",
       "historical_source_task_id": "vbr1_l1_xor_phase_detector_tb",
@@ -965,8 +965,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_xor_phase_detector/tb/evidence.json",
       "pending_blockers": [
@@ -978,7 +978,7 @@
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "form": "e2e",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "ADPLL lock/ratio-hop/timer flow",
       "source_task_id": "adpll_ratio_hop_smoke",
       "historical_source_task_id": "adpll_ratio_hop_smoke",
@@ -989,8 +989,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/tb_adpll_ratio_hop_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/tb_adpll_ratio_hop_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/evidence.json",
       "pending_blockers": [
@@ -1002,7 +1002,7 @@
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "form": "tb",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "ADPLL lock/ratio-hop/timer flow",
       "source_task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
       "historical_source_task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
@@ -1013,8 +1013,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/adpll_ratio_hop_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/tb_adpll_ratio_hop_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/adpll_ratio_hop_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/tb_adpll_ratio_hop_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/evidence.json",
       "pending_blockers": [
@@ -1026,7 +1026,7 @@
       "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
       "form": "e2e",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "CPPLL tracking and frequency-step reacquire flow",
       "source_task_id": "cppll_freq_step_reacquire_smoke",
       "historical_source_task_id": "cppll_freq_step_reacquire_smoke",
@@ -1037,9 +1037,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/evidence.json",
       "pending_blockers": [
@@ -1051,7 +1051,7 @@
       "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
       "form": "tb",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "CPPLL tracking and frequency-step reacquire flow",
       "source_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
       "historical_source_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
@@ -1062,9 +1062,9 @@
       "gold_va_count": 2,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/cppll_timer_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/ref_step_clk.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/tb_cppll_freq_step_reacquire_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/ref_step_clk.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/tb_cppll_freq_step_reacquire_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/evidence.json",
       "pending_blockers": [
@@ -1076,7 +1076,7 @@
       "entry_id": "vbr1_l2_pll_timing_slice",
       "form": "e2e",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PLL timing slice",
       "source_task_id": "cppll_tracking_smoke",
       "historical_source_task_id": "cppll_tracking_smoke",
@@ -1087,8 +1087,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/tb_cppll_tracking_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/tb_cppll_tracking_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pll_timing_slice/e2e/evidence.json",
       "pending_blockers": [
@@ -1100,7 +1100,7 @@
       "entry_id": "vbr1_l2_pll_timing_slice",
       "form": "tb",
       "level": "L2",
-      "category": "PLL / Clock / Event Timing",
+      "category": "PLL Clock and Timing Systems",
       "base_function": "PLL timing slice",
       "source_task_id": "vbr1_l2_pll_timing_slice_tb",
       "historical_source_task_id": "vbr1_l2_pll_timing_slice_tb",
@@ -1111,8 +1111,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pll_timing_slice/tb/evidence.json",
       "pending_blockers": [

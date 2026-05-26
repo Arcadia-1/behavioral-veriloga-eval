@@ -31,12 +31,20 @@
       "required": [
         "planned_entry_count",
         "release_form_count",
+        "core_entry_count",
+        "support_entry_count",
+        "core_form_count",
+        "support_form_count",
         "certified_entry_count",
         "certified_form_count",
         "benchmark_score_enabled_entry_count",
         "benchmark_score_enabled_form_count",
         "scored_entry_count",
         "scored_form_count",
+        "core_scored_entry_count",
+        "core_scored_form_count",
+        "support_scored_entry_count",
+        "support_scored_form_count",
         "l0_conformance_counted_in_denominator",
         "entry_exclusion_reason_counts",
         "form_exclusion_reason_counts"
@@ -46,6 +54,18 @@
           "type": "integer"
         },
         "release_form_count": {
+          "type": "integer"
+        },
+        "core_entry_count": {
+          "type": "integer"
+        },
+        "support_entry_count": {
+          "type": "integer"
+        },
+        "core_form_count": {
+          "type": "integer"
+        },
+        "support_form_count": {
           "type": "integer"
         },
         "certified_entry_count": {
@@ -64,6 +84,18 @@
           "type": "integer"
         },
         "scored_form_count": {
+          "type": "integer"
+        },
+        "core_scored_entry_count": {
+          "type": "integer"
+        },
+        "core_scored_form_count": {
+          "type": "integer"
+        },
+        "support_scored_entry_count": {
+          "type": "integer"
+        },
+        "support_scored_form_count": {
           "type": "integer"
         },
         "l0_conformance_counted_in_denominator": {
@@ -103,6 +135,8 @@
         "required": [
           "release_entry_id",
           "level",
+          "track",
+          "difficulty",
           "category",
           "base_function",
           "score_surface",
@@ -123,6 +157,19 @@
             "enum": [
               "L1",
               "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
             ]
           },
           "category": {
@@ -182,6 +229,8 @@
           "task_id",
           "form",
           "level",
+          "track",
+          "difficulty",
           "category",
           "base_function",
           "score_surface",
@@ -213,6 +262,19 @@
             "enum": [
               "L1",
               "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
             ]
           },
           "category": {

@@ -2,7 +2,7 @@
 
 - Entry: `vbr1_l1_precision_rectifier`
 - Level: `L1`
-- Category: `Analog Behavioral Signal Conditioning`
+- Category: `Baseband Signal Conditioning`
 - Source base: `precision_rectifier`
 - Package status: `current_l1_seed`
 - Certification: `not_certified`

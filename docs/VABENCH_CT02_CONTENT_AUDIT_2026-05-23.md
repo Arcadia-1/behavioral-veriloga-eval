@@ -2,7 +2,7 @@
 
 Date: 2026-05-23
 
-Scope: `benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits`.
+Scope: `benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits`.
 
 This audit checks whether CT02 prompt/checker content follows the same public-contract direction used for the recent CT01 review: public interface, public observables, behavior-level checks, hidden evaluator boundary, and no hidden checker leakage. It also separates "already certified and acceptable" from "changed in this audit batch and requires fresh EVAS/Spectre dual validation".
 

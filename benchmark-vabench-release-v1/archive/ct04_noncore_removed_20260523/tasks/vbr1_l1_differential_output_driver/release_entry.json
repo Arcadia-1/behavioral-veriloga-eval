@@ -3,7 +3,7 @@
   "benchmark": "vabench-release-v1",
   "release_entry_id": "vbr1_l1_differential_output_driver",
   "level": "L1",
-  "category": "Analog Behavioral Signal Conditioning",
+  "category": "Baseband Signal Conditioning",
   "base_function": "Differential output driver",
   "package_status": "selected_l1_addition",
   "score_surface": "model-capability",
@@ -64,13 +64,13 @@
   "release_tasks": [
     {
       "form": "dut",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut",
-      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/prompt.md",
-      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/meta.json",
-      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/checks.yaml",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/differential_voltage_output_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/tb_differential_voltage_output_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/dut/gold/tb_differential_voltage_output_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
@@ -88,13 +88,13 @@
     },
     {
       "form": "tb",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb",
-      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/prompt.md",
-      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/meta.json",
-      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/checks.yaml",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/differential_voltage_output_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/tb_differential_voltage_output_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/tb/gold/tb_differential_voltage_output_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
@@ -112,14 +112,14 @@
     },
     {
       "form": "bugfix",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix",
-      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/prompt.md",
-      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/meta.json",
-      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/checks.yaml",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/tb_differential_voltage_output_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/bugfix/gold/tb_differential_voltage_output_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,
@@ -137,13 +137,13 @@
     },
     {
       "form": "e2e",
-      "release_path": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e",
-      "prompt": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/prompt.md",
-      "meta": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/meta.json",
-      "checks": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/checks.yaml",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e",
+      "prompt": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/prompt.md",
+      "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/meta.json",
+      "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/differential_voltage_output_ref.va",
-        "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/tb_differential_voltage_output_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/differential_voltage_output_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e/gold/tb_differential_voltage_output_ref.scs"
       ],
       "asset_materialized": true,
       "historical_dual_expected": false,

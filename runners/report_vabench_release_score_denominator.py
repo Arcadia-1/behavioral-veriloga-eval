@@ -16,6 +16,7 @@ TASKS_ROOT = PACKAGE_ROOT / "tasks"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 CONFORMANCE_JSON = REPORTS_ROOT / "conformance_manifest.json"
 ENABLEMENT_JSON = REPORTS_ROOT / "score_denominator_enablement.json"
+ENABLEMENT_MD = REPORTS_ROOT / "score_denominator_enablement.md"
 REPORT_JSON = REPORTS_ROOT / "score_denominator_manifest.json"
 REPORT_MD = REPORTS_ROOT / "score_denominator_manifest.md"
 
@@ -32,7 +33,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def read_release_entries() -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         if payload:
             payload["_manifest_path"] = rel(path)
@@ -136,6 +137,8 @@ def build_form_rows(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     "task_id": task_manifest.get("id", f"{entry['release_entry_id']}:{task.get('form', '')}"),
                     "form": task.get("form", ""),
                     "level": entry.get("level", ""),
+                    "track": entry.get("track", "core"),
+                    "difficulty": entry.get("difficulty", "D2"),
                     "category": entry.get("category", ""),
                     "base_function": entry.get("base_function", ""),
                     "score_surface": entry.get("score_surface", ""),
@@ -167,6 +170,8 @@ def build_entry_rows(entries: list[dict[str, Any]], form_rows: list[dict[str, An
             {
                 "release_entry_id": entry["release_entry_id"],
                 "level": entry.get("level", ""),
+                "track": entry.get("track", "core"),
+                "difficulty": entry.get("difficulty", "D2"),
                 "category": entry.get("category", ""),
                 "base_function": entry.get("base_function", ""),
                 "score_surface": entry.get("score_surface", ""),
@@ -204,6 +209,10 @@ def build_report() -> dict[str, Any]:
     certified_forms = sum(1 for row in form_rows if row["certified"])
     content_denominator_entries = [row for row in entry_rows if row["content_denominator_included"]]
     content_denominator_forms = [row for row in form_rows if row["content_denominator_included"]]
+    track_entry_counts = dict(sorted(Counter(row["track"] for row in entry_rows).items()))
+    track_form_counts = dict(sorted(Counter(row["track"] for row in form_rows).items()))
+    difficulty_entry_counts = dict(sorted(Counter(row["difficulty"] for row in entry_rows).items()))
+    difficulty_form_counts = dict(sorted(Counter(row["difficulty"] for row in form_rows).items()))
     l0_count = int(conformance.get("benchmark_coverage_count", 0) or 0)
     fully_certified = certified_entries == len(entry_rows) and certified_forms == len(form_rows)
     status = (
@@ -220,6 +229,14 @@ def build_report() -> dict[str, Any]:
         "summary": {
             "planned_entry_count": len(entry_rows),
             "release_form_count": len(form_rows),
+            "track_entry_counts": track_entry_counts,
+            "track_form_counts": track_form_counts,
+            "difficulty_entry_counts": difficulty_entry_counts,
+            "difficulty_form_counts": difficulty_form_counts,
+            "core_entry_count": track_entry_counts.get("core", 0),
+            "support_entry_count": track_entry_counts.get("support", 0),
+            "core_form_count": track_form_counts.get("core", 0),
+            "support_form_count": track_form_counts.get("support", 0),
             "content_denominator_entry_count": len(content_denominator_entries),
             "content_excluded_entry_count": len(entry_rows) - len(content_denominator_entries),
             "content_denominator_form_count": len(content_denominator_forms),
@@ -230,6 +247,14 @@ def build_report() -> dict[str, Any]:
             "benchmark_score_enabled_form_count": enabled_forms,
             "scored_entry_count": scored_entries,
             "scored_form_count": scored_forms,
+            "core_scored_entry_count": sum(1 for row in entry_rows if row["track"] == "core" and row["counted_in_score"]),
+            "core_scored_form_count": sum(1 for row in form_rows if row["track"] == "core" and row["counted_in_score"]),
+            "support_scored_entry_count": sum(
+                1 for row in entry_rows if row["track"] == "support" and row["counted_in_score"]
+            ),
+            "support_scored_form_count": sum(
+                1 for row in form_rows if row["track"] == "support" and row["counted_in_score"]
+            ),
             "l0_conformance_counted_in_denominator": l0_count,
             "entry_exclusion_reason_counts": reason_counts(entry_rows),
             "form_exclusion_reason_counts": reason_counts(form_rows),
@@ -240,6 +265,8 @@ def build_report() -> dict[str, Any]:
                 "Only rows with benchmark_score_enabled=true and static/evas/spectre pass may enter "
                 "the benchmark score denominator. Content-excluded duplicates and L0 conformance "
                 "remain excluded."
+                " Measurement/stimulus support-suite rows remain package assets but are reported outside "
+                "the core circuit score."
             ),
             "score_claim_allowed": bool(scored_entries or scored_forms) and l0_count == 0,
         },
@@ -271,6 +298,10 @@ def write_markdown(report: dict[str, Any]) -> None:
         f"| status | `{report['status']}` |",
         f"| planned entries | {summary['planned_entry_count']} |",
         f"| release forms | {summary['release_form_count']} |",
+        f"| core entries | {summary['core_entry_count']} |",
+        f"| support entries | {summary['support_entry_count']} |",
+        f"| core forms | {summary['core_form_count']} |",
+        f"| support forms | {summary['support_form_count']} |",
         f"| content denominator entries | {summary['content_denominator_entry_count']} |",
         f"| content-excluded entries | {summary['content_excluded_entry_count']} |",
         f"| content denominator forms | {summary['content_denominator_form_count']} |",
@@ -281,6 +312,10 @@ def write_markdown(report: dict[str, Any]) -> None:
         f"| score-enabled forms | {summary['benchmark_score_enabled_form_count']} |",
         f"| scored entries | {summary['scored_entry_count']} |",
         f"| scored forms | {summary['scored_form_count']} |",
+        f"| core scored entries | {summary['core_scored_entry_count']} |",
+        f"| core scored forms | {summary['core_scored_form_count']} |",
+        f"| support scored entries | {summary['support_scored_entry_count']} |",
+        f"| support scored forms | {summary['support_scored_form_count']} |",
         f"| L0 conformance counted | {summary['l0_conformance_counted_in_denominator']} |",
         "",
         "## Entry Exclusion Reasons",
@@ -294,11 +329,113 @@ def write_markdown(report: dict[str, Any]) -> None:
     REPORT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def write_deferred_enablement_snapshot(report: dict[str, Any]) -> None:
+    if report["status"] == "score_enabled":
+        return
+    summary = report["summary"]
+    entry_rows = report["entry_rows"]
+    form_rows = report["form_rows"]
+    snapshot = {
+        "date": report["date"],
+        "release": report["release"],
+        "status": "blocked",
+        "summary": {
+            "release_entry_count": summary["planned_entry_count"],
+            "release_form_count": summary["release_form_count"],
+            "enabled_entry_count": 0,
+            "enabled_form_count": 0,
+            "disabled_entry_count": summary["planned_entry_count"],
+            "disabled_form_count": summary["release_form_count"],
+            "content_excluded_entry_count": summary["content_excluded_entry_count"],
+            "content_excluded_form_count": summary["content_excluded_form_count"],
+            "benchmark_score_flagged_entry_count": summary["benchmark_score_enabled_entry_count"],
+            "benchmark_score_flagged_form_count": summary["benchmark_score_enabled_form_count"],
+            "scored_entry_count": summary["scored_entry_count"],
+            "scored_form_count": summary["scored_form_count"],
+            "dual_certification_ready": False,
+            "dual_blockers": [f"score_denominator_manifest.status={report['status']}"],
+            "disabled_reason_counts": dict(summary["entry_exclusion_reason_counts"]),
+        },
+        "policy": {
+            "source_of_truth_after_refresh": rel(REPORT_JSON),
+            "enabled_rule": (
+                "benchmark_score flags may mark the intended release denominator, but score enablement "
+                "is blocked until every counted row has static/EVAS/Spectre certification."
+            ),
+            "excluded_rule": "Content-excluded duplicates remain package assets but do not enter scored benchmark denominators.",
+            "l0_rule": "L0 conformance remains outside the L1/L2 benchmark denominator.",
+        },
+        "entry_rows": [
+            {
+                "release_entry_id": row["release_entry_id"],
+                "manifest": row["manifest"],
+                "certified": row["certified"],
+                "content_denominator_included": row["content_denominator_included"],
+                "benchmark_score_flagged": row["benchmark_score_enabled"],
+                "score_enabled": row["counted_in_score"],
+                "disabled_reasons": row["exclusion_reasons"],
+                "form_count": len(row["required_forms"]),
+            }
+            for row in entry_rows
+        ],
+        "form_rows": [
+            {
+                "release_entry_id": row["release_entry_id"],
+                "form": row["form"],
+                "manifest": row["manifest"],
+                "certified": row["certified"],
+                "content_denominator_included": row["content_denominator_included"],
+                "benchmark_score_flagged": row["benchmark_score_enabled"],
+                "score_enabled": row["counted_in_score"],
+            }
+            for row in form_rows
+        ],
+        "evidence_sources": {
+            "score_denominator_manifest": rel(REPORT_JSON),
+            "release_tasks_root": rel(TASKS_ROOT),
+        },
+        "notes": [
+            "This is a current blocked snapshot, not a successful score-enablement write step.",
+            "score_denominator_manifest.json remains the source of truth for counted_in_score rows.",
+        ],
+    }
+    ENABLEMENT_JSON.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
+    lines = [
+        "# vaBench Release Score Denominator Enablement",
+        "",
+        f"Date: {snapshot['date']}",
+        "",
+        "This is a blocked snapshot for the current release package. It replaces older",
+        "enablement records so current reports do not point at removed entries.",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Value |",
+        "| --- | ---: |",
+        f"| status | `{snapshot['status']}` |",
+        f"| release entries | {snapshot['summary']['release_entry_count']} |",
+        f"| release forms | {snapshot['summary']['release_form_count']} |",
+        f"| score-enabled entries | {snapshot['summary']['enabled_entry_count']} |",
+        f"| score-enabled forms | {snapshot['summary']['enabled_form_count']} |",
+        f"| benchmark-score-flagged entries | {snapshot['summary']['benchmark_score_flagged_entry_count']} |",
+        f"| benchmark-score-flagged forms | {snapshot['summary']['benchmark_score_flagged_form_count']} |",
+        f"| scored entries | {snapshot['summary']['scored_entry_count']} |",
+        f"| scored forms | {snapshot['summary']['scored_form_count']} |",
+        f"| dual certification ready | `{snapshot['summary']['dual_certification_ready']}` |",
+        "",
+        "## Blocking Rule",
+        "",
+        snapshot["policy"]["enabled_rule"],
+    ]
+    ENABLEMENT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     report = build_report()
     REPORTS_ROOT.mkdir(parents=True, exist_ok=True)
     REPORT_JSON.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     write_markdown(report)
+    write_deferred_enablement_snapshot(report)
     summary = report["summary"]
     print(
         "wrote score denominator manifest: status={status}; scored_entries={entries}; scored_forms={forms}".format(

@@ -1,6 +1,6 @@
 # vaBench Release Bridge Profile Diagnostics
 
-Date: 2026-05-23
+Date: 2026-05-26
 
 This report diagnoses the external bridge profiles needed for the
 EVAS/Spectre release rerun. It is not benchmark certification evidence.

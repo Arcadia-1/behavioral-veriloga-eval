@@ -45,12 +45,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
       "source_includes": [
         "bbpd_ref.va"
       ],
       "source_include_origins": {
-        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_fixed.va"
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/gold/tb_bbpd_ref.scs",
       "staged_includes": [
@@ -81,12 +81,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
       "source_includes": [
         "bbpd_ref.va"
       ],
       "source_include_origins": {
-        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_buggy.va"
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy/gold/tb_bbpd_ref.scs",
       "staged_includes": [
@@ -114,12 +114,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/tb_bbpd_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/tb_bbpd_ref.scs",
       "source_includes": [
         "bbpd_ref.va"
       ],
       "source_include_origins": {
-        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/bbpd_ref.va"
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/bbpd_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold/gold/tb_bbpd_ref.scs",
       "staged_includes": [
@@ -147,12 +147,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/tb_bbpd_data_edge_alignment_ref.scs",
       "source_includes": [
         "bbpd_data_edge_alignment_ref.va"
       ],
       "source_include_origins": {
-        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/bbpd_data_edge_alignment_ref.va"
+        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/bbpd_data_edge_alignment_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold/gold/tb_bbpd_data_edge_alignment_ref.scs",
       "staged_includes": [
@@ -181,12 +181,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs",
       "source_includes": [
         "bbpd_data_edge_alignment_ref.va"
       ],
       "source_include_origins": {
-        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va"
+        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold/gold/tb_bbpd_data_edge_alignment_ref.scs",
       "staged_includes": [
@@ -215,12 +215,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
       "source_includes": [
         "charge_pump_abstraction.va"
       ],
       "source_include_origins": {
-        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_fixed.va"
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed/gold/tb_charge_pump_abstraction.scs",
       "staged_includes": [
@@ -251,12 +251,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
       "source_includes": [
         "charge_pump_abstraction.va"
       ],
       "source_include_origins": {
-        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_buggy.va"
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy/gold/tb_charge_pump_abstraction.scs",
       "staged_includes": [
@@ -287,12 +287,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
       "source_includes": [
         "charge_pump_abstraction.va"
       ],
       "source_include_origins": {
-        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold/gold/tb_charge_pump_abstraction.scs",
       "staged_includes": [
@@ -323,12 +323,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
       "source_includes": [
         "charge_pump_abstraction.va"
       ],
       "source_include_origins": {
-        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/charge_pump_abstraction.va"
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/charge_pump_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold/gold/tb_charge_pump_abstraction.scs",
       "staged_includes": [
@@ -357,12 +357,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs",
       "source_includes": [
         "charge_pump_abstraction.va"
       ],
       "source_include_origins": {
-        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold/gold/tb_charge_pump_abstraction.scs",
       "staged_includes": [
@@ -393,12 +393,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
       "source_includes": [
         "clk_divider_ref.va"
       ],
       "source_include_origins": {
-        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/dut_fixed.va"
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed/gold/tb_clk_divider_ref.scs",
       "staged_includes": [
@@ -429,12 +429,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
       "source_includes": [
         "clk_divider_ref.va"
       ],
       "source_include_origins": {
-        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/gold/dut_buggy.va"
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy/gold/tb_clk_divider_ref.scs",
       "staged_includes": [
@@ -461,12 +461,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs",
       "source_includes": [
         "clk_divider_ref.va"
       ],
       "source_include_origins": {
-        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va"
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold/gold/tb_clk_divider_ref.scs",
       "staged_includes": [
@@ -493,12 +493,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/gold/tb_clk_divider_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/tb_clk_divider_ref.scs",
       "source_includes": [
         "clk_divider_ref.va"
       ],
       "source_include_origins": {
-        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider_ref.va"
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold/gold/tb_clk_divider_ref.scs",
       "staged_includes": [
@@ -525,12 +525,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/gold/tb_clk_divider_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/tb_clk_divider_ref.scs",
       "source_includes": [
         "clk_divider_ref.va"
       ],
       "source_include_origins": {
-        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/gold/clk_divider_ref.va"
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/clk_divider_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold/gold/tb_clk_divider_ref.scs",
       "staged_includes": [
@@ -561,12 +561,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "source_includes": [
         "./phase_accumulator_timer_wrap_ref.va"
       ],
       "source_include_origins": {
-        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_fixed.va"
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "staged_includes": [
@@ -597,12 +597,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "source_includes": [
         "./phase_accumulator_timer_wrap_ref.va"
       ],
       "source_include_origins": {
-        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_buggy.va"
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "staged_includes": [
@@ -631,12 +631,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "source_includes": [
         "./phase_accumulator_timer_wrap_ref.va"
       ],
       "source_include_origins": {
-        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va"
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "staged_includes": [
@@ -664,12 +664,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "source_includes": [
         "./phase_accumulator_timer_wrap_ref.va"
       ],
       "source_include_origins": {
-        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va"
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "staged_includes": [
@@ -698,12 +698,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "source_includes": [
         "./phase_accumulator_timer_wrap_ref.va"
       ],
       "source_include_origins": {
-        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/phase_accumulator_timer_wrap_ref.va"
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/phase_accumulator_timer_wrap_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
       "staged_includes": [
@@ -730,12 +730,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/dut_fixed.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed/gold/tb_lock_detector_ref.scs",
       "staged_includes": [
@@ -762,12 +762,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/gold/dut_buggy.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy/gold/tb_lock_detector_ref.scs",
       "staged_includes": [
@@ -794,12 +794,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/dut/gold/tb_lock_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/tb_lock_detector_ref.scs",
       "source_includes": [
         "lock_detector.va"
       ],
       "source_include_origins": {
-        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/dut/gold/lock_detector.va"
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/lock_detector.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold/gold/tb_lock_detector_ref.scs",
       "staged_includes": [
@@ -826,12 +826,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/e2e/gold/tb_lock_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/tb_lock_detector_ref.scs",
       "source_includes": [
         "lock_detector.va"
       ],
       "source_include_origins": {
-        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/e2e/gold/lock_detector.va"
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/lock_detector.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold/gold/tb_lock_detector_ref.scs",
       "staged_includes": [
@@ -858,12 +858,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/tb/gold/tb_lock_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/tb_lock_detector_ref.scs",
       "source_includes": [
         "lock_detector.va"
       ],
       "source_include_origins": {
-        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/tb/gold/lock_detector.va"
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/lock_detector.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold/gold/tb_lock_detector_ref.scs",
       "staged_includes": [
@@ -892,12 +892,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
       "source_includes": [
         "loop_filter_abstraction.va"
       ],
       "source_include_origins": {
-        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed/gold/tb_loop_filter_abstraction.scs",
       "staged_includes": [
@@ -928,12 +928,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
       "source_includes": [
         "loop_filter_abstraction.va"
       ],
       "source_include_origins": {
-        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va"
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy/gold/tb_loop_filter_abstraction.scs",
       "staged_includes": [
@@ -964,12 +964,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
       "source_includes": [
         "loop_filter_abstraction.va"
       ],
       "source_include_origins": {
-        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold/gold/tb_loop_filter_abstraction.scs",
       "staged_includes": [
@@ -1000,12 +1000,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
       "source_includes": [
         "loop_filter_abstraction.va"
       ],
       "source_include_origins": {
-        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold/gold/tb_loop_filter_abstraction.scs",
       "staged_includes": [
@@ -1034,12 +1034,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs",
       "source_includes": [
         "loop_filter_abstraction.va"
       ],
       "source_include_origins": {
-        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold/gold/tb_loop_filter_abstraction.scs",
       "staged_includes": [
@@ -1068,12 +1068,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/gold/tb_pfd_small_phase_ref.scs",
       "staged_includes": [
@@ -1102,12 +1102,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_buggy.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy/gold/tb_pfd_small_phase_ref.scs",
       "staged_includes": [
@@ -1135,12 +1135,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/tb_pfd_small_phase_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/tb_pfd_small_phase_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold/gold/tb_pfd_small_phase_ref.scs",
       "staged_includes": [
@@ -1168,12 +1168,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold/gold/tb_pfd_small_phase_ref.scs",
       "staged_includes": [
@@ -1202,12 +1202,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/tb_pfd_small_phase_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/tb_pfd_small_phase_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold/gold/tb_pfd_small_phase_ref.scs",
       "staged_includes": [
@@ -1234,12 +1234,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/gold/tb_pfd_reset_race_ref.scs",
       "staged_includes": [
@@ -1266,12 +1266,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_buggy.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy/gold/tb_pfd_reset_race_ref.scs",
       "staged_includes": [
@@ -1298,12 +1298,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold/gold/tb_pfd_reset_race_ref.scs",
       "staged_includes": [
@@ -1330,12 +1330,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/tb_pfd_reset_race_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/tb_pfd_reset_race_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold/gold/tb_pfd_reset_race_ref.scs",
       "staged_includes": [
@@ -1362,12 +1362,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs",
       "source_includes": [
         "./pfd_updn.va"
       ],
       "source_include_origins": {
-        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va"
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold/gold/tb_pfd_reset_race_ref.scs",
       "staged_includes": [
@@ -1396,12 +1396,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
       "source_includes": [
         "vco_phase_integrator.va"
       ],
       "source_include_origins": {
-        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_fixed.va"
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed/gold/tb_vco_phase_integrator_ref.scs",
       "staged_includes": [
@@ -1430,12 +1430,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
       "source_includes": [
         "vco_phase_integrator.va"
       ],
       "source_include_origins": {
-        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_buggy.va"
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy/gold/tb_vco_phase_integrator_ref.scs",
       "staged_includes": [
@@ -1462,12 +1462,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/dut/gold/tb_vco_phase_integrator_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/tb_vco_phase_integrator_ref.scs",
       "source_includes": [
         "vco_phase_integrator.va"
       ],
       "source_include_origins": {
-        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/dut/gold/vco_phase_integrator.va"
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/vco_phase_integrator.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold/gold/tb_vco_phase_integrator_ref.scs",
       "staged_includes": [
@@ -1494,12 +1494,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
       "source_includes": [
         "vco_phase_integrator.va"
       ],
       "source_include_origins": {
-        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold/gold/tb_vco_phase_integrator_ref.scs",
       "staged_includes": [
@@ -1526,12 +1526,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/tb/gold/tb_vco_phase_integrator_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/tb_vco_phase_integrator_ref.scs",
       "source_includes": [
         "vco_phase_integrator.va"
       ],
       "source_include_origins": {
-        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/tb/gold/vco_phase_integrator.va"
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/vco_phase_integrator.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold/gold/tb_vco_phase_integrator_ref.scs",
       "staged_includes": [
@@ -1562,12 +1562,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
       "source_includes": [
         "xor_phase_detector_ref.va"
       ],
       "source_include_origins": {
-        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va"
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed/gold/tb_xor_phase_detector_ref.scs",
       "staged_includes": [
@@ -1598,12 +1598,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
       "source_includes": [
         "xor_phase_detector_ref.va"
       ],
       "source_include_origins": {
-        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va"
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy/gold/tb_xor_phase_detector_ref.scs",
       "staged_includes": [
@@ -1632,12 +1632,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/dut/gold/tb_xor_phase_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/tb_xor_phase_detector_ref.scs",
       "source_includes": [
         "xor_phase_detector_ref.va"
       ],
       "source_include_origins": {
-        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/dut/gold/xor_phase_detector_ref.va"
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/xor_phase_detector_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold/gold/tb_xor_phase_detector_ref.scs",
       "staged_includes": [
@@ -1665,12 +1665,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/e2e/gold/tb_xor_phase_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/tb_xor_phase_detector_ref.scs",
       "source_includes": [
         "xor_phase_detector_ref.va"
       ],
       "source_include_origins": {
-        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/e2e/gold/xor_phase_detector_ref.va"
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/xor_phase_detector_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold/gold/tb_xor_phase_detector_ref.scs",
       "staged_includes": [
@@ -1699,12 +1699,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
       "source_includes": [
         "xor_phase_detector_ref.va"
       ],
       "source_include_origins": {
-        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold/gold/tb_xor_phase_detector_ref.scs",
       "staged_includes": [
@@ -1732,12 +1732,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/tb_adpll_ratio_hop_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/tb_adpll_ratio_hop_ref.scs",
       "source_includes": [
         "adpll_ratio_hop_ref.va"
       ],
       "source_include_origins": {
-        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
+        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold/gold/tb_adpll_ratio_hop_ref.scs",
       "staged_includes": [
@@ -1766,12 +1766,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/tb_adpll_ratio_hop_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/tb_adpll_ratio_hop_ref.scs",
       "source_includes": [
         "adpll_ratio_hop_ref.va"
       ],
       "source_include_origins": {
-        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/adpll_ratio_hop_ref.va"
+        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/adpll_ratio_hop_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold/gold/tb_adpll_ratio_hop_ref.scs",
       "staged_includes": [
@@ -1799,14 +1799,14 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs",
       "source_includes": [
         "cppll_timer_ref.va",
         "ref_step_clk.va"
       ],
       "source_include_origins": {
-        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold/tb_cppll_freq_step_reacquire_ref.scs",
       "staged_includes": [
@@ -1836,14 +1836,14 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/tb_cppll_freq_step_reacquire_ref.scs",
       "source_includes": [
         "cppll_timer_ref.va",
         "ref_step_clk.va"
       ],
       "source_include_origins": {
-        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/cppll_timer_ref.va",
-        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/ref_step_clk.va"
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/cppll_timer_ref.va",
+        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/ref_step_clk.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold/tb_cppll_freq_step_reacquire_ref.scs",
       "staged_includes": [
@@ -1872,12 +1872,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/tb_cppll_tracking_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/tb_cppll_tracking_ref.scs",
       "source_includes": [
         "cppll_timer_ref.va"
       ],
       "source_include_origins": {
-        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold/gold/tb_cppll_tracking_ref.scs",
       "staged_includes": [
@@ -1906,12 +1906,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs",
       "source_includes": [
         "cppll_timer_ref.va"
       ],
       "source_include_origins": {
-        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va"
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold/gold/tb_cppll_tracking_ref.scs",
       "staged_includes": [

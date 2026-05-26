@@ -1,19 +1,32 @@
 # vaBench Content Audit Test Plan
 
-Date: 2026-05-17
+Date: 2026-05-25
 
-This plan defines the review tests needed before treating the current
-`vabench-release-v1` contents as a paper-facing benchmark. It focuses on two
-questions:
+This plan defines the review tests needed before treating
+`benchmark-vabench-release-v1` as a paper-facing benchmark. It is a
+content-quality audit, not an EVAS/Spectre certification report. Dual
+simulation can show that packaged gold and checkers agree; it cannot prove that
+the public prompt is the right analog/mixed-signal circuit problem.
 
-1. Is the top-level circuit-function table and L1/L2 design internally
-   consistent?
+Current release target:
+
+- 64 content entries.
+- 51 core circuit entries plus 13 measurement/stimulus support entries.
+- 51 L1 entries and 13 L2 entries.
+- 8 release categories.
+- Score denominator remains disabled until fresh full EVAS/Spectre dual
+  certification is complete.
+
+Core review questions:
+
+1. Is the top-level circuit-function table internally consistent and useful for
+   an analog Verilog-A benchmark, not just an EVAS demo?
 2. For each materialized task, do `prompt.md`, `checks.yaml`, and `gold/`
    describe the same circuit function?
-
-This is a content-quality audit. It is separate from EVAS/Spectre certification:
-dual simulation can prove that the packaged gold and checker agree, but it
-cannot prove that the public task wording is the right circuit problem.
+3. For each L2 row, does the checker validate a composed flow or a meaningful
+   measurement/stimulus support flow, rather than a single shallow observable?
+4. Are support categories reported separately from the 51-entry core circuit
+   denominator?
 
 ## Inputs
 
@@ -21,12 +34,15 @@ cannot prove that the public task wording is the right circuit problem.
 | --- | --- |
 | `docs/VABENCH_RELEASE_TAXONOMY.md` | Normative top-level L0/L1/L2 taxonomy and release coverage contract. |
 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` | Human-readable category/level coverage view. |
-| `docs/VABENCH_BASE_FUNCTION_REGISTRY.md` | Current-seed merge/remove decisions and high-risk wording decisions. |
+| `docs/VABENCH_BASE_FUNCTION_REGISTRY.md` | Current merge/remove decisions and high-risk wording decisions. |
 | `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md` | Completed content inventory by category, level, and form. |
+| `docs/VABENCH_TOPLEVEL_POSITIONING.md` | Paper-facing core/support split and claim boundary. |
+| `docs/VABENCH_L2_CLAIM_MAPPING_AUDIT.md` | Human claim map for the 13 L2 entries. |
 | `benchmark-vabench-release-v1/MANIFEST.json` | Machine-readable release package manifest. |
-| `benchmark-vabench-release-v1/tasks/CT*/vbr1_*/release_entry.json` | Per-entry category, level, base function, forms, assets, and evidence links. |
+| `benchmark-vabench-release-v1/tasks/*/vbr1_*/release_entry.json` | Per-entry category, level, base function, forms, assets, and evidence links. |
 | `benchmark-vabench-release-v1/tasks/CT*/vbr1_*/forms/*/{prompt.md,meta.json,checks.yaml,gold/}` | Public task contracts, checkers, and reference assets. |
 | `benchmark-vabench-release-v1/evidence/{static,dual}/...` | Certification evidence for packaged forms. |
+| `benchmark-vabench-release-v1/reports/{manifest,dual_certification,score_denominator_manifest,claim_gate}.json` | Reported package, certification, scoring, and claim-gate state. |
 
 ## Audit Gate A: Top-Level Function Table and L1/L2 Design
 
@@ -39,20 +55,44 @@ Automated checks:
 
 | Check | Expected result | Failure action |
 | --- | --- | --- |
-| Package manifest entry count equals package asset target. | `80` release entries. | Block package-integrity claims; reconcile taxonomy or package. |
-| Strong content denominator matches the audited target. | `75` entries: `60` L1 and `15` non-duplicate L2. | Block distinct-function benchmark claims. |
-| Category set has exactly the release taxonomy categories. | 9 categories, no legacy-only categories. | Rename or remap entries. |
+| Package manifest entry count equals package asset target. | `64` release entries. | Block package-integrity claims; reconcile taxonomy or package. |
+| Content denominator matches the audited target. | `64` entries: `51` core circuit entries and `13` support entries. | Block distinct-function benchmark claims. |
+| Level split matches current release. | `51` L1 and `13` L2. | Fix manifest/docs or reclassify entries. |
+| Category set has exactly the release taxonomy categories. | 8 categories, no legacy-only categories. | Rename, merge, or remap entries. |
 | Completed-content table agrees with manifest counts. | Same entry/form totals and category counts. | Regenerate or correct docs. |
 | L0 conformance cases are outside the L1/L2 denominator. | `counted_in_score=false`, separate conformance report. | Move row to conformance or reclassify. |
-| Exact duplicate L2 kernels are content-excluded. | Duplicates remain as package assets only. | Rewrite or exclude before counting. |
+| Score denominator is disabled until fresh dual certification. | No counted score rows while EVAS/Spectre is pending. | Block score reporting. |
 
 Human review:
 
-- Check whether each category name is an analog/mixed-signal behavioral circuit
-  role, not a historical artifact.
-- Check whether any category is too broad or hides duplicate circuit kernels.
+- Check whether each category is a recognizable analog/mixed-signal behavioral
+  circuit or support role, not a historical artifact.
+- Check whether any category is inflated by easy variants.
+- Check whether support categories are useful for Verilog-A benchmark practice
+  without being counted as core circuit-function coverage.
 
-### A2. Function Uniqueness and Naming
+### A2. Core / Support Split
+
+Purpose: keep the paper's main claim about analog circuit functions separate
+from reusable measurement and stimulus infrastructure.
+
+Current split:
+
+| Role | Categories | Count |
+| --- | --- | --- |
+| Core circuit entries | Data Converter Models; Comparator and Decision Circuits; Sampling and Analog Memory; Baseband Signal Conditioning; PLL Clock and Timing Systems; Calibration, DEM, and Control | 51 |
+| Support entries | Measurement Instrumentation Flows; Stimulus and Source Generators | 13 |
+
+Audit rules:
+
+- Core entries can support the main benchmark-function count.
+- Support entries can support "Verilog-A benchmark infrastructure coverage",
+  "testbench/measurement modeling", or "stimulus/source modeling" claims.
+- Support entries must not inflate the core circuit denominator.
+- Any paper table that lists all 64 entries should visibly separate `51 core`
+  from `13 support`.
+
+### A3. Function Uniqueness and Naming
 
 Purpose: avoid counting the same circuit function twice under different names.
 
@@ -61,22 +101,22 @@ Automated checks:
 | Check | Expected result | Failure action |
 | --- | --- | --- |
 | Normalized `base_function` names are unique inside the package unless explicitly marked as a variant. | No accidental duplicates. | Merge, rename, or mark as distinct variant with rationale. |
-| Excluded historical bases are absent from the release denominator. | `background_calibration_accumulator` and `offset_calibration_fsm` are not counted. | Remove from denominator or redesign. |
-| Known renamed functions use release wording, not misleading historical wording. | Binary DAC is not publicly called thermometer DAC. | Fix prompt/meta/checks/reports. |
+| Excluded historical bases are absent from the release denominator. | Removed/merged rows are not counted. | Remove from denominator or redesign. |
+| Known renamed functions use release wording, not misleading historical wording. | Binary DAC is not publicly called thermometer DAC; support categories are named as support. | Fix prompt/meta/checks/reports. |
 | `source_base_id` duplication is explained by merge or companion-form policy. | No unexplained many-entry reuse. | Add merge note or split function. |
 
 Human review:
 
 - For near-duplicates, decide whether the distinction is electrical/behavioral
-  enough to count. Examples:
-  - hard clamp vs soft/hysteretic limiter: count only if checker exercises
-    different behavior.
-  - binary DAC vs unit-element thermometer DAC: count separately only if the
-    latter uses unit-element thermometer-coded behavior.
-  - trim-voltage generator vs gain trim controller: count separately only
-    if the measured update law and observable role differ.
+  enough to count.
+- Count binary DAC and unit-element thermometer DAC separately only if the
+  latter uses actual unary segment behavior.
+- Count trim-voltage generator and gain trim controller separately only if
+  their observable role and update law differ.
+- Count support measurement/stimulus rows only when they add reusable
+  Verilog-A benchmark practice, not just another testbench wrapper.
 
-### A3. L1 Definition Test
+### A4. L1 Definition Test
 
 Purpose: ensure an L1 entry is a reusable circuit function, not a disguised
 multi-block flow or pure simulator primitive.
@@ -87,41 +127,47 @@ Automated checks:
 | --- | --- | --- |
 | L1 entries have `score_surface=model-capability`. | True. | Fix manifest or reclassify. |
 | L1 entries are not under conformance paths. | True. | Move to L0 conformance. |
-| L1 `dut` forms, when present, expose a clear module contract. | Prompt has module, ports, directions, disciplines, and ranges. | Fix prompt template. |
-| L1 entries do not depend only on isolated `cross/timer/source` semantics. | Checker has circuit behavior, not only primitive behavior. | Move primitive case to L0. |
+| L1 `dut` forms, when present, expose a clear module contract. | Prompt has module, ports, directions, disciplines, ranges, and public observables. | Fix prompt template. |
+| L1 entries do not depend only on isolated `cross/timer/source` semantics. | Checker has circuit behavior, not only primitive behavior. | Move primitive case to L0 or rewrite as circuit block. |
 
 Human review:
 
-- Confirm the base function is a recognizable circuit block, such as DAC,
-  comparator, clock divider, sample-and-hold, filter, source, detector, or
+- Confirm the base function is a recognizable block such as DAC, comparator,
+  sample-and-hold, filter, limiter, clock/PLL component, source, detector, or
   controller.
-- If an L1 `e2e` form includes a testbench, verify it is still testing the same
-  L1 function rather than an L2 chain.
+- If an L1 `e2e` form includes a testbench, verify it still tests the same L1
+  function rather than an unclaimed L2 chain.
 
-### A4. L2 Complete-Circuit Test
+### A5. L2 Complete-Flow Test
 
-Purpose: ensure L2 entries actually compose multiple interacting functions.
+Purpose: ensure L2 entries actually compose multiple interacting functions, or
+are explicitly scoped as measurement/stimulus support flows.
 
 Automated checks:
 
 | Check | Expected result | Failure action |
 | --- | --- | --- |
 | L2 entries use `score_surface=benchmark-e2e`. | True. | Fix manifest or reclassify. |
-| L2 entries expose only `e2e` and/or `tb` unless a richer form is deliberately justified. | No accidental L1 form expansion. | Remove unsupported forms. |
-| L2 gold assets include either multiple modules or one module whose prompt/checker explicitly names a composed flow. | Composition evidence exists. | Reclassify to L1 or strengthen task. |
-| L2 checks include chain-level observables. | Not just generic compile/sim/run guards. | Add chain-specific checker items. |
+| L2 entries expose only `e2e` and/or `tb` unless richer forms are justified. | No accidental L1 form expansion. | Remove unsupported forms. |
+| L2 gold assets include either multiple modules or one module whose prompt/checker explicitly names a composed flow. | Composition or support-flow evidence exists. | Reclassify to L1, strengthen task, or mark support-only. |
+| L2 checks include chain-level observables. | Not just compile/run/non-NaN guards. | Add behavior-specific checker items. |
+| Each L2 row has a claim-mapping decision. | `keep`, `revise`, `downgrade`, or `support-only`. | Block L2 coverage claims. |
 
 Human review:
 
 - Confirm the L2 behavior cannot be reduced to one L1 function with a long
-  testbench.
+  testbench unless the row is explicitly support-only.
 - Confirm checker measures an interaction, for example:
-  - SAR ADC: comparator + DAC feedback + SAR code convergence.
-  - PLL slice: PFD/divider/VCO or loop-control interaction.
-  - signal-conditioning chain: gain plus filtering/limiting response, not just
-    final non-NaN output.
+  - SAR ADC: sample/hold plus SAR decision plus weighted DAC feedback.
+  - Static-linearity flow: quantizer plus nonideal reconstruction plus metric
+    consistency, not a precomputed DNL/INL lookup.
+  - PLL slice: divider/timer/control lock and reacquire behavior.
+  - Signal-conditioning chain: gain plus dynamic filtering/limiting response.
+  - Measurement support: metric output must be tied to waveform behavior.
+  - Stimulus support: scheduled waveform segments and mode continuity must be
+    observable.
 
-### A5. Coverage Balance and Scope Boundary
+### A6. Coverage Balance and Scope Boundary
 
 Purpose: avoid a release that is numerically complete but conceptually skewed.
 
@@ -129,16 +175,20 @@ Automated checks:
 
 | Check | Expected result | Failure action |
 | --- | --- | --- |
-| Every release category has at least one L1 entry. | True. | Add or remove category. |
-| Every release category has L2 coverage if the taxonomy claims complete-circuit coverage there. | True for the current 80-entry target. | Add L2 or narrow claim. |
-| All entries stay in pure voltage-domain behavioral Verilog-A scope. | No unsupported current-domain/KCL/KVL claim. | Rewrite or remove row. |
-| Score remains disabled while audit is open. | `counted_in_score=false`. | Block score reporting. |
+| Every release category has at least one L1 entry. | True. | Add content or remove category. |
+| Every core category has L2 coverage if the taxonomy claims complete-flow coverage there. | True for the current 64-entry target. | Add L2 or narrow claim. |
+| Support categories are clearly marked as support. | True. | Fix taxonomy/report/paper wording. |
+| All entries stay in pure voltage-domain behavioral Verilog-A scope. | No unsupported current-domain/KCL/KVL/device-level/AC/noise claim. | Rewrite or remove row. |
+| Score remains disabled while fresh dual certification is pending. | `counted_in_score=false`. | Block score reporting. |
 
 Human review:
 
-- Check whether 80 entries cover enough distinct analog/mixed-signal behavior
+- Check whether 64 entries cover enough distinct analog/mixed-signal behavior
   to support the benchmark claim.
-- Check whether any category is underrepresented or inflated by easy variants.
+- Check whether CT01 data converters are overrepresented relative to other
+  core categories.
+- Check whether small categories need stronger representative entries rather
+  than more variants.
 
 ## Audit Gate B: Prompt / Checker / Gold Alignment
 
@@ -162,15 +212,13 @@ Human review:
 
 - Decide whether the prompt describes the intended circuit function, not just
   the checker's easiest route to pass.
-- Flag misleading historical names, such as a binary DAC task retaining
-  thermometer-DAC wording.
+- Flag misleading historical names or claims that turn support rows into core
+  circuit rows.
 
 ### B2. Artifact Contract by Form
 
 Purpose: keep public/private boundaries fair across `dut`, `tb`, `bugfix`, and
 `e2e`.
-
-Automated checks:
 
 | Form | Public input should contain | Model output should contain | Private/evidence only |
 | --- | --- | --- | --- |
@@ -183,12 +231,6 @@ Failure action:
 
 - Fix `meta.json`, `release_task.json`, and generated reports.
 - Do not release bugfix tasks where the fixed solution is public input.
-
-Human review:
-
-- For bugfix tasks, confirm the buggy source is a realistic repair problem and
-  not a synthetic one-line trick unless the task explicitly targets that bug
-  class.
 
 ### B3. Gold Behavior Matches Base Function
 
@@ -216,9 +258,10 @@ Review examples:
 | Risk | What to check |
 | --- | --- |
 | Binary DAC vs thermometer DAC | Does gold implement `code/15`, or actual unit-element thermometer segments? |
-| Calibration controller duplication | Is the update law materially different from `cdac_calibration`, or just the same signed accumulator? |
-| Measurement task drift | Does gold write a metric artifact that the prompt asks for and checker validates? |
+| Calibration controller duplication | Is the update law materially different from adjacent calibration entries? |
+| Measurement task drift | Does gold write or expose a metric artifact that the prompt asks for and checker validates? |
 | VCO/PLL startup artifacts | Is benchmark behavior about final phase/frequency, while startup sample quirks stay in L0 conformance? |
+| Stimulus source overclaim | Is the waveform schedule itself the target, not a hidden downstream circuit? |
 
 ### B4. Checker Semantics Match Prompt and Gold
 
@@ -240,7 +283,8 @@ Human review:
 - For each task, ask: "Could a wrong implementation pass this checker by
   exploiting a shallow observable?"
 - If yes, add a concrete missed behavior window, such as monotonicity, reset,
-  clamp, signed movement, edge ordering, or metric/waveform consistency.
+  clamp, signed movement, edge ordering, mode schedule, metric/waveform
+  consistency, or lock/reacquire behavior.
 
 ### B5. Bugfix Badcase Validity
 
@@ -262,9 +306,6 @@ Human review:
 - Confirm the bug type is pedagogically meaningful for Verilog-A behavioral
   modeling, such as reset priority, sign/direction error, saturation boundary,
   event ordering, pointer wrap, or missing transition.
-- A good fixed solution may correspond to multiple possible badcases; that is
-  acceptable only if the released badcase is specific, realistic, and
-  behavior-checked.
 
 ### B6. Evidence Freshness and Source Equivalence
 
@@ -284,77 +325,36 @@ Human review:
 
 - For rows marked as imported or historical, inspect whether the source is still
   exactly the same as the package source.
+- Do not convert partial imports into final release certification.
 
 ## Proposed Review Order
 
 | Phase | Scope | Why first |
 | --- | --- | --- |
-| P0 | All 20 L2 entries. | L2 is easiest to over-claim; checker must prove interaction, not just component behavior. |
-| P1 | High-risk L1 entries. | Known wording or semantic risks can corrupt benchmark interpretation. |
-| P2 | One representative row per category and form. | Verifies template consistency across categories. |
-| P3 | Remaining L1 entries by category. | Completes coverage after the risky cases are resolved. |
+| P0 | All 13 L2 entries in `docs/VABENCH_L2_CLAIM_MAPPING_AUDIT.md`. | L2 is easiest to over-claim; checker must prove interaction or explicit support-flow behavior. |
+| P1 | High-risk L1 and support entries. | Known wording or semantic risks can corrupt benchmark interpretation. |
+| P2 | One representative row per category and form. | Verifies prompt/check/gold template consistency across categories. |
+| P3 | Remaining L1 entries by category. | Completes coverage after risky cases are resolved. |
 
-High-risk L1 queue:
+High-risk L1/support queue:
 
 | Entry | Review focus |
 | --- | --- |
 | `vbr1_l1_binary_weighted_voltage_dac` | Public wording must say binary-weighted DAC, not thermometer DAC. |
-| `vbr1_l1_unit_element_thermometer_dac` | Must actually use unit-element thermometer-coded behavior. |
-| `vbr1_l1_crossing_metric_writer` | Metric file must match waveform crossing time. |
-| `vbr1_l1_settling_time_detector` | Define tolerance band, settle window, and metric semantics. |
-| `vbr1_l1_vco_phase_integrator` | Benchmark should check phase/frequency behavior; startup quirks stay L0. |
-| `vbr1_l1_charge_pump_abstraction` | Voltage-domain abstraction must not over-claim current-domain simulation. |
-| `vbr1_l1_loop_filter_abstraction` | Check proportional/integral update semantics, not just bounded output. |
-| `vbr1_l1_pfd_dead_zone_model` | Treat as PFD small-phase-error response; avoid making simulator threshold conformance replace circuit-level PFD behavior. |
-| `vbr1_l1_trim_calibration_controller` | Confirm distinctness from merged calibration accumulator evidence. |
-| `vbr1_l1_gain_trim_controller` | Confirm signed gain-control movement and saturation behavior. |
-
-Current semantic audit status:
-
-The current content audit has 0 `REVIEW_REQUIRED` findings. The former
-remaining high-risk entries were cleared by tightening their public checks and
-their executable behavior checkers:
-
-| Entry | Resolution evidence |
-| --- | --- |
-| `vbr1_l1_loop_filter_abstraction` | Dedicated checker now verifies proportional step decay, integral residual behavior, metric timing after valid updates, reset clearing, and bounded output. |
-| `vbr1_l1_gain_trim_controller` | Stimulus now drives sustained low/high measurement windows, and the checker verifies reset, signed control movement, upper clamp, lower clamp, and in-range behavior. |
-
-Resolved wording-only items in this pass:
-
-| Entry | Resolution |
-| --- | --- |
-| `vbr1_l1_charge_pump_abstraction` | Public function name is now "Voltage-domain charge-pump control abstraction"; prompt and taxonomy explicitly exclude current contributions, KCL/KVL assumptions, and transistor-level charge-pump claims. |
-| `vbr1_l1_settling_time_detector` | Public function name is now "Settling response measurement helper"; exact 120 ns event ordering remains an EVAS/Spectre conformance matter rather than the benchmark function. |
-| `vbr1_l1_trim_calibration_controller` | Public function name is now "Trim-voltage generator"; it is explicitly a calibration accumulator that drives `trim`, not a full capacitor-array CDAC model. |
-| `vbr1_l1_unit_element_thermometer_dac` | Public function name remains unit-element thermometer DAC; prompt/checker/gold all require fifteen unary segments including `seg14`, so it is distinct from the simple binary-coded DAC. |
-| `vbr1_l1_crossing_metric_writer` | Public checker requires a single `metric.out` record matching waveform crossing time within tolerance; file I/O atomicity remains L0 conformance rather than a circuit-function claim. |
-
-Function-checked DUT companion resolution:
-
-The former 14 auxiliary `dut` companion forms have been promoted only after
-adding function-level EVAS checker aliases, replacing generic checks, and
-rewriting public prompts with explicit module/port/observable contracts.
-
-Resolved in this pass: `vbr1_l1_burst_clock_source`,
-`vbr1_l1_clocked_adc_quantizer`, `vbr1_l1_resettable_sample_and_hold`
-(historical ID; public function is now clocked sample-and-hold), and the
-active entries below now expose function-level DUT prompts and checks.
-
-| Entry | Current status | Strong-checker direction |
-| --- | --- | --- |
-| `vbr1_l1_digital_phase_accumulator_with_modulo_wrap` | Function-checked DUT. | Check phase increment, wrap, and output event relation. |
-| `vbr1_l1_dither_or_noise_like_deterministic_source` | Function-checked DUT. | Check nonconstant dither/noise deviation from input. |
-| `vbr1_l1_dwa_dem_encoder` | Function-checked DUT. | Check one-hot pointer rotation, latched-code cell span, and wrap behavior. |
-| `vbr1_l1_hysteresis_comparator` | Function-checked DUT. | Check separate rising/falling thresholds and state retention inside hysteresis band. |
-| `vbr1_l1_pfd_dead_zone_model` | Function-checked DUT. | Check small phase-error UP/DN behavior without reducing it to exact threshold conformance. |
-| `vbr1_l1_propagation_delay_comparator` | Function-checked DUT. | Check threshold decision after delay and delay dependence on input difference. |
-| `vbr1_l1_ramp_or_step_source` | Function-checked DUT. | Check phase ramp, period wrap, and guard pulse width. |
-| `vbr1_l1_serializer_frame_aligner` | Function-checked DUT. | Check frame boundary, serial order, and bounded frame pulse. |
-| `vbr1_l1_threshold_comparator` | Function-checked DUT. | Check low/high threshold decisions and transition boundedness. |
-| `vbr1_l1_unit_element_thermometer_dac` | Function-checked DUT. | Check 15 unit elements, monotonic thermometer-code activation, endpoint scaling, and full-scale `seg14` coverage. |
-| `vbr1_l1_window_comparator_detector` | Function-checked DUT. | Check inside-window versus outside-window states with two thresholds. |
-| `vbr1_l1_xor_phase_detector` | Function-checked DUT. | Check phase/duty relationship, XOR high-time, and bounded output. |
+| `vbr1_l1_unit_element_thermometer_dac` | Must use fifteen unit-element thermometer-coded segments including full-scale `seg14` behavior. |
+| `vbr1_l1_crossing_metric_writer` | Metric output must match waveform crossing time within tolerance. |
+| `vbr1_l1_settling_time_detector` | Tolerance band, settle window, and metric semantics must be public and checker-aligned. |
+| `vbr1_l1_vco_phase_integrator` | Check phase/frequency behavior; startup quirks stay L0. |
+| `vbr1_l1_charge_pump_abstraction` | Must remain a voltage-domain control abstraction, not a current-domain charge-pump claim. |
+| `vbr1_l1_loop_filter_abstraction` | Check update law and reset behavior, not just bounded output. |
+| `vbr1_l1_trim_calibration_controller` | Must be distinct as a trim-voltage generator. |
+| `vbr1_l1_gain_trim_controller` | Check signed movement, saturation, and in-range hold behavior. |
+| `vbr1_l1_dwa_dem_encoder` | Check true DEM/DWA selection behavior, not only pointer smoke. |
+| `vbr1_l1_precision_rectifier_envelope_detector` | Check nonlinear rectification/envelope behavior, not only positive output. |
+| `vbr1_l1_programmable_gain_amplifier` | Check programmable gain behavior distinct from a fixed amplifier. |
+| `vbr1_l1_dither_or_noise_like_deterministic_source` | Keep as deterministic source support behavior; avoid stochastic/noise-analysis overclaim. |
+| CT07 measurement entries | Support-only wording; metric must be tied to waveform behavior. |
+| CT08 stimulus entries | Support-only wording; waveform schedule and continuity must be checked. |
 
 ## Manual Review Sheet Template
 
@@ -363,24 +363,24 @@ Use this per entry:
 | Field | Reviewer answer |
 | --- | --- |
 | Entry ID |  |
-| Category / level |  |
-| One-sentence intended circuit function |  |
+| Category / level / core-support role |  |
+| One-sentence intended function |  |
 | One-sentence gold behavior after reading `.va` |  |
 | Does prompt match intended function? | pass / revise / fail |
 | Does checker validate the intended function? | pass / revise / fail |
 | Does gold match prompt and checker? | pass / revise / fail |
-| L1/L2 classification correct? | pass / revise / fail |
+| L1/L2/support classification correct? | pass / revise / fail |
 | If bugfix, is badcase behavior-level and fair? | pass / revise / fail / n/a |
-| Required action | keep / rename / strengthen checker / reclassify / quarantine |
+| Required action | keep / revise / downgrade / support-only / quarantine |
 
 ## Test Implementation Plan
 
-Add one content-audit runner and one pytest wrapper:
+Existing automated content audit surface:
 
 | Artifact | Responsibility |
 | --- | --- |
 | `runners/audit_vabench_content_contract.py` | Read taxonomy docs, manifest, release entries, prompts, meta, checks, gold, and evidence; emit `content_contract_audit.json/md`. |
-| `tests/test_vabench_content_contract.py` | Assert no blocking automated findings; allow human-review warnings to remain explicit. |
+| `tests/test_vabench_content_contract.py` | Assert no blocking automated findings; keep human-review notes explicit. |
 
 Recommended automated finding classes:
 
@@ -390,37 +390,34 @@ Recommended automated finding classes:
 | `REVIEW_REQUIRED` | Near-duplicate function, L2 composition ambiguity, checker may be shallow, misleading historical name. |
 | `INFO` | Human-readable trace notes and sampling choices. |
 
-The runner should not claim semantic correctness by itself. Its final status
-should be:
-
-| Status | Meaning |
-| --- | --- |
-| `pass` | No automated blockers and no required human-review queue remains. |
-| `review_required` | No automated blockers, but semantic review rows remain. |
-| `fail` | At least one automated blocker exists. |
+The runner must not claim semantic correctness by itself. Human review remains
+required for L2 claim mapping and high-risk L1/support interpretation.
 
 ## Commands
 
-Current structural checks to run before the new content audit:
+Run from `behavioral-veriloga-eval`:
 
 ```bash
-cd behavioral-veriloga-eval
 python3 runners/report_vabench_release_schema_validation.py
 python3 runners/audit_vabench_release_assets.py
 python3 runners/report_vabench_release_completion_audit.py
-pytest -q \
+python3 runners/audit_vabench_content_contract.py
+python3 -m pytest -q \
   tests/test_vabench_release_schema_validation.py \
   tests/test_vabench_release_asset_integrity.py \
-  tests/test_vabench_release_completion_audit.py
+  tests/test_vabench_release_completion_audit.py \
+  tests/test_vabench_content_contract.py
 ```
 
-After implementing the new audit runner:
+Fresh certification is a separate gate:
 
 ```bash
-cd behavioral-veriloga-eval
-python3 runners/audit_vabench_content_contract.py
-pytest -q tests/test_vabench_content_contract.py
+python3 runners/run_gold_dual_suite.py --release benchmark-vabench-release-v1
 ```
+
+Use the actual release runner/options when launching the full EVAS/Spectre job;
+the command above is the conceptual gate, not a substitute for the project
+queue scripts.
 
 ## Stop Condition
 
@@ -428,8 +425,11 @@ The benchmark content audit is ready for baseline pilots only when:
 
 - all Audit Gate A automated checks pass;
 - all Audit Gate B automated checks pass;
-- every L2 entry has a human `keep` or `revise-complete` decision;
+- every L2 entry has a human `keep`, `revise-complete`, `downgrade`, or
+  `support-only` decision;
+- support-only rows are visibly separated from the 51-entry core circuit
+  denominator;
 - high-risk L1 entries have no unresolved wording/checker/gold mismatch;
-- score remains disabled, while unweighted pass-rate reporting is allowed;
+- score remains disabled until fresh full EVAS/Spectre certification;
 - any remaining caveat is documented as a non-blocking review note, not hidden
   inside a pass result.

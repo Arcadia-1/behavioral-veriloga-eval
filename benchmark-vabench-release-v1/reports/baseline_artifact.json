@@ -1,27 +1,29 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
-  "status": "ready_for_baseline_runs",
+  "status": "pending_release_baselines",
   "claim_allowed": false,
-  "scored_release_entries": 72,
-  "scored_release_forms": 245,
+  "scored_release_entries": 51,
+  "scored_release_forms": 184,
   "score_denominator_status": "score_enabled",
   "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-  "fully_certified_entry_count": 72,
-  "dual_pending_release_task_count": 0,
+  "fully_certified_entry_count": 63,
+  "dual_pending_release_task_count": 2,
   "dual_failed_release_task_count": 0,
   "baseline_summary_count": 0,
   "baseline_summaries": [],
   "execution_plan": {
-    "status": "ready_for_baseline_runs",
-    "blocked_by": [],
+    "status": "blocked_until_full_certification",
+    "blocked_by": [
+      "EVAS/Spectre release certification is pending"
+    ],
     "denominator_preview": {
-      "planned_entries": 72,
-      "release_forms": 245,
-      "certified_entries": 72,
-      "certified_forms": 245,
-      "scored_entries": 72,
-      "scored_forms": 245
+      "planned_entries": 64,
+      "release_forms": 219,
+      "certified_entries": 63,
+      "certified_forms": 217,
+      "scored_entries": 51,
+      "scored_forms": 184
     },
     "run_order": [
       "Use score_denominator_manifest.json as the frozen scored-row source.",

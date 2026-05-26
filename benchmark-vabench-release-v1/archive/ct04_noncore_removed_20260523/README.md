@@ -3,7 +3,7 @@
 Date: 2026-05-23
 
 This archive preserves three CT04 entries removed from the paper-facing
-`tasks/CT04_analog_behavioral_signal_conditioning` surface after content
+`tasks/CT04_baseband_signal_conditioning` surface after content
 audit. The retained CT04 core is:
 
 - `vbr1_l1_voltage_gain_amplifier`

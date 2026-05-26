@@ -4,7 +4,7 @@
   "task_form": "dut",
   "taxonomy": {
     "level": "L1",
-    "category": "PLL / Clock / Event Timing",
+    "category": "PLL Clock and Timing Systems",
     "base_function": "Clock divider"
   },
   "static": "pass",
@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/clk_divider.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs"
   ],
   "checks": {
     "must_include": [

@@ -1032,7 +1032,13 @@ def write_schemas() -> None:
                 "type": "object",
                 "required": ["status", "blocked_by", "run_order", "aggregation_metrics"],
                 "properties": {
-                    "status": {"enum": ["ready_for_baseline_runs", "blocked_until_scored_release_exists"]},
+                    "status": {
+                        "enum": [
+                            "ready_for_baseline_runs",
+                            "blocked_until_full_certification",
+                            "blocked_until_scored_release_exists",
+                        ]
+                    },
                     "blocked_by": {"type": "array", "items": {"type": "string"}},
                     "run_order": {"type": "array", "items": {"type": "string"}},
                     "aggregation_metrics": {"type": "array", "items": {"type": "string"}},

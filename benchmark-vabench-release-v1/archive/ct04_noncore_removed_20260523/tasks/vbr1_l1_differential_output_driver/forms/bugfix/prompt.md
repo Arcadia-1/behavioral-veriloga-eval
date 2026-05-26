@@ -4,7 +4,7 @@
 
 - Form: `bugfix`
 - Level: `L1`
-- Category: Analog Behavioral Signal Conditioning
+- Category: Baseband Signal Conditioning
 - Base function: Differential output driver
 - Domain: `voltage`
 - Target artifact(s): `dut_fixed.va`

@@ -30,8 +30,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/element_shuffler.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/tb_element_shuffler_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/element_shuffler.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/tb_element_shuffler_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/dut/evidence.json",
       "pending_blockers": [
@@ -54,8 +54,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/element_shuffler.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/tb_element_shuffler_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/element_shuffler.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/tb_element_shuffler_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/tb/evidence.json",
       "pending_blockers": [
@@ -78,11 +78,11 @@
       "gold_va_count": 3,
       "gold_scs_count": 2,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/element_shuffler.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_buggy.scs",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/bugfix/evidence.json",
       "pending_blockers": [
@@ -105,8 +105,8 @@
       "gold_va_count": 1,
       "gold_scs_count": 1,
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/element_shuffler.va",
-        "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/tb_element_shuffler_ref.scs"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/element_shuffler.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/tb_element_shuffler_ref.scs"
       ],
       "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_element_shuffler/e2e/evidence.json",
       "pending_blockers": [
@@ -116,7 +116,7 @@
     }
   ],
   "notes": [
-    "Targeted CT07 refresh after changing element_shuffler from a rotating-selector duplicate into a non-monotonic permutation task.",
+    "Targeted SUP01 refresh after changing element_shuffler from a rotating-selector duplicate into a non-monotonic permutation task.",
     "Rows here are ready for EVAS/Spectre dual rerun and replacement of stale evidence."
   ]
 }

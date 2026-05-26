@@ -1,0 +1,22 @@
+syntax:
+  must_include:
+    - "transition("
+    - "@(cross("
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "ramp_segment_monotonic"
+    - "swept_chirp_segment_frequency_increases"
+    - "burst_prbs_gate_schedule"
+    - "mode_switch_continuity"
+parity:
+  reference: "spectre"
+  status: "pending_until_evas_spectre_rerun"
+  notes:
+    - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."

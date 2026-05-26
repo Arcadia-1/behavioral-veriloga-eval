@@ -44,7 +44,7 @@ def write_json(path: Path, payload: dict[str, object]) -> None:
 
 def read_entries() -> dict[str, tuple[Path, dict[str, object]]]:
     entries: dict[str, tuple[Path, dict[str, object]]] = {}
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         entries[str(payload["release_entry_id"])] = (path, payload)
     return entries
@@ -110,10 +110,29 @@ def backend_status(raw: dict[str, object], backend: str) -> str:
         return "fail"
     if backend == "spectre":
         spectre = raw.get("spectre", {})
+        if isinstance(spectre, dict) and spectre_license_blocker(spectre):
+            return "pending"
         if isinstance(spectre, dict) and spectre.get("ok") is True and float(spectre.get("behavior_score", 0.0)) >= 1.0:
             return "pass"
         return "fail"
     raise ValueError(f"unknown backend: {backend}")
+
+
+def spectre_license_blocker(spectre: dict[str, object]) -> bool:
+    errors = spectre.get("errors", [])
+    error_text = " ".join(str(item) for item in errors) if isinstance(errors, list) else str(errors)
+    stdout_tail = str(spectre.get("stdout_tail", ""))
+    combined = f"{error_text}\n{stdout_tail}"
+    return "SPECTRE-209" in combined or "required license could not be checked out" in combined
+
+
+def external_pending_blockers(raw: dict[str, object]) -> list[str]:
+    spectre = raw.get("spectre", {})
+    if isinstance(spectre, dict) and spectre_license_blocker(spectre):
+        return [
+            "Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed."
+        ]
+    return []
 
 
 def raw_result_status(row: dict[str, object]) -> str:
@@ -152,7 +171,11 @@ def write_backend_result(
         "release_entry_id": row["entry_id"],
         "source_task_id": raw.get("task_id", row.get("source_task_id")) if isinstance(raw, dict) else row.get("source_task_id"),
         "backend": backend,
-        "status": "PASS" if status == "pass" else "FAIL_SIM_CORRECTNESS",
+        "status": (
+            "PASS"
+            if status == "pass"
+            else ("PENDING" if status == "pending" else "FAIL_SIM_CORRECTNESS")
+        ),
         "scores": {
             "rerun_backend_pass": status == "pass",
             "rerun_expected_result_met": row.get("expected_result_met"),
@@ -214,12 +237,14 @@ def write_task_evidence(
     evas = backend_status(raw, "evas")
     spectre = backend_status(raw, "spectre")
     certified = result_is_certified(row)
+    pending_blockers = external_pending_blockers(raw)
     failures: list[str] = []
     if not certified:
-        failures.append(f"rerun raw status is {raw_result_status(row)}")
+        if not pending_blockers:
+            failures.append(f"rerun raw status is {raw_result_status(row)}")
     if evas != "pass":
         failures.append("EVAS rerun did not pass")
-    if spectre != "pass":
+    if spectre == "fail":
         failures.append("Spectre rerun did not pass")
 
     evas_result = write_backend_result(
@@ -280,8 +305,12 @@ def write_task_evidence(
             "release_gold": task.get("gold", []),
         },
         "failures": failures,
-        "pending_blockers": [] if certified else failures,
-        "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets.",
+        "pending_blockers": [] if certified else (pending_blockers or failures),
+        "notes": (
+            "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+            if not pending_blockers
+            else "EVAS evidence imported from current release gold; Spectre certification remains pending on external license checkout."
+        ),
     }
     write_json(evidence_path, evidence)
 
@@ -293,20 +322,21 @@ def write_task_evidence(
     task["simulator_rerun_source"] = "release_rerun_staging_bundle"
     update_release_task_manifest(task=task, evas=evas, spectre=spectre, evidence_path=evidence_path)
 
+    task_status = "pass" if certified else ("pending" if pending_blockers and not failures else "fail")
     return {
         "entry_id": entry_id,
         "form": form,
         "source_task_id": raw.get("task_id", row.get("source_task_id")),
-        "status": "pass" if certified else "fail",
+        "status": task_status,
         "backend_status": {
             "evas": evas,
             "spectre": spectre,
         },
         "failure_count": len(failures),
         "source_equivalence_failure_count": 0,
-        "blocker_count": 0 if certified else len(failures),
+        "blocker_count": 0 if certified else len(pending_blockers or failures),
         "failures": failures,
-        "pending_blockers": [] if certified else failures,
+        "pending_blockers": [] if certified else (pending_blockers or failures),
         "evidence": rel(evidence_path),
         "simulator_rerun": True,
     }
@@ -344,10 +374,9 @@ def recompute_dual_report(current: dict[str, object], updates: dict[tuple[str, s
         dual_status = "pass" if dual_pass else ("fail" if dual_fail else "pending")
         missing_forms = entry.get("missing_forms", [])
         blockers = entry.get("release_blockers", [])
-        effective_blockers = (
-            [blocker for blocker in blockers if blocker not in DUAL_REFRESH_BLOCKERS]
-            if dual_pass and isinstance(blockers, list)
-            else blockers
+        effective_blockers = entry_release_blockers(
+            blockers=blockers,
+            task_reports=reports,
         )
         fully_certified = (
             dual_pass
@@ -412,6 +441,45 @@ def recompute_dual_report(current: dict[str, object], updates: dict[tuple[str, s
         }
     )
     return merged
+
+
+def entry_backend_certification(task_reports: list[dict[str, object]], backend: str) -> str:
+    if not task_reports:
+        return "pending"
+    statuses = []
+    for report in task_reports:
+        backend_status = report.get("backend_status", {})
+        if not isinstance(backend_status, dict):
+            statuses.append("pending")
+            continue
+        statuses.append(str(backend_status.get(backend, "pending")))
+    if all(status == "pass" for status in statuses):
+        return "pass"
+    if any(status == "fail" for status in statuses):
+        return "fail"
+    return "pending"
+
+
+def entry_release_blockers(
+    *,
+    blockers: object,
+    task_reports: list[dict[str, object]],
+) -> list[object] | object:
+    if not isinstance(blockers, list):
+        return blockers
+    evas_cert = entry_backend_certification(task_reports, "evas")
+    spectre_cert = entry_backend_certification(task_reports, "spectre")
+    retained = [
+        blocker
+        for blocker in blockers
+        if blocker not in {"evas_certification", "spectre_certification"}
+        and not (blocker in DUAL_REFRESH_BLOCKERS and evas_cert == "pass" and spectre_cert == "pass")
+    ]
+    if evas_cert != "pass" and "evas_certification" not in retained:
+        retained.append("evas_certification")
+    if spectre_cert != "pass" and "spectre_certification" not in retained:
+        retained.append("spectre_certification")
+    return retained
 
 
 def write_dual_markdown(report: dict[str, object]) -> None:
@@ -539,11 +607,12 @@ def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]
 
         task_reports = reports_by_entry.get(entry_id, [])
         dual_pass = bool(task_reports) and all(report["status"] == "pass" for report in task_reports)
-        dual_fail = any(report["status"] == "fail" for report in task_reports)
+        evas_cert = entry_backend_certification(task_reports, "evas")
+        spectre_cert = entry_backend_certification(task_reports, "spectre")
         certification = entry.setdefault("certification", {})
         if isinstance(certification, dict):
-            certification["evas"] = "pass" if dual_pass else ("fail" if dual_fail else "pending")
-            certification["spectre"] = "pass" if dual_pass else ("fail" if dual_fail else "pending")
+            certification["evas"] = evas_cert
+            certification["spectre"] = spectre_cert
             certification["evidence"] = rel(DUAL_REPORT_JSON)
             changed = True
         blockers = entry.get("release_blockers", [])
@@ -551,11 +620,10 @@ def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]
             if dual_pass:
                 entry["release_blockers"] = [blocker for blocker in blockers if blocker not in DUAL_REFRESH_BLOCKERS]
             else:
-                retained = list(blockers)
-                for blocker in ("evas_certification", "spectre_certification"):
-                    if blocker not in retained:
-                        retained.append(blocker)
-                entry["release_blockers"] = retained
+                entry["release_blockers"] = entry_release_blockers(
+                    blockers=blockers,
+                    task_reports=task_reports,
+                )
             changed = True
         if changed:
             write_json(entry_path, entry)
@@ -579,7 +647,9 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             write_json(DUAL_REPORT_JSON, merged)
             write_dual_markdown(merged)
             update_entry_certifications({}, merged)
-        tasks_total = summary_task_count(summary) if summary else None
+        tasks_total = summary_task_count(summary) if summary else 0
+        if tasks_total is None:
+            tasks_total = 0
         return {
             "date": date.today().isoformat(),
             "status": "imported",
@@ -608,11 +678,16 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         return {
             "date": date.today().isoformat(),
             "status": "missing",
+            "reason": "No dual rerun summary exists yet.",
             "summary": rel(summary_path) if summary_path.exists() else str(summary_path),
+            "tasks_total": 0,
             "current_queue_count": queue_count,
-            "summary_tasks_total": None,
+            "summary_tasks_total": 0,
             "stale_summary": False,
             "imported_primary_result_count": 0,
+            "skipped_result_count": 0,
+            "imported_pass_count": 0,
+            "imported_fail_count": 0,
             "notes": ["No dual rerun summary exists yet."],
         }
     tasks_total = summary_task_count(summary)
@@ -634,6 +709,9 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "summary_tasks_total": tasks_total,
             "stale_summary": True,
             "imported_primary_result_count": 0,
+            "skipped_result_count": 0,
+            "imported_pass_count": 0,
+            "imported_fail_count": 0,
             "notes": [
                 "Fresh dual rerun results are not imported when summary task count is stale.",
                 "Current dual_certification.json remains based on historical import plus pending rerun blockers.",
@@ -650,6 +728,9 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "summary_tasks_total": tasks_total,
             "stale_summary": False,
             "imported_primary_result_count": 0,
+            "skipped_result_count": 0,
+            "imported_pass_count": 0,
+            "imported_fail_count": 0,
             "notes": [
                 "Fresh dual rerun results are not imported unless the rerun summary status is complete.",
                 "Current dual_certification.json remains based on historical import plus pending rerun blockers.",
@@ -674,16 +755,50 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         task_report = write_task_evidence(entry=entry, task=task, row=row, summary_path=summary_path) if write else {
             "entry_id": entry_id,
             "form": form,
-            "status": "pass" if result_is_certified(row) else "fail",
+            "status": (
+                "pass"
+                if result_is_certified(row)
+                else (
+                    "pending"
+                    if isinstance(row.get("raw_result", {}), dict)
+                    and external_pending_blockers(row.get("raw_result", {}))
+                    else "fail"
+                )
+            ),
             "backend_status": {
                 "evas": backend_status(row.get("raw_result", {}), "evas") if isinstance(row.get("raw_result", {}), dict) else "fail",
                 "spectre": backend_status(row.get("raw_result", {}), "spectre") if isinstance(row.get("raw_result", {}), dict) else "fail",
             },
-            "failure_count": 0 if result_is_certified(row) else 1,
+            "failure_count": (
+                0
+                if result_is_certified(row)
+                or (
+                    isinstance(row.get("raw_result", {}), dict)
+                    and external_pending_blockers(row.get("raw_result", {}))
+                )
+                else 1
+            ),
             "source_equivalence_failure_count": 0,
             "blocker_count": 0 if result_is_certified(row) else 1,
-            "failures": [] if result_is_certified(row) else [f"rerun raw status is {raw_result_status(row)}"],
-            "pending_blockers": [] if result_is_certified(row) else [f"rerun raw status is {raw_result_status(row)}"],
+            "failures": (
+                []
+                if result_is_certified(row)
+                or (
+                    isinstance(row.get("raw_result", {}), dict)
+                    and external_pending_blockers(row.get("raw_result", {}))
+                )
+                else [f"rerun raw status is {raw_result_status(row)}"]
+            ),
+            "pending_blockers": (
+                []
+                if result_is_certified(row)
+                else (
+                    external_pending_blockers(row.get("raw_result", {}))
+                    if isinstance(row.get("raw_result", {}), dict)
+                    and external_pending_blockers(row.get("raw_result", {}))
+                    else [f"rerun raw status is {raw_result_status(row)}"]
+                )
+            ),
             "evidence": "",
             "simulator_rerun": True,
         }
@@ -697,6 +812,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         update_entry_certifications(updates, merged)
 
     imported_fail_count = sum(1 for row in imported_rows if row["status"] == "fail")
+    imported_pending_count = sum(1 for row in imported_rows if row["status"] == "pending")
     return {
         "date": date.today().isoformat(),
         "status": (
@@ -708,9 +824,13 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "Fresh dual rerun imported with failing primary rows; release certification remains blocked."
             if imported_fail_count
             else (
+                "Fresh dual rerun imported with external pending blockers; release certification remains pending."
+                if imported_pending_count
+                else (
                 "Stale-count dual rerun summary was partially imported by exact entry/form match; unmatched rows remain skipped and missing rows remain pending."
                 if stale_reason
                 else "Fresh dual rerun imported; all primary rows passed EVAS/Spectre certification."
+                )
             )
         ),
         "summary": rel(summary_path) if summary_path.is_relative_to(ROOT) else str(summary_path),
@@ -722,6 +842,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         "imported_primary_result_count": len(imported_rows),
         "skipped_result_count": len(skipped_rows),
         "imported_pass_count": sum(1 for row in imported_rows if row["status"] == "pass"),
+        "imported_pending_count": imported_pending_count,
         "imported_fail_count": imported_fail_count,
         "merged_dual_certified_release_task_count": merged["dual_certified_release_task_count"],
         "merged_dual_pending_release_task_count": merged["dual_pending_release_task_count"],
@@ -758,6 +879,7 @@ def write_markdown(report: dict[str, object]) -> None:
         f"| imported primary results | {report.get('imported_primary_result_count', 0)} |",
         f"| skipped results | {report.get('skipped_result_count', 0)} |",
         f"| imported pass | {report.get('imported_pass_count', 0)} |",
+        f"| imported pending | {report.get('imported_pending_count', 0)} |",
         f"| imported fail | {report.get('imported_fail_count', 0)} |",
     ]
     if report.get("reason"):

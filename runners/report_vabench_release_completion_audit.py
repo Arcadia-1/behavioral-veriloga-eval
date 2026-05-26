@@ -45,8 +45,8 @@ SCHEMAS = [
 ]
 REPORT_JSON = REPORTS_ROOT / "completion_audit.json"
 REPORT_MD = REPORTS_ROOT / "completion_audit.md"
-PLANNED_ENTRY_TARGET = 72
-PLANNED_LEVEL_COUNTS = {"L1": 56, "L2": 16}
+PLANNED_ENTRY_TARGET = 64
+PLANNED_LEVEL_COUNTS = {"L1": 51, "L2": 13}
 
 
 def rel(path: Path) -> str:
@@ -163,7 +163,7 @@ def build_report() -> dict[str, object]:
             ],
         ),
         req(
-            requirement_id="R2_tracker_72_entries",
+            requirement_id="R2_tracker_64_entries",
             requirement=f"Create an execution tracker for the {PLANNED_ENTRY_TARGET} selected L1/L2 functions.",
             status="proved" if len(tracker) == PLANNED_ENTRY_TARGET and level_counts == PLANNED_LEVEL_COUNTS else "incomplete",
             evidence=[rel(TRACKER_CSV), rel(REPORTS_ROOT / "release_status.json")],

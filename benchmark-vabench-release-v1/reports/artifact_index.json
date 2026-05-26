@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "artifact_count": 29,
@@ -8,12 +8,13 @@
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
     "can_claim_top_level_coverage_plan": true,
-    "can_claim_release_package_complete": true,
+    "can_claim_release_package_complete": false,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
     "can_claim_speedup": false,
     "can_claim_model_baseline": false,
     "blocking_conditions": [
+      "selected EVAS/Spectre rerun pending",
       "external blocker report active: 0 blocked, 1 pending",
       "speed/debug timing artifact not claimable",
       "release model baseline artifact pending"
@@ -25,7 +26,7 @@
       "path": "docs/VABENCH_RELEASE_TRACKER.csv",
       "exists": true,
       "kind": "tracker",
-      "purpose": "72-entry L1/L2 release coverage target.",
+      "purpose": "64-entry L1/L2 release coverage target.",
       "claim_role": "coverage_plan",
       "status": "ready",
       "certification_evidence": false,
@@ -175,11 +176,11 @@
       "kind": "report",
       "purpose": "Imported EVAS/Spectre certification evidence and pending dual evidence.",
       "claim_role": "parity",
-      "status": "pass",
+      "status": "partial",
       "certification_evidence": true,
       "notes": [
-        "dual_certified_release_task_count=245",
-        "dual_pending_release_task_count=0",
+        "dual_certified_release_task_count=217",
+        "dual_pending_release_task_count=2",
         "evas_pass_spectre_fail_count=0"
       ]
     },
@@ -190,7 +191,7 @@
       "kind": "report",
       "purpose": "Entry/form-level certification matrix derived from dual evidence and score denominator gates.",
       "claim_role": "parity_audit",
-      "status": "complete",
+      "status": "partial",
       "certification_evidence": false,
       "notes": [
         "Derived audit view only; dual_certification.json remains the certification evidence source.",
@@ -216,7 +217,7 @@
       "kind": "execution_queue",
       "purpose": "Pending primary release rows that still need fresh EVAS/Spectre rerun.",
       "claim_role": "rerun_plan",
-      "status": "complete",
+      "status": "ready",
       "certification_evidence": false,
       "notes": []
     },
@@ -227,7 +228,7 @@
       "kind": "execution_queue",
       "purpose": "Runnable staged bundles for release dual rerun.",
       "claim_role": "rerun_plan",
-      "status": "complete",
+      "status": "ready",
       "certification_evidence": false,
       "notes": [
         "Staging readiness is not simulator pass evidence."
@@ -240,7 +241,7 @@
       "kind": "report",
       "purpose": "Import gate for fresh dual rerun summaries.",
       "claim_role": "certification_import_gate",
-      "status": "partial_imported",
+      "status": "imported",
       "certification_evidence": false,
       "notes": [
         "Blocked, dry-run, or running summaries are not imported as certification evidence."
@@ -279,7 +280,7 @@
       "kind": "readiness_gate",
       "purpose": "Preflight gate for safely starting, importing, and finishing the fresh EVAS/Spectre release rerun.",
       "claim_role": "recovery_path",
-      "status": "blocked",
+      "status": "ready_to_run",
       "certification_evidence": false,
       "notes": [
         "Readiness does not imply simulator certification evidence."
@@ -303,7 +304,7 @@
       "kind": "report",
       "purpose": "Same-slice EVAS/Spectre timing and debug evidence gate.",
       "claim_role": "speed_debug",
-      "status": "measured_subset",
+      "status": "measured_with_failures",
       "certification_evidence": false,
       "notes": []
     },
@@ -314,7 +315,7 @@
       "kind": "report",
       "purpose": "Model baseline protocol and claim gate.",
       "claim_role": "baseline",
-      "status": "ready_for_baseline_runs",
+      "status": "pending_release_baselines",
       "certification_evidence": false,
       "notes": []
     },
@@ -325,7 +326,7 @@
       "kind": "report",
       "purpose": "P1 write-step record for frozen benchmark_score flags before denominator manifest rebuild.",
       "claim_role": "scoring_denominator",
-      "status": "enabled",
+      "status": "blocked",
       "certification_evidence": false,
       "notes": [
         "benchmark-vabench-release-v1/reports/score_denominator_enablement.md"
@@ -464,7 +465,7 @@
     {
       "id": "primary_dual_rerun",
       "command": "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
-      "purpose": "Run the 0-row primary EVAS/Spectre release rerun through the bridge wrapper."
+      "purpose": "Run the 2-row primary EVAS/Spectre release rerun through the bridge wrapper."
     }
   ],
   "notes": [

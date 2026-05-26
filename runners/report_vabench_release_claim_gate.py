@@ -11,7 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "claim_gate.json"
 REPORT_MD = REPORTS_ROOT / "claim_gate.md"
-PLANNED_ENTRY_TARGET = 72
+PLANNED_ENTRY_TARGET = 64
 
 
 def rel(path: Path) -> str:
@@ -92,7 +92,7 @@ def build_report() -> dict[str, object]:
     dual_pending_forms = as_int(dual.get("dual_pending_release_task_count"))
     dual_failed_forms = as_int(dual.get("dual_failed_release_task_count"))
     mismatch_forms = as_int(dual.get("evas_pass_spectre_fail_count"))
-    scored_entries = as_int(release_status.get("scored_release_entries"))
+    scored_entries = as_int(score_summary.get("scored_entry_count"))
     scored_forms = as_int(score_summary.get("scored_form_count"))
     source_pending = as_int(remaining.get("source_design_pending_entry_count"))
     missing_required = as_int(remaining.get("missing_required_form_entry_count"))

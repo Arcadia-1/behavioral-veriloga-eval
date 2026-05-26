@@ -14,6 +14,7 @@ REPORTS_ROOT = PACKAGE_ROOT / "reports"
 TABLES_ROOT = REPORTS_ROOT / "paper_tables"
 REPORT_JSON = REPORTS_ROOT / "paper_tables.json"
 REPORT_MD = REPORTS_ROOT / "paper_tables.md"
+SUPPORT_CATEGORIES = {"Measurement Instrumentation Flows", "Stimulus and Source Generators"}
 
 
 def rel(path: Path) -> str:
@@ -115,6 +116,11 @@ def build_report() -> dict[str, object]:
         as_int(parity.get("dual_pending_release_task_count", 0)) == 0
         and as_int(parity.get("dual_failed_release_task_count", 0)) == 0
     )
+    category_counts = coverage.get("category_counts", {})
+    if not isinstance(category_counts, dict):
+        category_counts = {}
+    support_entry_count = sum(as_int(category_counts.get(category)) for category in SUPPORT_CATEGORIES)
+    core_entry_count = as_int(coverage.get("planned_entries", 0)) - support_entry_count
 
     coverage_rows = [
         metric_row(
@@ -124,7 +130,25 @@ def build_report() -> dict[str, object]:
             scope="coverage target",
             claim_status=str(claims.get("C1_coverage_target_defined", {}).get("status", "missing")),
             evidence=rel(REPORTS_ROOT / "release_status.json"),
-            safe_caption_note="Coverage target only; not a scored denominator.",
+            safe_caption_note="Coverage target only; split core circuit coverage from measurement/stimulus support; not a scored denominator.",
+        ),
+        metric_row(
+            table_id="coverage",
+            metric="core_circuit_entries",
+            value=core_entry_count,
+            scope="core coverage target",
+            claim_status=str(claims.get("C1_coverage_target_defined", {}).get("status", "missing")),
+            evidence=rel(ROOT / "docs" / "VABENCH_LEVEL_COVERAGE_TABLE.md"),
+            safe_caption_note="Core analog/mixed-signal circuit-function entries; excludes measurement and stimulus/source support categories.",
+        ),
+        metric_row(
+            table_id="coverage",
+            metric="support_measurement_stimulus_entries",
+            value=support_entry_count,
+            scope="support coverage target",
+            claim_status=str(claims.get("C1_coverage_target_defined", {}).get("status", "missing")),
+            evidence=rel(ROOT / "docs" / "VABENCH_LEVEL_COVERAGE_TABLE.md"),
+            safe_caption_note="Auxiliary measurement, instrumentation, and stimulus/source entries; report separately from core circuit coverage.",
         ),
         metric_row(
             table_id="coverage",
@@ -344,7 +368,7 @@ def build_report() -> dict[str, object]:
             "title": "vaBench release coverage and materialization status",
             "csv": rel(TABLES_ROOT / "coverage.csv"),
             "row_count": len(coverage_rows),
-            "caption": "Coverage/materialization status for the 72-entry L1/L2 release target; score denominator claims are governed by the score denominator manifest.",
+            "caption": "Coverage/materialization status for the 64-entry L1/L2 release target, split into core circuit coverage and measurement/stimulus support; score denominator claims are governed by the score denominator manifest.",
         },
         {
             "id": "parity",

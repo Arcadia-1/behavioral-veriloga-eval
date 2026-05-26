@@ -5,7 +5,7 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L1",
-    "category": "PLL / Clock / Event Timing",
+    "category": "PLL Clock and Timing Systems",
     "base_function": "Bang-bang phase detector"
   },
   "static": "pass",
@@ -13,12 +13,12 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold",
-    "results/ct05-dual-rerun-20260523-final/vbr1_l1_bang_bang_phase_detector/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260525/vbr1_l1_bang_bang_phase_detector/tb/gold",
+    "results/vabench-release-v1-ct05-dual-20260525_234000_ci/vbr1_l1_bang_bang_phase_detector/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_bang_bang_phase_detector/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -28,13 +28,20 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold",
-    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l1_bang_bang_phase_detector/tb/gold",
+    "summary": "results/vabench-release-v1-ct05-dual-20260525_234000_ci/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260525/vbr1_l1_bang_bang_phase_detector/tb/gold",
+    "result_root": "results/vabench-release-v1-ct05-dual-20260525_234000_ci/vbr1_l1_bang_bang_phase_detector/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
       "status": "passed",
+      "policy": {
+        "policy": "spectre_equivalence_core_v1",
+        "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
+        "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
+        "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
+        "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25"
+      },
       "common_window_s": [
         0.0,
         1.7e-07
@@ -43,8 +50,9 @@
       "samples": 1200,
       "max_rmse_v": 0.05,
       "max_abs_v": 1.0,
+      "mean_relative_rms_error": 0.0005,
+      "max_relative_rms_error": 0.0025,
       "mean_nrmse": 0.0005,
-      "p95_nrmse": 0.0025,
       "max_nrmse": 0.0025,
       "per_signal": {
         "clk": {
@@ -105,8 +113,8 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs"
     ]
   },
   "failures": [],

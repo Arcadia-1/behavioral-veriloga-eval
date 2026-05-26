@@ -25,7 +25,7 @@ def test_checker_evidence_workplan_preserves_dual_parity_boundary() -> None:
     work_items = {item["id"]: item for item in report["work_items"]}
 
     assert summary["dual_status"] == "partial"
-    assert summary["dual_certified_release_task_count"] == 255
+    assert summary["dual_certified_release_task_count"] == 0
     assert summary["evas_pass_spectre_fail_count"] == 0
     assert summary["targeted_l2_checker_tightening_status"] == "pass"
     assert summary["targeted_l2_checker_tightening_pass_count"] == 2
@@ -44,11 +44,11 @@ def test_checker_evidence_workplan_identifies_l2_checker_review_queue() -> None:
     rows = {row["release_entry_id"]: row for row in report["l2_e2e_rows"]}
     work_items = {item["id"]: item for item in report["work_items"]}
 
-    assert summary["l2_e2e_count"] == 16
+    assert summary["l2_e2e_count"] == 13
     assert summary["l2_checker_strength_counts"] == {
-        "multi_behavior_check": 16,
+        "multi_behavior_check": 13,
     }
     assert work_items["W2_l2_checker_strength_audit"]["status"] == "ready_for_claim_mapping"
     assert work_items["W2_l2_checker_strength_audit"]["weak_or_needs_review_count"] == 0
-    assert rows["vbr1_l2_event_controller"]["checker_strength"] == "multi_behavior_check"
+    assert rows["vbr1_l2_programmable_stimulus_sequencer"]["checker_strength"] == "multi_behavior_check"
     assert rows["vbr1_l2_measurement_flow"]["checker_strength"] == "multi_behavior_check"

@@ -4,7 +4,7 @@
 
 - Form: `tb`
 - Level: `L1`
-- Category: Analog Behavioral Signal Conditioning
+- Category: Baseband Signal Conditioning
 - Base function: Voltage clamp or limiter
 - Domain: `voltage`
 - Target artifact(s): `tb_ref.scs`

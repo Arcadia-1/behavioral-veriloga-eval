@@ -1,32 +1,25 @@
 # vaBench Release Score Denominator Enablement
 
-Date: 2026-05-24
+Date: 2026-05-25
 
-This report records the P1 write step that freezes `counts.benchmark_score`
-for the release package before the score denominator manifest is rebuilt.
+This is a blocked snapshot for the current release package. It replaces older
+enablement records so current reports do not point at removed entries.
 
 ## Summary
 
 | Metric | Value |
 | --- | ---: |
-| status | `enabled` |
-| release entries | 72 |
-| release forms | 245 |
-| score-enabled entries | 72 |
-| score-enabled forms | 245 |
-| disabled entries | 0 |
-| disabled forms | 0 |
-| content-excluded entries | 0 |
-| content-excluded forms | 0 |
-| dual certification ready | `True` |
+| status | `blocked` |
+| release entries | 64 |
+| release forms | 219 |
+| score-enabled entries | 0 |
+| score-enabled forms | 0 |
+| benchmark-score-flagged entries | 64 |
+| benchmark-score-flagged forms | 219 |
+| scored entries | 0 |
+| scored forms | 0 |
+| dual certification ready | `False` |
 
-## Policy
+## Blocking Rule
 
-- `source_of_truth_after_refresh`: benchmark-vabench-release-v1/reports/score_denominator_manifest.json
-- `enabled_rule`: benchmark_score=true only for content-denominator entries with full static/EVAS/Spectre certification after dual_certification.status=pass.
-- `excluded_rule`: Content-excluded duplicates remain package assets and certified parity evidence, but do not enter scored benchmark denominators.
-- `l0_rule`: L0 conformance remains outside the L1/L2 benchmark denominator.
-
-## Disabled Reasons
-
-- none
+benchmark_score flags may mark the intended release denominator, but score enablement is blocked until every counted row has static/EVAS/Spectre certification.

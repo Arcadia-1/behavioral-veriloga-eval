@@ -85,6 +85,36 @@ Keep `start_bridge_tunnel.sh` and `stop_bridge_tunnel.sh` for manual debugging.
 For routine validation runs, prefer the wrapper so background tunnel state does
 not drift away from the command you actually care about.
 
+Direct SUI Spectre backend:
+
+- `--spectre-backend sui-direct` bypasses `virtuoso-bridge-lite` and runs
+  Spectre over SSH on `thu-sui`.
+- The runner uploads an isolated gold testbench plus `ahdl_include` files to a
+  temporary directory under `/tmp/vaevas-direct-spectre`, runs
+  `spectre -format psfascii`, downloads the raw directory and side-output files,
+  converts PSFASCII to `tran_spectre.csv`, then reuses the same checker path.
+- Direct-SUI Spectre uses a bounded license queue timeout derived from the
+  runner timeout, capped at 60 seconds, so license exhaustion returns a clear
+  Spectre error instead of a long opaque runner timeout.
+- Use it when the bridge listener is the blocker but SSH plus Cadence setup are
+  available:
+
+```bash
+python3 runners/run_gold_dual_suite.py \
+  --spectre-backend sui-direct \
+  --sui-host thu-sui \
+  --task <task_id>
+
+python3 runners/run_vabench_release_dual_rerun.py \
+  --spectre-backend sui-direct \
+  --sui-host thu-sui \
+  --workers 8
+```
+
+The default remains `--spectre-backend bridge`. The direct backend uses
+`/home/cshrc/.cshrc.cadence.IC618SP201` unless overridden by
+`--cadence-cshrc`, `VAEVAS_SUI_CADENCE_CSHRC`, or `VB_CADENCE_CSHRC`.
+
 Useful preflight variants:
 
 1. `./scripts/check_bridge_ready.sh --json`

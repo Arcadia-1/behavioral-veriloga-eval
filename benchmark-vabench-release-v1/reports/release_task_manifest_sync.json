@@ -1,45 +1,15 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "pass",
-  "release_task_manifest_count": 245,
+  "release_task_manifest_count": 219,
   "rows": [
     {
-      "release_entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -47,7 +17,9 @@
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -55,7 +27,9 @@
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -63,7 +37,9 @@
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_binary_weighted_voltage_dac/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -71,7 +47,9 @@
     {
       "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -79,7 +57,9 @@
     {
       "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -87,7 +67,9 @@
     {
       "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -95,7 +77,9 @@
     {
       "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -103,7 +87,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_clocked_adc_quantizer/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -111,7 +97,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_clocked_adc_quantizer/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -119,7 +107,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_clocked_adc_quantizer/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -127,7 +117,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_clocked_adc_quantizer/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -135,7 +127,9 @@
     {
       "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_dac_mismatch_unit_weighting_model/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -143,7 +137,9 @@
     {
       "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -151,7 +147,9 @@
     {
       "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_dac_mismatch_unit_weighting_model/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -159,7 +157,9 @@
     {
       "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_dac_mismatch_unit_weighting_model/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -167,7 +167,9 @@
     {
       "release_entry_id": "vbr1_l1_pipeline_adc_stage",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_pipeline_adc_stage/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -175,7 +177,9 @@
     {
       "release_entry_id": "vbr1_l1_pipeline_adc_stage",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_pipeline_adc_stage/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -183,7 +187,9 @@
     {
       "release_entry_id": "vbr1_l1_pipeline_adc_stage",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_pipeline_adc_stage/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -191,7 +197,9 @@
     {
       "release_entry_id": "vbr1_l1_pipeline_adc_stage",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_pipeline_adc_stage/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -199,7 +207,9 @@
     {
       "release_entry_id": "vbr1_l1_sar_logic",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -207,7 +217,9 @@
     {
       "release_entry_id": "vbr1_l1_sar_logic",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -215,7 +227,9 @@
     {
       "release_entry_id": "vbr1_l1_sar_logic",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -223,7 +237,9 @@
     {
       "release_entry_id": "vbr1_l1_sar_logic",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_sar_logic/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -231,7 +247,9 @@
     {
       "release_entry_id": "vbr1_l1_segmented_dac",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_segmented_dac/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -239,7 +257,9 @@
     {
       "release_entry_id": "vbr1_l1_segmented_dac",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_segmented_dac/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -247,7 +267,9 @@
     {
       "release_entry_id": "vbr1_l1_segmented_dac",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_segmented_dac/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -255,71 +277,9 @@
     {
       "release_entry_id": "vbr1_l1_segmented_dac",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_segmented_dac/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serializer_frame_aligner/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -327,7 +287,9 @@
     {
       "release_entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -335,7 +297,9 @@
     {
       "release_entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -343,7 +307,9 @@
     {
       "release_entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -351,7 +317,9 @@
     {
       "release_entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_thermometer_code_decoder/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -359,7 +327,9 @@
     {
       "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_unit_element_thermometer_dac/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -367,7 +337,9 @@
     {
       "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_unit_element_thermometer_dac/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -375,7 +347,9 @@
     {
       "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_unit_element_thermometer_dac/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -383,39 +357,29 @@
     {
       "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_unit_element_thermometer_dac/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
+      "release_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_adc_dac_reconstruction_chain/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l2_event_controller",
+      "release_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_event_controller",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -423,7 +387,9 @@
     {
       "release_entry_id": "vbr1_l2_flash_adc_mini_array",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -431,7 +397,9 @@
     {
       "release_entry_id": "vbr1_l2_flash_adc_mini_array",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_flash_adc_mini_array/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -439,7 +407,9 @@
     {
       "release_entry_id": "vbr1_l2_pipeline_adc_chain",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -447,23 +417,9 @@
     {
       "release_entry_id": "vbr1_l2_pipeline_adc_chain",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_pipeline_adc_chain/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -471,7 +427,9 @@
     {
       "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -479,7 +437,9 @@
     {
       "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -487,7 +447,9 @@
     {
       "release_entry_id": "vbr1_l1_debounce_latch",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -495,7 +457,9 @@
     {
       "release_entry_id": "vbr1_l1_debounce_latch",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -503,7 +467,9 @@
     {
       "release_entry_id": "vbr1_l1_debounce_latch",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -511,7 +477,9 @@
     {
       "release_entry_id": "vbr1_l1_debounce_latch",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -519,7 +487,9 @@
     {
       "release_entry_id": "vbr1_l1_hysteresis_comparator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -527,7 +497,9 @@
     {
       "release_entry_id": "vbr1_l1_hysteresis_comparator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -535,7 +507,9 @@
     {
       "release_entry_id": "vbr1_l1_hysteresis_comparator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -543,7 +517,9 @@
     {
       "release_entry_id": "vbr1_l1_hysteresis_comparator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -551,7 +527,9 @@
     {
       "release_entry_id": "vbr1_l1_offset_comparator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -559,7 +537,9 @@
     {
       "release_entry_id": "vbr1_l1_offset_comparator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -567,7 +547,9 @@
     {
       "release_entry_id": "vbr1_l1_offset_comparator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -575,7 +557,9 @@
     {
       "release_entry_id": "vbr1_l1_offset_comparator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_offset_comparator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -583,7 +567,9 @@
     {
       "release_entry_id": "vbr1_l1_propagation_delay_comparator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -591,7 +577,9 @@
     {
       "release_entry_id": "vbr1_l1_propagation_delay_comparator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -599,7 +587,9 @@
     {
       "release_entry_id": "vbr1_l1_propagation_delay_comparator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -607,7 +597,9 @@
     {
       "release_entry_id": "vbr1_l1_propagation_delay_comparator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -615,7 +607,9 @@
     {
       "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -623,7 +617,9 @@
     {
       "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -631,7 +627,9 @@
     {
       "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -639,7 +637,9 @@
     {
       "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -647,7 +647,9 @@
     {
       "release_entry_id": "vbr1_l1_threshold_comparator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -655,7 +657,9 @@
     {
       "release_entry_id": "vbr1_l1_threshold_comparator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -663,7 +667,9 @@
     {
       "release_entry_id": "vbr1_l1_threshold_comparator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -671,7 +677,9 @@
     {
       "release_entry_id": "vbr1_l1_threshold_comparator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_threshold_comparator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -679,7 +687,9 @@
     {
       "release_entry_id": "vbr1_l1_window_comparator_detector",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -687,7 +697,9 @@
     {
       "release_entry_id": "vbr1_l1_window_comparator_detector",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -695,7 +707,9 @@
     {
       "release_entry_id": "vbr1_l1_window_comparator_detector",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -703,7 +717,9 @@
     {
       "release_entry_id": "vbr1_l1_window_comparator_detector",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -711,7 +727,9 @@
     {
       "release_entry_id": "vbr1_l2_comparator_measurement_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -719,7 +737,49 @@
     {
       "release_entry_id": "vbr1_l2_comparator_measurement_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -727,7 +787,9 @@
     {
       "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -735,7 +797,9 @@
     {
       "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -743,7 +807,9 @@
     {
       "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -751,7 +817,9 @@
     {
       "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -759,7 +827,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -767,7 +837,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -775,7 +847,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -783,7 +857,9 @@
     {
       "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -791,7 +867,9 @@
     {
       "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -799,7 +877,9 @@
     {
       "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -807,7 +887,9 @@
     {
       "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -815,7 +897,9 @@
     {
       "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -823,7 +907,9 @@
     {
       "release_entry_id": "vbr1_l2_converter_front_end",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -831,7 +917,9 @@
     {
       "release_entry_id": "vbr1_l2_converter_front_end",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -839,7 +927,9 @@
     {
       "release_entry_id": "vbr1_l1_first_order_lowpass",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -847,7 +937,9 @@
     {
       "release_entry_id": "vbr1_l1_first_order_lowpass",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -855,7 +947,9 @@
     {
       "release_entry_id": "vbr1_l1_first_order_lowpass",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -863,7 +957,9 @@
     {
       "release_entry_id": "vbr1_l1_first_order_lowpass",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -871,7 +967,9 @@
     {
       "release_entry_id": "vbr1_l1_higher_order_filter",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -879,7 +977,9 @@
     {
       "release_entry_id": "vbr1_l1_higher_order_filter",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -887,7 +987,9 @@
     {
       "release_entry_id": "vbr1_l1_higher_order_filter",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -895,7 +997,89 @@
     {
       "release_entry_id": "vbr1_l1_higher_order_filter",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -903,7 +1087,9 @@
     {
       "release_entry_id": "vbr1_l1_resettable_integrator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -911,7 +1097,9 @@
     {
       "release_entry_id": "vbr1_l1_resettable_integrator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -919,7 +1107,9 @@
     {
       "release_entry_id": "vbr1_l1_resettable_integrator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -927,7 +1117,9 @@
     {
       "release_entry_id": "vbr1_l1_resettable_integrator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_resettable_integrator/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -935,7 +1127,9 @@
     {
       "release_entry_id": "vbr1_l1_slew_rate_limiter",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -943,7 +1137,9 @@
     {
       "release_entry_id": "vbr1_l1_slew_rate_limiter",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -951,7 +1147,9 @@
     {
       "release_entry_id": "vbr1_l1_slew_rate_limiter",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -959,7 +1157,9 @@
     {
       "release_entry_id": "vbr1_l1_slew_rate_limiter",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -967,7 +1167,9 @@
     {
       "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -975,7 +1177,9 @@
     {
       "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -983,7 +1187,9 @@
     {
       "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -991,39 +1197,9 @@
     {
       "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1031,7 +1207,9 @@
     {
       "release_entry_id": "vbr1_l2_amplifier_filter_chain",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1039,7 +1217,9 @@
     {
       "release_entry_id": "vbr1_l2_amplifier_filter_chain",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1047,7 +1227,9 @@
     {
       "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1055,7 +1237,9 @@
     {
       "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1063,7 +1247,9 @@
     {
       "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1071,7 +1257,9 @@
     {
       "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_bang_bang_phase_detector/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1079,7 +1267,9 @@
     {
       "release_entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1087,7 +1277,9 @@
     {
       "release_entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1095,7 +1287,9 @@
     {
       "release_entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1103,7 +1297,9 @@
     {
       "release_entry_id": "vbr1_l1_charge_pump_abstraction",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_charge_pump_abstraction/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1111,7 +1307,9 @@
     {
       "release_entry_id": "vbr1_l1_clock_divider",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1119,7 +1317,9 @@
     {
       "release_entry_id": "vbr1_l1_clock_divider",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1127,7 +1327,9 @@
     {
       "release_entry_id": "vbr1_l1_clock_divider",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1135,7 +1337,9 @@
     {
       "release_entry_id": "vbr1_l1_clock_divider",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_clock_divider/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1143,7 +1347,9 @@
     {
       "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1151,7 +1357,9 @@
     {
       "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1159,7 +1367,9 @@
     {
       "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1167,7 +1377,9 @@
     {
       "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1175,7 +1387,9 @@
     {
       "release_entry_id": "vbr1_l1_lock_detector",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1183,7 +1397,9 @@
     {
       "release_entry_id": "vbr1_l1_lock_detector",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1191,7 +1407,9 @@
     {
       "release_entry_id": "vbr1_l1_lock_detector",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1199,7 +1417,9 @@
     {
       "release_entry_id": "vbr1_l1_lock_detector",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_lock_detector/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1207,7 +1427,9 @@
     {
       "release_entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1215,7 +1437,9 @@
     {
       "release_entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1223,7 +1447,9 @@
     {
       "release_entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1231,39 +1457,9 @@
     {
       "release_entry_id": "vbr1_l1_loop_filter_abstraction",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_loop_filter_abstraction/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_small_phase_error_response/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1271,7 +1467,9 @@
     {
       "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1279,7 +1477,9 @@
     {
       "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1287,7 +1487,9 @@
     {
       "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1295,7 +1497,9 @@
     {
       "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_pfd_up_dn_logic/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1303,7 +1507,9 @@
     {
       "release_entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1311,7 +1517,9 @@
     {
       "release_entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1319,7 +1527,9 @@
     {
       "release_entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1327,39 +1537,9 @@
     {
       "release_entry_id": "vbr1_l1_vco_phase_integrator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_vco_phase_integrator/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l1_xor_phase_detector/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1367,7 +1547,9 @@
     {
       "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1375,7 +1557,9 @@
     {
       "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1383,7 +1567,9 @@
     {
       "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1391,23 +1577,9 @@
     {
       "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_pll_timing_slice",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l2_pll_timing_slice",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_pll_timing_slice/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1415,7 +1587,9 @@
     {
       "release_entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1423,7 +1597,9 @@
     {
       "release_entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1431,7 +1607,9 @@
     {
       "release_entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1439,7 +1617,9 @@
     {
       "release_entry_id": "vbr1_l1_calibration_deadband_controller",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1447,7 +1627,9 @@
     {
       "release_entry_id": "vbr1_l1_dwa_dem_encoder",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1455,7 +1637,9 @@
     {
       "release_entry_id": "vbr1_l1_dwa_dem_encoder",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1463,7 +1647,9 @@
     {
       "release_entry_id": "vbr1_l1_dwa_dem_encoder",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1471,7 +1657,9 @@
     {
       "release_entry_id": "vbr1_l1_dwa_dem_encoder",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1479,7 +1667,9 @@
     {
       "release_entry_id": "vbr1_l1_element_shuffler",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1487,7 +1677,9 @@
     {
       "release_entry_id": "vbr1_l1_element_shuffler",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1495,7 +1687,9 @@
     {
       "release_entry_id": "vbr1_l1_element_shuffler",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1503,7 +1697,9 @@
     {
       "release_entry_id": "vbr1_l1_element_shuffler",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1511,7 +1707,9 @@
     {
       "release_entry_id": "vbr1_l1_gain_trim_controller",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1519,7 +1717,9 @@
     {
       "release_entry_id": "vbr1_l1_gain_trim_controller",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1527,7 +1727,9 @@
     {
       "release_entry_id": "vbr1_l1_gain_trim_controller",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1535,39 +1737,9 @@
     {
       "release_entry_id": "vbr1_l1_gain_trim_controller",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_rotating_dem_selector/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_rotating_dem_selector/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_rotating_dem_selector/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_rotating_dem_selector/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1575,7 +1747,9 @@
     {
       "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1583,7 +1757,9 @@
     {
       "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1591,7 +1767,9 @@
     {
       "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1599,7 +1777,9 @@
     {
       "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1607,7 +1787,9 @@
     {
       "release_entry_id": "vbr1_l1_trim_calibration_controller",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/dut/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1615,7 +1797,9 @@
     {
       "release_entry_id": "vbr1_l1_trim_calibration_controller",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1623,7 +1807,9 @@
     {
       "release_entry_id": "vbr1_l1_trim_calibration_controller",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/bugfix/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1631,39 +1817,9 @@
     {
       "release_entry_id": "vbr1_l1_trim_calibration_controller",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/e2e/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_windowed_dem_pointer/forms/dut/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_windowed_dem_pointer/forms/tb/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_windowed_dem_pointer/forms/bugfix/release_task.json",
-      "static": "pass",
-      "evas": "pass",
-      "spectre": "pass"
-    },
-    {
-      "release_entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_windowed_dem_pointer/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1671,7 +1827,9 @@
     {
       "release_entry_id": "vbr1_l2_complete_calibration_loop",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1679,7 +1837,9 @@
     {
       "release_entry_id": "vbr1_l2_complete_calibration_loop",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/release_task.json",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1687,7 +1847,9 @@
     {
       "release_entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1695,7 +1857,9 @@
     {
       "release_entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1703,7 +1867,9 @@
     {
       "release_entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_crossing_metric_writer/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1711,7 +1877,9 @@
     {
       "release_entry_id": "vbr1_l1_edge_interval_timer",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_edge_interval_timer/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1719,7 +1887,9 @@
     {
       "release_entry_id": "vbr1_l1_edge_interval_timer",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_edge_interval_timer/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_edge_interval_timer/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1727,23 +1897,29 @@
     {
       "release_entry_id": "vbr1_l1_gain_estimator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
-      "spectre": "pass"
+      "spectre": "pending"
     },
     {
       "release_entry_id": "vbr1_l1_gain_estimator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
-      "spectre": "pass"
+      "spectre": "pending"
     },
     {
       "release_entry_id": "vbr1_l1_peak_detector",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1751,7 +1927,9 @@
     {
       "release_entry_id": "vbr1_l1_peak_detector",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1759,7 +1937,9 @@
     {
       "release_entry_id": "vbr1_l1_peak_detector",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/bugfix/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1767,7 +1947,9 @@
     {
       "release_entry_id": "vbr1_l1_peak_detector",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_peak_detector/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1775,7 +1957,9 @@
     {
       "release_entry_id": "vbr1_l1_settling_time_detector",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_settling_time_detector/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1783,7 +1967,9 @@
     {
       "release_entry_id": "vbr1_l1_settling_time_detector",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_settling_time_detector/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_settling_time_detector/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1791,7 +1977,9 @@
     {
       "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1799,7 +1987,9 @@
     {
       "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1807,7 +1997,9 @@
     {
       "release_entry_id": "vbr1_l2_measurement_flow",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1815,7 +2007,9 @@
     {
       "release_entry_id": "vbr1_l2_measurement_flow",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_measurement_flow/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1823,7 +2017,9 @@
     {
       "release_entry_id": "vbr1_l1_burst_clock_source",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1831,7 +2027,9 @@
     {
       "release_entry_id": "vbr1_l1_burst_clock_source",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1839,7 +2037,9 @@
     {
       "release_entry_id": "vbr1_l1_burst_clock_source",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1847,7 +2047,9 @@
     {
       "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1855,7 +2057,9 @@
     {
       "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1863,7 +2067,9 @@
     {
       "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1871,7 +2077,9 @@
     {
       "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1879,7 +2087,9 @@
     {
       "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1887,7 +2097,9 @@
     {
       "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
       "form": "bugfix",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1895,7 +2107,9 @@
     {
       "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1903,7 +2117,9 @@
     {
       "release_entry_id": "vbr1_l1_ramp_or_step_source",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1911,7 +2127,9 @@
     {
       "release_entry_id": "vbr1_l1_ramp_or_step_source",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1919,7 +2137,9 @@
     {
       "release_entry_id": "vbr1_l1_ramp_or_step_source",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_ramp_or_step_source/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1927,7 +2147,9 @@
     {
       "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
       "form": "dut",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/dut/release_task.json",
+      "track": "support",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/dut/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1935,7 +2157,9 @@
     {
       "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
@@ -1943,23 +2167,29 @@
     {
       "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_sine_periodic_voltage_source/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "release_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
       "form": "e2e",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/e2e/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"
     },
     {
-      "release_entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "release_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
       "form": "tb",
-      "manifest": "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l2_adc_dac_source_sweep_flow/forms/tb/release_task.json",
+      "track": "support",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
       "spectre": "pass"

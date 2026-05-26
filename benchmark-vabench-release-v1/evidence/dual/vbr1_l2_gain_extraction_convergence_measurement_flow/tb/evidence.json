@@ -5,23 +5,23 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L2",
-    "category": "Measurement and Testbench Instrumentation",
-    "base_function": "Gain extraction/convergence measurement flow"
+    "category": "Measurement Instrumentation Flows",
+    "base_function": "Dithered differential gain extraction flow"
   },
   "static": "pass",
   "evas": "pass",
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
-    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
+    "results/vabench-release-v1-dual-targeted-20260526_fix2/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/gain_amp_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/lfsr.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/tb_gain_extraction_ref.scs",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/vin_src.va"
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/gain_amp_fixed.va",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/lfsr.va",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/tb_gain_extraction_ref.scs",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/vin_src.va"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -31,57 +31,29 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
-    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
+    "summary": "/private/tmp/vabench_fix2_without_gain_estimator.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
+    "result_root": "results/vabench-release-v1-dual-targeted-20260526_fix2/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
       "status": "passed",
-      "common_window_s": [
-        0.0,
-        0.0002
-      ],
-      "signals_compared": 4,
-      "samples": 1200,
-      "max_rmse_v": 0.060323601822553904,
-      "max_abs_v": 0.20926540085768663,
-      "mean_nrmse": 0.08282717123835595,
-      "p95_nrmse": 0.12783625716505415,
-      "max_nrmse": 0.12783625716505415,
-      "per_signal": {
-        "vamp_n": {
-          "rmse_v": 0.0603236018225539,
-          "max_abs_v": 0.20926540085768663,
-          "span_v": 0.5929412891784638,
-          "nrmse": 0.10173621389418484,
-          "kind": "analog"
-        },
-        "vamp_p": {
-          "rmse_v": 0.060323601822553904,
-          "max_abs_v": 0.20926540085768658,
-          "span_v": 0.5929412891784639,
-          "nrmse": 0.10173621389418483,
-          "kind": "analog"
-        },
-        "vinn": {
-          "rmse_v": 0.0,
-          "max_abs_v": 0.0,
-          "span_v": 0.0,
-          "nrmse": 0.0,
-          "kind": "digital",
-          "best_lag_samples": 0,
-          "best_lag_s": 0.0,
-          "mismatch_ratio": 0.0
-        },
-        "vinp": {
-          "rmse_v": 0.013950629804311547,
-          "max_abs_v": 0.048441034457797905,
-          "span_v": 0.10912889749501481,
-          "nrmse": 0.12783625716505415,
-          "kind": "analog"
-        }
-      }
+      "policy": "gain_extraction_metric_parity_v1",
+      "basis": "Gain extraction uses dither/noise-like stimulus, so functional gain metric parity is the acceptance gate instead of raw pointwise waveform parity.",
+      "evas": {
+        "status": "ok",
+        "std_in": 0.017200395858638324,
+        "std_out": 0.19158265914029768,
+        "diff_gain": 11.138270346497967
+      },
+      "spectre": {
+        "status": "ok",
+        "std_in": 0.017439820356878924,
+        "std_out": 0.1902969656241958,
+        "diff_gain": 10.911635655073447
+      },
+      "relative_gain_delta": 0.020770001729222384,
+      "gain_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25"
     }
   },
   "source_equivalence": {
@@ -89,11 +61,11 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/gain_amp_fixed.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/lfsr.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/tb_gain_extraction_ref.scs",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/vin_src.va"
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/gain_amp_fixed.va",
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/lfsr.va",
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/tb_gain_extraction_ref.scs",
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/vin_src.va"
     ]
   },
   "failures": [],

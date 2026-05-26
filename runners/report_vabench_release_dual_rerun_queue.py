@@ -29,7 +29,7 @@ def read_json(path: Path) -> dict[str, object]:
 
 def read_entries() -> dict[str, dict[str, object]]:
     entries: dict[str, dict[str, object]] = {}
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         payload = read_json(path)
         entries[str(payload["release_entry_id"])] = payload
     return entries

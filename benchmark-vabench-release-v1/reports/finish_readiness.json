@@ -1,35 +1,37 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
-  "status": "blocked",
-  "ready_to_run_fresh_dual": false,
-  "ready_to_import_fresh_dual": true,
+  "status": "ready_to_run",
+  "ready_to_run_fresh_dual": true,
+  "ready_to_import_fresh_dual": false,
   "ready_to_finish_release": false,
-  "pass_count": 6,
-  "blocked_count": 1,
+  "pass_count": 4,
+  "blocked_count": 3,
   "blocked_check_ids": [
-    "P6_import_gate_clear"
+    "P5_current_summary_acceptable",
+    "P6_import_gate_clear",
+    "P7_full_dual_certification_clear"
   ],
   "run_scope": {
-    "primary_queue_rows": 0,
-    "ready_primary_queue_rows": 0,
-    "staged_bundle_count": 0,
-    "ready_staged_bundle_count": 0,
+    "primary_queue_rows": 2,
+    "ready_primary_queue_rows": 2,
+    "staged_bundle_count": 2,
+    "ready_staged_bundle_count": 2,
     "default_include_buggy": false,
-    "expected_primary_summary_tasks_total": 0,
+    "expected_primary_summary_tasks_total": 2,
     "source_equivalence_blocked_forms": 0
   },
   "checks": [
     {
       "id": "P1_local_release_package_ready",
       "status": "pass",
-      "requirement": "The 72-entry release plan is covered by materialized entries with zero asset/static issues.",
+      "requirement": "The 64-entry release plan is covered by materialized entries with zero asset/static issues.",
       "evidence": [
         "benchmark-vabench-release-v1/reports/release_status.json",
         "benchmark-vabench-release-v1/reports/asset_integrity.json",
         "benchmark-vabench-release-v1/reports/static_certification.json"
       ],
-      "finding": "planned=72, source_linked=72, materialized=72, asset=pass, static=pass",
+      "finding": "planned=64, source_linked=64, materialized=64, asset=pass, static=pass",
       "recovery": []
     },
     {
@@ -39,7 +41,7 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_queue.json"
       ],
-      "finding": "queue_status=complete, queue_count=0, ready=0, blocked=0",
+      "finding": "queue_status=ready, queue_count=2, ready=2, blocked=0",
       "recovery": []
     },
     {
@@ -49,7 +51,7 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json"
       ],
-      "finding": "queue_rows=0, ready_primary_rows=0, bundles=0, ready_bundles=0, blocked_bundles=0",
+      "finding": "queue_rows=2, ready_primary_rows=2, bundles=2, ready_bundles=2, blocked_bundles=0",
       "recovery": []
     },
     {
@@ -65,13 +67,15 @@
     },
     {
       "id": "P5_current_summary_acceptable",
-      "status": "pass",
+      "status": "blocked",
       "requirement": "Fresh rerun summary must be complete, non-dry-run, current to the queue, and have zero expected misses.",
       "evidence": [
-        "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json"
+        "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
       ],
-      "finding": "summary_status=complete, tasks_total=37, queue_count=0, dry_run=False, expected_miss_count=0",
-      "recovery": []
+      "finding": "summary_status=complete, tasks_total=2, queue_count=2, dry_run=False, expected_miss_count=2",
+      "recovery": [
+        "python3 runners/finish_vabench_release_after_bridge.py"
+      ]
     },
     {
       "id": "P6_import_gate_clear",
@@ -80,20 +84,18 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_import.json"
       ],
-      "finding": "import_status=partial_imported, stale_summary=True, imported=35",
-      "recovery": [
-        "python3 runners/import_vabench_release_dual_rerun_results.py"
-      ]
+      "finding": "import_status=imported, stale_summary=False, imported=2",
+      "recovery": []
     },
     {
       "id": "P7_full_dual_certification_clear",
-      "status": "pass",
+      "status": "blocked",
       "requirement": "Full release dual certification has no pending forms, failures, or EVAS PASS / Spectre FAIL mismatches.",
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_certification.json",
         "benchmark-vabench-release-v1/reports/certification_matrix.json"
       ],
-      "finding": "dual_pending=0, dual_failed=0, evas_pass_spectre_fail=0",
+      "finding": "dual_pending=2, dual_failed=0, evas_pass_spectre_fail=0",
       "recovery": []
     }
   ],

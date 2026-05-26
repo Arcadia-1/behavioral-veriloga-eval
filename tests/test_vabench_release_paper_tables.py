@@ -38,19 +38,22 @@ def test_coverage_and_parity_tables_keep_scope_boundaries() -> None:
     coverage = {row["metric"]: row for row in read_csv("coverage.csv")}
     parity = {row["metric"]: row for row in read_csv("parity.csv")}
 
-    assert coverage["planned_l1_l2_entries"]["value"] == "72"
+    assert coverage["planned_l1_l2_entries"]["value"] == "64"
     assert coverage["planned_l1_l2_entries"]["claim_status"] == "allowed"
-    assert coverage["scored_entries"]["value"] == "72"
+    assert coverage["core_circuit_entries"]["value"] == "51"
+    assert coverage["support_measurement_stimulus_entries"]["value"] == "13"
+    assert "report separately" in coverage["support_measurement_stimulus_entries"]["safe_caption_note"]
+    assert coverage["scored_entries"]["value"] == "51"
     assert coverage["scored_entries"]["claim_status"] == "allowed"
     assert "not a scored denominator" in coverage["planned_l1_l2_entries"]["safe_caption_note"]
 
-    assert parity["dual_certified_release_forms"]["value"] == "245"
+    assert parity["dual_certified_release_forms"]["value"] == "217"
     assert parity["dual_certified_release_forms"]["claim_status"] == "allowed"
-    assert parity["dual_pending_release_forms"]["value"] == "0"
-    assert parity["dual_pending_release_forms"]["claim_status"] == "allowed"
+    assert parity["dual_pending_release_forms"]["value"] == "2"
+    assert parity["dual_pending_release_forms"]["claim_status"] == "blocked"
     assert parity["bridge_status"]["value"] == "ready"
-    assert "not part of already imported full release certification" in parity["bridge_status"]["safe_caption_note"]
-    assert "Full release dual certification evidence" in parity["dual_certified_release_forms"]["safe_caption_note"]
+    assert "fresh Spectre evidence is pending" in parity["bridge_status"]["safe_caption_note"]
+    assert "Subset evidence only" in parity["dual_certified_release_forms"]["safe_caption_note"]
 
 
 def test_claim_and_speed_baseline_tables_block_unfinished_paper_claims() -> None:
@@ -58,9 +61,9 @@ def test_claim_and_speed_baseline_tables_block_unfinished_paper_claims() -> None
     speed_baseline = {row["artifact"]: row for row in read_csv("speed_baseline.csv")}
 
     assert claims["C3_imported_dual_subset_clean"]["status"] == "allowed"
-    assert claims["C4_full_release_dual_certified"]["status"] == "allowed"
-    assert claims["C9_release_package_complete"]["status"] == "allowed"
-    assert claims["C4_full_release_dual_certified"]["blocked_until"] == ""
+    assert claims["C4_full_release_dual_certified"]["status"] == "blocked"
+    assert claims["C9_release_package_complete"]["status"] == "blocked"
+    assert "resolve 2 dual-pending forms" in claims["C4_full_release_dual_certified"]["blocked_until"]
 
     assert speed_baseline["speed_debug"]["claim_status"] == "blocked"
     assert speed_baseline["baseline"]["claim_status"] == "blocked"
@@ -73,5 +76,5 @@ def test_paper_table_report_declares_it_is_not_certification_evidence() -> None:
 
     assert any("do not create new certification evidence" in item for item in report["claim_boundary"])
     assert report["source_reports"]["claim_gate"].endswith("claim_gate.json")
-    assert report["matrix_summary_snapshot"]["entry_count"] == 72
-    assert report["matrix_summary_snapshot"]["pending_form_count"] == 0
+    assert report["matrix_summary_snapshot"]["entry_count"] == 64
+    assert report["matrix_summary_snapshot"]["pending_form_count"] == 2

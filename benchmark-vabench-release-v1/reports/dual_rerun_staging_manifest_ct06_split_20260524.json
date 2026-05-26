@@ -39,12 +39,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/gold/tb_adc_code_capture_register.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/dut/gold/tb_adc_code_capture_register.scs",
       "source_includes": [
         "adc_code_capture_register.va"
       ],
       "source_include_origins": {
-        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/dut/gold/adc_code_capture_register.va"
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/dut/gold/adc_code_capture_register.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold/gold/tb_adc_code_capture_register.scs",
       "staged_includes": [
@@ -69,12 +69,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/gold/tb_adc_code_capture_register.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/tb/gold/tb_adc_code_capture_register.scs",
       "source_includes": [
         "adc_code_capture_register.va"
       ],
       "source_include_origins": {
-        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/tb/gold/adc_code_capture_register.va"
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/tb/gold/adc_code_capture_register.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold/gold/tb_adc_code_capture_register.scs",
       "staged_includes": [
@@ -99,12 +99,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
       "source_includes": [
         "adc_code_capture_register.va"
       ],
       "source_include_origins": {
-        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_fixed.va"
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed/gold/tb_adc_code_capture_register.scs",
       "staged_includes": [
@@ -129,12 +129,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
       "source_includes": [
         "adc_code_capture_register.va"
       ],
       "source_include_origins": {
-        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_buggy.va"
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy/gold/tb_adc_code_capture_register.scs",
       "staged_includes": [
@@ -159,12 +159,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/gold/tb_adc_code_capture_register.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/e2e/gold/tb_adc_code_capture_register.scs",
       "source_includes": [
         "adc_code_capture_register.va"
       ],
       "source_include_origins": {
-        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_adc_code_capture_register/forms/e2e/gold/adc_code_capture_register.va"
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/e2e/gold/adc_code_capture_register.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold/gold/tb_adc_code_capture_register.scs",
       "staged_includes": [
@@ -189,12 +189,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/gold/tb_serial_readout_deserializer.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/dut/gold/tb_serial_readout_deserializer.scs",
       "source_includes": [
         "serial_readout_deserializer.va"
       ],
       "source_include_origins": {
-        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/dut/gold/serial_readout_deserializer.va"
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/dut/gold/serial_readout_deserializer.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold/gold/tb_serial_readout_deserializer.scs",
       "staged_includes": [
@@ -219,12 +219,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/gold/tb_serial_readout_deserializer.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/tb/gold/tb_serial_readout_deserializer.scs",
       "source_includes": [
         "serial_readout_deserializer.va"
       ],
       "source_include_origins": {
-        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/tb/gold/serial_readout_deserializer.va"
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/tb/gold/serial_readout_deserializer.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold/gold/tb_serial_readout_deserializer.scs",
       "staged_includes": [
@@ -249,12 +249,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
       "source_includes": [
         "serial_readout_deserializer.va"
       ],
       "source_include_origins": {
-        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_fixed.va"
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed/gold/tb_serial_readout_deserializer.scs",
       "staged_includes": [
@@ -279,12 +279,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
       "source_includes": [
         "serial_readout_deserializer.va"
       ],
       "source_include_origins": {
-        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_buggy.va"
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy/gold/tb_serial_readout_deserializer.scs",
       "staged_includes": [
@@ -309,12 +309,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/tb_serial_readout_deserializer.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/tb_serial_readout_deserializer.scs",
       "source_includes": [
         "serial_readout_deserializer.va"
       ],
       "source_include_origins": {
-        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/serial_readout_deserializer.va"
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/serial_readout_deserializer.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold/gold/tb_serial_readout_deserializer.scs",
       "staged_includes": [
@@ -342,12 +342,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/tb_conversion_event_controller.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/tb/gold/tb_conversion_event_controller.scs",
       "source_includes": [
         "conversion_event_controller.va"
       ],
       "source_include_origins": {
-        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/tb/gold/conversion_event_controller.va"
+        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/tb/gold/conversion_event_controller.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold/gold/tb_conversion_event_controller.scs",
       "staged_includes": [
@@ -374,12 +374,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/gold/tb_conversion_event_controller.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/e2e/gold/tb_conversion_event_controller.scs",
       "source_includes": [
         "conversion_event_controller.va"
       ],
       "source_include_origins": {
-        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_event_controller/forms/e2e/gold/conversion_event_controller.va"
+        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/e2e/gold/conversion_event_controller.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold/gold/tb_conversion_event_controller.scs",
       "staged_includes": [
@@ -407,12 +407,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/tb_serializer_frame_monitor_flow.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/tb_serializer_frame_monitor_flow.scs",
       "source_includes": [
         "serializer_frame_monitor_flow.va"
       ],
       "source_include_origins": {
-        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/serializer_frame_monitor_flow.va"
+        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/serializer_frame_monitor_flow.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold/gold/tb_serializer_frame_monitor_flow.scs",
       "staged_includes": [
@@ -439,12 +439,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_monitor_flow.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_monitor_flow.scs",
       "source_includes": [
         "serializer_frame_monitor_flow.va"
       ],
       "source_include_origins": {
-        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converters/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va"
+        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/gold/tb_serializer_frame_monitor_flow.scs",
       "staged_includes": [

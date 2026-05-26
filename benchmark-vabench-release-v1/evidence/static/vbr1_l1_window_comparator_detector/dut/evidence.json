@@ -4,7 +4,7 @@
   "task_form": "dut",
   "taxonomy": {
     "level": "L1",
-    "category": "Comparators and Decision Circuits",
+    "category": "Comparator and Decision Circuits",
     "base_function": "Window comparator/detector"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/window_comparator_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_window_comparator_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/window_comparator_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/gold/tb_window_comparator_ref.scs"
   ],
   "checks": {
     "must_include": [

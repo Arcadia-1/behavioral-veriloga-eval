@@ -5,7 +5,7 @@
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
-    "category": "PLL / Clock / Event Timing",
+    "category": "PLL Clock and Timing Systems",
     "base_function": "CPPLL tracking and frequency-step reacquire flow"
   },
   "static": "pass",
@@ -13,13 +13,13 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
-    "results/ct05-dual-rerun-20260523-final/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
+    "benchmark-vabench-release-v1/rerun_staging_ct05_20260525/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
+    "results/vabench-release-v1-ct05-dual-20260525_234000_ci/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
-    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
+    "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -29,9 +29,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/ct05-dual-rerun-20260523-final/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
-    "result_root": "results/ct05-dual-rerun-20260523-final/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
+    "summary": "results/vabench-release-v1-ct05-dual-20260525_234000_ci/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260525/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
+    "result_root": "results/vabench-release-v1-ct05-dual-20260525_234000_ci/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -76,9 +76,9 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_event_timing/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs"
     ]
   },
   "failures": [],

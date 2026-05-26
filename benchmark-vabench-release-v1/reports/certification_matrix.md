@@ -1,6 +1,6 @@
 # vaBench Release Certification Matrix
 
-Date: 2026-05-24
+Date: 2026-05-26
 
 This matrix is a paper-facing audit view over the release certification
 state. It reorganizes existing evidence and does not create new
@@ -10,31 +10,34 @@ simulator certification evidence.
 
 | Metric | Value |
 | --- | ---: |
-| status | `complete` |
-| entries | 72 |
-| forms | 245 |
-| fully certified entries | 72 |
-| pending entries | 0 |
-| certified forms | 245 |
-| pending forms | 0 |
-| fresh dual-rerun pending forms | 0 |
+| status | `partial` |
+| entries | 64 |
+| forms | 219 |
+| fully certified entries | 63 |
+| pending entries | 1 |
+| certified forms | 217 |
+| pending forms | 2 |
+| fresh dual-rerun pending forms | 2 |
 | source-equivalence blocked forms | 0 |
 | dual-failure forms | 0 |
 | EVAS PASS / Spectre FAIL | 0 |
-| scored entries | 72 |
-| scored forms | 245 |
+| scored entries | 51 |
+| scored forms | 184 |
 
 ## Entry Pending Cause Counts
 
-- `fully_certified`: 72
+- `fresh_dual_rerun_pending`: 1
+- `fully_certified`: 63
 
 ## Form Pending Cause Counts
 
-- `certified`: 245
+- `certified`: 217
+- `fresh_dual_rerun_pending`: 2
 
 ## Form Disposition Counts
 
-- `none`: 245
+- `fresh_dual_rerun_required`: 2
+- `none`: 217
 
 ## Source-Equivalence Blocked Forms
 

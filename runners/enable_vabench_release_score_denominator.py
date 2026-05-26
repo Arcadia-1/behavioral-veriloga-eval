@@ -107,7 +107,7 @@ def entry_certified(entry: dict[str, Any]) -> tuple[bool, list[str]]:
 
 def read_release_entries() -> list[tuple[Path, dict[str, Any]]]:
     rows: list[tuple[Path, dict[str, Any]]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         rows.append((path, read_json(path)))
     return rows
 

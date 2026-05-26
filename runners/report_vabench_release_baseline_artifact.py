@@ -43,14 +43,19 @@ def build_report() -> dict[str, object]:
     denominator_summary = denominator.get("summary", {})
     if not isinstance(denominator_summary, dict):
         denominator_summary = {}
-    scored_entries = int(status.get("scored_release_entries", 0) or 0)
+    scored_entries = int(denominator_summary.get("scored_entry_count", 0) or 0)
     scored_forms = int(denominator_summary.get("scored_form_count", 0) or 0)
     certified_entries = int(status.get("fully_certified_entry_count", 0) or 0)
     dual_pending = int(dual.get("dual_pending_release_task_count", 0) or 0)
     dual_failed = int(dual.get("dual_failed_release_task_count", 0) or 0)
     summaries = discover_release_baseline_summaries()
     ready = scored_entries > 0 and scored_forms > 0 and dual_pending == 0 and dual_failed == 0
-    execution_plan_status = "ready_for_baseline_runs" if ready else "blocked_until_scored_release_exists"
+    if ready:
+        execution_plan_status = "ready_for_baseline_runs"
+    elif scored_entries > 0 and scored_forms > 0:
+        execution_plan_status = "blocked_until_full_certification"
+    else:
+        execution_plan_status = "blocked_until_scored_release_exists"
     return {
         "date": date.today().isoformat(),
         "release": "vabench-release-v1",

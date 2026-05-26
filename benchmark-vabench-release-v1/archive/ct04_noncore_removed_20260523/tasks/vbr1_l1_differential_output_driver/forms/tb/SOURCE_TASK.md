@@ -1,6 +1,6 @@
 # TB Companion From E2E: vbr1_l1_differential_output_driver
 
-- Source E2E form: `benchmark-vabench-release-v1/tasks/CT04_analog_behavioral_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e`
+- Source E2E form: `benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_differential_output_driver/forms/e2e`
 - Source E2E task id: `differential_voltage_output_smoke`
 - EVAS/Spectre status: pass in release dual evidence
 

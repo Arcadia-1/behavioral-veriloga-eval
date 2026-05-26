@@ -33,12 +33,20 @@
       "required": [
         "planned_entries",
         "level_counts",
+        "track_counts",
+        "difficulty_counts",
+        "core_entry_count",
+        "support_entry_count",
         "source_linked_entry_count",
         "asset_materialized_entry_count",
         "static_certified_release_task_count",
         "dual_certified_release_task_count",
         "scored_release_entries",
         "scored_release_forms",
+        "core_scored_release_entries",
+        "core_scored_release_forms",
+        "support_scored_release_entries",
+        "support_scored_release_forms",
         "score_denominator_status",
         "claim_status"
       ],
@@ -48,6 +56,18 @@
         },
         "level_counts": {
           "type": "object"
+        },
+        "track_counts": {
+          "type": "object"
+        },
+        "difficulty_counts": {
+          "type": "object"
+        },
+        "core_entry_count": {
+          "type": "integer"
+        },
+        "support_entry_count": {
+          "type": "integer"
         },
         "source_linked_entry_count": {
           "type": "integer"
@@ -65,6 +85,18 @@
           "type": "integer"
         },
         "scored_release_forms": {
+          "type": "integer"
+        },
+        "core_scored_release_entries": {
+          "type": "integer"
+        },
+        "core_scored_release_forms": {
+          "type": "integer"
+        },
+        "support_scored_release_entries": {
+          "type": "integer"
+        },
+        "support_scored_release_forms": {
           "type": "integer"
         },
         "score_denominator_status": {

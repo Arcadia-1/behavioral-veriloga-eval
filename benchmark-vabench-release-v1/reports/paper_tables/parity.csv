@@ -1,10 +1,10 @@
 table_id,metric,value,scope,claim_status,evidence,safe_caption_note
-parity,dual_certified_release_forms,245,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Full release dual certification evidence; score/speed/baseline claims are still separate.
-parity,fully_certified_entries,72,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Entry-level certification from imported evidence.
-parity,evas_pass_spectre_fail_count,0,full certified release,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Zero mismatch applies to the certified release forms.
-parity,dual_pending_release_forms,0,fresh full-release rerun,allowed,benchmark-vabench-release-v1/reports/certification_matrix.json,Pending forms block full release certification when nonzero.
-parity,fresh_rerun_queue_rows,0,fresh full-release rerun,allowed,benchmark-vabench-release-v1/reports/dual_rerun_queue.json,"Queue readiness is execution planning, not pass evidence."
-parity,ready_rerun_bundles,0,fresh full-release rerun,allowed,benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json,Staged bundles are runnable when the bridge is reachable.
-parity,bridge_status,ready,external bridge diagnostics,allowed,benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json,Current bridge reachability is not part of already imported full release certification.
+parity,dual_certified_release_forms,217,imported certified subset,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Subset evidence only; do not phrase as full release certification.
+parity,fully_certified_entries,63,imported certified subset,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Entry-level certification from imported evidence.
+parity,evas_pass_spectre_fail_count,0,imported certified subset,allowed,benchmark-vabench-release-v1/reports/dual_certification.json,Zero mismatch applies to the certified release forms.
+parity,dual_pending_release_forms,2,fresh full-release rerun,blocked,benchmark-vabench-release-v1/reports/certification_matrix.json,Pending forms block full release certification when nonzero.
+parity,fresh_rerun_queue_rows,2,fresh full-release rerun,blocked,benchmark-vabench-release-v1/reports/dual_rerun_queue.json,"Queue readiness is execution planning, not pass evidence."
+parity,ready_rerun_bundles,2,fresh full-release rerun,blocked,benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json,Staged bundles are runnable when the bridge is reachable.
+parity,bridge_status,ready,external bridge diagnostics,blocked,benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json,Bridge status explains why fresh Spectre evidence is pending.
 parity,main120_gold_evas_pass,0/0,historical supporting evidence,supporting_only,,"Historical main120 evidence supports development history, not the release denominator."
 parity,main120_gold_spectre_pass,0/0,historical supporting evidence,supporting_only,,"Historical main120 evidence supports development history, not the release denominator."

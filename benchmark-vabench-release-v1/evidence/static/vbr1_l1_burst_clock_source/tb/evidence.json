@@ -4,7 +4,7 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L1",
-    "category": "Stimulus and Sources",
+    "category": "Stimulus and Source Generators",
     "base_function": "Burst clock source"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/gold/clk_burst_gen.va",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_burst_clock_source/forms/tb/gold/tb_clk_burst_gen_ref.scs"
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/gold/clk_burst_gen.va",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/gold/tb_clk_burst_gen_ref.scs"
   ],
   "checks": {
     "must_include": [

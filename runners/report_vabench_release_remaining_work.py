@@ -91,7 +91,7 @@ def current_seed_missing_forms(status: dict[str, object]) -> list[dict[str, obje
 
 def all_missing_required_forms() -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
-    for path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         entry = read_json(path)
         missing = entry.get("missing_forms", [])
         if not missing:

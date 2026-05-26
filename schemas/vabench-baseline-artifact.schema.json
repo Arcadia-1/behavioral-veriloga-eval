@@ -78,6 +78,7 @@
         "status": {
           "enum": [
             "ready_for_baseline_runs",
+            "blocked_until_full_certification",
             "blocked_until_scored_release_exists"
           ]
         },

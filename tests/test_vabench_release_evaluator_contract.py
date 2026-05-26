@@ -16,14 +16,14 @@ def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
     assert contract["status"] == "ready"
     assert contract["release"] == "vabench-release-v1"
     assert contract["contract_version"] == "v1"
-    assert selection["package_entry_count"] == 72
-    assert selection["package_form_count"] == 245
-    assert selection["certified_entries"] == 72
-    assert selection["certified_forms"] == 245
-    assert selection["pending_entries"] == 0
-    assert selection["pending_forms"] == 0
-    assert selection["scored_entries"] == 72
-    assert selection["scored_forms"] == 245
+    assert selection["package_entry_count"] == 64
+    assert selection["package_form_count"] == 219
+    assert selection["certified_entries"] == 63
+    assert selection["certified_forms"] == 217
+    assert selection["pending_entries"] == 1
+    assert selection["pending_forms"] == 2
+    assert selection["scored_entries"] == 51
+    assert selection["scored_forms"] == 184
     assert selection["score_enabled"] is True
     assert selection["l0_conformance_excluded"] is True
     assert selection["unscored_rows_excluded"] is True
@@ -82,9 +82,9 @@ def test_evaluator_contract_keeps_baseline_speed_and_claims_blocked() -> None:
     commands = contract["commands"]
     boundary = "\n".join(contract["claim_boundary"])
 
-    assert baseline["status"] == "ready_for_baseline_runs"
+    assert baseline["status"] == "pending_release_baselines"
     assert baseline["claim_allowed"] is False
-    assert speed["status"] == "measured_subset"
+    assert speed["status"] == "measured_with_failures"
     assert speed["claim_allowed"] is False
     assert commands["finish_after_bridge"] == "python3 runners/finish_vabench_release_after_bridge.py"
     assert commands["primary_dual_rerun"].startswith("./scripts/run_with_bridge.sh")

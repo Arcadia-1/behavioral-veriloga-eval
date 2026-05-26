@@ -1,1 +1,3 @@
 entry_id,form,level,category,base_function,source_task_id,historical_source_task_id,queue_reason,static_status,evas_status,spectre_status,gold_va_count,gold_scs_count,ready_for_dual_rerun,evidence
+vbr1_l1_gain_estimator,e2e,L1,Measurement Instrumentation Flows,Gain estimator,vbr1_l1_gain_estimator_e2e,vbr1_l1_gain_estimator_e2e,designed_release_source_rerun,pass,pass,pending,1,1,True,benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/e2e/evidence.json
+vbr1_l1_gain_estimator,tb,L1,Measurement Instrumentation Flows,Gain estimator,vbr1_l1_gain_estimator_tb,vbr1_l1_gain_estimator_tb,selected_existing_source_rerun,pass,pass,pending,1,1,True,benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evidence.json

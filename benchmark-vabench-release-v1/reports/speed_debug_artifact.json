@@ -1,1 +1,282 @@
-../../speed-optimization/reports/speed_debug_artifact.json
+{
+  "date": "2026-05-26",
+  "release": "vabench-release-v1",
+  "status": "measured_with_failures",
+  "claim_allowed": false,
+  "reason": "Timing exists, but at least one rerun row did not PASS.",
+  "measurement_scope": {
+    "summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+    "summaries": [
+      "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+    ],
+    "summary_selection": {
+      "source": "dual_rerun_import",
+      "imported_summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+      "imported_summary_rejected_reason": "",
+      "selected_summaries": [
+        "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+      ]
+    },
+    "staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
+    "queue_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
+    "planned_primary_rerun_rows": 2,
+    "planned_staged_bundles": 2,
+    "timed_rows": 2,
+    "stale_summary_rejected": false,
+    "scored_form_count": 184,
+    "timed_form_count": 2,
+    "timed_scored_form_count": 0,
+    "missing_scored_form_count": 184,
+    "timed_unscored_form_count": 2,
+    "score_denominator_coverage_fraction": 0.0,
+    "full_score_denominator_timed": false,
+    "missing_scored_form_examples": [
+      {
+        "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+        "form": "bugfix"
+      },
+      {
+        "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+        "form": "dut"
+      },
+      {
+        "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+        "form": "e2e"
+      },
+      {
+        "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+        "form": "tb"
+      },
+      {
+        "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+        "form": "bugfix"
+      },
+      {
+        "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+        "form": "dut"
+      },
+      {
+        "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+        "form": "e2e"
+      },
+      {
+        "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+        "form": "tb"
+      },
+      {
+        "entry_id": "vbr1_l1_bang_bang_phase_detector",
+        "form": "bugfix"
+      },
+      {
+        "entry_id": "vbr1_l1_bang_bang_phase_detector",
+        "form": "dut"
+      }
+    ],
+    "timed_unscored_form_examples": [
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "e2e"
+      },
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "tb"
+      }
+    ]
+  },
+  "measurement_plan": {
+    "status": "measured_or_ready_to_import",
+    "bridge_ready": true,
+    "bridge_status": "ready",
+    "bridge_ready_profiles": [
+      "default",
+      "ci",
+      "jin"
+    ],
+    "summary_status": "complete",
+    "primary_queue_rows": 2,
+    "ready_primary_queue_rows": 2,
+    "staged_bundle_count": 2,
+    "ready_staged_bundle_count": 2,
+    "blocked_staged_bundle_count": 0,
+    "bundle_variant_counts": {
+      "gold": 2
+    },
+    "bundle_expected_result_counts": {
+      "pass": 2
+    },
+    "bundle_form_counts": {
+      "e2e": 1,
+      "tb": 1
+    },
+    "primary_form_counts": {
+      "e2e": 1,
+      "tb": 1
+    },
+    "primary_category_counts": {
+      "Measurement Instrumentation Flows": 2
+    },
+    "commands": [
+      "python3 runners/finish_vabench_release_after_bridge.py",
+      "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
+      "python3 runners/report_vabench_release_speed_debug.py"
+    ],
+    "required_timing_fields": [
+      "raw_result.timing.evas_wall_time_s",
+      "raw_result.timing.spectre_wall_time_s",
+      "raw_result.timing.combined_wall_time_s"
+    ],
+    "claim_blockers": []
+  },
+  "timing_totals": {
+    "evas_wall_time_s": 9.364832209,
+    "spectre_wall_time_s": 129.990263541,
+    "spectre_over_evas_speedup": 13.88068260487079,
+    "evas_reported_total_elapsed_s": 7.0,
+    "spectre_reported_total_elapsed_s": null,
+    "reported_total_spectre_over_evas_speedup": null,
+    "evas_reported_tran_elapsed_s": 6.9236,
+    "spectre_reported_tran_elapsed_s": null,
+    "tran_spectre_over_evas_speedup": null
+  },
+  "timing_distribution": {
+    "wrapper_ratio": {
+      "count": 2,
+      "median": 12.54401424436662,
+      "geomean": 13.966117092974612,
+      "p10": 12.54401424436662,
+      "p90": 15.549442375854566,
+      "rows_evas_faster": 2,
+      "rows_evas_slower": 0,
+      "rows_equal": 0
+    },
+    "reported_total_ratio": {
+      "count": 0,
+      "median": null,
+      "geomean": null,
+      "p10": null,
+      "p90": null,
+      "rows_evas_faster": 0,
+      "rows_evas_slower": 0,
+      "rows_equal": 0
+    },
+    "tran_ratio": {
+      "count": 0,
+      "median": null,
+      "geomean": null,
+      "p10": null,
+      "p90": null,
+      "rows_evas_faster": 0,
+      "rows_evas_slower": 0,
+      "rows_equal": 0
+    },
+    "top_evas_wall_rows": [
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "e2e",
+        "variant": "gold",
+        "evas_wall_time_s": 5.19981,
+        "spectre_wall_time_s": 65.226490708,
+        "wrapper_spectre_over_evas_speedup": 12.54401424436662,
+        "evas_reported_total_elapsed_s": 3.9,
+        "spectre_reported_total_elapsed_s": null,
+        "reported_total_spectre_over_evas_speedup": null,
+        "evas_accepted_tran_steps": 1204.0
+      },
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "tb",
+        "variant": "gold",
+        "evas_wall_time_s": 4.165022209,
+        "spectre_wall_time_s": 64.76377283299999,
+        "wrapper_spectre_over_evas_speedup": 15.549442375854566,
+        "evas_reported_total_elapsed_s": 3.1,
+        "spectre_reported_total_elapsed_s": null,
+        "reported_total_spectre_over_evas_speedup": null,
+        "evas_accepted_tran_steps": 1204.0
+      }
+    ],
+    "worst_wrapper_speedup_rows": [
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "e2e",
+        "variant": "gold",
+        "evas_wall_time_s": 5.19981,
+        "spectre_wall_time_s": 65.226490708,
+        "wrapper_spectre_over_evas_speedup": 12.54401424436662,
+        "evas_reported_total_elapsed_s": 3.9,
+        "spectre_reported_total_elapsed_s": null,
+        "reported_total_spectre_over_evas_speedup": null,
+        "evas_accepted_tran_steps": 1204.0
+      },
+      {
+        "entry_id": "vbr1_l1_gain_estimator",
+        "form": "tb",
+        "variant": "gold",
+        "evas_wall_time_s": 4.165022209,
+        "spectre_wall_time_s": 64.76377283299999,
+        "wrapper_spectre_over_evas_speedup": 15.549442375854566,
+        "evas_reported_total_elapsed_s": 3.1,
+        "spectre_reported_total_elapsed_s": null,
+        "reported_total_spectre_over_evas_speedup": null,
+        "evas_accepted_tran_steps": 1204.0
+      }
+    ]
+  },
+  "required_to_claim": [
+    "Run same-slice EVAS/Spectre timing for every scored release form, or state a narrower subset-only claim.",
+    "Stratify or fix EVAS slow outliers before claiming aggregate speedup on the release package.",
+    "Keep per-row EVAS and Spectre wall-clock timings from run_gold_dual_suite timing fields.",
+    "Keep Spectre-reported runtime from spectre.out alongside wrapper wall-clock timings.",
+    "Report machine/bridge/Cadence configuration with the timing artifact.",
+    "Do not compute speedup from historical main120 summaries because they lack same-slice runtime metadata."
+  ],
+  "debug_triage_order": [
+    "bridge_profile_diagnostics.json for SSH/tunnel readiness",
+    "external_blockers.json for claim-boundary blocker chain",
+    "dual_rerun_staging_manifest.json for per-bundle staging blockers",
+    "imported dual rerun summary for per-row simulator/checker failures",
+    "dual_rerun_import.json for stale or incomplete import blockers"
+  ],
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "raw_status": "FAIL_SPECTRE",
+      "evas_wall_time_s": 5.19981,
+      "spectre_wall_time_s": 65.226490708,
+      "combined_wall_time_s": 70.426300708,
+      "evas_reported_total_elapsed_s": 3.9,
+      "evas_reported_tran_elapsed_s": 3.8586,
+      "evas_accepted_tran_steps": 1204.0,
+      "spectre_reported_total_elapsed_s": null,
+      "spectre_reported_tran_elapsed_s": null,
+      "spectre_reported_wall_clock_elapsed_s": null,
+      "spectre_timing_source": "",
+      "wrapper_spectre_over_evas_speedup": 12.54401424436662,
+      "reported_total_spectre_over_evas_speedup": null,
+      "tran_spectre_over_evas_speedup": null,
+      "summary_source": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "variant": "gold",
+      "raw_status": "FAIL_SPECTRE",
+      "evas_wall_time_s": 4.165022209,
+      "spectre_wall_time_s": 64.76377283299999,
+      "combined_wall_time_s": 68.92879504199999,
+      "evas_reported_total_elapsed_s": 3.1,
+      "evas_reported_tran_elapsed_s": 3.065,
+      "evas_accepted_tran_steps": 1204.0,
+      "spectre_reported_total_elapsed_s": null,
+      "spectre_reported_tran_elapsed_s": null,
+      "spectre_reported_wall_clock_elapsed_s": null,
+      "spectre_timing_source": "",
+      "wrapper_spectre_over_evas_speedup": 15.549442375854566,
+      "reported_total_spectre_over_evas_speedup": null,
+      "tran_spectre_over_evas_speedup": null,
+      "summary_source": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+    }
+  ]
+}

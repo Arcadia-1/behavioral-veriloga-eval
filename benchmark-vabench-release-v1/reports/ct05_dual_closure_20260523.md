@@ -1,6 +1,6 @@
 # CT05 Dual Closure - 2026-05-23
 
-- Scope: `CT05_pll_clock_event_timing`
+- Scope: `CT05_pll_clock_and_timing_systems`
 - Status: `complete`
 - Queue forms: `46`; executed bundles: `56` with `8` workers
 - Expected-met: `56/56`; expected-miss: `0`

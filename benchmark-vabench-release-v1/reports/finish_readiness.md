@@ -1,6 +1,6 @@
 # vaBench Release Finish Readiness
 
-Date: 2026-05-24
+Date: 2026-05-26
 
 This report states whether it is safe to start or import the fresh
 EVAS/Spectre release rerun. It is a readiness gate, not simulator
@@ -10,24 +10,24 @@ certification evidence.
 
 | Metric | Value |
 | --- | --- |
-| status | `blocked` |
-| ready to run fresh dual | `False` |
-| ready to import fresh dual | `True` |
+| status | `ready_to_run` |
+| ready to run fresh dual | `True` |
+| ready to import fresh dual | `False` |
 | ready to finish release | `False` |
-| passed checks | 6 |
-| blocked checks | 1 |
+| passed checks | 4 |
+| blocked checks | 3 |
 
 ## Checks
 
 | ID | Status | Finding |
 | --- | --- | --- |
-| `P1_local_release_package_ready` | `pass` | planned=72, source_linked=72, materialized=72, asset=pass, static=pass |
-| `P2_primary_rerun_queue_ready` | `pass` | queue_status=complete, queue_count=0, ready=0, blocked=0 |
-| `P3_staging_ready` | `pass` | queue_rows=0, ready_primary_rows=0, bundles=0, ready_bundles=0, blocked_bundles=0 |
+| `P1_local_release_package_ready` | `pass` | planned=64, source_linked=64, materialized=64, asset=pass, static=pass |
+| `P2_primary_rerun_queue_ready` | `pass` | queue_status=ready, queue_count=2, ready=2, blocked=0 |
+| `P3_staging_ready` | `pass` | queue_rows=2, ready_primary_rows=2, bundles=2, ready_bundles=2, blocked_bundles=0 |
 | `P4_bridge_ready` | `pass` | bridge_status=ready, ready_profiles=['default', 'ci', 'jin'], reason=bridge profile default is ready for release rerun |
-| `P5_current_summary_acceptable` | `pass` | summary_status=complete, tasks_total=37, queue_count=0, dry_run=False, expected_miss_count=0 |
-| `P6_import_gate_clear` | `blocked` | import_status=partial_imported, stale_summary=True, imported=35 |
-| `P7_full_dual_certification_clear` | `pass` | dual_pending=0, dual_failed=0, evas_pass_spectre_fail=0 |
+| `P5_current_summary_acceptable` | `blocked` | summary_status=complete, tasks_total=2, queue_count=2, dry_run=False, expected_miss_count=2 |
+| `P6_import_gate_clear` | `blocked` | import_status=imported, stale_summary=False, imported=2 |
+| `P7_full_dual_certification_clear` | `blocked` | dual_pending=2, dual_failed=0, evas_pass_spectre_fail=0 |
 
 ## Fresh Summary Acceptance Criteria
 

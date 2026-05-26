@@ -41,12 +41,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/gold/tb_leaky_hold_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/gold/tb_leaky_hold_ref.scs",
       "source_includes": [
         "leaky_hold.va"
       ],
       "source_include_origins": {
-        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/gold/leaky_hold.va"
+        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/gold/leaky_hold.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/dut/gold/gold/tb_leaky_hold_ref.scs",
       "staged_includes": [
@@ -73,12 +73,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/tb_leaky_hold_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/tb_leaky_hold_ref.scs",
       "source_includes": [
         "leaky_hold.va"
       ],
       "source_include_origins": {
-        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/leaky_hold.va"
+        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/gold/leaky_hold.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/tb/gold/gold/tb_leaky_hold_ref.scs",
       "staged_includes": [
@@ -105,12 +105,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_fixed.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/fixed/gold/tb_leaky_hold_ref.scs",
       "staged_includes": [
@@ -137,12 +137,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_buggy.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/bugfix/buggy/gold/tb_leaky_hold_ref.scs",
       "staged_includes": [
@@ -169,12 +169,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/gold/tb_leaky_hold_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/gold/tb_leaky_hold_ref.scs",
       "source_includes": [
         "leaky_hold.va"
       ],
       "source_include_origins": {
-        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/gold/leaky_hold.va"
+        "leaky_hold.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/gold/leaky_hold.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l1_sample_and_hold_with_droop_leakage/e2e/gold/gold/tb_leaky_hold_ref.scs",
       "staged_includes": [
@@ -203,12 +203,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/tb_sample_hold_droop_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/tb_sample_hold_droop_ref.scs",
       "source_includes": [
         "sample_hold_droop_ref.va"
       ],
       "source_include_origins": {
-        "sample_hold_droop_ref.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/sample_hold_droop_ref.va"
+        "sample_hold_droop_ref.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/sample_hold_droop_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/tb/gold/gold/tb_sample_hold_droop_ref.scs",
       "staged_includes": [
@@ -236,12 +236,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/tb_sample_hold_droop_ref.scs",
       "source_includes": [
         "sample_hold_droop_ref.va"
       ],
       "source_include_origins": {
-        "sample_hold_droop_ref.va": "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
+        "sample_hold_droop_ref.va": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct03_20260523/vbr1_l2_converter_front_end/e2e/gold/gold/tb_sample_hold_droop_ref.scs",
       "staged_includes": [

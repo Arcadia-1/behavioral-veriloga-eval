@@ -12,22 +12,22 @@ def test_finish_readiness_blocks_release_finish_until_target_and_import_gate_are
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     checks = {item["id"]: item for item in report["checks"]}
 
-    assert report["status"] == "blocked"
-    assert report["ready_to_run_fresh_dual"] is False
-    assert report["ready_to_import_fresh_dual"] is True
+    assert report["status"] == "ready_to_run"
+    assert report["ready_to_run_fresh_dual"] is True
+    assert report["ready_to_import_fresh_dual"] is False
     assert report["ready_to_finish_release"] is False
-    assert report["run_scope"]["primary_queue_rows"] == 0
-    assert report["run_scope"]["ready_primary_queue_rows"] == 0
-    assert report["run_scope"]["staged_bundle_count"] == 0
-    assert report["run_scope"]["expected_primary_summary_tasks_total"] == 0
+    assert report["run_scope"]["primary_queue_rows"] == 2
+    assert report["run_scope"]["ready_primary_queue_rows"] == 2
+    assert report["run_scope"]["staged_bundle_count"] == 2
+    assert report["run_scope"]["expected_primary_summary_tasks_total"] == 2
 
     assert checks["P1_local_release_package_ready"]["status"] == "pass"
     assert checks["P2_primary_rerun_queue_ready"]["status"] == "pass"
     assert checks["P3_staging_ready"]["status"] == "pass"
     assert checks["P4_bridge_ready"]["status"] == "pass"
-    assert checks["P5_current_summary_acceptable"]["status"] == "pass"
+    assert checks["P5_current_summary_acceptable"]["status"] == "blocked"
     assert checks["P6_import_gate_clear"]["status"] == "blocked"
-    assert checks["P7_full_dual_certification_clear"]["status"] == "pass"
+    assert checks["P7_full_dual_certification_clear"]["status"] == "blocked"
 
 
 def test_finish_readiness_records_fresh_summary_acceptance_criteria_and_commands() -> None:

@@ -1,53 +1,13 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "pass",
-  "static_certified_release_task_count": 245,
+  "static_certified_release_task_count": 219,
   "static_failed_release_task_count": 0,
-  "static_certified_entry_count": 72,
-  "entry_count": 72,
+  "static_certified_entry_count": 64,
+  "entry_count": 64,
   "issue_count": 0,
   "task_reports": [
-    {
-      "entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "dut",
-      "task_id": "vbr1_l1_adc_code_capture_register:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "tb",
-      "task_id": "vbr1_l1_adc_code_capture_register:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_adc_code_capture_register:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_adc_code_capture_register",
-      "form": "e2e",
-      "task_id": "vbr1_l1_adc_code_capture_register:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_adc_code_capture_register/e2e/result.json"
-    },
     {
       "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "form": "dut",
@@ -329,86 +289,6 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_segmented_dac/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "dut",
-      "task_id": "vbr1_l1_serial_readout_deserializer:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "tb",
-      "task_id": "vbr1_l1_serial_readout_deserializer:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_serial_readout_deserializer:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serial_readout_deserializer",
-      "form": "e2e",
-      "task_id": "vbr1_l1_serial_readout_deserializer:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serial_readout_deserializer/e2e/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "dut",
-      "task_id": "vbr1_l1_serializer_frame_aligner:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "tb",
-      "task_id": "vbr1_l1_serializer_frame_aligner:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_serializer_frame_aligner:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "form": "e2e",
-      "task_id": "vbr1_l1_serializer_frame_aligner:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_serializer_frame_aligner/e2e/result.json"
-    },
-    {
       "entry_id": "vbr1_l1_thermometer_code_decoder",
       "form": "dut",
       "task_id": "vbr1_l1_thermometer_code_decoder:dut",
@@ -489,44 +369,24 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_unit_element_thermometer_dac/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
-      "form": "tb",
-      "task_id": "vbr1_l2_adc_dac_reconstruction_chain:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_reconstruction_chain/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_reconstruction_chain/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
+      "entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
       "form": "e2e",
-      "task_id": "vbr1_l2_adc_dac_reconstruction_chain:e2e",
+      "task_id": "vbr1_l2_converter_static_linearity_measurement_flow:e2e",
       "status": "pass",
       "failure_count": 0,
       "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_reconstruction_chain/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_reconstruction_chain/e2e/result.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/e2e/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l2_event_controller",
+      "entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
       "form": "tb",
-      "task_id": "vbr1_l2_event_controller:tb",
+      "task_id": "vbr1_l2_converter_static_linearity_measurement_flow:tb",
       "status": "pass",
       "failure_count": 0,
       "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_event_controller/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_event_controller/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_event_controller",
-      "form": "e2e",
-      "task_id": "vbr1_l2_event_controller:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_event_controller/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_event_controller/e2e/result.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/tb/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/tb/result.json"
     },
     {
       "entry_id": "vbr1_l2_flash_adc_mini_array",
@@ -567,26 +427,6 @@
       "failures": [],
       "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pipeline_adc_chain/e2e/evidence.json",
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pipeline_adc_chain/e2e/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "tb",
-      "task_id": "vbr1_l2_serializer_frame_alignment_flow:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_serializer_frame_alignment_flow/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_serializer_frame_alignment_flow/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
-      "form": "e2e",
-      "task_id": "vbr1_l2_serializer_frame_alignment_flow:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_serializer_frame_alignment_flow/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_serializer_frame_alignment_flow/e2e/result.json"
     },
     {
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
@@ -909,6 +749,46 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_comparator_measurement_flow/e2e/result.json"
     },
     {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "dut",
+      "task_id": "vbr1_l1_acquisition_limited_sample_and_hold:dut",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/dut/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/dut/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "tb",
+      "task_id": "vbr1_l1_acquisition_limited_sample_and_hold:tb",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/tb/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/tb/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "bugfix",
+      "task_id": "vbr1_l1_acquisition_limited_sample_and_hold:bugfix",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "e2e",
+      "task_id": "vbr1_l1_acquisition_limited_sample_and_hold:e2e",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/e2e/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_acquisition_limited_sample_and_hold/e2e/result.json"
+    },
+    {
       "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "form": "dut",
       "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
@@ -1129,6 +1009,86 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/e2e/result.json"
     },
     {
+      "entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "dut",
+      "task_id": "vbr1_l1_precision_rectifier_envelope_detector:dut",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/dut/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/dut/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "tb",
+      "task_id": "vbr1_l1_precision_rectifier_envelope_detector:tb",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/tb/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/tb/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "bugfix",
+      "task_id": "vbr1_l1_precision_rectifier_envelope_detector:bugfix",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/bugfix/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/bugfix/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "e2e",
+      "task_id": "vbr1_l1_precision_rectifier_envelope_detector:e2e",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/e2e/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_precision_rectifier_envelope_detector/e2e/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "dut",
+      "task_id": "vbr1_l1_programmable_gain_amplifier:dut",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/dut/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/dut/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "tb",
+      "task_id": "vbr1_l1_programmable_gain_amplifier:tb",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/tb/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/tb/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "bugfix",
+      "task_id": "vbr1_l1_programmable_gain_amplifier:bugfix",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/bugfix/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/bugfix/result.json"
+    },
+    {
+      "entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "e2e",
+      "task_id": "vbr1_l1_programmable_gain_amplifier:e2e",
+      "status": "pass",
+      "failure_count": 0,
+      "failures": [],
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/e2e/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_programmable_gain_amplifier/e2e/result.json"
+    },
+    {
       "entry_id": "vbr1_l1_resettable_integrator",
       "form": "dut",
       "task_id": "vbr1_l1_resettable_integrator:dut",
@@ -1247,46 +1207,6 @@
       "failures": [],
       "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/e2e/evidence.json",
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/e2e/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "dut",
-      "task_id": "vbr1_l1_voltage_gain_amplifier:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "tb",
-      "task_id": "vbr1_l1_voltage_gain_amplifier:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_voltage_gain_amplifier:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_gain_amplifier",
-      "form": "e2e",
-      "task_id": "vbr1_l1_voltage_gain_amplifier:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_voltage_gain_amplifier/e2e/result.json"
     },
     {
       "entry_id": "vbr1_l2_amplifier_filter_chain",
@@ -1549,46 +1469,6 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "dut",
-      "task_id": "vbr1_l1_pfd_small_phase_error_response:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "tb",
-      "task_id": "vbr1_l1_pfd_small_phase_error_response:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_pfd_small_phase_error_response:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "form": "e2e",
-      "task_id": "vbr1_l1_pfd_small_phase_error_response:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_pfd_small_phase_error_response/e2e/result.json"
-    },
-    {
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "form": "dut",
       "task_id": "vbr1_l1_pfd_up_dn_logic:dut",
@@ -1669,46 +1549,6 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_vco_phase_integrator/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "dut",
-      "task_id": "vbr1_l1_xor_phase_detector:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "tb",
-      "task_id": "vbr1_l1_xor_phase_detector:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_xor_phase_detector:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_xor_phase_detector",
-      "form": "e2e",
-      "task_id": "vbr1_l1_xor_phase_detector:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_xor_phase_detector/e2e/result.json"
-    },
-    {
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "form": "tb",
       "task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow:tb",
@@ -1747,26 +1587,6 @@
       "failures": [],
       "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/evidence.json",
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_pll_timing_slice",
-      "form": "tb",
-      "task_id": "vbr1_l2_pll_timing_slice:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pll_timing_slice/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pll_timing_slice/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l2_pll_timing_slice",
-      "form": "e2e",
-      "task_id": "vbr1_l2_pll_timing_slice:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pll_timing_slice/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_pll_timing_slice/e2e/result.json"
     },
     {
       "entry_id": "vbr1_l1_calibration_deadband_controller",
@@ -1929,46 +1749,6 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_gain_trim_controller/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "dut",
-      "task_id": "vbr1_l1_rotating_dem_selector:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "tb",
-      "task_id": "vbr1_l1_rotating_dem_selector:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_rotating_dem_selector:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_rotating_dem_selector",
-      "form": "e2e",
-      "task_id": "vbr1_l1_rotating_dem_selector:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_rotating_dem_selector/e2e/result.json"
-    },
-    {
       "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "form": "dut",
       "task_id": "vbr1_l1_successive_approximation_calibration_search_fsm:dut",
@@ -2047,46 +1827,6 @@
       "failures": [],
       "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_trim_calibration_controller/e2e/evidence.json",
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_trim_calibration_controller/e2e/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "dut",
-      "task_id": "vbr1_l1_windowed_dem_pointer:dut",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/dut/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/dut/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "tb",
-      "task_id": "vbr1_l1_windowed_dem_pointer:tb",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/tb/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "bugfix",
-      "task_id": "vbr1_l1_windowed_dem_pointer:bugfix",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/bugfix/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/bugfix/result.json"
-    },
-    {
-      "entry_id": "vbr1_l1_windowed_dem_pointer",
-      "form": "e2e",
-      "task_id": "vbr1_l1_windowed_dem_pointer:e2e",
-      "status": "pass",
-      "failure_count": 0,
-      "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_windowed_dem_pointer/e2e/result.json"
     },
     {
       "entry_id": "vbr1_l2_complete_calibration_loop",
@@ -2439,36 +2179,27 @@
       "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_sine_periodic_voltage_source/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "entry_id": "vbr1_l2_programmable_stimulus_sequencer",
       "form": "e2e",
-      "task_id": "vbr1_l2_adc_dac_source_sweep_flow:e2e",
+      "task_id": "vbr1_l2_programmable_stimulus_sequencer:e2e",
       "status": "pass",
       "failure_count": 0,
       "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_source_sweep_flow/e2e/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_source_sweep_flow/e2e/result.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/e2e/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/e2e/result.json"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "entry_id": "vbr1_l2_programmable_stimulus_sequencer",
       "form": "tb",
-      "task_id": "vbr1_l2_adc_dac_source_sweep_flow:tb",
+      "task_id": "vbr1_l2_programmable_stimulus_sequencer:tb",
       "status": "pass",
       "failure_count": 0,
       "failures": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_source_sweep_flow/tb/evidence.json",
-      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adc_dac_source_sweep_flow/tb/result.json"
+      "evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/tb/evidence.json",
+      "result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/tb/result.json"
     }
   ],
   "entry_reports": [
-    {
-      "entry_id": "vbr1_l1_adc_code_capture_register",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
     {
       "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
       "release_task_count": 4,
@@ -2533,24 +2264,6 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l1_serial_readout_deserializer",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l1_serializer_frame_aligner",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
       "entry_id": "vbr1_l1_thermometer_code_decoder",
       "release_task_count": 4,
       "static": "pass",
@@ -2569,16 +2282,7 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_reconstruction_chain",
-      "release_task_count": 2,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l2_event_controller",
+      "entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
       "release_task_count": 2,
       "static": "pass",
       "missing_forms": [],
@@ -2597,15 +2301,6 @@
     },
     {
       "entry_id": "vbr1_l2_pipeline_adc_chain",
-      "release_task_count": 2,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
       "release_task_count": 2,
       "static": "pass",
       "missing_forms": [],
@@ -2695,6 +2390,15 @@
       "certification_status": "not_certified"
     },
     {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "release_task_count": 4,
+      "static": "pass",
+      "missing_forms": [],
+      "evas": "pass",
+      "spectre": "pass",
+      "certification_status": "not_certified"
+    },
+    {
       "entry_id": "vbr1_l1_aperture_delay_track_and_hold",
       "release_task_count": 4,
       "static": "pass",
@@ -2749,6 +2453,24 @@
       "certification_status": "not_certified"
     },
     {
+      "entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "release_task_count": 4,
+      "static": "pass",
+      "missing_forms": [],
+      "evas": "pass",
+      "spectre": "pass",
+      "certification_status": "not_certified"
+    },
+    {
+      "entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "release_task_count": 4,
+      "static": "pass",
+      "missing_forms": [],
+      "evas": "pass",
+      "spectre": "pass",
+      "certification_status": "not_certified"
+    },
+    {
       "entry_id": "vbr1_l1_resettable_integrator",
       "release_task_count": 4,
       "static": "pass",
@@ -2768,15 +2490,6 @@
     },
     {
       "entry_id": "vbr1_l1_soft_hysteretic_limiter",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l1_voltage_gain_amplifier",
       "release_task_count": 4,
       "static": "pass",
       "missing_forms": [],
@@ -2848,15 +2561,6 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
       "entry_id": "vbr1_l1_pfd_up_dn_logic",
       "release_task_count": 4,
       "static": "pass",
@@ -2875,15 +2579,6 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l1_xor_phase_detector",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
       "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
       "release_task_count": 2,
       "static": "pass",
@@ -2894,15 +2589,6 @@
     },
     {
       "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
-      "release_task_count": 2,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l2_pll_timing_slice",
       "release_task_count": 2,
       "static": "pass",
       "missing_forms": [],
@@ -2947,15 +2633,6 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l1_rotating_dem_selector",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
       "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
       "release_task_count": 4,
       "static": "pass",
@@ -2966,15 +2643,6 @@
     },
     {
       "entry_id": "vbr1_l1_trim_calibration_controller",
-      "release_task_count": 4,
-      "static": "pass",
-      "missing_forms": [],
-      "evas": "pass",
-      "spectre": "pass",
-      "certification_status": "not_certified"
-    },
-    {
-      "entry_id": "vbr1_l1_windowed_dem_pointer",
       "release_task_count": 4,
       "static": "pass",
       "missing_forms": [],
@@ -3015,7 +2683,7 @@
       "static": "pass",
       "missing_forms": [],
       "evas": "pass",
-      "spectre": "pass",
+      "spectre": "pending",
       "certification_status": "not_certified"
     },
     {
@@ -3100,7 +2768,7 @@
       "certification_status": "not_certified"
     },
     {
-      "entry_id": "vbr1_l2_adc_dac_source_sweep_flow",
+      "entry_id": "vbr1_l2_programmable_stimulus_sequencer",
       "release_task_count": 2,
       "static": "pass",
       "missing_forms": [],

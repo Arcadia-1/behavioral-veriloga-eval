@@ -49,7 +49,7 @@ def read_json(path: Path) -> dict:
 
 
 def task_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("CT*/vbr1_*/forms/*/release_task.json"))
+    return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
 
 
 def rel(path: Path) -> str:

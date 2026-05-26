@@ -7,6 +7,8 @@
     "benchmark",
     "release_entry_id",
     "level",
+    "track",
+    "difficulty",
     "category",
     "base_function",
     "package_status",
@@ -33,6 +35,19 @@
       "enum": [
         "L1",
         "L2"
+      ]
+    },
+    "track": {
+      "enum": [
+        "core",
+        "support"
+      ]
+    },
+    "difficulty": {
+      "enum": [
+        "D1",
+        "D2",
+        "D3"
       ]
     },
     "category": {

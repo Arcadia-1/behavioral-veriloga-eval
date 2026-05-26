@@ -4,7 +4,7 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Sample, Hold, and Analog Memory",
+    "category": "Sampling and Analog Memory",
     "base_function": "Sample-and-hold with droop/leakage"
   },
   "static": "pass",
@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_buggy.scs",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/gold/tb_leaky_hold_ref.scs"
   ],
   "checks": {
     "must_include": [

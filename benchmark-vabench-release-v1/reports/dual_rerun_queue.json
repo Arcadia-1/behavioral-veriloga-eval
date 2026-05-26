@@ -1,13 +1,68 @@
 {
-  "date": "2026-05-24",
+  "date": "2026-05-26",
   "release": "vabench-release-v1",
-  "status": "complete",
-  "queue_count": 0,
-  "reason_counts": {},
-  "form_counts": {},
-  "ready_count": 0,
+  "status": "ready",
+  "queue_count": 2,
+  "reason_counts": {
+    "designed_release_source_rerun": 1,
+    "selected_existing_source_rerun": 1
+  },
+  "form_counts": {
+    "e2e": 1,
+    "tb": 1
+  },
+  "ready_count": 2,
   "blocked_count": 0,
-  "rows": [],
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "level": "L1",
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Gain estimator",
+      "source_task_id": "vbr1_l1_gain_estimator_e2e",
+      "historical_source_task_id": "vbr1_l1_gain_estimator_e2e",
+      "queue_reason": "designed_release_source_rerun",
+      "static_status": "pass",
+      "evas_status": "pass",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/gain_estimator.va",
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_estimator_ref.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/e2e/evidence.json",
+      "pending_blockers": [
+        "Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed."
+      ],
+      "ready_for_dual_rerun": true
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "level": "L1",
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Gain estimator",
+      "source_task_id": "vbr1_l1_gain_estimator_tb",
+      "historical_source_task_id": "vbr1_l1_gain_estimator_tb",
+      "queue_reason": "selected_existing_source_rerun",
+      "static_status": "pass",
+      "evas_status": "pass",
+      "spectre_status": "pending",
+      "gold_va_count": 1,
+      "gold_scs_count": 1,
+      "gold": [
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/gold/gain_estimator.va",
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/gold/tb_gain_estimator_ref.scs"
+      ],
+      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evidence.json",
+      "pending_blockers": [
+        "Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed."
+      ],
+      "ready_for_dual_rerun": true
+    }
+  ],
   "notes": [
     "This queue is derived from dual_certification.json pending forms.",
     "Rows here are not failures and are not scored benchmark results.",

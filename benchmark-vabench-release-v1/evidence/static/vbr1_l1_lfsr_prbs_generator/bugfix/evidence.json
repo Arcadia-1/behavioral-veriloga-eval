@@ -4,7 +4,7 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Stimulus and Sources",
+    "category": "Stimulus and Source Generators",
     "base_function": "PRBS stimulus/dither generator"
   },
   "static": "pass",
@@ -12,12 +12,12 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT09_stimulus_and_sources/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/gold/tb_prbs7_ref.scs"
   ],
   "checks": {
     "must_include": [

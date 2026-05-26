@@ -4,7 +4,7 @@
   "task_form": "tb",
   "taxonomy": {
     "level": "L2",
-    "category": "Sample, Hold, and Analog Memory",
+    "category": "Sampling and Analog Memory",
     "base_function": "Converter front-end"
   },
   "static": "pass",
@@ -12,18 +12,23 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/sample_hold_droop_ref.va",
-    "benchmark-vabench-release-v1/tasks/CT03_sample_hold_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/tb_sample_hold_droop_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/sample_hold_droop_ref.va",
+    "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/gold/tb_sample_hold_droop_ref.scs"
   ],
   "checks": {
     "must_include": [
+      "ahdl_include",
       "tran",
       "save"
     ],
-    "must_not_include": [],
+    "must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
     "failures": []
   },
   "notes": "Static release certification only; EVAS and Spectre remain pending."

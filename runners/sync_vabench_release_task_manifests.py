@@ -64,6 +64,8 @@ def release_task_payload(entry: dict[str, object], task: dict[str, object]) -> d
         "benchmark": "vabench-release-v1",
         "release_entry_id": entry["release_entry_id"],
         "level": entry["level"],
+        "track": entry.get("track", "core"),
+        "difficulty": entry.get("difficulty", "D2"),
         "category": entry["category"],
         "base_function": entry["base_function"],
         "family": FORM_TO_FAMILY[form],
@@ -91,7 +93,7 @@ def release_task_payload(entry: dict[str, object], task: dict[str, object]) -> d
 
 def build_report() -> dict[str, object]:
     rows: list[dict[str, object]] = []
-    for entry_path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for entry_path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         entry = read_json(entry_path)
         for task in entry.get("release_tasks", []):
             if not isinstance(task, dict):
@@ -104,6 +106,8 @@ def build_report() -> dict[str, object]:
                 {
                     "release_entry_id": entry["release_entry_id"],
                     "form": task["form"],
+                    "track": entry.get("track", "core"),
+                    "difficulty": entry.get("difficulty", "D2"),
                     "manifest": rel(manifest_path),
                     "static": payload["certification"]["static"],
                     "evas": payload["certification"]["evas"],

@@ -1,27 +1,24 @@
 {
   "release_entry_id": "vbr1_l1_gain_estimator",
   "task_id": "vbr1_l1_gain_estimator:e2e",
-  "source_task_id": "gain_extraction_smoke",
+  "source_task_id": "vbr1_l1_gain_estimator_e2e",
   "task_form": "e2e",
   "taxonomy": {
     "level": "L1",
-    "category": "Measurement and Testbench Instrumentation",
+    "category": "Measurement Instrumentation Flows",
     "base_function": "Gain estimator"
   },
   "static": "pass",
   "evas": "pass",
-  "spectre": "pass",
-  "verdict": "certified",
+  "spectre": "pending",
+  "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold",
-    "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_gain_estimator/e2e/gold",
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/e2e/gold",
+    "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/vbr1_l1_gain_estimator/e2e/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/e2e/spectre_result.json",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/dither_adder.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/gain_amp_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/lfsr.va",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_extraction_ref.scs",
-    "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/vin_src.va"
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/gain_estimator.va",
+    "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_estimator_ref.scs"
   ],
   "historical_evidence": {
     "evas_result": "",
@@ -31,57 +28,14 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct08_ct09_20260524/vbr1_l1_gain_estimator/e2e/gold",
-    "result_root": "results/vabench-release-v1-dual-rerun-ct08-ct09-20260524-fix1-noncross/vbr1_l1_gain_estimator/e2e/gold",
-    "raw_status": "PASS",
-    "expected_result_met": true,
+    "summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/e2e/gold",
+    "result_root": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/vbr1_l1_gain_estimator/e2e/gold",
+    "raw_status": "FAIL_SPECTRE",
+    "expected_result_met": false,
     "parity": {
-      "status": "passed",
-      "common_window_s": [
-        0.0,
-        0.0002
-      ],
-      "signals_compared": 4,
-      "samples": 1200,
-      "max_rmse_v": 0.060323601822553904,
-      "max_abs_v": 0.20926540085768663,
-      "mean_nrmse": 0.08282717123835595,
-      "p95_nrmse": 0.12783625716505415,
-      "max_nrmse": 0.12783625716505415,
-      "per_signal": {
-        "vamp_n": {
-          "rmse_v": 0.0603236018225539,
-          "max_abs_v": 0.20926540085768663,
-          "span_v": 0.5929412891784638,
-          "nrmse": 0.10173621389418484,
-          "kind": "analog"
-        },
-        "vamp_p": {
-          "rmse_v": 0.060323601822553904,
-          "max_abs_v": 0.20926540085768658,
-          "span_v": 0.5929412891784639,
-          "nrmse": 0.10173621389418483,
-          "kind": "analog"
-        },
-        "vinn": {
-          "rmse_v": 0.0,
-          "max_abs_v": 0.0,
-          "span_v": 0.0,
-          "nrmse": 0.0,
-          "kind": "digital",
-          "best_lag_samples": 0,
-          "best_lag_s": 0.0,
-          "mismatch_ratio": 0.0
-        },
-        "vinp": {
-          "rmse_v": 0.013950629804311547,
-          "max_abs_v": 0.048441034457797905,
-          "span_v": 0.10912889749501481,
-          "nrmse": 0.12783625716505415,
-          "kind": "analog"
-        }
-      }
+      "status": "blocked",
+      "reason": "prerequisites not met for waveform comparison"
     }
   },
   "source_equivalence": {
@@ -89,14 +43,13 @@
     "source": "release_rerun_staging_bundle",
     "failures": [],
     "release_gold": [
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/dither_adder.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/gain_amp_fixed.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/lfsr.va",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_extraction_ref.scs",
-      "benchmark-vabench-release-v1/tasks/CT08_measurement_and_testbench_instrumentation/vbr1_l1_gain_estimator/forms/e2e/gold/vin_src.va"
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/gain_estimator.va",
+      "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_estimator_ref.scs"
     ]
   },
   "failures": [],
-  "pending_blockers": [],
-  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+  "pending_blockers": [
+    "Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed."
+  ],
+  "notes": "EVAS evidence imported from current release gold; Spectre certification remains pending on external license checkout."
 }

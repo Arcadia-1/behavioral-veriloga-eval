@@ -1,10 +1,11 @@
 # vaBench Release Package v1
 
-This directory is the clean paper-facing benchmark package for the 72-entry L1/L2
-vaBench release target. It is intentionally claim-gated: source assets,
-static checks, imported EVAS/Spectre evidence, fresh rerun staging, score
-denominators, speed/debug measurements, and model baselines are reported as
-separate surfaces.
+This directory is the clean paper-facing benchmark package for the 64-entry L1/L2
+vaBench release target: 51 core circuit entries plus 13 auxiliary
+measurement/stimulus support entries. It is intentionally claim-gated: source
+assets, static checks, imported EVAS/Spectre evidence, fresh rerun staging,
+score denominators, speed/debug measurements, and model baselines are reported
+as separate surfaces.
 
 This package is the current vaBench release target. It can be cited only through
 the current reports in `reports/`. A row
@@ -13,7 +14,9 @@ as counted, and no pending or blocked simulator run is certification evidence.
 
 ## Layout
 
-- `tasks/`: scored L1/L2 task directories after materialization.
+- `tasks/`: release L1/L2 task directories after materialization; only
+  `track=core` rows marked counted by the score denominator enter the main
+  circuit score.
 - `conformance/`: non-scored L0 EVAS/Spectre diagnostic cases.
 - `evidence/`: certification bundles and simulator logs referenced by tasks.
 - `reports/`: coverage, parity, speed/debug, baseline, completion, artifact
@@ -34,9 +37,9 @@ model capability, bugfix claims, or broad parity denominators.
 
 ## Current Claim Boundary
 
-The current local package is source-complete, statically certified, and
-EVAS/Spectre certified for the release denominator. Speed/debug measurements and
-model baselines remain separate gated claims.
+The current local package is source-complete and statically certified. Fresh
+full EVAS/Spectre certification, speed/debug measurements, and model baselines
+remain separate gated claims.
 
 Use these reports as the source of truth:
 
@@ -56,10 +59,11 @@ Use these reports as the source of truth:
 
 Current safe wording is intentionally narrow:
 
-- The package defines a 72-entry L1/L2 coverage target.
+- The package defines a 64-entry L1/L2 coverage target split into core circuit
+  coverage and auxiliary measurement/stimulus support coverage.
 - All materialized release forms pass static/integrity checks.
-- The certified EVAS/Spectre release evidence is clean with respect to EVAS
-  PASS / Spectre FAIL mismatches.
+- Current dual reports are clean with respect to EVAS PASS / Spectre FAIL
+  mismatches, while full fresh EVAS/Spectre certification remains pending.
 - L0 conformance is separate from the benchmark denominator.
 
 Do not claim EVAS speedup, debug advantage, or model baselines until the

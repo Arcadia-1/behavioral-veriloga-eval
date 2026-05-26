@@ -4,14 +4,14 @@ from pathlib import Path
 
 
 CATEGORY_DIR_BY_NAME: dict[str, str] = {
-    "Data Converters": "CT01_data_converters",
-    "Comparators and Decision Circuits": "CT02_comparators_and_decision_circuits",
-    "Sample, Hold, and Analog Memory": "CT03_sample_hold_and_analog_memory",
-    "Analog Behavioral Signal Conditioning": "CT04_analog_behavioral_signal_conditioning",
-    "PLL / Clock / Event Timing": "CT05_pll_clock_event_timing",
-    "Calibration, DEM, and Control": "CT07_calibration_dem_and_control",
-    "Measurement and Testbench Instrumentation": "CT08_measurement_and_testbench_instrumentation",
-    "Stimulus and Sources": "CT09_stimulus_and_sources",
+    "Data Converter Models": "CT01_data_converter_models",
+    "Comparator and Decision Circuits": "CT02_comparator_and_decision_circuits",
+    "Sampling and Analog Memory": "CT03_sampling_and_analog_memory",
+    "Baseband Signal Conditioning": "CT04_baseband_signal_conditioning",
+    "PLL Clock and Timing Systems": "CT05_pll_clock_and_timing_systems",
+    "Calibration, DEM, and Control": "CT06_calibration_dem_and_control",
+    "Measurement Instrumentation Flows": "SUP01_measurement_instrumentation_flows",
+    "Stimulus and Source Generators": "SUP02_stimulus_and_source_generators",
 }
 
 
@@ -23,15 +23,15 @@ def category_dir_name(category: str) -> str:
 
 
 def iter_release_entry_paths(tasks_root: Path) -> list[Path]:
-    return sorted(tasks_root.glob("CT*/vbr1_*/release_entry.json"))
+    return sorted(tasks_root.glob("*/vbr1_*/release_entry.json"))
 
 
 def iter_release_task_manifest_paths(tasks_root: Path) -> list[Path]:
-    return sorted(tasks_root.glob("CT*/vbr1_*/forms/*/release_task.json"))
+    return sorted(tasks_root.glob("*/vbr1_*/forms/*/release_task.json"))
 
 
 def release_entry_dir(tasks_root: Path, entry_id: str) -> Path:
-    matches = sorted(tasks_root.glob(f"CT*/{entry_id}"))
+    matches = sorted(tasks_root.glob(f"*/{entry_id}"))
     if len(matches) == 1:
         return matches[0]
     flat = tasks_root / entry_id

@@ -2,7 +2,7 @@
 
 - Entry: `vbr1_l1_differential_output_driver`
 - Level: `L1`
-- Category: `Analog Behavioral Signal Conditioning`
+- Category: `Baseband Signal Conditioning`
 - Package status: `selected_l1_addition`
 - Materialized forms: `dut`, `tb`, `bugfix`, `e2e`
 - Missing forms: none

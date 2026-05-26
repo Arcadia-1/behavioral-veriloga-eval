@@ -41,9 +41,6 @@ SELECTED_SOURCE_LINKS: dict[str, list[str]] = {
     "vbr1_l1_capacitive_weighted_sar_feedback_dac": [
         "tasks/spec-to-va/voltage/dac/cdac_cal",
     ],
-    "vbr1_l2_adc_dac_reconstruction_chain": [
-        "tasks/end-to-end/voltage/adc_dac_ideal_4b_smoke",
-    ],
     "vbr1_l2_weighted_sar_adc_dac_loop": [
         "tasks/end-to-end/voltage/sar_adc_dac_weighted_8b_smoke",
     ],
@@ -323,6 +320,17 @@ def normalize_release_checks(checks_path: Path, source: SourceTask) -> None:
         checks_path.write_text(text.rstrip() + "\n" + "\n".join(additions) + "\n", encoding="utf-8")
 
 
+def normalize_release_gold(form_dir: Path) -> None:
+    tb_path = form_dir / "gold" / "tb_gain_extraction_ref.scs"
+    if not tb_path.exists():
+        return
+    text = tb_path.read_text(encoding="utf-8")
+    text = text.replace("Run 200us.", "Run 20us.")
+    text = text.replace("  40n vdd  200u vdd]", "  40n vdd  20u vdd]")
+    text = text.replace("tran tran stop=200u maxstep=8n", "tran tran stop=20u maxstep=8n")
+    tb_path.write_text(text, encoding="utf-8")
+
+
 def copy_release_assets(entry_dir: Path, source: SourceTask) -> dict[str, object]:
     form_dir = entry_dir / "forms" / source.form
     form_dir.mkdir(parents=True, exist_ok=True)
@@ -332,6 +340,7 @@ def copy_release_assets(entry_dir: Path, source: SourceTask) -> dict[str, object
     normalize_release_meta(form_dir / "meta.json", source)
     normalize_release_prompt(form_dir / "prompt.md", source.form)
     normalize_release_checks(form_dir / "checks.yaml", source)
+    normalize_release_gold(form_dir)
     gold_files = sorted(path for path in (form_dir / "gold").rglob("*") if path.is_file())
     return {
         "form": source.form,

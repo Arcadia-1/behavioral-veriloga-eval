@@ -1,123 +1,106 @@
 # vaBench Category and Level Coverage Table
 
-Date: 2026-05-15
+Date: 2026-05-24
 
-This table is the current human-review view of the clean vaBench taxonomy after
-the calibration merge and offset-calibration deletion decisions.
+This table is the current human-review view of the 64-entry vaBench release
+after the weak/duplicate entry rebalance. It is a coverage and taxonomy view,
+not EVAS/Spectre certification evidence.
 
-Counting decisions:
+## Selection Principle
 
-- `background_calibration_accumulator` is fully merged into
-  `cdac_calibration` and is not counted separately.
-- `offset_calibration_fsm` is removed from the release count for now.
-- `thermometer_dac` remains trace evidence only after it is renamed as a simple
-  4-bit binary-coded DAC.
-- Current main120 e2e forms are treated as L1-form unless the task composes
-  multiple interacting functions.
+The release set is chosen for analog/mixed-signal circuit-function coverage,
+not only for simulation-speed relevance. A valid entry should be recognizable
+as a real behavioral IC block, macro helper, measurement/testbench function,
+source model, or composed mixed-signal flow. EVAS support constrains the
+implementation subset and certification path, but it should not be the only
+reason a function exists in the benchmark.
 
-Coverage-count vocabulary:
+## Count Vocabulary
 
 | Term | Count | Meaning |
 | --- | ---: | --- |
-| Current promoted L1 seeds | 24 | Countable current-seed L1 functions retained in the release package after duplicate/removal policy. |
-| Promoted top-level L1 additions | 32 | Additional L1 functions selected from examples, smoke tasks, and historical validated drafts as release coverage targets. They still require task materialization and certification before scoring. |
-| Selected L2 complete-circuit targets | 16 | System/flow targets that compose multiple L1 functions after removing duplicate kernels. They still require task materialization and certification before scoring. |
-| Top-level L1/L2 coverage target | 72 | 24 current L1 seeds + 32 promoted L1 additions + 16 L2 targets, before task-form multiplication. |
-| Excluded historical bases | 2 | `background_calibration_accumulator` is merged; `offset_calibration_fsm` is removed pending redesign. |
+| Current promoted L1 seeds | 22 | Current-seed L1 functions retained in the release package after duplicate/removal policy. |
+| Promoted top-level L1 additions | 29 | Additional L1 functions selected as release coverage targets. |
+| Selected L2 complete-circuit targets | 13 | System/flow targets that compose multiple L1 functions. |
+| Top-level L1/L2 coverage target | 64 | 51 L1 + 13 L2 entries, before task-form multiplication. |
+| Release task forms | 219 | Materialized `dut`, `tb`, `bugfix`, and/or `e2e` forms. |
+| Core score denominator | 51 entries / 184 forms | Enabled for certified `track=core` rows; support rows are reported separately. |
+| Support suite | 13 entries / 35 forms | Measurement/stimulus coverage excluded from the core circuit score. |
+| Difficulty split | D1=7, D2=43, D3=14 | Difficulty is orthogonal to L1/L2 and core/support. |
 
-So "24 seeds" means current promoted seed functions only. The top-level release
-coverage target is larger: 24 current L1 seeds plus 32 promoted L1 additions
-plus 16 L2 complete-circuit targets.
+The 64-entry target intentionally contains two roles: 51 core circuit entries
+under converter, comparator, PLL/timing, calibration/control, signal
+conditioning, and sample/hold categories; and 13 support entries under
+measurement/testbench instrumentation plus stimulus/sources. Support entries
+are valid benchmark content after certification, but paper tables must not mix
+them into the core analog circuit-function score denominator.
 
 ## L0 / L1 / L2 Rules
 
 | Level | What it means | Current use | Counted in benchmark score |
 | --- | --- | --- | --- |
 | L0 conformance | Single-cause Verilog-A, simulator, source, event, sampling, or checker semantic. | EVAS/Spectre health and regression tests. | No. |
-| L1 function | One reusable circuit function with a module contract and measurable behavior. | Main scored model-capability surface. | Yes. |
-| L2 complete circuit | Multiple interacting L1 functions or a complete mixed-signal flow. | Higher-level benchmark expansions and true system e2e tasks. | Yes. |
+| L1 function | One reusable analog/mixed-signal behavioral circuit function with measurable behavior. | Main model-capability surface after certification. | Yes for `track=core`; support rows report separately. |
+| L2 complete circuit | Multiple interacting L1 functions or a complete mixed-signal flow. | Higher-level benchmark expansions and true system e2e tasks. | Yes for `track=core`; support rows report separately. |
 
-## Complete Category Table
+## Category Coverage
 
-| Category | L0 conformance themes | Current L1 concrete circuits | Promoted L1 additions from examples/history | L2 complete-circuit targets |
-| --- | --- | --- | --- | --- |
-| Data Converters | Bus width guards; code saturation; decoder monotonicity; transition timing; readout framing. | Simple 4-bit binary-coded DAC; segmented DAC; guarded thermometer-code decoder; 4-bit SAR logic. | Clocked ADC quantizer; unit-element thermometer DAC; capacitive/weighted SAR feedback DAC; DAC mismatch/unit-weighting model; ADC code capture register; ADC/readout serializer frame aligner; serial readout deserializer. | ADC/DAC reconstruction chain; weighted SAR ADC/DAC loop; flash ADC mini-array; pipeline ADC chain; conversion event controller; readout frame-monitor flow. |
-| Comparators and Decision Circuits | `cross()` threshold touch; clock/reset ordering; output transition placement; decision qualification. | Offset comparator; StrongARM-style latch comparator behavior; comparator debounce latch. | Ideal threshold comparator; propagation-delay comparator; hysteresis comparator; window comparator/detector. | Single-ramp offset measurement flow: ramp stimulus + comparator + offset metric. |
-| PLL / Clock / Event Timing | `timer()` startup semantics; coincident events; `$abstime` sampling; divider edge ordering. | VCO phase integrator; PFD UP/DN reset-race behavior; resettable clock divider; lock detector. | PFD UP/DN core; PFD small phase-error response; XOR phase detector; bang-bang phase detector; digital phase accumulator with modulo wrap; voltage-domain charge-pump control abstraction; sampled loop-filter abstraction. | PLL timing slice; ADPLL lock/ratio-hop/timer flow; CPPLL tracking and frequency-step reacquire flow. |
-| Calibration, DEM, and Control | Update ordering at clock edges; clamp bounds; pointer wrap boundaries. | Trim-voltage generator; gain trim controller; rotating DEM selector; windowed DEM pointer; deterministic element shuffler. | DWA/DEM encoder; calibration deadband controller; successive-approximation calibration/search FSM. | Complete calibration loop. |
-| Measurement and Testbench Instrumentation | File I/O parsing; final-row sampling; CSV metric schema; tolerance-window semantics. | Crossing metric writer; settling-time measurement testbench; peak detector. | Gain estimator; edge interval timer. | Measurement flow; gain extraction/convergence measurement flow. |
-| Stimulus and Sources | PWL/source continuation legality; breakpoint insertion; source row sampling. | No current countable release seed after clamp/slew are mapped to signal conditioning. | Ramp/step source; burst-clock source; deterministic noise/dither source; sine/periodic voltage source; PRBS stimulus/dither generator. | ADC/DAC source sweep flow. |
-| Analog Behavioral Signal Conditioning | Continuous update timestep; transition smoothing; saturation/limiting edge cases; resettable state. | First-order lowpass; resettable integrator; slew-rate limiter. | Soft/hysteretic limiter; voltage gain amplifier; higher-order filter. | Amplifier/filter chain. |
-| Sample, Hold, and Analog Memory | Track/sample edge timing; aperture delay; leakage/decay timestep semantics. | Aperture-delay track-and-hold; sample-and-hold with droop/leakage. | Clocked sample-and-hold. | Converter front-end. |
+| Category | Entries | L1 | L2 | Core/support role |
+| --- | ---: | ---: | ---: | --- |
+| Data Converter Models | 13 | 9 | 4 | Core converter coverage. |
+| Comparator and Decision Circuits | 8 | 7 | 1 | Core decision-block coverage. |
+| PLL Clock and Timing Systems | 10 | 8 | 2 | Core event/timing mixed-signal coverage. |
+| Calibration, DEM, and Control | 7 | 6 | 1 | Core calibration/control coverage after DEM deduplication. |
+| Baseband Signal Conditioning | 8 | 7 | 1 | Core voltage-domain transform coverage. |
+| Sampling and Analog Memory | 5 | 4 | 1 | Core sampled analog memory/front-end coverage. |
+| Measurement Instrumentation Flows | 7 | 5 | 2 | Support coverage for reusable measurement contracts. |
+| Stimulus and Source Generators | 6 | 5 | 1 | Support coverage for reusable stimulus/source models. |
 
-Promoted additions in this table are part of the top-level release coverage
-contract. They are still not automatically scored tasks: each one must receive
-prompt, metadata, gold assets, checks, and EVAS/Spectre certification before it
-can enter a release package.
+## L1 Function Coverage
 
-## Expansion Source Trace
-
-| Source | Functions and variants extracted for promotion review |
+| Category | L1 functions |
 | --- | --- |
-| `veriloga-skills/evas-sim/examples/data-converter` | Ideal clocked ADC; ideal binary-weighted DAC; trim-code decoder for binary/one-hot/thermometer outputs; register-loaded binary-weighted DAC; unit-element thermometer DAC; capacitive/weighted DAC; weighted SAR ADC loop. |
-| `veriloga-skills/evas-sim/examples/comparator` | Ideal threshold comparator; propagation-delay comparator; offset-search comparator; StrongARM-style latch comparator; edge interval timer. |
-| `veriloga-skills/evas-sim/examples/digital-logic` | Clock divider; basic gates; DFF with reset; LFSR. |
-| `veriloga-skills/evas-sim/examples/calibration` | DWA pointer generator; no-overlap pointer; wraparound-related DEM pointer behavior. |
-| `veriloga-skills/evas-sim/examples/stimulus` | Ramp generator; burst-clock generator; deterministic noise generator. |
-| `veriloga-skills/evas-sim/examples/measurement` | Gain estimator; gain calibration controller; gain extraction/convergence flow; dither source; differential SAR ADC helper. |
-| Historical `benchmark-balanced` | Threshold detector; window detector; analog limiter; retriggerable pulse-stretcher seed. |
-| Historical `benchmark-v2` | ADC/DAC shared quantized state; binary-weighted DAC versus thermometer/unit-cell distractors; DWA pointer perturbations; PFD/lock-window behavior; divider/counter ratio and encoding distractors; sample/hold plus calibration/system composition. |
-| Existing smoke tasks under `tasks/end-to-end/voltage` | Flash ADC; ADPLL lock/ratio-hop/timer; CPPLL tracking/reacquire; PFD UP/DN/small-phase-error; gray counter; serializer; mux; comparator hysteresis; sample-hold droop; phase accumulator wrap. |
+| Data Converter Models | Simple 4-bit binary-coded DAC; unit-element thermometer DAC; segmented DAC; thermometer-code decoder; clocked ADC quantizer; capacitive/weighted SAR feedback DAC; DAC mismatch/unit-weighting model; SAR logic; pipeline ADC MDAC stage. |
+| Comparator and Decision Circuits | Threshold comparator; propagation-delay comparator; hysteresis comparator; window comparator/detector; offset comparator; StrongARM-style latch comparator; comparator debounce latch. |
+| PLL Clock and Timing Systems | VCO phase integrator; PFD UP/DN logic; bang-bang phase detector; digital phase accumulator with modulo wrap; clock divider; lock detector; voltage-domain charge-pump control abstraction; sampled loop-filter abstraction. |
+| Calibration, DEM, and Control | Trim-voltage generator; gain trim controller; DWA/DEM encoder; calibration deadband controller; successive-approximation calibration/search FSM; element shuffler. |
+| Baseband Signal Conditioning | First-order lowpass; resettable integrator; soft/hysteretic limiter; precision rectifier/envelope detector; higher-order filter; slew-rate limiter; programmable gain amplifier. |
+| Sampling and Analog Memory | Aperture-delay track-and-hold; sample-and-hold with droop/leakage; clocked sample-and-hold; acquisition-limited sample-and-hold. |
+| Measurement Instrumentation Flows | Crossing metric writer; settling response measurement helper; peak detector; gain estimator; edge interval timer. |
+| Stimulus and Source Generators | PRBS stimulus/dither generator; periodic phase-ramp guard source; burst clock source; dither or noise-like deterministic source; sine/periodic voltage source. |
 
-## Current L1 Seed List
-
-| Category | Countable current L1 seeds |
-| --- | --- |
-| Data Converters | `simple_binary_voltage_dac_4b` as simple 4-bit binary-coded DAC after rename; `segmented_dac`; `thermometer_decoder_guarded`; `sar_logic_4b`. |
-| Comparators and Decision Circuits | `offset_comparator`; `strongarm_comparator_behavior` as StrongARM-style latch behavior. |
-| PLL / Clock / Event Timing | `vco_phase_integrator`; `pfd_reset_race` as PFD UP/DN reset-race behavior; `resettable_counter_divider`; `lock_detector`. |
-| Calibration, DEM, and Control | `cdac_calibration`; `gain_trim_controller`; `rotating_element_selector`; `barrel_pointer_window`; `element_shuffler`. |
-| Measurement and Testbench Instrumentation | `file_metric_writer`; `settling_time_measurement_tb`; `peak_detector`. |
-| Stimulus and Sources | None currently counted after remapping clamp/slew to signal conditioning. |
-| Analog Behavioral Signal Conditioning | `first_order_lowpass`; `resettable_integrator`; `slew_rate_limiter`. |
-| Sample, Hold, and Analog Memory | `track_hold_aperture`; `leaky_hold` as sample-and-hold droop/leakage behavior. |
-
-Current promoted countable L1 seeds in the release seed manifest: 24.
-
-Excluded current historical bases:
-
-| Base | Reason |
-| --- | --- |
-| `background_calibration_accumulator` | Fully merged into `cdac_calibration`; same signed trim-control kernel. |
-| `offset_calibration_fsm` | Removed until redesigned as a true multi-state offset-search controller. |
-
-## L0 Conformance Table
-
-| L0 family | Concrete conformance cases to maintain |
-| --- | --- |
-| Syntax legality | Empty control branch; illegal or ambiguous module/source continuation; Spectre-rejected syntax that EVAS must reject. |
-| Source parsing | Uncontinued PWL/source lines; breakpoint creation for source changes; source value row sampling. |
-| Event scheduling | `cross()` threshold touch; coincident `cross()` and `timer()` events; reset-before-update ordering. |
-| Sampling and timestep semantics | `$abstime` decay behavior; `timer(0)` startup sample; final-row value exclusion where it is simulator-artifact-sensitive. |
-| Checker and artifact semantics | `metric.out` one-line parsing; waveform/metric consistency; CSV header and tolerance-window checks. |
-
-## L2 Target Table
+## L2 Target Coverage
 
 | Category | L2 target | Required components |
 | --- | --- | --- |
-| Data Converters | ADC/DAC reconstruction chain | ADC quantizer + DAC reconstruction + source/checker flow. |
-| Data Converters | Weighted SAR ADC/DAC loop | SAR controller + weighted feedback DAC + comparator interaction. |
-| Data Converters | Flash ADC mini-array | Multiple threshold comparators + thermometer/code output behavior. |
-| Data Converters | Pipeline ADC chain | Multiple pipeline stages plus digital correction/reconstruction behavior. |
-| Data Converters | Conversion event controller | Start/comparator-done inputs drive sample/compare/readout/done control phases. |
-| Data Converters | Readout frame-monitor flow | Serializer + frame monitor reconstructs and validates loaded ADC/readout words. |
-| Comparators and Decision Circuits | Single-ramp comparator offset measurement flow | Ramp stimulus + comparator + input-referred offset measurement. |
-| PLL / Clock / Event Timing | PLL timing slice | PFD + divider + VCO or loop-control interaction. |
-| PLL / Clock / Event Timing | ADPLL lock/ratio-hop/timer flow | Digital phase/timer control + divider/VCO timing response. |
-| PLL / Clock / Event Timing | CPPLL tracking and frequency-step reacquire flow | PFD + voltage-domain charge-pump/filter abstraction + VCO response to a frequency step. |
+| Data Converter Models | Converter static linearity measurement flow | Converter core plus lightweight meter covering ramp code coverage, monotonic reconstruction, visible step nonuniformity, and DNL/INL-like metrics derived from code/reconstruction history. |
+| Data Converter Models | Weighted SAR ADC/DAC loop | SAR controller + weighted feedback DAC + comparator interaction. |
+| Data Converter Models | Flash ADC mini-array | Multiple threshold comparators + thermometer/code output behavior. |
+| Data Converter Models | Pipeline ADC residue chain | Two behavioral converter stages with exposed coarse decision, residue generation, backend decision, and final-code concatenation for one sampled input. |
+| Comparator and Decision Circuits | Single-ramp comparator offset measurement flow | Ramp stimulus + comparator + input-referred offset measurement. |
+| PLL Clock and Timing Systems | ADPLL lock/ratio-hop/timer flow | Digital phase/timer control + divider/VCO timing response. |
+| PLL Clock and Timing Systems | CPPLL tracking and frequency-step reacquire flow | PFD + voltage-domain charge-pump/filter abstraction + VCO response to a frequency step. |
 | Calibration, DEM, and Control | Complete calibration loop | Error source + controller + trim/actuator + convergence metric. |
-| Measurement and Testbench Instrumentation | Measurement flow | Stimulus + DUT + metric artifact + checker. |
-| Measurement and Testbench Instrumentation | Gain extraction/convergence measurement flow | Stimulus + gain estimator + convergence or trim metric artifact. |
-| Stimulus and Sources | ADC/DAC source sweep flow | Source model + converter response + checker. |
-| Analog Behavioral Signal Conditioning | Amplifier/filter chain | Gain or driver stage + filter/limiter + measured response. |
-| Sample, Hold, and Analog Memory | Converter front-end | Sampling front-end + quantizer or comparator interaction. |
+| Baseband Signal Conditioning | Amplifier/filter chain | Gain or driver stage + filter/limiter + measured response. |
+| Sampling and Analog Memory | Converter front-end | Sampling front-end + quantizer or comparator interaction. |
+| Measurement Instrumentation Flows | Measurement flow | Stimulus + DUT + metric artifact + checker. |
+| Measurement Instrumentation Flows | Gain extraction/convergence measurement flow | Stimulus + gain estimator + convergence or trim metric artifact. |
+| Stimulus and Source Generators | Programmable stimulus sequencer | Ramp, swept/chirp sine, and gated burst/PRBS schedule with mode-switch continuity checks; support/stimulus L2 reported separately from core circuit flows. |
+
+## Rebalance Decisions
+
+The 64-entry release removes 10 weak or duplicate rows:
+`vbr1_l1_adc_code_capture_register`,
+`vbr1_l1_serializer_frame_aligner`,
+`vbr1_l1_serial_readout_deserializer`,
+`vbr1_l2_serializer_frame_alignment_flow`,
+`vbr1_l2_event_controller`,
+`vbr1_l1_pfd_small_phase_error_response`,
+`vbr1_l1_xor_phase_detector`,
+`vbr1_l2_pll_timing_slice`,
+`vbr1_l1_rotating_dem_selector`, and
+`vbr1_l1_windowed_dem_pointer`.
+
+It adds two stronger analog tasks:
+`vbr1_l1_acquisition_limited_sample_and_hold` and
+`vbr1_l1_programmable_gain_amplifier`.

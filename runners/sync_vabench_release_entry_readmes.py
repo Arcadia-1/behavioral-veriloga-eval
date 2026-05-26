@@ -71,7 +71,7 @@ def render_entry_readme(entry: dict[str, Any]) -> str:
 
 def sync_readmes(*, level: str | None, dry_run: bool) -> list[Path]:
     changed: list[Path] = []
-    for entry_path in sorted(TASKS_ROOT.glob("CT*/vbr1_*/release_entry.json")):
+    for entry_path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         entry = read_json(entry_path)
         if level is not None and str(entry.get("level")) != level:
             continue

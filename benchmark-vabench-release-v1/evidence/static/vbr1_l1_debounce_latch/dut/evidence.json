@@ -4,7 +4,7 @@
   "task_form": "dut",
   "taxonomy": {
     "level": "L1",
-    "category": "Comparators and Decision Circuits",
+    "category": "Comparator and Decision Circuits",
     "base_function": "Comparator debounce latch"
   },
   "static": "pass",
@@ -12,11 +12,11 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/gold/debounce_latch.va",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/gold/tb_debounce_latch_ref.scs"
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/gold/debounce_latch.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/gold/tb_debounce_latch_ref.scs"
   ],
   "checks": {
     "must_include": [

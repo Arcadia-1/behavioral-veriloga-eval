@@ -4,7 +4,7 @@
   "task_form": "bugfix",
   "taxonomy": {
     "level": "L1",
-    "category": "Comparators and Decision Circuits",
+    "category": "Comparator and Decision Circuits",
     "base_function": "Propagation-delay comparator"
   },
   "static": "pass",
@@ -12,13 +12,13 @@
   "spectre": "pending",
   "verdict": "not_certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/prompt.md",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/meta.json",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/checks.yaml",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/dut_buggy.va",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/dut_fixed.va",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/tb_cmp_delay_ref.scs",
-    "benchmark-vabench-release-v1/tasks/CT02_comparators_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/edge_interval_timer.va"
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/tb_cmp_delay_ref.scs",
+    "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/gold/edge_interval_timer.va"
   ],
   "checks": {
     "must_include": [

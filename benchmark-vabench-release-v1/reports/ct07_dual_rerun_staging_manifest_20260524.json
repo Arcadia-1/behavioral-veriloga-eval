@@ -41,12 +41,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/tb_element_shuffler_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/tb_element_shuffler_ref.scs",
       "source_includes": [
         "element_shuffler.va"
       ],
       "source_include_origins": {
-        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/element_shuffler.va"
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/element_shuffler.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold/gold/tb_element_shuffler_ref.scs",
       "staged_includes": [
@@ -73,12 +73,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/tb_element_shuffler_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/tb_element_shuffler_ref.scs",
       "source_includes": [
         "element_shuffler.va"
       ],
       "source_include_origins": {
-        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/element_shuffler.va"
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/element_shuffler.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold/gold/tb_element_shuffler_ref.scs",
       "staged_includes": [
@@ -105,12 +105,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed/gold/tb_element_shuffler_ref.scs",
       "staged_includes": [
@@ -137,12 +137,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
       "source_includes": [
         "dut_fixed.va"
       ],
       "source_include_origins": {
-        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va"
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy/gold/tb_element_shuffler_ref.scs",
       "staged_includes": [
@@ -169,12 +169,12 @@
       "blockers": [],
       "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold",
       "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold/gold",
-      "source_testbench": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/tb_element_shuffler_ref.scs",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/tb_element_shuffler_ref.scs",
       "source_includes": [
         "element_shuffler.va"
       ],
       "source_include_origins": {
-        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT07_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/element_shuffler.va"
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/element_shuffler.va"
       },
       "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold/gold/tb_element_shuffler_ref.scs",
       "staged_includes": [
