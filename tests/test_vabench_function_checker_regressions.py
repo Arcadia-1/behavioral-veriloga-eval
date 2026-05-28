@@ -232,6 +232,39 @@ def test_threshold_comparator_checker_rejects_inverted_polarity() -> None:
     assert not sim.check_comparator(_threshold_comparator_rows(inverted=True))[0]
 
 
+def test_release_threshold_comparator_accepts_sparse_spectre_samples() -> None:
+    rows = [
+        {"time": 0.0e-9, "vinp": 0.2, "vinn": 0.45, "out_p": 0.0},
+        {"time": 5.0e-9, "vinp": 0.2, "vinn": 0.45, "out_p": 0.0},
+        {"time": 9.93e-9, "vinp": 0.2, "vinn": 0.45, "out_p": 0.0},
+        {"time": 10.0447e-9, "vinp": 0.4233, "vinn": 0.45, "out_p": 0.0},
+        {"time": 10.0500e-9, "vinp": 0.4501, "vinn": 0.45, "out_p": 0.0},
+        {"time": 10.0608e-9, "vinp": 0.5038, "vinn": 0.45, "out_p": 0.0966},
+        {"time": 10.0822e-9, "vinp": 0.6111, "vinn": 0.45, "out_p": 0.2897},
+        {"time": 10.0911e-9, "vinp": 0.6555, "vinn": 0.45, "out_p": 0.3697},
+        {"time": 10.1000e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.4498},
+        {"time": 10.1012e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.4603},
+        {"time": 10.1033e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.4791},
+        {"time": 10.1074e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.5168},
+        {"time": 10.1158e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.5922},
+        {"time": 10.1326e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.7429},
+        {"time": 10.1500e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.9000},
+        {"time": 10.6736e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.9000},
+        {"time": 11.8321e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.9000},
+        {"time": 20.0000e-9, "vinp": 0.7000, "vinn": 0.45, "out_p": 0.9000},
+        {"time": 20.0500e-9, "vinp": 0.4499, "vinn": 0.45, "out_p": 0.9000},
+        {"time": 20.1000e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.4502},
+        {"time": 20.1500e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.0000},
+        {"time": 20.6381e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.0000},
+        {"time": 21.1555e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.0000},
+        {"time": 21.7555e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.0000},
+        {"time": 30.0e-9, "vinp": 0.2000, "vinn": 0.45, "out_p": 0.0000},
+    ]
+
+    ok, note = sim.check_release_threshold_comparator(rows)
+    assert ok, note
+
+
 def _window_comparator_rows(*, mode: str = "true_window") -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     schmitt_state = False
@@ -307,6 +340,85 @@ def test_comparator_measurement_flow_checker_requires_latched_metrics() -> None:
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="shallow_output_only"))[0]
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="early_output"))[0]
     assert not sim.check_comparator_measurement_flow(_comparator_measurement_flow_rows(mode="early_valid"))[0]
+
+
+def test_comparator_measurement_flow_allows_same_transition_valid_and_outp() -> None:
+    rows: list[dict[str, float]] = []
+    for idx in range(101):
+        time = idx * 1.0e-9
+        inp = 0.490 + 0.030 * min(time / 100e-9, 1.0)
+        tripped = time >= 50.011e-9
+        rows.append(
+            {
+                "time": time,
+                "inp": inp,
+                "inn": 0.500,
+                "outp": 0.9 if tripped else 0.0,
+                "valid": 0.9 if tripped else 0.0,
+                "trip_v": 0.505 if tripped else 0.0,
+                "offset_est": 0.005 if tripped else 0.0,
+            }
+        )
+    rows.extend(
+        [
+            {
+                "time": 50.007e-9,
+                "inp": 0.5050021,
+                "inn": 0.500,
+                "outp": 0.450,
+                "valid": 0.540,
+                "trip_v": 0.303,
+                "offset_est": 0.003,
+            },
+            {
+                "time": 50.009e-9,
+                "inp": 0.5050027,
+                "inn": 0.500,
+                "outp": 0.585,
+                "valid": 0.675,
+                "trip_v": 0.379,
+                "offset_est": 0.0038,
+            },
+        ]
+    )
+    rows.sort(key=lambda row: row["time"])
+
+    ok, note = sim.check_comparator_measurement_flow(rows)
+    assert ok, note
+
+
+def test_spectre_aligned_preflight_rejects_missing_disciplines(tmp_path: Path) -> None:
+    (tmp_path / "bad.va").write_text(
+        "module bad(out);\n  output out;\n  electrical out;\nendmodule\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "ok.va").write_text(
+        '`include "disciplines.vams"\nmodule ok(out);\n  output out;\n  electrical out;\nendmodule\n',
+        encoding="utf-8",
+    )
+
+    assert sim.spectre_aligned_veriloga_preflight(tmp_path) == ["bad.va:missing_disciplines_vams"]
+
+
+def test_spectre_aligned_preflight_rejects_unbounded_event_loop(tmp_path: Path) -> None:
+    (tmp_path / "loop.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module loop(clk, out);\n"
+        "  input clk; output out; electrical clk, out;\n"
+        "  real state;\n"
+        "  analog begin\n"
+        "    while (1) begin\n"
+        "      @(cross(V(clk)-0.5,+1)); state = 1;\n"
+        "    end\n"
+        "    V(out) <+ state;\n"
+        "  end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+
+    assert sim.spectre_aligned_veriloga_preflight(tmp_path) == [
+        "loop.va:unsupported_unbounded_event_loop"
+    ]
 
 
 def _xor_pd_rows(*, and_gate: bool = False) -> list[dict[str, float]]:

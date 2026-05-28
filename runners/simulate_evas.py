@@ -114,6 +114,29 @@ def run_evas(run_dir: Path, tb_file: Path, output_dir: Path, timeout_s: int) -> 
     )
 
 
+def _veriloga_code_without_comments(text: str) -> str:
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    return "\n".join(line.split("//", 1)[0] for line in text.splitlines())
+
+
+def spectre_aligned_veriloga_preflight(run_dir: Path) -> list[str]:
+    """Reject .va files outside the shared EVAS/Spectre release subset."""
+    failures: list[str] = []
+    for path in sorted(run_dir.glob("*.va")):
+        try:
+            code = _veriloga_code_without_comments(path.read_text(encoding="utf-8", errors="replace"))
+        except OSError as exc:
+            failures.append(f"{path.name}:read_error={exc}")
+            continue
+        uses_electrical = re.search(r"\belectrical\b", code) is not None
+        has_disciplines = re.search(r"`\s*include\s+\"disciplines\.vams\"", code) is not None
+        if uses_electrical and not has_disciplines:
+            failures.append(f"{path.name}:missing_disciplines_vams")
+        if re.search(r"\bwhile\s*\(\s*(?:1|1\.0|true)\s*\)|\bforever\b", code):
+            failures.append(f"{path.name}:unsupported_unbounded_event_loop")
+    return failures
+
+
 FILE_METRIC_WRITER_TASKS = {
     "vbm1_file_metric_writer_dut",
     "vbm1_file_metric_writer_tb",
@@ -1278,6 +1301,28 @@ def _differential_output_state(out_p: float, out_n: float, threshold: float = 0.
     return "X"
 
 
+def _conditional_time_fraction(
+    rows: list[dict[str, float]],
+    region_predicate,
+    pass_predicate,
+) -> float:
+    """Time-weighted pass fraction for sparse or adaptive transient samples."""
+    total_dt = 0.0
+    pass_dt = 0.0
+    for prev, cur in zip(rows, rows[1:]):
+        dt = cur["time"] - prev["time"]
+        if dt <= 0.0:
+            continue
+        if not region_predicate(prev):
+            continue
+        total_dt += dt
+        if pass_predicate(prev):
+            pass_dt += dt
+    if total_dt <= 0.0:
+        return 0.0
+    return pass_dt / total_dt
+
+
 def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "out_p"}
     if not rows or not required.issubset(rows[0]):
@@ -1299,8 +1344,16 @@ def check_release_threshold_comparator(rows: list[dict[str, float]]) -> tuple[bo
     if len(high_rows) < 5 or len(low_rows) < 5:
         return False, "insufficient_positive_negative_input_windows"
 
-    high_frac = sum(1 for r in high_rows if r["out_p"] > vth) / len(high_rows)
-    low_frac = sum(1 for r in low_rows if r["out_p"] < vth) / len(low_rows)
+    high_frac = _conditional_time_fraction(
+        rows,
+        lambda r: r["vinp"] - r["vinn"] >= margin,
+        lambda r: r["out_p"] > vth,
+    )
+    low_frac = _conditional_time_fraction(
+        rows,
+        lambda r: r["vinn"] - r["vinp"] >= margin,
+        lambda r: r["out_p"] < vth,
+    )
 
     diff_rises = _threshold_crossings(diff, times, threshold=0.0, direction="rising")
     diff_falls = _threshold_crossings(diff, times, threshold=0.0, direction="falling")
@@ -4192,7 +4245,15 @@ def check_comparator_measurement_flow(rows: list[dict[str, float]]) -> tuple[boo
     if abs(valid_trip_diff - 0.005) > 0.0015:
         return False, f"valid_first_trip_diff={valid_trip_diff:.4f}"
     if first_valid["outp"] <= threshold:
-        return False, f"valid_before_output_trip outp={first_valid['outp']:.3f}"
+        valid_out_settle_s = 100e-12
+        settled_after_valid = any(
+            r["time"] >= first_valid["time"]
+            and r["time"] <= first_valid["time"] + valid_out_settle_s
+            and r["outp"] > threshold
+            for r in rows
+        )
+        if not settled_after_valid:
+            return False, f"valid_before_output_trip outp={first_valid['outp']:.3f}"
 
     final_valid_rows = [r for r in valid_rows if r["time"] >= first_valid["time"] + 2e-9]
     if len(final_valid_rows) < 3:
@@ -5971,6 +6032,514 @@ def check_release_quantized_reconstruction(rows: list[dict[str, float]]) -> tupl
     return True, f"quantized_recon_mismatches={mismatches}/{checked} metric_hi={metric_hi}"
 
 
+def check_bandgap_reference_macro_model(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    pre_start = mean_in_window(rows, "out", 4.0e-9, 7.5e-9)
+    nominal_ref = mean_in_window(rows, "out", 27.0e-9, 36.0e-9)
+    high_supply_ref = mean_in_window(rows, "out", 55.0e-9, 63.0e-9)
+    brownout_ref = mean_in_window(rows, "out", 67.0e-9, 70.0e-9)
+    valid_metric = mean_in_window(rows, "metric", 30.0e-9, 62.0e-9)
+    if None in (pre_start, nominal_ref, high_supply_ref, brownout_ref, valid_metric):
+        return False, "bandgap_missing_sample_windows"
+    assert pre_start is not None
+    assert nominal_ref is not None
+    assert high_supply_ref is not None
+    assert brownout_ref is not None
+    assert valid_metric is not None
+
+    if pre_start > 0.08:
+        return False, f"bandgap_reference_not_held_low_pre_start={pre_start:.3f}"
+    if not (0.50 <= nominal_ref <= 0.60):
+        return False, f"bandgap_reference_nominal_wrong={nominal_ref:.3f}"
+    line_delta = abs(high_supply_ref - nominal_ref)
+    if line_delta > 0.065:
+        return False, f"bandgap_line_regulation_too_large={line_delta:.3f}"
+    if brownout_ref > 0.12:
+        return False, f"bandgap_brownout_not_reset={brownout_ref:.3f}"
+    if valid_metric < 0.65:
+        return False, f"bandgap_valid_metric_low={valid_metric:.3f}"
+    return True, (
+        "bandgap_reference_macro_model "
+        f"ref={nominal_ref:.3f}/{high_supply_ref:.3f} line_delta={line_delta:.3f} "
+        f"brownout={brownout_ref:.3f}"
+    )
+
+
+def check_ptat_ctat_reference_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    cold_ref = mean_in_window(rows, "out", 8.0e-9, 16.0e-9)
+    mid_ref = mean_in_window(rows, "out", 26.0e-9, 38.0e-9)
+    hot_ref = mean_in_window(rows, "out", 52.0e-9, 72.0e-9)
+    cold_ptat = mean_in_window(rows, "metric", 8.0e-9, 16.0e-9)
+    hot_ptat = mean_in_window(rows, "metric", 52.0e-9, 72.0e-9)
+    if None in (cold_ref, mid_ref, hot_ref, cold_ptat, hot_ptat):
+        return False, "ptat_ctat_missing_sample_windows"
+    assert cold_ref is not None
+    assert mid_ref is not None
+    assert hot_ref is not None
+    assert cold_ptat is not None
+    assert hot_ptat is not None
+
+    ref_span = max(cold_ref, mid_ref, hot_ref) - min(cold_ref, mid_ref, hot_ref)
+    if not (0.42 <= cold_ref <= 0.55 and 0.42 <= mid_ref <= 0.55 and 0.42 <= hot_ref <= 0.55):
+        return False, f"ptat_ctat_reference_range={cold_ref:.3f}/{mid_ref:.3f}/{hot_ref:.3f}"
+    if ref_span > 0.075:
+        return False, f"ptat_ctat_reference_not_compensated span={ref_span:.3f}"
+    if hot_ptat <= cold_ptat + 0.12:
+        return False, f"ptat_metric_not_monotonic cold={cold_ptat:.3f} hot={hot_ptat:.3f}"
+    return True, (
+        "ptat_ctat_reference_generator "
+        f"ref_span={ref_span:.3f} ptat={cold_ptat:.3f}->{hot_ptat:.3f}"
+    )
+
+
+def check_bias_voltage_generator_with_enable_trim(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    disabled_early = mean_in_window(rows, "out", 5.0e-9, 10.0e-9)
+    low_trim = mean_in_window(rows, "out", 24.0e-9, 30.0e-9)
+    high_trim = mean_in_window(rows, "out", 45.0e-9, 52.0e-9)
+    disabled_late = mean_in_window(rows, "out", 58.0e-9, 64.0e-9)
+    enabled_metric = mean_in_window(rows, "metric", 24.0e-9, 52.0e-9)
+    disabled_metric = mean_in_window(rows, "metric", 58.0e-9, 64.0e-9)
+    if None in (disabled_early, low_trim, high_trim, disabled_late, enabled_metric, disabled_metric):
+        return False, "bias_trim_missing_sample_windows"
+    assert disabled_early is not None
+    assert low_trim is not None
+    assert high_trim is not None
+    assert disabled_late is not None
+    assert enabled_metric is not None
+    assert disabled_metric is not None
+
+    if disabled_early > 0.08 or disabled_late > 0.08:
+        return False, f"bias_not_disabled early={disabled_early:.3f} late={disabled_late:.3f}"
+    if not (0.30 <= low_trim <= 0.50):
+        return False, f"bias_low_trim_wrong={low_trim:.3f}"
+    if high_trim <= low_trim + 0.14 or high_trim > 0.85:
+        return False, f"bias_trim_span_wrong low={low_trim:.3f} high={high_trim:.3f}"
+    if enabled_metric < 0.65 or disabled_metric > 0.15:
+        return False, f"bias_metric_wrong enabled={enabled_metric:.3f} disabled={disabled_metric:.3f}"
+    return True, (
+        "bias_voltage_generator_with_enable_trim "
+        f"disabled={disabled_early:.3f}/{disabled_late:.3f} trim={low_trim:.3f}->{high_trim:.3f}"
+    )
+
+
+def check_power_on_reset_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    initial_reset = mean_in_window(rows, "out", 4.0e-9, 7.0e-9)
+    delayed_reset = mean_in_window(rows, "out", 10.0e-9, 13.0e-9)
+    released = mean_in_window(rows, "out", 22.0e-9, 38.0e-9)
+    brownout_reset = mean_in_window(rows, "out", 46.0e-9, 52.0e-9)
+    recovered = mean_in_window(rows, "out", 65.0e-9, 76.0e-9)
+    released_metric = mean_in_window(rows, "metric", 22.0e-9, 38.0e-9)
+    if None in (initial_reset, delayed_reset, released, brownout_reset, recovered, released_metric):
+        return False, "por_missing_sample_windows"
+    assert initial_reset is not None
+    assert delayed_reset is not None
+    assert released is not None
+    assert brownout_reset is not None
+    assert recovered is not None
+    assert released_metric is not None
+
+    if initial_reset < 0.65:
+        return False, f"por_initial_not_asserted={initial_reset:.3f}"
+    if delayed_reset < 0.65:
+        return False, f"por_no_release_delay={delayed_reset:.3f}"
+    if released > 0.20:
+        return False, f"por_not_released={released:.3f}"
+    if brownout_reset < 0.65:
+        return False, f"por_brownout_not_asserted={brownout_reset:.3f}"
+    if recovered > 0.20 or released_metric < 0.65:
+        return False, f"por_recovery_wrong recovered={recovered:.3f} metric={released_metric:.3f}"
+    return True, (
+        "power_on_reset_detector "
+        f"reset={initial_reset:.3f}->{released:.3f} brownout={brownout_reset:.3f}"
+    )
+
+
+def check_uvlo_brownout_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    initial_low = mean_in_window(rows, "out", 5.0e-9, 9.0e-9)
+    power_good = mean_in_window(rows, "out", 18.0e-9, 26.0e-9)
+    hysteresis_hold = mean_in_window(rows, "out", 33.0e-9, 41.0e-9)
+    brownout_low = mean_in_window(rows, "out", 48.0e-9, 53.0e-9)
+    lower_threshold_hold = mean_in_window(rows, "out", 59.0e-9, 65.0e-9)
+    recovered = mean_in_window(rows, "out", 72.0e-9, 78.0e-9)
+    if None in (initial_low, power_good, hysteresis_hold, brownout_low, lower_threshold_hold, recovered):
+        return False, "uvlo_missing_sample_windows"
+    assert initial_low is not None
+    assert power_good is not None
+    assert hysteresis_hold is not None
+    assert brownout_low is not None
+    assert lower_threshold_hold is not None
+    assert recovered is not None
+
+    if initial_low > 0.20:
+        return False, f"uvlo_initial_power_good_high={initial_low:.3f}"
+    if power_good < 0.65 or hysteresis_hold < 0.65:
+        return False, f"uvlo_hysteresis_hold_failed good={power_good:.3f} hold={hysteresis_hold:.3f}"
+    if brownout_low > 0.20 or lower_threshold_hold > 0.20:
+        return False, f"uvlo_brownout_or_lower_hold_failed brownout={brownout_low:.3f} hold={lower_threshold_hold:.3f}"
+    if recovered < 0.65:
+        return False, f"uvlo_not_recovered={recovered:.3f}"
+    return True, (
+        "uvlo_brownout_detector "
+        f"pgood={power_good:.3f} hold={hysteresis_hold:.3f}/{lower_threshold_hold:.3f} "
+        f"recover={recovered:.3f}"
+    )
+
+
+def check_ldo_regulator_macro_model(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    light_load = mean_in_window(rows, "out", 10.0e-9, 16.0e-9)
+    heavy_load = mean_in_window(rows, "out", 28.0e-9, 40.0e-9)
+    recovered = mean_in_window(rows, "out", 55.0e-9, 64.0e-9)
+    heavy_metric = mean_in_window(rows, "metric", 28.0e-9, 40.0e-9)
+    recovered_metric = mean_in_window(rows, "metric", 55.0e-9, 64.0e-9)
+    if None in (light_load, heavy_load, recovered, heavy_metric, recovered_metric):
+        return False, "ldo_missing_sample_windows"
+    assert light_load is not None
+    assert heavy_load is not None
+    assert recovered is not None
+    assert heavy_metric is not None
+    assert recovered_metric is not None
+
+    if not (0.56 <= light_load <= 0.66):
+        return False, f"ldo_light_load_regulation_wrong={light_load:.3f}"
+    if heavy_load >= light_load - 0.015:
+        return False, f"ldo_load_step_no_droop light={light_load:.3f} heavy={heavy_load:.3f}"
+    if recovered <= heavy_load + 0.025:
+        return False, f"ldo_no_recovery heavy={heavy_load:.3f} recovered={recovered:.3f}"
+    if recovered_metric < 0.65 or heavy_metric < 0.45:
+        return False, f"ldo_metric_wrong heavy={heavy_metric:.3f} recovered={recovered_metric:.3f}"
+    return True, (
+        "ldo_regulator_macro_model "
+        f"light/heavy/recovered={light_load:.3f}/{heavy_load:.3f}/{recovered:.3f}"
+    )
+
+
+def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    supply_off = mean_in_window(rows, "out", 5.0e-9, 9.0e-9)
+    pre_enable = mean_in_window(rows, "out", 15.0e-9, 22.0e-9)
+    startup_ref = mean_in_window(rows, "out", 39.0e-9, 52.0e-9)
+    startup_metric = mean_in_window(rows, "metric", 39.0e-9, 52.0e-9)
+    dip_reset = mean_in_window(rows, "out", 57.0e-9, 61.0e-9)
+    recovered_metric = mean_in_window(rows, "metric", 74.0e-9, 79.0e-9)
+    if None in (supply_off, pre_enable, startup_ref, startup_metric, dip_reset, recovered_metric):
+        return False, "ref_startup_missing_sample_windows"
+    assert supply_off is not None
+    assert pre_enable is not None
+    assert startup_ref is not None
+    assert startup_metric is not None
+    assert dip_reset is not None
+    assert recovered_metric is not None
+
+    if supply_off > 0.08:
+        return False, f"ref_startup_supply_off_not_low={supply_off:.3f}"
+    if pre_enable > 0.12:
+        return False, f"ref_startup_ignores_enable={pre_enable:.3f}"
+    if startup_ref < 0.48 or startup_ref > 0.60:
+        return False, f"ref_startup_wrong_reference={startup_ref:.3f}"
+    if startup_metric < 0.65:
+        return False, f"ref_startup_valid_metric_low={startup_metric:.3f}"
+    if dip_reset > 0.10:
+        return False, f"ref_startup_supply_dip_not_reset={dip_reset:.3f}"
+    if recovered_metric < 0.45:
+        return False, f"ref_startup_no_recovery_metric={recovered_metric:.3f}"
+    return True, (
+        "reference_startup_enable_flow "
+        f"pre_enable={pre_enable:.3f} startup={startup_ref:.3f} dip={dip_reset:.3f}"
+    )
+
+
+def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    pre_step = mean_in_window(rows, "out", 10.0e-9, 15.0e-9)
+    early_droop = mean_in_window(rows, "out", 18.0e-9, 22.0e-9)
+    late_recovery = mean_in_window(rows, "out", 34.0e-9, 40.0e-9)
+    light_recovery = mean_in_window(rows, "out", 52.0e-9, 60.0e-9)
+    second_droop = mean_in_window(rows, "out", 64.0e-9, 68.0e-9)
+    late_metric = mean_in_window(rows, "metric", 34.0e-9, 40.0e-9)
+    if None in (pre_step, early_droop, late_recovery, light_recovery, second_droop, late_metric):
+        return False, "ldo_flow_missing_sample_windows"
+    assert pre_step is not None
+    assert early_droop is not None
+    assert late_recovery is not None
+    assert light_recovery is not None
+    assert second_droop is not None
+    assert late_metric is not None
+
+    if not (0.56 <= pre_step <= 0.66):
+        return False, f"ldo_flow_pre_step_regulation_wrong={pre_step:.3f}"
+    if early_droop >= pre_step - 0.04:
+        return False, f"ldo_flow_no_transient_droop pre={pre_step:.3f} early={early_droop:.3f}"
+    if late_recovery <= early_droop + 0.045:
+        return False, f"ldo_flow_no_closed_loop_recovery early={early_droop:.3f} late={late_recovery:.3f}"
+    if light_recovery <= late_recovery:
+        return False, f"ldo_flow_light_load_not_higher light={light_recovery:.3f} late={late_recovery:.3f}"
+    if second_droop >= light_recovery - 0.035:
+        return False, f"ldo_flow_second_step_no_droop second={second_droop:.3f} light={light_recovery:.3f}"
+    if late_metric < 0.65:
+        return False, f"ldo_flow_recovery_metric_low={late_metric:.3f}"
+    return True, (
+        "ldo_load_step_recovery_flow "
+        f"pre/early/late/light/second={pre_step:.3f}/{early_droop:.3f}/"
+        f"{late_recovery:.3f}/{light_recovery:.3f}/{second_droop:.3f}"
+    )
+
+
+def check_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    small_vin = mean_in_window(rows, "vin", 12.0e-9, 22.0e-9)
+    small_out = mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
+    comp_high = mean_in_window(rows, "out", 34.0e-9, 44.0e-9)
+    comp_low = mean_in_window(rows, "out", 55.0e-9, 63.0e-9)
+    comp_metric = mean_in_window(rows, "metric", 34.0e-9, 63.0e-9)
+    if None in (small_vin, small_out, comp_high, comp_low, comp_metric):
+        return False, "lna_missing_sample_windows"
+    assert small_vin is not None
+    assert small_out is not None
+    assert comp_high is not None
+    assert comp_low is not None
+    assert comp_metric is not None
+
+    if small_out <= small_vin + 0.045:
+        return False, f"lna_small_signal_gain_missing vin={small_vin:.3f} out={small_out:.3f}"
+    if not (0.74 <= comp_high <= 0.86):
+        return False, f"lna_high_compression_wrong={comp_high:.3f}"
+    if not (0.04 <= comp_low <= 0.18):
+        return False, f"lna_low_compression_wrong={comp_low:.3f}"
+    if comp_metric < 0.55:
+        return False, f"lna_compression_metric_low={comp_metric:.3f}"
+    return True, (
+        "lna_gain_compression_macro "
+        f"small={small_vin:.3f}->{small_out:.3f} compressed={comp_low:.3f}/{comp_high:.3f}"
+    )
+
+
+def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    def mean_selected(start: float, stop: float, key: str, *, clk_high: bool, vin_high: bool) -> float | None:
+        selected = []
+        for row in rows:
+            if not (start <= row["time"] <= stop) or row["rst"] > 0.45:
+                continue
+            if clk_high and row["clk"] <= 0.75:
+                continue
+            if (not clk_high) and row["clk"] >= 0.15:
+                continue
+            if vin_high and row["vin"] <= 0.55:
+                continue
+            if (not vin_high) and row["vin"] >= 0.38:
+                continue
+            selected.append(row[key])
+        if not selected:
+            return None
+        return sum(selected) / len(selected)
+
+    pos_hi = mean_selected(10.0e-9, 30.0e-9, "out", clk_high=True, vin_high=True)
+    pos_lo = mean_selected(10.0e-9, 30.0e-9, "out", clk_high=False, vin_high=True)
+    neg_hi = mean_selected(38.0e-9, 54.0e-9, "out", clk_high=True, vin_high=False)
+    neg_lo = mean_selected(38.0e-9, 54.0e-9, "out", clk_high=False, vin_high=False)
+    active_metric = mean_in_window(rows, "metric", 12.0e-9, 52.0e-9)
+    if None in (pos_hi, pos_lo, neg_hi, neg_lo, active_metric):
+        return False, "mixer_missing_sample_windows"
+    assert pos_hi is not None
+    assert pos_lo is not None
+    assert neg_hi is not None
+    assert neg_lo is not None
+    assert active_metric is not None
+
+    if pos_hi <= 0.58 or pos_lo >= 0.34:
+        return False, f"mixer_positive_lo_polarity_wrong hi={pos_hi:.3f} lo={pos_lo:.3f}"
+    if neg_hi >= 0.34 or neg_lo <= 0.56:
+        return False, f"mixer_negative_lo_polarity_wrong hi={neg_hi:.3f} lo={neg_lo:.3f}"
+    if active_metric < 0.45:
+        return False, f"mixer_active_metric_low={active_metric:.3f}"
+    return True, (
+        "rf_mixer_downconverter_macro "
+        f"pos={pos_hi:.3f}/{pos_lo:.3f} neg={neg_hi:.3f}/{neg_lo:.3f}"
+    )
+
+
+def check_pa_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    small_vin = mean_in_window(rows, "vin", 12.0e-9, 22.0e-9)
+    small_out = mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
+    high_out = mean_in_window(rows, "out", 32.0e-9, 42.0e-9)
+    low_out = mean_in_window(rows, "out", 54.0e-9, 62.0e-9)
+    limit_metric = mean_in_window(rows, "metric", 32.0e-9, 62.0e-9)
+    if None in (small_vin, small_out, high_out, low_out, limit_metric):
+        return False, "pa_missing_sample_windows"
+    assert small_vin is not None
+    assert small_out is not None
+    assert high_out is not None
+    assert low_out is not None
+    assert limit_metric is not None
+
+    if small_out <= small_vin + 0.07:
+        return False, f"pa_gain_missing vin={small_vin:.3f} out={small_out:.3f}"
+    if not (0.78 <= high_out <= 0.89):
+        return False, f"pa_high_compression_wrong={high_out:.3f}"
+    if not (0.02 <= low_out <= 0.14):
+        return False, f"pa_low_compression_wrong={low_out:.3f}"
+    if limit_metric < 0.55:
+        return False, f"pa_limit_metric_low={limit_metric:.3f}"
+    return True, f"pa_compression_macro small={small_out:.3f} limits={low_out:.3f}/{high_out:.3f}"
+
+
+def check_log_rssi_power_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    floor = mean_in_window(rows, "out", 5.0e-9, 7.5e-9)
+    small = mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
+    mid = mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
+    high = mean_in_window(rows, "out", 50.0e-9, 60.0e-9)
+    high_metric = mean_in_window(rows, "metric", 50.0e-9, 60.0e-9)
+    if None in (floor, small, mid, high, high_metric):
+        return False, "rssi_missing_sample_windows"
+    assert floor is not None
+    assert small is not None
+    assert mid is not None
+    assert high is not None
+    assert high_metric is not None
+
+    if not (0.08 <= floor <= 0.16):
+        return False, f"rssi_floor_wrong={floor:.3f}"
+    if not (small + 0.12 <= mid <= high - 0.10):
+        return False, f"rssi_not_monotonic_loglike small/mid/high={small:.3f}/{mid:.3f}/{high:.3f}"
+    if (high - mid) >= (mid - small):
+        return False, f"rssi_large_step_not_compressed small/mid/high={small:.3f}/{mid:.3f}/{high:.3f}"
+    if high_metric < 0.55:
+        return False, f"rssi_metric_low={high_metric:.3f}"
+    return True, f"log_rssi_power_detector floor/small/mid/high={floor:.3f}/{small:.3f}/{mid:.3f}/{high:.3f}"
+
+
+def check_limiting_amplifier_frontend(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    small_vin = mean_in_window(rows, "vin", 10.0e-9, 20.0e-9)
+    small_out = mean_in_window(rows, "out", 10.0e-9, 20.0e-9)
+    high_out = mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
+    low_out = mean_in_window(rows, "out", 50.0e-9, 60.0e-9)
+    limit_metric = mean_in_window(rows, "metric", 30.0e-9, 60.0e-9)
+    if None in (small_vin, small_out, high_out, low_out, limit_metric):
+        return False, "limiter_missing_sample_windows"
+    assert small_vin is not None
+    assert small_out is not None
+    assert high_out is not None
+    assert low_out is not None
+    assert limit_metric is not None
+
+    if small_out <= small_vin + 0.025:
+        return False, f"limiter_small_gain_missing vin={small_vin:.3f} out={small_out:.3f}"
+    if high_out < 0.74 or low_out > 0.18:
+        return False, f"limiter_large_signal_not_limited high={high_out:.3f} low={low_out:.3f}"
+    if limit_metric < 0.55:
+        return False, f"limiter_metric_low={limit_metric:.3f}"
+    return True, f"limiting_amplifier_frontend small={small_out:.3f} limited={low_out:.3f}/{high_out:.3f}"
+
+
+def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    def amp_mean(start: float, stop: float) -> float | None:
+        val = mean_in_window(rows, "out", start, stop)
+        if val is None:
+            return None
+        return abs(val - 0.45)
+
+    low_amp = amp_mean(12.0e-9, 20.0e-9)
+    overload_amp = amp_mean(24.0e-9, 30.0e-9)
+    settled_amp = amp_mean(44.0e-9, 54.0e-9)
+    settled_metric = mean_in_window(rows, "metric", 44.0e-9, 54.0e-9)
+    if None in (low_amp, overload_amp, settled_amp, settled_metric):
+        return False, "agc_missing_sample_windows"
+    assert low_amp is not None
+    assert overload_amp is not None
+    assert settled_amp is not None
+    assert settled_metric is not None
+
+    if overload_amp <= settled_amp + 0.08:
+        return False, f"agc_gain_not_reduced overload={overload_amp:.3f} settled={settled_amp:.3f}"
+    if not (0.10 <= settled_amp <= 0.24):
+        return False, f"agc_settled_amplitude_wrong={settled_amp:.3f}"
+    if low_amp < 0.08:
+        return False, f"agc_low_input_not_amplified={low_amp:.3f}"
+    if settled_metric < 0.45:
+        return False, f"agc_lock_metric_low={settled_metric:.3f}"
+    return True, f"agc_receiver_leveling_loop amp_low/overload/settled={low_amp:.3f}/{overload_amp:.3f}/{settled_amp:.3f}"
+
+
+def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst/vin/out/metric"
+
+    i_hi = mean_in_window(rows, "out", 12.2e-9, 13.5e-9)
+    q_hi = mean_in_window(rows, "metric", 14.2e-9, 15.5e-9)
+    i_lo = mean_in_window(rows, "out", 16.2e-9, 17.5e-9)
+    q_lo = mean_in_window(rows, "metric", 18.2e-9, 19.5e-9)
+    i_cm = mean_in_window(rows, "out", 58.0e-9, 64.0e-9)
+    q_cm = mean_in_window(rows, "metric", 58.0e-9, 64.0e-9)
+    if None in (i_hi, q_hi, i_lo, q_lo, i_cm, q_cm):
+        return False, "iq_missing_sample_windows"
+    assert i_hi is not None
+    assert q_hi is not None
+    assert i_lo is not None
+    assert q_lo is not None
+    assert i_cm is not None
+    assert q_cm is not None
+
+    if i_hi < 0.70 or q_hi < 0.70:
+        return False, f"iq_positive_quadrature_missing i={i_hi:.3f} q={q_hi:.3f}"
+    if i_lo > 0.22 or q_lo > 0.22:
+        return False, f"iq_negative_quadrature_missing i={i_lo:.3f} q={q_lo:.3f}"
+    if abs(i_cm - 0.45) > 0.08 or abs(q_cm - 0.45) > 0.08:
+        return False, f"iq_common_mode_hold_wrong i={i_cm:.3f} q={q_cm:.3f}"
+    return True, f"iq_downconversion_chain i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f}"
+
+
 def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "mode", "gate", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -6453,6 +7022,21 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_precision_rectifier_envelope_detector": check_precision_rectifier_envelope_detector,
     "vbr1_l1_programmable_gain_amplifier": check_programmable_gain_amplifier,
     "vbr1_l2_amplifier_filter_chain": check_release_amplifier_filter_chain,
+    "vbr1_l1_bandgap_reference_macro_model": check_bandgap_reference_macro_model,
+    "vbr1_l1_ptat_ctat_reference_generator": check_ptat_ctat_reference_generator,
+    "vbr1_l1_bias_voltage_generator_with_enable_trim": check_bias_voltage_generator_with_enable_trim,
+    "vbr1_l1_power_on_reset_detector": check_power_on_reset_detector,
+    "vbr1_l1_uvlo_brownout_detector": check_uvlo_brownout_detector,
+    "vbr1_l1_ldo_regulator_macro_model": check_ldo_regulator_macro_model,
+    "vbr1_l2_reference_startup_enable_flow": check_reference_startup_enable_flow,
+    "vbr1_l2_ldo_load_step_recovery_flow": check_ldo_load_step_recovery_flow,
+    "vbr1_l1_lna_gain_compression_macro": check_lna_gain_compression_macro,
+    "vbr1_l1_rf_mixer_downconverter_macro": check_rf_mixer_downconverter_macro,
+    "vbr1_l1_pa_compression_macro": check_pa_compression_macro,
+    "vbr1_l1_log_rssi_power_detector": check_log_rssi_power_detector,
+    "vbr1_l1_limiting_amplifier_frontend": check_limiting_amplifier_frontend,
+    "vbr1_l2_agc_receiver_leveling_loop": check_agc_receiver_leveling_loop,
+    "vbr1_l2_iq_downconversion_chain": check_iq_downconversion_chain,
     "vbr1_l1_dac_mismatch_unit_weighting_model": check_release_dac_mismatch_unit_weighting,
     "vbr1_l2_converter_static_linearity_measurement_flow": check_converter_static_linearity_measurement_flow,
     "vbr1_l2_programmable_stimulus_sequencer": check_programmable_stimulus_sequencer,
@@ -6630,7 +7214,35 @@ def run_case(
         run_dir = Path(temp_ctx.name)
         out_dir = output_root.resolve() if output_root else run_dir / "output"
         out_dir.mkdir(parents=True, exist_ok=True)
+        for stale_name in ("tran.csv", "strobe.txt", "tran.png"):
+            stale_path = out_dir / stale_name
+            if stale_path.exists():
+                stale_path.unlink()
         dut_dst, tb_dst = copy_inputs(run_dir, dut_path, tb_path)
+        preflight_failures = spectre_aligned_veriloga_preflight(run_dir)
+        if preflight_failures:
+            notes = ["spectre_aligned_preflight_failed", *preflight_failures]
+            return {
+                "task_id": task_id,
+                "checker_task_id": checker_task_id,
+                "status": "FAIL_DUT_COMPILE",
+                "backend_used": "evas",
+                "scores": {
+                    "dut_compile": 0.0,
+                    "tb_compile": 0.0,
+                    "sim_correct": 0.0,
+                    "weighted_total": 0.0,
+                },
+                "artifacts": [
+                    str(dut_dst),
+                    str(tb_dst),
+                    str(out_dir / "tran.csv"),
+                    str(out_dir / "strobe.txt"),
+                ],
+                "notes": notes,
+                "timing": {},
+                "stdout_tail": "\n".join(notes),
+            }
         _remove_stale_metric_file(checker_task_id, run_dir)
         proc = run_evas(run_dir, tb_dst, out_dir, timeout_s)
         combined = (proc.stdout or "") + "\n" + (proc.stderr or "")

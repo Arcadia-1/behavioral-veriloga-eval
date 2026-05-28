@@ -8,6 +8,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from vabench_release_prompt_wrapper import RELEASE_RUNNER_WRAPPER_VERSION
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -17,7 +19,7 @@ REPORT_JSON = REPORTS_ROOT / "prompt_contract_manifest.json"
 REPORT_MD = REPORTS_ROOT / "prompt_contract_manifest.md"
 PACKAGE_MANIFEST = PACKAGE_ROOT / "MANIFEST.json"
 
-PROMPT_VERSION_ID = "public-contract-v2"
+PROMPT_VERSION_ID = "public-contract-v3"
 SYNC_SCRIPT = ROOT / "runners" / "sync_vabench_release_prompt_contracts.py"
 REQUIRED_SECTIONS = [
     "## Release Task Contract",
@@ -125,7 +127,8 @@ def build_report() -> dict[str, Any]:
         "release": "vabench-release-v1",
         "status": "pass" if not failed_rows and len(rows) == expected_count else "fail",
         "prompt_version_id": PROMPT_VERSION_ID,
-        "previous_prompt_version": "pre-public-contract-v2",
+        "previous_prompt_version": "public-contract-v2",
+        "runner_wrapper_version": RELEASE_RUNNER_WRAPPER_VERSION,
         "prompt_count": len(rows),
         "expected_prompt_count": expected_count,
         "status_counts": dict(sorted(status_counts.items())),
@@ -133,7 +136,9 @@ def build_report() -> dict[str, Any]:
         "sync_script": rel(SYNC_SCRIPT),
         "change_summary": [
             "Normalized all release prompts to explicit public benchmark contracts.",
+            "Added explicit Spectre .scs scaffold guidance for TB/E2E prompts, including ahdl_include and instance syntax.",
             "Moved runner-only wrapper, ICL, and repair-feedback protocol out of public prompts.",
+            f"Recorded runner-side baseline wrapper `{RELEASE_RUNNER_WRAPPER_VERSION}` for Question/Answer markers and shared EVAS/Spectre rules.",
             "Recorded target artifact names from release_task/gold assets for prompt-version traceability.",
             "Old model-baseline results should be treated as historical and rerun before comparison.",
         ],
@@ -141,7 +146,7 @@ def build_report() -> dict[str, Any]:
             "public_prompt_scope": "task contract only: form, target artifacts, interfaces, public observables, public behavior checks, and output contract",
             "runner_wrapper_scope": "model invocation protocol, output extraction markers, optional repair feedback, and optional ICL variants",
             "evas_rules_scope": "shared voltage-domain and EVAS/Spectre compatibility guidance injected by runners, not benchmark prompt content",
-            "baseline_comparison": "pre-public-contract-v2 and public-contract-v2 results are not directly comparable without rerun",
+            "baseline_comparison": "public-contract-v2, public-contract-v3, and different runner wrapper versions are not directly comparable without rerun",
         },
         "rows": rows,
     }
@@ -157,6 +162,7 @@ def write_markdown(report: dict[str, Any]) -> None:
         "| --- | ---: |",
         f"| status | `{report['status']}` |",
         f"| prompt version | `{report['prompt_version_id']}` |",
+        f"| runner wrapper | `{report['runner_wrapper_version']}` |",
         f"| prompts | {report['prompt_count']} |",
         "",
         "## Form Counts",

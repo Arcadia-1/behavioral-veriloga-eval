@@ -12,17 +12,18 @@ def test_prompt_contract_manifest_records_public_contract_v2() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     assert report["status"] == "pass"
-    assert report["prompt_version_id"] == "public-contract-v2"
-    assert report["previous_prompt_version"] == "pre-public-contract-v2"
-    assert report["prompt_count"] == 219
+    assert report["prompt_version_id"] == "public-contract-v3"
+    assert report["previous_prompt_version"] == "public-contract-v2"
+    assert report["runner_wrapper_version"] == "release-runner-wrapper-v4"
+    assert report["prompt_count"] == 271
     assert report["form_counts"] == {
-        "bugfix": 43,
-        "dut": 48,
-        "e2e": 64,
-        "tb": 64,
+        "bugfix": 54,
+        "dut": 59,
+        "e2e": 79,
+        "tb": 79,
     }
     assert report["sync_script"] == "runners/sync_vabench_release_prompt_contracts.py"
-    assert report["claim_policy"]["baseline_comparison"].startswith("pre-public-contract-v2")
+    assert "runner wrapper versions" in report["claim_policy"]["baseline_comparison"]
 
 
 def test_prompt_contract_manifest_rows_are_rerun_gated_and_clean() -> None:
@@ -30,7 +31,7 @@ def test_prompt_contract_manifest_rows_are_rerun_gated_and_clean() -> None:
 
     for row in report["rows"]:
         assert row["status"] == "pass", row["prompt"]
-        assert row["prompt_version_id"] == "public-contract-v2"
+        assert row["prompt_version_id"] == "public-contract-v3"
         assert row["baseline_compatibility"] == "requires_rerun"
         assert row["missing_sections"] == []
         assert row["forbidden_text_present"] == []
