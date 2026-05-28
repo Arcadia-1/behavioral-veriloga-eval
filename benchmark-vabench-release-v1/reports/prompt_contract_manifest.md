@@ -6,7 +6,7 @@ Date: 2026-05-28
 | --- | ---: |
 | status | `pass` |
 | prompt version | `public-contract-v3` |
-| runner wrapper | `release-runner-wrapper-v4` |
+| runner wrapper | `release-runner-wrapper-v5` |
 | prompts | 271 |
 
 ## Form Counts
@@ -23,7 +23,7 @@ Date: 2026-05-28
 - Normalized all release prompts to explicit public benchmark contracts.
 - Added explicit Spectre .scs scaffold guidance for TB/E2E prompts, including ahdl_include and instance syntax.
 - Moved runner-only wrapper, ICL, and repair-feedback protocol out of public prompts.
-- Recorded runner-side baseline wrapper `release-runner-wrapper-v4` for Question/Answer markers and shared EVAS/Spectre rules.
+- Recorded runner-side baseline wrapper `release-runner-wrapper-v5` for Question/Answer markers and shared EVAS/Spectre rules.
 - Recorded target artifact names from release_task/gold assets for prompt-version traceability.
 - Old model-baseline results should be treated as historical and rerun before comparison.
 

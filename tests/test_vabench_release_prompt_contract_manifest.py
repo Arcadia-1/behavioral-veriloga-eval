@@ -14,7 +14,7 @@ def test_prompt_contract_manifest_records_public_contract_v2() -> None:
     assert report["status"] == "pass"
     assert report["prompt_version_id"] == "public-contract-v3"
     assert report["previous_prompt_version"] == "public-contract-v2"
-    assert report["runner_wrapper_version"] == "release-runner-wrapper-v4"
+    assert report["runner_wrapper_version"] == "release-runner-wrapper-v5"
     assert report["prompt_count"] == 271
     assert report["form_counts"] == {
         "bugfix": 54,

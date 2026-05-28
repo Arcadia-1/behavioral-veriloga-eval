@@ -13,7 +13,7 @@ from pathlib import Path
 import re
 
 
-RELEASE_RUNNER_WRAPPER_VERSION = "release-runner-wrapper-v4"
+RELEASE_RUNNER_WRAPPER_VERSION = "release-runner-wrapper-v5"
 
 RELEASE_SYSTEM_PROMPT = """\
 You are an expert Verilog-A behavioral modeling engineer.
@@ -24,7 +24,7 @@ explanatory prose, private reasoning, or unrequested files.
 
 EVAS_SPECTRE_RULES = [
     "Use voltage-domain behavioral Verilog-A only: electrical ports, V(...) <+ contributions, analog begin/end, real/integer/genvar state, and event controls such as @(initial_step), @(cross(...)), @(timer(...)), and transition(...).",
-    "Every generated .va file must start with `include \"constants.vams\" and `include \"disciplines.vams\" before the module declaration so Spectre can compile electrical disciplines.",
+    "Every generated .va file must start with the literal lines `` `include \"constants.vams\" `` and `` `include \"disciplines.vams\" `` before the module declaration so Spectre can compile electrical disciplines.",
     "Do not use digital Verilog constructs in .va files: no reg, wire, logic, always, initial, assign, posedge/negedge sensitivity lists, or module instantiations written in RTL style.",
     "Do not use current-domain or unsupported analog operators unless the public task explicitly asks for them: no I(...) <+, ddt(), idt(), laplace_*, transistor devices, AC/noise analysis, or topology-level KCL/KVL modeling.",
     "Declare Verilog-A real, integer, genvar, and parameter symbols at module scope before analog begin; do not declare local variables inside analog begin, if/else bodies, loops, or event bodies.",

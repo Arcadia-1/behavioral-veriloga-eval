@@ -20,7 +20,8 @@ def test_release_prompt_wrapper_keeps_runner_protocol_outside_public_prompt() ->
     assert "\nQuestion:\n" in wrapped
     assert public_prompt in wrapped
     assert "\nEVAS/Spectre compatibility rules:\n" in wrapped
-    assert '`include "disciplines.vams"' in wrapped
+    assert '`` `include "constants.vams" ``' in wrapped
+    assert '`` `include "disciplines.vams" ``' in wrapped
     assert "while (1) or forever" in wrapped
     assert "PWL vector spans multiple lines" in wrapped
     assert "\nAnswer:\n" in wrapped

@@ -4,7 +4,7 @@
   "status": "pass",
   "prompt_version_id": "public-contract-v3",
   "previous_prompt_version": "public-contract-v2",
-  "runner_wrapper_version": "release-runner-wrapper-v4",
+  "runner_wrapper_version": "release-runner-wrapper-v5",
   "prompt_count": 271,
   "expected_prompt_count": 271,
   "status_counts": {
@@ -21,7 +21,7 @@
     "Normalized all release prompts to explicit public benchmark contracts.",
     "Added explicit Spectre .scs scaffold guidance for TB/E2E prompts, including ahdl_include and instance syntax.",
     "Moved runner-only wrapper, ICL, and repair-feedback protocol out of public prompts.",
-    "Recorded runner-side baseline wrapper `release-runner-wrapper-v4` for Question/Answer markers and shared EVAS/Spectre rules.",
+    "Recorded runner-side baseline wrapper `release-runner-wrapper-v5` for Question/Answer markers and shared EVAS/Spectre rules.",
     "Recorded target artifact names from release_task/gold assets for prompt-version traceability.",
     "Old model-baseline results should be treated as historical and rerun before comparison."
   ],
