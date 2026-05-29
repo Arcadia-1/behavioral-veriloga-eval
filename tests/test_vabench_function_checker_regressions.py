@@ -1831,3 +1831,90 @@ def test_amplifier_filter_chain_checker_requires_preamp_metric_and_lagged_output
     assert not sim.check_release_amplifier_filter_chain(
         _ct04_rows("amp_filter", mode="direct_gain")
     )[0]
+
+
+def _rf_mixer_downconverter_rows(*, active_metric: float = 0.44) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    for idx in range(0, 161):
+        time_ns = idx * 0.5
+        rst = time_ns <= 2.0
+        clk_high = (time_ns % 4.0) < 2.0
+        if time_ns < 8.0:
+            vin = 0.45
+        elif time_ns < 34.0:
+            vin = 0.66
+        elif time_ns < 58.0:
+            vin = 0.24
+        else:
+            vin = 0.55
+        if rst:
+            out = 0.45
+            metric = 0.0
+        elif vin > 0.55:
+            out = 0.66 if clk_high else 0.24
+            metric = active_metric
+        elif vin < 0.38:
+            out = 0.24 if clk_high else 0.66
+            metric = active_metric
+        else:
+            out = 0.45
+            metric = 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": 0.9 if clk_high else 0.0,
+                "rst": 0.9 if rst else 0.0,
+                "vin": vin,
+                "out": out,
+                "metric": metric,
+            }
+        )
+    return rows
+
+
+def test_rf_mixer_checker_accepts_half_duty_activity_metric_with_margin() -> None:
+    assert sim.check_rf_mixer_downconverter_macro(_rf_mixer_downconverter_rows())[0]
+    assert not sim.check_rf_mixer_downconverter_macro(
+        _rf_mixer_downconverter_rows(active_metric=0.20)
+    )[0]
+
+
+def _log_rssi_rows_with_dense_transition_tail() -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+
+    def add(time_ns: float, out: float, metric: float = 0.0, vin: float = 0.0) -> None:
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": 0.0,
+                "rst": 0.0,
+                "vin": vin,
+                "out": out,
+                "metric": metric,
+            }
+        )
+
+    add(0.0, 0.12)
+    add(5.0, 0.12)
+    add(7.5, 0.12)
+    add(12.0, 0.12)
+    add(22.0, 0.12)
+    add(30.0, 0.60, vin=0.35)
+    add(39.90, 0.60, vin=0.35)
+    for idx in range(10):
+        add(39.91 + idx * 0.009, 0.72, vin=0.35)
+    add(40.0, 0.72, vin=0.35)
+    add(50.0, 0.72, metric=0.70, vin=0.70)
+    add(60.0, 0.72, metric=0.70, vin=0.70)
+    add(61.0, 0.72, metric=0.70, vin=0.70)
+    return rows
+
+
+def test_log_rssi_checker_uses_time_weighted_windows_for_adaptive_sample_density() -> None:
+    rows = _log_rssi_rows_with_dense_transition_tail()
+    unweighted_mid = sim.mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
+    weighted_mid = sim.time_weighted_mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
+
+    assert unweighted_mid is not None and unweighted_mid > 0.62
+    assert weighted_mid is not None and weighted_mid < 0.61
+    assert sim.check_log_rssi_power_detector(rows)[0]

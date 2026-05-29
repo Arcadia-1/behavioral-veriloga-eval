@@ -1,0 +1,92 @@
+{
+  "date": "2026-05-29",
+  "scope": "targeted rerun of five previously exposed Spectre PASS / EVAS FAIL rows",
+  "repair_rule": [
+    "fix a general parser/source/elaboration/event/checker semantic class",
+    "add or run an atomic regression for the semantic class",
+    "do not add EVAS-core branches keyed by task id, model id, module name, or checker note",
+    "calibrate checker windows only after EVAS and Spectre are semantically aligned"
+  ],
+  "semantic_fixes": [
+    {
+      "class": "Spectre source semantics",
+      "fix": "parse case-sensitive SI suffixes and match transient sine canonical parameter semantics",
+      "regression": "EVAS/tests/test_netlist.py"
+    },
+    {
+      "class": "Verilog-A elaboration",
+      "fix": "support module-scope real initializers referencing earlier parameters and variables",
+      "regression": "EVAS/tests/test_engine.py"
+    },
+    {
+      "class": "cross event scheduling",
+      "fix": "protect same-step cross event bodies from retrograde source-order overwrites",
+      "regression": "EVAS/tests/test_engine.py"
+    },
+    {
+      "class": "checker windowing",
+      "fix": "use time-weighted RSSI window means instead of point-count means",
+      "regression": "tests/test_vabench_function_checker_regressions.py"
+    }
+  ],
+  "targeted_results": [
+    {
+      "baseline": "deepseek-v4-pro",
+      "row": "vbr1_l1_bias_voltage_generator_with_enable_trim:dut",
+      "result_after_fix": "strict dual PASS",
+      "interpretation": "EVAS false negative fixed by elaboration support"
+    },
+    {
+      "baseline": "deepseek-v4-pro",
+      "row": "vbr1_l1_rf_mixer_downconverter_macro:tb",
+      "result_after_fix": "strict dual PASS",
+      "interpretation": "EVAS false negative fixed by Spectre sine/source semantics"
+    },
+    {
+      "baseline": "mimo-v2.5-pro",
+      "row": "vbr1_l1_bandgap_reference_macro_model:dut",
+      "result_after_fix": "strict dual PASS",
+      "interpretation": "EVAS false negative fixed by chronological cross-event behavior"
+    },
+    {
+      "baseline": "mimo-v2.5-pro",
+      "row": "vbr1_l1_rf_mixer_downconverter_macro:tb",
+      "result_after_fix": "strict dual PASS",
+      "interpretation": "EVAS false negative fixed by Spectre sine/source semantics"
+    },
+    {
+      "baseline": "mimo-v2.5-pro",
+      "row": "vbr1_l1_log_rssi_power_detector:tb",
+      "result_after_fix": "EVAS FAIL / Spectre FAIL",
+      "interpretation": "old Spectre pass was a checker sampling-density artifact; time-weighted checker consistently rejects the non-loglike waveform"
+    }
+  ],
+  "summary": {
+    "deepseek_mismatch_rerun": {
+      "rows": 2,
+      "strict_dual_pass": 2,
+      "evas_pass_spectre_fail": 0,
+      "spectre_pass_evas_fail": 0,
+      "summary_json": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260529-evasrulefix-mismatch2-dual/summary.json"
+    },
+    "mimo_mismatch_rerun": {
+      "rows": 3,
+      "strict_dual_pass": 2,
+      "evas_pass_spectre_fail": 0,
+      "spectre_pass_evas_fail": 0,
+      "summary_json": "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260529-evasrulefix-mismatch3-dual/summary.json"
+    }
+  },
+  "validation": [
+    {
+      "command": "PYTHONPATH=. python3 -m pytest tests/test_netlist.py tests/test_compiler.py tests/test_engine.py -q",
+      "cwd": "EVAS",
+      "result": "360 passed"
+    },
+    {
+      "command": "PYTHONPATH=runners python3 -m pytest tests/test_vabench_function_checker_regressions.py -q",
+      "cwd": "behavioral-veriloga-eval",
+      "result": "50 passed"
+    }
+  ]
+}

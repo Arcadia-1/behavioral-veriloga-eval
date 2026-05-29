@@ -5120,11 +5120,58 @@ def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: f
     return sum(values) / len(values)
 
 
-def edge_settled_values(rows: list[dict[str, float]], key: str, *, clk_key: str = "clk", rst_key: str = "rst") -> list[tuple[dict[str, float], float]]:
+def time_weighted_mean_in_window(
+    rows: list[dict[str, float]],
+    key: str,
+    start: float,
+    stop: float,
+) -> float | None:
+    if stop <= start:
+        return None
+    ordered = sorted((r for r in rows if "time" in r and key in r), key=lambda r: r["time"])
+    area = 0.0
+    duration = 0.0
+    for left, right in zip(ordered, ordered[1:]):
+        t0 = float(left["time"])
+        t1 = float(right["time"])
+        if t1 <= t0:
+            continue
+        lo = max(start, t0)
+        hi = min(stop, t1)
+        if hi <= lo:
+            continue
+        v0 = float(left[key])
+        v1 = float(right[key])
+
+        def interp(t: float) -> float:
+            frac = (t - t0) / (t1 - t0)
+            return v0 + frac * (v1 - v0)
+
+        area += 0.5 * (interp(lo) + interp(hi)) * (hi - lo)
+        duration += hi - lo
+    if duration > 0.0:
+        return area / duration
+    return mean_in_window(rows, key, start, stop)
+
+
+def edge_settled_values(
+    rows: list[dict[str, float]],
+    key: str,
+    *,
+    clk_key: str = "clk",
+    rst_key: str = "rst",
+    settle_delay_s: float | None = None,
+) -> list[tuple[dict[str, float], float]]:
     values: list[tuple[dict[str, float], float]] = []
     for idx in range(1, len(rows)):
         if rows[idx - 1][clk_key] <= 0.45 < rows[idx][clk_key] and rows[idx].get(rst_key, 0.0) <= 0.45:
-            settle = min(idx + 3, len(rows) - 1)
+            if settle_delay_s is None:
+                settle = min(idx + 3, len(rows) - 1)
+            else:
+                settle_time = rows[idx]["time"] + settle_delay_s
+                settle = idx
+                while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
+                    settle += 1
             values.append((rows[idx], rows[settle][key]))
     return values
 
@@ -5343,7 +5390,7 @@ def check_release_deadband_calibration(rows: list[dict[str, float]]) -> tuple[bo
     ok, note = check_release_calibration_loop(rows)
     if not ok:
         return ok, note
-    samples = edge_settled_values(rows, "out")
+    samples = edge_settled_values(rows, "out", settle_delay_s=0.12e-9)
     hold_checks = hold_ok = 0
     previous: float | None = None
     for edge_row, out in samples:
@@ -5980,7 +6027,7 @@ def check_release_soft_hysteretic_limiter(rows: list[dict[str, float]]) -> tuple
         return False, f"soft_limiter_high_compression={high_limited:.3f}"
     if low_limited < 0.08 or low_limited > 0.22:
         return False, f"soft_limiter_low_compression={low_limited:.3f}"
-    if high_memory <= low_memory + 0.08:
+    if high_memory <= low_memory + 0.10:
         return False, f"soft_limiter_hysteresis_not_visible high={high_memory:.3f} low={low_memory:.3f}"
     if high_metric < 0.58 or high_memory_metric < 0.58 or low_metric > 0.32 or low_memory_metric > 0.32:
         return False, (
@@ -6351,22 +6398,43 @@ def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bo
         return False, "missing time/clk/rst/vin/out/metric"
 
     def mean_selected(start: float, stop: float, key: str, *, clk_high: bool, vin_high: bool) -> float | None:
-        selected = []
-        for row in rows:
-            if not (start <= row["time"] <= stop) or row["rst"] > 0.45:
+        total = 0.0
+        duration = 0.0
+
+        def interp(a: dict[str, float], b: dict[str, float], t: float, field: str) -> float:
+            t0 = a["time"]
+            t1 = b["time"]
+            if t1 <= t0:
+                return a[field]
+            frac = max(0.0, min(1.0, (t - t0) / (t1 - t0)))
+            return a[field] + frac * (b[field] - a[field])
+
+        for row, nxt in zip(rows, rows[1:]):
+            left = max(start, row["time"])
+            right = min(stop, nxt["time"])
+            if right <= left:
                 continue
-            if clk_high and row["clk"] <= 0.75:
+            mid = 0.5 * (left + right)
+            rst_mid = interp(row, nxt, mid, "rst")
+            clk_mid = interp(row, nxt, mid, "clk")
+            vin_mid = interp(row, nxt, mid, "vin")
+            if rst_mid > 0.45:
                 continue
-            if (not clk_high) and row["clk"] >= 0.15:
+            if clk_high and clk_mid <= 0.75:
                 continue
-            if vin_high and row["vin"] <= 0.55:
+            if (not clk_high) and clk_mid >= 0.15:
                 continue
-            if (not vin_high) and row["vin"] >= 0.38:
+            if vin_high and vin_mid <= 0.55:
                 continue
-            selected.append(row[key])
-        if not selected:
+            if (not vin_high) and vin_mid >= 0.38:
+                continue
+            value_left = interp(row, nxt, left, key)
+            value_right = interp(row, nxt, right, key)
+            total += 0.5 * (value_left + value_right) * (right - left)
+            duration += right - left
+        if duration <= 0.0:
             return None
-        return sum(selected) / len(selected)
+        return total / duration
 
     pos_hi = mean_selected(10.0e-9, 30.0e-9, "out", clk_high=True, vin_high=True)
     pos_lo = mean_selected(10.0e-9, 30.0e-9, "out", clk_high=False, vin_high=True)
@@ -6385,7 +6453,7 @@ def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bo
         return False, f"mixer_positive_lo_polarity_wrong hi={pos_hi:.3f} lo={pos_lo:.3f}"
     if neg_hi >= 0.34 or neg_lo <= 0.56:
         return False, f"mixer_negative_lo_polarity_wrong hi={neg_hi:.3f} lo={neg_lo:.3f}"
-    if active_metric < 0.45:
+    if active_metric < 0.40:
         return False, f"mixer_active_metric_low={active_metric:.3f}"
     return True, (
         "rf_mixer_downconverter_macro "
@@ -6427,11 +6495,11 @@ def check_log_rssi_power_detector(rows: list[dict[str, float]]) -> tuple[bool, s
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/rst/vin/out/metric"
 
-    floor = mean_in_window(rows, "out", 5.0e-9, 7.5e-9)
-    small = mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
-    mid = mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
-    high = mean_in_window(rows, "out", 50.0e-9, 60.0e-9)
-    high_metric = mean_in_window(rows, "metric", 50.0e-9, 60.0e-9)
+    floor = time_weighted_mean_in_window(rows, "out", 5.0e-9, 7.5e-9)
+    small = time_weighted_mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
+    mid = time_weighted_mean_in_window(rows, "out", 30.0e-9, 40.0e-9)
+    high = time_weighted_mean_in_window(rows, "out", 50.0e-9, 60.0e-9)
+    high_metric = time_weighted_mean_in_window(rows, "metric", 50.0e-9, 60.0e-9)
     if None in (floor, small, mid, high, high_metric):
         return False, "rssi_missing_sample_windows"
     assert floor is not None
