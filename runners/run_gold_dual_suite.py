@@ -45,6 +45,7 @@ DEFAULT_SUI_HOST = "thu-wei"
 DEFAULT_SUI_PROXY_JUMP = "thu-sui"
 DEFAULT_SUI_WORK_ROOT = "/tmp/vaevas-direct-spectre"
 DEFAULT_SUI_CADENCE_CSHRC = "/home/cshrc/.cshrc.cadence.IC618SP201"
+DEFAULT_SUI_NESTED_HOST = ""
 SPECTRE_BACKEND_ALIASES = {
     "bridge": "bridge",
     "virtuoso-bridge": "bridge",
@@ -75,6 +76,10 @@ def default_sui_cadence_cshrc() -> str:
 
 def default_sui_proxy_jump() -> str:
     return os.environ.get("VAEVAS_SUI_PROXY_JUMP", DEFAULT_SUI_PROXY_JUMP).strip()
+
+
+def default_sui_nested_host() -> str:
+    return os.environ.get("VAEVAS_SUI_NESTED_HOST", DEFAULT_SUI_NESTED_HOST).strip()
 
 
 def spectre_license_queue_timeout(timeout_s: int) -> int:
@@ -1162,16 +1167,32 @@ def ssh_base_cmd(host: str, timeout_s: int) -> list[str]:
         "BatchMode=yes",
         "-o",
         f"ConnectTimeout={connect_timeout}",
-        "-o",
-        "ControlMaster=no",
-        "-o",
-        "ControlPath=none",
     ]
+    if os.environ.get("VAEVAS_SSH_USE_CONFIG_MULTIPLEX", "").strip() not in {"1", "true", "yes"}:
+        cmd.extend(["-o", "ControlMaster=no", "-o", "ControlPath=none"])
     proxy_jump = default_sui_proxy_jump()
     if proxy_jump:
         cmd.extend(["-J", proxy_jump])
     cmd.append(host)
     return cmd
+
+
+def nested_ssh_cmd(host: str, timeout_s: int, shell_args: list[str]) -> list[str]:
+    nested_host = default_sui_nested_host()
+    if not nested_host:
+        return [*ssh_base_cmd(host, timeout_s), *shell_args]
+
+    connect_timeout = max(1, min(int(timeout_s), 30))
+    inner = [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        f"ConnectTimeout={connect_timeout}",
+        nested_host,
+        *shell_args,
+    ]
+    return [*ssh_base_cmd(host, timeout_s), " ".join(shlex.quote(part) for part in inner)]
 
 
 def run_ssh_text(
@@ -1182,7 +1203,7 @@ def run_ssh_text(
     input_data: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [*ssh_base_cmd(host, timeout_s), "bash", "-lc", shlex.quote(script)],
+        nested_ssh_cmd(host, timeout_s, ["bash", "-lc", shlex.quote(script)]),
         input=input_data,
         capture_output=True,
         text=True,
@@ -1199,7 +1220,7 @@ def run_ssh_bytes(
     input_data: bytes | None = None,
 ) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(
-        [*ssh_base_cmd(host, timeout_s), "bash", "--noprofile", "--norc", "-c", shlex.quote(script)],
+        nested_ssh_cmd(host, timeout_s, ["bash", "--noprofile", "--norc", "-c", shlex.quote(script)]),
         input=input_data,
         capture_output=True,
         timeout=timeout_s,
@@ -1434,6 +1455,7 @@ def run_spectre_case_sui_direct(
         "side_outputs": side_outputs,
         "spectre_backend": "sui-direct",
         "sui_host": host,
+        "sui_nested_host": default_sui_nested_host(),
         "sui_work_root": work_root,
         "remote_run_dir": remote_dir,
         "command": " ".join(command),
