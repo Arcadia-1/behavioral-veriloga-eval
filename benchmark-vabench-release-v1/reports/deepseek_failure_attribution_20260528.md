@@ -22,7 +22,7 @@ Interpretation rule: Spectre checker pass is the model score signal; EVAS/Spectr
 | `model_veriloga_subset_failure` | 18 | 9.68% |
 | `prompt_contract_gap_old_wrapper` | 55 | 29.57% |
 | `evas_core_parity_debt` | 2 | 1.08% |
-| `runner_infra_extraction` | 4 | 2.15% |
+| `model_incomplete_generation` | 4 | 2.15% |
 | `evaluator_runner_review` | 1 | 0.54% |
 
 ## Root Cause Families
@@ -34,16 +34,16 @@ Interpretation rule: Spectre checker pass is the model score signal; EVAS/Spectr
 | `public_contract_missing_include` | 28 | 15.05% |
 | `spectre_scs_source_contract` | 27 | 14.52% |
 | `evas_spectre_semantics` | 2 | 1.08% |
-| `runner_or_api_artifact` | 4 | 2.15% |
+| `model_output_budget_exhausted` | 4 | 2.15% |
 | `simulation_output_missing` | 1 | 0.54% |
 
 ## Model-Ability View
 
 | Bucket | Rows | Meaning |
 | --- | --- | --- |
-| Direct model failures | 124 | Behavior-check mismatches plus clear Verilog-A/Spectre subset violations. |
+| Direct model failures | 128 | Behavior-check mismatches, clear Verilog-A/Spectre subset violations, and incomplete fixed-budget generations. |
 | Spectre-final model passes | 52 | Includes two rows that still fail EVAS waveform parity. |
-| Inconclusive/non-model rows | 60 | Old prompt-contract gaps, extraction infra, or evaluator-review rows; parity-debt rows are already counted as Spectre-final passes. |
+| Inconclusive/non-model rows | 56 | Old prompt-contract gaps or evaluator-review rows; fixed-budget length failures are counted as incomplete model failures. |
 
 ## Raw Evaluator Status
 
@@ -53,7 +53,7 @@ Interpretation rule: Spectre checker pass is the model score signal; EVAS/Spectr
 | `FAIL_SIM_CORRECTNESS` | 107 |
 | `FAIL_DUT_COMPILE` | 57 |
 | `FAIL_TB_COMPILE` | 16 |
-| `FAIL_INFRA` | 4 |
+| `INCOMPLETE` | 4 |
 
 ## Failure Rows
 
@@ -183,14 +183,14 @@ The CSV/JSON files contain the full audit columns. This Markdown table keeps the
 | `vbr1_l2_pipeline_adc_chain:tb` | `tb` | `FAIL_EVAS` | `FAIL_TB_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Invalid source Vin: Vin: PWL wave must contain at least one time/value pair |
 | `vbr1_l2_weighted_sar_adc_dac_loop:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_TB_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Invalid source Vrst_n: Vrst_n: PWL wave must contain at least one time/value pair |
 | `vbr1_l2_weighted_sar_adc_dac_loop:tb` | `tb` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | samples=95 unique_codes=91 code_range=0-255 sample_span=0.994 vout_span=1.000 avg_quant_err=0.0588 max_quant_err=0.10... |
-| `vbr1_l1_bang_bang_phase_detector:bugfix` | `bugfix` | `missing` | `FAIL_INFRA` | `runner_infra_extraction` | `no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
+| `vbr1_l1_bang_bang_phase_detector:bugfix` | `bugfix` | `INCOMPLETE` | `INCOMPLETE` | `model_incomplete_generation` | `incomplete_no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
 | `vbr1_l1_bang_bang_phase_detector:dut` | `dut` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | data_edges=150 up_edges=60 down_edges=60 overlap_frac=0.0209 direction_up=0/60 direction_down=0/90 wrong_direction=15... |
 | `vbr1_l1_bang_bang_phase_detector:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `prompt_contract_gap_old_wrapper` | `missing_disciplines_vams_in_old_wrapper_candidate` | bbpd_data_edge_alignment_ref.va:missing_disciplines_vams |
 | `vbr1_l1_bang_bang_phase_detector:tb` | `tb` | `FAIL_EVAS` | `FAIL_TB_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Failed to parse tb_bbpd_data_edge_alignment_ref.scs: Spectre-incompatible PWL wave syntax at line 10: multilin... |
 | `vbr1_l1_charge_pump_abstraction:bugfix` | `bugfix` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `prompt_contract_gap_old_wrapper` | `missing_disciplines_vams_in_old_wrapper_candidate` | charge_pump_abstraction.va:missing_disciplines_vams |
 | `vbr1_l1_charge_pump_abstraction:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | charge_pump_missing_polarity_windows up=1 down=0 |
 | `vbr1_l1_charge_pump_abstraction:tb` | `tb` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | charge_pump_vctrl_span_too_small=0.000 |
-| `vbr1_l1_clock_divider:bugfix` | `bugfix` | `missing` | `FAIL_INFRA` | `runner_infra_extraction` | `no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
+| `vbr1_l1_clock_divider:bugfix` | `bugfix` | `INCOMPLETE` | `INCOMPLETE` | `model_incomplete_generation` | `incomplete_no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
 | `vbr1_l1_clock_divider:dut` | `dut` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `evaluator_runner_review` | `simulator_or_checker_crash_before_waveform` | tran.csv missing |
 | `vbr1_l1_digital_phase_accumulator_with_modulo_wrap:bugfix` | `bugfix` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | phase_span_too_small=0.000 |
 | `vbr1_l1_digital_phase_accumulator_with_modulo_wrap:dut` | `dut` | `FAIL_PARITY` | `PASS` | `evas_core_parity_debt` | `evas_spectre_timer_zero_start_ordering` | max_rmse_v=0.432 ; max_abs_v=1 ; mean_relative_rms_error=0.2461 ; max_relative_rms_error=0.3055 |
@@ -211,7 +211,7 @@ The CSV/JSON files contain the full audit columns. This Markdown table keeps the
 | `vbr1_l1_vco_phase_integrator:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | phase_1ns=0.000 phase_10ns=0.030 phase_span=0.030 clk_edges=0 early_edges=0 late_edges=0 |
 | `vbr1_l2_adpll_lock_ratio_hop_timer_flow:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | hop_t=1.500e-06 pre_ratio=3.528 post_ratio=3.520 pre_lock=0.000 post_lock=0.000 vctrl_range_ok=True |
 | `vbr1_l2_adpll_lock_ratio_hop_timer_flow:tb` | `tb` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | hop_t=2.500e-06 pre_ratio=10.001 post_ratio=15.001 pre_lock=1.000 post_lock=1.000 vctrl_range_ok=True |
-| `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:e2e` | `e2e` | `missing` | `FAIL_INFRA` | `runner_infra_extraction` | `no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
+| `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:e2e` | `e2e` | `INCOMPLETE` | `INCOMPLETE` | `model_incomplete_generation` | `incomplete_no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
 | `vbr1_l1_limiting_amplifier_frontend:dut` | `dut` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | limiter_small_gain_missing vin=0.500 out=0.100 |
 | `vbr1_l1_limiting_amplifier_frontend:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `model_veriloga_subset_failure` | `local_declaration_inside_analog_or_procedural_block` | an embedded declaration statement outside a labeled block. Specify the |
 | `vbr1_l1_limiting_amplifier_frontend:tb` | `tb` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Failed to parse tb_limiting_amplifier_frontend.scs: Spectre-incompatible PWL wave syntax at line 7: multiline... |
@@ -245,5 +245,5 @@ The CSV/JSON files contain the full audit columns. This Markdown table keeps the
 | `vbr1_l1_sample_and_hold_with_droop_leakage:bugfix` | `bugfix` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | vin_samples=0.200,0.720,0.340 held_samples=0.200,0.719,0.340 max_sample_err=0.001 expected_span=0.520 observed_span=0... |
 | `vbr1_l1_sample_and_hold_with_droop_leakage:e2e` | `e2e` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Failed to parse tb_leaky_hold_ref.scs: Spectre-incompatible PWL wave syntax at line 11: multiline wave=[...] r... |
 | `vbr1_l1_sample_and_hold_with_droop_leakage:tb` | `tb` | `FAIL_EVAS` | `FAIL_DUT_COMPILE` | `prompt_contract_gap_old_wrapper` | `invalid_or_incomplete_pwl_source_syntax` | ERROR: Failed to parse tb_leaky_hold_ref.scs: Spectre-incompatible PWL wave syntax at line 9: multiline wave=[...] re... |
-| `vbr1_l2_converter_front_end:e2e` | `e2e` | `missing` | `FAIL_INFRA` | `runner_infra_extraction` | `no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
+| `vbr1_l2_converter_front_end:e2e` | `e2e` | `INCOMPLETE` | `INCOMPLETE` | `model_incomplete_generation` | `incomplete_no_code_extracted_finish_reason_length` | generation_status=no_code_extracted finish_reason=length |
 | `vbr1_l2_converter_front_end:tb` | `tb` | `FAIL_EVAS` | `FAIL_SIM_CORRECTNESS` | `model_behavior_failure` | `compiled_and_ran_but_failed_hidden_behavior_checker` | edges=9 max_sample_err=0.000 coarse_mismatches=0 valid_high_hits=8 valid_low_hits=8 aperture_sensitive=0 droop_window... |

@@ -13,6 +13,7 @@ import audit_vabench_release_package
 import import_vabench_release_dual_rerun_results
 import report_vabench_release_artifact_index
 import report_vabench_release_baseline_artifact
+import report_vabench_release_certification_matrix
 import report_vabench_release_claim_gate
 import report_vabench_release_checksum_manifest
 import report_vabench_release_completion_audit
@@ -161,6 +162,7 @@ def refresh_reports() -> None:
     import_vabench_release_dual_rerun_results.main([])
     sync_vabench_release_task_manifests.main()
     audit_vabench_release_package.main()
+    report_vabench_release_certification_matrix.main()
     report_vabench_release_remaining_work.main()
     report_vabench_release_speed_debug.main()
     report_vabench_release_score_denominator.main()
@@ -178,9 +180,12 @@ def refresh_reports() -> None:
     report_vabench_release_external_blockers.main()
     report_vabench_release_finish_readiness.main()
     report_vabench_release_claim_gate.main()
+    audit_vabench_release_package.main()
     report_vabench_release_paper_tables.main()
     report_vabench_release_package_manifest.main()
     report_vabench_release_evaluator_contract.main()
+    report_vabench_release_schema_validation.main()
+    report_vabench_release_completion_audit.main()
     report_vabench_release_checksum_manifest.main()
     report_vabench_release_artifact_index.main()
     report_vabench_release_checksum_manifest.main()

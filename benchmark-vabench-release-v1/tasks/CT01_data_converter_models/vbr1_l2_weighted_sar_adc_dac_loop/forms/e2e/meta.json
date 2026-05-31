@@ -13,7 +13,7 @@
     "path": "behavioral-veriloga-eval/examples/data-converter/sar_adc_dac_weighted_8b"
   },
   "tier": "raw",
-  "verification_status": "failed",
+  "verification_status": "passed",
   "owner": "team",
   "created_at": "2026-04-05",
   "must_include": [
@@ -48,7 +48,7 @@
   "evidence": {
     "result_path": "behavioral-veriloga-eval/results/gold-dual-suite-final/sar_adc_dac_weighted_8b_smoke",
     "pr_link": "[TODO]",
-    "notes": "Converted from examples/data-converter/sar_adc_dac_weighted_8b; hardest data-converter task \u2014 8-bit SAR with full successive approximation; dual validation backfill 2026-04-16"
+    "notes": "Converted from examples/data-converter/sar_adc_dac_weighted_8b; hardest data-converter task — 8-bit SAR with full successive approximation; dual validation backfill 2026-04-16"
   },
   "id": "sar_adc_dac_weighted_8b_smoke",
   "asset_type": "vabench_task"

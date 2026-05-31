@@ -15,10 +15,14 @@
 
 - Generate all target artifacts: `calibration_deadband_controller.va`, `tb_calibration_deadband_controller.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `calibration_deadband_controller.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "calibration_deadband_controller.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
-- `calibration_deadband_controller.va` declares module `calibration_deadband_controller` with positional ports from the public port contract below.
+- `calibration_deadband_controller.va` declares module `calibration_deadband_controller` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Public Testbench And Observable Contract
 
@@ -30,17 +34,47 @@ tran tran stop=80n maxstep=0.5n
 
 The release harness expects these exact public scalar observables:
 
-```text
-clk rst vin out metric
-```
+- `clk`
+- `rst`
+- `vin`
+- `out`
+- `metric`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
+Public stimulus/source nodes visible in the reference harness include:
+
+- `clk`
+- `rst`
+- `vin`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "calibration_deadband_controller.va"
+
+XDUT (clk rst vin out metric) calibration_deadband_controller
+
+tran tran stop=80n maxstep=0.5n
+save clk rst vin out metric
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
-- trim_holds_inside_deadband
-- trim_moves_for_large_error
-- trim_clamped_to_range
+- `trim_holds_inside_deadband`
+- `trim_moves_for_large_error`
+- `trim_clamped_to_range`
 
 ## Output Contract
 
@@ -66,7 +100,6 @@ Domain: pure voltage-domain behavioral Verilog-A.
 Do not use current contributions, transistor-level devices, AC/noise analysis,
 or KCL/KVL solving assumptions.
 
-
 Public port contract:
 
 ```verilog
@@ -85,12 +118,6 @@ Saved waveform columns:
 ```text
 clk rst vin out metric
 ```
-
-Public behavior checks:
-
-- trim_holds_inside_deadband
-- trim_moves_for_large_error
-- trim_clamped_to_range
 
 Public transient contract:
 

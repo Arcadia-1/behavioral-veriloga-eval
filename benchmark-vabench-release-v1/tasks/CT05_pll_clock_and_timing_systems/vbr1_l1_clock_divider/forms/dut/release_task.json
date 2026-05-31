@@ -18,7 +18,11 @@
       "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider.va",
       "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va",
       "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs"
-    ]
+    ],
+    "submission_artifacts": [
+      "clk_divider_ref.va"
+    ],
+    "private_reference_artifacts": []
   },
   "certification": {
     "static": "pass",

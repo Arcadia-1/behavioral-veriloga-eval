@@ -11,7 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "claim_gate.json"
 REPORT_MD = REPORTS_ROOT / "claim_gate.md"
-PLANNED_ENTRY_TARGET = 64
+PLANNED_ENTRY_TARGET = 79
 
 
 def rel(path: Path) -> str:
@@ -83,13 +83,17 @@ def build_report() -> dict[str, object]:
     paper_gates = paper.get("claim_gates", {})
     if not isinstance(paper_gates, dict):
         paper_gates = {}
+    matrix_summary = certification_matrix.get("summary", {})
+    if not isinstance(matrix_summary, dict):
+        matrix_summary = {}
 
     planned_entries = as_int(release_status.get("planned_entries"))
     source_linked_entries = as_int(release_status.get("source_linked_entry_count"))
     materialized_entries = as_int(release_status.get("asset_materialized_entry_count"))
     static_forms = as_int(static.get("static_certified_release_task_count"))
     dual_certified_forms = as_int(dual.get("dual_certified_release_task_count"))
-    dual_pending_forms = as_int(dual.get("dual_pending_release_task_count"))
+    imported_dual_pending_forms = as_int(dual.get("dual_pending_release_task_count"))
+    current_dual_pending_forms = as_int(matrix_summary.get("pending_form_count", imported_dual_pending_forms))
     dual_failed_forms = as_int(dual.get("dual_failed_release_task_count"))
     mismatch_forms = as_int(dual.get("evas_pass_spectre_fail_count"))
     scored_entries = as_int(score_summary.get("scored_entry_count"))
@@ -109,8 +113,8 @@ def build_report() -> dict[str, object]:
     )
     imported_dual_clean = dual_certified_forms > 0 and dual_failed_forms == 0 and mismatch_forms == 0
     full_dual_certified = (
-        dual.get("status") == "pass"
-        and dual_pending_forms == 0
+        certification_matrix.get("status") in {"complete", "pass"}
+        and current_dual_pending_forms == 0
         and dual_failed_forms == 0
         and mismatch_forms == 0
     )
@@ -197,7 +201,8 @@ def build_report() -> dict[str, object]:
             required_before_allowed=[] if imported_dual_clean else ["dual_certification must contain at least one clean imported form"],
             numbers={
                 "dual_certified_forms": dual_certified_forms,
-                "dual_pending_forms": dual_pending_forms,
+                "imported_dual_pending_forms": imported_dual_pending_forms,
+                "current_dual_pending_forms": current_dual_pending_forms,
                 "dual_failed_forms": dual_failed_forms,
                 "evas_pass_spectre_fail_count": mismatch_forms,
             },
@@ -225,7 +230,7 @@ def build_report() -> dict[str, object]:
                 rel(REPORTS_ROOT / "external_blockers.json"),
             ],
             required_before_allowed=[
-                f"resolve {dual_pending_forms} dual-pending forms",
+                f"resolve {current_dual_pending_forms} current release dual-pending forms",
                 (
                     f"complete fresh rerun for {fresh_dual_rerun_queue_forms} queued forms "
                     f"(includes {source_equivalence_blocked} historical source-equivalence blockers)"
@@ -236,7 +241,8 @@ def build_report() -> dict[str, object]:
             if not full_dual_certified
             else [],
             numbers={
-                "dual_pending_forms": dual_pending_forms,
+                "current_dual_pending_forms": current_dual_pending_forms,
+                "imported_dual_pending_forms": imported_dual_pending_forms,
                 "selected_rerun_pending_forms": rerun_pending,
                 "source_equivalence_blocked_forms": source_equivalence_blocked,
                 "fresh_dual_rerun_queue_forms": fresh_dual_rerun_queue_forms,
@@ -379,7 +385,8 @@ def build_report() -> dict[str, object]:
                 "package_complete": package_complete,
                 "source_design_pending_entries": source_pending,
                 "missing_required_form_entries": missing_required,
-                "dual_pending_forms": dual_pending_forms,
+                "current_dual_pending_forms": current_dual_pending_forms,
+                "imported_dual_pending_forms": imported_dual_pending_forms,
                 "scored_entries": scored_entries,
             },
         ),

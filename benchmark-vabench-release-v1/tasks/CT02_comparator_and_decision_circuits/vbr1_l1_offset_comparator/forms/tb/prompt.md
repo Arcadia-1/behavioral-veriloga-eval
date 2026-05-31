@@ -16,6 +16,10 @@
 
 - Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
 - Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `cmp_offset_ref.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "cmp_offset_ref.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public DUT Interface To Instantiate
 
@@ -45,6 +49,60 @@ Public stimulus/source nodes visible in the reference harness include:
 - `CLK`
 - `VINP`
 - `VINN`
+
+## Public Stimulus Schedule Contract
+
+Use this exact public source schedule in generated Spectre testbenches. This schedule is part of the public testbench contract; it is not hidden checker logic.
+
+Public schedule source: `tb_comparator_offset_ref.scs`.
+
+```spectre
+Vvdd (VDD 0) vsource dc=0.9
+Vvss (VSS 0) vsource dc=0
+Vclk (CLK 0) vsource type=pulse val0=0 val1=0.9 delay=1n rise=20p fall=20p width=1n period=4n
+Vinp (VINP 0) vsource type=pwl wave=[ \
+    0    0.440 \
+    4n   0.440 \
+    4.2n 0.450 \
+    8n   0.450 \
+    8.2n 0.453 \
+    12n  0.453 \
+    12.2n 0.457 \
+    16n  0.457 \
+    16.2n 0.470 \
+    20n  0.470 \
+    20.2n 0.450 \
+    24n  0.450 \
+    24.2n 0.440 \
+    28n  0.440 \
+]
+Vinn (VINN 0) vsource dc=0.450
+```
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "cmp_offset_ref.va"
+
+Vvdd (VDD 0) vsource dc=0.9
+Vvss (VSS 0) vsource dc=0
+
+XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref
+
+tran tran stop=28n maxstep=20p
+save CLK VINP VINN OUT_P
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

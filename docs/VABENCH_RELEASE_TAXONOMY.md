@@ -1,10 +1,10 @@
 # vaBench Release Taxonomy
 
-Date: 2026-05-24
+Date: 2026-05-26
 
-This is the clean release-facing taxonomy for the rebalanced 64-entry
-vaBench release. It is the benchmark coverage contract, not a statement that
-EVAS/Spectre certification or score denominators are already complete.
+This is the clean release-facing taxonomy for the current 79-entry
+vaBench release. It is the benchmark coverage contract and should be read
+together with the current certification and score-denominator reports.
 
 The scored benchmark surface is L1/L2 behavioral analog/mixed-signal circuit
 work. L0 EVAS/Spectre conformance cases are maintained separately because they
@@ -70,11 +70,11 @@ Every released task must provide:
 | Gold assets | Gold Verilog-A and reference testbench or source artifacts. |
 | Evidence | Static integrity, EVAS gold validation, and Spectre gold validation links. |
 
-The current 64-entry package is materialized and static-certified. Imported
-EVAS/Spectre evidence certifies 217 of 219 forms with zero EVAS PASS / Spectre
-FAIL mismatches; two support-suite gain-estimator forms remain Spectre-pending.
-The current core score denominator is enabled for 51 core entries / 184 core
-forms. Support-suite rows remain outside that core denominator.
+The current 79-entry package is materialized, static-certified, and
+EVAS/Spectre-certified across all 271 forms with zero EVAS PASS / Spectre FAIL
+mismatches. The current core score denominator is enabled for 66 core entries /
+236 core forms. The 13-entry / 35-form support suite remains certified and
+reported, but outside that core denominator.
 
 ## Function-Level Checker Contract
 
@@ -86,6 +86,8 @@ forms. Support-suite rows remain outside that core denominator.
 | Calibration, DEM, and Control | Controller updates state in the correct signed direction while respecting bounds and sequence rules. | Signed movement outside deadband, hold inside deadband, clamp behavior, wrap/rotation correctness, and convergence when specified. |
 | Baseband Signal Conditioning | Analog transform implements intended gain, filter, limiting, integration, or slew behavior. | Gain/slope/lag estimates, bounded output, reset behavior, limiting/slew constraints, and representative transient response. |
 | Sampling and Analog Memory | Sampled value, held value, droop/leakage, or aperture/acquisition timing matches the contract. | Sample instant alignment, hold stability, droop/leakage slope, aperture/acquisition behavior, and rejection of transparent-through behavior. |
+| Bias Reference and Power Management | Bias, reference, reset, and regulator macromodels produce intended supply/reference state across enable, trim, ramp, and load events. | Startup threshold, trim slope, reset/UVLO polarity, regulated output/load recovery, and no stuck or rail-only output. |
+| RF and AFE Behavioral Macromodels | RF/AFE voltage-domain macromodels capture gain, compression, mixing, detection, limiting, and composed receiver behavior without transistor RF physics. | Gain/compression trend, LO polarity or I/Q schedule, envelope/RSSI monotonicity, limiting bounds, AGC convergence, and phase/quadrature separation. |
 | Measurement Instrumentation Flows | Generated measurement matches the waveform quantity it claims to report. | Metric-to-waveform agreement, one-record artifact format where required, tolerance-window semantics, and no final-row artifact passing. |
 | Stimulus and Source Generators | Source generates the specified waveform schedule or deterministic sequence. | Amplitude/range, timing, burst count, periodicity or deterministic variation, and reproducibility. |
 
@@ -93,14 +95,15 @@ forms. Support-suite rows remain outside that core denominator.
 
 | Pool | Count | Score status |
 | --- | ---: | --- |
-| Current promoted L1 seeds | 22 | Scored only after release-package certification. |
-| Promoted top-level L1 additions | 29 | Main-table coverage targets; not scored until materialized and certified. |
-| Selected L2 package targets | 13 | Complete-circuit targets after removing duplicate kernels. |
-| Top-level L1/L2 package target | 64 | 51 L1 + 13 L2 rows, split into 51 core entries and 13 support entries. |
-| Core score denominator | 51 entries / 184 forms | Enabled for certified `track=core` rows. |
+| Current promoted L1 seeds | 22 | Included when `track=core` and certified. |
+| Promoted top-level L1 additions | 40 | Materialized additions that expand the core/support coverage contract. |
+| Selected L2 package targets | 17 | Complete-circuit targets after removing duplicate kernels. |
+| Top-level L1/L2 package target | 79 | 62 L1 + 17 L2 rows, split into 66 core entries and 13 support entries. |
+| Core content denominator | 66 entries / 236 forms | Full certified core content target. |
+| Current scored denominator | 66 entries / 236 forms | Enabled for certified `track=core` rows. |
 | Support suite | 13 entries / 35 forms | Report separately; excluded from the core circuit score. |
-| Materialized task forms | 219 | Static-certified; 217 currently dual-certified and 2 support forms Spectre-pending. |
-| Difficulty split | D1=7, D2=43, D3=14 | Difficulty is orthogonal to L1/L2 and core/support. |
+| Materialized task forms | 271 | Static-certified and EVAS/Spectre-certified with zero pending forms. |
+| Difficulty split | D1=7, D2=54, D3=18 | Difficulty is orthogonal to L1/L2 and core/support. |
 
 ## Release Coverage Table
 
@@ -157,6 +160,21 @@ forms. Support-suite rows remain outside that core denominator.
 | Sampling and Analog Memory | Clocked sample-and-hold | L1 | dut; tb; bugfix; e2e-form | model-capability |
 | Sampling and Analog Memory | Acquisition-limited sample-and-hold | L1 | dut; tb; bugfix; e2e-form | model-capability |
 | Sampling and Analog Memory | Converter front-end | L2 | e2e; tb | benchmark-e2e |
+| Bias Reference and Power Management | Bandgap reference macro model | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | PTAT/CTAT reference generator | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | Bias voltage generator with enable/trim | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | Power-on reset detector | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | UVLO/brownout detector | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | LDO regulator macro model | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| Bias Reference and Power Management | Reference startup enable flow | L2 | e2e; tb | benchmark-e2e |
+| Bias Reference and Power Management | LDO load-step recovery flow | L2 | e2e; tb | benchmark-e2e |
+| RF and AFE Behavioral Macromodels | LNA gain-compression macro | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| RF and AFE Behavioral Macromodels | RF mixer downconverter macro | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| RF and AFE Behavioral Macromodels | PA compression macro | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| RF and AFE Behavioral Macromodels | Log/RSSI power detector | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| RF and AFE Behavioral Macromodels | Limiting amplifier frontend | L1 | dut; tb; bugfix; e2e-form | model-capability |
+| RF and AFE Behavioral Macromodels | AGC receiver leveling loop | L2 | e2e; tb | benchmark-e2e |
+| RF and AFE Behavioral Macromodels | I/Q downconversion chain | L2 | e2e; tb | benchmark-e2e |
 | Measurement Instrumentation Flows | Crossing metric writer | L1 | tb; dut; e2e-form | model-capability |
 | Measurement Instrumentation Flows | Settling response measurement helper | L1 | tb; e2e-form | model-capability |
 | Measurement Instrumentation Flows | Peak detector | L1 | dut; tb; bugfix; e2e-form | model-capability |
@@ -180,5 +198,9 @@ aligner, serial readout deserializer, serializer frame-alignment flow,
 conversion event controller, PFD small phase-error response, XOR phase detector,
 PLL timing slice, rotating DEM selector, and windowed DEM pointer.
 
-Two stronger analog rows were added: acquisition-limited sample-and-hold and
-programmable gain amplifier.
+Two stronger analog rows were added during that rebalance:
+acquisition-limited sample-and-hold and programmable gain amplifier. Later
+coverage work added CT07 bias/reference/power-management macromodels and CT08
+RF/AFE behavioral macromodels; these core rows are now static-certified,
+EVAS/Spectre-certified, and included in the 66-entry / 236-form scored core
+denominator.

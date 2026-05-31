@@ -27,7 +27,7 @@
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=300n maxstep=10p errpreset=conservative
+tran tran stop=300n maxstep=5n errpreset=conservative
 ```
 
 The release harness expects these exact public scalar observables:

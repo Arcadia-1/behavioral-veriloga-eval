@@ -41,7 +41,8 @@ def default_bridge_repo() -> Path:
     return project_root() / "iccad" / "virtuoso-bridge-lite"
 
 
-DEFAULT_SUI_HOST = "thu-sui"
+DEFAULT_SUI_HOST = "thu-wei"
+DEFAULT_SUI_PROXY_JUMP = "thu-sui"
 DEFAULT_SUI_WORK_ROOT = "/tmp/vaevas-direct-spectre"
 DEFAULT_SUI_CADENCE_CSHRC = "/home/cshrc/.cshrc.cadence.IC618SP201"
 SPECTRE_BACKEND_ALIASES = {
@@ -70,6 +71,22 @@ def default_sui_work_root() -> str:
 
 def default_sui_cadence_cshrc() -> str:
     return os.environ.get("VAEVAS_SUI_CADENCE_CSHRC") or os.environ.get("VB_CADENCE_CSHRC") or DEFAULT_SUI_CADENCE_CSHRC
+
+
+def default_sui_proxy_jump() -> str:
+    return os.environ.get("VAEVAS_SUI_PROXY_JUMP", DEFAULT_SUI_PROXY_JUMP).strip()
+
+
+def spectre_license_queue_timeout(timeout_s: int) -> int:
+    default_timeout = min(60, max(1, int(timeout_s) - 30))
+    override = os.environ.get("VAEVAS_SPECTRE_LQTIMEOUT_S")
+    if override is None:
+        return max(1, default_timeout)
+    try:
+        requested = int(override)
+    except ValueError:
+        return max(1, default_timeout)
+    return max(1, min(requested, max(1, int(timeout_s) - 30)))
 
 
 def safe_path_component(value: object) -> str:
@@ -874,11 +891,16 @@ WAVEFORM_EQUIVALENCE_POLICY = {
 
 
 def gain_extraction_metric(rows: list[dict[str, float]]) -> dict[str, float | str]:
-    required = {"vinp", "vinn", "vamp_p", "vamp_n"}
-    if not rows or not required.issubset(rows[0]):
-        return {"status": "blocked", "reason": "missing vinp/vinn/vamp_p/vamp_n"}
+    if not rows or not {"vinp", "vinn"}.issubset(rows[0]):
+        return {"status": "blocked", "reason": "missing vinp/vinn"}
+    if {"vamp_p", "vamp_n"}.issubset(rows[0]):
+        out_p, out_n = "vamp_p", "vamp_n"
+    elif {"voutp", "voutn"}.issubset(rows[0]):
+        out_p, out_n = "voutp", "voutn"
+    else:
+        return {"status": "blocked", "reason": "missing vamp_p/vamp_n or voutp/voutn"}
     vin_diff = [r["vinp"] - r["vinn"] for r in rows]
-    vamp_diff = [r["vamp_p"] - r["vamp_n"] for r in rows]
+    vamp_diff = [r[out_p] - r[out_n] for r in rows]
     mean_in = sum(vin_diff) / len(vin_diff)
     mean_out = sum(vamp_diff) / len(vamp_diff)
     std_in = math.sqrt(sum((x - mean_in) ** 2 for x in vin_diff) / len(vin_diff))
@@ -889,6 +911,7 @@ def gain_extraction_metric(rows: list[dict[str, float]]) -> dict[str, float | st
         "std_in": std_in,
         "std_out": std_out,
         "diff_gain": gain,
+        "output_pair": f"{out_p}/{out_n}",
     }
 
 
@@ -1133,14 +1156,22 @@ def run_cmd(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, tim
 
 def ssh_base_cmd(host: str, timeout_s: int) -> list[str]:
     connect_timeout = max(1, min(int(timeout_s), 30))
-    return [
+    cmd = [
         "ssh",
         "-o",
         "BatchMode=yes",
         "-o",
         f"ConnectTimeout={connect_timeout}",
-        host,
+        "-o",
+        "ControlMaster=no",
+        "-o",
+        "ControlPath=none",
     ]
+    proxy_jump = default_sui_proxy_jump()
+    if proxy_jump:
+        cmd.extend(["-J", proxy_jump])
+    cmd.append(host)
+    return cmd
 
 
 def run_ssh_text(
@@ -1269,7 +1300,7 @@ def run_spectre_case_sui_direct(
     errors: list[str] = []
     warnings: list[str] = []
     psf_parse: dict[str, object] | None = None
-    license_queue_timeout_s = max(1, min(60, max(1, int(timeout_s) - 30)))
+    license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
     command = [
         "spectre",
         "-64",
@@ -1619,7 +1650,7 @@ def run_dual_case(
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
     task_id = meta.get("task_id", task_dir.name)
-    checker_task_id = resolve_checker_task_id(meta, str(task_id))
+    checker_task_id = resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
 
     tb_path = choose_gold_tb(gold_dir)

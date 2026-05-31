@@ -42,8 +42,8 @@ def test_completion_audit_maps_goal_requirements_to_evidence() -> None:
     assert "schemas/vabench-dual-certification.schema.json" in requirements["R1_schema_package"]["evidence"]
     assert "schemas/vabench-certification-matrix.schema.json" in requirements["R1_schema_package"]["evidence"]
     assert "schemas/vabench-remaining-work.schema.json" in requirements["R1_schema_package"]["evidence"]
-    assert requirements["R2_tracker_64_entries"]["status"] == "proved"
-    assert requirements["R2_tracker_64_entries"]["blockers"] == []
+    assert requirements["R2_tracker_planned_entries"]["status"] == "proved"
+    assert requirements["R2_tracker_planned_entries"]["blockers"] == []
     assert requirements["R3_source_materialization"]["status"] == "proved"
     assert requirements["R4_static_certification"]["status"] == "proved"
     assert requirements["R6_l0_conformance_separate"]["status"] == "proved"
@@ -53,16 +53,16 @@ def test_completion_audit_maps_goal_requirements_to_evidence() -> None:
     assert report["evidence_sources"]["evaluator_contract"] == "benchmark-vabench-release-v1/EVALUATOR.json"
 
 
-def test_completion_audit_keeps_score_speed_and_baseline_claims_pending() -> None:
+def test_completion_audit_keeps_speed_and_baseline_claims_pending() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     requirements = {item["id"]: item for item in report["requirements"]}
 
-    assert requirements["R5_dual_certification"]["status"] == "blocked"
+    assert requirements["R5_dual_certification"]["status"] == "proved"
     assert "benchmark-vabench-release-v1/reports/finish_readiness.json" in requirements["R5_dual_certification"]["evidence"]
-    assert "EVAS/Spectre dual rerun remains pending" in requirements["R5_dual_certification"]["blockers"]
+    assert requirements["R5_dual_certification"]["blockers"] == []
     assert requirements["R7_paper_artifacts"]["status"] == "incomplete"
     assert "benchmark-vabench-release-v1/reports/paper_tables.json" in requirements["R7_paper_artifacts"]["evidence"]
     assert any(item.startswith("external blocker report active:") for item in report["blocking_conditions"])
-    assert "selected EVAS/Spectre rerun pending" in report["blocking_conditions"]
+    assert "selected EVAS/Spectre rerun pending" not in report["blocking_conditions"]
     assert "speed/debug timing artifact not claimable" in report["blocking_conditions"]
     assert "release model baseline artifact pending" in report["blocking_conditions"]

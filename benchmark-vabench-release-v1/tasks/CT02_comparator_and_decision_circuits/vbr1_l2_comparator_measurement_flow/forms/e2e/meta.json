@@ -11,8 +11,8 @@
     "type": "benchmark-gold",
     "path": "behavioral-veriloga-eval/tasks/end-to-end/voltage/comparator_measurement_flow_smoke/gold"
   },
-  "tier": "pending_dual",
-  "verification_status": "fresh_dual_pending_after_l2_redesign",
+  "tier": "release-certified",
+  "verification_status": "passed",
   "owner": "team",
   "created_at": "2026-04-19",
   "must_include": [
@@ -45,9 +45,9 @@
     "parity_required": true
   },
   "evidence": {
-    "result_path": "pending/fresh-dual-after-l2-redesign",
+    "result_path": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_comparator_measurement_flow/e2e/evidence.json",
     "pr_link": "[TODO]",
-    "notes": "Redesigned as an L2 single-ramp comparator offset measurement flow with public trip_v, offset_est, and valid observables. Fresh EVAS/Spectre dual validation is pending."
+    "notes": "Release form is EVAS/Spectre dual-certified in benchmark-vabench-release-v1/evidence/dual/vbr1_l2_comparator_measurement_flow/e2e/evidence.json."
   },
   "task_id": "comparator_measurement_flow_smoke",
   "release_entry_id": "vbr1_l2_comparator_measurement_flow",

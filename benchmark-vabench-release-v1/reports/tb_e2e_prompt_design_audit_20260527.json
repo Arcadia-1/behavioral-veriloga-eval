@@ -1,0 +1,90 @@
+{
+  "date": "2026-05-27",
+  "scope": "core scored tb/e2e prompt design audit after EVAS-only gold consistency repair and DeepSeek v4-pro baseline rescore",
+  "verdict": "Gold/testbench/checker assets are EVAS-consistent, but public tb/e2e prompts under-specify runnable Spectre .scs structure. Current tb/e2e baseline failures therefore measure Spectre-testbench syntax and integration burden in addition to Verilog-A circuit reasoning.",
+  "evidence": {
+    "full_evas_only_audit": "325/325 expected outcomes met; 271 PASS gold/fixed, 54 expected buggy FAIL_SIM_CORRECTNESS",
+    "deepseek_rescore_overall": "34/236 core scored PASS = 14.41%",
+    "deepseek_by_form": {
+      "bugfix": "11/52",
+      "dut": "19/52",
+      "e2e": "0/66",
+      "tb": "4/66"
+    },
+    "dominant_status_counts": {
+      "PASS": 34,
+      "FAIL_DUT_COMPILE": 116,
+      "FAIL_SIM_CORRECTNESS": 69,
+      "FAIL_TB_COMPILE": 16,
+      "FAIL_INFRA": 1
+    },
+    "prompt_feature_core_tb_e2e": {
+      "tb_rows": 66,
+      "e2e_rows": 66,
+      "tb_full_scs_skeleton": "0/66",
+      "e2e_full_scs_skeleton": "0/66",
+      "tb_has_ahdl_include_literal": "66/66",
+      "e2e_has_ahdl_include_literal": "66/66"
+    }
+  },
+  "findings": [
+    {
+      "severity": "P0",
+      "title": "tb/e2e prompts lack a complete runnable Spectre .scs skeleton",
+      "impact": "Models must infer Spectre file structure, instance syntax, save syntax, and include placement. This makes tb/e2e forms partly a Spectre syntax-recall benchmark rather than a circuit-behavior benchmark.",
+      "evidence": [
+        "Core tb/e2e feature audit: full_scs_skeleton = 0/66 for tb and 0/66 for e2e.",
+        "CDAC generated candidate omitted ahdl_include and used module-first instance syntax: cdac_cal DUT (...), causing dut_not_compiled / tb_not_executed.",
+        "Passing comparator tb candidate used ahdl_include and Spectre instance form: Icomparator (...) comparator."
+      ],
+      "recommendation": "Add a public .scs scaffold block to every tb/e2e prompt: simulator header, global 0, parameters/supplies, exact ahdl_include line, exact Spectre instance syntax Xname (nodes...) module, tran line, save line, and return-only artifact rule."
+    },
+    {
+      "severity": "P1",
+      "title": "e2e forms conflate DUT synthesis and Spectre harness synthesis",
+      "impact": "0/66 e2e PASS suggests current e2e score is too harsh for interpreting model Verilog-A ability. It is useful as an integration stress test, but should not dominate the headline model baseline without stratified reporting.",
+      "evidence": [
+        "DeepSeek v4-pro core e2e result: 0/66 PASS.",
+        "Pipeline ADC e2e prompt asks for both multi-stage DUT behavior and a full transient harness with many observables, but still no complete .scs skeleton."
+      ],
+      "recommendation": "Report dut/bugfix/tb/e2e separately. Treat e2e as D3/integration tier unless prompt scaffolding is upgraded and a fresh A/B baseline confirms expected difficulty."
+    },
+    {
+      "severity": "P1",
+      "title": "Spectre instance syntax is not explicit enough",
+      "impact": "Multiple failed candidates wrote SPICE/module-first style instances, which compile-fails before checker semantics. This is a prompt/interface issue, not an analog reasoning failure.",
+      "evidence": [
+        "Failing CDAC tb candidate: cdac_cal DUT (...) instead of XDUT (...) cdac_cal.",
+        "Failing pipeline ADC e2e testbench similarly used pipeline_adc_chain_4b DUT (...)."
+      ],
+      "recommendation": "Add a hard rule and example: Use Spectre AHDL instance syntax `XDUT (node1 node2 ...) module_name`; never write `module_name instance (...)`."
+    },
+    {
+      "severity": "P2",
+      "title": "Release prompt conventions are not fully normalized",
+      "impact": "Some prompts have richer interface/observable blocks than others. The benchmark is functionally valid, but inconsistent prompt shape adds unwanted variance across categories.",
+      "evidence": [
+        "All core tb/e2e prompts mention required artifacts and include literals, but only a subset uses the newer explicit saved-waveform-column wording.",
+        "Legacy task-specific prompts and newer designed-source prompts coexist."
+      ],
+      "recommendation": "Regenerate prompt contracts through one shared template for tb and e2e: public interface, allowed constants, stimulus schedule, saved columns, checker-observable contract, and no-gold-leak rule."
+    },
+    {
+      "severity": "P2",
+      "title": "Supply/parameter assumptions are under-constrained in some tb/e2e prompts",
+      "impact": "Candidates may pick plausible but wrong supplies or timing constants; failures then reflect unstated benchmark assumptions.",
+      "evidence": [
+        "Failing CDAC tb candidate selected VDD_val=1.2, while the benchmark task expects its own fixed operating contract.",
+        "Prompts state transient/check columns, but not always a complete parameter/supply scaffold."
+      ],
+      "recommendation": "Include exact public operating constants in the scaffold whenever checker correctness depends on them."
+    }
+  ],
+  "recommended_next_actions": [
+    "Implement a common tb/e2e .scs scaffold generator in the prompt sync path, not per-task hand edits.",
+    "Add explicit Spectre AHDL instance syntax examples and ahdl_include placement to every tb/e2e prompt.",
+    "Run a 12- to 20-form DeepSeek prompt A/B smoke after scaffolding: same model, regenerated candidates, covering easy/medium/hard tb/e2e rows.",
+    "Only after A/B, decide whether e2e remains headline-scored or is reported as an integration/D3 tier.",
+    "Keep current EVAS-only gold consistency report separate from Spectre certification; do not overclaim Spectre until the direct-SUI validation queue finishes."
+  ]
+}

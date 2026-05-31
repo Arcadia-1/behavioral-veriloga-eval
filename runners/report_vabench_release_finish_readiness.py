@@ -13,7 +13,7 @@ REPORTS_ROOT = PACKAGE_ROOT / "reports"
 SUMMARY_JSON = ROOT / "results" / "vabench-release-v1-dual-rerun" / "summary.json"
 REPORT_JSON = REPORTS_ROOT / "finish_readiness.json"
 REPORT_MD = REPORTS_ROOT / "finish_readiness.md"
-PLANNED_ENTRY_TARGET = 64
+PLANNED_ENTRY_TARGET = 79
 
 
 def rel(path: Path) -> str:

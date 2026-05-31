@@ -8,17 +8,22 @@
 - Base function: DAC mismatch/unit-weighting model
 - Domain: `voltage`
 - Target artifact(s): `tb_dac_mismatch_unit_weighting_model.scs`
+- Supplied/reference support artifact(s): `dac_mismatch_unit_weighting_model.va`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
 ## Form-Specific Requirements
 
-- Generate the target artifact: `tb_dac_mismatch_unit_weighting_model.scs`.
-- The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
+- Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `dac_mismatch_unit_weighting_model.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "dac_mismatch_unit_weighting_model.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
-## Public Verilog-A Interface
+## Public DUT Interface To Instantiate
 
-- `dac_mismatch_unit_weighting_model.va` declares module `dac_mismatch_unit_weighting_model` with positional ports from the public port contract below.
+- `dac_mismatch_unit_weighting_model.va` declares module `dac_mismatch_unit_weighting_model` with positional ports: `b0`, `b1`, `b2`, `b3`, `out`.
 
 ## Public Testbench And Observable Contract
 
@@ -30,24 +35,52 @@ tran tran stop=80n maxstep=0.5n
 
 The release harness expects these exact public scalar observables:
 
-```text
-b0 b1 b2 b3 out
-```
+- `b0`
+- `b1`
+- `b2`
+- `b3`
+- `out`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
+Public stimulus/source nodes visible in the reference harness include:
+
+- `b0`
+- `b1`
+- `b2`
+- `b3`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "dac_mismatch_unit_weighting_model.va"
+
+XDUT (b0 b1 b2 b3 out) dac_mismatch_unit_weighting_model
+
+tran tran stop=80n maxstep=0.5n
+save b0 b1 b2 b3 out
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
-- weighted_code_response
-- explicit_mismatch_terms
-- bounded_reconstruction_voltage
+- `weighted_code_response`
+- `explicit_mismatch_terms`
+- `bounded_reconstruction_voltage`
 
 ## Output Contract
 
-Return exactly these source artifacts:
-
-- `tb_dac_mismatch_unit_weighting_model.scs`
-
+Return exactly one source artifact named `tb_dac_mismatch_unit_weighting_model.scs`.
 Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
@@ -64,7 +97,6 @@ Module name: `dac_mismatch_unit_weighting_model`.
 Domain: pure voltage-domain behavioral Verilog-A.
 Do not use current contributions, transistor-level devices, AC/noise analysis,
 or KCL/KVL solving assumptions.
-
 
 Public port contract:
 
@@ -84,12 +116,6 @@ Saved waveform columns:
 ```text
 b0 b1 b2 b3 out
 ```
-
-Public behavior checks:
-
-- weighted_code_response
-- explicit_mismatch_terms
-- bounded_reconstruction_voltage
 
 Public transient contract:
 

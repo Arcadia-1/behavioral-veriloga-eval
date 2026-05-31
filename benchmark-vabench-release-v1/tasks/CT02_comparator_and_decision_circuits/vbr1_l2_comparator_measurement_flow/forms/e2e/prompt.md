@@ -11,10 +11,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a behavioral composition/flow task for Single-ramp comparator offset measurement flow. It should expose intermediate state, multi-stage behavior, or a closed-loop relation through the public observables below.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to the public behavior checks below; do not broaden the task into full silicon implementation, layout, device physics, or unlisted performance metrics.
+
 ## Form-Specific Requirements
 
 - Generate all target artifacts: `comparator_offset_search_ref.va`, `tb_comparator_offset_search_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `comparator_offset_search_ref.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "comparator_offset_search_ref.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -46,6 +56,31 @@ Public stimulus/source nodes visible in the reference harness include:
 - `inn`
 - `inp`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "comparator_offset_search_ref.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0.0
+
+XDUT (vdd vss inp inn outp trip_v offset_est valid) comparator_offset_search_ref
+
+tran tran stop=100n maxstep=50p errpreset=conservative
+save inp inn outp trip_v offset_est valid
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `comparator_output_low_before_trip`
@@ -56,6 +91,35 @@ Public stimulus/source nodes visible in the reference harness include:
 - `trip_voltage_near_inn_plus_offset`
 - `offset_estimate_near_static_offset`
 - `measurement_outputs_hold_after_valid`
+
+## Public L2 Behavior Contract
+
+This row is a single-ramp comparator offset measurement flow. It is not only a
+bare comparator; it must expose the measurement latch that captures the first
+trip point.
+
+1. Comparator decision:
+   - Hold `inn` at 0.500 V.
+   - Ramp `inp` from below to above the expected trip point.
+   - With `vos = 5m`, drive `outp` low before `V(inp) - V(inn) > vos` and high
+     after the first rising trip.
+
+2. Measurement latch:
+   - Before the first trip, keep `valid` low.
+   - On the first rising trip only, latch `trip_v = V(inp)` and
+     `offset_est = V(inp) - V(inn)`.
+   - After `valid` goes high, hold `trip_v` and `offset_est` stable instead of
+     letting them continue to follow the ramp.
+
+3. Public stimulus shape:
+   - Use a monotonic `inp` ramp from about 0.490 V to about 0.520 V with
+     `inn = 0.500 V`.
+   - The expected public relation is that the first `outp` transition, `valid`
+     assertion, `trip_v`, and `offset_est` all point to the same near-5 mV
+     offset measurement.
+
+Use top-level `@(cross(..., +1))` event control for the trip detector and
+`transition()` for rail outputs.
 
 ## Output Contract
 

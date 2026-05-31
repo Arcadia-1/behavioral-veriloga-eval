@@ -13,7 +13,7 @@ from pathlib import Path
 import re
 
 
-RELEASE_RUNNER_WRAPPER_VERSION = "release-runner-wrapper-v5"
+RELEASE_RUNNER_WRAPPER_VERSION = "release-runner-wrapper-v6"
 
 RELEASE_SYSTEM_PROMPT = """\
 You are an expert Verilog-A behavioral modeling engineer.
@@ -120,24 +120,62 @@ def build_file_protocol(target_artifacts: list[str]) -> str:
     return "\n".join(lines).strip()
 
 
+def build_support_artifact_context(support_artifacts: dict[str, str] | None) -> str:
+    """Render public read-only support artifacts for model invocation.
+
+    These are not answer blocks.  They intentionally use a different marker
+    from `[BEGIN file: ...]` so response extraction cannot confuse supplied
+    inputs with generated target artifacts.
+    """
+    if not support_artifacts:
+        return ""
+    lines = [
+        "Public support artifact contents:",
+        "",
+        "The following files are supplied public inputs. Use them as read-only context.",
+        "Do not return these files unless a filename is also listed as a target artifact.",
+        "",
+    ]
+    for filename, contents in support_artifacts.items():
+        language = artifact_language(filename)
+        lines.extend(
+            [
+                f"[BEGIN support file: {filename}]",
+                f"```{language}",
+                contents.strip(),
+                "```",
+                f"[END support file: {filename}]",
+                "",
+            ]
+        )
+    return "\n".join(lines).strip()
+
+
 def build_release_generation_prompt(
     *,
     public_prompt: str,
     target_artifacts: list[str],
     form: str | None = None,
+    support_artifacts: dict[str, str] | None = None,
 ) -> str:
     """Wrap a public vaBench prompt for model generation."""
     form_line = f"\nForm: `{form}`\n" if form else "\n"
     rules = "\n".join(f"{idx}. {rule}" for idx, rule in enumerate(EVAS_SPECTRE_RULES, start=1))
-    return "\n\n".join(
+    sections = [
+        f"Wrapper version: `{RELEASE_RUNNER_WRAPPER_VERSION}`",
+        "Question:",
+        public_prompt.strip(),
+    ]
+    support_context = build_support_artifact_context(support_artifacts)
+    if support_context:
+        sections.append(support_context)
+    sections.extend(
         [
-            f"Wrapper version: `{RELEASE_RUNNER_WRAPPER_VERSION}`",
-            "Question:",
-            public_prompt.strip(),
             "Runner-visible context:" + form_line + "These are public language, artifact, and simulator compatibility rules; they are not hidden checker criteria.",
             "EVAS/Spectre compatibility rules:",
             rules,
             "Answer:",
             build_file_protocol(target_artifacts),
         ]
-    ).strip() + "\n"
+    )
+    return "\n\n".join(sections).strip() + "\n"

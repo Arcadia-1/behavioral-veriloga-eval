@@ -1,6 +1,6 @@
 # DeepSeek Wrapper-v4 Changed-Rerun Comparison
 
-Generated: `2026-05-28T07:53:26.335711+00:00`
+Generated: `2026-05-28T14:20:27.611882+00:00`
 
 Scope: only the 55 rows whose wrapper-v1 candidates were attributed to
 `prompt_contract_gap_old_wrapper`. This is not a full 236-row baseline.

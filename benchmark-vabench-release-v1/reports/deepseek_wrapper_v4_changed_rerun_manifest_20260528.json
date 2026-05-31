@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-28T07:04:01.508223+00:00",
+  "generated_at": "2026-05-28T14:20:27.519619+00:00",
   "source_csv": "benchmark-vabench-release-v1/reports/deepseek_failure_attribution_inconclusive_20260528.csv",
   "selection_rule": {
     "primary_attribution": "prompt_contract_gap_old_wrapper",
@@ -8,16 +8,15 @@
   "wrapper_from": "release-runner-wrapper-v1",
   "wrapper_to": "release-runner-wrapper-v4",
   "full_denominator_rows": 236,
-  "inconclusive_source_rows": 60,
+  "inconclusive_source_rows": 56,
   "selected_count": 55,
-  "skipped_count": 5,
+  "skipped_count": 1,
   "task_id_file": "benchmark-vabench-release-v1/reports/deepseek_wrapper_v4_changed_rerun_task_ids_20260528.txt",
   "selected_root_cause_counts": {
     "missing_disciplines_vams_in_old_wrapper_candidate": 28,
     "invalid_or_incomplete_pwl_source_syntax": 27
   },
   "skipped_attribution_counts": {
-    "runner_infra_extraction": 4,
     "evaluator_runner_review": 1
   },
   "selected_rows": [
@@ -849,36 +848,6 @@
   ],
   "skipped_rows": [
     {
-      "release_task_id": "vbr1_l1_bang_bang_phase_detector:bugfix",
-      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
-      "form": "bugfix",
-      "level": "L1",
-      "difficulty": "D2",
-      "track": "core",
-      "category": "PLL Clock and Timing Systems",
-      "base_function": "Bang-bang phase detector",
-      "primary_attribution": "runner_infra_extraction",
-      "root_cause_family": "runner_or_api_artifact",
-      "root_cause_detail": "no_code_extracted_finish_reason_length",
-      "evidence": "generation_status=no_code_extracted finish_reason=length",
-      "recommended_action": "Exclude from model-ability denominator and rerun generation/extraction with a token/output guard."
-    },
-    {
-      "release_task_id": "vbr1_l1_clock_divider:bugfix",
-      "release_entry_id": "vbr1_l1_clock_divider",
-      "form": "bugfix",
-      "level": "L1",
-      "difficulty": "D2",
-      "track": "core",
-      "category": "PLL Clock and Timing Systems",
-      "base_function": "Clock divider",
-      "primary_attribution": "runner_infra_extraction",
-      "root_cause_family": "runner_or_api_artifact",
-      "root_cause_detail": "no_code_extracted_finish_reason_length",
-      "evidence": "generation_status=no_code_extracted finish_reason=length",
-      "recommended_action": "Exclude from model-ability denominator and rerun generation/extraction with a token/output guard."
-    },
-    {
       "release_task_id": "vbr1_l1_clock_divider:dut",
       "release_entry_id": "vbr1_l1_clock_divider",
       "form": "dut",
@@ -892,36 +861,6 @@
       "root_cause_detail": "simulator_or_checker_crash_before_waveform",
       "evidence": "tran.csv missing",
       "recommended_action": "Triage as EVAS/checker runner robustness before counting as model behavior failure."
-    },
-    {
-      "release_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:e2e",
-      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
-      "form": "e2e",
-      "level": "L2",
-      "difficulty": "D3",
-      "track": "core",
-      "category": "PLL Clock and Timing Systems",
-      "base_function": "CPPLL tracking and frequency-step reacquire flow",
-      "primary_attribution": "runner_infra_extraction",
-      "root_cause_family": "runner_or_api_artifact",
-      "root_cause_detail": "no_code_extracted_finish_reason_length",
-      "evidence": "generation_status=no_code_extracted finish_reason=length",
-      "recommended_action": "Exclude from model-ability denominator and rerun generation/extraction with a token/output guard."
-    },
-    {
-      "release_task_id": "vbr1_l2_converter_front_end:e2e",
-      "release_entry_id": "vbr1_l2_converter_front_end",
-      "form": "e2e",
-      "level": "L2",
-      "difficulty": "D3",
-      "track": "core",
-      "category": "Sampling and Analog Memory",
-      "base_function": "Converter front-end",
-      "primary_attribution": "runner_infra_extraction",
-      "root_cause_family": "runner_or_api_artifact",
-      "root_cause_detail": "no_code_extracted_finish_reason_length",
-      "evidence": "generation_status=no_code_extracted finish_reason=length",
-      "recommended_action": "Exclude from model-ability denominator and rerun generation/extraction with a token/output guard."
     }
   ]
 }

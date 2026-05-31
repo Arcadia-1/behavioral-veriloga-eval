@@ -8,17 +8,18 @@
 - Base function: Calibration deadband controller
 - Domain: `voltage`
 - Target artifact(s): `calibration_deadband_controller.va`
+- Supplied/reference support artifact(s): `tb_calibration_deadband_controller.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
 ## Form-Specific Requirements
 
-- Generate the target artifact: `calibration_deadband_controller.va`.
-- The module must satisfy the public interface and observable behavior contract.
+- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
+- Preserve the public module names, port order, parameters, and waveform observable names.
 
 ## Public Verilog-A Interface
 
-- `calibration_deadband_controller.va` declares module `calibration_deadband_controller` with positional ports from the public port contract below.
+- `calibration_deadband_controller.va` declares module `calibration_deadband_controller` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Public Testbench And Observable Contract
 
@@ -30,24 +31,23 @@ tran tran stop=80n maxstep=0.5n
 
 The release harness expects these exact public scalar observables:
 
-```text
-clk rst vin out metric
-```
+- `clk`
+- `rst`
+- `vin`
+- `out`
+- `metric`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 ## Public Behavior Checks
 
-- trim_holds_inside_deadband
-- trim_moves_for_large_error
-- trim_clamped_to_range
+- `trim_holds_inside_deadband`
+- `trim_moves_for_large_error`
+- `trim_clamped_to_range`
 
 ## Output Contract
 
-Return exactly these source artifacts:
-
-- `calibration_deadband_controller.va`
-
+Return exactly one source artifact named `calibration_deadband_controller.va`.
 Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description
@@ -64,7 +64,6 @@ Module name: `calibration_deadband_controller`.
 Domain: pure voltage-domain behavioral Verilog-A.
 Do not use current contributions, transistor-level devices, AC/noise analysis,
 or KCL/KVL solving assumptions.
-
 
 Public port contract:
 
@@ -84,12 +83,6 @@ Saved waveform columns:
 ```text
 clk rst vin out metric
 ```
-
-Public behavior checks:
-
-- trim_holds_inside_deadband
-- trim_moves_for_large_error
-- trim_clamped_to_range
 
 Public transient contract:
 

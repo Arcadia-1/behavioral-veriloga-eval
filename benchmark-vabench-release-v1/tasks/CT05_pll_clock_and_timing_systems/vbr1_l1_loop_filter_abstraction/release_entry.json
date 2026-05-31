@@ -71,7 +71,8 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/tb_loop_filter_abstraction.scs"
       ],
       "public_inputs": [
         "prompt.md"
@@ -89,11 +90,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_loop_filter_abstraction",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/dut/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/dut/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/dut/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/dut/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_loop_filter_abstraction_dut",
-      "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_dut"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/dut/result.json"
     },
     {
       "form": "tb",
@@ -102,6 +99,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/gold/loop_filter_abstraction.va",
         "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs"
       ],
       "public_inputs": [
@@ -120,11 +118,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_loop_filter_abstraction",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_loop_filter_abstraction_tb",
-      "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/tb/result.json"
     },
     {
       "form": "bugfix",
@@ -134,7 +128,8 @@
       "checks": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/tb_loop_filter_abstraction.scs"
       ],
       "public_inputs": [
         "prompt.md",
@@ -155,11 +150,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_loop_filter_abstraction",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/bugfix/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/bugfix/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/bugfix/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/bugfix/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
-      "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/bugfix/result.json"
     },
     {
       "form": "e2e",
@@ -188,11 +179,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_loop_filter_abstraction",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_loop_filter_abstraction/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
-      "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_loop_filter_abstraction/e2e/result.json"
     }
   ],
   "missing_forms": [],

@@ -18,6 +18,7 @@ REPORT_MD = PACKAGE_ROOT / "reports" / "release_status.md"
 ASSET_REPORT_JSON = PACKAGE_ROOT / "reports" / "asset_integrity.json"
 STATIC_REPORT_JSON = PACKAGE_ROOT / "reports" / "static_certification.json"
 DUAL_REPORT_JSON = PACKAGE_ROOT / "reports" / "dual_certification.json"
+CERTIFICATION_MATRIX_REPORT_JSON = PACKAGE_ROOT / "reports" / "certification_matrix.json"
 CONFORMANCE_REPORT_JSON = PACKAGE_ROOT / "reports" / "conformance_manifest.json"
 SCORE_DENOMINATOR_REPORT_JSON = PACKAGE_ROOT / "reports" / "score_denominator_manifest.json"
 SPEED_DEBUG_REPORT_JSON = PACKAGE_ROOT / "reports" / "speed_debug_artifact.json"
@@ -88,6 +89,7 @@ def build_report() -> dict[str, object]:
     asset_report = read_json(ASSET_REPORT_JSON)
     static_report = read_json(STATIC_REPORT_JSON)
     dual_report = read_json(DUAL_REPORT_JSON)
+    certification_matrix_report = read_json(CERTIFICATION_MATRIX_REPORT_JSON)
     conformance_report = read_json(CONFORMANCE_REPORT_JSON)
     score_denominator_report = read_json(SCORE_DENOMINATOR_REPORT_JSON)
     speed_debug_report = read_json(SPEED_DEBUG_REPORT_JSON)
@@ -97,6 +99,9 @@ def build_report() -> dict[str, object]:
     score_summary = score_denominator_report.get("summary", {})
     if not isinstance(score_summary, dict):
         score_summary = {}
+    certification_matrix_summary = certification_matrix_report.get("summary", {})
+    if not isinstance(certification_matrix_summary, dict):
+        certification_matrix_summary = {}
     score_claim_rule = score_denominator_report.get("claim_rule", {})
     if not isinstance(score_claim_rule, dict):
         score_claim_rule = {}
@@ -157,18 +162,40 @@ def build_report() -> dict[str, object]:
         "static_failed_release_task_count": static_report.get("static_failed_release_task_count", "missing"),
         "static_certified_entry_count": static_report.get("static_certified_entry_count", "missing"),
         "dual_certification_status": dual_report.get("status", "missing"),
-        "dual_certified_release_task_count": dual_report.get("dual_certified_release_task_count", "missing"),
-        "dual_failed_release_task_count": dual_report.get("dual_failed_release_task_count", "missing"),
-        "dual_pending_release_task_count": dual_report.get("dual_pending_release_task_count", "missing"),
-        "dual_pass_materialized_entry_count": dual_report.get("dual_pass_materialized_entry_count", "missing"),
-        "dual_pending_materialized_entry_count": dual_report.get("dual_pending_materialized_entry_count", "missing"),
-        "dual_failed_materialized_entry_count": dual_report.get("dual_failed_materialized_entry_count", "missing"),
-        "fully_certified_entry_count": dual_report.get("fully_certified_entry_count", "missing"),
-        "source_equivalence_failure_count": dual_report.get("source_equivalence_failure_count", "missing"),
-        "source_equivalence_blocked_release_task_count": dual_report.get(
-            "source_equivalence_blocked_release_task_count", "missing"
+        "dual_certified_release_task_count": certification_matrix_summary.get(
+            "certified_form_count",
+            dual_report.get("dual_certified_release_task_count", "missing"),
         ),
-        "evas_pass_spectre_fail_count": dual_report.get("evas_pass_spectre_fail_count", "missing"),
+        "dual_failed_release_task_count": certification_matrix_summary.get(
+            "dual_failure_form_count",
+            dual_report.get("dual_failed_release_task_count", "missing"),
+        ),
+        "dual_pending_release_task_count": certification_matrix_summary.get(
+            "pending_form_count",
+            dual_report.get("dual_pending_release_task_count", "missing"),
+        ),
+        "dual_pass_materialized_entry_count": certification_matrix_summary.get(
+            "fully_certified_entry_count",
+            dual_report.get("dual_pass_materialized_entry_count", "missing"),
+        ),
+        "dual_pending_materialized_entry_count": certification_matrix_summary.get(
+            "pending_entry_count",
+            dual_report.get("dual_pending_materialized_entry_count", "missing"),
+        ),
+        "dual_failed_materialized_entry_count": dual_report.get("dual_failed_materialized_entry_count", "missing"),
+        "fully_certified_entry_count": certification_matrix_summary.get(
+            "fully_certified_entry_count",
+            dual_report.get("fully_certified_entry_count", "missing"),
+        ),
+        "source_equivalence_failure_count": dual_report.get("source_equivalence_failure_count", "missing"),
+        "source_equivalence_blocked_release_task_count": certification_matrix_summary.get(
+            "source_equivalence_blocked_form_count",
+            dual_report.get("source_equivalence_blocked_release_task_count", "missing"),
+        ),
+        "evas_pass_spectre_fail_count": certification_matrix_summary.get(
+            "evas_pass_spectre_fail_count",
+            dual_report.get("evas_pass_spectre_fail_count", "missing"),
+        ),
         "dual_simulator_rerun": dual_report.get("simulator_rerun", "missing"),
         "l0_conformance_case_count": conformance_report.get("conformance_case_count", "missing"),
         "l0_conformance_benchmark_coverage_count": conformance_report.get("benchmark_coverage_count", "missing"),

@@ -71,7 +71,8 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/tb_soft_hysteretic_limiter.scs"
       ],
       "public_inputs": [
         "prompt.md"
@@ -89,11 +90,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_soft_hysteretic_limiter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/dut/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/dut/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/dut/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/dut/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
-      "historical_source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/dut/result.json"
     },
     {
       "form": "tb",
@@ -102,6 +99,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/gold/soft_hysteretic_limiter.va",
         "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/gold/tb_soft_hysteretic_limiter.scs"
       ],
       "public_inputs": [
@@ -120,11 +118,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_soft_hysteretic_limiter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_soft_hysteretic_limiter_tb",
-      "historical_source_task_id": "vbr1_l1_soft_hysteretic_limiter_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/tb/result.json"
     },
     {
       "form": "bugfix",
@@ -134,7 +128,8 @@
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/tb_soft_hysteretic_limiter.scs"
       ],
       "public_inputs": [
         "prompt.md",
@@ -155,11 +150,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_soft_hysteretic_limiter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/bugfix/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/bugfix/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/bugfix/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/bugfix/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
-      "historical_source_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/bugfix/result.json"
     },
     {
       "form": "e2e",
@@ -188,11 +179,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_soft_hysteretic_limiter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_soft_hysteretic_limiter/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e",
-      "historical_source_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_soft_hysteretic_limiter/e2e/result.json"
     }
   ],
   "missing_forms": [],

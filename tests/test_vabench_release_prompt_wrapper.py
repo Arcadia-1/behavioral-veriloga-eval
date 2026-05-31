@@ -30,6 +30,34 @@ def test_release_prompt_wrapper_keeps_runner_protocol_outside_public_prompt() ->
     assert "These are public language, artifact, and simulator compatibility rules" in wrapped
 
 
+def test_release_prompt_wrapper_includes_read_only_support_artifacts() -> None:
+    public_prompt = "# Task: demo bugfix\n\nReturn exactly one source artifact named `dut_fixed.va`."
+    buggy = """\
+`include "constants.vams"
+`include "disciplines.vams"
+module demo(out);
+  output out;
+  electrical out;
+  analog begin
+    V(out) <+ 0.0;
+  end
+endmodule
+"""
+
+    wrapped = build_release_generation_prompt(
+        public_prompt=public_prompt,
+        target_artifacts=["dut_fixed.va"],
+        form="bugfix",
+        support_artifacts={"dut_buggy.va": buggy},
+    )
+
+    assert "[BEGIN support file: dut_buggy.va]" in wrapped
+    assert "module demo(out);" in wrapped
+    assert "[BEGIN file: dut_fixed.va]" in wrapped
+    assert "[BEGIN file: dut_buggy.va]" not in wrapped
+    assert "dut_buggy.va" not in extract_marked_artifacts(wrapped)
+
+
 def test_marked_artifact_extraction_uses_exact_target_names() -> None:
     response = """\
 [BEGIN file: demo.va]

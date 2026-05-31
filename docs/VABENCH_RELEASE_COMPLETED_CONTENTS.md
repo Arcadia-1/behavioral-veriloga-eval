@@ -3,7 +3,7 @@
 Date: 2026-05-24
 
 This note records the benchmark contents currently materialized in the clean
-`vabench-release-v1` package after the 64-entry rebalance. The package manifest
+`vabench-release-v1` package after the 79-entry expansion. The package manifest
 and release reports remain the source of truth for certification and scoring.
 
 ## Evidence Sources
@@ -17,26 +17,27 @@ and release reports remain the source of truth for certification and scoring.
 
 | Item | Count | Meaning |
 | --- | ---: | --- |
-| Release entries | 64 | Top-level L1/L2 benchmark entries: core circuit functions plus auxiliary measurement/stimulus support entries. |
-| L1 entries | 51 | Single-function model-capability tasks. |
-| L2 entries | 13 | Complete-circuit or chain-level flows. |
-| Release task forms | 219 | Materialized `dut`, `tb`, `bugfix`, and/or `e2e` forms. |
-| Content-denominator entries | 64 | Package entries allowed to support benchmark coverage claims after certification, with core and support slices reported separately. |
-| Content-denominator forms | 219 | Materialized forms attached to included entries. |
-| Static-certified entries/forms | 64 / 219 | Prompt/meta/checks/gold/static integrity currently pass. |
-| EVAS/Spectre-certified entries/forms | 0 / 0 | Fresh dual validation is pending for this rebalanced release. |
-| Pending dual entries/forms | 64 / 219 | Need fresh EVAS/Spectre validation before certification and scoring. |
+| Release entries | 79 | Top-level L1/L2 benchmark entries: core circuit functions plus auxiliary measurement/stimulus support entries. |
+| L1 entries | 62 | Single-function model-capability tasks. |
+| L2 entries | 17 | Complete-circuit or chain-level flows. |
+| Release task forms | 271 | Materialized `dut`, `tb`, `bugfix`, and/or `e2e` forms. |
+| Core content-denominator entries | 66 | Certified core entries allowed to enter the main benchmark score. |
+| Core content-denominator forms | 236 | Materialized forms attached to scored core entries. |
+| Support suite entries/forms | 13 / 35 | Certified support rows reported separately from the core score. |
+| Static-certified entries/forms | 79 / 271 | Prompt/meta/checks/gold/static integrity currently pass. |
+| EVAS/Spectre-certified entries/forms | 79 / 271 | Full release dual validation passes. |
+| Pending dual entries/forms | 0 / 0 | No current release forms await EVAS/Spectre certification. |
 | EVAS PASS / Spectre FAIL | 0 | Hard parity mismatch count in current audited release reports. |
-| Scored entries/forms | 0 / 0 | Score denominator is disabled until full dual certification. |
+| Scored entries/forms | 66 / 236 | Enabled for certified `track=core`; support remains excluded. |
 
 ## Form Counts
 
 | Form | Count | Scope |
 | --- | ---: | --- |
-| `dut` | 48 | Materialized release form. |
-| `tb` | 64 | Materialized release form. |
-| `bugfix` | 43 | Materialized release form. |
-| `e2e` | 64 | Materialized release form. |
+| `dut` | 59 | Materialized release form. |
+| `tb` | 79 | Materialized release form. |
+| `bugfix` | 54 | Materialized release form. |
+| `e2e` | 79 | Materialized release form. |
 
 ## Category Summary
 
@@ -48,6 +49,8 @@ and release reports remain the source of truth for certification and scoring.
 | Calibration, DEM, and Control | 7 | 6 | 1 | 26 |
 | Baseband Signal Conditioning | 8 | 7 | 1 | 30 |
 | Sampling and Analog Memory | 5 | 4 | 1 | 18 |
+| Bias Reference and Power Management | 8 | 6 | 2 | 28 |
+| RF and AFE Behavioral Macromodels | 7 | 5 | 2 | 24 |
 | Measurement Instrumentation Flows | 7 | 5 | 2 | 17 |
 | Stimulus and Source Generators | 6 | 5 | 1 | 18 |
 
@@ -55,15 +58,15 @@ and release reports remain the source of truth for certification and scoring.
 
 | Role | Categories | Entries | Paper wording |
 | --- | --- | ---: | --- |
-| Core circuit coverage | Data Converter Models; Comparator and Decision Circuits; PLL Clock and Timing Systems; Calibration, DEM, and Control; Baseband Signal Conditioning; Sampling and Analog Memory | 51 | Use for claims about analog/mixed-signal circuit-function coverage. |
+| Core circuit coverage | Data Converter Models; Comparator and Decision Circuits; PLL Clock and Timing Systems; Calibration, DEM, and Control; Baseband Signal Conditioning; Sampling and Analog Memory; Bias Reference and Power Management; RF and AFE Behavioral Macromodels | 66 | Use for claims about analog/mixed-signal circuit-function coverage. |
 | Support coverage | Measurement Instrumentation Flows; Stimulus and Source Generators | 13 | Report as reusable measurement, instrumentation, and stimulus/source modeling coverage. Do not use to inflate the core circuit count. |
 
 ## Functions By Category
 
 All entries below are materialized and static-certified. Measurement and
 stimulus/source rows are benchmark support entries, not core analog signal-path
-or decision-circuit rows. Dual EVAS/Spectre certification remains pending for
-all 219 forms after the rebalance.
+or decision-circuit rows. All 271 forms are currently static-certified and
+EVAS/Spectre-certified.
 
 | Category | Level | Function | Forms |
 | --- | --- | --- | --- |
@@ -118,6 +121,21 @@ all 219 forms after the rebalance.
 | Sampling and Analog Memory | L1 | Clocked sample-and-hold | `dut`, `tb`, `bugfix`, `e2e` |
 | Sampling and Analog Memory | L1 | Acquisition-limited sample-and-hold | `dut`, `tb`, `bugfix`, `e2e` |
 | Sampling and Analog Memory | L2 | Converter front-end | `tb`, `e2e` |
+| Bias Reference and Power Management | L1 | Bandgap reference macromodel | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L1 | PTAT/CTAT reference generator | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L1 | Bias voltage generator with enable and trim | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L1 | LDO regulator macromodel | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L1 | UVLO/brownout detector | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L1 | Power-on reset detector | `dut`, `tb`, `bugfix`, `e2e` |
+| Bias Reference and Power Management | L2 | Reference startup/enable flow | `tb`, `e2e` |
+| Bias Reference and Power Management | L2 | LDO load-step recovery flow | `tb`, `e2e` |
+| RF and AFE Behavioral Macromodels | L1 | LNA gain-compression macromodel | `dut`, `tb`, `bugfix`, `e2e` |
+| RF and AFE Behavioral Macromodels | L1 | RF mixer/downconverter macromodel | `dut`, `tb`, `bugfix`, `e2e` |
+| RF and AFE Behavioral Macromodels | L1 | Limiting amplifier front-end | `dut`, `tb`, `bugfix`, `e2e` |
+| RF and AFE Behavioral Macromodels | L1 | Log/RSSI power detector | `dut`, `tb`, `bugfix`, `e2e` |
+| RF and AFE Behavioral Macromodels | L1 | PA compression macromodel | `dut`, `tb`, `bugfix`, `e2e` |
+| RF and AFE Behavioral Macromodels | L2 | I/Q downconversion chain | `tb`, `e2e` |
+| RF and AFE Behavioral Macromodels | L2 | AGC receiver leveling loop | `tb`, `e2e` |
 | Measurement Instrumentation Flows | L1 | Crossing metric writer (support/measurement) | `dut`, `tb`, `e2e` |
 | Measurement Instrumentation Flows | L1 | Settling response measurement helper (support/measurement) | `tb`, `e2e` |
 | Measurement Instrumentation Flows | L1 | Peak detector (support/measurement) | `dut`, `tb`, `bugfix`, `e2e` |

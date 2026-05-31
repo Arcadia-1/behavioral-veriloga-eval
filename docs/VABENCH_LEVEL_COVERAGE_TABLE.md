@@ -2,9 +2,10 @@
 
 Date: 2026-05-24
 
-This table is the current human-review view of the 64-entry vaBench release
-after the weak/duplicate entry rebalance. It is a coverage and taxonomy view,
-not EVAS/Spectre certification evidence.
+This table is the current human-review view of the 79-entry vaBench release
+after the weak/duplicate entry rebalance and the later bias/reference/power and
+RF/AFE expansion. It is a coverage and taxonomy view; certification evidence
+is maintained in the release reports.
 
 ## Selection Principle
 
@@ -20,20 +21,21 @@ reason a function exists in the benchmark.
 | Term | Count | Meaning |
 | --- | ---: | --- |
 | Current promoted L1 seeds | 22 | Current-seed L1 functions retained in the release package after duplicate/removal policy. |
-| Promoted top-level L1 additions | 29 | Additional L1 functions selected as release coverage targets. |
-| Selected L2 complete-circuit targets | 13 | System/flow targets that compose multiple L1 functions. |
-| Top-level L1/L2 coverage target | 64 | 51 L1 + 13 L2 entries, before task-form multiplication. |
-| Release task forms | 219 | Materialized `dut`, `tb`, `bugfix`, and/or `e2e` forms. |
-| Core score denominator | 51 entries / 184 forms | Enabled for certified `track=core` rows; support rows are reported separately. |
+| Promoted top-level L1 additions | 40 | Additional L1 functions selected as release coverage targets. |
+| Selected L2 complete-circuit targets | 17 | System/flow targets that compose multiple L1 functions. |
+| Top-level L1/L2 coverage target | 79 | 62 L1 + 17 L2 entries, before task-form multiplication. |
+| Release task forms | 271 | Materialized `dut`, `tb`, `bugfix`, and/or `e2e` forms. |
+| Core score denominator | 66 entries / 236 forms | Enabled for certified `track=core` rows; support rows are reported separately. |
 | Support suite | 13 entries / 35 forms | Measurement/stimulus coverage excluded from the core circuit score. |
-| Difficulty split | D1=7, D2=43, D3=14 | Difficulty is orthogonal to L1/L2 and core/support. |
+| Difficulty split | D1=7, D2=54, D3=18 | Difficulty is orthogonal to L1/L2 and core/support. |
 
-The 64-entry target intentionally contains two roles: 51 core circuit entries
+The 79-entry target intentionally contains two roles: 66 core circuit entries
 under converter, comparator, PLL/timing, calibration/control, signal
-conditioning, and sample/hold categories; and 13 support entries under
-measurement/testbench instrumentation plus stimulus/sources. Support entries
-are valid benchmark content after certification, but paper tables must not mix
-them into the core analog circuit-function score denominator.
+conditioning, sample/hold, bias/reference/power, and RF/AFE categories; and 13
+support entries under measurement/testbench instrumentation plus
+stimulus/sources. Support entries are valid benchmark content after
+certification, but paper tables must not mix them into the core analog
+circuit-function score denominator.
 
 ## L0 / L1 / L2 Rules
 
@@ -53,6 +55,8 @@ them into the core analog circuit-function score denominator.
 | Calibration, DEM, and Control | 7 | 6 | 1 | Core calibration/control coverage after DEM deduplication. |
 | Baseband Signal Conditioning | 8 | 7 | 1 | Core voltage-domain transform coverage. |
 | Sampling and Analog Memory | 5 | 4 | 1 | Core sampled analog memory/front-end coverage. |
+| Bias Reference and Power Management | 8 | 6 | 2 | Core bias, reference, reset, regulator, and power-state macromodel coverage. |
+| RF and AFE Behavioral Macromodels | 7 | 5 | 2 | Core voltage-domain RF/AFE macro behavior, not transistor-level RF physics. |
 | Measurement Instrumentation Flows | 7 | 5 | 2 | Support coverage for reusable measurement contracts. |
 | Stimulus and Source Generators | 6 | 5 | 1 | Support coverage for reusable stimulus/source models. |
 
@@ -66,6 +70,8 @@ them into the core analog circuit-function score denominator.
 | Calibration, DEM, and Control | Trim-voltage generator; gain trim controller; DWA/DEM encoder; calibration deadband controller; successive-approximation calibration/search FSM; element shuffler. |
 | Baseband Signal Conditioning | First-order lowpass; resettable integrator; soft/hysteretic limiter; precision rectifier/envelope detector; higher-order filter; slew-rate limiter; programmable gain amplifier. |
 | Sampling and Analog Memory | Aperture-delay track-and-hold; sample-and-hold with droop/leakage; clocked sample-and-hold; acquisition-limited sample-and-hold. |
+| Bias Reference and Power Management | Bandgap reference macromodel; PTAT/CTAT reference generator; bias voltage generator with enable and trim; LDO regulator macromodel; UVLO/brownout detector; power-on reset detector. |
+| RF and AFE Behavioral Macromodels | LNA gain-compression macromodel; RF mixer/downconverter macromodel; limiting amplifier front-end; log/RSSI power detector; PA compression macromodel. |
 | Measurement Instrumentation Flows | Crossing metric writer; settling response measurement helper; peak detector; gain estimator; edge interval timer. |
 | Stimulus and Source Generators | PRBS stimulus/dither generator; periodic phase-ramp guard source; burst clock source; dither or noise-like deterministic source; sine/periodic voltage source. |
 
@@ -83,13 +89,17 @@ them into the core analog circuit-function score denominator.
 | Calibration, DEM, and Control | Complete calibration loop | Error source + controller + trim/actuator + convergence metric. |
 | Baseband Signal Conditioning | Amplifier/filter chain | Gain or driver stage + filter/limiter + measured response. |
 | Sampling and Analog Memory | Converter front-end | Sampling front-end + quantizer or comparator interaction. |
+| Bias Reference and Power Management | Reference startup/enable flow | Enable/ramp behavior + reference startup + valid/reset-style observable state. |
+| Bias Reference and Power Management | LDO load-step recovery flow | Regulator macromodel + load-step transient + recovery metric. |
+| RF and AFE Behavioral Macromodels | I/Q downconversion chain | Mixer/downconversion behavior plus quadrature baseband observables. |
+| RF and AFE Behavioral Macromodels | AGC receiver leveling loop | Gain-compression/front-end behavior plus gain-control convergence. |
 | Measurement Instrumentation Flows | Measurement flow | Stimulus + DUT + metric artifact + checker. |
 | Measurement Instrumentation Flows | Gain extraction/convergence measurement flow | Stimulus + gain estimator + convergence or trim metric artifact. |
 | Stimulus and Source Generators | Programmable stimulus sequencer | Ramp, swept/chirp sine, and gated burst/PRBS schedule with mode-switch continuity checks; support/stimulus L2 reported separately from core circuit flows. |
 
 ## Rebalance Decisions
 
-The 64-entry release removes 10 weak or duplicate rows:
+The release rebalance removed 10 weak or duplicate rows:
 `vbr1_l1_adc_code_capture_register`,
 `vbr1_l1_serializer_frame_aligner`,
 `vbr1_l1_serial_readout_deserializer`,
@@ -101,6 +111,7 @@ The 64-entry release removes 10 weak or duplicate rows:
 `vbr1_l1_rotating_dem_selector`, and
 `vbr1_l1_windowed_dem_pointer`.
 
-It adds two stronger analog tasks:
+It then added stronger analog coverage, including:
 `vbr1_l1_acquisition_limited_sample_and_hold` and
-`vbr1_l1_programmable_gain_amplifier`.
+`vbr1_l1_programmable_gain_amplifier`, plus the CT07 bias/reference/power and
+CT08 RF/AFE macromodel categories.

@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `clk_divider.va`, `clk_divider_ref.va`, `tb_clk_divider_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `clk_divider.va`, `clk_divider_ref.va` must be co-located with the generated Spectre testbench.
+- Include each generated Verilog-A file exactly with a matching `ahdl_include "<file>.va"` line in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -35,7 +39,14 @@ The release harness expects these exact public scalar observables:
 - `rst_n`
 - `clk_out`
 - `lock`
-- `\`
+- `div_code_0`
+- `div_code_1`
+- `div_code_2`
+- `div_code_3`
+- `div_code_4`
+- `div_code_5`
+- `div_code_6`
+- `div_code_7`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -51,6 +62,29 @@ Public stimulus/source nodes visible in the reference harness include:
 - `div_code_5`
 - `div_code_6`
 - `div_code_7`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "clk_divider.va"
+ahdl_include "clk_divider_ref.va"
+
+XDUT (clk_in rst_n div_code_0 div_code_1 div_code_2 div_code_3 div_code_4 div_code_5 div_code_6 div_code_7 clk_out lock) clk_divider_ref
+
+tran tran stop=80n maxstep=50p
+save clk_in rst_n clk_out lock div_code_0 div_code_1 div_code_2 div_code_3 div_code_4 div_code_5 div_code_6 div_code_7
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

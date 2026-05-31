@@ -24,7 +24,7 @@
     "path": "tb_companion_from_e2e:pipeline_adc_chain_e2e"
   },
   "tier": "release-candidate",
-  "verification_status": "pending_dual",
+  "verification_status": "passed",
   "owner": "team",
   "created_at": "2026-05-22",
   "inputs": [
@@ -47,7 +47,7 @@
     "parity_required": true
   },
   "evidence": {
-    "result_path": "pending",
-    "notes": "Release L2 compact pipeline ADC residue-chain testbench companion; fresh EVAS/Spectre dual validation pending."
+    "result_path": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pipeline_adc_chain/tb/evidence.json",
+    "notes": "Release form is EVAS/Spectre dual-certified in benchmark-vabench-release-v1/evidence/dual/vbr1_l2_pipeline_adc_chain/tb/evidence.json."
   }
 }

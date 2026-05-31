@@ -15,6 +15,18 @@ import run_gold_dual_suite as dual  # noqa: E402
 import run_gold_suite as gold_suite  # noqa: E402
 
 
+def test_direct_sui_ssh_base_cmd_disables_stale_controlmaster(monkeypatch) -> None:
+    monkeypatch.setenv("VAEVAS_SUI_PROXY_JUMP", "thu-sui")
+
+    cmd = dual.ssh_base_cmd("thu-wei", timeout_s=45)
+
+    assert cmd[:2] == ["ssh", "-o"]
+    assert "ControlMaster=no" in cmd
+    assert "ControlPath=none" in cmd
+    assert cmd[cmd.index("-J") + 1] == "thu-sui"
+    assert cmd[-1] == "thu-wei"
+
+
 def test_run_dual_case_marks_non_scored_behavior_as_not_required(
     monkeypatch, tmp_path: Path
 ) -> None:
@@ -142,6 +154,26 @@ def test_run_spectre_case_can_request_side_output_downloads(monkeypatch, tmp_pat
     assert "remote_pwd = next((line for line in reversed(pwd_lines) if line.startswith('/')), '')" in captured["inline"]
     assert "remote_output_dirs.append(candidate_dir)" in captured["inline"]
     assert "runner.download(remote_path, local_path)" in captured["inline"]
+
+
+def test_gain_extraction_parity_accepts_gain_estimator_output_names() -> None:
+    rows = []
+    for idx in range(80):
+        vin_diff = -0.03 + idx * (0.06 / 79)
+        rows.append(
+            {
+                "time": idx * 1e-9,
+                "vinp": 0.45 + 0.5 * vin_diff,
+                "vinn": 0.45 - 0.5 * vin_diff,
+                "voutp": 0.45 + 3.0 * vin_diff,
+                "voutn": 0.45 - 3.0 * vin_diff,
+            }
+        )
+
+    result = dual.compare_gain_extraction_parity(rows, rows)
+
+    assert result["status"] == "passed"
+    assert result["evas"]["output_pair"] == "voutp/voutn"
 
 
 def test_run_spectre_case_can_use_direct_sui_backend(monkeypatch, tmp_path: Path) -> None:

@@ -1,8 +1,8 @@
 {
-  "date": "2026-05-26",
+  "date": "2026-05-29",
   "release": "vabench-release-v1",
   "status": "pass",
-  "release_task_manifest_count": 219,
+  "release_task_manifest_count": 271,
   "rows": [
     {
       "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
@@ -1845,6 +1845,526 @@
       "spectre": "pass"
     },
     {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D1",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "dut",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/dut/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "bugfix",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/bugfix/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D2",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "e2e",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
+      "release_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "tb",
+      "track": "core",
+      "difficulty": "D3",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/tb/release_task.json",
+      "static": "pass",
+      "evas": "pass",
+      "spectre": "pass"
+    },
+    {
       "release_entry_id": "vbr1_l1_crossing_metric_writer",
       "form": "tb",
       "track": "support",
@@ -1902,7 +2422,7 @@
       "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/release_task.json",
       "static": "pass",
       "evas": "pass",
-      "spectre": "pending"
+      "spectre": "pass"
     },
     {
       "release_entry_id": "vbr1_l1_gain_estimator",
@@ -1912,7 +2432,7 @@
       "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/release_task.json",
       "static": "pass",
       "evas": "pass",
-      "spectre": "pending"
+      "spectre": "pass"
     },
     {
       "release_entry_id": "vbr1_l1_peak_detector",

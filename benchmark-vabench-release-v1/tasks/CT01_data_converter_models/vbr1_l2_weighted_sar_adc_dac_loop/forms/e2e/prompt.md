@@ -11,10 +11,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a behavioral composition/flow task for Weighted SAR ADC/DAC loop. It should expose intermediate state, multi-stage behavior, or a closed-loop relation through the public observables below.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to the public behavior checks below; do not broaden the task into full silicon implementation, layout, device physics, or unlisted performance metrics.
+
 ## Form-Specific Requirements
 
 - Generate all target artifacts: `dac_weighted_8b.va`, `sar_adc_weighted_8b.va`, `sh_ideal.va`, `tb_sar_adc_dac_weighted_8b_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `dac_weighted_8b.va`, `sar_adc_weighted_8b.va`, `sh_ideal.va` must be co-located with the generated Spectre testbench.
+- Include each generated Verilog-A file exactly with a matching `ahdl_include "<file>.va"` line in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -56,6 +66,35 @@ Public stimulus/source nodes visible in the reference harness include:
 - `rst_n`
 - `vin`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "dac_weighted_8b.va"
+ahdl_include "sar_adc_weighted_8b.va"
+ahdl_include "sh_ideal.va"
+
+Vvdd (vdd 0) vsource dc=vdd
+Vvss (vss 0) vsource dc=0
+
+IADC (vin clks rst_n dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0) sar_adc_weighted_8b vdd=vdd
+IDAC (dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0 vout) dac_weighted_8b vdd=vdd
+ISH (vin clks vdd vss rst_n vin_sh) sh_ideal
+
+tran tran stop=10u maxstep=5n
+save vin vin_sh clks rst_n vout dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `sar_adc_code_range_sufficient`
@@ -64,6 +103,31 @@ Public stimulus/source nodes visible in the reference harness include:
 - `dac_output_matches_weighted_code`
 - `code_monotonic_with_sampled_input`
 - `dac_output_in_range`
+
+## Public L2 Behavior Contract
+
+This row is a composed SAR ADC plus weighted DAC loop. The public behavior must
+make the sample, conversion code, and reconstruction mutually consistent:
+
+1. Sample/hold stage:
+   - Sample `vin` onto `vin_sh` on the public sampling clock.
+   - Keep the held sample stable long enough for conversion and reconstruction
+     to be observed.
+
+2. SAR conversion stage:
+   - Drive `dout_7` through `dout_0` as an 8-bit voltage-coded conversion
+     result for the held input.
+   - The code should cover a broad range under the public full-swing input
+     stimulus and should be monotonic with the sampled input.
+
+3. Weighted DAC reconstruction:
+   - Feed the saved SAR bits into the weighted DAC path.
+   - Drive `vout` as the weighted reconstruction of the saved code in the 0 V
+     to 0.9 V range.
+
+The public relation is: sampled input `vin_sh` -> SAR code bits -> weighted DAC
+`vout`. The evaluator checks range, unique-code coverage, monotonicity, and
+code-to-DAC consistency from saved waveforms.
 
 ## Output Contract
 

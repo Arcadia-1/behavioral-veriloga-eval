@@ -6,12 +6,12 @@
   "status": "PASS",
   "scores": {
     "rerun_backend_pass": true,
-    "rerun_expected_result_met": false,
-    "raw_status": "FAIL_SPECTRE",
+    "rerun_expected_result_met": true,
+    "raw_status": "PASS",
     "behavior_score": null
   },
   "artifacts": [
-    "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/vbr1_l1_gain_estimator/tb/gold",
+    "results/vabench-release-v1-dual-rerun/vbr1_l1_gain_estimator/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evidence.json"
   ],
   "notes": [

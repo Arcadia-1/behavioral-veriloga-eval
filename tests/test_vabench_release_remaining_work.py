@@ -12,18 +12,18 @@ REPORT = PACKAGE / "reports" / "remaining_work.json"
 def test_remaining_work_report_separates_pending_causes() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
-    assert report["status"] == "in_progress"
+    assert report["status"] == "complete"
     assert report["ready_to_score"] is True
-    assert report["planned_entries"] == 64
-    assert report["source_linked_entry_count"] == 64
-    assert report["asset_materialized_entry_count"] == 64
+    assert report["planned_entries"] == 79
+    assert report["source_linked_entry_count"] == 79
+    assert report["asset_materialized_entry_count"] == 79
     assert report["dual_failed_release_task_count"] == 0
     assert report["evas_pass_spectre_fail_count"] == 0
-    assert report["scored_release_entries"] == 51
+    assert report["scored_release_entries"] == 66
     assert report["source_design_pending_entry_count"] == 0
-    assert report["selected_rerun_pending_form_count"] == 2
+    assert report["selected_rerun_pending_form_count"] == 0
     assert report["source_equivalence_blocked_form_count"] == 0
-    assert report["fresh_dual_rerun_queue_form_count"] == 2
+    assert report["fresh_dual_rerun_queue_form_count"] == 0
     assert "fresh EVAS/Spectre rerun" in report["source_equivalence_resolution_policy"]
     assert report["missing_required_form_entry_count"] == 0
     assert report["current_seed_missing_form_entry_count"] == 0
@@ -48,7 +48,7 @@ def test_remaining_work_next_queue_only_lists_active_work() -> None:
     queue = report["next_queue"]
 
     assert all("Design release-ready source tasks" not in item for item in queue)
-    assert queue == ["Run the current 2-form EVAS/Spectre fresh dual certification queue."]
+    assert queue == ["No remaining release work is known from current reports."]
     assert not any("source-equivalence blocked historical imports" in item for item in queue)
     assert not any("missing required forms" in item for item in queue)
     assert not any("benchmark_score" in item for item in queue)

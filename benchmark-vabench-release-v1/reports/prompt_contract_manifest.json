@@ -1,10 +1,10 @@
 {
-  "date": "2026-05-28",
+  "date": "2026-05-30",
   "release": "vabench-release-v1",
   "status": "pass",
   "prompt_version_id": "public-contract-v3",
   "previous_prompt_version": "public-contract-v2",
-  "runner_wrapper_version": "release-runner-wrapper-v5",
+  "runner_wrapper_version": "release-runner-wrapper-v6",
   "prompt_count": 271,
   "expected_prompt_count": 271,
   "status_counts": {
@@ -21,7 +21,8 @@
     "Normalized all release prompts to explicit public benchmark contracts.",
     "Added explicit Spectre .scs scaffold guidance for TB/E2E prompts, including ahdl_include and instance syntax.",
     "Moved runner-only wrapper, ICL, and repair-feedback protocol out of public prompts.",
-    "Recorded runner-side baseline wrapper `release-runner-wrapper-v5` for Question/Answer markers and shared EVAS/Spectre rules.",
+    "Removed explicit bug-root-cause hints from bugfix prompts; bugfix tasks now expose only public behavior and observable mismatch framing.",
+    "Recorded runner-side baseline wrapper `release-runner-wrapper-v6` for Question/Answer markers and shared EVAS/Spectre rules.",
     "Recorded target artifact names from release_task/gold assets for prompt-version traceability.",
     "Old model-baseline results should be treated as historical and rerun before comparison."
   ],
@@ -101,7 +102,7 @@
         "simple_binary_voltage_dac_4b.va",
         "tb_simple_binary_voltage_dac_4b_ref.scs"
       ],
-      "prompt_sha256": "30ab082163da4b9d811a91b13d81529cf39036bb14106ee925c065f8df7f6d88",
+      "prompt_sha256": "2863e0d38b8914360566247b2126df5398d2c300b0a7b33370ef06c76704a0d0",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -373,7 +374,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "6f7a821d884f3b8e0a9dfc6e21688bd30e040deee0670df46974cd6ce0fa1437",
+      "prompt_sha256": "10a2b9121757f81b01b254576b4b2f86fd1adc5077e618ba73914920e75b17ec",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -864,7 +865,7 @@
         "tb_thermometer_decoder_guarded_ref.scs",
         "thermometer_decoder_guarded.va"
       ],
-      "prompt_sha256": "7a84d5e219f7627ea629c76cefe511fd5fc4bbef74b2a5ad03cd5f73f886f1aa",
+      "prompt_sha256": "71e7f7e2797173a457d26c217dba0dfaf1fc74ae5e61088a7255f16072ae2264",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -891,7 +892,7 @@
       "target_artifacts": [
         "tb_thermometer_decoder_guarded_ref.scs"
       ],
-      "prompt_sha256": "ca84f27f530983487961c6f209339e08a21c9f660b477948b5ea7f3b742a3529",
+      "prompt_sha256": "608bd3289f836c8a1a22f3f70eaa72ff3babf765f0c5987e58eabfe0955d532c",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -1000,7 +1001,7 @@
       "target_artifacts": [
         "tb_thermometer_dac_15seg_ref.scs"
       ],
-      "prompt_sha256": "f70d71cd0ab6e78fbaedff007975a604713419b9e9f8dce41eb213ee6d1d8647",
+      "prompt_sha256": "5e01cc0803eed1897e7ec77e293efcc46486a1dea4c6dfc53e09f29b13cd5e6e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -1522,7 +1523,7 @@
         "cmp_offset_ref.va",
         "tb_comparator_offset_ref.scs"
       ],
-      "prompt_sha256": "49f9084910ac3c19d4ec71a742dca2b0275574e18bb7b96b4dcff27e3e77fb19",
+      "prompt_sha256": "6f7cd18ab30fd4cf93389d3be2ff74bef8b886870619921bb5bd3718ae8c925f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -1549,7 +1550,7 @@
       "target_artifacts": [
         "tb_comparator_offset_ref.scs"
       ],
-      "prompt_sha256": "b86ea4a9440ae54aa6e36f7a94ee69f0e705885d2e224ae8d811b3ec67b1d7fd",
+      "prompt_sha256": "92cedac5425a3deb99972cb43f7750e814d7a982c9f18288b8e8d1d709dc338b",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2615,7 +2616,7 @@
         "first_order_lowpass.va",
         "tb_first_order_lowpass_ref.scs"
       ],
-      "prompt_sha256": "6e6dfc1fb2a5ff10d03df9df0e358dcf6ff1ec3c6b009e7ac3faf3f98a072ab0",
+      "prompt_sha256": "74da20eda757b077c9859657b16e62810a02755926a1e6946df51e19acbd2ba7",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2642,7 +2643,7 @@
       "target_artifacts": [
         "tb_first_order_lowpass_ref.scs"
       ],
-      "prompt_sha256": "aa05117fe2ee087675af3a81b10baf4a5688d9136236b35e76d542e2cd692e2d",
+      "prompt_sha256": "ef4a654da1ed2fb5645aaef960056d68338e19af87c3d003e08d8159d71a88fd",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2669,7 +2670,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "a8f89c7006e880885c01d93868decd0301a5ea4ee2e8bf74144567b7dd6584eb",
+      "prompt_sha256": "63fabc2f1070de61af963277787ad0087ba9de02bd2241267f7eb825651be24d",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2724,7 +2725,7 @@
         "higher_order_filter.va",
         "tb_higher_order_filter.scs"
       ],
-      "prompt_sha256": "a2c453e937cb9ed43c5b63e6a65390e030143fbd430b5170e55b1b92f3ba12c0",
+      "prompt_sha256": "213cd714f1385113d69ce75877dae3b5ca36ce8d8740a2ccf8ef518cdb6f6596",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2751,7 +2752,7 @@
       "target_artifacts": [
         "tb_higher_order_filter.scs"
       ],
-      "prompt_sha256": "5d186c75b7f9e5e6666fc32ed569695a459cf07a9e57cc4773ad65fcf1a32c9f",
+      "prompt_sha256": "f5061d0cb492f598be4dc0778c9f8b433b37db9cfa2aeddc256b32c4597abf45",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2860,7 +2861,7 @@
       "target_artifacts": [
         "tb_precision_rectifier_envelope_detector.scs"
       ],
-      "prompt_sha256": "46b783963c6c5640f6fb6a56f84cd43dd0f83f911131b4abcf4c6e4fcb5c6b1e",
+      "prompt_sha256": "7ed1bf53b68df0a7773f17be5d2893410061a10c861dca7cafb5d5411dc0e91e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2942,7 +2943,7 @@
         "programmable_gain_amplifier.va",
         "tb_programmable_gain_amplifier.scs"
       ],
-      "prompt_sha256": "3cc9472deef2c82393a74d556020daaff914fe1abd007bf6eed84d9585865362",
+      "prompt_sha256": "56c9f21699024c0677e4a0d5af19af09bf1b1f51fc15dded0000d5d440387df9",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -2969,7 +2970,7 @@
       "target_artifacts": [
         "tb_programmable_gain_amplifier.scs"
       ],
-      "prompt_sha256": "508d32b477af7595e6e6530896eead834f77199c31eaf2b3625a1c3d1d76f4c1",
+      "prompt_sha256": "0c293a4593d0ec698297265c798f31fd12711b78b913246dcb1b3cbc1bce62fb",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3051,7 +3052,7 @@
         "resettable_integrator.va",
         "tb_resettable_integrator_ref.scs"
       ],
-      "prompt_sha256": "3398f3f478bf39793eb355508c9f7fb91cf0538091c66e08d26096e635563677",
+      "prompt_sha256": "d856aed42d7031d89a4e70005b1e79b4f20c5153959b29cdc40d9034b8bdfa81",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3078,7 +3079,7 @@
       "target_artifacts": [
         "tb_resettable_integrator_ref.scs"
       ],
-      "prompt_sha256": "be2156a2c5b99d3d2d13a6bc3049d31e55b55c9fc3f00cc0b41b330d432873c7",
+      "prompt_sha256": "0ee4629a3207d6e51559f25163c4581c79556b60e5e19324acdc6ddde211a813",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3187,7 +3188,7 @@
       "target_artifacts": [
         "tb_slew_rate_limiter_ref.scs"
       ],
-      "prompt_sha256": "a284194e6e688517a1f16dc8ab24793070ddea4da980e4d10f027f9e0da9dd7b",
+      "prompt_sha256": "e01e27dd44b118282960f83fee8201c8443a56612dc34ac8b1f74513ef3e0b9e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3214,7 +3215,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "aab60bbe1ecb7329b9ef73ff1a136971095a549aa276d84b24ab6f211c5ba15a",
+      "prompt_sha256": "4cf3c4f9c927d6dee256a66090bcd5dee8a9a6639d20a08e7d619c1beab6602e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3351,7 +3352,7 @@
       "target_artifacts": [
         "tb_amplifier_filter_chain.scs"
       ],
-      "prompt_sha256": "ca6cee7eaa51f52e79fbbdf1d0a9a6cb802433cc801ecbc39418650543e2dd32",
+      "prompt_sha256": "beade061fbcf2ba782f20dcbbc8dfb28a86dc45b6dda07e4e7a8277cdd377d81",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3487,7 +3488,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "86a5daf5e51e7bf24173d3e6054964b52747b708a13a0c49112cef73b5067f42",
+      "prompt_sha256": "c0e7a23e87da88b829211e40980d33ad4c73db07ca92449f96776f37fd1aca92",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3621,10 +3622,9 @@
       "prompt": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/prompt.md",
       "release_task_manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/release_task.json",
       "target_artifacts": [
-        "clk_divider.va",
         "clk_divider_ref.va"
       ],
-      "prompt_sha256": "df23e0591bcb8fb237507057ea16ef3a4d0b4031a430ddb5d5a1263079be0422",
+      "prompt_sha256": "4293cfee6ad73eb0db7da23cb6b83865192672d43c0662605d469298303d85e1",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3925,7 +3925,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "dfcc5739ece89b587c996a500912b69f251aec41534d4286daa7141275177f4a",
+      "prompt_sha256": "b83d14e591300f662e063d3f7afc4945de5e14433e8d51d1124a1261f8137138",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -4363,7 +4363,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "72699ba895da2ca9ae013a58de7002e826c3ef7104fd89fe19393715ea9b57ad",
+      "prompt_sha256": "ade4744dd7d3363bb0f151b9bdace3064ee6ec7406ff8fab1988b9fd83cd94f4",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -4801,7 +4801,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "7ce29c4ca5d4c94c48761048732693f8eee5079870751c6242f6a7b5e2382aa8",
+      "prompt_sha256": "da2c94363d5194881534f5dc59fd005d2968fcfeab047649f9f5ef82f9814f7e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5074,7 +5074,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "438b18ceb70fc4f8ca51a660b8aa560c1f713598b80db69132acfb448432615b",
+      "prompt_sha256": "120737a712159422bf2bf1e8feaae5f760e6ef0e1c9b0f39d436b2cfb95e7389",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5101,7 +5101,7 @@
       "target_artifacts": [
         "bandgap_reference_macro_model.va"
       ],
-      "prompt_sha256": "43d70017c8411d4f2d71ac04de95e465fc487b1ee497413e2a1d22e2d570bbdc",
+      "prompt_sha256": "c683b961331fc2c569af0cbfd02ec5c5fa0a6aa91de41be2703d11ad191e9f7f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5129,7 +5129,7 @@
         "bandgap_reference_macro_model.va",
         "tb_bandgap_reference_macro_model.scs"
       ],
-      "prompt_sha256": "2b477e9354594624082aa16cc6d80192bd862284fde6ce1972058844a006faed",
+      "prompt_sha256": "900a87368851e922a56d220e563d9bba86d05ec696a50daa0f04675378ddccc3",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5156,7 +5156,7 @@
       "target_artifacts": [
         "tb_bandgap_reference_macro_model.scs"
       ],
-      "prompt_sha256": "1796b8f000c64ad0aafaf301ab0f0331d1cc2f566e3709da66ae858593cdcef3",
+      "prompt_sha256": "840e905d10c26a236ab06ca44eca2c48df4920e511a0f4e5bce576c7eb50a2b6",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5183,7 +5183,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "7da7759d85237a679a43a756bc2a0e0bcc797264d188bd3ca43b2d880372bd44",
+      "prompt_sha256": "0a8c31f8c3667ff7283bfabda154d5aee690bac56bbedb44ffa2ae78264a3042",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5210,7 +5210,7 @@
       "target_artifacts": [
         "bias_voltage_generator_with_enable_trim.va"
       ],
-      "prompt_sha256": "1e278403d1ffd41d3f1df99f72ab3458c715cafc2d40668e7f3d6c579d4af82b",
+      "prompt_sha256": "6b3721f87008b726892e71a242e6a82e16083178a7f5ddf42ce3922ccc16bcf3",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5238,7 +5238,7 @@
         "bias_voltage_generator_with_enable_trim.va",
         "tb_bias_voltage_generator_with_enable_trim.scs"
       ],
-      "prompt_sha256": "61a1be73c32a32ae7eff99b18e6b6b42d01de38ca22ec2e9220e04efba659dfd",
+      "prompt_sha256": "a66b21b54d960321384ec6ec9985588ed35866f47f3e8240b5b06c8c7be6bf98",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5265,7 +5265,7 @@
       "target_artifacts": [
         "tb_bias_voltage_generator_with_enable_trim.scs"
       ],
-      "prompt_sha256": "b46314f8fc6401583f6fcfabd3352bd615c6214c2535b6b159368fd8d39b1f41",
+      "prompt_sha256": "a5c2920ad9afe4cb97226a7ec0f10e4b3bbd4c6bf0980ea36d4951fbfcc6cef5",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5292,7 +5292,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "6c7f81227e1313de02317c5fa5c5c3ae89e6f65ee942146a1a81ed5bed429a36",
+      "prompt_sha256": "a799452c5190cfec81b328a74ceaf889ca636bf1c3895257901e51376e02760b",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5319,7 +5319,7 @@
       "target_artifacts": [
         "ldo_regulator_macro_model.va"
       ],
-      "prompt_sha256": "cb919289319f8c504c49245ae8fef45418a4480be4b98df25e07640735bb53b4",
+      "prompt_sha256": "a4fb5bf0e6871297ca38d18c5a60a21a9618b7751e9dc14530cd4dcfdb45c4bf",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5347,7 +5347,7 @@
         "ldo_regulator_macro_model.va",
         "tb_ldo_regulator_macro_model.scs"
       ],
-      "prompt_sha256": "6f2d17f0b590ce1f9dbb7137ef2980a894f7e10d7989ef3a370fdd85cd176682",
+      "prompt_sha256": "cdca009eeeabc435493536a7937bed817935449fbcd094b576ab18793dc1fdd8",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5374,7 +5374,7 @@
       "target_artifacts": [
         "tb_ldo_regulator_macro_model.scs"
       ],
-      "prompt_sha256": "58e056235b4b58f691facc4e2031c747d7052abe4cc7e2aae5ff57313b673e86",
+      "prompt_sha256": "7c3762a8db83c8efe80d4c57e2c8d38fbc038ce26e851f399508d08abe7d9e4a",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5401,7 +5401,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "da672f0009858c5b344302d051a466a6f720502a712e2b2ac0d9543397bf98f8",
+      "prompt_sha256": "fa3bb6ce22b7d4e9ee2fc0f7c18e3b87813db7ac96521d169d0c228e5c2c500e",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5428,7 +5428,7 @@
       "target_artifacts": [
         "power_on_reset_detector.va"
       ],
-      "prompt_sha256": "a0ddefb907a6f3f8603f7945c87ccec3d234ff901b1fb65b9c9591d6487b9e89",
+      "prompt_sha256": "e12ca111a78271aeccdf3ef11453cf74a53fd9f543499004184da9b24d30dec8",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5456,7 +5456,7 @@
         "power_on_reset_detector.va",
         "tb_power_on_reset_detector.scs"
       ],
-      "prompt_sha256": "49d0696a95935fdc63fa1492409a4524c693b5fa4e2da8b2c846ac2b93e2c206",
+      "prompt_sha256": "ed452498f964ca04530bbd1273107d77955a2d000cb6780ee631a63aae35c1d3",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5483,7 +5483,7 @@
       "target_artifacts": [
         "tb_power_on_reset_detector.scs"
       ],
-      "prompt_sha256": "7f22ad77aa9aee2d80af766fcdd2f664533d5b501510a15b6d016d8660b562e6",
+      "prompt_sha256": "7dc678c1f733f7df4edc2faf0426763930e9b240e8fc441d3797e40851415afe",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5510,7 +5510,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "b0a56bcdea01210392015f653f0746e62166b4b0860007d29612b7b34e36b96c",
+      "prompt_sha256": "feecd0b5f754d80ec9d70fc1bcb917215a2c2e6bc58b62c565f85749871c5767",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5537,7 +5537,7 @@
       "target_artifacts": [
         "ptat_ctat_reference_generator.va"
       ],
-      "prompt_sha256": "6fd3e1b7b7b12f65b3a4644f48f29491a43d66e12770463688a433c0e1cf0bec",
+      "prompt_sha256": "83915c7a9889c3e0e1bbdef4f5a6e10efdbced20563837b2bdb2f1db052f9520",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5565,7 +5565,7 @@
         "ptat_ctat_reference_generator.va",
         "tb_ptat_ctat_reference_generator.scs"
       ],
-      "prompt_sha256": "fc03ec6705db7df32f629e0e14b529c47509c8e4357f68f4014e6c4a5610cc47",
+      "prompt_sha256": "54478f8a873eccb873ff8971bd52426d1a1cb6e2df92339a2eb7d4dd5f6b8f5c",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5592,7 +5592,7 @@
       "target_artifacts": [
         "tb_ptat_ctat_reference_generator.scs"
       ],
-      "prompt_sha256": "ba0b04088fa69c0b642002cb603f029b2834932187ae36fd43db475978cf617d",
+      "prompt_sha256": "f7f5b8d6c0f2d22ec5bf2a1fac4556bb4e827c3a0672ca71440345631419d1fa",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5619,7 +5619,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "abf3d2d8e9a32bba02668244855e79273b7c7432789f9d7bae6d281d27e13d4a",
+      "prompt_sha256": "c0f512e25db15545db066f259bf1ebc7fa960287e4615b3aba646ef40a791006",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5646,7 +5646,7 @@
       "target_artifacts": [
         "uvlo_brownout_detector.va"
       ],
-      "prompt_sha256": "e6627e6350d622815d32c370321deb9a6c9d80e9166cdd9a08c421bfec8d56e4",
+      "prompt_sha256": "aeebf1746a8f8fb9770f821dded874ed6959ca059575432cc0de104d3f2bdb64",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5674,7 +5674,7 @@
         "uvlo_brownout_detector.va",
         "tb_uvlo_brownout_detector.scs"
       ],
-      "prompt_sha256": "df1b78a6d5adb853856fa724d3239791f5660155806df2fe534364dc1bd987e1",
+      "prompt_sha256": "feff24f317f9d8077cc80610de88ee5eeb92ea606a88a4ab8e2d3a68c3ca92d4",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5701,7 +5701,7 @@
       "target_artifacts": [
         "tb_uvlo_brownout_detector.scs"
       ],
-      "prompt_sha256": "dabcf825e7a99a79fd2dc610c24fd254a1c46dc3bdcfdb8da40fa40ad2907075",
+      "prompt_sha256": "659bde428bc5166bb5b2de0c669f3e53e2382298667b455e7db8b33986516546",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5729,7 +5729,7 @@
         "ldo_load_step_recovery_flow.va",
         "tb_ldo_load_step_recovery_flow.scs"
       ],
-      "prompt_sha256": "1c7991745f12096971a39313e77da48fd636f6a31970d75a8b874f36380eb45d",
+      "prompt_sha256": "2edec50ca8d49fdde93e9e57920dd9dd7d09192b91329db1c4fb0cb90650e6dd",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5756,7 +5756,7 @@
       "target_artifacts": [
         "tb_ldo_load_step_recovery_flow.scs"
       ],
-      "prompt_sha256": "091e8bd5be571d205ff09887a00d8c45c22ba6c930245b1dc803e9794043bd8e",
+      "prompt_sha256": "f8573b78b2ec72a49d7c163f6c3454385cea3a2f04af7a52a969c1c16037ef36",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5784,7 +5784,7 @@
         "reference_startup_enable_flow.va",
         "tb_reference_startup_enable_flow.scs"
       ],
-      "prompt_sha256": "35e411cd4529f12f55ef4502a1c3d4c006c7f6f7a2254aa72a1c6f9bbf2f76ad",
+      "prompt_sha256": "cda00f62a6731355e2617ebc81d4c6bc440d2f193068a860387f706f81b79020",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5811,7 +5811,7 @@
       "target_artifacts": [
         "tb_reference_startup_enable_flow.scs"
       ],
-      "prompt_sha256": "b89b8ce622b2a034aa46e89d44459d4b76d5a3a059b9e220c734d210d6045ab9",
+      "prompt_sha256": "0ba734a80bd00e3f930914f640615b72e0a1d0b4dafc71435b27e079805b3e6d",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5838,7 +5838,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "0baff0ae98fd996e8ec91c6d9b3898eb4bbcd4f9624ad3b949626db0db7bb514",
+      "prompt_sha256": "651c04a99154167c4145467fe40add9cf07a6cd7a0616bb512eb54ddb7aace5d",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5865,7 +5865,7 @@
       "target_artifacts": [
         "limiting_amplifier_frontend.va"
       ],
-      "prompt_sha256": "261796efdfe54a32249cc5efef86c3484444e6f980f8191331c2ef9e259993a5",
+      "prompt_sha256": "15bc6f35075834af5e2df3fc55f6de26e4619a9b973035259933a41289b45c69",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5893,7 +5893,7 @@
         "limiting_amplifier_frontend.va",
         "tb_limiting_amplifier_frontend.scs"
       ],
-      "prompt_sha256": "c7f4686d143ac2a1606d3035101acc06e1e1ecb9c8364844d5e9cbacc547c112",
+      "prompt_sha256": "7238beb0c0dc42eb16de7ef66277f94e8c2e38ab9690c0376ecdd55e1a7d6325",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5920,7 +5920,7 @@
       "target_artifacts": [
         "tb_limiting_amplifier_frontend.scs"
       ],
-      "prompt_sha256": "cfce4324fe9481628b3fb07dcd1a5a12f4a168b1b4c18b840abd54bfd6b69771",
+      "prompt_sha256": "0eb057865d695be213a1ee71505e016934b01411f037ce36f444049769594376",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5947,7 +5947,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "bbae44c3341e3520a6c620cc54fe4b937c4e95783266055af3ff947be339ad3a",
+      "prompt_sha256": "379a1078a3cf8f58216e5ca52234d5708e88757125981daf1a8a25c413ba0e0f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5974,7 +5974,7 @@
       "target_artifacts": [
         "lna_gain_compression_macro.va"
       ],
-      "prompt_sha256": "f062bde4cbc154cba979a4735548b908d2d2089e4e9aea4dbcf3b2f59a042109",
+      "prompt_sha256": "9f896a38227152b3e059c69a11bb90f3af89b473714126d50935542262d7e20f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6002,7 +6002,7 @@
         "lna_gain_compression_macro.va",
         "tb_lna_gain_compression_macro.scs"
       ],
-      "prompt_sha256": "91be629ebe809607e75e25ec57a796a247466b39d5650f6da9d79004b8a03fa2",
+      "prompt_sha256": "d6b1b8bd2f09bd0790d56a29933fd0d7f8ee31b48a677274f7da96576a76407b",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6029,7 +6029,7 @@
       "target_artifacts": [
         "tb_lna_gain_compression_macro.scs"
       ],
-      "prompt_sha256": "f4b8c1ecd0912b7c7cc181afc590de5f6867cd161deab4b47643fd9592e4dce8",
+      "prompt_sha256": "0ae6898b6fb8fee3a8ad572388f64a5e13ade704faef9278dd931fa2558fe5a4",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6056,7 +6056,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "35ce1e0f0832d59bc7d3854851ce1d4c3a31afc250d464d23480d692179256ac",
+      "prompt_sha256": "8a0a5ce16267a804864bd85af9b4eb5f12de4dd7b3ad3d1dd7d7befcf791c8a6",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6083,7 +6083,7 @@
       "target_artifacts": [
         "log_rssi_power_detector.va"
       ],
-      "prompt_sha256": "ec277f4be336d2f15411a04254218d57fc5c006a3857f848a3f3b52515117e44",
+      "prompt_sha256": "79e20f76afb4ac345397073a878a876c1387645acbff3a74d8f987811aeae92a",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6111,7 +6111,7 @@
         "log_rssi_power_detector.va",
         "tb_log_rssi_power_detector.scs"
       ],
-      "prompt_sha256": "22d100e74a8fc3ff9fcf9e685a82fefe6a94d02f773edfa4aed5549262c67730",
+      "prompt_sha256": "6cf7d761e4a0bf4dba86c8908a16f1b8b9c02bb7565e1ffe6ac1661025e82ca2",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6138,7 +6138,7 @@
       "target_artifacts": [
         "tb_log_rssi_power_detector.scs"
       ],
-      "prompt_sha256": "1fd092c9bdbbf19097f00d62fe6ca09ceb33e4828977987c82b2daa89d544fd0",
+      "prompt_sha256": "ed0382e3c9a1e3d230af73cdc0a2008ceb0a4871c6288d554d77560b203808c1",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6165,7 +6165,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "734042ad80ab53ca2a031e8c22d69db7023136e4122c9a6c9940034b7ca015d5",
+      "prompt_sha256": "b82c6f241664b8ee0cbc330c260c1bafd636091cc623cec0c381fd18ad244207",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6192,7 +6192,7 @@
       "target_artifacts": [
         "pa_compression_macro.va"
       ],
-      "prompt_sha256": "f169c97f67605060d3dc8068653795248aa65a0dce1341fb95deb7212b260035",
+      "prompt_sha256": "96a5abb1e3c54d97cce916b4da944ae2a3d22e6823d4b34f4bd2aa4ccd162b14",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6220,7 +6220,7 @@
         "pa_compression_macro.va",
         "tb_pa_compression_macro.scs"
       ],
-      "prompt_sha256": "4dd70c19da31a58c4e7054e52701420426e3f143ee6a1442cf536f47e5bc6987",
+      "prompt_sha256": "ba5df5ccdacf56898d48907854482a9d02ffe47d8dac7c36efc8cdb470d129c5",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6247,7 +6247,7 @@
       "target_artifacts": [
         "tb_pa_compression_macro.scs"
       ],
-      "prompt_sha256": "fd7b84098099abbc58ba95d60de6ba941d64ae457129a4c294157fcbcca0df59",
+      "prompt_sha256": "9ddadd07ac34515fdfd02b7453bbe6b517fac15e06e72eaa2f1bcc9602b4fef9",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6274,7 +6274,7 @@
       "target_artifacts": [
         "dut_fixed.va"
       ],
-      "prompt_sha256": "97f43979a2b9f8b27a38b1e2e27839311e69c5d79238368154d1df4bb04e48b4",
+      "prompt_sha256": "8b8ffa3a47bfa36aa1f6ce8b7a3cdf02b7b1138be3f5efacb2b569aca48bef77",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6301,7 +6301,7 @@
       "target_artifacts": [
         "rf_mixer_downconverter_macro.va"
       ],
-      "prompt_sha256": "2acbb6b9ed19cde3ce48fa34dd87f3805b25c0d2ae8c907410f72886b05e5c1c",
+      "prompt_sha256": "7056b7daaa5586f24d96b1a54efed0ed32b2997ddcc755ae0cc2e6e7b903a18f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6329,7 +6329,7 @@
         "rf_mixer_downconverter_macro.va",
         "tb_rf_mixer_downconverter_macro.scs"
       ],
-      "prompt_sha256": "2425560327503ca40722248b160f1a3ef86ef180df6ed61ca38a797d06cbccfd",
+      "prompt_sha256": "159db9e254f445eda40737d0bc0b591346da15f8036503c4f0e3c41b9e6562bf",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6356,7 +6356,7 @@
       "target_artifacts": [
         "tb_rf_mixer_downconverter_macro.scs"
       ],
-      "prompt_sha256": "105a33a316b6b208214aacb7bec1f766d7bef9c993c66c94911e43dd18127b81",
+      "prompt_sha256": "13ac00a602cee22d8d26193fd64fd94bec8f2ae2b178915f25a33a020672fe4a",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6384,7 +6384,7 @@
         "agc_receiver_leveling_loop.va",
         "tb_agc_receiver_leveling_loop.scs"
       ],
-      "prompt_sha256": "6e93eeee29c71ba24f6b007d858411556757ac7e35ba398231f044098225124e",
+      "prompt_sha256": "a740bea44deac04cdf074675529cc84a48232fdc29cebb38cc83cdc3c3efe177",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6411,7 +6411,7 @@
       "target_artifacts": [
         "tb_agc_receiver_leveling_loop.scs"
       ],
-      "prompt_sha256": "fbe95b1c3d1cc48408da7305a83b7eca5495166849d46d761b9f04d7b471e8d3",
+      "prompt_sha256": "9689cf8e05b6a787c7a4dd29ac8faea8c36c24b63f0b8f83a1fb3f589d5c5137",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6439,7 +6439,7 @@
         "iq_downconversion_chain.va",
         "tb_iq_downconversion_chain.scs"
       ],
-      "prompt_sha256": "48678608f5a5ad90c54996eb7c14f85de9068707a809ada4bbc297a24d660bc5",
+      "prompt_sha256": "8c08f76e7807bfc25ada66cf0b3daac567c2131e9401681364db55a8e541e8f4",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6466,7 +6466,7 @@
       "target_artifacts": [
         "tb_iq_downconversion_chain.scs"
       ],
-      "prompt_sha256": "ed2a98328af8fb32b23843791d495f5644d3e3da27a42193064d3a0fe6b7f106",
+      "prompt_sha256": "237170ee4355754a7415add0aa74507a103786c5fb5bc35532dcb50ede1400ce",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",

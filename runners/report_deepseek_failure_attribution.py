@@ -128,6 +128,13 @@ def generation_meta(row: dict[str, Any]) -> dict[str, Any]:
         return {}
 
 
+def is_incomplete_generation(meta: dict[str, Any]) -> bool:
+    return (
+        meta.get("status") == "no_code_extracted"
+        and str(meta.get("finish_reason", "")).lower() == "length"
+    )
+
+
 def combined_text(row: dict[str, Any], meta: dict[str, Any]) -> str:
     dual = row.get("dual_result") or {}
     evas = dual.get("evas") or {}
@@ -256,6 +263,20 @@ def classify(row: dict[str, Any], text: str, meta: dict[str, Any]) -> dict[str, 
         if meta.get("status") == "no_code_extracted":
             detail = "no_code_extracted_finish_reason_" + str(meta.get("finish_reason", "unknown"))
             evidence = f"generation_status={meta.get('status')} finish_reason={meta.get('finish_reason')}"
+            if is_incomplete_generation(meta):
+                result.update(
+                    primary_attribution="model_incomplete_generation",
+                    root_cause_family="model_output_budget_exhausted",
+                    root_cause_detail="incomplete_no_code_extracted_finish_reason_length",
+                    attribution_confidence="high",
+                    counts_as_direct_model_failure=True,
+                    evidence=compact(evidence),
+                    recommended_action=(
+                        "Count as model incomplete under the fixed output budget; rerun only when "
+                        "changing the token budget, wrapper protocol, or extraction policy."
+                    ),
+                )
+                return result
         elif meta:
             evidence = compact(json.dumps(meta, sort_keys=True))
         result.update(
@@ -415,12 +436,15 @@ def enriched_rows() -> list[dict[str, Any]]:
         meta = generation_meta(row)
         text = combined_text(row, meta)
         classification = row.get("classification") or {}
-        dual_status = classification.get("dual_status") or (
-            "missing" if row.get("status") in {"SKIPPED", "ERROR"} else "unknown"
-        )
-        evas_status = classification.get("evas_status") or (
-            "FAIL_INFRA" if row.get("status") == "SKIPPED" else "missing"
-        )
+        status = "INCOMPLETE" if is_incomplete_generation(meta) else row.get("status", "")
+        if status == "INCOMPLETE":
+            fallback_dual_status = "INCOMPLETE"
+            fallback_evas_status = "INCOMPLETE"
+        else:
+            fallback_dual_status = "missing" if row.get("status") in {"SKIPPED", "ERROR"} else "unknown"
+            fallback_evas_status = "FAIL_INFRA" if row.get("status") == "SKIPPED" else "missing"
+        dual_status = classification.get("dual_status") or fallback_dual_status
+        evas_status = classification.get("evas_status") or fallback_evas_status
         spectre_checker_pass = bool(classification.get("spectre_checker_pass"))
         dual_pass = bool(classification.get("dual_pass") or dual_status == "PASS")
         attribution = classify(row, text, meta)
@@ -435,7 +459,7 @@ def enriched_rows() -> list[dict[str, Any]]:
                 "track": entry_info.get("track") or form_info.get("track", ""),
                 "category": row.get("category") or entry_info.get("category") or form_info.get("category", ""),
                 "base_function": entry_info.get("base_function", ""),
-                "status": row.get("status", ""),
+                "status": status,
                 "dual_status": dual_status,
                 "evas_status": evas_status,
                 "spectre_checker_pass": spectre_checker_pass,
@@ -466,8 +490,10 @@ def counter(rows: list[dict[str, Any]], key: str, *, failures_only: bool = False
 
 
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
-    with path.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS, extrasaction="ignore")
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=CSV_FIELDS, extrasaction="ignore", lineterminator="\n"
+        )
         writer.writeheader()
         for row in rows:
             writer.writerow({key: row.get(key, "") for key in CSV_FIELDS})
@@ -485,6 +511,12 @@ def md_table(headers: list[str], body: list[list[Any]]) -> list[str]:
     for row in body:
         lines.append("| " + " | ".join(str(cell) for cell in row) + " |")
     return lines
+
+
+def render_lines(lines: list[str]) -> str:
+    while lines and lines[-1] == "":
+        lines.pop()
+    return "\n".join(lines) + "\n"
 
 
 def write_markdown(rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
@@ -534,7 +566,7 @@ def write_markdown(rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
                 [
                     "Direct model failures",
                     summary["direct_model_failures"],
-                    "Behavior-check mismatches plus clear Verilog-A/Spectre subset violations.",
+                    "Behavior-check mismatches, clear Verilog-A/Spectre subset violations, and incomplete fixed-budget generations.",
                 ],
                 [
                     "Spectre-final model passes",
@@ -544,7 +576,7 @@ def write_markdown(rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
                 [
                     "Inconclusive/non-model rows",
                     summary["inconclusive_or_non_model_rows"],
-                    "Old prompt-contract gaps, extraction infra, or evaluator-review rows; parity-debt rows are already counted as Spectre-final passes.",
+                    "Old prompt-contract gaps or evaluator-review rows; fixed-budget length failures are counted as incomplete model failures.",
                 ],
             ],
         )
@@ -589,8 +621,7 @@ def write_markdown(rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
             failure_rows,
         )
     )
-    lines.append("")
-    OUT_MD.write_text("\n".join(lines) + "\n")
+    OUT_MD.write_text(render_lines(lines), encoding="utf-8")
 
 
 def write_inconclusive_markdown(rows: list[dict[str, Any]], summary: dict[str, Any]) -> None:
@@ -602,9 +633,9 @@ def write_inconclusive_markdown(rows: list[dict[str, Any]], summary: dict[str, A
     lines: list[str] = [
         "# DeepSeek Inconclusive Rows - 2026-05-28",
         "",
-        "Scope: the 60/236 rows that should not currently be counted as either Spectre-final model passes or direct model failures.",
+        "Scope: rows that should not currently be counted as either Spectre-final model passes or direct model failures.",
         "",
-        "Interpretation: these rows need a wrapper-v4 regeneration/rerun or runner/evaluator triage before they are used as model-capability evidence.",
+        "Interpretation: these rows need a wrapper-v4 regeneration/rerun or runner/evaluator triage before they are used as model-capability evidence. Fixed-budget `finish_reason=length` generations are classified separately as `model_incomplete_generation`.",
         "",
         "## Breakdown",
         "",
@@ -643,8 +674,7 @@ def write_inconclusive_markdown(rows: list[dict[str, Any]], summary: dict[str, A
             body,
         )
     )
-    lines.append("")
-    OUT_INCONCLUSIVE_MD.write_text("\n".join(lines) + "\n")
+    OUT_INCONCLUSIVE_MD.write_text(render_lines(lines), encoding="utf-8")
 
 
 def build_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:

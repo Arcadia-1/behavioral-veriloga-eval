@@ -1,6 +1,6 @@
 # vaBench Release Completion Audit
 
-Date: 2026-05-26
+Date: 2026-05-27
 
 This report maps the active goal to concrete release evidence. It is
 intentionally conservative: partial or blocked evidence does not count as
@@ -11,8 +11,8 @@ completion.
 | Metric | Value |
 | --- | ---: |
 | status | `in_progress` |
-| proved requirements | 6 |
-| blocked requirements | 1 |
+| proved requirements | 7 |
+| blocked requirements | 0 |
 | incomplete requirements | 1 |
 
 ## Requirement Audit
@@ -20,17 +20,16 @@ completion.
 | ID | Status | Finding |
 | --- | --- | --- |
 | `R1_schema_package` | `proved` | Release package root, package manifest, evaluator contract, and all current release schemas are present and validate current release JSON surfaces. |
-| `R2_tracker_64_entries` | `proved` | Tracker has 64 rows with level counts {'L1': 51, 'L2': 13}. |
-| `R3_source_materialization` | `proved` | source-linked=64, asset-materialized=64, asset-status=pass |
-| `R4_static_certification` | `proved` | static-status=pass, static-certified-forms=219 |
-| `R5_dual_certification` | `blocked` | dual-status=partial, dual-certified=217, dual-pending=2, EVAS-pass/Spectre-fail=0, staging=ready, import=imported, bridge=ready, finish-readiness=ready_to_run |
+| `R2_tracker_planned_entries` | `proved` | Tracker has 79 rows with level counts {'L1': 62, 'L2': 17}. |
+| `R3_source_materialization` | `proved` | source-linked=79, asset-materialized=79, asset-status=pass |
+| `R4_static_certification` | `proved` | static-status=pass, static-certified-forms=271 |
+| `R5_dual_certification` | `proved` | dual-status=pass, dual-certified=271, dual-pending=0, EVAS-pass/Spectre-fail=0, staging=ready, import=imported, bridge=ready, finish-readiness=ready_to_finish |
 | `R6_l0_conformance_separate` | `proved` | conformance-cases=4, benchmark-coverage-count=0 |
-| `R7_paper_artifacts` | `incomplete` | paper-status=in_progress, speed=measured_with_failures, speed-claim=False, baseline=pending_release_baselines, baseline-claim=False, paper-tables=in_progress |
-| `R8_no_overclaiming` | `proved` | scored=51, scored_forms=184, paper-claim-gates={'can_claim_release_assets_materialized': True, 'can_claim_top_level_coverage_plan': True, 'can_claim_release_package_complete': False, 'can_claim_scored_benchmark': True, 'can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence': True, 'can_claim_speedup': False, 'can_claim_model_baseline': False, 'blocking_conditions': ['selected EVAS/Spectre rerun pending', 'external blocker report active: 0 blocked, 1 pending', 'speed/debug timing artifact not claimable', 'release model baseline artifact pending']}, blocked-claim-ids=['C4_full_release_dual_certified', 'C6_speed_debug_claim', 'C7_model_baseline_claim', 'C9_release_package_complete'] |
+| `R7_paper_artifacts` | `incomplete` | paper-status=in_progress, speed=measured_subset, speed-claim=False, baseline=ready_for_baseline_runs, baseline-claim=False, paper-tables=in_progress |
+| `R8_no_overclaiming` | `proved` | scored=66, scored_forms=236, paper-claim-gates={'can_claim_release_assets_materialized': True, 'can_claim_top_level_coverage_plan': True, 'can_claim_release_package_complete': True, 'can_claim_scored_benchmark': True, 'can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence': True, 'can_claim_speedup': False, 'can_claim_model_baseline': False, 'blocking_conditions': ['external blocker report active: 0 blocked, 1 pending', 'speed/debug timing artifact not claimable', 'release model baseline artifact pending']}, blocked-claim-ids=['C6_speed_debug_claim', 'C7_model_baseline_claim'] |
 
 ## Blocking Conditions
 
-- selected EVAS/Spectre rerun pending
 - external blocker report active: 0 blocked, 1 pending
 - speed/debug timing artifact not claimable
 - release model baseline artifact pending

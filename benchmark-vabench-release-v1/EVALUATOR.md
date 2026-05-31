@@ -1,6 +1,6 @@
 # vaBench Release Evaluator Contract
 
-Date: 2026-05-26
+Date: 2026-05-29
 
 This contract describes how the release package is consumed by evaluators
 and paper-facing baselines. It does not create certification evidence.
@@ -9,12 +9,12 @@ and paper-facing baselines. It does not create certification evidence.
 
 | Metric | Value |
 | --- | ---: |
-| package entries | 64 |
-| package forms | 219 |
-| certified entries | 63 |
-| certified forms | 217 |
-| scored entries | 51 |
-| scored forms | 184 |
+| package entries | 79 |
+| package forms | 271 |
+| certified entries | 79 |
+| certified forms | 271 |
+| scored entries | 66 |
+| scored forms | 236 |
 | L0 conformance excluded | `True` |
 
 ## Backend Roles
@@ -27,10 +27,10 @@ and paper-facing baselines. It does not create certification evidence.
 
 ## Gates
 
-- Score gate: `score_enabled`; scored entries/forms = 51/184
-- Finish readiness: `ready_to_run`
-- Baseline gate: `pending_release_baselines`; claim allowed = `False`
-- Speed/debug gate: `measured_with_failures`; claim allowed = `False`
+- Score gate: `score_enabled`; scored entries/forms = 66/236
+- Finish readiness: `ready_to_finish`
+- Baseline gate: `ready_for_baseline_runs`; claim allowed = `False`
+- Speed/debug gate: `measured_subset`; claim allowed = `False`
 
 ## Commands
 

@@ -22,5 +22,5 @@ sim_correct:
     - "final_code_monotonic_with_vin"
 parity:
   required: true
-  status: "pending_until_evas_spectre_rerun"
-  tolerance_notes: "Fresh EVAS/Spectre dual validation required before scoring or paper claims."
+  status: "certified"
+  tolerance_notes: "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

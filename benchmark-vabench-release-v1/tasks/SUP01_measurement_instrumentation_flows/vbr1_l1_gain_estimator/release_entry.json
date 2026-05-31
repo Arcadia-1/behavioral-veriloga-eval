@@ -55,7 +55,7 @@
       "source_path": "tb_companion_from_e2e:vbr1_l1_gain_estimator_e2e",
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "release_source_task_id": "vbr1_l1_gain_estimator_tb",
       "historical_source_task_id": "vbr1_l1_gain_estimator_tb",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_gain_estimator/tb/evidence.json",
@@ -80,7 +80,7 @@
       "source_path": "designed_release_spec:vbr1_l1_gain_estimator",
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "release_source_task_id": "vbr1_l1_gain_estimator_e2e",
       "historical_source_task_id": "vbr1_l1_gain_estimator_e2e",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_gain_estimator/e2e/evidence.json",
@@ -95,7 +95,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pending",
+    "spectre": "pass",
     "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
   },
   "counts": {
@@ -103,8 +103,5 @@
     "model_capability": false,
     "l0_conformance": false
   },
-  "release_blockers": [
-    "fresh_evas_spectre_dual_refresh_pending",
-    "spectre_certification"
-  ]
+  "release_blockers": []
 }

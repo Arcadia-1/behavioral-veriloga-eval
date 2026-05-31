@@ -1,0 +1,263 @@
+{
+  "status": "complete",
+  "started_at": "2026-05-27T15:28:45",
+  "finished_at": "2026-05-27T15:28:52",
+  "manifest": "benchmark-vabench-release-v1/reports/full_evas_only_audit_staging_manifest_20260527.json",
+  "output_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke",
+  "workers": 2,
+  "timeout_s": 180,
+  "selected_bundle_count": 5,
+  "completed_bundle_count": 5,
+  "pass_count": 4,
+  "nonpass_count": 1,
+  "expected_met_count": 5,
+  "expected_miss_count": 0,
+  "raw_status_counts": {
+    "FAIL_SIM_CORRECTNESS": 1,
+    "PASS": 4
+  },
+  "form_counts": {
+    "bugfix": 2,
+    "dut": 1,
+    "e2e": 1,
+    "tb": 1
+  },
+  "variant_counts": {
+    "buggy": 1,
+    "fixed": 1,
+    "gold": 3
+  },
+  "expected_miss_rows": [],
+  "results": [
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "expected_result_met": true,
+      "started_at": "2026-05-27T15:28:45",
+      "finished_at": "2026-05-27T15:28:48",
+      "wall_time_s": 2.497092,
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy",
+      "result_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy",
+      "raw_result": {
+        "task_id": "vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy",
+        "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_bugfix",
+        "status": "FAIL_SIM_CORRECTNESS",
+        "backend_used": "evas",
+        "scores": {
+          "dut_compile": 1.0,
+          "tb_compile": 1.0,
+          "sim_correct": 0.0,
+          "weighted_total": 0.6667
+        },
+        "artifacts": [
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy_046lr1kk/acquisition_limited_sample_hold.va",
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy_046lr1kk/tb_acquisition_limited_sample_hold.scs",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy/tran.csv",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy/strobe.txt"
+        ],
+        "notes": [
+          "returncode=0",
+          "acq_hold_instantaneous_jump initial_error=0.050"
+        ],
+        "timing": {
+          "tran_elapsed_s": 1.0791,
+          "total_elapsed_s": 1.1,
+          "accepted_tran_steps": 412.0
+        },
+        "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.1.0 -- May 2026\n\nSimulating `tb_acquisition_limited_sample_hold.scs' at 3:28:46 PM, Wed May 27, 2026.\nCommand line:\n    -c simulate tb_acquisition_limited_sample_hold.scs -o /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy\n\nReading file: tb_acquisition_limited_sample_hold.scs\nCompiled Verilog-A module: acquisition_limited_sample_hold\n\nCircuit inventory:\n               nodes 5\nacquisition_limited_sample_hold 1\n             vsource 3\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 90 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 90 ns\n    step  = 250 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 9 ns         ( 10 %)\n    tran: time = 18 ns        ( 20 %)\n    tran: time = 27 ns        ( 30 %)\n    tran: time = 36 ns        ( 40 %)\n    tran: time = 45 ns        ( 50 %)\n    tran: time = 54 ns        ( 60 %)\n    tran: time = 63 ns        ( 70 %)\n    tran: time = 72 ns        ( 80 %)\n    tran: time = 81 ns        ( 90 %)\n    tran: time = 90 ns        (100 %)\nNumber of accepted tran steps = 412\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 9\n    cross_refine_triggers = 6\n    dynamic_step_grows = 779\n    dynamic_step_shrinks = 3841\n    err_ratio_skipped_outputs = 34234\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 25\n    model_breakpoint_clamps = 83\n    output_step_clamps = 129\n    source_breakpoint_clamps = 29\n    steps_total = 17117\nModel event counters:\n    model[0] acquisition_limited_sample_hold_Model:\n        above_fires = 0\n        cross_fires = 9\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 17117\n        timer_periodic_checks = 17118\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 91\n\nMaximum value achieved for any signal of each quantity:\n    V: V(metric) = 900 mV\n\nTran analysis time: CPU = 1079.1 ms, elapsed = 1079.1 ms.\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_buggy/tran.csv (signals: sample, rst, vin, vout, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.1 s, elapsed = 1.1 s.\n\n",
+        "gold_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/gold",
+        "gold_tb": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/buggy/gold/tb_acquisition_limited_sample_hold.scs",
+        "gold_includes": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "behavior_check_available": true
+      }
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "expected_result_met": true,
+      "started_at": "2026-05-27T15:28:45",
+      "finished_at": "2026-05-27T15:28:48",
+      "wall_time_s": 2.544416,
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed",
+      "result_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed",
+      "raw_result": {
+        "task_id": "vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed",
+        "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_bugfix",
+        "status": "PASS",
+        "backend_used": "evas",
+        "scores": {
+          "dut_compile": 1.0,
+          "tb_compile": 1.0,
+          "sim_correct": 1.0,
+          "weighted_total": 1.0
+        },
+        "artifacts": [
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed_7ltpm01v/acquisition_limited_sample_hold.va",
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed_7ltpm01v/tb_acquisition_limited_sample_hold.scs",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed/tran.csv",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed/strobe.txt"
+        ],
+        "notes": [
+          "returncode=0",
+          "acquisition_limited_sample_hold errors=0.200/0.142/0.080 hold_delta=0.000 metric=0.900/0.000"
+        ],
+        "timing": {
+          "tran_elapsed_s": 1.1351,
+          "total_elapsed_s": 1.2,
+          "accepted_tran_steps": 497.0
+        },
+        "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.1.0 -- May 2026\n\nSimulating `tb_acquisition_limited_sample_hold.scs' at 3:28:46 PM, Wed May 27, 2026.\nCommand line:\n    -c simulate tb_acquisition_limited_sample_hold.scs -o /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed\n\nReading file: tb_acquisition_limited_sample_hold.scs\nCompiled Verilog-A module: acquisition_limited_sample_hold\n\nCircuit inventory:\n               nodes 5\nacquisition_limited_sample_hold 1\n             vsource 3\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 90 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 90 ns\n    step  = 250 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 9 ns         ( 10 %)\n    tran: time = 18 ns        ( 20 %)\n    tran: time = 27 ns        ( 30 %)\n    tran: time = 36 ns        ( 40 %)\n    tran: time = 45 ns        ( 50 %)\n    tran: time = 54 ns        ( 60 %)\n    tran: time = 63 ns        ( 70 %)\n    tran: time = 72 ns        ( 80 %)\n    tran: time = 81 ns        ( 90 %)\n    tran: time = 90 ns        (100 %)\nNumber of accepted tran steps = 497\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 9\n    cross_refine_triggers = 5\n    dynamic_step_grows = 824\n    dynamic_step_shrinks = 3746\n    err_ratio_skipped_outputs = 34762\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 27\n    model_breakpoint_clamps = 176\n    output_step_clamps = 137\n    source_breakpoint_clamps = 30\n    steps_total = 17381\nModel event counters:\n    model[0] acquisition_limited_sample_hold_Model:\n        above_fires = 0\n        cross_fires = 9\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 17381\n        timer_periodic_checks = 17382\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 91\n\nMaximum value achieved for any signal of each quantity:\n    V: V(metric) = 900 mV\n\nTran analysis time: CPU = 1135.1 ms, elapsed = 1135.1 ms.\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/vbr1_l1_acquisition_limited_sample_and_hold_bugfix_fixed/tran.csv (signals: sample, rst, vin, vout, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.2 s, elapsed = 1.2 s.\n\n",
+        "gold_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/gold",
+        "gold_tb": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/bugfix/fixed/gold/tb_acquisition_limited_sample_hold.scs",
+        "gold_includes": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "behavior_check_available": true
+      }
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "expected_result_met": true,
+      "started_at": "2026-05-27T15:28:48",
+      "finished_at": "2026-05-27T15:28:50",
+      "wall_time_s": 2.339824,
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold",
+      "result_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold",
+      "raw_result": {
+        "task_id": "vbr1_l1_acquisition_limited_sample_and_hold_dut",
+        "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_dut",
+        "status": "PASS",
+        "backend_used": "evas",
+        "scores": {
+          "dut_compile": 1.0,
+          "tb_compile": 1.0,
+          "sim_correct": 1.0,
+          "weighted_total": 1.0
+        },
+        "artifacts": [
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_dut_ii4plo26/acquisition_limited_sample_hold.va",
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_dut_ii4plo26/tb_acquisition_limited_sample_hold.scs",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/vbr1_l1_acquisition_limited_sample_and_hold_dut/tran.csv",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/vbr1_l1_acquisition_limited_sample_and_hold_dut/strobe.txt"
+        ],
+        "notes": [
+          "returncode=0",
+          "acquisition_limited_sample_hold errors=0.200/0.142/0.080 hold_delta=0.000 metric=0.900/0.000"
+        ],
+        "timing": {
+          "tran_elapsed_s": 1.219,
+          "total_elapsed_s": 1.3,
+          "accepted_tran_steps": 497.0
+        },
+        "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.1.0 -- May 2026\n\nSimulating `tb_acquisition_limited_sample_hold.scs' at 3:28:49 PM, Wed May 27, 2026.\nCommand line:\n    -c simulate tb_acquisition_limited_sample_hold.scs -o /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/vbr1_l1_acquisition_limited_sample_and_hold_dut\n\nReading file: tb_acquisition_limited_sample_hold.scs\nCompiled Verilog-A module: acquisition_limited_sample_hold\n\nCircuit inventory:\n               nodes 5\nacquisition_limited_sample_hold 1\n             vsource 3\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 90 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 90 ns\n    step  = 250 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 9 ns         ( 10 %)\n    tran: time = 18 ns        ( 20 %)\n    tran: time = 27 ns        ( 30 %)\n    tran: time = 36 ns        ( 40 %)\n    tran: time = 45 ns        ( 50 %)\n    tran: time = 54 ns        ( 60 %)\n    tran: time = 63 ns        ( 70 %)\n    tran: time = 72 ns        ( 80 %)\n    tran: time = 81 ns        ( 90 %)\n    tran: time = 90 ns        (100 %)\nNumber of accepted tran steps = 497\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 9\n    cross_refine_triggers = 5\n    dynamic_step_grows = 824\n    dynamic_step_shrinks = 3746\n    err_ratio_skipped_outputs = 34762\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 27\n    model_breakpoint_clamps = 176\n    output_step_clamps = 137\n    source_breakpoint_clamps = 30\n    steps_total = 17381\nModel event counters:\n    model[0] acquisition_limited_sample_hold_Model:\n        above_fires = 0\n        cross_fires = 9\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 17381\n        timer_periodic_checks = 17382\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 91\n\nMaximum value achieved for any signal of each quantity:\n    V: V(metric) = 900 mV\n\nTran analysis time: CPU = 1219.0 ms, elapsed = 1219.0 ms.\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/vbr1_l1_acquisition_limited_sample_and_hold_dut/tran.csv (signals: sample, rst, vin, vout, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.3 s, elapsed = 1.3 s.\n\n",
+        "gold_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/gold",
+        "gold_tb": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/dut/gold/gold/tb_acquisition_limited_sample_hold.scs",
+        "gold_includes": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "behavior_check_available": true
+      }
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "expected_result_met": true,
+      "started_at": "2026-05-27T15:28:48",
+      "finished_at": "2026-05-27T15:28:50",
+      "wall_time_s": 2.173203,
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold",
+      "result_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold",
+      "raw_result": {
+        "task_id": "vbr1_l1_acquisition_limited_sample_and_hold_e2e",
+        "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_e2e",
+        "status": "PASS",
+        "backend_used": "evas",
+        "scores": {
+          "dut_compile": 1.0,
+          "tb_compile": 1.0,
+          "sim_correct": 1.0,
+          "weighted_total": 1.0
+        },
+        "artifacts": [
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_e2e_8hq3hg_5/acquisition_limited_sample_hold.va",
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_e2e_8hq3hg_5/tb_acquisition_limited_sample_hold.scs",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/vbr1_l1_acquisition_limited_sample_and_hold_e2e/tran.csv",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/vbr1_l1_acquisition_limited_sample_and_hold_e2e/strobe.txt"
+        ],
+        "notes": [
+          "returncode=0",
+          "acquisition_limited_sample_hold errors=0.200/0.142/0.080 hold_delta=0.000 metric=0.900/0.000"
+        ],
+        "timing": {
+          "tran_elapsed_s": 1.1824000000000001,
+          "total_elapsed_s": 1.2,
+          "accepted_tran_steps": 497.0
+        },
+        "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.1.0 -- May 2026\n\nSimulating `tb_acquisition_limited_sample_hold.scs' at 3:28:49 PM, Wed May 27, 2026.\nCommand line:\n    -c simulate tb_acquisition_limited_sample_hold.scs -o /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/vbr1_l1_acquisition_limited_sample_and_hold_e2e\n\nReading file: tb_acquisition_limited_sample_hold.scs\nCompiled Verilog-A module: acquisition_limited_sample_hold\n\nCircuit inventory:\n               nodes 5\nacquisition_limited_sample_hold 1\n             vsource 3\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 90 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 90 ns\n    step  = 250 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 9 ns         ( 10 %)\n    tran: time = 18 ns        ( 20 %)\n    tran: time = 27 ns        ( 30 %)\n    tran: time = 36 ns        ( 40 %)\n    tran: time = 45 ns        ( 50 %)\n    tran: time = 54 ns        ( 60 %)\n    tran: time = 63 ns        ( 70 %)\n    tran: time = 72 ns        ( 80 %)\n    tran: time = 81 ns        ( 90 %)\n    tran: time = 90 ns        (100 %)\nNumber of accepted tran steps = 497\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 9\n    cross_refine_triggers = 5\n    dynamic_step_grows = 824\n    dynamic_step_shrinks = 3746\n    err_ratio_skipped_outputs = 34762\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 27\n    model_breakpoint_clamps = 176\n    output_step_clamps = 137\n    source_breakpoint_clamps = 30\n    steps_total = 17381\nModel event counters:\n    model[0] acquisition_limited_sample_hold_Model:\n        above_fires = 0\n        cross_fires = 9\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 17381\n        timer_periodic_checks = 17382\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 91\n\nMaximum value achieved for any signal of each quantity:\n    V: V(metric) = 900 mV\n\nTran analysis time: CPU = 1182.4 ms, elapsed = 1182.4 ms.\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/vbr1_l1_acquisition_limited_sample_and_hold_e2e/tran.csv (signals: sample, rst, vin, vout, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.2 s, elapsed = 1.2 s.\n\n",
+        "gold_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/gold",
+        "gold_tb": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/e2e/gold/gold/tb_acquisition_limited_sample_hold.scs",
+        "gold_includes": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "behavior_check_available": true
+      }
+    },
+    {
+      "entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "expected_result_met": true,
+      "started_at": "2026-05-27T15:28:50",
+      "finished_at": "2026-05-27T15:28:52",
+      "wall_time_s": 1.569648,
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold",
+      "result_root": "results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold",
+      "raw_result": {
+        "task_id": "vbr1_l1_acquisition_limited_sample_and_hold_tb",
+        "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_tb",
+        "status": "PASS",
+        "backend_used": "evas",
+        "scores": {
+          "dut_compile": 1.0,
+          "tb_compile": 1.0,
+          "sim_correct": 1.0,
+          "weighted_total": 1.0
+        },
+        "artifacts": [
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_tb_r1n4uyig/acquisition_limited_sample_hold.va",
+          "/var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/vbr1_l1_acquisition_limited_sample_and_hold_tb_r1n4uyig/tb_acquisition_limited_sample_hold.scs",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/vbr1_l1_acquisition_limited_sample_and_hold_tb/tran.csv",
+          "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/vbr1_l1_acquisition_limited_sample_and_hold_tb/strobe.txt"
+        ],
+        "notes": [
+          "returncode=0",
+          "acquisition_limited_sample_hold errors=0.200/0.142/0.080 hold_delta=0.000 metric=0.900/0.000"
+        ],
+        "timing": {
+          "tran_elapsed_s": 0.7062999999999999,
+          "total_elapsed_s": 0.8,
+          "accepted_tran_steps": 497.0
+        },
+        "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.1.0 -- May 2026\n\nSimulating `tb_acquisition_limited_sample_hold.scs' at 3:28:51 PM, Wed May 27, 2026.\nCommand line:\n    -c simulate tb_acquisition_limited_sample_hold.scs -o /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/vbr1_l1_acquisition_limited_sample_and_hold_tb\n\nReading file: tb_acquisition_limited_sample_hold.scs\nCompiled Verilog-A module: acquisition_limited_sample_hold\n\nCircuit inventory:\n               nodes 5\nacquisition_limited_sample_hold 1\n             vsource 3\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 90 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 90 ns\n    step  = 250 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n\n    tran: time = 9 ns         ( 10 %)\n    tran: time = 18 ns        ( 20 %)\n    tran: time = 27 ns        ( 30 %)\n    tran: time = 36 ns        ( 40 %)\n    tran: time = 45 ns        ( 50 %)\n    tran: time = 54 ns        ( 60 %)\n    tran: time = 63 ns        ( 70 %)\n    tran: time = 72 ns        ( 80 %)\n    tran: time = 81 ns        ( 90 %)\n    tran: time = 90 ns        (100 %)\nNumber of accepted tran steps = 497\nPerformance counters:\n    bound_step_clamps = 0\n    cross_event_steps = 9\n    cross_refine_triggers = 5\n    dynamic_step_grows = 824\n    dynamic_step_shrinks = 3746\n    err_ratio_skipped_outputs = 34762\n    err_ratio_skipped_sources = 0\n    min_step_clamps = 27\n    model_breakpoint_clamps = 176\n    output_step_clamps = 137\n    source_breakpoint_clamps = 30\n    steps_total = 17381\nModel event counters:\n    model[0] acquisition_limited_sample_hold_Model:\n        above_fires = 0\n        cross_fires = 9\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_hits = 17381\n        timer_periodic_checks = 17382\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 91\n\nMaximum value achieved for any signal of each quantity:\n    V: V(metric) = 900 mV\n\nTran analysis time: CPU = 706.3 ms, elapsed = 706.3 ms.\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/vabench-release-v1-full-evas-only-audit-20260527-smoke/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/vbr1_l1_acquisition_limited_sample_and_hold_tb/tran.csv (signals: sample, rst, vin, vout, metric)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.8 s, elapsed = 0.8 s.\n\n",
+        "gold_dir": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/gold",
+        "gold_tb": "/Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/benchmark-vabench-release-v1/rerun_staging_full_evas_audit_20260527/vbr1_l1_acquisition_limited_sample_and_hold/tb/gold/gold/tb_acquisition_limited_sample_hold.scs",
+        "gold_includes": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "behavior_check_available": true
+      }
+    }
+  ]
+}

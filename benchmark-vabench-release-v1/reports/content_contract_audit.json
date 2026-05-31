@@ -2,18 +2,18 @@
   "date": "2026-05-26",
   "release": "vabench-release-v1",
   "status": "pass",
-  "entry_count": 64,
-  "form_count": 219,
+  "entry_count": 79,
+  "form_count": 271,
   "track_entry_counts": {
-    "core": 51,
+    "core": 66,
     "support": 13
   },
   "track_form_counts": {
-    "core": 184,
+    "core": 236,
     "support": 35
   },
-  "content_denominator_entry_count": 51,
-  "content_denominator_form_count": 184,
+  "content_denominator_entry_count": 66,
+  "content_denominator_form_count": 236,
   "content_excluded_entry_count": 13,
   "content_excluded_entries": {
     "vbr1_l1_burst_clock_source": [
@@ -280,6 +280,86 @@
       ],
       "checks_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
       "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Bias Reference and Power Management",
+      "base_function": "LDO load-step recovery flow",
+      "gold_va_modules": [
+        "ldo_load_step_recovery_flow"
+      ],
+      "sim_checks": [
+        "load_step_transient_droop_visible",
+        "closed_loop_recovery_after_step",
+        "metric_marks_recovered_regulation"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/gold/ldo_load_step_recovery_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Bias Reference and Power Management",
+      "base_function": "Reference startup/enable flow",
+      "gold_va_modules": [
+        "reference_startup_enable_flow"
+      ],
+      "sim_checks": [
+        "pre_enable_reference_is_held_low",
+        "enabled_reference_startup_settles",
+        "supply_dip_resets_valid_status"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "AGC receiver leveling loop",
+      "gold_va_modules": [
+        "agc_receiver_leveling_loop"
+      ],
+      "sim_checks": [
+        "agc_reduces_gain_on_large_input",
+        "leveled_output_amplitude",
+        "lock_metric_after_settling"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/gold/agc_receiver_leveling_loop.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_iq_downconversion_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "I/Q downconversion chain",
+      "gold_va_modules": [
+        "iq_downconversion_chain"
+      ],
+      "sim_checks": [
+        "quadrature_iq_phase_sequence",
+        "i_and_q_outputs_are_distinct",
+        "common_mode_hold_when_input_centered"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/gold/iq_downconversion_chain.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/prompt.md"
     },
     {
       "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",

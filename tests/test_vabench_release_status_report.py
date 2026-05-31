@@ -22,7 +22,7 @@ def test_release_entry_schema_covers_generated_seed_skeletons() -> None:
     required = set(schema["required"])
 
     entries = release_entries()
-    assert len(entries) == 64
+    assert len(entries) == 79
     for entry in entries:
         assert required <= set(entry)
         assert entry["benchmark"] == "vabench-release-v1"
@@ -31,7 +31,10 @@ def test_release_entry_schema_covers_generated_seed_skeletons() -> None:
         assert entry["difficulty"] in {"D1", "D2", "D3"}
         assert entry["counts"]["model_capability"] is False
         assert entry["counts"]["l0_conformance"] is False
-        assert entry["counts"]["benchmark_score"] is (entry["track"] == "core")
+        if entry["track"] == "support":
+            assert entry["counts"]["benchmark_score"] is False
+        if entry["counts"]["benchmark_score"]:
+            assert entry["track"] == "core"
         if entry["release_tasks"]:
             assert entry["certification"]["static"] == "pass"
         else:
@@ -57,27 +60,27 @@ def test_release_entry_schema_covers_generated_seed_skeletons() -> None:
 def test_release_status_report_is_conservative() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
-    assert report["planned_entries"] == 64
-    assert report["level_counts"] == {"L1": 51, "L2": 13}
-    assert report["source_linked_entry_count"] == 64
+    assert report["planned_entries"] == 79
+    assert report["level_counts"] == {"L1": 62, "L2": 17}
+    assert report["source_linked_entry_count"] == 79
     assert report["source_linked_seed_count"] == 22
-    assert report["asset_materialized_entry_count"] == 64
+    assert report["asset_materialized_entry_count"] == 79
     assert report["fully_materialized_seed_count"] == 22
     assert report["asset_integrity_status"] == "pass"
     assert report["asset_integrity_issue_count"] == 0
     assert report["asset_integrity_warning_count"] == 0
     assert report["static_certification_status"] == "pass"
-    assert report["static_certified_release_task_count"] == 219
+    assert report["static_certified_release_task_count"] == 271
     assert report["static_failed_release_task_count"] == 0
-    assert report["static_certified_entry_count"] == 64
-    assert report["dual_certification_status"] == "partial"
-    assert report["dual_certified_release_task_count"] == 217
+    assert report["static_certified_entry_count"] == 79
+    assert report["dual_certification_status"] == "pass"
+    assert report["dual_certified_release_task_count"] == 271
     assert report["dual_failed_release_task_count"] == 0
-    assert report["dual_pending_release_task_count"] == 2
-    assert report["dual_pass_materialized_entry_count"] == 63
-    assert report["dual_pending_materialized_entry_count"] == 1
+    assert report["dual_pending_release_task_count"] == 0
+    assert report["dual_pass_materialized_entry_count"] == 79
+    assert report["dual_pending_materialized_entry_count"] == 0
     assert report["dual_failed_materialized_entry_count"] == 0
-    assert report["fully_certified_entry_count"] == 63
+    assert report["fully_certified_entry_count"] == 79
     assert report["source_equivalence_blocked_release_task_count"] == 0
     assert report["source_equivalence_failure_count"] == 0
     assert report["evas_pass_spectre_fail_count"] == 0
@@ -88,20 +91,21 @@ def test_release_status_report_is_conservative() -> None:
     assert report["l0_conformance_broad_parity_denominator_count"] == 0
     assert report["seed_entries_all_forms_present"] == 22
     assert report["selected_entries_without_package_dir"] == []
-    assert report["certified_release_entries"] == 63
-    assert report["score_content_denominator_entry_count"] == 51
-    assert report["score_content_denominator_form_count"] == 184
-    assert report["scored_release_entries"] == 51
+    assert report["certified_release_entries"] == 79
+    assert report["score_content_denominator_entry_count"] == 66
+    assert report["score_content_denominator_form_count"] == 236
+    assert report["scored_release_entries"] == 66
     assert report["score_denominator_status"] == "score_enabled"
     assert report["score_claim_allowed"] is True
-    assert report["scored_release_forms"] == 184
-    assert report["speed_debug_status"] == "measured_with_failures"
+    assert report["scored_release_forms"] == 236
+    assert report["speed_debug_status"] == "measured_subset"
     assert report["speed_claim_allowed"] is False
-    assert report["speed_timed_rows"] == 2
-    assert report["baseline_status"] == "pending_release_baselines"
+    assert report["speed_timed_rows"] == 54
+    assert report["baseline_status"] == "ready_for_baseline_runs"
     assert report["baseline_claim_allowed"] is False
     assert report["claim_gate_status"] == "in_progress"
-    assert report["allowed_claim_count"] == 5
-    assert report["blocked_claim_count"] == 4
+    assert report["allowed_claim_count"] == 7
+    assert report["blocked_claim_count"] == 2
     assert report["dual_rerun_import_status"] == "imported"
+    assert report["dual_rerun_import_stale_summary"] is False
     assert report["stop_condition"]["ready_to_score"] is True

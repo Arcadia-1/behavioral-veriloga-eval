@@ -8,7 +8,7 @@
 - Base function: Precision rectifier/envelope detector
 - Domain: `voltage`
 - Target artifact(s): `dut_fixed.va`
-- Supplied/reference support artifact(s): `dut_buggy.va`
+- Supplied/reference support artifact(s): `dut_buggy.va`, `tb_precision_rectifier_envelope_detector.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
@@ -22,6 +22,25 @@
 - `dut_buggy.va` declares module `precision_rectifier_envelope_detector` with positional ports: `clk`, `rst`, `vin`, `rect`, `env`, `metric`.
 - `dut_fixed.va` declares module `precision_rectifier_envelope_detector` with positional ports: `clk`, `rst`, `vin`, `rect`, `env`, `metric`.
 
+## Public Testbench And Observable Contract
+
+Public transient setting used by the release harness:
+
+```spectre
+tran tran stop=90n maxstep=250p
+```
+
+The release harness expects these exact public scalar observables:
+
+- `clk`
+- `rst`
+- `vin`
+- `rect`
+- `env`
+- `metric`
+
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+
 ## Public Behavior Checks
 
 - `full_wave_rectification_around_common_mode`
@@ -33,6 +52,15 @@
 
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
+
+Representative public mismatch scenarios:
+
+| Scenario | Expected behavior | Faulty behavior to repair |
+| --- | --- | --- |
+| `vin` rises above common mode | `rect` follows the positive deviation and `env` can update its peak | positive half-cycle is not reflected correctly |
+| `vin` falls below common mode | `rect` still reports the absolute deviation from common mode | negative half-cycle is ignored or has the wrong sign |
+| after a peak | `env` holds the recent envelope and decays gradually | envelope drops immediately or never decays |
+| envelope memory active | `metric` marks the held-envelope state | metric does not indicate envelope memory |
 
 ## Output Contract
 

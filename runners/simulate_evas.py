@@ -2786,9 +2786,9 @@ def first_threshold_crossing(rows: list[dict[str, float]], signal: str, threshol
 
 
 def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"ref_clk", "vout", "lock", "vctrl_mon", "ratio_ctrl"}
+    required = {"ref_clk", "ratio_ctrl", "fb_clk", "vout", "lock", "vctrl_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing ref_clk/vout/lock/vctrl_mon/ratio_ctrl"
+        return False, "missing ref_clk/ratio_ctrl/fb_clk/vout/lock/vctrl_mon"
 
     hop_t = first_threshold_crossing(rows, "ratio_ctrl", 5.0)
     if not math.isfinite(hop_t):
@@ -2796,10 +2796,22 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
     pre_ratio, pre_note = edge_frequency_ratio(rows, "vout", "ref_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
     post_ratio, post_note = edge_frequency_ratio(rows, "vout", "ref_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
+    pre_div_ratio, pre_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
+    post_div_ratio, post_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
+    pre_fb_ref_ratio, pre_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
+    post_fb_ref_ratio, post_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
     if pre_note != "ok":
         return False, f"pre_window_{pre_note}"
     if post_note != "ok":
         return False, f"post_window_{post_note}"
+    if pre_div_note != "ok":
+        return False, f"pre_divider_window_{pre_div_note}"
+    if post_div_note != "ok":
+        return False, f"post_divider_window_{post_div_note}"
+    if pre_fb_ref_note != "ok":
+        return False, f"pre_feedback_window_{pre_fb_ref_note}"
+    if post_fb_ref_note != "ok":
+        return False, f"post_feedback_window_{post_fb_ref_note}"
 
     vth = max(r["lock"] for r in rows) * 0.5 if rows else 0.45
     pre_lock = weighted_logic_high_fraction_window(rows, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
@@ -2810,14 +2822,22 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     ok = (
         abs(pre_ratio - 4.0) <= 0.25
         and abs(post_ratio - 6.0) <= 0.35
+        and abs(pre_div_ratio - 4.0) <= 0.25
+        and abs(post_div_ratio - 6.0) <= 0.35
+        and abs(pre_fb_ref_ratio - 1.0) <= 0.15
+        and abs(post_fb_ref_ratio - 1.0) <= 0.15
         and pre_lock >= 0.8
         and post_lock >= 0.8
         and vctrl_in_range
     )
     return ok, (
         f"hop_t={hop_t:.3e} "
-        f"pre_ratio={pre_ratio:.3f} "
-        f"post_ratio={post_ratio:.3f} "
+        f"pre_vout_ref={pre_ratio:.3f} "
+        f"post_vout_ref={post_ratio:.3f} "
+        f"pre_vout_fb={pre_div_ratio:.3f} "
+        f"post_vout_fb={post_div_ratio:.3f} "
+        f"pre_fb_ref={pre_fb_ref_ratio:.3f} "
+        f"post_fb_ref={post_fb_ref_ratio:.3f} "
         f"pre_lock={pre_lock:.3f} "
         f"post_lock={post_lock:.3f} "
         f"vctrl_range_ok={vctrl_in_range}"
@@ -5177,9 +5197,9 @@ def edge_settled_values(
 
 
 def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {"time", "clk", "rst", "vin", "out", "metric", "trim_mon", "residual_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        return False, "missing time/clk/rst/vin/out/metric/trim_mon/residual_mon"
 
     post_rows = [r for r in rows if r["rst"] <= 0.45 and r["time"] > 3e-9]
     if len(post_rows) < 10:
@@ -5231,6 +5251,41 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
     if correction_ok < correction_checks - 2:
         return False, f"complete_cal_loop_uncorrected_samples={correction_checks - correction_ok}/{correction_checks}"
 
+    trim_vals = [r["trim_mon"] for r in post_rows]
+    residual_vals = [r["residual_mon"] for r in post_rows]
+    trim_min = min(trim_vals)
+    trim_max = max(trim_vals)
+    residual_min = min(residual_vals)
+    residual_max = max(residual_vals)
+    if not (0.0 <= trim_min <= trim_max <= 0.95):
+        return False, f"complete_cal_loop_trim_range=({trim_min:.3f},{trim_max:.3f})"
+    if not (0.0 <= residual_min <= residual_max <= 0.95):
+        return False, f"complete_cal_loop_residual_range=({residual_min:.3f},{residual_max:.3f})"
+    if trim_max - trim_min < 0.12:
+        return False, f"complete_cal_loop_trim_span_too_small={trim_max - trim_min:.3f}"
+
+    trim_samples = edge_settled_values(rows, "trim_mon")
+    residual_samples = edge_settled_values(rows, "residual_mon")
+    trim_checks = trim_ok = residual_ok = 0
+    for (edge_row, trim_v), (_res_edge_row, residual_v) in zip(trim_samples, residual_samples):
+        if edge_row["time"] > 60.0e-9 and edge_row["time"] < 68.0e-9:
+            continue
+        raw_err = edge_row["vin"] - 0.45
+        if abs(raw_err) <= 0.09:
+            continue
+        trim_checks += 1
+        if (raw_err > 0.0 and trim_v < 0.435) or (raw_err < 0.0 and trim_v > 0.465):
+            trim_ok += 1
+        residual_err = abs(residual_v - 0.45)
+        if residual_err <= max(0.075, abs(raw_err) * 0.85):
+            residual_ok += 1
+    if trim_checks < 8:
+        return False, f"complete_cal_loop_insufficient_trim_windows={trim_checks}"
+    if trim_ok < trim_checks - 2:
+        return False, f"complete_cal_loop_trim_not_opposing_error={trim_checks - trim_ok}/{trim_checks}"
+    if residual_ok < trim_checks - 2:
+        return False, f"complete_cal_loop_residual_not_reduced={trim_checks - residual_ok}/{trim_checks}"
+
     converged_metrics = [r["metric"] for r in post_rows if abs(r["out"] - 0.45) <= 0.08]
     if len(converged_metrics) < 5:
         return False, f"complete_cal_loop_too_few_converged_samples={len(converged_metrics)}"
@@ -5246,7 +5301,8 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
 
     return True, (
         f"complete_cal_loop reset={reset_mean:.3f} vin_span={vin_span:.3f} out_span={out_span:.3f} "
-        f"correction={correction_ok}/{correction_checks} metric={converged_metric_mean:.3f}"
+        f"correction={correction_ok}/{correction_checks} trim={trim_ok}/{trim_checks} "
+        f"residual={residual_ok}/{trim_checks} metric={converged_metric_mean:.3f}"
     )
 
 
@@ -6322,9 +6378,9 @@ def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[b
 
 
 def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {"time", "clk", "rst", "vin", "out", "metric", "load_mon", "ctrl_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        return False, "missing time/clk/rst/vin/out/metric/load_mon/ctrl_mon"
 
     pre_step = mean_in_window(rows, "out", 10.0e-9, 15.0e-9)
     early_droop = mean_in_window(rows, "out", 18.0e-9, 22.0e-9)
@@ -6332,7 +6388,30 @@ def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[boo
     light_recovery = mean_in_window(rows, "out", 52.0e-9, 60.0e-9)
     second_droop = mean_in_window(rows, "out", 64.0e-9, 68.0e-9)
     late_metric = mean_in_window(rows, "metric", 34.0e-9, 40.0e-9)
-    if None in (pre_step, early_droop, late_recovery, light_recovery, second_droop, late_metric):
+    pre_load = mean_in_window(rows, "load_mon", 10.0e-9, 15.0e-9)
+    heavy_load = mean_in_window(rows, "load_mon", 18.0e-9, 22.0e-9)
+    light_load = mean_in_window(rows, "load_mon", 52.0e-9, 60.0e-9)
+    second_load = mean_in_window(rows, "load_mon", 64.0e-9, 68.0e-9)
+    pre_ctrl = mean_in_window(rows, "ctrl_mon", 10.0e-9, 15.0e-9)
+    heavy_ctrl = mean_in_window(rows, "ctrl_mon", 18.0e-9, 22.0e-9)
+    light_ctrl = mean_in_window(rows, "ctrl_mon", 52.0e-9, 60.0e-9)
+    second_ctrl = mean_in_window(rows, "ctrl_mon", 64.0e-9, 68.0e-9)
+    if None in (
+        pre_step,
+        early_droop,
+        late_recovery,
+        light_recovery,
+        second_droop,
+        late_metric,
+        pre_load,
+        heavy_load,
+        light_load,
+        second_load,
+        pre_ctrl,
+        heavy_ctrl,
+        light_ctrl,
+        second_ctrl,
+    ):
         return False, "ldo_flow_missing_sample_windows"
     assert pre_step is not None
     assert early_droop is not None
@@ -6340,6 +6419,14 @@ def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[boo
     assert light_recovery is not None
     assert second_droop is not None
     assert late_metric is not None
+    assert pre_load is not None
+    assert heavy_load is not None
+    assert light_load is not None
+    assert second_load is not None
+    assert pre_ctrl is not None
+    assert heavy_ctrl is not None
+    assert light_ctrl is not None
+    assert second_ctrl is not None
 
     if not (0.56 <= pre_step <= 0.66):
         return False, f"ldo_flow_pre_step_regulation_wrong={pre_step:.3f}"
@@ -6353,10 +6440,23 @@ def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[boo
         return False, f"ldo_flow_second_step_no_droop second={second_droop:.3f} light={light_recovery:.3f}"
     if late_metric < 0.65:
         return False, f"ldo_flow_recovery_metric_low={late_metric:.3f}"
+    if heavy_load <= pre_load + 0.45 or light_load >= heavy_load - 0.35 or second_load <= light_load + 0.35:
+        return False, (
+            f"ldo_flow_load_monitor_wrong pre/heavy/light/second="
+            f"{pre_load:.3f}/{heavy_load:.3f}/{light_load:.3f}/{second_load:.3f}"
+        )
+    if heavy_ctrl <= pre_ctrl + 0.12:
+        return False, f"ldo_flow_ctrl_no_heavy_load_response pre={pre_ctrl:.3f} heavy={heavy_ctrl:.3f}"
+    if light_ctrl >= heavy_ctrl - 0.08:
+        return False, f"ldo_flow_ctrl_not_reduced_at_light_load light={light_ctrl:.3f} heavy={heavy_ctrl:.3f}"
+    if second_ctrl <= light_ctrl + 0.08:
+        return False, f"ldo_flow_ctrl_no_second_step_response second={second_ctrl:.3f} light={light_ctrl:.3f}"
     return True, (
         "ldo_load_step_recovery_flow "
         f"pre/early/late/light/second={pre_step:.3f}/{early_droop:.3f}/"
-        f"{late_recovery:.3f}/{light_recovery:.3f}/{second_droop:.3f}"
+        f"{late_recovery:.3f}/{light_recovery:.3f}/{second_droop:.3f} "
+        f"load={pre_load:.3f}/{heavy_load:.3f}/{light_load:.3f}/{second_load:.3f} "
+        f"ctrl={pre_ctrl:.3f}/{heavy_ctrl:.3f}/{light_ctrl:.3f}/{second_ctrl:.3f}"
     )
 
 
@@ -6547,9 +6647,9 @@ def check_limiting_amplifier_frontend(rows: list[dict[str, float]]) -> tuple[boo
 
 
 def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {"time", "clk", "rst", "vin", "out", "metric", "gain_mon", "rssi_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        return False, "missing time/clk/rst/vin/out/metric/gain_mon/rssi_mon"
 
     def amp_mean(start: float, stop: float) -> float | None:
         val = mean_in_window(rows, "out", start, stop)
@@ -6561,12 +6661,22 @@ def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool
     overload_amp = amp_mean(24.0e-9, 30.0e-9)
     settled_amp = amp_mean(44.0e-9, 54.0e-9)
     settled_metric = mean_in_window(rows, "metric", 44.0e-9, 54.0e-9)
-    if None in (low_amp, overload_amp, settled_amp, settled_metric):
+    low_gain = mean_in_window(rows, "gain_mon", 12.0e-9, 20.0e-9)
+    settled_gain = mean_in_window(rows, "gain_mon", 44.0e-9, 54.0e-9)
+    low_rssi = mean_in_window(rows, "rssi_mon", 12.0e-9, 20.0e-9)
+    overload_rssi = mean_in_window(rows, "rssi_mon", 24.0e-9, 30.0e-9)
+    settled_rssi = mean_in_window(rows, "rssi_mon", 44.0e-9, 54.0e-9)
+    if None in (low_amp, overload_amp, settled_amp, settled_metric, low_gain, settled_gain, low_rssi, overload_rssi, settled_rssi):
         return False, "agc_missing_sample_windows"
     assert low_amp is not None
     assert overload_amp is not None
     assert settled_amp is not None
     assert settled_metric is not None
+    assert low_gain is not None
+    assert settled_gain is not None
+    assert low_rssi is not None
+    assert overload_rssi is not None
+    assert settled_rssi is not None
 
     if overload_amp <= settled_amp + 0.08:
         return False, f"agc_gain_not_reduced overload={overload_amp:.3f} settled={settled_amp:.3f}"
@@ -6576,7 +6686,17 @@ def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool
         return False, f"agc_low_input_not_amplified={low_amp:.3f}"
     if settled_metric < 0.45:
         return False, f"agc_lock_metric_low={settled_metric:.3f}"
-    return True, f"agc_receiver_leveling_loop amp_low/overload/settled={low_amp:.3f}/{overload_amp:.3f}/{settled_amp:.3f}"
+    if overload_rssi <= low_rssi + 0.20 or overload_rssi <= settled_rssi + 0.15:
+        return False, (
+            f"agc_rssi_monitor_not_overload_sensitive low/overload/settled="
+            f"{low_rssi:.3f}/{overload_rssi:.3f}/{settled_rssi:.3f}"
+        )
+    if settled_gain >= low_gain - 0.10:
+        return False, f"agc_gain_monitor_not_reduced low={low_gain:.3f} settled={settled_gain:.3f}"
+    return True, (
+        f"agc_receiver_leveling_loop amp_low/overload/settled={low_amp:.3f}/{overload_amp:.3f}/{settled_amp:.3f} "
+        f"gain={low_gain:.3f}->{settled_gain:.3f} rssi={low_rssi:.3f}/{overload_rssi:.3f}/{settled_rssi:.3f}"
+    )
 
 
 def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -7157,6 +7277,33 @@ def has_behavior_check(task_id: str) -> bool:
     return task_id in CHECKS
 
 
+def release_checker_task_id(meta: dict, form: str | None = None) -> str | None:
+    """Return the release-v1 checker key when a task keeps a legacy meta id."""
+    release_entry_id = str(meta.get("release_entry_id") or "").strip()
+    release_form = (form or "").strip()
+    if release_form not in {"dut", "tb", "bugfix", "e2e"}:
+        legacy_task_id = str(meta.get("task_id") or meta.get("id") or "").strip()
+        for suffix in ("bugfix", "dut", "e2e", "tb"):
+            if legacy_task_id.endswith(f"_{suffix}") or legacy_task_id.endswith(f":{suffix}"):
+                release_form = suffix
+                break
+    if release_form not in {"dut", "tb", "bugfix", "e2e"}:
+        return None
+    if not release_entry_id:
+        return None
+    candidate = f"{release_entry_id}_{release_form}"
+    return candidate if candidate in CHECKS else None
+
+
+def resolve_checker_task_id(meta: dict, task_id: str, form: str | None = None) -> str:
+    return str(
+        meta.get("checker_task_id")
+        or release_checker_task_id(meta, form)
+        or meta.get("source_checker_task_id")
+        or task_id
+    )
+
+
 def evaluate_behavior(task_id: str, csv_path: Path) -> tuple[float, list[str]]:
     if task_id not in CHECKS:
         return 0.0, [f"no behavior check implemented for {task_id}"]
@@ -7271,9 +7418,7 @@ def run_case(
     task_id = task_id_override or meta.get("id") or meta.get("task_id") or task_dir.name
     checker_task_id = (
         checker_task_id_override
-        or meta.get("checker_task_id")
-        or meta.get("source_checker_task_id")
-        or task_id
+        or resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     )
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
 

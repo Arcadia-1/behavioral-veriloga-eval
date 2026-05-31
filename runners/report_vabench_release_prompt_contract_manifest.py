@@ -35,6 +35,7 @@ FORBIDDEN_TEXT = [
     "System:",
     "few-shot",
     "ICL",
+    "Known defect:",
     "[BEGIN file]",
     "[DONE file]",
 ]
@@ -69,7 +70,9 @@ def release_form_dirs() -> list[Path]:
     return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
 
 
-def target_artifacts(form: str, gold_names: list[str]) -> list[str]:
+def target_artifacts(form: str, gold_names: list[str], explicit: list[str] | None = None) -> list[str]:
+    if explicit:
+        return [str(item) for item in explicit]
     if form == "dut":
         return [name for name in gold_names if name.endswith(".va") and not name.startswith("tb_")]
     if form == "tb":
@@ -88,8 +91,10 @@ def build_row(form_dir: Path) -> dict[str, Any]:
     prompt_path = form_dir / "prompt.md"
     prompt = prompt_path.read_text(encoding="utf-8")
     form = form_dir.name
-    gold_names = [Path(path).name for path in release_task.get("artifacts", {}).get("gold", [])]
-    targets = target_artifacts(form, gold_names)
+    artifacts = release_task.get("artifacts", {})
+    gold_names = [Path(path).name for path in artifacts.get("gold", [])]
+    explicit = artifacts.get("submission_artifacts")
+    targets = target_artifacts(form, gold_names, explicit if isinstance(explicit, list) else None)
     missing_sections = [section for section in REQUIRED_SECTIONS if section not in prompt]
     forbidden = [item for item in FORBIDDEN_TEXT if item in prompt]
     missing_targets = [name for name in targets if f"`{name}`" not in prompt]
@@ -138,6 +143,7 @@ def build_report() -> dict[str, Any]:
             "Normalized all release prompts to explicit public benchmark contracts.",
             "Added explicit Spectre .scs scaffold guidance for TB/E2E prompts, including ahdl_include and instance syntax.",
             "Moved runner-only wrapper, ICL, and repair-feedback protocol out of public prompts.",
+            "Removed explicit bug-root-cause hints from bugfix prompts; bugfix tasks now expose only public behavior and observable mismatch framing.",
             f"Recorded runner-side baseline wrapper `{RELEASE_RUNNER_WRAPPER_VERSION}` for Question/Answer markers and shared EVAS/Spectre rules.",
             "Recorded target artifact names from release_task/gold assets for prompt-version traceability.",
             "Old model-baseline results should be treated as historical and rerun before comparison.",

@@ -1,6 +1,6 @@
 # vaBench Release External Blockers
 
-Date: 2026-05-26
+Date: 2026-05-29
 
 This report isolates the non-certification blockers that prevent the
 release package from becoming fully paper-claimable. It is a recovery
@@ -11,13 +11,13 @@ and claim-boundary artifact, not simulator certification evidence.
 | Metric | Value |
 | --- | ---: |
 | status | `pending` |
-| blockers | 2 |
+| blockers | 1 |
 | blocked | 0 |
 | pending | 1 |
-| ready-to-continue | 1 |
+| ready-to-continue | 0 |
 | bridge status | `ready` |
-| primary rerun queue rows | 2 |
-| ready staging bundles | 2 |
+| primary rerun queue rows | 54 |
+| ready staging bundles | 65 |
 | latest rerun summary | `complete` |
 | latest import | `imported` |
 
@@ -25,15 +25,13 @@ and claim-boundary artifact, not simulator certification evidence.
 
 | ID | Status | Scope | Diagnosis |
 | --- | --- | --- | --- |
-| `B2_fresh_dual_rerun_not_complete` | `ready_to_continue` | 2 primary EVAS/Spectre release rows | dry run: no bridge tunnel or simulator command was executed |
 | `B4_downstream_paper_claims_disabled` | `pending` | speed/debug, model baseline artifacts | downstream paper claims remain disabled until their dedicated artifacts are explicitly enabled |
 
 ## Recovery Sequence
 
-- Fix external SSH/VPN/jump-host reachability until bridge diagnostics reports a ready profile.
-- Run finish_after_bridge without --dry-run to execute the fresh release dual rerun.
-- Import only a complete current rerun summary, then regenerate paper artifacts and completion audit.
-- Enable scored benchmark and baseline artifacts only after dual certification has no pending release forms.
+- Keep the imported full EVAS/Spectre rerun as the release certification evidence.
+- Use the enabled score denominator gate for scored benchmark rows/forms.
+- Enable speed/debug and model baseline claims only after their dedicated artifacts support them.
 
 ## Claim Boundary
 

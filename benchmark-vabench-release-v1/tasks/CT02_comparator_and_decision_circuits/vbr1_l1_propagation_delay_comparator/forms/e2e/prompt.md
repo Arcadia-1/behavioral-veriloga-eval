@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `cmp_delay.va`, `edge_interval_timer.va`, `tb_cmp_delay_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `cmp_delay.va`, `edge_interval_timer.va` must be co-located with the generated Spectre testbench.
+- Include each generated Verilog-A file exactly with a matching `ahdl_include "<file>.va"` line in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -47,6 +51,32 @@ Public stimulus/source nodes visible in the reference harness include:
 - `clk`
 - `vinp`
 - `vinn`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "cmp_delay.va"
+ahdl_include "edge_interval_timer.va"
+
+Vvdd (vdd 0) vsource dc=0.9 type=dc
+
+IDUT (clk vinn vinp out_n out_p lp_int lm_int gnd vdd) cmp_delay
+IEIT (clk out_p delay_ps) edge_interval_timer VTH=0.45
+
+tran tran stop=16n maxstep=10p
+save clk vinp vinn out_p out_n delay_ps
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

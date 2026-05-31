@@ -20,7 +20,7 @@ from run_gold_dual_suite import (
     normalize_spectre_backend,
     run_dual_case,
 )
-from run_gold_suite import benchmark_root
+from run_gold_suite import benchmark_root, checker_task_id as resolve_checker_task_id
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -114,7 +114,7 @@ def dry_run_raw_result(task_dir: Path) -> dict[str, object]:
     meta_path = task_dir / "meta.json"
     meta = read_json(meta_path) if meta_path.exists() else {}
     task_id = meta.get("task_id") or meta.get("id") or task_dir.name
-    checker_task_id = meta.get("checker_task_id") or meta.get("source_checker_task_id") or task_id
+    checker_task_id = resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     return {
         "task_id": task_id,
         "checker_task_id": checker_task_id,
@@ -329,6 +329,12 @@ def parse_args() -> argparse.Namespace:
         help="Remote Cadence cshrc path used to expose spectre on PATH.",
     )
     ap.add_argument("--timeout-s", type=int, default=180, help="Per-bundle simulator timeout.")
+    ap.add_argument(
+        "--spectre-license-wait-s",
+        type=int,
+        default=None,
+        help="Override Spectre +lqtimeout for license checkout, capped by --timeout-s.",
+    )
     ap.add_argument("--limit", type=int, default=None, help="Optional maximum number of bundles to run.")
     ap.add_argument("--entry", action="append", help="Restrict to one release entry; may be repeated.")
     ap.add_argument("--form", action="append", choices=["dut", "tb", "bugfix", "e2e"], help="Restrict by form.")
@@ -344,6 +350,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.spectre_license_wait_s is not None:
+        os.environ["VAEVAS_SPECTRE_LQTIMEOUT_S"] = str(args.spectre_license_wait_s)
     spectre_backend = normalize_spectre_backend(args.spectre_backend)
     manifest_path = Path(args.manifest)
     if not manifest_path.is_absolute():

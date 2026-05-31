@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `clk_burst_gen.va`, `tb_clk_burst_gen_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `clk_burst_gen.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "clk_burst_gen.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -40,6 +44,28 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `CLK`
 - `RST_N`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "clk_burst_gen.va"
+
+IDUT (CLK RST_N CLK_OUT) clk_burst_gen div=8 vdd=0.9 vth=0.45
+
+tran tran stop=3000n maxstep=5n
+save CLK RST_N CLK_OUT
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

@@ -12,7 +12,7 @@
   "source_base_id": "complete_calibration_loop",
   "canonical_kernel": "complete_calibration_loop",
   "source_registry_status": "designed_from_release_taxonomy",
-  "source_evidence_status": "designed_source_pending_dual",
+  "source_evidence_status": "fresh_dual_rerun_required",
   "source_tasks": [
     {
       "form": "e2e",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "tb",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [
@@ -62,16 +62,12 @@
       "historical_dual_expected": false,
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pass",
+      "spectre_status": "pending",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/e2e/evidence.json",
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l2_complete_calibration_loop",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_complete_calibration_loop_e2e",
-      "historical_source_task_id": "vbr1_l2_complete_calibration_loop_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/e2e/result.json"
     },
     {
       "form": "tb",
@@ -80,6 +76,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/gold/complete_calibration_loop.va",
         "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/gold/tb_complete_calibration_loop.scs"
       ],
       "public_inputs": [
@@ -93,23 +90,19 @@
       "historical_dual_expected": false,
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pass",
+      "spectre_status": "pending",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/tb/evidence.json",
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l2_complete_calibration_loop",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_complete_calibration_loop_tb",
-      "historical_source_task_id": "vbr1_l2_complete_calibration_loop_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_complete_calibration_loop/tb/result.json"
     }
   ],
   "missing_forms": [],
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pass",
+    "spectre": "pending",
     "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
   },
   "counts": {
@@ -117,5 +110,7 @@
     "model_capability": false,
     "l0_conformance": false
   },
-  "release_blockers": []
+  "release_blockers": [
+    "fresh_dual_rerun_required_after_intermediate_observability_update"
+  ]
 }

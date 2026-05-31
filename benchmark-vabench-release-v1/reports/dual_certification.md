@@ -1,6 +1,6 @@
 # vaBench Release Dual Certification
 
-Date: 2026-05-26
+Date: 2026-05-27
 
 This report is generated from historical imported evidence plus fresh
 release EVAS/Spectre rerun results when available.
@@ -9,17 +9,17 @@ release EVAS/Spectre rerun results when available.
 
 | Metric | Value |
 | --- | ---: |
-| status | `partial` |
+| status | `pass` |
 | source | `historical main120 import plus fresh release dual rerun` |
 | simulator rerun | `True` |
-| release entries | 64 |
-| dual-certified release forms | 217 |
+| release entries | 79 |
+| dual-certified release forms | 271 |
 | dual-failed release forms | 0 |
-| dual-pending release forms | 2 |
-| dual-pass materialized entries | 63 |
-| dual-pending materialized entries | 1 |
+| dual-pending release forms | 0 |
+| dual-pass materialized entries | 79 |
+| dual-pending materialized entries | 0 |
 | dual-failed materialized entries | 0 |
-| fully certified entries | 63 |
+| fully certified entries | 79 |
 | source-equivalence failures | 0 |
 | source-equivalence blocked forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
@@ -28,14 +28,13 @@ release EVAS/Spectre rerun results when available.
 
 | Entry | Form | Status | EVAS | Spectre | Blockers | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| `vbr1_l1_gain_estimator` | `tb` | `pending` | `pass` | `pending` | Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed. | `benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evidence.json` |
-| `vbr1_l1_gain_estimator` | `e2e` | `pending` | `pass` | `pending` | Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed. | `benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/e2e/evidence.json` |
+| none | none | none | none | none | none | none |
 
 ## Incomplete Entries
 
 | Entry | Dual | Missing forms | Release blockers |
 | --- | --- | --- | --- |
-| `vbr1_l1_gain_estimator` | `pending` |  | fresh_evas_spectre_dual_refresh_pending, spectre_certification |
+| none | none | none | none |
 
 ## Notes
 

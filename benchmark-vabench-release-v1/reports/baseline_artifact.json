@@ -1,29 +1,40 @@
 {
-  "date": "2026-05-26",
+  "date": "2026-05-27",
   "release": "vabench-release-v1",
-  "status": "pending_release_baselines",
+  "status": "ready_for_baseline_runs",
   "claim_allowed": false,
-  "scored_release_entries": 51,
-  "scored_release_forms": 184,
+  "claim_status": "baseline_runs_present_claim_pending",
+  "claim_blockers": [
+    "baseline runs exist but paper-facing model-baseline claims still require a dedicated final-judge summary",
+    "EVAS-filter claims require zero unresolved EVAS PASS / Spectre FAIL model-output cases"
+  ],
+  "scored_release_entries": 66,
+  "scored_release_forms": 236,
   "score_denominator_status": "score_enabled",
   "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-  "fully_certified_entry_count": 63,
-  "dual_pending_release_task_count": 2,
+  "fully_certified_entry_count": 79,
+  "dual_pending_release_task_count": 0,
   "dual_failed_release_task_count": 0,
-  "baseline_summary_count": 0,
-  "baseline_summaries": [],
+  "baseline_summary_count": 7,
+  "baseline_summaries": [
+    "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-dual/summary.json",
+    "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-full/summary.json",
+    "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-public-contract-v3-incremental/summary.json",
+    "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-lq1200-r2/summary.json",
+    "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-thu-wei-full/summary.json",
+    "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-thu-wei-smoke/summary.json",
+    "results/vabench-release-v1-baseline-minimax-deepseek-v4-pro-20260527-public-contract-v3-smoke/summary.json"
+  ],
   "execution_plan": {
-    "status": "blocked_until_full_certification",
-    "blocked_by": [
-      "EVAS/Spectre release certification is pending"
-    ],
+    "status": "ready_for_baseline_runs",
+    "blocked_by": [],
     "denominator_preview": {
-      "planned_entries": 64,
-      "release_forms": 219,
-      "certified_entries": 63,
-      "certified_forms": 217,
-      "scored_entries": 51,
-      "scored_forms": 184
+      "planned_entries": 79,
+      "release_forms": 271,
+      "certified_entries": 79,
+      "certified_forms": 271,
+      "scored_entries": 66,
+      "scored_forms": 236
     },
     "run_order": [
       "Use score_denominator_manifest.json as the frozen scored-row source.",

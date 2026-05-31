@@ -10,11 +10,11 @@
   },
   "static": "pass",
   "evas": "pass",
-  "spectre": "pending",
-  "verdict": "not_certified",
+  "spectre": "pass",
+  "verdict": "certified",
   "artifacts": [
     "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/tb/gold",
-    "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/vbr1_l1_gain_estimator/tb/gold",
+    "results/vabench-release-v1-dual-rerun/vbr1_l1_gain_estimator/tb/gold",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_gain_estimator/tb/spectre_result.json",
     "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/gold/gain_estimator.va",
@@ -28,14 +28,31 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+    "summary": "results/vabench-release-v1-dual-rerun/summary.json",
     "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_gain_estimator/tb/gold",
-    "result_root": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/vbr1_l1_gain_estimator/tb/gold",
-    "raw_status": "FAIL_SPECTRE",
-    "expected_result_met": false,
+    "result_root": "results/vabench-release-v1-dual-rerun/vbr1_l1_gain_estimator/tb/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
     "parity": {
-      "status": "blocked",
-      "reason": "prerequisites not met for waveform comparison"
+      "status": "passed",
+      "policy": "gain_extraction_metric_parity_v1",
+      "basis": "Gain extraction uses dither/noise-like stimulus, so functional gain metric parity is the acceptance gate instead of raw pointwise waveform parity.",
+      "evas": {
+        "status": "ok",
+        "std_in": 0.02128724235209299,
+        "std_out": 0.12772347965696013,
+        "diff_gain": 6.000001199986441,
+        "output_pair": "voutp/voutn"
+      },
+      "spectre": {
+        "status": "ok",
+        "std_in": 0.02106045508025497,
+        "std_out": 0.12636273048152985,
+        "diff_gain": 6.000000000000001,
+        "output_pair": "voutp/voutn"
+      },
+      "relative_gain_delta": 1.9999773999875475e-07,
+      "gain_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25"
     }
   },
   "source_equivalence": {
@@ -48,8 +65,6 @@
     ]
   },
   "failures": [],
-  "pending_blockers": [
-    "Spectre license checkout failed on thu-sui direct-SUI rerun (SPECTRE-209); current gold EVAS/checker passed."
-  ],
-  "notes": "EVAS evidence imported from current release gold; Spectre certification remains pending on external license checkout."
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
 }

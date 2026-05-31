@@ -27,6 +27,8 @@ CATEGORY_BATCH = {
     "Stimulus and Source Generators": "F Stimulus and sources",
     "Baseband Signal Conditioning": "G Signal conditioning",
     "Sampling and Analog Memory": "H Sample/hold memory",
+    "Bias Reference and Power Management": "I Bias reference and power",
+    "RF and AFE Behavioral Macromodels": "J RF and AFE macros",
 }
 
 FIELDS = [
@@ -265,7 +267,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         f"Date: {date.today().isoformat()}",
         "",
         "This is the human-review queue for task 2 and task 3 after locking the",
-        "clean 64-entry function table. Every entry requires manual semantic",
+        "current 79-entry release package. Every entry requires manual semantic",
         "sign-off; risk level only decides review order.",
         "",
         "## Review Contract",

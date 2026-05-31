@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `tb_thermometer_dac_15seg_ref.scs`, `thermometer_dac_15seg.va`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `thermometer_dac_15seg.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "thermometer_dac_15seg.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -68,11 +72,50 @@ Public stimulus/source nodes visible in the reference harness include:
 - `seg12`
 - `seg13`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "thermometer_dac_15seg.va"
+
+Vss (vss 0) vsource dc=0
+
+XDUT (seg0 seg1 seg2 seg3 seg4 seg5 seg6 seg7 seg8 seg9 seg10 seg11 seg12 seg13 seg14 vref vss aout) thermometer_dac_15seg
+
+tran tran stop=180n maxstep=500p
+save seg0 seg1 seg2 seg3 seg4 seg5 seg6 seg7 seg8 seg9 seg10 seg11 seg12 seg13 seg14 aout
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `safe_time_output_levels_match_15_segment_thermometer_count`
 - `full_scale_counts_all_15_segments`
 - `output_is_monotonic_across_programmed_segment_counts`
+
+## Public L1 Behavior Contract
+
+This row is a single unit-element thermometer DAC. The public behavior should
+make the number of enabled unit segments directly observable:
+
+- Treat `seg0` through `seg14` as 0 V/0.9 V thermometer-control inputs.
+- Drive `aout` as the average contribution of the enabled unit elements between
+  `vss` and `vref`.
+- Exercise several stable segment-count plateaus, including zero enabled
+  segments, intermediate counts, and all 15 enabled segments.
+- Hold each plateau long enough for `aout` to settle before the next segment
+  count change.
+- The expected public relation is monotonic: more enabled segments should never
+  reduce `aout`, and full-scale should approach `vref`.
 
 ## Output Contract
 

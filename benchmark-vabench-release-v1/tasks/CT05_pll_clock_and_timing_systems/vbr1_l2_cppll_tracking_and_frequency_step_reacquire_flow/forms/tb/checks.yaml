@@ -24,6 +24,6 @@ sim_correct:
     - "lock"
 parity:
   reference: "spectre"
-  status: "pending_until_evas_spectre_rerun"
+  status: "certified"
   notes:
-    - "Fresh EVAS/Spectre dual validation is required after strengthening this L2 testbench checker contract."
+    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

@@ -12,7 +12,7 @@
   "source_base_id": "comparator_measurement_flow",
   "canonical_kernel": "",
   "source_registry_status": "manual_release_redesign",
-  "source_evidence_status": "fresh_dual_pending_after_l2_redesign",
+  "source_evidence_status": "release_dual_certified",
   "source_tasks": [
     {
       "form": "tb",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "e2e",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [

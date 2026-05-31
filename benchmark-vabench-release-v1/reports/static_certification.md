@@ -12,10 +12,10 @@ EVAS or Spectre simulation report.
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| static-certified release forms | 219 |
+| static-certified release forms | 271 |
 | static-failed release forms | 0 |
-| static-certified entries | 64 |
-| entries with materialized assets | 64 |
+| static-certified entries | 79 |
+| entries with materialized assets | 79 |
 | blocking issues | 0 |
 
 ## Failures

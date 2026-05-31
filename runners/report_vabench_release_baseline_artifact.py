@@ -11,6 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 STATUS_REPORT_JSON = REPORTS_ROOT / "release_status.json"
 DUAL_REPORT_JSON = REPORTS_ROOT / "dual_certification.json"
+CERTIFICATION_MATRIX_JSON = REPORTS_ROOT / "certification_matrix.json"
 SCORE_DENOMINATOR_JSON = REPORTS_ROOT / "score_denominator_manifest.json"
 RESULTS_ROOT = ROOT / "results"
 REPORT_JSON = REPORTS_ROOT / "baseline_artifact.json"
@@ -39,6 +40,7 @@ def discover_release_baseline_summaries() -> list[str]:
 def build_report() -> dict[str, object]:
     status = read_json(STATUS_REPORT_JSON)
     dual = read_json(DUAL_REPORT_JSON)
+    certification_matrix = read_json(CERTIFICATION_MATRIX_JSON)
     denominator = read_json(SCORE_DENOMINATOR_JSON)
     denominator_summary = denominator.get("summary", {})
     if not isinstance(denominator_summary, dict):
@@ -46,7 +48,16 @@ def build_report() -> dict[str, object]:
     scored_entries = int(denominator_summary.get("scored_entry_count", 0) or 0)
     scored_forms = int(denominator_summary.get("scored_form_count", 0) or 0)
     certified_entries = int(status.get("fully_certified_entry_count", 0) or 0)
-    dual_pending = int(dual.get("dual_pending_release_task_count", 0) or 0)
+    matrix_summary = certification_matrix.get("summary", {})
+    if not isinstance(matrix_summary, dict):
+        matrix_summary = {}
+    dual_pending = int(
+        matrix_summary.get(
+            "pending_form_count",
+            dual.get("dual_pending_release_task_count", 0),
+        )
+        or 0
+    )
     dual_failed = int(dual.get("dual_failed_release_task_count", 0) or 0)
     summaries = discover_release_baseline_summaries()
     ready = scored_entries > 0 and scored_forms > 0 and dual_pending == 0 and dual_failed == 0
@@ -56,11 +67,17 @@ def build_report() -> dict[str, object]:
         execution_plan_status = "blocked_until_full_certification"
     else:
         execution_plan_status = "blocked_until_scored_release_exists"
+    claim_blockers = [
+        "baseline runs exist but paper-facing model-baseline claims still require a dedicated final-judge summary",
+        "EVAS-filter claims require zero unresolved EVAS PASS / Spectre FAIL model-output cases",
+    ]
     return {
         "date": date.today().isoformat(),
         "release": "vabench-release-v1",
         "status": "ready_for_baseline_runs" if ready else "pending_release_baselines",
-        "claim_allowed": ready and bool(summaries),
+        "claim_allowed": False,
+        "claim_status": "baseline_runs_present_claim_pending" if summaries else "pending_baseline_runs",
+        "claim_blockers": claim_blockers if summaries else ["release model baseline artifact pending"],
         "scored_release_entries": scored_entries,
         "scored_release_forms": scored_forms,
         "score_denominator_status": denominator.get("status", "missing"),

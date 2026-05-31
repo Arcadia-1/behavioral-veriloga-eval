@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `dwa_ptr_gen.va`, `tb_dwa_ptr_gen_ref.scs`, `v2b_4b.va`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `dwa_ptr_gen.va`, `v2b_4b.va` must be co-located with the generated Spectre testbench.
+- Include each generated Verilog-A file exactly with a matching `ahdl_include "<file>.va"` line in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -37,7 +41,38 @@ The release harness expects these exact public scalar observables:
 - `code_2`
 - `code_1`
 - `code_0`
-- `\`
+- `cell_en_15`
+- `cell_en_14`
+- `cell_en_13`
+- `cell_en_12`
+- `cell_en_11`
+- `cell_en_10`
+- `cell_en_9`
+- `cell_en_8`
+- `cell_en_7`
+- `cell_en_6`
+- `cell_en_5`
+- `cell_en_4`
+- `cell_en_3`
+- `cell_en_2`
+- `cell_en_1`
+- `cell_en_0`
+- `ptr_15`
+- `ptr_14`
+- `ptr_13`
+- `ptr_12`
+- `ptr_11`
+- `ptr_10`
+- `ptr_9`
+- `ptr_8`
+- `ptr_7`
+- `ptr_6`
+- `ptr_5`
+- `ptr_4`
+- `ptr_3`
+- `ptr_2`
+- `ptr_1`
+- `ptr_0`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -46,6 +81,30 @@ Public stimulus/source nodes visible in the reference harness include:
 - `clk_i`
 - `rst_ni`
 - `vin_node`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "dwa_ptr_gen.va"
+ahdl_include "v2b_4b.va"
+
+IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b vdd=0.9
+IDUT (clk_i rst_ni code_3 code_2 code_1 code_0 cell_en_15 cell_en_14 cell_en_13 cell_en_12 cell_en_11 cell_en_10 cell_en_9 cell_en_8 cell_en_7 cell_en_6 cell_en_5 cell_en_4 cell_en_3 cell_en_2 cell_en_1 cell_en_0 ptr_15 ptr_14 ptr_13 ptr_12 ptr_11 ptr_10 ptr_9 ptr_8 ptr_7 ptr_6 ptr_5 ptr_4 ptr_3 ptr_2 ptr_1 ptr_0) dwa_ptr_gen vdd=0.9 vth=0.45 ptr_init=0
+
+tran tran stop=100n maxstep=2n
+save clk_i rst_ni code_3 code_2 code_1 code_0 cell_en_15 cell_en_14 cell_en_13 cell_en_12 cell_en_11 cell_en_10 cell_en_9 cell_en_8 cell_en_7 cell_en_6 cell_en_5 cell_en_4 cell_en_3 cell_en_2 cell_en_1 cell_en_0 ptr_15 ptr_14 ptr_13 ptr_12 ptr_11 ptr_10 ptr_9 ptr_8 ptr_7 ptr_6 ptr_5 ptr_4 ptr_3 ptr_2 ptr_1 ptr_0
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

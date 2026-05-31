@@ -16,6 +16,6 @@ sim_correct:
     - "metric_tracks_settling"
 parity:
   reference: "spectre"
-  status: "pending_until_evas_spectre_rerun"
+  status: "certified"
   notes:
-    - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

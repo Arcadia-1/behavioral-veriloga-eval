@@ -22,7 +22,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pass",
+    "spectre": "pending",
     "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/evidence.json"
   },
   "counts": {
@@ -38,6 +38,7 @@
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",
-    "benchmark_score is enabled because this release entry is in the frozen score denominator."
+    "benchmark_score is enabled because this release entry is in the frozen score denominator.",
+    "Fresh Spectre rerun required after 2026-05-31 ADPLL feedback-loop gold/checker update."
   ]
 }

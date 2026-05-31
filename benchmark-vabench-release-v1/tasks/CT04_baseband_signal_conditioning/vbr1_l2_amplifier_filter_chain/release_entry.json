@@ -12,7 +12,7 @@
   "source_base_id": "amplifier_filter_chain",
   "canonical_kernel": "amplifier_filter_chain",
   "source_registry_status": "designed_from_release_taxonomy",
-  "source_evidence_status": "designed_source_pending_dual",
+  "source_evidence_status": "release_dual_certified",
   "source_tasks": [
     {
       "form": "e2e",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "tb",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [
@@ -64,14 +64,10 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/e2e/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_amplifier_filter_chain",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
-      "historical_source_task_id": "vbr1_l2_amplifier_filter_chain_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/e2e/result.json"
     },
     {
       "form": "tb",
@@ -80,6 +76,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/gold/amplifier_filter_chain.va",
         "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/gold/tb_amplifier_filter_chain.scs"
       ],
       "public_inputs": [
@@ -95,14 +92,10 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/tb/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_amplifier_filter_chain",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_amplifier_filter_chain_tb",
-      "historical_source_task_id": "vbr1_l2_amplifier_filter_chain_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_amplifier_filter_chain/tb/result.json"
     }
   ],
   "missing_forms": [],

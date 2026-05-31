@@ -11,10 +11,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a reusable measurement/stimulus support flow for Dithered differential gain extraction flow. It is certified as release content but remains outside the core circuit score denominator.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to support-flow behavior and must be reported separately from core analog/mixed-signal circuit-function coverage.
+
 ## Form-Specific Requirements
 
 - Generate all target artifacts: `dither_adder.va`, `gain_amp_fixed.va`, `lfsr.va`, `tb_gain_extraction_ref.scs`, `vin_src.va`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `dither_adder.va`, `gain_amp_fixed.va`, `lfsr.va`, `vin_src.va` must be co-located with the generated Spectre testbench.
+- Include each generated Verilog-A file exactly with a matching `ahdl_include "<file>.va"` line in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -48,10 +58,65 @@ Public stimulus/source nodes visible in the reference harness include:
 - `rst_n`
 - `en`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "dither_adder.va"
+ahdl_include "gain_amp_fixed.va"
+ahdl_include "lfsr.va"
+ahdl_include "vin_src.va"
+
+Vvdd (vdd 0) vsource dc=vdd
+Vvss (vss 0) vsource dc=0
+
+IVIN (clk rst_n vinp vinn) vin_src vdd=vdd vth=0.45 ampl=0.02 freq=fin sigma=VIN_NOISE SEED=0
+ILFSR (dpn vdd vss clk en rst_n) lfsr seed=42
+IDITH (vinp vinn dpn vdin_p vdin_n) dither_adder vdd=vdd vth=0.45 DITHER_AMP=DITHER_AMP
+IAMP (vdin_p vdin_n vamp_p vamp_n) gain_amp_fixed vdd=vdd ACTUAL_GAIN=ACTUAL_GAIN
+
+tran tran stop=20u maxstep=8n
+save vinp vinn vamp_p vamp_n
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `gain_amplification_present`
 - `differential_gain_above_threshold`
+
+## Public L2 Behavior Contract
+
+This support row is a dithered differential gain extraction flow. It must expose
+the generated input pair and the amplified output pair:
+
+1. Source and dither:
+   - Generate a deterministic voltage-domain differential input pair
+     `vinp/vinn`.
+   - Apply a repeatable dither or PRBS-like perturbation so the measurement is
+     not based on one static sample.
+
+2. Fixed-gain path:
+   - Drive `vamp_p/vamp_n` as the amplified differential output pair.
+   - Keep common-mode and signal levels bounded in the public voltage domain.
+
+3. Measurement relation:
+   - The output differential amplitude should be visibly larger than the input
+     differential amplitude over the saved transient.
+   - The gain relation should be consistent across the dithered samples rather
+     than a one-time spike.
+
+The expected public relation is: deterministic differential input plus dither
+-> amplified differential output with gain above the public threshold.
 
 ## Output Contract
 

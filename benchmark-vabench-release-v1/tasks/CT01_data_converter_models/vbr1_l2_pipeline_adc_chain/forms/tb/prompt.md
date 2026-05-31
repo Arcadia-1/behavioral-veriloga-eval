@@ -12,10 +12,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a behavioral composition/flow task for Pipeline ADC residue chain. It should expose intermediate state, multi-stage behavior, or a closed-loop relation through the public observables below.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to the public behavior checks below; do not broaden the task into full silicon implementation, layout, device physics, or unlisted performance metrics.
+
 ## Form-Specific Requirements
 
 - Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
 - Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `pipeline_adc_chain_4b.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "pipeline_adc_chain_4b.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public DUT Interface To Instantiate
 
@@ -53,6 +63,31 @@ Public stimulus/source nodes visible in the reference harness include:
 - `clk`
 - `vin`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "pipeline_adc_chain_4b.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0.0
+
+IDUT (vdd vss vin clk res1 res2 s1b1 s1b0 s2b1 s2b0 dout3 dout2 dout1 dout0) pipeline_adc_chain_4b vrefp=0.9 vrefn=0.0 vth=0.45 tedge=100p
+
+tran tran stop=170n maxstep=200p
+save vin clk res1 res2 s1b1 s1b0 s2b1 s2b0 dout3 dout2 dout1 dout0
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `all_16_pipeline_codes_present`
@@ -60,6 +95,24 @@ Public stimulus/source nodes visible in the reference harness include:
 - `stage2_residue_matches_backend_decision`
 - `final_code_matches_stage_concatenation`
 - `final_code_monotonic_with_vin`
+
+## Public L2 Behavior Contract
+
+This row is a two-stage behavioral pipeline ADC residue chain. The testbench
+must expose intermediate stage behavior, not only final-code coverage:
+
+1. Drive one stable input point for every final 4-bit code bin over the 0 V to
+   0.9 V range.
+2. Hold each `vin` value stable before the corresponding rising `clk` edge.
+3. Save `s1b1 s1b0` and `res1` so the evaluator can compare the first-stage
+   coarse decision and residue.
+4. Save `s2b1 s2b0` and `res2` so the evaluator can compare the backend
+   decision and second residue.
+5. Save `dout3 dout2 dout1 dout0` so the evaluator can check final-code
+   coverage, concatenation, and monotonicity.
+
+Use a compact single-sample transient schedule. Do not add interstage latency
+or checker logic in the testbench; the evaluator checks the public waveforms.
 
 ## Output Contract
 

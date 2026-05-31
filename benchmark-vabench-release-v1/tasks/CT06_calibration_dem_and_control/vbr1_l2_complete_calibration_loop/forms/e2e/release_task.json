@@ -30,7 +30,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pass",
+    "spectre": "pending",
     "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/e2e/evidence.json"
   },
   "counts": {
@@ -40,12 +40,13 @@
   },
   "source": {
     "source_base_id": "complete_calibration_loop",
-    "source_task_id": "vbr1_l2_complete_calibration_loop_e2e",
-    "historical_source_task_id": "vbr1_l2_complete_calibration_loop_e2e",
+    "source_task_id": "",
+    "historical_source_task_id": "",
     "release_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e"
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",
-    "benchmark_score is enabled because this release entry is in the frozen score denominator."
+    "benchmark_score is enabled because this release entry is in the frozen score denominator.",
+    "Fresh Spectre rerun required after adding trim_mon/residual_mon intermediate observability."
   ]
 }

@@ -19,6 +19,6 @@ sim_correct:
 
 parity:
   reference: "spectre"
-  status: "pending"
+  status: "certified"
   notes:
-    - "Fresh EVAS/Spectre dual rerun required after L2 measurement-flow prompt/checker/gold redesign."
+    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

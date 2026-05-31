@@ -10,6 +10,8 @@ CATEGORY_DIR_BY_NAME: dict[str, str] = {
     "Baseband Signal Conditioning": "CT04_baseband_signal_conditioning",
     "PLL Clock and Timing Systems": "CT05_pll_clock_and_timing_systems",
     "Calibration, DEM, and Control": "CT06_calibration_dem_and_control",
+    "Bias Reference and Power Management": "CT07_bias_reference_power_management",
+    "RF and AFE Behavioral Macromodels": "CT08_rf_afe_behavioral_macromodels",
     "Measurement Instrumentation Flows": "SUP01_measurement_instrumentation_flows",
     "Stimulus and Source Generators": "SUP02_stimulus_and_source_generators",
 }

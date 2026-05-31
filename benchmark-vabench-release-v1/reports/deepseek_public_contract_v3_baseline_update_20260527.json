@@ -1,0 +1,133 @@
+{
+  "date": "2026-05-27",
+  "benchmark": "vabench-release-v1",
+  "model": "deepseek-v4-pro",
+  "prompt_contract_version": "public-contract-v3",
+  "status": "updated_with_incremental_generation_thu_wei_dual_confirmation_and_evas_compatibility_fix",
+  "claim_boundary": "Incremental public-contract-v3 baseline: tb/e2e candidates were regenerated; dut/bugfix candidates were reused from the previous DeepSeek run and re-scored with current assets.",
+  "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+  "prompt_contract_manifest": "benchmark-vabench-release-v1/reports/prompt_contract_manifest.json",
+  "prompt_only_evas": {
+    "old_summary": "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-full/summary.json",
+    "new_summary": "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-public-contract-v3-incremental/summary.json",
+    "old_evas_pass": 34,
+    "old_scored_forms": 236,
+    "old_evas_pass_rate": 0.1441,
+    "new_evas_pass": 46,
+    "new_scored_forms": 236,
+    "new_evas_pass_rate": 0.1949,
+    "new_generation_status_counts": {
+      "generated": 217,
+      "no_code_extracted": 19
+    },
+    "new_by_form": {
+      "bugfix": {
+        "pass": 11,
+        "total": 52,
+        "pass_rate": 0.2115,
+        "source": "reused_previous_candidates_re_scored"
+      },
+      "dut": {
+        "pass": 19,
+        "total": 52,
+        "pass_rate": 0.3654,
+        "source": "reused_previous_candidates_re_scored"
+      },
+      "e2e": {
+        "pass": 6,
+        "total": 66,
+        "pass_rate": 0.0909,
+        "source": "regenerated_public_contract_v3"
+      },
+      "tb": {
+        "pass": 10,
+        "total": 66,
+        "pass_rate": 0.1515,
+        "source": "regenerated_public_contract_v3"
+      }
+    }
+  },
+  "composition": {
+    "composition_report": "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-public-contract-v3-incremental/baseline_composition.json",
+    "regenerated_forms": {
+      "tb": 66,
+      "e2e": 66
+    },
+    "reused_previous_candidate_forms": {
+      "dut": 52,
+      "bugfix": 52
+    },
+    "missing_composition_rows": 0
+  },
+  "spectre_dual_confirmation": {
+    "effective_summary": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-thu-wei-full/summary.json",
+    "backend": "sui-direct",
+    "compute_host": "jinzhihong@thu-wei",
+    "proxy_jump": "jinzhihong@thu-sui",
+    "selection": "historical_evas-pass_before_evas_compatibility_fix",
+    "selected_scored_forms": 236,
+    "completed_dual_count": 48,
+    "skipped_evas_fail_count": 188,
+    "spectre_final_pass_count": 46,
+    "dual_pass_count": 44,
+    "evas_pass_spectre_fail_count": 2,
+    "spectre_pass_evas_fail_count": 0,
+    "invalidated_attempts": [
+      {
+        "summary": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass/summary.partial.json",
+        "reason": "thu-sui Spectre license checkout was capped to 270 seconds by timeout-s=300 and produced SPECTRE-209 license failures; not counted as final judge evidence."
+      },
+      {
+        "summary": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-lq1200-r2/summary.json",
+        "reason": "ran inside sandbox without SSH/control-socket permission and failed remote workdir creation; not counted as final judge evidence."
+      }
+    ]
+  },
+  "evas_compatibility_fix": {
+    "current_prompt_only_summary": "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-public-contract-v3-incremental/summary.json",
+    "current_evas_pass": 46,
+    "current_scored_forms": 236,
+    "current_evas_pass_rate": 0.1949,
+    "fixed_cases": [
+      {
+        "task_id": "flash_adc_3b_smoke",
+        "new_evas_status": "FAIL_DUT_COMPILE",
+        "fix": "EVAS parser now rejects Spectre-incompatible local real/integer declarations inside analog/procedural statement blocks."
+      },
+      {
+        "task_id": "vbr1_l1_pipeline_adc_stage_tb",
+        "new_evas_status": "FAIL_TB_COMPILE",
+        "fix": "EVAS Spectre netlist parser now rejects implicit multiline PWL wave=[...] blocks unless backslash line continuation is used."
+      }
+    ],
+    "runner_fix": "run_case removes stale tran.csv/strobe/plot outputs before rerunning EVAS so failed parses cannot inherit old waveform files."
+  },
+  "evas_false_positive_cases": [
+    {
+      "task_id": "flash_adc_3b_smoke",
+      "form": "e2e",
+      "category": "Data Converter Models",
+      "spectre_error": "Verilog-A declaration statement outside a labeled block / Spectre compile failure",
+      "candidate_issue": "Generated DUT declares and initializes real variables inside an event block; EVAS accepted it, Spectre rejected it.",
+      "staged_candidate": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-thu-wei-full/staged_tasks/flash_adc_3b_smoke/gold/flash_adc_3b.va"
+    },
+    {
+      "task_id": "vbr1_l1_pipeline_adc_stage_tb",
+      "form": "tb",
+      "category": "Data Converter Models",
+      "spectre_error": "Unexpected end of line in Spectre netlist PWL source",
+      "candidate_issue": "Generated testbench uses a multiline vsource wave=[...] block that EVAS accepted but Spectre rejected.",
+      "staged_candidate": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260527-public-contract-v3-incremental-evas-pass-thu-wei-full/staged_tasks/vbr1_l1_pipeline_adc_stage_tb/gold/tb_pipeline_stage_ref.scs"
+    }
+  ],
+  "runner_update": {
+    "file": "runners/run_gold_dual_suite.py",
+    "change": "sui-direct SSH now honors VAEVAS_SUI_PROXY_JUMP and inserts ssh -J before the target host.",
+    "motivation": "Allow thu-sui to act as the jump host while running Spectre on thu-wei."
+  },
+  "next_actions": [
+    "Use the current prompt-only EVAS pass rate as 46/236 after the syntax-compatibility fix; the preserved 48-selected dual artifact is historical diagnostic evidence.",
+    "Use Spectre-confirmed pass count 46/236 for conservative final-judge model capability.",
+    "If a same-date fully regenerated baseline is required, regenerate dut/bugfix too; this artifact is intentionally incremental."
+  ]
+}

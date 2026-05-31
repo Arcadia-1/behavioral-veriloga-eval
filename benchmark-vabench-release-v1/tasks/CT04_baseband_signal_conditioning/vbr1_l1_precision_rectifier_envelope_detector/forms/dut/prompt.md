@@ -8,6 +8,7 @@
 - Base function: Precision rectifier/envelope detector
 - Domain: `voltage`
 - Target artifact(s): `precision_rectifier_envelope_detector.va`
+- Supplied/reference support artifact(s): `tb_precision_rectifier_envelope_detector.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
@@ -19,6 +20,25 @@
 ## Public Verilog-A Interface
 
 - `precision_rectifier_envelope_detector.va` declares module `precision_rectifier_envelope_detector` with positional ports: `clk`, `rst`, `vin`, `rect`, `env`, `metric`.
+
+## Public Testbench And Observable Contract
+
+Public transient setting used by the release harness:
+
+```spectre
+tran tran stop=90n maxstep=250p
+```
+
+The release harness expects these exact public scalar observables:
+
+- `clk`
+- `rst`
+- `vin`
+- `rect`
+- `env`
+- `metric`
+
+When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 ## Public Behavior Checks
 

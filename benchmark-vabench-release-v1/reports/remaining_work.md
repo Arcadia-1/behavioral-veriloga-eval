@@ -1,6 +1,6 @@
 # vaBench Release Remaining Work
 
-Date: 2026-05-26
+Date: 2026-05-27
 
 This report is the active queue for finishing the clean vaBench release.
 It separates missing source design from missing simulator evidence and
@@ -11,21 +11,21 @@ from the frozen score denominator, not inferred from source presence alone.
 
 | Metric | Value |
 | --- | ---: |
-| planned entries | 64 |
-| source-linked entries | 64 |
-| entries with copied assets | 64 |
-| static-certified release forms | 219 |
-| dual-certified release forms | 217 |
-| dual-pending release forms | 2 |
+| planned entries | 79 |
+| source-linked entries | 79 |
+| entries with copied assets | 79 |
+| static-certified release forms | 271 |
+| dual-certified release forms | 271 |
+| dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
 | source-design pending entries | 0 |
-| selected rerun-pending forms | 2 |
+| selected rerun-pending forms | 0 |
 | source-equivalence blocked forms | 0 |
-| fresh dual rerun queue forms | 2 |
+| fresh dual rerun queue forms | 0 |
 | missing required-form entries | 0 |
 | current seed missing-form entries | 0 |
-| scored release entries | 51 |
+| scored release entries | 66 |
 
 ## Source Design Pending
 
@@ -37,8 +37,7 @@ from the frozen score denominator, not inferred from source presence alone.
 
 | Entry | Form | Source task |
 | --- | --- | --- |
-| `vbr1_l1_gain_estimator` | `tb` | `vbr1_l1_gain_estimator_tb` |
-| `vbr1_l1_gain_estimator` | `e2e` | `vbr1_l1_gain_estimator_e2e` |
+| none | none | none |
 
 ## Source-Equivalence Blocked
 
@@ -64,4 +63,4 @@ current fresh EVAS/Spectre rerun queue.
 
 ## Next Queue
 
-- Run the current 2-form EVAS/Spectre fresh dual certification queue.
+- No remaining release work is known from current reports.

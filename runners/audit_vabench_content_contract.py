@@ -28,6 +28,8 @@ EXPECTED_CATEGORIES = {
     "Calibration, DEM, and Control",
     "Baseband Signal Conditioning",
     "Sampling and Analog Memory",
+    "Bias Reference and Power Management",
+    "RF and AFE Behavioral Macromodels",
 }
 
 GENERIC_CHECKS = {
@@ -174,9 +176,9 @@ def audit_counts(manifest: dict[str, object]) -> list[dict[str, object]]:
     excluded_levels = Counter(
         entry["level"] for entry in entries if not is_content_denominator_entry(str(entry["release_entry_id"]))
     )
-    expected_package_entries = 64
+    expected_package_entries = 79
     expected_content_entries = expected_package_entries - len(CONTENT_DENOMINATOR_EXCLUDED_ENTRIES)
-    expected_levels = {"L1": 51 - excluded_levels.get("L1", 0), "L2": 13 - excluded_levels.get("L2", 0)}
+    expected_levels = {"L1": 62 - excluded_levels.get("L1", 0), "L2": 17 - excluded_levels.get("L2", 0)}
 
     if len(entries) != expected_package_entries:
         findings.append(

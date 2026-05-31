@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from runners.vabench_release_prompt_wrapper import RELEASE_RUNNER_WRAPPER_VERSION
+
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "benchmark-vabench-release-v1" / "reports" / "prompt_contract_manifest.json"
@@ -14,7 +16,7 @@ def test_prompt_contract_manifest_records_public_contract_v2() -> None:
     assert report["status"] == "pass"
     assert report["prompt_version_id"] == "public-contract-v3"
     assert report["previous_prompt_version"] == "public-contract-v2"
-    assert report["runner_wrapper_version"] == "release-runner-wrapper-v5"
+    assert report["runner_wrapper_version"] == RELEASE_RUNNER_WRAPPER_VERSION
     assert report["prompt_count"] == 271
     assert report["form_counts"] == {
         "bugfix": 54,

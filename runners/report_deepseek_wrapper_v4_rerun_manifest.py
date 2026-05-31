@@ -69,7 +69,7 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
         "recommended_action",
     ]
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

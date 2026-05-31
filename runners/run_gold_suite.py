@@ -6,7 +6,7 @@ import json
 import re
 from pathlib import Path
 
-from simulate_evas import has_behavior_check, run_case
+from simulate_evas import has_behavior_check, resolve_checker_task_id, run_case
 from vabench_policy import should_count_as, validate_or_raise
 
 
@@ -35,8 +35,8 @@ def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
 
 
-def checker_task_id(meta: dict, task_id: str) -> str:
-    return str(meta.get("checker_task_id") or meta.get("source_checker_task_id") or task_id)
+def checker_task_id(meta: dict, task_id: str, form: str | None = None) -> str:
+    return resolve_checker_task_id(meta, task_id, form=form)
 
 
 def list_gold_task_dirs(
@@ -82,7 +82,7 @@ def run_gold_case(task_dir: Path, output_root: Path, timeout_s: int) -> dict:
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
     task_id = meta.get("task_id") or meta.get("id") or task_dir.name
-    checker_id = checker_task_id(meta, task_id)
+    checker_id = checker_task_id(meta, task_id, form=task_dir.name)
 
     tb_path = choose_gold_tb(gold_dir)
     if tb_path is None:

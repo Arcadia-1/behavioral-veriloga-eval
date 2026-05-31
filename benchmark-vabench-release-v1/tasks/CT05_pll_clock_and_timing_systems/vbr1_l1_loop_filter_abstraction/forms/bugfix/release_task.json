@@ -16,7 +16,8 @@
     "checks": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/checks.yaml",
     "gold": [
       "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/tb_loop_filter_abstraction.scs"
     ],
     "public_inputs": [
       "prompt.md",
@@ -42,8 +43,8 @@
   },
   "source": {
     "source_base_id": "loop_filter_abstraction",
-    "source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
-    "historical_source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+    "source_task_id": "",
+    "historical_source_task_id": "",
     "release_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix"
   },
   "notes": [

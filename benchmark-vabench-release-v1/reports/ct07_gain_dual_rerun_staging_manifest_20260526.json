@@ -1,0 +1,95 @@
+{
+  "date": "2026-05-26",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 2,
+  "queue_rows_with_ready_primary_bundle": 2,
+  "bundle_count": 2,
+  "ready_bundle_count": 2,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "e2e": 1,
+    "tb": 1
+  },
+  "variant_counts": {
+    "gold": 2
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_gain_estimator_e2e",
+      "checker_task_id": "vbr1_l1_gain_estimator_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_gain_estimator_e2e",
+        "vbr1_l1_gain_estimator",
+        "vbr1_l1_gain_estimator_e2e",
+        "vbr1_l1_gain_estimator_e2e",
+        "vbr1_l1_gain_estimator",
+        "vbr1_l1_gain_estimator"
+      ],
+      "queue_reason": "designed_release_source_rerun",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/tb_gain_estimator_ref.scs",
+      "source_includes": [
+        "./gain_estimator.va"
+      ],
+      "source_include_origins": {
+        "./gain_estimator.va": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/gold/gain_estimator.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/e2e/gold/gold/tb_gain_estimator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/e2e/gold/gold/gain_estimator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_gain_estimator_tb",
+      "checker_task_id": "vbr1_l1_gain_estimator_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_gain_estimator_tb",
+        "vbr1_l1_gain_estimator",
+        "vbr1_l1_gain_estimator_tb",
+        "vbr1_l1_gain_estimator_tb",
+        "vbr1_l1_gain_estimator_e2e",
+        "vbr1_l1_gain_estimator_e2e"
+      ],
+      "queue_reason": "selected_existing_source_rerun",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/gold/tb_gain_estimator_ref.scs",
+      "source_includes": [
+        "./gain_estimator.va"
+      ],
+      "source_include_origins": {
+        "./gain_estimator.va": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/gold/gain_estimator.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/tb/gold/gold/tb_gain_estimator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_gain_20260526/vbr1_l1_gain_estimator/tb/gold/gold/gain_estimator.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

@@ -15,7 +15,8 @@
     "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/meta.json",
     "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/checks.yaml",
     "gold": [
-      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va"
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/tb_soft_hysteretic_limiter.scs"
     ],
     "public_inputs": [
       "prompt.md"
@@ -38,8 +39,8 @@
   },
   "source": {
     "source_base_id": "soft_hysteretic_limiter",
-    "source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
-    "historical_source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
+    "source_task_id": "",
+    "historical_source_task_id": "",
     "release_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut"
   },
   "notes": [

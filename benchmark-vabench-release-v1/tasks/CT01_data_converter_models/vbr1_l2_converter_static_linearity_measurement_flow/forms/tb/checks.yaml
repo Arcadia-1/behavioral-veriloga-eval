@@ -30,6 +30,6 @@ sim_correct:
     - "inl"
 parity:
   reference: "spectre"
-  status: "pending"
+  status: "certified"
   notes:
-    - "Fresh EVAS/Spectre dual validation is required after the ahdlLib-guided quality refinement."
+    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

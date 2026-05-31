@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `cdac_calibration.va`, `tb_cdac_calibration_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `cdac_calibration.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "cdac_calibration.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -42,6 +46,28 @@ Public stimulus/source nodes visible in the reference harness include:
 - `clk`
 - `rst`
 - `err`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "cdac_calibration.va"
+
+XDUT (clk rst err trim) cdac_calibration
+
+tran tran stop=220n maxstep=500p
+save clk rst err trim
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

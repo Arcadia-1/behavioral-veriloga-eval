@@ -1,6 +1,6 @@
 # vaBench Release Package Manifest
 
-Date: 2026-05-26
+Date: 2026-05-29
 
 This package-level manifest indexes every release entry and materialized
 form. It is a navigation and machine-consumption layer, not simulator
@@ -11,25 +11,25 @@ certification evidence.
 | Metric | Value |
 | --- | ---: |
 | status | `in_progress` |
-| planned entries | 64 |
-| entries | 64 |
-| forms | 219 |
-| core entries | 51 |
+| planned entries | 79 |
+| entries | 79 |
+| forms | 271 |
+| core entries | 66 |
 | support entries | 13 |
-| core forms | 184 |
+| core forms | 236 |
 | support forms | 35 |
-| content denominator entries | 51 |
+| content denominator entries | 66 |
 | content-excluded entries | 13 |
-| content denominator forms | 184 |
+| content denominator forms | 236 |
 | content-excluded forms | 35 |
-| certified entries | 63 |
-| certified forms | 217 |
-| pending entries | 1 |
-| pending forms | 2 |
-| scored entries | 51 |
-| scored forms | 184 |
-| core scored entries | 51 |
-| core scored forms | 184 |
+| certified entries | 79 |
+| certified forms | 271 |
+| pending entries | 0 |
+| pending forms | 0 |
+| scored entries | 66 |
+| scored forms | 236 |
+| core scored entries | 66 |
+| core scored forms | 236 |
 | support scored entries | 0 |
 | support scored forms | 0 |
 | L0 conformance cases | 4 |
@@ -38,15 +38,13 @@ certification evidence.
 
 | Status | Count |
 | --- | ---: |
-| `certified` | 63 |
-| `pending` | 1 |
+| `certified` | 79 |
 
 ## Form Status Counts
 
 | Status | Count |
 | --- | ---: |
-| `certified` | 217 |
-| `pending` | 2 |
+| `certified` | 271 |
 
 ## Claim Boundary
 

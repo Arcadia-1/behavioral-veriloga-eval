@@ -28,20 +28,24 @@ module adpll_ratio_hop_ref (
     real vh;
     real vl;
     real vth;
+    real ratio_sample;
     real t_ref_prev;
     real t_ref_last;
+    real t_fb_prev;
     real t_fb_last;
     real ref_period;
+    real fb_period;
+    real period_err;
+    real period_mag;
     real phase_err;
+    real phase_mag;
+    real phase_limit;
     real dco_freq;
-    real desired_freq;
     real dco_half_period;
     real t_next_toggle;
     real code_norm;
-    real ratio_sample;
 
     integer ctrl_code;
-    integer desired_code;
     integer ratio_cur;
     integer ratio_prev;
     integer dco_state;
@@ -55,14 +59,37 @@ module adpll_ratio_hop_ref (
         vl = V(VSS);
         vth = 0.5 * (vh + vl);
         ratio_sample = V(ratio_ctrl);
-        ratio_cur = (ratio_sample < 5.0) ? 4 : 6;
+
+        ratio_cur = 2;
+        if (ratio_sample >= 2.5) ratio_cur = 3;
+        if (ratio_sample >= 3.5) ratio_cur = 4;
+        if (ratio_sample >= 4.5) ratio_cur = 5;
+        if (ratio_sample >= 5.5) ratio_cur = 6;
+        if (ratio_sample >= 6.5) ratio_cur = 7;
+        if (ratio_sample >= 7.5) ratio_cur = 8;
+        if (ratio_sample >= 8.5) ratio_cur = 9;
+        if (ratio_sample >= 9.5) ratio_cur = 10;
+        if (ratio_sample >= 10.5) ratio_cur = 11;
+        if (ratio_sample >= 11.5) ratio_cur = 12;
+        if (ratio_sample >= 12.5) ratio_cur = 13;
+        if (ratio_sample >= 13.5) ratio_cur = 14;
+        if (ratio_sample >= 14.5) ratio_cur = 15;
+        if (ratio_sample >= 15.5) ratio_cur = 16;
+        if (ratio_cur < ratio_min) ratio_cur = ratio_min;
+        if (ratio_cur > ratio_max) ratio_cur = ratio_max;
 
         @(initial_step) begin
             t_ref_prev = -1.0;
             t_ref_last = -1.0;
+            t_fb_prev = -1.0;
             t_fb_last = -1.0;
-            ref_period = 20e-9;
+            ref_period = 20.0e-9;
+            fb_period = 20.0e-9;
+            period_err = 0.0;
+            period_mag = 0.0;
             phase_err = 0.0;
+            phase_mag = 0.0;
+            phase_limit = 6.0e-9;
 
             ctrl_code = code_init;
             if (ctrl_code < code_min) ctrl_code = code_min;
@@ -88,6 +115,9 @@ module adpll_ratio_hop_ref (
                 div_cnt = 0;
                 lock_state = 0;
                 lock_streak = 0;
+                t_fb_prev = -1.0;
+                t_fb_last = -1.0;
+                fb_period = 20.0e-9;
             end
 
             t_ref_prev = t_ref_last;
@@ -95,29 +125,9 @@ module adpll_ratio_hop_ref (
             if (t_ref_prev >= 0.0) begin
                 ref_period = t_ref_last - t_ref_prev;
             end
-            if (ref_period < 1e-15) begin
-                ref_period = 20e-9;
+            if (ref_period < 1.0e-15) begin
+                ref_period = 20.0e-9;
             end
-
-            desired_freq = ratio_cur / ref_period;
-            if (desired_freq < f_min) desired_freq = f_min;
-            if (desired_freq > f_max) desired_freq = f_max;
-
-            desired_code = code_init + 10 * (ratio_cur - 4);
-            if (desired_code < code_min) desired_code = code_min;
-            if (desired_code > code_max) desired_code = code_max;
-
-            if (ctrl_code < desired_code) begin
-                ctrl_code = ctrl_code + 1;
-                lock_streak = 0;
-            end else if (ctrl_code > desired_code) begin
-                ctrl_code = ctrl_code - 1;
-                lock_streak = 0;
-            end else begin
-                lock_streak = lock_streak + 1;
-            end
-
-            lock_state = (lock_streak >= lock_count_target) ? 1 : 0;
         end
 
         @(timer(t_next_toggle)) begin
@@ -128,6 +138,42 @@ module adpll_ratio_hop_ref (
                 if (div_cnt >= ratio_cur) begin
                     div_cnt = 0;
                     fb_state = 1;
+
+                    t_fb_prev = t_fb_last;
+                    t_fb_last = $abstime;
+                    if (t_fb_prev >= 0.0) begin
+                        fb_period = t_fb_last - t_fb_prev;
+                    end
+
+                    if ((t_ref_last >= 0.0) && (t_fb_prev >= 0.0) && (ref_period > 1.0e-15)) begin
+                        period_err = fb_period - ref_period;
+                        period_mag = period_err;
+                        if (period_mag < 0.0) period_mag = -period_mag;
+
+                        if (period_err > 0.25 * lock_tol) begin
+                            ctrl_code = ctrl_code + 1;
+                        end else if (period_err < -0.25 * lock_tol) begin
+                            ctrl_code = ctrl_code - 1;
+                        end
+
+                        if (ctrl_code < code_min) ctrl_code = code_min;
+                        if (ctrl_code > code_max) ctrl_code = code_max;
+
+                        phase_err = t_fb_last - t_ref_last;
+                        if (phase_err > 0.5 * ref_period) phase_err = phase_err - ref_period;
+                        if (phase_err < -0.5 * ref_period) phase_err = phase_err + ref_period;
+                        phase_mag = phase_err;
+                        if (phase_mag < 0.0) phase_mag = -phase_mag;
+                        phase_limit = 0.30 * ref_period;
+                        if (phase_limit < 3.0 * lock_tol) phase_limit = 3.0 * lock_tol;
+
+                        if (period_mag <= lock_tol) begin
+                            lock_streak = lock_streak + 1;
+                        end else begin
+                            lock_streak = 0;
+                        end
+                        lock_state = (lock_streak >= lock_count_target) ? 1 : 0;
+                    end
                 end
             end else if (fb_state == 1) begin
                 fb_state = 0;
@@ -143,11 +189,7 @@ module adpll_ratio_hop_ref (
             t_next_toggle = t_next_toggle + dco_half_period;
         end
 
-        @(cross(V(fb_clk) - vth, +1)) begin
-            t_fb_last = $abstime;
-        end
-
-        code_norm = ctrl_code / code_max;
+        code_norm = (ctrl_code - code_min) / (1.0 * (code_max - code_min));
         if (code_norm < 0.0) code_norm = 0.0;
         if (code_norm > 1.0) code_norm = 1.0;
 

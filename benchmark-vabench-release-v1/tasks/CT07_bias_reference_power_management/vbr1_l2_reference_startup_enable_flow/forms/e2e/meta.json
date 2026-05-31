@@ -1,0 +1,31 @@
+{
+  "id": "vbr1_l2_reference_startup_enable_flow_e2e",
+  "task_id": "vbr1_l2_reference_startup_enable_flow_e2e",
+  "asset_type": "vabench_task",
+  "benchmark": "vabench-release-v1",
+  "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+  "family": "end-to-end",
+  "category": "Bias Reference and Power Management",
+  "domain": "voltage",
+  "track": "core",
+  "difficulty": "D3",
+  "expected_backend": "evas",
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "reference_startup_enable_flow.va",
+    "tb_reference_startup_enable_flow.scs"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "behavior_checks": [
+    "pre_enable_reference_is_held_low",
+    "enabled_reference_startup_settles",
+    "supply_dip_resets_valid_status"
+  ],
+  "designed_source": true
+}

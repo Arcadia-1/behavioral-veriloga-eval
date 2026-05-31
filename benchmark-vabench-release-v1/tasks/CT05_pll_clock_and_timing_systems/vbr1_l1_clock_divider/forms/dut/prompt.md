@@ -7,8 +7,8 @@
 - Category: PLL Clock and Timing Systems
 - Base function: Clock divider
 - Domain: `voltage`
-- Target artifact(s): `clk_divider.va`, `clk_divider_ref.va`
-- Supplied/reference support artifact(s): `tb_clk_divider_ref.scs`
+- Target artifact(s): `clk_divider_ref.va`
+- Supplied/reference support artifact(s): `clk_divider.va`, `tb_clk_divider_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
@@ -36,7 +36,14 @@ The release harness expects these exact public scalar observables:
 - `rst_n`
 - `clk_out`
 - `lock`
-- `\`
+- `div_code_0`
+- `div_code_1`
+- `div_code_2`
+- `div_code_3`
+- `div_code_4`
+- `div_code_5`
+- `div_code_6`
+- `div_code_7`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -48,11 +55,7 @@ When this form generates a testbench, use plain scalar save names for these obse
 
 ## Output Contract
 
-Return exactly these source artifacts:
-
-- `clk_divider.va`
-- `clk_divider_ref.va`
-
+Return exactly one source artifact named `clk_divider_ref.va`.
 Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Public Description

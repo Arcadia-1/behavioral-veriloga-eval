@@ -1,13 +1,13 @@
 {
-  "date": "2026-05-26",
+  "date": "2026-05-27",
   "release": "vabench-release-v1",
   "status": "pass",
-  "audited_release_task_count": 219,
+  "audited_release_task_count": 271,
   "form_counts": {
-    "bugfix": 43,
-    "dut": 48,
-    "e2e": 64,
-    "tb": 64
+    "bugfix": 54,
+    "dut": 59,
+    "e2e": 79,
+    "tb": 79
   },
   "issue_count": 0,
   "warning_count": 0,
@@ -1480,6 +1480,422 @@
       "entry_id": "vbr1_l2_complete_calibration_loop",
       "form": "tb",
       "release_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "dut",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/dut",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "bugfix",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/bugfix",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/tb",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "e2e",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e",
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "tb",
+      "release_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/tb",
       "status": "pass",
       "issues": [],
       "warnings": []

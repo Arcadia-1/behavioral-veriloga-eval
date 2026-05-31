@@ -54,6 +54,15 @@ When this form generates a testbench, use plain scalar save names for these obse
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
 
+Representative public mismatch scenarios:
+
+| Scenario | Expected behavior | Faulty behavior to repair |
+| --- | --- | --- |
+| `gain_sel` changes before a rising `clk` edge | gain changes only after the sampling edge and then holds | output gain changes asynchronously or ignores sampled gain |
+| reset asserted | output returns to common mode and gain returns to unity/default behavior | stale gain or output state survives reset |
+| large input excursion under high gain | output clamps to the rail and `metric` marks clipping | output exceeds rails or clipping metric is missing |
+| common-mode input | output remains near common mode regardless of gain | amplifier shifts common mode incorrectly |
+
 ## Output Contract
 
 Return exactly one source artifact named `dut_fixed.va`.

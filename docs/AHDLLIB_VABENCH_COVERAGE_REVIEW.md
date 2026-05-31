@@ -66,7 +66,7 @@ coverage gaps and weak tasks, then replace or refine selected vaBench entries.
 | Mostly digital or RTL-like | `and_gate`, `or_gate`, `xor_gate`, `d_ff`, `jk_ff`, `serial_reg_8`, `parallel_reg_8`, `full_adder` | Exclude from scored analog benchmark unless embedded in a mixed-signal circuit flow. |
 | Device/passive/current-domain primitives | `res`, `cap`, `ind`, `diode_simple`, `diode_sch`, `mos_level1`, `npn_bjt`, `cccs_hdl`, `vccs_hdl`, current clamps | Exclude from the current EVAS-aligned release. They require branch current/KCL/KVL or device semantics. |
 | Non-IC physical-domain examples | `dc_motor`, `three_phase_motor`, `mass`, `spring`, `road`, `wheel`, `mag_core`, `mag_winding` | Exclude. They broaden the benchmark away from analog IC behavioral modeling. |
-| Communication-system blocks | `qam_16ary_mod`, `qam_16ary_demod`, `qpsk_modulator`, `qpsk_demodulator`, `am_modulator`, `fm_modulator`, `pm_modulator` | Defer. They are interesting but would imply a new RF/communication behavioral category. |
+| Communication-system blocks | `qam_16ary_mod`, `qam_16ary_demod`, `qpsk_modulator`, `qpsk_demodulator`, `am_modulator`, `fm_modulator`, `pm_modulator` | Defer. RF/AFE macromodels are now represented, but full communication modulation/demodulation would imply a broader system benchmark category. |
 
 The practical takeaway is: many ahdlLib cells are useful, but only a few should
 enter the release because many are duplicates, outside scope, support-only, or
@@ -74,7 +74,7 @@ would require a new benchmark category.
 
 ## Current vaBench Coverage Baseline
 
-Current release tracker: 64 entries, including 51 L1 entries and 13 L2 entries.
+Current release tracker: 79 entries, including 62 L1 entries and 17 L2 entries.
 
 | vaBench category | Current entries | Current role |
 | --- | ---: | --- |
@@ -86,6 +86,8 @@ Current release tracker: 64 entries, including 51 L1 entries and 13 L2 entries.
 | Stimulus and Source Generators | 6 | PRBS, ramp/step, burst clock, dither/noise-like source, sine, sequencer |
 | Baseband Signal Conditioning | 8 | Low-pass, resettable integrator, limiter, gain/PGA, higher-order filter, slew, chain |
 | Sampling and Analog Memory | 5 | Aperture, droop/leakage, clocked S/H, acquisition limit, converter front-end |
+| Bias Reference and Power Management | 8 | Bandgap/PTAT/CTAT, bias generator, LDO, UVLO, POR, startup/load-step flows |
+| RF and AFE Behavioral Macromodels | 7 | LNA/mixer/limiter/RSSI/PA macromodels, I/Q downconversion, AGC receiver loop |
 
 ## Category Mapping
 
@@ -99,6 +101,8 @@ Current release tracker: 64 entries, including 51 L1 entries and 13 L2 entries.
 | Stimulus and Source Generators | Good, but swept/chirp behavior is an obvious industrial idiom. | `swept_sine_src`, `varfreq_sin`, `audio_src`, `three_phase_src`, `rand_bit_stream`, modulation source cells | Current programmable sequencer already covers ramp, sine, and burst/PRBS gating. A swept-sine/chirp extension is the cleanest possible future addition if stimulus coverage is judged thin. |
 | Baseband Signal Conditioning | Good, but ahdlLib exposes more nonlinear and compensator-style blocks. | `amp`, `attenuator`, `limiting_diffamp`, `vargain_diffamp`, `vc_vg_diffamp`, `level_shifter`, `hard_voltage_clamp`, `soft_voltage_clamp`, `lpf_1storder`, `lead_compensator`, `lag_compensator`, `lead_lag_compensator`, `mixer`, `absolute_value`, `fullwave_rectifier_2p`, `halfwave_rectifier_2p`, `log_amp`, `polynomial` | Best area for selective improvement. Prefer one nonlinear conditioning task or one lead-lag/compensator task over increasing count broadly. |
 | Sampling and Analog Memory | Strong. | `sah_ideal`, `sampler`, `switch_cap_integ` | Current S/H entries cover the important behavioral contracts. `switch_cap_integ` should be handled carefully because integrator behavior may cross the EVAS scope boundary. |
+| Bias Reference and Power Management | Now represented as a core category. | Reference/bias, reset/threshold, regulator-like, and startup examples where available. | Keep as voltage-domain macromodel coverage. Avoid transistor-level bandgap/LDO stability claims. |
+| RF and AFE Behavioral Macromodels | Now represented as a core category. | `mixer`, limiting/log/gain blocks, and modulation examples as indirect inspiration. | Keep voltage-domain RF/AFE macros; defer full communication modulation/demodulation systems. |
 
 ## Exclusion Buckets
 
@@ -126,12 +130,12 @@ It is to identify a small number of high-value replacements or refinements.
 | P2 | Deadband comparator/nonlinear amplifier behavior | `deadband`, `deadband_diffamp` | Existing comparator and calibration deadband tasks already cover part of this. Use mainly to sharpen specs. |
 | P2 | Frequency/offset/slew measurement helpers | `freq_meter`, `offset_meas`, `slew_rate_meas`, `find_slope` | Use to improve measurement-flow semantics and checker audits, not necessarily to add scored core entries. |
 | P2 | Trim-element macromodel | `tuning_res`, `untrimmed_res`, `untrimmed_cap`, `untrimmed_ind` | Only worth adding if framed as analog calibration hardware, not as passive primitive modeling. |
-| P3 | Mixer/modulator/demodulator | `mixer`, `am_modulator`, `fm_modulator`, `qam_16ary_mod`, `qpsk_modulator` | Interesting but could broaden the benchmark into communication-system modeling. Defer unless we explicitly add an RF/communication behavioral category. |
+| P3 | Communication modulator/demodulator | `am_modulator`, `fm_modulator`, `qam_16ary_mod`, `qpsk_modulator` | RF/AFE macromodels are now covered; full communication modulation/demodulation remains deferred unless we explicitly broaden the benchmark. |
 
 ## Current vaBench Risk Audit From ahdlLib
 
 The current release categories are broadly reasonable, but ahdlLib exposes
-several concrete risks in the current 64-entry package:
+several concrete risks in the current 79-entry package:
 
 | Risk | Affected area | Why it matters | Preferred fix |
 | --- | --- | --- | --- |
@@ -140,11 +144,11 @@ several concrete risks in the current 64-entry package:
 | Stimulus coverage is close but should emphasize sweep semantics. | Stimulus and Source Generators | `swept_sine_src` and `varfreq_sin` are common reusable behavioral sources; current sequencer has ramp/sine/burst/PRBS but may not stress chirp/frequency continuity enough. | Extend `vbr1_l2_programmable_stimulus_sequencer` or replace a weaker source task with swept-sine/chirp behavior. |
 | Measurement tasks could become support-only clutter if not tied to circuit decisions. | Measurement Instrumentation Flows | `ahdlLib` has many probes/meters. That validates the category, but reviewers may see it as testbench plumbing if scoring is not separated. | Keep support/core score separation explicit; use measurement entries to validate circuit-facing flows. |
 | Some current categories contain digital-control-flavored entries. | PLL, Calibration/DEM, Stimulus | Digital-looking blocks can be justified only when they are analog-facing: SAR control, DEM for DAC mismatch, PFD/VCO timing, PRBS/dither stimulus. | Keep only analog-facing digital control. Do not add generic gates/registers from ahdlLib. |
-| EVAS scope could hide valuable Spectre-only Verilog-A idioms. | Filters, integrators, device/passive models | Industrial Verilog-A often uses `I()<+`, `idt`, `ddt`, branch current, and continuous-time operators. vaBench intentionally excludes most of that today. | State this as a deliberate scope boundary, not as full Verilog-A coverage. Consider a future Spectre-only extension only after the current release is certified. |
+| EVAS scope could hide valuable Spectre-only Verilog-A idioms. | Filters, integrators, device/passive models | Industrial Verilog-A often uses `I()<+`, `idt`, `ddt`, branch current, and continuous-time operators. vaBench intentionally excludes most of that today. | State this as a deliberate scope boundary, not as full Verilog-A coverage. Consider a future Spectre-only extension only after the current release baseline and speed gates are stable. |
 
 ## Recommended Next Step
 
-Do not change the 64-entry release immediately. First use this review as an
+Do not expand the 79-entry release reflexively. First use this review as an
 audit lens:
 
 1. Mark current entries that already align with ahdlLib industrial idioms.

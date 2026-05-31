@@ -10,12 +10,12 @@ the public prompt is the right analog/mixed-signal circuit problem.
 
 Current release target:
 
-- 64 content entries.
-- 51 core circuit entries plus 13 measurement/stimulus support entries.
-- 51 L1 entries and 13 L2 entries.
-- 8 release categories.
-- Score denominator remains disabled until fresh full EVAS/Spectre dual
-  certification is complete.
+- 79 content entries.
+- 66 core circuit entries plus 13 measurement/stimulus support entries.
+- 62 L1 entries and 17 L2 entries.
+- 10 release categories.
+- Score denominator is enabled for the 66-entry / 236-form certified core
+  slice; support rows remain certified but excluded from the main score.
 
 Core review questions:
 
@@ -25,7 +25,7 @@ Core review questions:
    describe the same circuit function?
 3. For each L2 row, does the checker validate a composed flow or a meaningful
    measurement/stimulus support flow, rather than a single shallow observable?
-4. Are support categories reported separately from the 51-entry core circuit
+4. Are support categories reported separately from the 66-entry core circuit
    denominator?
 
 ## Inputs
@@ -55,13 +55,13 @@ Automated checks:
 
 | Check | Expected result | Failure action |
 | --- | --- | --- |
-| Package manifest entry count equals package asset target. | `64` release entries. | Block package-integrity claims; reconcile taxonomy or package. |
-| Content denominator matches the audited target. | `64` entries: `51` core circuit entries and `13` support entries. | Block distinct-function benchmark claims. |
-| Level split matches current release. | `51` L1 and `13` L2. | Fix manifest/docs or reclassify entries. |
-| Category set has exactly the release taxonomy categories. | 8 categories, no legacy-only categories. | Rename, merge, or remap entries. |
+| Package manifest entry count equals package asset target. | `79` release entries. | Block package-integrity claims; reconcile taxonomy or package. |
+| Content denominator matches the audited target. | `66` core circuit entries and `13` support entries. | Block distinct-function benchmark claims. |
+| Level split matches current release. | `62` L1 and `17` L2. | Fix manifest/docs or reclassify entries. |
+| Category set has exactly the release taxonomy categories. | 10 categories, no legacy-only categories. | Rename, merge, or remap entries. |
 | Completed-content table agrees with manifest counts. | Same entry/form totals and category counts. | Regenerate or correct docs. |
 | L0 conformance cases are outside the L1/L2 denominator. | `counted_in_score=false`, separate conformance report. | Move row to conformance or reclassify. |
-| Score denominator is disabled until fresh dual certification. | No counted score rows while EVAS/Spectre is pending. | Block score reporting. |
+| Score denominator follows certification state. | `66` scored core entries / `236` scored forms after full EVAS/Spectre certification. | Block score reporting or refresh score manifest. |
 
 Human review:
 
@@ -80,7 +80,7 @@ Current split:
 
 | Role | Categories | Count |
 | --- | --- | --- |
-| Core circuit entries | Data Converter Models; Comparator and Decision Circuits; Sampling and Analog Memory; Baseband Signal Conditioning; PLL Clock and Timing Systems; Calibration, DEM, and Control | 51 |
+| Core circuit entries | Data Converter Models; Comparator and Decision Circuits; Sampling and Analog Memory; Baseband Signal Conditioning; PLL Clock and Timing Systems; Calibration, DEM, and Control; Bias Reference and Power Management; RF and AFE Behavioral Macromodels | 66 |
 | Support entries | Measurement Instrumentation Flows; Stimulus and Source Generators | 13 |
 
 Audit rules:
@@ -89,7 +89,7 @@ Audit rules:
 - Support entries can support "Verilog-A benchmark infrastructure coverage",
   "testbench/measurement modeling", or "stimulus/source modeling" claims.
 - Support entries must not inflate the core circuit denominator.
-- Any paper table that lists all 64 entries should visibly separate `51 core`
+- Any paper table that lists all 79 entries should visibly separate `66 core`
   from `13 support`.
 
 ### A3. Function Uniqueness and Naming
@@ -176,14 +176,14 @@ Automated checks:
 | Check | Expected result | Failure action |
 | --- | --- | --- |
 | Every release category has at least one L1 entry. | True. | Add content or remove category. |
-| Every core category has L2 coverage if the taxonomy claims complete-flow coverage there. | True for the current 64-entry target. | Add L2 or narrow claim. |
+| Every core category has L2 coverage if the taxonomy claims complete-flow coverage there. | True for the current 79-entry target. | Add L2 or narrow claim. |
 | Support categories are clearly marked as support. | True. | Fix taxonomy/report/paper wording. |
 | All entries stay in pure voltage-domain behavioral Verilog-A scope. | No unsupported current-domain/KCL/KVL/device-level/AC/noise claim. | Rewrite or remove row. |
 | Score remains disabled while fresh dual certification is pending. | `counted_in_score=false`. | Block score reporting. |
 
 Human review:
 
-- Check whether 64 entries cover enough distinct analog/mixed-signal behavior
+- Check whether 79 entries cover enough distinct analog/mixed-signal behavior
   to support the benchmark claim.
 - Check whether CT01 data converters are overrepresented relative to other
   core categories.
@@ -427,9 +427,10 @@ The benchmark content audit is ready for baseline pilots only when:
 - all Audit Gate B automated checks pass;
 - every L2 entry has a human `keep`, `revise-complete`, `downgrade`, or
   `support-only` decision;
-- support-only rows are visibly separated from the 51-entry core circuit
+- support-only rows are visibly separated from the 66-entry core circuit
   denominator;
 - high-risk L1 entries have no unresolved wording/checker/gold mismatch;
-- score remains disabled until fresh full EVAS/Spectre certification;
+- score remains enabled only for certified core rows and support rows remain
+  excluded from the main score;
 - any remaining caveat is documented as a non-blocking review note, not hidden
   inside a pass result.

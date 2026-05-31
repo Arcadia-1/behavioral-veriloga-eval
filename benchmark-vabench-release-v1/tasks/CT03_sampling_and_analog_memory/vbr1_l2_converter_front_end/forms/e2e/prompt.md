@@ -11,10 +11,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a behavioral composition/flow task for Converter front-end. It should expose intermediate state, multi-stage behavior, or a closed-loop relation through the public observables below.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to the public behavior checks below; do not broaden the task into full silicon implementation, layout, device physics, or unlisted performance metrics.
+
 ## Form-Specific Requirements
 
 - Generate all target artifacts: `sample_hold_droop_ref.va`, `tb_sample_hold_droop_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `sample_hold_droop_ref.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "sample_hold_droop_ref.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -45,12 +55,62 @@ Public stimulus/source nodes visible in the reference harness include:
 - `clk`
 - `vin`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "sample_hold_droop_ref.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0.0
+
+XDUT (vdd vss clk vin vout valid coarse) sample_hold_droop_ref vth=0.45 tau=90n dt=0.5n taperture=200p valid_width=2n trf=40p
+
+tran tran stop=170n maxstep=0.1n
+save vin clk vout valid coarse
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `aperture_delayed_sample_tracks_vin`
 - `hold_windows_show_bounded_droop`
 - `coarse_decision_matches_held_sample`
 - `valid_pulses_mark_completed_samples`
+
+## Public L2 Behavior Contract
+
+This row is a converter front-end chain. It must expose the handoff from
+aperture-delayed sampling to hold droop and coarse decision:
+
+1. Aperture-delayed sampling:
+   - On each rising `clk` edge, wait the public `taperture` interval before
+     sampling `vin`.
+   - The testbench should move `vin` near selected clock edges so delayed
+     sampling can be distinguished from immediate edge sampling.
+
+2. Hold and droop:
+   - Drive `vout` from the sampled value, then let it droop gradually toward
+     `vss` between samples according to the public droop behavior.
+   - Keep droop bounded; `vout` should not jump instantly to zero during a hold
+     window.
+
+3. Coarse decision and valid pulse:
+   - Drive `coarse` from the held sample compared with `vth`.
+   - Pulse `valid` after the delayed sample completes so completed samples can
+     be identified in the saved waveform.
+
+The public relation is: `vin` near the aperture instant -> held `vout` with
+bounded droop -> `coarse` decision -> `valid` pulse marking sample completion.
 
 ## Output Contract
 

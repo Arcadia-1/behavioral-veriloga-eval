@@ -9,10 +9,11 @@ Source table: `docs/VABENCH_BASE_FUNCTION_REGISTRY.csv`.
 
 Selected top-level additions are tracked in
 `docs/VABENCH_LEVEL_COVERAGE_TABLE.md`. The current clean release package has
-materialized 64 L1/L2 package entries after removing duplicate kernels and weak
-readout/control/PLL/DEM rows. The 64-entry target contains both core circuit
-entries and measurement/stimulus support entries, and EVAS/Spectre release
-certification is still partial. The detailed
+materialized 79 L1/L2 package entries after removing duplicate kernels and weak
+readout/control/PLL/DEM rows and adding bias/reference/power plus RF/AFE
+coverage. The 79-entry target contains both core circuit entries and
+measurement/stimulus support entries, with current EVAS/Spectre release
+certification complete. The detailed
 completed-content inventory is `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md`.
 
 ## Why This Exists
@@ -37,18 +38,19 @@ This registry adds one explicit decision per base:
 | Removed pending redesign | 1 | `offset_calibration_fsm` is removed from the release count for now. It can return only as a true multi-state offset-search controller. |
 
 These numbers are registry decisions, not final benchmark scores. The current
-release package has materialized the selected 64-entry target, but release
-certification is still partial. Score, speed, and model-baseline claims remain
-disabled until their own claim gates are explicitly enabled.
+release package has materialized and certified the selected 79-entry target.
+The core score denominator is enabled for certified `track=core` entries;
+speed and model-baseline claims remain blocked until their own claim gates are
+explicitly enabled.
 
 The package asset target is larger than this current-seed registry:
 
 | Pool | Count | Where tracked |
 | --- | ---: | --- |
 | Current promoted L1 seed functions | 22 | `docs/VABENCH_RELEASE_SEED_MANIFEST.csv`. |
-| Promoted top-level L1 additions | 29 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Selected L2 package targets | 13 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
-| Top-level L1/L2 package target | 64 | 51 core circuit entries + 13 measurement/stimulus support entries. |
+| Promoted top-level L1 additions | 40 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
+| Selected L2 package targets | 17 | `docs/VABENCH_LEVEL_COVERAGE_TABLE.md` and `docs/VABENCH_RELEASE_TAXONOMY.md`. |
+| Top-level L1/L2 package target | 79 | 66 core circuit entries + 13 measurement/stimulus support entries. |
 
 ## Identifier Policy
 
@@ -64,17 +66,17 @@ evidence, and script joins.
 
 | Item | Count | Status |
 | --- | ---: | --- |
-| Release entries | 64 | Materialized. |
-| L1 entries | 51 | Materialized. |
-| L2 entries | 13 | Materialized after duplicate/weak entry deletion. |
-| Release task forms | 219 | Materialized. |
-| EVAS/Spectre-certified entries | 0 | Fresh release dual validation is pending. |
-| EVAS/Spectre-certified forms | 0 | Fresh release dual validation is pending. |
-| Pending release entries | 64 | Await fresh certification or import. |
-| Pending release forms | 219 | Await fresh certification or import. |
+| Release entries | 79 | Materialized. |
+| L1 entries | 62 | Materialized. |
+| L2 entries | 17 | Materialized after duplicate/weak entry deletion and later category expansion. |
+| Release task forms | 271 | Materialized. |
+| EVAS/Spectre-certified entries | 79 | Full release dual certification imported. |
+| EVAS/Spectre-certified forms | 271 | Full release dual certification imported. |
+| Pending release entries | 0 | No current release entries await dual certification. |
+| Pending release forms | 0 | No current release forms await dual certification. |
 | Failed release entries/forms | 0 / 0 | No current release failure is countable as certified evidence. |
 | EVAS PASS / Spectre FAIL mismatches | 0 | Clear. |
-| Scored entries/forms | 0 / 0 | Disabled by policy. |
+| Scored entries/forms | 66 / 236 | Enabled for certified `track=core`; support remains excluded. |
 
 See `docs/VABENCH_RELEASE_COMPLETED_CONTENTS.md` for the completed functions
 by category and form.
@@ -91,8 +93,8 @@ by category and form.
 | `file_metric_writer` | Count with stronger checker. | Require a one-line `metric.out` value and compare it to waveform crossing time. |
 | `settling_time_measurement_tb` | Count with explicit metric semantics. | Define tolerance band, settle window, and metric artifact behavior. |
 | `vco_phase_integrator` | Count with tolerance policy. | Public prompt should describe final phase/frequency behavior; startup-sample parity belongs in evaluator policy. |
-| `adc_code_capture_register` | Removed from the 64-entry core release. | Weak readout-boundary logic duplicated converter support behavior without adding a strong analog/mixed-signal circuit function. |
-| `serial_readout_deserializer` | Removed from the 64-entry core release. | Readout reconstruction overlapped with serializer/frame-alignment support tasks and was not kept as a distinct core circuit function. |
+| `adc_code_capture_register` | Removed from the core release. | Weak readout-boundary logic duplicated converter support behavior without adding a strong analog/mixed-signal circuit function. |
+| `serial_readout_deserializer` | Removed from the core release. | Readout reconstruction overlapped with serializer/frame-alignment support tasks and was not kept as a distinct core circuit function. |
 
 ## Function-Level Review Contract
 

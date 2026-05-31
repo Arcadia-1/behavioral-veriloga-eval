@@ -51,6 +51,14 @@ When this form generates a testbench, use plain scalar save names for these obse
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
 
+Representative public mismatch scenarios:
+
+| Scenario | Expected behavior | Faulty behavior to repair |
+| --- | --- | --- |
+| reset is low/inactive with positive input | `vout` ramps upward over time | output does not integrate or has the wrong ramp direction |
+| reset pulse asserted | `vout` clears near zero during the reset window | output keeps the old integrated state |
+| reset released after the pulse | integration restarts from the reset-cleared value | output resumes from stale pre-reset state |
+
 ## Output Contract
 
 Return exactly one source artifact named `dut_fixed.va`.

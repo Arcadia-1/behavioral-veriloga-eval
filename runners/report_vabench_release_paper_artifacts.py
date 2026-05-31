@@ -32,7 +32,7 @@ MAIN120_EVAS_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-evas-202
 MAIN120_SPECTRE_SUMMARY = ROOT / "results" / "vabench-main-v1-main120-gold-spectre-jin-2026-05-08" / "summary.json"
 REPORT_JSON = REPORTS_ROOT / "paper_artifacts.json"
 REPORT_MD = REPORTS_ROOT / "paper_artifacts.md"
-PLANNED_ENTRY_TARGET = 64
+PLANNED_ENTRY_TARGET = 79
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -98,6 +98,9 @@ def build_report() -> dict[str, object]:
     conformance = read_json(CONFORMANCE_REPORT_JSON)
     remaining = read_json(REMAINING_REPORT_JSON)
     certification_matrix = read_json(CERTIFICATION_MATRIX_JSON)
+    certification_matrix_summary = certification_matrix.get("summary", {})
+    if not isinstance(certification_matrix_summary, dict):
+        certification_matrix_summary = {}
     staging = read_json(RERUN_STAGING_REPORT_JSON)
     import_report = read_json(DUAL_RERUN_IMPORT_JSON)
     summary_path = imported_summary_path(import_report)
@@ -126,6 +129,27 @@ def build_report() -> dict[str, object]:
     scored_forms = int(denominator_summary.get("scored_form_count", 0) or 0)
     dual_failed = int(status.get("dual_failed_release_task_count", 0) or 0)
     mismatch = int(status.get("evas_pass_spectre_fail_count", 0) or 0)
+    dual_certified_forms = int(
+        certification_matrix_summary.get(
+            "certified_form_count",
+            dual.get("dual_certified_release_task_count", 0),
+        )
+        or 0
+    )
+    dual_pending_forms = int(
+        certification_matrix_summary.get(
+            "pending_form_count",
+            dual.get("dual_pending_release_task_count", 0),
+        )
+        or 0
+    )
+    source_equivalence_blocked_forms = int(
+        certification_matrix_summary.get(
+            "source_equivalence_blocked_form_count",
+            dual.get("source_equivalence_blocked_release_task_count", 0),
+        )
+        or 0
+    )
     asset_issues = int(status.get("asset_integrity_issue_count", 0) or 0)
     asset_warnings = int(status.get("asset_integrity_warning_count", 0) or 0)
     static_failed = int(status.get("static_failed_release_task_count", 0) or 0)
@@ -157,8 +181,8 @@ def build_report() -> dict[str, object]:
     )
     bridge_ready = bridge_diagnostics.get("status") == "ready" and bool(bridge_diagnostics.get("ready_profiles", []))
     full_dual_certified = (
-        dual.get("status") == "pass"
-        and int(dual.get("dual_pending_release_task_count", 0) or 0) == 0
+        certification_matrix.get("status") in {"complete", "pass"}
+        and dual_pending_forms == 0
         and dual_failed == 0
         and mismatch == 0
     )
@@ -179,7 +203,7 @@ def build_report() -> dict[str, object]:
         "source_linked_entry_count": status.get("source_linked_entry_count", 0),
         "asset_materialized_entry_count": status.get("asset_materialized_entry_count", 0),
         "static_certified_release_task_count": static.get("static_certified_release_task_count", 0),
-        "dual_certified_release_task_count": dual.get("dual_certified_release_task_count", 0),
+        "dual_certified_release_task_count": dual_certified_forms,
         "fully_certified_entry_count": dual.get("fully_certified_entry_count", 0),
         "certification_matrix_status": certification_matrix.get("status", "missing"),
         "scored_release_entries": scored,
@@ -192,14 +216,13 @@ def build_report() -> dict[str, object]:
         "claim_status": "planning_and_full_certified_unscored" if scored == 0 else "core_score_enabled",
     }
     parity_summary = {
-        "release_dual_status": dual.get("status", "missing"),
-        "dual_certified_release_task_count": dual.get("dual_certified_release_task_count", 0),
-        "dual_pending_release_task_count": dual.get("dual_pending_release_task_count", 0),
+        "release_dual_status": certification_matrix.get("status", dual.get("status", "missing")),
+        "dual_certified_release_task_count": dual_certified_forms,
+        "dual_pending_release_task_count": dual_pending_forms,
         "dual_failed_release_task_count": dual_failed,
         "evas_pass_spectre_fail_count": mismatch,
-        "source_equivalence_blocked_release_task_count": dual.get(
-            "source_equivalence_blocked_release_task_count", 0
-        ),
+        "source_equivalence_blocked_release_task_count": source_equivalence_blocked_forms,
+        "imported_dual_pending_release_task_count": dual.get("dual_pending_release_task_count", 0),
         "main120_gold_evas": backend_gold_summary(MAIN120_EVAS_SUMMARY, "evas"),
         "main120_gold_spectre": backend_gold_summary(MAIN120_SPECTRE_SUMMARY, "spectre"),
         "l0_conformance_case_count": conformance.get("conformance_case_count", 0),
@@ -255,7 +278,7 @@ def build_report() -> dict[str, object]:
         "fresh_dual_rerun_queue_ready": fresh_queue_ready,
         "fresh_dual_rerun_queue_count": staging.get("queue_row_count", 0),
         "fresh_dual_rerun_ready_bundle_count": staging.get("ready_bundle_count", 0),
-        "dual_pending_release_task_count": dual.get("dual_pending_release_task_count", 0),
+        "dual_pending_release_task_count": dual_pending_forms,
         "bridge_ready": bridge_ready,
         "bridge_required_for_certification": bridge_required_for_certification,
         "bridge_ready_profiles": bridge_diagnostics.get("ready_profiles", []),
@@ -271,7 +294,7 @@ def build_report() -> dict[str, object]:
         "can_claim_top_level_coverage_plan": len(tracker) == PLANNED_ENTRY_TARGET,
         "can_claim_release_package_complete": (
             materialization_complete
-            and int(dual.get("dual_pending_release_task_count", 0) or 0) == 0
+            and dual_pending_forms == 0
             and dual_failed == 0
             and mismatch == 0
         ),

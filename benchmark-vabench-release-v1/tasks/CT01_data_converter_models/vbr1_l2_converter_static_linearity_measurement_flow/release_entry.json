@@ -12,7 +12,7 @@
   "source_base_id": "converter_static_linearity_measurement_flow",
   "canonical_kernel": "converter_static_linearity_measurement_flow",
   "source_registry_status": "designed_from_ahdllib_coverage_review",
-  "source_evidence_status": "designed_source_pending_dual",
+  "source_evidence_status": "release_dual_certified",
   "source_tasks": [
     {
       "form": "e2e",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "tb",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [
@@ -64,7 +64,7 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_converter_static_linearity_measurement_flow/e2e/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_converter_static_linearity_measurement_flow",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/e2e/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/e2e/result.json",
@@ -96,7 +96,7 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_converter_static_linearity_measurement_flow/tb/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_converter_static_linearity_measurement_flow",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/tb/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_converter_static_linearity_measurement_flow/tb/result.json",

@@ -16,6 +16,10 @@
 
 - Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
 - Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `bound_step_period_guard_ref.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "bound_step_period_guard_ref.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public DUT Interface To Instantiate
 
@@ -40,6 +44,31 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `VDD`
 - `VSS`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "bound_step_period_guard_ref.va"
+
+Vvdd (VDD 0) vsource dc=0.9 type=dc
+Vvss (VSS 0) vsource dc=0.0 type=dc
+
+IDUT (VDD VSS guard_out phase_out) bound_step_period_guard_ref period=8n pulse_w=1.5n points_per_period=16 tedge=40p
+
+tran tran stop=34n maxstep=20n errpreset=conservative
+save guard_out phase_out
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `slew_rate_limiter.va`, `tb_slew_rate_limiter_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `slew_rate_limiter.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "slew_rate_limiter.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -38,6 +42,28 @@ When this form generates a testbench, use plain scalar save names for these obse
 Public stimulus/source nodes visible in the reference harness include:
 
 - `vin`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "slew_rate_limiter.va"
+
+XDUT (vin vout) slew_rate_limiter
+
+tran tran stop=170n maxstep=500p
+save vin vout
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

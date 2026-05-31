@@ -45,10 +45,10 @@ def test_release_schema_validation_covers_all_release_json_surfaces() -> None:
     assert groups["dual_certification"]["file_count"] == 1
     assert groups["certification_matrix"]["file_count"] == 1
     assert groups["remaining_work"]["file_count"] == 1
-    assert groups["release_entry"]["file_count"] == 64
-    assert groups["release_task"]["file_count"] == 219
-    assert groups["evidence"]["file_count"] == 438
-    assert groups["result"]["file_count"] == 657
+    assert groups["release_entry"]["file_count"] == 79
+    assert groups["release_task"]["file_count"] == 271
+    assert groups["evidence"]["file_count"] == 542
+    assert groups["result"]["file_count"] == 813
 
 
 def test_release_task_manifest_sync_writes_one_manifest_per_materialized_form() -> None:
@@ -56,8 +56,8 @@ def test_release_task_manifest_sync_writes_one_manifest_per_materialized_form() 
     manifests = sorted(PACKAGE.glob("tasks/*/vbr1_*/forms/*/release_task.json"))
 
     assert report["status"] == "pass"
-    assert report["release_task_manifest_count"] == 219
-    assert len(manifests) == 219
+    assert report["release_task_manifest_count"] == 271
+    assert len(manifests) == 271
     sample = json.loads(manifests[0].read_text(encoding="utf-8"))
     assert sample["benchmark"] == "vabench-release-v1"
     assert sample["domain"] == "voltage"
@@ -70,7 +70,7 @@ def test_release_task_manifest_sync_writes_one_manifest_per_materialized_form() 
         assert isinstance(payload["counts"]["benchmark_score"], bool)
         enabled += int(payload["counts"]["benchmark_score"] is True)
         disabled += int(payload["counts"]["benchmark_score"] is False)
-    assert enabled == 184
+    assert enabled == 236
     assert disabled == 35
 
 

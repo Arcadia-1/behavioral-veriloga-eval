@@ -15,7 +15,8 @@
     "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/meta.json",
     "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/checks.yaml",
     "gold": [
-      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/gold/programmable_gain_amplifier.va"
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/gold/programmable_gain_amplifier.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/gold/tb_programmable_gain_amplifier.scs"
     ],
     "public_inputs": [
       "prompt.md"

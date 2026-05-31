@@ -40,6 +40,7 @@ def test_finish_after_bridge_refreshes_all_downstream_claim_gates(monkeypatch) -
     monkeypatch.setattr(finish_after_bridge.import_vabench_release_dual_rerun_results, "main", record("import_dual"))
     monkeypatch.setattr(finish_after_bridge.sync_vabench_release_task_manifests, "main", record("sync_manifests"))
     monkeypatch.setattr(finish_after_bridge.audit_vabench_release_package, "main", record("audit_package"))
+    monkeypatch.setattr(finish_after_bridge.report_vabench_release_certification_matrix, "main", record("certification_matrix"))
     monkeypatch.setattr(finish_after_bridge.report_vabench_release_remaining_work, "main", record("remaining"))
     monkeypatch.setattr(finish_after_bridge.report_vabench_release_speed_debug, "main", record("speed"))
     monkeypatch.setattr(finish_after_bridge.report_vabench_release_score_denominator, "main", record("score_denominator"))
@@ -56,11 +57,15 @@ def test_finish_after_bridge_refreshes_all_downstream_claim_gates(monkeypatch) -
         "import_dual",
         "sync_manifests",
         "audit_package",
+        "certification_matrix",
         "remaining",
         "speed",
         "score_denominator",
         "baseline",
         "paper",
+        "schema",
+        "completion",
+        "audit_package",
         "schema",
         "completion",
         "checksum",
@@ -97,10 +102,10 @@ def test_finish_after_bridge_writes_fresh_bridge_diagnostics(monkeypatch, tmp_pa
     assert bridge_json.exists()
     assert bridge_md_calls and bridge_md_calls[0]["ready_profiles"] == ["ci"]
     assert report["rerun_scope"]["queue_status"] == "ready"
-    assert report["rerun_scope"]["primary_queue_count"] == 2
-    assert report["rerun_scope"]["primary_ready_count"] == 2
-    assert report["rerun_scope"]["staging_bundle_count"] == 2
-    assert report["rerun_scope"]["staging_ready_bundle_count"] == 2
+    assert report["rerun_scope"]["primary_queue_count"] == 54
+    assert report["rerun_scope"]["primary_ready_count"] == 54
+    assert report["rerun_scope"]["staging_bundle_count"] == 65
+    assert report["rerun_scope"]["staging_ready_bundle_count"] == 65
     assert report["rerun_scope"]["latest_import_stale_summary"] is False
 
 

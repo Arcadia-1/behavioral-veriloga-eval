@@ -50,6 +50,14 @@ When this form generates a testbench, use plain scalar save names for these obse
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
 
+Representative public mismatch scenarios:
+
+| Scenario | Expected behavior | Faulty behavior to repair |
+| --- | --- | --- |
+| input steps from 0 V to about 0.8 V | `vout` rises monotonically with first-order lag | response is too slow, too fast, or non-monotonic |
+| early after the step | `vout` should lag `vin`, not immediately equal it | output behaves like a passthrough |
+| late in the transient | `vout` settles near the final input level without overshoot | output remains far from final value or overshoots the rail |
+
 ## Output Contract
 
 Return exactly one source artifact named `dut_fixed.va`.

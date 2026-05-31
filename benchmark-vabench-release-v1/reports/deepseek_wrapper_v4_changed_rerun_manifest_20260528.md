@@ -1,6 +1,6 @@
 # DeepSeek Wrapper-v4 Changed Rerun Manifest
 
-Generated: `2026-05-28T07:04:01.508223+00:00`
+Generated: `2026-05-28T14:20:27.519619+00:00`
 
 This is a minimal rerun queue. It includes only rows whose old wrapper-v1
 candidate failure was attributed to missing shared prompt-wrapper contract
@@ -9,7 +9,7 @@ rules. It does not request a full 236-row baseline rerun.
 ## Summary
 
 - selected for wrapper-v4 regeneration: 55
-- skipped inconclusive rows: 5
+- skipped inconclusive rows: 1
 - task-id file: `benchmark-vabench-release-v1/reports/deepseek_wrapper_v4_changed_rerun_task_ids_20260528.txt`
 
 ## Selected Root Causes
@@ -24,7 +24,6 @@ rules. It does not request a full 236-row baseline rerun.
 | Attribution | Count | Reason |
 | --- | ---: | --- |
 | `evaluator_runner_review` | 1 | needs evaluator or checker triage before being counted as model evidence |
-| `runner_infra_extraction` | 4 | needs extraction/max-token runner handling, not a wrapper-contract rerun |
 
 ## Selected Rows
 

@@ -8,7 +8,7 @@
 - Base function: Propagation-delay comparator
 - Domain: `voltage`
 - Target artifact(s): `dut_fixed.va`
-- Supplied/reference support artifact(s): `dut_buggy.va`, `tb_cmp_delay_ref.scs`, `edge_interval_timer.va`
+- Supplied/reference support artifact(s): `dut_buggy.va`, `edge_interval_timer.va`, `tb_cmp_delay_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 

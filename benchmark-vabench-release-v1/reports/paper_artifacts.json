@@ -1,68 +1,71 @@
 {
-  "date": "2026-05-26",
+  "date": "2026-05-29",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "coverage_summary": {
-    "planned_entries": 64,
+    "planned_entries": 79,
     "level_counts": {
-      "L1": 51,
-      "L2": 13
+      "L1": 62,
+      "L2": 17
     },
     "category_counts": {
       "Baseband Signal Conditioning": 8,
+      "Bias Reference and Power Management": 8,
       "Calibration, DEM, and Control": 7,
       "Comparator and Decision Circuits": 8,
       "Data Converter Models": 13,
       "Measurement Instrumentation Flows": 7,
       "PLL Clock and Timing Systems": 10,
+      "RF and AFE Behavioral Macromodels": 7,
       "Sampling and Analog Memory": 5,
       "Stimulus and Source Generators": 6
     },
     "track_counts": {
-      "core": 51,
+      "core": 66,
       "support": 13
     },
     "track_form_counts": {
-      "core": 184,
+      "core": 236,
       "support": 35
     },
     "difficulty_counts": {
-      "D1": 7,
-      "D2": 43,
-      "D3": 14
+      "D1": 10,
+      "D2": 49,
+      "D3": 20
     },
-    "core_entry_count": 51,
+    "core_entry_count": 66,
     "support_entry_count": 13,
-    "core_form_count": 184,
+    "core_form_count": 236,
     "support_form_count": 35,
     "package_status_counts": {
       "current_l1_seed": 21,
       "current_l1_seed_with_review": 1,
-      "selected_l1_addition": 29,
-      "selected_l2_target": 13
+      "selected_l1_addition": 40,
+      "selected_l2_target": 17
     },
-    "source_linked_entry_count": 64,
-    "asset_materialized_entry_count": 64,
-    "static_certified_release_task_count": 219,
-    "dual_certified_release_task_count": 217,
-    "fully_certified_entry_count": 63,
-    "certification_matrix_status": "partial",
-    "scored_release_entries": 51,
-    "scored_release_forms": 184,
-    "core_scored_release_entries": 51,
-    "core_scored_release_forms": 184,
+    "source_linked_entry_count": 79,
+    "asset_materialized_entry_count": 79,
+    "static_certified_release_task_count": 271,
+    "dual_certified_release_task_count": 271,
+    "fully_certified_entry_count": 79,
+    "certification_matrix_status": "complete",
+    "scored_release_entries": 66,
+    "scored_release_forms": 236,
+    "core_scored_release_entries": 66,
+    "core_scored_release_forms": 236,
     "support_scored_release_entries": 0,
     "support_scored_release_forms": 0,
     "score_denominator_status": "score_enabled",
     "claim_status": "core_score_enabled"
   },
   "parity_summary": {
-    "release_dual_status": "partial",
-    "dual_certified_release_task_count": 217,
-    "dual_pending_release_task_count": 2,
+    "release_dual_status": "complete",
+    "dual_certified_release_task_count": 271,
+    "dual_pending_release_task_count": 0,
     "dual_failed_release_task_count": 0,
     "evas_pass_spectre_fail_count": 0,
     "source_equivalence_blocked_release_task_count": 0,
+    "imported_dual_pending_release_task_count": 0,
     "main120_gold_evas": {
       "source": "",
       "available": false,
@@ -82,8 +85,8 @@
     "l0_conformance_case_count": 4,
     "l0_counts_in_benchmark_denominator": 0,
     "dual_rerun_staging_status": "ready",
-    "dual_rerun_queue_rows_with_ready_primary_bundle": 2,
-    "dual_rerun_ready_bundle_count": 2,
+    "dual_rerun_queue_rows_with_ready_primary_bundle": 54,
+    "dual_rerun_ready_bundle_count": 65,
     "latest_dual_rerun_attempt_status": "complete",
     "latest_dual_rerun_attempt_reason": "",
     "bridge_diagnostics_status": "ready",
@@ -96,35 +99,35 @@
     "bridge_ssh_ok_profiles": []
   },
   "speed_debug_summary": {
-    "status": "measured_with_failures",
+    "status": "measured_subset",
     "claim_allowed": false,
-    "reason": "Timing exists, but at least one rerun row did not PASS.",
+    "reason": "Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.",
     "required_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "measurement_scope": {
-      "summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+      "summary": "results/vabench-release-v1-dual-rerun/summary.json",
       "summaries": [
-        "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+        "results/vabench-release-v1-dual-rerun/summary.json"
       ],
       "summary_selection": {
         "source": "dual_rerun_import",
-        "imported_summary": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+        "imported_summary": "results/vabench-release-v1-dual-rerun/summary.json",
         "imported_summary_rejected_reason": "",
         "selected_summaries": [
-          "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json"
+          "results/vabench-release-v1-dual-rerun/summary.json"
         ]
       },
       "staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
       "queue_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
-      "planned_primary_rerun_rows": 2,
-      "planned_staged_bundles": 2,
-      "timed_rows": 2,
+      "planned_primary_rerun_rows": 54,
+      "planned_staged_bundles": 65,
+      "timed_rows": 54,
       "stale_summary_rejected": false,
-      "scored_form_count": 184,
-      "timed_form_count": 2,
-      "timed_scored_form_count": 0,
+      "scored_form_count": 236,
+      "timed_form_count": 54,
+      "timed_scored_form_count": 52,
       "missing_scored_form_count": 184,
       "timed_unscored_form_count": 2,
-      "score_denominator_coverage_fraction": 0.0,
+      "score_denominator_coverage_fraction": 0.22033898305084745,
       "full_score_denominator_timed": false,
       "missing_scored_form_examples": [
         {
@@ -180,15 +183,15 @@
       ]
     },
     "timing_totals": {
-      "evas_wall_time_s": 9.364832209,
-      "spectre_wall_time_s": 129.990263541,
-      "spectre_over_evas_speedup": 13.88068260487079,
-      "evas_reported_total_elapsed_s": 7.0,
-      "spectre_reported_total_elapsed_s": null,
-      "reported_total_spectre_over_evas_speedup": null,
-      "evas_reported_tran_elapsed_s": 6.9236,
-      "spectre_reported_tran_elapsed_s": null,
-      "tran_spectre_over_evas_speedup": null
+      "evas_wall_time_s": 43.617206748,
+      "spectre_wall_time_s": 288.042362961,
+      "spectre_over_evas_speedup": 6.603869996196116,
+      "evas_reported_total_elapsed_s": 9.799999999999986,
+      "spectre_reported_total_elapsed_s": 37.962,
+      "reported_total_spectre_over_evas_speedup": 3.873673469387761,
+      "evas_reported_tran_elapsed_s": 7.935100000000002,
+      "spectre_reported_tran_elapsed_s": 1.5394783000000003,
+      "tran_spectre_over_evas_speedup": 0.19400868294035362
     },
     "current_debug_evidence": [
       "benchmark-vabench-release-v1/reports/remaining_work.json",
@@ -198,15 +201,15 @@
     ]
   },
   "baseline_summary": {
-    "status": "pending_release_baselines",
+    "status": "ready_for_baseline_runs",
     "claim_allowed": false,
     "reason": "Score denominator is enabled, but no claimable model baseline summary has been produced yet.",
     "required_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
-    "current_scored_release_entries": 51,
-    "current_scored_release_forms": 184,
+    "current_scored_release_entries": 66,
+    "current_scored_release_forms": 236,
     "score_denominator_status": "score_enabled",
     "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "baseline_summary_count": 0,
+    "baseline_summary_count": 7,
     "baseline_protocol": {
       "minimal_lanes": [
         "prompt_only_generation",
@@ -240,11 +243,11 @@
     "assets_materialized": true,
     "static_certification_complete": true,
     "fresh_dual_rerun_queue_ready": true,
-    "fresh_dual_rerun_queue_count": 2,
-    "fresh_dual_rerun_ready_bundle_count": 2,
-    "dual_pending_release_task_count": 2,
+    "fresh_dual_rerun_queue_count": 54,
+    "fresh_dual_rerun_ready_bundle_count": 65,
+    "dual_pending_release_task_count": 0,
     "bridge_ready": true,
-    "bridge_required_for_certification": true,
+    "bridge_required_for_certification": false,
     "bridge_ready_profiles": [
       "default",
       "ci",
@@ -255,18 +258,17 @@
     "external_pending_count": 1,
     "stale_rerun_summary_rejected": false,
     "import_status": "imported",
-    "import_reason": "Fresh dual rerun imported with external pending blockers; release certification remains pending."
+    "import_reason": "Fresh dual rerun imported; all primary rows passed EVAS/Spectre certification."
   },
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
     "can_claim_top_level_coverage_plan": true,
-    "can_claim_release_package_complete": false,
+    "can_claim_release_package_complete": true,
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
     "can_claim_speedup": false,
     "can_claim_model_baseline": false,
     "blocking_conditions": [
-      "selected EVAS/Spectre rerun pending",
       "external blocker report active: 0 blocked, 1 pending",
       "speed/debug timing artifact not claimable",
       "release model baseline artifact pending"
@@ -285,14 +287,14 @@
     "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "baseline_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
     "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "latest_dual_rerun_attempt": "results/vabench-release-v1-ct07-gain-dual-20260526_sui_r2/summary.json",
+    "latest_dual_rerun_attempt": "results/vabench-release-v1-dual-rerun/summary.json",
     "conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
     "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
     "certification_matrix": "benchmark-vabench-release-v1/reports/certification_matrix.json"
   },
   "remaining_counts": {
     "source_design_pending_entry_count": 0,
-    "selected_rerun_pending_form_count": 2,
+    "selected_rerun_pending_form_count": 0,
     "source_equivalence_blocked_form_count": 0,
     "missing_required_form_entry_count": 0,
     "current_seed_missing_form_entry_count": 0

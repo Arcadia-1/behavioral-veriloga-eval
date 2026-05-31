@@ -1,0 +1,9 @@
+category,row_count,both_pass,first_only_pass,second_only_pass,both_fail,first_pass_rate_pct,second_pass_rate_pct,common_behavior_fail_rows,common_artifact_or_protocol_fail_rows,risk_label,recommended_action
+Baseband Signal Conditioning,30,2,4,1,23,20.0,10.0,16,7,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+Bias Reference and Power Management,28,0,4,0,24,14.29,0.0,12,12,zero_common_pass,Manually audit prompts/checkers and category scope before using this as evidence of calibrated difficulty.
+"Calibration, DEM, and Control",26,1,0,3,22,3.85,15.38,13,9,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+Comparator and Decision Circuits,30,9,6,0,15,50.0,30.0,7,8,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+Data Converter Models,44,14,3,4,23,38.64,40.91,6,17,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+PLL Clock and Timing Systems,36,5,4,4,23,25.0,25.0,10,13,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+RF and AFE Behavioral Macromodels,24,2,1,1,20,12.5,12.5,11,9,common_hard_category,Check whether the category is under-scaffolded or genuinely hard; keep as hard coverage only with clear prompts/checkers.
+Sampling and Analog Memory,18,3,1,2,12,22.22,27.78,7,5,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.

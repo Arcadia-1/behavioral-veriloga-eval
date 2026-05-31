@@ -51,7 +51,6 @@
       "checks": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/gold/file_metric_writer.va",
-        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/gold/metric.out",
         "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/gold/tb_file_metric_writer_ref.scs"
       ],
       "asset_materialized": true,
@@ -74,7 +73,6 @@
       "checks": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/gold/file_metric_writer.va",
-        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/gold/metric.out",
         "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/gold/tb_file_metric_writer_ref.scs"
       ],
       "asset_materialized": true,

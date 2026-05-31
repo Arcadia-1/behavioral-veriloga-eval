@@ -11,10 +11,20 @@
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
 - Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
+## L2 Background And Claim Boundary
+
+This Level-2 row is a behavioral composition/flow task for Flash ADC mini-array. It should expose intermediate state, multi-stage behavior, or a closed-loop relation through the public observables below.
+Stay within the listed voltage-domain/event-driven contract. Do not use transistor-level devices, current-domain loads, AC/noise analysis, S-parameters, or hidden checker logic unless the public contract explicitly lists them.
+Paper-facing claims for this row are limited to the public behavior checks below; do not broaden the task into full silicon implementation, layout, device physics, or unlisted performance metrics.
+
 ## Form-Specific Requirements
 
 - Generate all target artifacts: `flash_adc_3b.va`, `tb_flash_adc_3b_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `flash_adc_3b.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "flash_adc_3b.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -52,12 +62,63 @@ Public stimulus/source nodes visible in the reference harness include:
 - `vin`
 - `clk`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "flash_adc_3b.va"
+
+Vvdd (vdd 0) vsource dc=0.9 type=dc
+Vvss (vss 0) vsource dc=0.0 type=dc
+
+IDUT (vdd vss vin clk cmp0 cmp1 cmp2 cmp3 cmp4 cmp5 cmp6 dout2 dout1 dout0) flash_adc_3b vrefp=0.9 vrefn=0.0 vth=0.45 tedge=100p
+
+tran tran stop=86n maxstep=200p
+save vin clk cmp0 cmp1 cmp2 cmp3 cmp4 cmp5 cmp6 dout2 dout1 dout0
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `all_8_flash_codes_present`
 - `comparator_threshold_ladder_matches_vin_bins`
 - `comparator_outputs_form_thermometer_prefix`
 - `binary_code_matches_comparator_count`
+
+## Public L2 Behavior Contract
+
+This row is a small flash ADC array, so the public behavior must include both
+parallel comparator decisions and binary encoding:
+
+1. Comparator ladder:
+   - Implement seven comparator outputs `cmp0` through `cmp6`.
+   - Use evenly ordered thresholds across the 0 V to 0.9 V input range.
+   - For each sampled `vin`, the comparator outputs should form a thermometer
+     prefix: all lower-threshold comparators high, all higher-threshold
+     comparators low.
+
+2. Clocked sampling:
+   - Update comparator and binary outputs on rising `clk` crossings after the
+     input has been stable.
+   - Use 0 V/0.9 V logic levels and a 0.45 V logic threshold.
+
+3. Binary encoder:
+   - Drive `dout2 dout1 dout0` as the 3-bit binary count represented by the
+     thermometer prefix.
+   - The testbench should present one stable input in each of the eight
+     quantization bins so all output codes 0 through 7 are visible.
+
+The expected public waveform relation is: `vin` bin -> thermometer prefix on
+`cmp0..cmp6` -> matching binary count on `dout2..dout0`.
 
 ## Output Contract
 

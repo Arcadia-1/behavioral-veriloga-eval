@@ -36,7 +36,14 @@ The release harness expects these exact public scalar observables:
 - `rst_n`
 - `clk_out`
 - `lock`
-- `\`
+- `div_code_0`
+- `div_code_1`
+- `div_code_2`
+- `div_code_3`
+- `div_code_4`
+- `div_code_5`
+- `div_code_6`
+- `div_code_7`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 

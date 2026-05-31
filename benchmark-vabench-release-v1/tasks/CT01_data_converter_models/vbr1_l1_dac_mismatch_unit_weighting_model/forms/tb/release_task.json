@@ -15,6 +15,7 @@
     "meta": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/meta.json",
     "checks": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/checks.yaml",
     "gold": [
+      "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/gold/dac_mismatch_unit_weighting_model.va",
       "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/gold/tb_dac_mismatch_unit_weighting_model.scs"
     ],
     "public_inputs": [
@@ -38,8 +39,8 @@
   },
   "source": {
     "source_base_id": "dac_mismatch_unit_weighting_model",
-    "source_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_tb",
-    "historical_source_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_tb",
+    "source_task_id": "",
+    "historical_source_task_id": "",
     "release_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb"
   },
   "notes": [

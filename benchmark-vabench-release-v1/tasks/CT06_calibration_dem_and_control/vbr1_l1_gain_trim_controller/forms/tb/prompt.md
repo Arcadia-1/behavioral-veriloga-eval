@@ -16,6 +16,10 @@
 
 - Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
 - Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `gain_trim_controller.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "gain_trim_controller.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public DUT Interface To Instantiate
 
@@ -45,6 +49,28 @@ Public stimulus/source nodes visible in the reference harness include:
 - `rst`
 - `meas`
 - `target`
+
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "gain_trim_controller.va"
+
+XDUT (clk rst meas target gain_ctrl) gain_trim_controller
+
+tran tran stop=620n maxstep=500p
+save clk rst meas target gain_ctrl
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
 
 ## Public Behavior Checks
 

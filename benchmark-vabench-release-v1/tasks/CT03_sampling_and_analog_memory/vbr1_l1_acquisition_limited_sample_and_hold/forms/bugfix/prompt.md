@@ -53,6 +53,15 @@ When this form generates a testbench, use plain scalar save names for these obse
 The supplied buggy artifact violates one or more public behavior checks above under the release validation testbench.
 Repair the observable behavior without renaming modules, changing ports, or weakening the public testbench contract.
 
+Representative public mismatch scenarios:
+
+| Scenario | Expected behavior | Faulty behavior to repair |
+| --- | --- | --- |
+| `sample` goes high while `vin` steps | `vout` moves toward `vin` with finite acquisition, not an instantaneous copy | `vout` jumps too aggressively or ignores the acquisition limit |
+| longer sample-high window | `vout` settles closer to `vin` than in a shorter window | acquisition progress is not reflected in the held output |
+| `sample` falls | `vout` holds the last acquired value with bounded droop/hold behavior | output keeps tracking the input after the hold edge |
+| reset asserted | `vout` and metric return to the public initial state | reset does not clear the held/acquisition state |
+
 ## Output Contract
 
 Return exactly one source artifact named `dut_fixed.va`.

@@ -71,7 +71,8 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/gold/calibration_deadband_controller.va"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/gold/calibration_deadband_controller.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/gold/tb_calibration_deadband_controller.scs"
       ],
       "public_inputs": [
         "prompt.md"
@@ -89,11 +90,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_calibration_deadband_controller",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/dut/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/dut/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/dut/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/dut/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_calibration_deadband_controller_dut",
-      "historical_source_task_id": "vbr1_l1_calibration_deadband_controller_dut"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/dut/result.json"
     },
     {
       "form": "tb",
@@ -102,6 +99,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/gold/calibration_deadband_controller.va",
         "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/gold/tb_calibration_deadband_controller.scs"
       ],
       "public_inputs": [
@@ -120,11 +118,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_calibration_deadband_controller",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_calibration_deadband_controller_tb",
-      "historical_source_task_id": "vbr1_l1_calibration_deadband_controller_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/tb/result.json"
     },
     {
       "form": "bugfix",
@@ -134,7 +128,8 @@
       "checks": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/gold/tb_calibration_deadband_controller.scs"
       ],
       "public_inputs": [
         "prompt.md",
@@ -155,11 +150,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_calibration_deadband_controller",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/bugfix/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/bugfix/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/bugfix/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/bugfix/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_calibration_deadband_controller_bugfix",
-      "historical_source_task_id": "vbr1_l1_calibration_deadband_controller_bugfix"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/bugfix/result.json"
     },
     {
       "form": "e2e",
@@ -188,11 +179,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_calibration_deadband_controller",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_calibration_deadband_controller/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_calibration_deadband_controller_e2e",
-      "historical_source_task_id": "vbr1_l1_calibration_deadband_controller_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_calibration_deadband_controller/e2e/result.json"
     }
   ],
   "missing_forms": [],

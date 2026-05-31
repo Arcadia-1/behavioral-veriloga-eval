@@ -88,7 +88,7 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "new_result_json",
     ]
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

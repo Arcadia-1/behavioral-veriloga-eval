@@ -12,7 +12,7 @@
   "source_base_id": "cppll_tracking_and_frequency_step_reacquire_flow",
   "canonical_kernel": "",
   "source_registry_status": "selected_from_existing_task",
-  "source_evidence_status": "selected_source_pending_dual",
+  "source_evidence_status": "release_dual_certified",
   "source_tasks": [
     {
       "form": "tb",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "e2e",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [

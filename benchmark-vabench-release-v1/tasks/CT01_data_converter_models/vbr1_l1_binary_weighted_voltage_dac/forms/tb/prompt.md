@@ -16,6 +16,10 @@
 
 - Generate only the Spectre transient testbench artifact(s); do not generate hidden checker logic.
 - Instantiate the supplied/public DUT module(s), drive a public transient scenario, and save the required observables.
+- The supplied DUT/support Verilog-A file(s) `simple_binary_voltage_dac_4b.va` will be co-located with the generated testbench by the evaluation harness.
+- Include it exactly with `ahdl_include "simple_binary_voltage_dac_4b.va"` in the generated Spectre `.scs` netlist.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public DUT Interface To Instantiate
 
@@ -48,12 +52,50 @@ Public stimulus/source nodes visible in the reference harness include:
 - `code_2`
 - `code_3`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "simple_binary_voltage_dac_4b.va"
+
+Vss (vss 0) vsource dc=0
+
+XDUT (code_0 code_1 code_2 code_3 vref vss aout) simple_binary_voltage_dac_4b
+
+tran tran stop=165n maxstep=500p
+save code_0 code_1 code_2 code_3 aout
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `all_16_binary_codes_match_ideal_levels`
 - `code_bits_match_expected_sampled_sequence`
 - `monotonic_output`
 - `zero_and_full_scale_codes_reach_references`
+
+## Public L1 Testbench Stimulus Contract
+
+This TB row should exercise all static codes of a 4-bit binary DAC:
+
+- Drive `vref = 0.9 V` and `vss = 0 V`.
+- Apply unsigned binary codes 0 through 15 in increasing order.
+- Use 0 V/0.9 V logic levels for `code_0` through `code_3`, with `code_0` as
+  the LSB and `code_3` as the MSB.
+- Hold each code stable for a visible window before switching to the next code.
+- Save all four code bits and `aout` exactly.
+
+The expected public relation is `aout = vss + code/15 * (vref - vss)`,
+monotonic from zero-scale to full-scale. Do not generate checker logic.
 
 ## Output Contract
 

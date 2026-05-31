@@ -24,10 +24,10 @@ def test_external_blockers_explain_current_bridge_and_rerun_chain() -> None:
     assert report["bridge_status"] in {"ready", "blocked"}
     assert report["latest_rerun_summary_status"] == "complete"
     assert report["latest_import_status"] == "imported"
-    assert report["queue_count"] == 2
-    assert report["ready_staging_bundle_count"] == 2
+    assert report["queue_count"] == 54
+    assert report["ready_staging_bundle_count"] == 65
     assert "B1_bridge_ssh_or_tunnel_reachability" not in blockers
-    assert blockers["B2_fresh_dual_rerun_not_complete"]["status"] == "ready_to_continue"
+    assert "B2_fresh_dual_rerun_not_complete" not in blockers
     assert "B3_fresh_result_import_not_complete" not in blockers
     assert blockers["B4_downstream_paper_claims_disabled"]["status"] == "pending"
 
@@ -47,4 +47,4 @@ def test_external_blockers_include_recovery_commands_and_stop_conditions() -> No
     ]
     assert "python3 runners/report_vabench_release_speed_debug.py" in commands
     assert "python3 runners/report_vabench_release_baseline_artifact.py" in commands
-    assert "python3 runners/finish_vabench_release_after_bridge.py" in commands
+    assert "python3 runners/finish_vabench_release_after_bridge.py" not in commands

@@ -20,4 +20,4 @@ sim_correct:
     - "binary_code_matches_comparator_count"
 parity:
   required: true
-  tolerance_notes: "Pending fresh EVAS/Spectre refresh after public comparator-observable contract update."
+  tolerance_notes: "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

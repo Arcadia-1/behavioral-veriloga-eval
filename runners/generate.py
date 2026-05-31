@@ -290,6 +290,29 @@ SYSTEM_PROMPT = textwrap.dedent("""\
        exercise every required block through observable signals.
     9. Do not invent hidden submodules just to look realistic; prefer the simplest
        evaluator-visible behavioral abstraction that satisfies the public contract.
+    10. In Spectre testbenches, drive ideal voltage sources with `vsource`
+        using `type=dc`, `type=pulse`, `type=pwl`, or `type=sine`; do not
+        instantiate `vpulse` or `vpwl` as module names.
+    11. Declare Verilog-A `real`, `integer`, `genvar`, and parameter variables
+        before `analog begin`; do not introduce local declarations inside
+        `begin/end` statement blocks or event bodies.
+    12. In Spectre netlists, use parenthesized source terminals, for example
+        `Vclk (clk 0) vsource type=pulse ...`; do not write
+        `Vclk clk 0 vsource ...`.
+    13. In Spectre netlists, use `//` comments or no comments; do not use
+        leading `*` comment lines.
+    14. Keep PWL sources on one line unless every continued line ends with a
+        backslash. PWL time points must be strictly increasing; do not repeat
+        the same timestamp. To make a step, use a small positive delta such as
+        `10n ... 10.1n ...`.
+    15. When a public schedule asks for a stable measurement window, hold the
+        same PWL value across that whole window. Do not ramp across the window.
+    16. Keep Verilog-A event controls such as `@(cross(...))` at the top level
+        of the `analog begin` block. Do not place event controls inside an
+        `if/else` conditional block; put the reset/branch logic inside the
+        event body instead.
+    17. Keep the answer compact and artifact-only. Do not spend tokens on
+        commentary, design notes, markdown headings, or hidden reasoning.
 """)
 
 

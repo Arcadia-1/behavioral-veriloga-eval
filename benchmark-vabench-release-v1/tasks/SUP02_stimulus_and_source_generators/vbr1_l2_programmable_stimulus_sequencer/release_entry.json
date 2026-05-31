@@ -12,7 +12,7 @@
   "source_base_id": "programmable_stimulus_sequencer",
   "canonical_kernel": "programmable_stimulus_sequencer",
   "source_registry_status": "designed_from_release_taxonomy",
-  "source_evidence_status": "designed_source_pending_dual",
+  "source_evidence_status": "release_dual_certified",
   "source_tasks": [
     {
       "form": "e2e",
@@ -24,7 +24,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     },
     {
       "form": "tb",
@@ -36,7 +36,7 @@
       "asset_complete": true,
       "checks_has_sim_correct": true,
       "checks_has_parity": true,
-      "checks_normalized_for_release": false
+      "checks_normalized_for_release": true
     }
   ],
   "release_tasks": [
@@ -64,14 +64,10 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/e2e/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_programmable_stimulus_sequencer",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_programmable_stimulus_sequencer_e2e",
-      "historical_source_task_id": "vbr1_l2_programmable_stimulus_sequencer_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/e2e/result.json"
     },
     {
       "form": "tb",
@@ -80,6 +76,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/gold/programmable_stimulus_sequencer.va",
         "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/gold/tb_programmable_stimulus_sequencer.scs"
       ],
       "public_inputs": [
@@ -95,14 +92,10 @@
       "evas_status": "pass",
       "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/tb/evidence.json",
-      "fresh_dual_rerun_required": true,
+      "fresh_dual_rerun_required": false,
       "source_path": "designed_release_spec:vbr1_l2_programmable_stimulus_sequencer",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_programmable_stimulus_sequencer/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l2_programmable_stimulus_sequencer_tb",
-      "historical_source_task_id": "vbr1_l2_programmable_stimulus_sequencer_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_programmable_stimulus_sequencer/tb/result.json"
     }
   ],
   "missing_forms": [],

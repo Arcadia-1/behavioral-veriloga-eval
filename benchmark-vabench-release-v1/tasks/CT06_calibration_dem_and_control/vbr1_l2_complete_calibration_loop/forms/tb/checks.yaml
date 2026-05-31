@@ -14,8 +14,10 @@ sim_correct:
     - "raw_error_is_corrected"
     - "bounded_negative_feedback_response"
     - "metric_tracks_convergence"
+    - "trim_moves_opposite_to_error"
+    - "residual_monitor_tracks_correction"
 parity:
   reference: "spectre"
-  status: "pending_until_evas_spectre_rerun"
+  status: "pending_fresh_dual_rerun"
   notes:
-    - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+    - "Fresh dual rerun required after adding trim_mon/residual_mon intermediate observability."

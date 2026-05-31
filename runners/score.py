@@ -133,6 +133,29 @@ def find_va_file(sample_dir: Path) -> Path | None:
     return vas[0] if vas else None
 
 
+def find_va_file_for_tb(sample_dir: Path, tb_path: Path | None) -> Path | None:
+    """Return the generated VA that best matches a Spectre testbench."""
+    vas = sorted(sample_dir.glob("*.va"))
+    if not vas:
+        return None
+    if tb_path is None or not tb_path.exists():
+        return vas[0]
+
+    include_names = [Path(name).name for name in ahdl_includes(tb_path)]
+    for include_name in include_names:
+        exact = sample_dir / include_name
+        if exact.exists():
+            return exact
+
+    instance_models = set(spectre_instance_models(tb_path))
+    if instance_models:
+        for va_path in vas:
+            if instance_models.intersection(verilog_module_names(va_path)):
+                return va_path
+
+    return vas[0]
+
+
 def find_tb_file(sample_dir: Path) -> Path | None:
     """Return the first .scs file found in a sample directory (prefer tb_*.scs)."""
     preferred = sorted(sample_dir.glob("tb_*.scs"))
@@ -301,10 +324,13 @@ def rewrite_tb_save_signals(tb_path: Path, desired_signals: list[str]) -> tuple[
     removed = 0
     inserted = 0
     inserted_save = False
-    for line in original_lines:
+    index = 0
+    while index < len(original_lines):
+        line = original_lines[index]
         stripped = line.strip()
         if not stripped.lower().startswith("save "):
             updated_lines.append(line)
+            index += 1
             continue
         removed += 1
         if desired_signals and not inserted_save:
@@ -312,6 +338,11 @@ def rewrite_tb_save_signals(tb_path: Path, desired_signals: list[str]) -> tuple[
             updated_lines.append(indent + "save " + " ".join(desired_signals))
             inserted += 1
             inserted_save = True
+        while stripped.endswith("\\") and index + 1 < len(original_lines):
+            index += 1
+            stripped = original_lines[index].strip()
+            removed += 1
+        index += 1
 
     if removed > 0 or inserted > 0:
         tb_path.write_text("\n".join(updated_lines) + "\n", encoding="utf-8")
@@ -822,9 +853,9 @@ def score_one_task(
             pass
 
     # Resolve DUT and testbench paths based on family
-    generated_va = find_va_file(sample_dir)
     generated_tb = find_tb_file(sample_dir)
     gold_tb = choose_gold_tb(gold_dir)
+    generated_va = find_va_file_for_tb(sample_dir, gold_tb if family in ("spec-to-va", "bugfix") else generated_tb)
     contract_save_signals = all_save_signals(gold_tb) if gold_tb and gold_tb.exists() else None
 
     if family in ("spec-to-va", "bugfix"):

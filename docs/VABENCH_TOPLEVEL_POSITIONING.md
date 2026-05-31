@@ -54,18 +54,18 @@ used to inflate the count of core signal-path or decision-circuit functions.
 | Pool | Count | Meaning |
 | --- | ---: | --- |
 | Current promoted L1 seed functions | 22 | Countable current-seed functions retained in the release package after duplicate/removal policy. |
-| Promoted top-level L1 additions | 29 | Additional L1 functions selected into the release coverage contract. |
-| Selected L2 complete-circuit targets | 13 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
-| Top-level L1/L2 coverage target | 64 | 51 core circuit entries plus 13 measurement/stimulus support entries, before task-form multiplication. |
-| Core score denominator | 51 entries / 184 forms | Certified `track=core` rows currently counted by `score_denominator_manifest.json`. |
+| Promoted top-level L1 additions | 40 | Additional L1 functions selected into the release coverage contract. |
+| Selected L2 complete-circuit targets | 17 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
+| Top-level L1/L2 coverage target | 79 | 66 core circuit entries plus 13 measurement/stimulus support entries, before task-form multiplication. |
+| Core score denominator | 66 entries / 236 forms | Certified `track=core` rows currently counted by `score_denominator_manifest.json`. |
 | Support suite | 13 entries / 35 forms | Measurement/stimulus rows reported separately from the main circuit-function score. |
 | Removed weak/duplicate entries in the rebalance | 10 | Readout/control/PLL/DEM duplicates were removed from the core release set. |
 
-The release score should only count materialized, certified tasks. The 29 L1
-additions and 13 L2 targets are top-level coverage commitments; rows still
-pending fresh dual validation stay out of certification claims.
+The release score counts only materialized and certified `track=core` tasks.
+Support tasks are still certified benchmark assets, but remain outside the main
+analog circuit-function denominator.
 
-## Eight Top-Level Categories
+## Ten Top-Level Categories
 
 | Category | Role in benchmark | Review decision |
 | --- | --- | --- |
@@ -77,6 +77,8 @@ pending fresh dual validation stay out of certification claims.
 | Stimulus and Source Generators | Ramp, burst clock, deterministic noise, dither, and source-driven flows. | Support suite. Count only reusable source models, not source syntax/conformance cases; exclude from main circuit-function score. |
 | Baseband Signal Conditioning | Lowpass, integrator, rectifier, clamp, slew limiter, gain amplifier, soft limiter, and signal chains. | Core. Avoid duplicate limiter/clamp variants unless transfer behavior differs. |
 | Sampling and Analog Memory | Track/hold, aperture, droop/leakage, resettable hold, and converter front-end sampling. | Core. Important converter-front-end primitive. |
+| Bias Reference and Power Management | Bandgap/PTAT/CTAT references, bias generators, LDO behavior, UVLO, POR, and startup/load-step flows. | Core. Important system-level analog support blocks; keep them as behavioral macromodels rather than transistor-level design tasks. |
+| RF and AFE Behavioral Macromodels | LNA/mixer/limiter/RSSI/PA macromodels plus I/Q and AGC receiver flows. | Core. Capture voltage-domain RF/AFE behavior without claiming transistor RF physics or S-parameter accuracy. |
 
 ## Duplicate and Naming Policy
 
@@ -108,7 +110,7 @@ Avoid this wording:
 
 > vaBench has 28 functions.
 
-Reason: the current-seed count and the full 64-entry release target are
+Reason: the current-seed count and the full 79-entry release target are
 different quantities and should be reported separately.
 
 Also avoid:
@@ -120,15 +122,10 @@ definition.
 
 ## Next Experimental Direction
 
-1. Keep the current 64-entry package aligned with the score denominator and
-   certification reports.
-2. Materialize selected core L1 additions first: unit-element thermometer DAC,
-   clocked ADC quantizer, threshold/delay/hysteresis/window comparators,
-   PFD variants, DWA/DEM encoder, ramp/burst/noise/sine sources, gain
-   estimator, edge interval timer, resettable sample/hold, and distinct
-   signal-conditioning blocks.
-3. Materialize and validate selected L2 flows: converter static-linearity flow, weighted SAR loop,
-   flash ADC mini-array, compact pipeline ADC residue chain, ADPLL/CPPLL flows, calibration loop,
-   measurement and gain-extraction support flows, programmable stimulus sequencer support flow,
-   amplifier/filter chain, and converter front-end.
+1. Keep the current 79-entry package aligned with the score denominator,
+   certification reports, and model-baseline protocol.
+2. Run model baselines on the 66-entry / 236-form scored core denominator, with
+   Spectre as the final judge and support rows excluded from the main score.
+3. Run same-slice speed timing for every scored form before making a
+   release-wide EVAS speedup claim.
 4. Keep L0 conformance growth parallel but separate from benchmark scoring.

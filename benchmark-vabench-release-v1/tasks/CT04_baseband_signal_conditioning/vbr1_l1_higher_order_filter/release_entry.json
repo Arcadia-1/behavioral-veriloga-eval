@@ -71,7 +71,8 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/checks.yaml",
       "gold": [
-        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/gold/higher_order_filter.va"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/gold/higher_order_filter.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/gold/tb_higher_order_filter.scs"
       ],
       "public_inputs": [
         "prompt.md"
@@ -89,11 +90,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_higher_order_filter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/dut/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/dut/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/dut/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/dut/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_higher_order_filter_dut",
-      "historical_source_task_id": "vbr1_l1_higher_order_filter_dut"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/dut/result.json"
     },
     {
       "form": "tb",
@@ -102,6 +99,7 @@
       "meta": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/meta.json",
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/checks.yaml",
       "gold": [
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/gold/higher_order_filter.va",
         "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/gold/tb_higher_order_filter.scs"
       ],
       "public_inputs": [
@@ -120,11 +118,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_higher_order_filter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/tb/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/tb/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/tb/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/tb/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_higher_order_filter_tb",
-      "historical_source_task_id": "vbr1_l1_higher_order_filter_tb"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/tb/result.json"
     },
     {
       "form": "bugfix",
@@ -134,7 +128,8 @@
       "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/checks.yaml",
       "gold": [
         "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/dut_buggy.va",
-        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/dut_fixed.va"
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/dut_fixed.va",
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/tb_higher_order_filter.scs"
       ],
       "public_inputs": [
         "prompt.md",
@@ -155,11 +150,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_higher_order_filter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/bugfix/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/bugfix/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/bugfix/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/bugfix/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_higher_order_filter_bugfix",
-      "historical_source_task_id": "vbr1_l1_higher_order_filter_bugfix"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/bugfix/result.json"
     },
     {
       "form": "e2e",
@@ -188,11 +179,7 @@
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l1_higher_order_filter",
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/e2e/evidence.json",
-      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/e2e/result.json",
-      "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/e2e/evas_result.json",
-      "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_higher_order_filter/e2e/spectre_result.json",
-      "release_source_task_id": "vbr1_l1_higher_order_filter_e2e",
-      "historical_source_task_id": "vbr1_l1_higher_order_filter_e2e"
+      "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l1_higher_order_filter/e2e/result.json"
     }
   ],
   "missing_forms": [],

@@ -1,6 +1,6 @@
 # vaBench Release Baseline Artifact
 
-Date: 2026-05-26
+Date: 2026-05-27
 
 This artifact gates model-baseline claims for the clean vaBench release.
 It intentionally keeps baseline workflows simple and secondary to the
@@ -10,16 +10,16 @@ benchmark/evaluator contribution.
 
 | Metric | Value |
 | --- | ---: |
-| status | `pending_release_baselines` |
+| status | `ready_for_baseline_runs` |
 | claim allowed | `False` |
-| scored release entries | 51 |
-| scored release forms | 184 |
+| scored release entries | 66 |
+| scored release forms | 236 |
 | score denominator status | `score_enabled` |
-| fully certified entries | 63 |
-| dual pending forms | 2 |
+| fully certified entries | 79 |
+| dual pending forms | 0 |
 | dual failed forms | 0 |
-| baseline summaries | 0 |
-| execution plan | `blocked_until_full_certification` |
+| baseline summaries | 7 |
+| execution plan | `ready_for_baseline_runs` |
 
 ## Minimal Baseline Lanes
 
@@ -36,7 +36,7 @@ benchmark/evaluator contribution.
 
 ## Blocked By
 
-- EVAS/Spectre release certification is pending
+- none
 
 ## Required To Claim
 

@@ -16,7 +16,8 @@
     "checks": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/checks.yaml",
     "gold": [
       "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/gold/dut_buggy.va",
-      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/gold/dut_fixed.va"
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/gold/dut_fixed.va",
+      "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/gold/tb_precision_rectifier_envelope_detector.scs"
     ],
     "public_inputs": [
       "prompt.md",

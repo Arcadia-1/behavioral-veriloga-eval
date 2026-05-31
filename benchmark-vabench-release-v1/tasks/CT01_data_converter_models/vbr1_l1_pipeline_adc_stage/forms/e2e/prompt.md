@@ -15,6 +15,10 @@
 
 - Generate all target artifacts: `pipeline_stage.va`, `tb_pipeline_stage_ref.scs`.
 - The Spectre testbench must exercise the generated DUT/system through public observables; do not generate hidden checker logic.
+- The generated Verilog-A file(s) `pipeline_stage.va` must be co-located with the generated Spectre testbench.
+- Include the generated DUT exactly with `ahdl_include "pipeline_stage.va"` in the generated testbench.
+- Use Spectre AHDL instance syntax with the instance name first and module name last: `XNAME (node1 node2 ...) module_name`.
+- Never write module-first syntax such as `module_name instance_name (...)`; that is not the release Spectre testbench syntax.
 
 ## Public Verilog-A Interface
 
@@ -48,12 +52,53 @@ Public stimulus/source nodes visible in the reference harness include:
 - `phi2`
 - `vin`
 
+## Public Spectre Testbench Scaffold
+
+When this form generates a `.scs` testbench, use the following public skeleton shape. Fill in only the public stimulus details required by the task; do not copy or emit hidden checker logic.
+
+```spectre
+simulator lang=spectre
+global 0
+ahdl_include "pipeline_stage.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0.0
+
+IDUT (vdd vss phi1 phi2 vin vref vres d1 d0) pipeline_stage vth=0.45 vdd=0.9 tedge=200p
+
+tran tran stop=300n maxstep=500p
+save phi1 phi2 vin vres d1 d0
+```
+
+Critical syntax rules:
+
+- Every Verilog-A DUT/support file used by the testbench must have a literal `ahdl_include "<file>.va"` line in the `.scs` artifact.
+- Spectre AHDL instances use instance-first/module-last syntax: `XNAME (node1 node2 ...) module_name`.
+- Do not use module-first syntax such as `module_name instance_name (...)`.
+- Keep saved names as plain scalar public observables, not instance-qualified aliases.
+
 ## Public Behavior Checks
 
 - `upper_middle_lower_regions_exercised`
 - `sub_adc_decisions_match_thresholds`
 - `residue_follows_gain_two_mdac_formula`
 - `residue_output_bounded`
+
+## Public L1 Behavior Contract
+
+This row is one behavioral pipeline ADC stage. The public behavior must expose
+the coarse sub-ADC decision and the residue:
+
+- Use non-overlapping `phi1` and `phi2` sampling/transfer phases.
+- Exercise upper, middle, and lower input regions across the 0 V to 0.9 V
+  reference range.
+- Drive `d1 d0` as the 2-bit sub-ADC decision for the sampled `vin`.
+- Drive `vres` as the gain-of-two MDAC-style residue implied by the sampled
+  input and coarse decision.
+- Keep `vres` bounded in the public voltage range.
+
+The expected public relation is: stable phase sample -> threshold decision on
+`d1 d0` -> matching residue on `vres`.
 
 ## Output Contract
 

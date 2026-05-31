@@ -662,6 +662,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "imported_primary_result_count": 0,
             "skipped_result_count": 0,
             "imported_pass_count": 0,
+            "imported_pending_count": 0,
             "imported_fail_count": 0,
             "merged_dual_certified_release_task_count": merged.get("dual_certified_release_task_count", 0),
             "merged_dual_pending_release_task_count": merged.get("dual_pending_release_task_count", 0),
@@ -687,6 +688,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "imported_primary_result_count": 0,
             "skipped_result_count": 0,
             "imported_pass_count": 0,
+            "imported_pending_count": 0,
             "imported_fail_count": 0,
             "notes": ["No dual rerun summary exists yet."],
         }
@@ -711,6 +713,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "imported_primary_result_count": 0,
             "skipped_result_count": 0,
             "imported_pass_count": 0,
+            "imported_pending_count": 0,
             "imported_fail_count": 0,
             "notes": [
                 "Fresh dual rerun results are not imported when summary task count is stale.",
@@ -730,6 +733,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
             "imported_primary_result_count": 0,
             "skipped_result_count": 0,
             "imported_pass_count": 0,
+            "imported_pending_count": 0,
             "imported_fail_count": 0,
             "notes": [
                 "Fresh dual rerun results are not imported unless the rerun summary status is complete.",

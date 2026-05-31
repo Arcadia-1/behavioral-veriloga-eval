@@ -12,6 +12,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 TASKS_ROOT = PACKAGE_ROOT / "tasks"
 SELECTED_MANIFEST_CSV = ROOT / "docs" / "VABENCH_RELEASE_SELECTED_MANIFEST.csv"
 DUAL_REPORT_JSON = PACKAGE_ROOT / "reports" / "dual_certification.json"
+QUEUE_REPORT_JSON = PACKAGE_ROOT / "reports" / "dual_rerun_queue.json"
 STATUS_REPORT_JSON = PACKAGE_ROOT / "reports" / "release_status.json"
 REPORT_JSON = PACKAGE_ROOT / "reports" / "remaining_work.json"
 REPORT_MD = PACKAGE_ROOT / "reports" / "remaining_work.md"
@@ -44,7 +45,26 @@ def source_design_pending_rows() -> list[dict[str, str]]:
     ]
 
 
-def selected_rerun_pending_forms(dual: dict[str, object]) -> list[dict[str, object]]:
+def selected_rerun_pending_forms(dual: dict[str, object], queue: dict[str, object]) -> list[dict[str, object]]:
+    current_status = {
+        (str(task.get("entry_id")), str(task.get("form"))): str(task.get("status", ""))
+        for task in dual.get("task_reports", [])
+        if isinstance(task, dict)
+    }
+    queue_rows = [row for row in queue.get("rows", []) if isinstance(row, dict)]
+    if queue_rows:
+        return [
+            {
+                "entry_id": row["entry_id"],
+                "form": row["form"],
+                "source_task_id": row.get("source_task_id", ""),
+                "reason": row.get("queue_reason", "fresh EVAS/Spectre rerun required"),
+                "evidence": row.get("evidence", ""),
+            }
+            for row in queue_rows
+            if row.get("queue_reason") != "source_equivalence_blocked_rerun"
+            and current_status.get((str(row.get("entry_id")), str(row.get("form"))), "pending") == "pending"
+        ]
     rows: list[dict[str, object]] = []
     for task in dual.get("task_reports", []):
         if not isinstance(task, dict):
@@ -67,7 +87,26 @@ def selected_rerun_pending_forms(dual: dict[str, object]) -> list[dict[str, obje
     return rows
 
 
-def source_equivalence_blocked_forms(dual: dict[str, object]) -> list[dict[str, object]]:
+def source_equivalence_blocked_forms(dual: dict[str, object], queue: dict[str, object]) -> list[dict[str, object]]:
+    current_status = {
+        (str(task.get("entry_id")), str(task.get("form"))): str(task.get("status", ""))
+        for task in dual.get("task_reports", [])
+        if isinstance(task, dict)
+    }
+    queue_rows = [row for row in queue.get("rows", []) if isinstance(row, dict)]
+    if queue_rows:
+        return [
+            {
+                "entry_id": row["entry_id"],
+                "form": row["form"],
+                "source_task_id": row.get("source_task_id", ""),
+                "pending_blockers": row.get("pending_blockers", []),
+                "evidence": row.get("evidence", ""),
+            }
+            for row in queue_rows
+            if row.get("queue_reason") == "source_equivalence_blocked_rerun"
+            and current_status.get((str(row.get("entry_id")), str(row.get("form"))), "pending") == "pending"
+        ]
     rows: list[dict[str, object]] = []
     for task in dual.get("task_reports", []):
         if not isinstance(task, dict):
@@ -142,19 +181,29 @@ def next_queue(
 
 def build_report() -> dict[str, object]:
     dual = read_json(DUAL_REPORT_JSON)
+    queue = read_json(QUEUE_REPORT_JSON)
     status = read_json(STATUS_REPORT_JSON)
     source_pending = source_design_pending_rows()
-    rerun_pending = selected_rerun_pending_forms(dual)
-    source_equiv = source_equivalence_blocked_forms(dual)
+    rerun_pending = selected_rerun_pending_forms(dual, queue)
+    source_equiv = source_equivalence_blocked_forms(dual, queue)
     fresh_queue_count = len(rerun_pending) + len(source_equiv)
     seed_missing = current_seed_missing_forms(status)
     missing_required = all_missing_required_forms()
     scored_entries = status.get("scored_release_entries", "missing")
     ready_to_score = int(scored_entries or 0) > 0
+    status_name = (
+        "complete"
+        if ready_to_score
+        and not source_pending
+        and not rerun_pending
+        and not source_equiv
+        and not missing_required
+        else "in_progress"
+    )
     return {
         "date": date.today().isoformat(),
         "release": "vabench-release-v1",
-        "status": "in_progress",
+        "status": status_name,
         "ready_to_score": ready_to_score,
         "planned_entries": status.get("planned_entries", "missing"),
         "source_linked_entry_count": status.get("source_linked_entry_count", "missing"),

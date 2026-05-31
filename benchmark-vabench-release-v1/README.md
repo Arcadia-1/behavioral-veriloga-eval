@@ -1,11 +1,12 @@
 # vaBench Release Package v1
 
-This directory is the clean paper-facing benchmark package for the 64-entry L1/L2
-vaBench release target: 51 core circuit entries plus 13 auxiliary
-measurement/stimulus support entries. It is intentionally claim-gated: source
-assets, static checks, imported EVAS/Spectre evidence, fresh rerun staging,
-score denominators, speed/debug measurements, and model baselines are reported
-as separate surfaces.
+This directory is the clean paper-facing benchmark package for the 79-entry L1/L2
+vaBench release target: 66 core circuit entries plus 13 auxiliary
+measurement/stimulus support entries. The current scored denominator is the
+certified 66-entry / 236-form core circuit slice; the 13-entry / 35-form support
+suite is certified and reported separately but excluded from the core score.
+Certification, score denominators, speed/debug measurements, and model baselines
+are reported as separate surfaces so paper claims cannot mix their evidence.
 
 This package is the current vaBench release target. It can be cited only through
 the current reports in `reports/`. A row
@@ -21,15 +22,15 @@ as counted, and no pending or blocked simulator run is certification evidence.
 - `evidence/`: certification bundles and simulator logs referenced by tasks.
 - `reports/`: coverage, parity, speed/debug, baseline, completion, artifact
   index, claim gate, and paper table summaries.
-- `rerun_staging/`: staged runnable bundles for the fresh EVAS/Spectre rerun.
+- `rerun_staging/`: staged runnable bundles used for EVAS/Spectre dual reruns.
 
 Rows are planned in `../docs/VABENCH_RELEASE_TRACKER.csv`. A row is not part of
 the scored benchmark until its task assets and EVAS/Spectre evidence are
 complete.
 
 Current seed rows may contain `forms/<form>/` directories copied from reviewed
-source tasks. These copied assets are release-materialized, but still unscored
-until static, EVAS, and Spectre certification are attached.
+source tasks. These copied assets are release-materialized and enter the score
+only when `reports/score_denominator_manifest.json` marks them counted.
 
 L0 conformance assets are synchronized from `../conformance/evas-spectre/`.
 They are simulator diagnostics and do not count toward L1/L2 benchmark coverage,
@@ -37,9 +38,12 @@ model capability, bugfix claims, or broad parity denominators.
 
 ## Current Claim Boundary
 
-The current local package is source-complete and statically certified. Fresh
-full EVAS/Spectre certification, speed/debug measurements, and model baselines
-remain separate gated claims.
+The current local package is source-complete, statically certified, and
+EVAS/Spectre dual-certified for all 271 release forms. The main scored benchmark
+denominator is the 66 core entries / 236 core forms marked counted in
+`reports/score_denominator_manifest.json`; the 13 support entries / 35 support
+forms are certified but excluded from the core circuit score. EVAS speed/debug
+measurements and model baselines remain separate gated claims.
 
 Use these reports as the source of truth:
 
@@ -59,15 +63,32 @@ Use these reports as the source of truth:
 
 Current safe wording is intentionally narrow:
 
-- The package defines a 64-entry L1/L2 coverage target split into core circuit
+- The package defines a 79-entry L1/L2 coverage target split into core circuit
   coverage and auxiliary measurement/stimulus support coverage.
+- The main scored denominator is the certified 66-entry / 236-form core circuit
+  slice; the certified 13-entry / 35-form support suite is reported separately.
 - All materialized release forms pass static/integrity checks.
-- Current dual reports are clean with respect to EVAS PASS / Spectre FAIL
-  mismatches, while full fresh EVAS/Spectre certification remains pending.
+- Current dual reports certify all 271 release forms with zero EVAS PASS /
+  Spectre FAIL mismatches.
 - L0 conformance is separate from the benchmark denominator.
 
 Do not claim EVAS speedup, debug advantage, or model baselines until the
 corresponding claim gate is allowed.
+
+## L2 Background Conditions
+
+Level-2 core rows count as composed behavioral circuit flows only when the
+public prompt, gold behavior, and checker expose more than a final scalar output:
+they must show intermediate state, multi-stage behavior, measurement state, or
+closed-loop response. L2 rows remain voltage-domain/event-driven behavioral
+Verilog-A tasks. They do not claim transistor-level implementation, layout,
+current-domain regulation, RF S-parameters, AC/noise analysis, PSRR,
+jitter/noise performance, or full silicon characterization unless those
+properties are explicitly modeled and checked.
+
+Level-2 support rows are certified release assets for measurement or stimulus
+infrastructure, but they are excluded from the core circuit score and must be
+reported separately from analog/mixed-signal circuit-function coverage.
 
 ## Reproducible Commands
 

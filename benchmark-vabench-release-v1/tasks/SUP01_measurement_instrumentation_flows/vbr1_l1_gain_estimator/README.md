@@ -8,7 +8,7 @@
 - Benchmark score: `disabled`
 - Materialized forms: `e2e, tb`
 - Missing forms: `none`
-- Certification: static `pass`; EVAS `pass`; Spectre `pending`
+- Certification: static `pass`; EVAS `pass`; Spectre `pass`
 - Evidence: `benchmark-vabench-release-v1/reports/dual_certification.json`
 
 This release entry is materialized in the paper-facing vaBench release package.

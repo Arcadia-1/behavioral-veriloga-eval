@@ -12,12 +12,12 @@ source describe the same circuit function.
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
-| release entries | 64 |
-| release forms | 219 |
-| core entries | 51 |
+| release entries | 79 |
+| release forms | 271 |
+| core entries | 66 |
 | support entries | 13 |
-| content denominator entries | 51 |
-| content denominator forms | 184 |
+| content denominator entries | 66 |
+| content denominator forms | 236 |
 | content-excluded entries | 13 |
 | INFO findings | 13 |
 
@@ -59,6 +59,10 @@ source describe the same circuit function.
 | `vbr1_l2_adpll_lock_ratio_hop_timer_flow` | `True` | PLL Clock and Timing Systems | ADPLL lock/ratio-hop/timer flow | `adpll_ratio_hop_ref` | adpll_ratio_hop_pre_ratio<br>adpll_ratio_hop_post_ratio<br>adpll_ratio_hop_lock_reacquired |
 | `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` | `True` | PLL Clock and Timing Systems | CPPLL tracking and frequency-step reacquire flow | `cppll_timer_ref, ref_step_clk` | cppll_reacquires_after_reference_step<br>late_window_tracks_new_reference<br>vctrl_stays_bounded |
 | `vbr1_l2_complete_calibration_loop` | `True` | Calibration, DEM, and Control | Complete calibration loop | `complete_calibration_loop` | raw_error_is_corrected<br>bounded_negative_feedback_response<br>metric_tracks_convergence |
+| `vbr1_l2_ldo_load_step_recovery_flow` | `True` | Bias Reference and Power Management | LDO load-step recovery flow | `ldo_load_step_recovery_flow` | load_step_transient_droop_visible<br>closed_loop_recovery_after_step<br>metric_marks_recovered_regulation |
+| `vbr1_l2_reference_startup_enable_flow` | `True` | Bias Reference and Power Management | Reference startup/enable flow | `reference_startup_enable_flow` | pre_enable_reference_is_held_low<br>enabled_reference_startup_settles<br>supply_dip_resets_valid_status |
+| `vbr1_l2_agc_receiver_leveling_loop` | `True` | RF and AFE Behavioral Macromodels | AGC receiver leveling loop | `agc_receiver_leveling_loop` | agc_reduces_gain_on_large_input<br>leveled_output_amplitude<br>lock_metric_after_settling |
+| `vbr1_l2_iq_downconversion_chain` | `True` | RF and AFE Behavioral Macromodels | I/Q downconversion chain | `iq_downconversion_chain` | quadrature_iq_phase_sequence<br>i_and_q_outputs_are_distinct<br>common_mode_hold_when_input_centered |
 | `vbr1_l2_gain_extraction_convergence_measurement_flow` | `False` | Measurement Instrumentation Flows | Dithered differential gain extraction flow | `dither_adder, gain_amp_fixed, lfsr, vin_src` | gain_amplification_present<br>differential_gain_above_threshold |
 | `vbr1_l2_measurement_flow` | `False` | Measurement Instrumentation Flows | Measurement flow | `final_step_file_metric_ref` | ref_edges_counted_on_expected_grid<br>metric_out_normalizes_final_edge_count<br>final_step_writes_candidate_metric_file |
 | `vbr1_l2_programmable_stimulus_sequencer` | `False` | Stimulus and Source Generators | Programmable stimulus sequencer | `programmable_stimulus_sequencer` | ramp_segment_monotonic<br>swept_chirp_segment_frequency_increases<br>burst_prbs_gate_schedule<br>mode_switch_continuity |

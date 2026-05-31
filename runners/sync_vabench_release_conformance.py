@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = ROOT / "conformance" / "evas-spectre"
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 DEST_ROOT = PACKAGE_ROOT / "conformance" / "evas-spectre"
+SOURCE_README = SOURCE_ROOT / "README.md"
+DEST_README = DEST_ROOT / "README.md"
 REPORT_JSON = PACKAGE_ROOT / "reports" / "conformance_manifest.json"
 REPORT_MD = PACKAGE_ROOT / "reports" / "conformance_manifest.md"
 REPORT_CSV = PACKAGE_ROOT / "reports" / "conformance_manifest.csv"
@@ -136,6 +138,8 @@ def write_reports(rows: list[dict[str, str]]) -> None:
 
 def main() -> None:
     DEST_ROOT.mkdir(parents=True, exist_ok=True)
+    if SOURCE_README.exists():
+        shutil.copy2(SOURCE_README, DEST_README)
     rows = [copy_case(case_dir) for case_dir in source_cases()]
     write_reports(rows)
     print(f"synced {len(rows)} L0 EVAS/Spectre conformance cases")
