@@ -5096,7 +5096,9 @@ def check_release_calibration_loop(rows: list[dict[str, float]]) -> tuple[bool, 
         return False, f"out_range=({out_min:.3f},{out_max:.3f})"
     if abs(reset_mean - 0.45) > 0.12:
         return False, f"reset_trim_mean={reset_mean:.3f}"
-    if out_span < 0.12:
+    # EVAS and Spectre can land on opposite sides of the exact 0.120 V boundary
+    # from transition sampling granularity while producing the same trim sequence.
+    if out_span < 0.12 - 1e-6:
         return False, f"trim_span_too_small={out_span:.3f}"
 
     edge_idx = [
