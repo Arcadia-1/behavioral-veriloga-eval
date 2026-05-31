@@ -1,0 +1,597 @@
+{
+  "schema_version": "same-server-speed.v1",
+  "artifact_kind": "candidate_same_server_evas_spectre_timing",
+  "date": "2026-05-26",
+  "created_at": "2026-05-26T11:43:14",
+  "claim_allowed": false,
+  "no_claim_reason": "Same-server timing is measured directly on one host and the artifact emits checker/waveform Spectre-equivalence gates. Paper-facing speed claims should use only equivalence-gated rows and still need repeated cold/warm runs.",
+  "evas_only_no_claim_reason": "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing.",
+  "host": "thu-sui",
+  "selected_rows": 2,
+  "jobs": 3,
+  "evas_modes": [],
+  "spectre_modes": [
+    "ax_speed",
+    "ax_normalized",
+    "reference_strict_primary"
+  ],
+  "output_root": "results/settings-normalization-smoke-20260526",
+  "results": [
+    {
+      "backend": "spectre",
+      "mode": "ax_speed",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "serializer_frame_alignment_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tb_serializer_frame_alignment_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tran_spectre.csv",
+        "rows": 328,
+        "columns": [
+          "time",
+          "clk",
+          "load",
+          "frame",
+          "sout",
+          "din7",
+          "din6",
+          "din5",
+          "din4",
+          "din3",
+          "din2",
+          "din1",
+          "din0"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.8480258099734783,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 15.0361,
+        "aggregate_elapsed_s": 0.681,
+        "reported_wall_s": 0.681,
+        "accepted_tran_steps": 327.0
+      },
+      "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tb_serializer_frame_alignment_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "serializer_frame_alignment_smoke",
+        "mode": "ax_speed",
+        "mode_label": "fast Spectre AX preset speed baseline",
+        "cli_args": [
+          "+preset=ax",
+          "+mt"
+        ],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tb_serializer_frame_alignment_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=130n maxstep=0.1n",
+        "tran_lines": [
+          "tran tran stop=130n maxstep=0.1n"
+        ],
+        "simulator_options_line": null,
+        "simulator_options_lines": [],
+        "maxstep": "0.1n",
+        "stop": "130n",
+        "errpreset": null,
+        "reltol": null,
+        "vabstol": null,
+        "iabstol": null,
+        "gmin": null,
+        "normalized_settings": false,
+        "normalization_profile": null,
+        "requested_tran_options": {},
+        "requested_simulator_options": {},
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed/tb_serializer_frame_alignment_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_speed",
+      "fixture_notes": [],
+      "notes": [
+        "frame_rises=2 period=5.000e-09 pulse_w=[1.0, 1.0] w0_mm=0 w1_mm=0 mismatch_total=0"
+      ],
+      "stdout_tail": "ithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   12      (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             327\n\nMaximum value achieved for any signal of each quantity: \nV: V(din0) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (3.6 %)       2 (1.8 %)       3 (1.9 %)       5 (1.8 %)\n         7 (71.4 %)     11 (1.8 %)      12 (1.8 %)      13 (12.5 %)\n        16 (1.8 %)      17 (63.6 %)     20 (16.4 %)     24 (64.3 %)\n        26 (1.8 %)      28 (1.8 %)      30 (1.8 %)      35 (12.5 %)\n        36 (1.8 %)      38 (1.8 %)      42 (1.8 %)      43 (1.8 %)\n        45 (1.8 %)      53 (3.6 %)      54 (1.8 %)      55 (1.8 %)\n        56 (1.8 %)      58 (1.8 %)      60 (1.8 %)      \n        Total: 281.9%\nInitial condition solution time: CPU = 1.483 ms, elapsed = 494.957 us.\nIntrinsic tran analysis time:    CPU = 19.811 ms, elapsed = 11.3609 ms.\nTotal time required for tran analysis `tran': CPU = 24.97 ms, elapsed = 15.0361 ms, util. = 166%.\nTime accumulated: CPU = 546.914 ms, elapsed = 608.392 ms.\nPeak resident memory used = 129 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:08.410928] Cdslmd servers:5280@thu-sui\n[11:43:08.935237] Feature usage summary:\n[11:43:08.935238] Virtuoso_Multi_mode_Simulation\n[11:43:08.935239] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (11:43:09 AM, Tue May 26, 2026):\nTime used: CPU = 620 ms, elapsed = 681 ms, util. = 91%.\nTime spent in licensing: elapsed = 68.9 ms, percentage of total = 10.1%.\nPeak memory used = 130 Mbytes.\nSimulation started at: 11:43:08 AM, Tue May 26, 2026, ended at: 11:43:09 AM, Tue May 26, 2026, with elapsed time (wall clock): 681 ms.\nspectre completes with 0 errors, 2 warnings, and 10 notices.\n",
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "serializer_frame_alignment_smoke"
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax_normalized",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "serializer_frame_alignment_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tb_serializer_frame_alignment_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tran_spectre.csv",
+        "rows": 328,
+        "columns": [
+          "time",
+          "clk",
+          "load",
+          "frame",
+          "sout",
+          "din7",
+          "din6",
+          "din5",
+          "din4",
+          "din3",
+          "din2",
+          "din1",
+          "din0"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.8458975399844348,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.0177429,
+        "aggregate_elapsed_s": 0.674,
+        "reported_wall_s": 0.674,
+        "accepted_tran_steps": 327.0
+      },
+      "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tb_serializer_frame_alignment_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "serializer_frame_alignment_smoke",
+        "mode": "ax_normalized",
+        "mode_label": "AX preset with explicit shared tran/options settings for precision ranking",
+        "cli_args": [
+          "+preset=ax",
+          "+mt"
+        ],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tb_serializer_frame_alignment_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=130n maxstep=0.1n errpreset=conservative",
+        "tran_lines": [
+          "tran tran stop=130n maxstep=0.1n errpreset=conservative"
+        ],
+        "simulator_options_line": "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 gmin=1e-12",
+        "simulator_options_lines": [
+          "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 gmin=1e-12"
+        ],
+        "maxstep": "0.1n",
+        "stop": "130n",
+        "errpreset": "conservative",
+        "reltol": "1e-5",
+        "vabstol": "1e-8",
+        "iabstol": "1e-12",
+        "gmin": "1e-12",
+        "normalized_settings": true,
+        "normalization_profile": "spectre_shared_tran_options_v1",
+        "requested_tran_options": {
+          "errpreset": "conservative"
+        },
+        "requested_simulator_options": {
+          "reltol": "1e-5",
+          "vabstol": "1e-8",
+          "iabstol": "1e-12",
+          "gmin": "1e-12"
+        },
+        "original_tran_line": "tran tran stop=130n maxstep=0.1n",
+        "original_simulator_options_line": null,
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized/tb_serializer_frame_alignment_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/ax_normalized",
+      "fixture_notes": [],
+      "notes": [
+        "frame_rises=2 period=5.000e-09 pulse_w=[1.0, 1.0] w0_mm=0 w1_mm=0 mismatch_total=0"
+      ],
+      "stdout_tail": "ransient analysis `tran'.\n    Multithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   12      (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             327\n\nMaximum value achieved for any signal of each quantity: \nV: V(din0) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (3.6 %)       2 (1.8 %)       3 (1.9 %)       5 (1.8 %)\n         7 (70.9 %)     11 (1.8 %)      12 (1.8 %)      13 (12.7 %)\n        16 (1.8 %)      17 (64.8 %)     20 (16.4 %)     24 (63.6 %)\n        26 (1.9 %)      30 (1.9 %)      35 (14.5 %)     36 (1.8 %)\n        38 (1.8 %)      42 (1.8 %)      43 (1.8 %)      45 (1.8 %)\n        53 (3.6 %)      54 (1.9 %)      55 (1.8 %)      56 (1.8 %)\n        58 (1.9 %)      \n        Total: 281.2%\nInitial condition solution time: CPU = 360 us, elapsed = 360.012 us.\nIntrinsic tran analysis time:    CPU = 22.328 ms, elapsed = 12.61 ms.\nTotal time required for tran analysis `tran': CPU = 28.446 ms, elapsed = 17.7429 ms, util. = 160%.\nTime accumulated: CPU = 510.162 ms, elapsed = 603.254 ms.\nPeak resident memory used = 131 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:08.413283] Cdslmd servers:5280@thu-sui\n[11:43:08.937588] Feature usage summary:\n[11:43:08.937589] Virtuoso_Multi_mode_Simulation\n[11:43:08.937589] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (11:43:09 AM, Tue May 26, 2026):\nTime used: CPU = 582 ms, elapsed = 674 ms, util. = 86.3%.\nTime spent in licensing: elapsed = 72.2 ms, percentage of total = 10.7%.\nPeak memory used = 131 Mbytes.\nSimulation started at: 11:43:08 AM, Tue May 26, 2026, ended at: 11:43:09 AM, Tue May 26, 2026, with elapsed time (wall clock): 674 ms.\nspectre completes with 0 errors, 2 warnings, and 10 notices.\n",
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "serializer_frame_alignment_smoke"
+    },
+    {
+      "backend": "spectre",
+      "mode": "reference_strict_primary",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "serializer_frame_alignment_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tb_serializer_frame_alignment_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tran_spectre.csv",
+        "rows": 1534,
+        "columns": [
+          "time",
+          "clk",
+          "load",
+          "frame",
+          "sout",
+          "din7",
+          "din6",
+          "din5",
+          "din4",
+          "din3",
+          "din2",
+          "din1",
+          "din0"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 3.457186101935804,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 60.936,
+        "aggregate_elapsed_s": 3.3,
+        "reported_wall_s": 3.3,
+        "accepted_tran_steps": 1533.0,
+        "ahdl_compile_elapsed_s": 2.67
+      },
+      "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tb_serializer_frame_alignment_ref.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "serializer_frame_alignment_smoke",
+        "mode": "reference_strict_primary",
+        "mode_label": "non-AX Spectre reference with explicit shared tran/options settings",
+        "cli_args": [],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tb_serializer_frame_alignment_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=130n maxstep=0.1n errpreset=conservative",
+        "tran_lines": [
+          "tran tran stop=130n maxstep=0.1n errpreset=conservative"
+        ],
+        "simulator_options_line": "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 gmin=1e-12",
+        "simulator_options_lines": [
+          "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 gmin=1e-12"
+        ],
+        "maxstep": "0.1n",
+        "stop": "130n",
+        "errpreset": "conservative",
+        "reltol": "1e-5",
+        "vabstol": "1e-8",
+        "iabstol": "1e-12",
+        "gmin": "1e-12",
+        "normalized_settings": true,
+        "normalization_profile": "spectre_shared_tran_options_v1",
+        "requested_tran_options": {
+          "errpreset": "conservative"
+        },
+        "requested_simulator_options": {
+          "reltol": "1e-5",
+          "vabstol": "1e-8",
+          "iabstol": "1e-12",
+          "gmin": "1e-12"
+        },
+        "original_tran_line": "tran tran stop=130n maxstep=0.1n",
+        "original_simulator_options_line": null,
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_serializer_frame_alignment_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary/tb_serializer_frame_alignment_ref.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/serializer_frame_alignment_smoke/reference_strict_primary",
+      "fixture_notes": [],
+      "notes": [
+        "frame_rises=2 period=5.000e-09 pulse_w=[1.0, 1.0] w0_mm=0 w1_mm=0 mismatch_total=0"
+      ],
+      "stdout_tail": "peed up simulation, consider\n          add ++aps on command line\n   -   Non-default settings that could significantly slow down simulation\n          errpreset = conservative, default moderate\n          maxstep = 100 ps, default 1.3 ns (conservative)\n          reltol = 1e-06, default 100e-06 (conservative)\n          abstol(V) = 10 nV, default 1 uV\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (4.0 %)       1 (1.9 %)       3 (1.2 %)       5 (19.6 %)\n         7 (16.7 %)      9 (1.2 %)      11 (3.7 %)      13 (3.4 %)\n        14 (1.2 %)      17 (15.9 %)     18 (1.9 %)      19 (1.6 %)\n        20 (6.5 %)      22 (1.9 %)      24 (88.2 %)     25 (1.2 %)\n        26 (1.2 %)      27 (2.8 %)      28 (1.2 %)      29 (1.9 %)\n        30 (5.0 %)      31 (1.2 %)      33 (2.5 %)      34 (1.2 %)\n        35 (3.7 %)      36 (1.2 %)      37 (26.1 %)     38 (1.9 %)\n        42 (1.2 %)      44 (1.2 %)      45 (13.9 %)     46 (2.2 %)\n        47 (6.8 %)      48 (3.7 %)      54 (1.6 %)      55 (27.0 %)\n        61 (2.8 %)      63 (1.6 %)      \n        Total: 291.9%\nInitial condition solution time: CPU = 259 us, elapsed = 259.161 us.\nIntrinsic tran analysis time:    CPU = 34.91 ms, elapsed = 58.795 ms.\nTotal time required for tran analysis `tran': CPU = 36.203 ms, elapsed = 60.936 ms, util. = 59.4%.\nTime accumulated: CPU = 3.02943 s, elapsed = 3.28871 s.\nPeak resident memory used = 139 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:11.001144] cdslmd servers: 5280@thu-sui\n[11:43:11.016472] Feature usage summary:\n[11:43:11.140951]   Virtuoso_Multi_mode_Simulation  \n\n\nAggregate audit (11:43:11 AM, Tue May 26, 2026):\nTime used: CPU = 3.03 s, elapsed = 3.3 s, util. = 91.9%.\nTime spent in licensing: elapsed = 73.5 ms.\nPeak memory used = 140 Mbytes.\nSimulation started at: 11:43:08 AM, Tue May 26, 2026, ended at: 11:43:11 AM, Tue May 26, 2026, with elapsed time (wall clock): 3.3 s.\nspectre completes with 0 errors, 1 warning, and 3 notices.\n",
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "serializer_frame_alignment_smoke"
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax_speed",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "simultaneous_event_order_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tb_simultaneous_event_order_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tran_spectre.csv",
+        "rows": 101,
+        "columns": [
+          "time",
+          "ref",
+          "out"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.7583852200768888,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 16.4621,
+        "aggregate_elapsed_s": 0.601,
+        "reported_wall_s": 0.601,
+        "accepted_tran_steps": 100.0
+      },
+      "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tb_simultaneous_event_order_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_event_controller",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "simultaneous_event_order_smoke",
+        "mode": "ax_speed",
+        "mode_label": "fast Spectre AX preset speed baseline",
+        "cli_args": [
+          "+preset=ax",
+          "+mt"
+        ],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tb_simultaneous_event_order_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=80n maxstep=20p errpreset=conservative",
+        "tran_lines": [
+          "tran tran stop=80n maxstep=20p errpreset=conservative"
+        ],
+        "simulator_options_line": "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
+        "simulator_options_lines": [
+          "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12"
+        ],
+        "maxstep": "20p",
+        "stop": "80n",
+        "errpreset": "conservative",
+        "reltol": "1e-4",
+        "vabstol": "1e-6",
+        "iabstol": "1e-12",
+        "gmin": "1e-12",
+        "normalized_settings": false,
+        "normalization_profile": null,
+        "requested_tran_options": {},
+        "requested_simulator_options": {},
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed/tb_simultaneous_event_order_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_speed",
+      "fixture_notes": [],
+      "notes": [
+        "ref_edges=4 max_edge_err_ns=0.025 plateau_levels=[0.18, 0.36, 0.54, 0.72] max_level_err=0.000 span=0.540"
+      ],
+      "stdout_tail": "\nNotice from spectre during transient analysis `tran'.\n    Multithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   2       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             100\n\nMaximum value achieved for any signal of each quantity: \nV: V(VDD) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (1.9 %)       1 (1.9 %)       5 (74.5 %)      7 (1.8 %)\n         9 (1.9 %)      11 (11.1 %)     12 (1.8 %)      17 (1.9 %)\n        18 (1.8 %)      20 (5.6 %)      21 (3.8 %)      24 (100.0 %)\n        25 (3.7 %)      27 (13.0 %)     31 (1.9 %)      42 (5.4 %)\n        45 (70.4 %)     46 (11.3 %)     48 (1.9 %)      54 (1.9 %)\n        55 (16.7 %)     58 (1.9 %)      59 (1.9 %)      61 (1.9 %)\n        Total: 339.5%\nInitial condition solution time: CPU = 291 us, elapsed = 292.778 us.\nIntrinsic tran analysis time:    CPU = 17.415 ms, elapsed = 14.436 ms.\nTotal time required for tran analysis `tran': CPU = 20.28 ms, elapsed = 16.4621 ms, util. = 123%.\nTime accumulated: CPU = 517.14 ms, elapsed = 587.901 ms.\nPeak resident memory used = 129 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:10.224225] Cdslmd servers:5280@thu-sui\n[11:43:10.224247] Feature usage summary:\n[11:43:10.224252] Virtuoso_Multi_mode_Simulation\n[11:43:10.224252] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (11:43:10 AM, Tue May 26, 2026):\nTime used: CPU = 531 ms, elapsed = 601 ms, util. = 88.3%.\nTime spent in licensing: elapsed = 67 ms, percentage of total = 11.1%.\nPeak memory used = 129 Mbytes.\nSimulation started at: 11:43:09 AM, Tue May 26, 2026, ended at: 11:43:10 AM, Tue May 26, 2026, with elapsed time (wall clock): 601 ms.\nspectre completes with 0 errors, 2 warnings, and 10 notices.\n",
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "simultaneous_event_order_smoke"
+    },
+    {
+      "backend": "spectre",
+      "mode": "ax_normalized",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "simultaneous_event_order_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tb_simultaneous_event_order_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tran_spectre.csv",
+        "rows": 101,
+        "columns": [
+          "time",
+          "ref",
+          "out"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.7465667380020022,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.0164032,
+        "aggregate_elapsed_s": 0.602,
+        "reported_wall_s": 0.602,
+        "accepted_tran_steps": 100.0
+      },
+      "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tb_simultaneous_event_order_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_event_controller",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "simultaneous_event_order_smoke",
+        "mode": "ax_normalized",
+        "mode_label": "AX preset with explicit shared tran/options settings for precision ranking",
+        "cli_args": [
+          "+preset=ax",
+          "+mt"
+        ],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tb_simultaneous_event_order_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=80n maxstep=20p errpreset=conservative",
+        "tran_lines": [
+          "tran tran stop=80n maxstep=20p errpreset=conservative"
+        ],
+        "simulator_options_line": "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
+        "simulator_options_lines": [
+          "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12"
+        ],
+        "maxstep": "20p",
+        "stop": "80n",
+        "errpreset": "conservative",
+        "reltol": "1e-5",
+        "vabstol": "1e-8",
+        "iabstol": "1e-12",
+        "gmin": "1e-12",
+        "normalized_settings": true,
+        "normalization_profile": "spectre_shared_tran_options_v1",
+        "requested_tran_options": {
+          "errpreset": "conservative"
+        },
+        "requested_simulator_options": {
+          "reltol": "1e-5",
+          "vabstol": "1e-8",
+          "iabstol": "1e-12",
+          "gmin": "1e-12"
+        },
+        "original_tran_line": "tran tran stop=80n maxstep=20p errpreset=conservative",
+        "original_simulator_options_line": "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized/tb_simultaneous_event_order_ref.raw +preset=ax +mt +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/ax_normalized",
+      "fixture_notes": [],
+      "notes": [
+        "ref_edges=4 max_edge_err_ns=0.025 plateau_levels=[0.18, 0.36, 0.54, 0.72] max_level_err=0.000 span=0.540"
+      ],
+      "stdout_tail": "nsient analysis `tran'.\n    Multithreading is disabled due to the size of the design being too small.\n\n\nOutput and IC/nodeset summary:\n                 save   2       (voltage)\n\n......9......8......7......6......5......4......3......2......1......0\nNumber of accepted tran steps =             100\n\nMaximum value achieved for any signal of each quantity: \nV: V(VDD) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (1.9 %)       1 (1.9 %)       5 (75.9 %)      7 (1.9 %)\n         9 (1.9 %)      11 (11.3 %)     12 (1.9 %)      17 (1.9 %)\n        18 (1.9 %)      20 (5.6 %)      21 (3.8 %)      24 (100.0 %)\n        25 (3.7 %)      27 (13.2 %)     31 (1.9 %)      42 (5.4 %)\n        45 (71.7 %)     46 (11.3 %)     47 (1.9 %)      48 (1.9 %)\n        54 (1.9 %)      55 (16.7 %)     58 (1.9 %)      59 (1.8 %)\n        61 (1.9 %)      \n        Total: 344.7%\nInitial condition solution time: CPU = 1.435 ms, elapsed = 447.035 us.\nIntrinsic tran analysis time:    CPU = 18.438 ms, elapsed = 14.344 ms.\nTotal time required for tran analysis `tran': CPU = 21.485 ms, elapsed = 16.4032 ms, util. = 131%.\nTime accumulated: CPU = 513.613 ms, elapsed = 590.743 ms.\nPeak resident memory used = 132 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:10.229955] Cdslmd servers:5280@thu-sui\n[11:43:10.229972] Feature usage summary:\n[11:43:10.229973] Virtuoso_Multi_mode_Simulation\n[11:43:10.229973] Spectre_X_MMSIM_Lk\n\n\nAggregate audit (11:43:10 AM, Tue May 26, 2026):\nTime used: CPU = 525 ms, elapsed = 602 ms, util. = 87.3%.\nTime spent in licensing: elapsed = 60.9 ms, percentage of total = 10.1%.\nPeak memory used = 133 Mbytes.\nSimulation started at: 11:43:09 AM, Tue May 26, 2026, ended at: 11:43:10 AM, Tue May 26, 2026, with elapsed time (wall clock): 602 ms.\nspectre completes with 0 errors, 2 warnings, and 10 notices.\n",
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "simultaneous_event_order_smoke"
+    },
+    {
+      "backend": "spectre",
+      "mode": "reference_strict_primary",
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "simultaneous_event_order_smoke",
+      "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tran_spectre.csv",
+      "psf_parse": {
+        "psf_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tb_simultaneous_event_order_ref.raw/tran.tran.tran",
+        "csv_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tran_spectre.csv",
+        "rows": 4013,
+        "columns": [
+          "time",
+          "ref",
+          "out"
+        ]
+      },
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 2.927034526830539,
+      "returncode": 0,
+      "timing": {
+        "tran_elapsed_s": 0.0535622,
+        "aggregate_elapsed_s": 2.81,
+        "reported_wall_s": 2.81,
+        "accepted_tran_steps": 4012.0,
+        "ahdl_compile_elapsed_s": 2.32
+      },
+      "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tb_simultaneous_event_order_ref.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus",
+      "spectre_settings": {
+        "entry_id": "vbr1_l2_event_controller",
+        "form": "e2e",
+        "variant": "gold",
+        "task_id": "simultaneous_event_order_smoke",
+        "mode": "reference_strict_primary",
+        "mode_label": "non-AX Spectre reference with explicit shared tran/options settings",
+        "cli_args": [],
+        "testbench_path": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tb_simultaneous_event_order_ref.scs",
+        "fixture_notes": [],
+        "tran_line": "tran tran stop=80n maxstep=20p errpreset=conservative",
+        "tran_lines": [
+          "tran tran stop=80n maxstep=20p errpreset=conservative"
+        ],
+        "simulator_options_line": "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
+        "simulator_options_lines": [
+          "simulatorOptions options reltol=1e-5 vabstol=1e-8 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12"
+        ],
+        "maxstep": "20p",
+        "stop": "80n",
+        "errpreset": "conservative",
+        "reltol": "1e-5",
+        "vabstol": "1e-8",
+        "iabstol": "1e-12",
+        "gmin": "1e-12",
+        "normalized_settings": true,
+        "normalization_profile": "spectre_shared_tran_options_v1",
+        "requested_tran_options": {
+          "errpreset": "conservative"
+        },
+        "requested_simulator_options": {
+          "reltol": "1e-5",
+          "vabstol": "1e-8",
+          "iabstol": "1e-12",
+          "gmin": "1e-12"
+        },
+        "original_tran_line": "tran tran stop=80n maxstep=20p errpreset=conservative",
+        "original_simulator_options_line": "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
+        "half_maxstep_requested": false,
+        "half_maxstep_applied": false,
+        "half_maxstep_from": null,
+        "half_maxstep_to": null,
+        "command": "spectre -64 tb_simultaneous_event_order_ref.scs +escchars +log /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/spectre.out -format psfascii -raw /home/jinzhihong/vaevas-speed-work-clean/behavioral-veriloga-eval/results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary/tb_simultaneous_event_order_ref.raw +lqtimeout 900 -maxw 5 -maxn 5 +logstatus"
+      },
+      "result_root": "results/settings-normalization-smoke-20260526/spectre/vbr1_l2_event_controller/e2e/gold/simultaneous_event_order_smoke/reference_strict_primary",
+      "fixture_notes": [],
+      "notes": [
+        "ref_edges=4 max_edge_err_ns=0.025 plateau_levels=[0.18, 0.36, 0.54, 0.72] max_level_err=0.000 span=0.540"
+      ],
+      "stdout_tail": ".0\nNumber of accepted tran steps =             4012\n\nMaximum value achieved for any signal of each quantity: \nV: V(VDD) = 900 mV\nI: I(Vvdd:p) = 0 A\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nPost-Transient Simulation Summary\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n   -   To further speed up simulation, consider\n          add ++aps on command line\n   -   Non-default settings that could significantly slow down simulation\n          errpreset = conservative, default moderate\n          maxstep = 20 ps, default 800 ps (conservative)\n          reltol = 1e-06, default 100e-06 (conservative)\n          abstol(V) = 10 nV, default 1 uV\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nDuring simulation, the CPU load for active processors is :\n         0 (6.3 %)       6 (1.5 %)      16 (1.1 %)      18 (2.6 %)\n        20 (2.9 %)      22 (1.1 %)      24 (28.5 %)     26 (1.1 %)\n        28 (1.5 %)      30 (4.0 %)      31 (1.1 %)      33 (4.8 %)\n        34 (2.2 %)      36 (2.2 %)      37 (95.6 %)     38 (1.1 %)\n        40 (21.8 %)     44 (1.8 %)      48 (2.2 %)      55 (20.2 %)\n        58 (2.6 %)      60 (19.8 %)     \n        Total: 236.5%\nInitial condition solution time: CPU = 254 us, elapsed = 253.916 us.\nIntrinsic tran analysis time:    CPU = 101.612 ms, elapsed = 51.682 ms.\nTotal time required for tran analysis `tran': CPU = 104.459 ms, elapsed = 53.5622 ms, util. = 195%.\nTime accumulated: CPU = 2.80364 s, elapsed = 2.77485 s.\nPeak resident memory used = 135 Mbytes.\n\nLicensing Information:\nLic Summary:\n[11:43:13.384658] Cdslmd servers:5280@thu-sui\n[11:43:13.384677] Feature usage summary:\n[11:43:13.384678] Virtuoso_Multi_mode_Simulation\n\n\nAggregate audit (11:43:13 AM, Tue May 26, 2026):\nTime used: CPU = 2.81 s, elapsed = 2.81 s, util. = 100%.\nTime spent in licensing: elapsed = 39.7 ms.\nPeak memory used = 135 Mbytes.\nSimulation started at: 11:43:10 AM, Tue May 26, 2026, ended at: 11:43:13 AM, Tue May 26, 2026, with elapsed time (wall clock): 2.81 s.\nspectre completes with 0 errors, 2 warnings, and 3 notices.\n",
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "simultaneous_event_order_smoke"
+    }
+  ],
+  "summary": {
+    "mode_summary": [
+      {
+        "backend": "spectre",
+        "mode": "ax_normalized",
+        "runs": 2,
+        "pass_count": 2,
+        "nonpass_count": 0,
+        "total_wall_time_s": 1.592464277986437,
+        "mean_wall_time_s": 0.7962321389932185,
+        "geomean_wall_time_s": 0.794681676591387
+      },
+      {
+        "backend": "spectre",
+        "mode": "ax_speed",
+        "runs": 2,
+        "pass_count": 2,
+        "nonpass_count": 0,
+        "total_wall_time_s": 1.6064110300503671,
+        "mean_wall_time_s": 0.8032055150251836,
+        "geomean_wall_time_s": 0.8019540139731319
+      },
+      {
+        "backend": "spectre",
+        "mode": "reference_strict_primary",
+        "runs": 2,
+        "pass_count": 2,
+        "nonpass_count": 0,
+        "total_wall_time_s": 6.384220628766343,
+        "mean_wall_time_s": 3.1921103143831715,
+        "geomean_wall_time_s": 3.181085205719077
+      }
+    ],
+    "equivalence_gate_summary": [],
+    "accuracy_gate_summary": [],
+    "speedups": [],
+    "equivalence_gated_speedups": [],
+    "accuracy_gated_speedups": [],
+    "geomean_spectre_over_evas_speedup": null,
+    "geomean_equivalence_gated_spectre_over_evas_speedup": null,
+    "geomean_accuracy_gated_spectre_over_evas_speedup": null
+  }
+}
