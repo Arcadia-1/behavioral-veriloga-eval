@@ -13,8 +13,9 @@ remote to keep the repo small and easy to navigate.
 - experiment method code
   - `runners/**` and `scripts/**` that change how experiments run
 - experiment plan and condition definitions
-  - `docs/project/EXPERIMENT_CONDITIONS_AND_MODEL_MATRIX.md`
-  - `docs/project/PROJECT_STATUS.md`
+  - `docs/VAEVAS_MAINLINE_PLAN.md`
+  - `docs/VABENCH_TOPDOWN_FUNCTION_TAXONOMY.md`
+  - current materialization or validation reports under `docs/`
 - paper-facing result summaries
   - `tables/` (Table 1 / Table 2 summaries and failure analysis)
 
@@ -41,8 +42,8 @@ After each experiment batch:
    - plan docs
    - `tables/`
 5. Delete local bulky generated folders if no longer needed.
-6. Follow `docs/project/POST_RUN_PLAYBOOK.md` for final status refresh and
-   upload packaging.
+6. Refresh the current mainline/materialization docs when the result changes a
+   paper-facing claim.
 
 ## One-Line Rule
 

@@ -39,6 +39,7 @@ import tempfile
 from pathlib import Path
 
 from simulate_evas import has_behavior_check, run_case
+from vabench_policy import should_count_as, validate_or_raise
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -80,6 +81,11 @@ def list_all_task_dirs(families: tuple[str, ...] = ALL_FAMILIES,
                 continue
             meta = json.loads(meta_path.read_text(encoding="utf-8"))
             task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+            validate_or_raise(meta, task_dir)
+            if not should_count_as(meta, "model_capability"):
+                if selected and task_id in selected:
+                    raise ValueError(f"{task_id} is excluded from model-capability scoring counts")
+                continue
             if selected and task_id not in selected:
                 continue
             # Skip scope-guard tasks by default (they have no LLM prompt intent)
@@ -125,6 +131,29 @@ def find_va_file(sample_dir: Path) -> Path | None:
     """Return the first .va file found in a sample directory."""
     vas = sorted(sample_dir.glob("*.va"))
     return vas[0] if vas else None
+
+
+def find_va_file_for_tb(sample_dir: Path, tb_path: Path | None) -> Path | None:
+    """Return the generated VA that best matches a Spectre testbench."""
+    vas = sorted(sample_dir.glob("*.va"))
+    if not vas:
+        return None
+    if tb_path is None or not tb_path.exists():
+        return vas[0]
+
+    include_names = [Path(name).name for name in ahdl_includes(tb_path)]
+    for include_name in include_names:
+        exact = sample_dir / include_name
+        if exact.exists():
+            return exact
+
+    instance_models = set(spectre_instance_models(tb_path))
+    if instance_models:
+        for va_path in vas:
+            if instance_models.intersection(verilog_module_names(va_path)):
+                return va_path
+
+    return vas[0]
 
 
 def find_tb_file(sample_dir: Path) -> Path | None:
@@ -295,10 +324,13 @@ def rewrite_tb_save_signals(tb_path: Path, desired_signals: list[str]) -> tuple[
     removed = 0
     inserted = 0
     inserted_save = False
-    for line in original_lines:
+    index = 0
+    while index < len(original_lines):
+        line = original_lines[index]
         stripped = line.strip()
         if not stripped.lower().startswith("save "):
             updated_lines.append(line)
+            index += 1
             continue
         removed += 1
         if desired_signals and not inserted_save:
@@ -306,6 +338,11 @@ def rewrite_tb_save_signals(tb_path: Path, desired_signals: list[str]) -> tuple[
             updated_lines.append(indent + "save " + " ".join(desired_signals))
             inserted += 1
             inserted_save = True
+        while stripped.endswith("\\") and index + 1 < len(original_lines):
+            index += 1
+            stripped = original_lines[index].strip()
+            removed += 1
+        index += 1
 
     if removed > 0 or inserted > 0:
         tb_path.write_text("\n".join(updated_lines) + "\n", encoding="utf-8")
@@ -816,9 +853,9 @@ def score_one_task(
             pass
 
     # Resolve DUT and testbench paths based on family
-    generated_va = find_va_file(sample_dir)
     generated_tb = find_tb_file(sample_dir)
     gold_tb = choose_gold_tb(gold_dir)
+    generated_va = find_va_file_for_tb(sample_dir, gold_tb if family in ("spec-to-va", "bugfix") else generated_tb)
     contract_save_signals = all_save_signals(gold_tb) if gold_tb and gold_tb.exists() else None
 
     if family in ("spec-to-va", "bugfix"):
@@ -915,6 +952,9 @@ def score_one_task(
         "task_id": task_id,
         "family": family,
         "category": category,
+        "release_form": meta.get("release_form", "legacy"),
+        "provenance_status": meta.get("provenance_status", "legacy"),
+        "counts": meta.get("counts", {}),
         "sample_idx": sample_idx,
         "temperature": temperature,
         "top_p": top_p,
@@ -1047,9 +1087,25 @@ def _task_pass(result: dict) -> bool:
 
 def build_model_results(model: str, results: list[dict], temperature: float,
                         top_p: float) -> dict:
+    input_total = len(results)
+    excluded = [r for r in results if not should_count_as(r, "model_capability")]
+    results = [r for r in results if should_count_as(r, "model_capability")]
     total = len(results)
     if total == 0:
-        return {"model": model, "total": 0, "pass_at_1": 0.0}
+        return {
+            "model": model,
+            "temperature": temperature,
+            "top_p": top_p,
+            "total_tasks": 0,
+            "input_results": input_total,
+            "excluded_from_model_capability": len(excluded),
+            "pass_at_1": 0.0,
+            "pass_count": 0,
+            "by_family": {},
+            "axis_rates": {},
+            "failure_taxonomy": {},
+            "status": "MODEL_EVALUATED",
+        }
 
     n_pass = sum(1 for r in results if _task_pass(r))
 
@@ -1108,6 +1164,8 @@ def build_model_results(model: str, results: list[dict], temperature: float,
         "temperature": temperature,
         "top_p": top_p,
         "total_tasks": total,
+        "input_results": input_total,
+        "excluded_from_model_capability": len(excluded),
         "pass_at_1": round(n_pass / total, 4),
         "pass_count": n_pass,
         "by_family": family_rates,
@@ -1151,6 +1209,9 @@ def _score_task_entry(
             None,
             None,
         )
+        result["release_form"] = meta.get("release_form", "legacy")
+        result["provenance_status"] = meta.get("provenance_status", "legacy")
+        result["counts"] = meta.get("counts", {})
         _save_result(result, out_root)
         return result
 

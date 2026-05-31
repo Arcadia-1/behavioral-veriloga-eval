@@ -1,0 +1,627 @@
+{
+  "date": "2026-05-23",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 14,
+  "queue_rows_with_ready_primary_bundle": 14,
+  "bundle_count": 17,
+  "ready_bundle_count": 17,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "bugfix": 6,
+    "dut": 3,
+    "e2e": 4,
+    "tb": 4
+  },
+  "variant_counts": {
+    "buggy": 3,
+    "fixed": 3,
+    "gold": 11
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/ct04_dual_rerun_queue_20260523.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_dut",
+      "checker_task_id": "vbr1_l1_voltage_gain_amplifier_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_voltage_gain_amplifier_dut",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier_dut",
+        "vbr1_l1_voltage_gain_amplifier_dut",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier"
+      ],
+      "queue_reason": "gold/checker split voltage-gain behavior from generic filter-chain template and require saturation metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/gold/tb_voltage_gain_amplifier.scs",
+      "source_includes": [
+        "voltage_gain_amplifier.va"
+      ],
+      "source_include_origins": {
+        "voltage_gain_amplifier.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/dut/gold/voltage_gain_amplifier.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/dut/gold/gold/tb_voltage_gain_amplifier.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/dut/gold/gold/voltage_gain_amplifier.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_tb",
+      "checker_task_id": "vbr1_l1_voltage_gain_amplifier_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_voltage_gain_amplifier_tb",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier_tb",
+        "vbr1_l1_voltage_gain_amplifier_tb",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier"
+      ],
+      "queue_reason": "checker split voltage-gain behavior from generic filter-chain template and require saturation metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/tb/gold/tb_voltage_gain_amplifier.scs",
+      "source_includes": [
+        "voltage_gain_amplifier.va"
+      ],
+      "source_include_origins": {
+        "voltage_gain_amplifier.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/dut/gold/voltage_gain_amplifier.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold/gold/tb_voltage_gain_amplifier.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/tb/gold/gold/voltage_gain_amplifier.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_bugfix",
+      "checker_task_id": "vbr1_l1_voltage_gain_amplifier_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier"
+      ],
+      "queue_reason": "bugfix now rejects unclamped gain output and missing saturation metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/gold/tb_voltage_gain_amplifier.scs",
+      "source_includes": [
+        "voltage_gain_amplifier.va"
+      ],
+      "source_include_origins": {
+        "voltage_gain_amplifier.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/fixed/gold/tb_voltage_gain_amplifier.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/fixed/gold/voltage_gain_amplifier.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_bugfix",
+      "checker_task_id": "vbr1_l1_voltage_gain_amplifier_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier_bugfix",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier"
+      ],
+      "queue_reason": "bugfix now rejects unclamped gain output and missing saturation metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/gold/tb_voltage_gain_amplifier.scs",
+      "source_includes": [
+        "voltage_gain_amplifier.va"
+      ],
+      "source_include_origins": {
+        "voltage_gain_amplifier.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/buggy/gold/tb_voltage_gain_amplifier.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/bugfix/buggy/gold/voltage_gain_amplifier.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_voltage_gain_amplifier",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_voltage_gain_amplifier_e2e",
+      "checker_task_id": "vbr1_l1_voltage_gain_amplifier_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_voltage_gain_amplifier_e2e",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier_e2e",
+        "vbr1_l1_voltage_gain_amplifier_e2e",
+        "vbr1_l1_voltage_gain_amplifier",
+        "vbr1_l1_voltage_gain_amplifier"
+      ],
+      "queue_reason": "gold/checker split voltage-gain behavior from generic filter-chain template and require saturation metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/gold/tb_voltage_gain_amplifier.scs",
+      "source_includes": [
+        "voltage_gain_amplifier.va"
+      ],
+      "source_include_origins": {
+        "voltage_gain_amplifier.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_voltage_gain_amplifier/forms/e2e/gold/voltage_gain_amplifier.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/e2e/gold/gold/tb_voltage_gain_amplifier.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_voltage_gain_amplifier/e2e/gold/gold/voltage_gain_amplifier.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_higher_order_filter_dut",
+      "checker_task_id": "vbr1_l1_higher_order_filter_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_higher_order_filter_dut",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter_dut",
+        "vbr1_l1_higher_order_filter_dut",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter"
+      ],
+      "queue_reason": "gold/checker split true two-state second-order response from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/gold/tb_higher_order_filter.scs",
+      "source_includes": [
+        "higher_order_filter.va"
+      ],
+      "source_include_origins": {
+        "higher_order_filter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/gold/higher_order_filter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/dut/gold/gold/tb_higher_order_filter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/dut/gold/gold/higher_order_filter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_higher_order_filter_tb",
+      "checker_task_id": "vbr1_l1_higher_order_filter_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_higher_order_filter_tb",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter_tb",
+        "vbr1_l1_higher_order_filter_tb",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter"
+      ],
+      "queue_reason": "checker split true two-state second-order response from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/gold/tb_higher_order_filter.scs",
+      "source_includes": [
+        "higher_order_filter.va"
+      ],
+      "source_include_origins": {
+        "higher_order_filter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/gold/higher_order_filter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/tb/gold/gold/tb_higher_order_filter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/tb/gold/gold/higher_order_filter.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "checker_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter"
+      ],
+      "queue_reason": "bugfix now rejects single-pole collapse and flat state-difference metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/gold/tb_higher_order_filter.scs",
+      "source_includes": [
+        "higher_order_filter.va"
+      ],
+      "source_include_origins": {
+        "higher_order_filter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/fixed/gold/tb_higher_order_filter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/fixed/gold/higher_order_filter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "checker_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter_bugfix",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter"
+      ],
+      "queue_reason": "bugfix now rejects single-pole collapse and flat state-difference metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/gold/tb_higher_order_filter.scs",
+      "source_includes": [
+        "higher_order_filter.va"
+      ],
+      "source_include_origins": {
+        "higher_order_filter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/buggy/gold/tb_higher_order_filter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/bugfix/buggy/gold/higher_order_filter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_higher_order_filter_e2e",
+      "checker_task_id": "vbr1_l1_higher_order_filter_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_higher_order_filter_e2e",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter_e2e",
+        "vbr1_l1_higher_order_filter_e2e",
+        "vbr1_l1_higher_order_filter",
+        "vbr1_l1_higher_order_filter"
+      ],
+      "queue_reason": "gold/checker split true two-state second-order response from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/gold/tb_higher_order_filter.scs",
+      "source_includes": [
+        "higher_order_filter.va"
+      ],
+      "source_include_origins": {
+        "higher_order_filter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/gold/higher_order_filter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/e2e/gold/gold/tb_higher_order_filter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_higher_order_filter/e2e/gold/gold/higher_order_filter.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_soft_hysteretic_limiter_dut",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter_dut",
+        "vbr1_l1_soft_hysteretic_limiter_dut",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter"
+      ],
+      "queue_reason": "gold/checker split stateful soft limiter from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/gold/tb_soft_hysteretic_limiter.scs",
+      "source_includes": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "source_include_origins": {
+        "soft_hysteretic_limiter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/dut/gold/gold/tb_soft_hysteretic_limiter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/dut/gold/gold/soft_hysteretic_limiter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_tb",
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_soft_hysteretic_limiter_tb",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter_tb",
+        "vbr1_l1_soft_hysteretic_limiter_tb",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter"
+      ],
+      "queue_reason": "checker split stateful soft limiter from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/gold/tb_soft_hysteretic_limiter.scs",
+      "source_includes": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "source_include_origins": {
+        "soft_hysteretic_limiter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/gold/soft_hysteretic_limiter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/tb/gold/gold/tb_soft_hysteretic_limiter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/tb/gold/gold/soft_hysteretic_limiter.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter"
+      ],
+      "queue_reason": "bugfix now rejects memoryless soft limiting and flat metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/gold/tb_soft_hysteretic_limiter.scs",
+      "source_includes": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "source_include_origins": {
+        "soft_hysteretic_limiter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed/gold/tb_soft_hysteretic_limiter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/fixed/gold/soft_hysteretic_limiter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter_bugfix",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter"
+      ],
+      "queue_reason": "bugfix now rejects memoryless soft limiting and flat metric",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/gold/tb_soft_hysteretic_limiter.scs",
+      "source_includes": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "source_include_origins": {
+        "soft_hysteretic_limiter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/buggy/gold/tb_soft_hysteretic_limiter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/bugfix/buggy/gold/soft_hysteretic_limiter.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e",
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_soft_hysteretic_limiter_e2e",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter_e2e",
+        "vbr1_l1_soft_hysteretic_limiter_e2e",
+        "vbr1_l1_soft_hysteretic_limiter",
+        "vbr1_l1_soft_hysteretic_limiter"
+      ],
+      "queue_reason": "gold/checker split stateful soft limiter from generic filter-chain template",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/gold/tb_soft_hysteretic_limiter.scs",
+      "source_includes": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "source_include_origins": {
+        "soft_hysteretic_limiter.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/gold/soft_hysteretic_limiter.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/e2e/gold/gold/tb_soft_hysteretic_limiter.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l1_soft_hysteretic_limiter/e2e/gold/gold/soft_hysteretic_limiter.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_amplifier_filter_chain_tb",
+      "checker_task_id": "vbr1_l2_amplifier_filter_chain_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_amplifier_filter_chain_tb",
+        "vbr1_l2_amplifier_filter_chain",
+        "vbr1_l2_amplifier_filter_chain_tb",
+        "vbr1_l2_amplifier_filter_chain_tb",
+        "vbr1_l2_amplifier_filter_chain",
+        "vbr1_l2_amplifier_filter_chain"
+      ],
+      "queue_reason": "checker now requires L2 composition with pre-filter gain metric and lagged filtered output",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/gold/tb_amplifier_filter_chain.scs",
+      "source_includes": [
+        "amplifier_filter_chain.va"
+      ],
+      "source_include_origins": {
+        "amplifier_filter_chain.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/tb/gold/gold/tb_amplifier_filter_chain.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/tb/gold/gold/amplifier_filter_chain.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
+      "checker_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_amplifier_filter_chain_e2e",
+        "vbr1_l2_amplifier_filter_chain",
+        "vbr1_l2_amplifier_filter_chain_e2e",
+        "vbr1_l2_amplifier_filter_chain_e2e",
+        "vbr1_l2_amplifier_filter_chain",
+        "vbr1_l2_amplifier_filter_chain"
+      ],
+      "queue_reason": "gold/checker now require L2 composition with pre-filter gain metric and lagged filtered output",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/tb_amplifier_filter_chain.scs",
+      "source_includes": [
+        "amplifier_filter_chain.va"
+      ],
+      "source_include_origins": {
+        "amplifier_filter_chain.va": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/e2e/gold/gold/tb_amplifier_filter_chain.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct04_20260523/vbr1_l2_amplifier_filter_chain/e2e/gold/gold/amplifier_filter_chain.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

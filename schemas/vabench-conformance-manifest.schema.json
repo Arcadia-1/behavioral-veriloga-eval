@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench L0 EVAS/Spectre conformance manifest",
+  "type": "object",
+  "required": [
+    "date",
+    "suite",
+    "conformance_case_count",
+    "model_capability_count",
+    "benchmark_coverage_count",
+    "bugfix_claim_count",
+    "broad_parity_denominator_count",
+    "runner_hook_required_count",
+    "cases",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "suite": {
+      "const": "evas-spectre"
+    },
+    "conformance_case_count": {
+      "type": "integer"
+    },
+    "model_capability_count": {
+      "const": 0
+    },
+    "benchmark_coverage_count": {
+      "const": 0
+    },
+    "bugfix_claim_count": {
+      "const": 0
+    },
+    "broad_parity_denominator_count": {
+      "const": 0
+    },
+    "runner_hook_required_count": {
+      "type": "integer"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "suite",
+          "conformance_axis",
+          "expected_relation",
+          "source_path",
+          "package_path",
+          "model_capability",
+          "benchmark_coverage",
+          "bugfix_claim",
+          "broad_parity_denominator",
+          "runner_hook_required"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "suite": {
+            "const": "evas-spectre"
+          },
+          "conformance_axis": {
+            "type": "string"
+          },
+          "expected_relation": {
+            "type": "string"
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "package_path": {
+            "type": "string"
+          },
+          "model_capability": {
+            "enum": [
+              false,
+              "false"
+            ]
+          },
+          "benchmark_coverage": {
+            "enum": [
+              false,
+              "false"
+            ]
+          },
+          "bugfix_claim": {
+            "enum": [
+              false,
+              "false"
+            ]
+          },
+          "broad_parity_denominator": {
+            "enum": [
+              false,
+              "false"
+            ]
+          },
+          "runner_hook_required": {
+            "enum": [
+              true,
+              false,
+              "true",
+              "false"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

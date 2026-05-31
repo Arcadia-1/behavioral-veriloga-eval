@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release status report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "planned_entries",
+    "level_counts",
+    "package_status_counts",
+    "tracker_certification_counts",
+    "source_linked_entry_count",
+    "asset_materialized_entry_count",
+    "asset_integrity_status",
+    "asset_integrity_issue_count",
+    "asset_integrity_warning_count",
+    "static_certification_status",
+    "static_certified_release_task_count",
+    "static_failed_release_task_count",
+    "static_certified_entry_count",
+    "dual_certification_status",
+    "dual_certified_release_task_count",
+    "dual_failed_release_task_count",
+    "dual_pending_release_task_count",
+    "fully_certified_entry_count",
+    "source_equivalence_failure_count",
+    "source_equivalence_blocked_release_task_count",
+    "evas_pass_spectre_fail_count",
+    "dual_simulator_rerun",
+    "l0_conformance_case_count",
+    "score_denominator_status",
+    "score_claim_allowed",
+    "scored_release_forms",
+    "speed_debug_status",
+    "speed_claim_allowed",
+    "baseline_status",
+    "baseline_claim_allowed",
+    "claim_gate_status",
+    "blocked_claim_ids",
+    "dual_rerun_import_status",
+    "scored_release_entries",
+    "certified_release_entries",
+    "stop_condition",
+    "next_actions"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "planned_entries": {
+      "type": "integer"
+    },
+    "level_counts": {
+      "type": "object"
+    },
+    "package_status_counts": {
+      "type": "object"
+    },
+    "tracker_certification_counts": {
+      "type": "object"
+    },
+    "source_linked_entry_count": {
+      "type": "integer"
+    },
+    "asset_materialized_entry_count": {
+      "type": "integer"
+    },
+    "asset_integrity_status": {
+      "enum": [
+        "pass",
+        "fail",
+        "missing"
+      ]
+    },
+    "asset_integrity_issue_count": {
+      "type": "integer"
+    },
+    "asset_integrity_warning_count": {
+      "type": "integer"
+    },
+    "static_certification_status": {
+      "enum": [
+        "pass",
+        "fail",
+        "missing"
+      ]
+    },
+    "static_certified_release_task_count": {
+      "type": "integer"
+    },
+    "static_failed_release_task_count": {
+      "type": "integer"
+    },
+    "static_certified_entry_count": {
+      "type": "integer"
+    },
+    "dual_certification_status": {
+      "enum": [
+        "pass",
+        "partial",
+        "fail",
+        "missing"
+      ]
+    },
+    "dual_certified_release_task_count": {
+      "type": "integer"
+    },
+    "dual_failed_release_task_count": {
+      "type": "integer"
+    },
+    "dual_pending_release_task_count": {
+      "type": "integer"
+    },
+    "fully_certified_entry_count": {
+      "type": "integer"
+    },
+    "source_equivalence_failure_count": {
+      "type": "integer"
+    },
+    "source_equivalence_blocked_release_task_count": {
+      "type": "integer"
+    },
+    "evas_pass_spectre_fail_count": {
+      "type": "integer"
+    },
+    "dual_simulator_rerun": {
+      "type": "boolean"
+    },
+    "l0_conformance_case_count": {
+      "type": "integer"
+    },
+    "score_denominator_status": {
+      "type": "string"
+    },
+    "score_denominator_enabled": {
+      "type": "boolean"
+    },
+    "score_claim_allowed": {
+      "type": "boolean"
+    },
+    "score_content_denominator_entry_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "score_content_denominator_form_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "score_certified_entry_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "score_certified_form_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "scored_release_forms": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "speed_debug_status": {
+      "type": "string"
+    },
+    "speed_claim_allowed": {
+      "type": "boolean"
+    },
+    "speed_timed_rows": {
+      "type": [
+        "integer",
+        "string",
+        "null"
+      ]
+    },
+    "baseline_status": {
+      "type": "string"
+    },
+    "baseline_claim_allowed": {
+      "type": "boolean"
+    },
+    "baseline_summary_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "claim_gate_status": {
+      "type": "string"
+    },
+    "allowed_claim_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "blocked_claim_count": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "blocked_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dual_rerun_import_status": {
+      "type": "string"
+    },
+    "dual_rerun_import_stale_summary": {
+      "type": [
+        "boolean",
+        "string"
+      ]
+    },
+    "scored_release_entries": {
+      "type": "integer"
+    },
+    "certified_release_entries": {
+      "type": "integer"
+    },
+    "stop_condition": {
+      "type": [
+        "string",
+        "object"
+      ]
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

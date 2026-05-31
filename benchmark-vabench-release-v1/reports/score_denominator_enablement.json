@@ -1,0 +1,2940 @@
+{
+  "date": "2026-05-27",
+  "release": "vabench-release-v1",
+  "status": "enabled",
+  "summary": {
+    "release_entry_count": 79,
+    "release_form_count": 271,
+    "enabled_entry_count": 66,
+    "enabled_form_count": 236,
+    "disabled_entry_count": 13,
+    "disabled_form_count": 35,
+    "content_excluded_entry_count": 13,
+    "content_excluded_form_count": 35,
+    "dual_certification_ready": true,
+    "dual_blockers": [],
+    "disabled_reason_counts": {
+      "support_suite_not_core_circuit_score": 13
+    }
+  },
+  "policy": {
+    "source_of_truth_after_refresh": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+    "enabled_rule": "benchmark_score=true only for content-denominator entries with full static/EVAS/Spectre certification after dual_certification.status=pass.",
+    "excluded_rule": "Content-excluded duplicates remain package assets and certified parity evidence, but do not enter scored benchmark denominators.",
+    "l0_rule": "L0 conformance remains outside the L1/L2 benchmark denominator."
+  },
+  "entry_rows": [
+    {
+      "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_sar_logic",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_segmented_dac",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_pipeline_adc_chain",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_hysteresis_comparator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_offset_comparator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_threshold_comparator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_front_end",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_higher_order_filter",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_resettable_integrator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_slew_rate_limiter",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_clock_divider",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_lock_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_vco_phase_integrator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_element_shuffler",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_trim_controller",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_trim_calibration_controller",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_complete_calibration_loop",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/release_entry.json",
+      "certified": true,
+      "content_denominator_included": true,
+      "benchmark_score_enabled": true,
+      "disabled_reasons": [],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_crossing_metric_writer",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 3
+    },
+    {
+      "release_entry_id": "vbr1_l1_edge_interval_timer",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_edge_interval_timer/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_estimator",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_peak_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_settling_time_detector",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_settling_time_detector/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l2_measurement_flow",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    },
+    {
+      "release_entry_id": "vbr1_l1_burst_clock_source",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 3
+    },
+    {
+      "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 3
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 4
+    },
+    {
+      "release_entry_id": "vbr1_l1_ramp_or_step_source",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 3
+    },
+    {
+      "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 3
+    },
+    {
+      "release_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/release_entry.json",
+      "certified": true,
+      "content_denominator_included": false,
+      "benchmark_score_enabled": false,
+      "disabled_reasons": [
+        "content_denominator_excluded:support_suite_not_core_circuit_score"
+      ],
+      "form_count": 2
+    }
+  ],
+  "form_rows": [
+    {
+      "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_binary_weighted_voltage_dac/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_capacitive_weighted_sar_feedback_dac/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_clocked_adc_quantizer/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_dac_mismatch_unit_weighting_model/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_pipeline_adc_stage/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sar_logic",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sar_logic",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sar_logic",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sar_logic",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_sar_logic/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_segmented_dac",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_segmented_dac",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_segmented_dac",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_segmented_dac",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_segmented_dac/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_thermometer_code_decoder/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_unit_element_thermometer_dac/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_pipeline_adc_chain",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_pipeline_adc_chain",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_debounce_latch",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_debounce_latch/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_hysteresis_comparator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_hysteresis_comparator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_hysteresis_comparator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_hysteresis_comparator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_hysteresis_comparator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_offset_comparator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_offset_comparator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_offset_comparator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_offset_comparator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_offset_comparator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_propagation_delay_comparator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_strongarm_style_latch_comparator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_threshold_comparator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_threshold_comparator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_threshold_comparator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_threshold_comparator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_threshold_comparator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_acquisition_limited_sample_and_hold/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_clocked_sample_and_hold/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_sample_and_hold_with_droop_leakage/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_front_end",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_converter_front_end",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_higher_order_filter",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_higher_order_filter",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_higher_order_filter",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_higher_order_filter/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier_envelope_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_programmable_gain_amplifier/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_resettable_integrator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_resettable_integrator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_resettable_integrator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_resettable_integrator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_resettable_integrator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_slew_rate_limiter",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_slew_rate_limiter",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_slew_rate_limiter",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_slew_rate_limiter",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_slew_rate_limiter/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_soft_hysteretic_limiter/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clock_divider",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clock_divider",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clock_divider",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_clock_divider",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lock_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lock_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lock_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lock_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_calibration_deadband_controller/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_dwa_dem_encoder/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_element_shuffler",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_element_shuffler",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_element_shuffler",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_element_shuffler",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_trim_controller",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_trim_controller",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_trim_controller",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_trim_controller",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_gain_trim_controller/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_successive_approximation_calibration_search_fsm/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_trim_calibration_controller",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_trim_calibration_controller",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_trim_calibration_controller",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_trim_calibration_controller",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_trim_calibration_controller/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_complete_calibration_loop",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_complete_calibration_loop",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bandgap_reference_macro_model/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_bias_voltage_generator_with_enable_trim/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ldo_regulator_macro_model/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_power_on_reset_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_power_on_reset_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_ptat_ctat_reference_generator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l1_uvlo_brownout_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_limiting_amplifier_frontend/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_lna_gain_compression_macro/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_log_rssi_power_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_pa_compression_macro",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_pa_compression_macro/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/dut/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l1_rf_mixer_downconverter_macro/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/tb/release_task.json",
+      "benchmark_score_enabled": true,
+      "content_denominator_included": true,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_crossing_metric_writer",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_crossing_metric_writer/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_edge_interval_timer",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_edge_interval_timer/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_edge_interval_timer",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_edge_interval_timer/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_gain_estimator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_peak_detector",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_peak_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_peak_detector",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_peak_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_peak_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_settling_time_detector",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_settling_time_detector/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_settling_time_detector",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l1_settling_time_detector/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_measurement_flow",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_measurement_flow",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_burst_clock_source",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_burst_clock_source",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_burst_clock_source",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_burst_clock_source/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_dither_or_noise_like_deterministic_source/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "bugfix",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/bugfix/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_lfsr_prbs_generator/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_ramp_or_step_source/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "dut",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/dut/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l1_sine_periodic_voltage_source/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "form": "e2e",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/e2e/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    },
+    {
+      "release_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "form": "tb",
+      "manifest": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/tb/release_task.json",
+      "benchmark_score_enabled": false,
+      "content_denominator_included": false,
+      "certified": true
+    }
+  ],
+  "evidence_sources": {
+    "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "release_tasks_root": "benchmark-vabench-release-v1/tasks",
+    "policy": "runners/vabench_policy.py"
+  }
+}

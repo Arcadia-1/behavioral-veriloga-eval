@@ -1,0 +1,461 @@
+{
+  "date": "2026-05-24",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 12,
+  "queue_rows_with_ready_primary_bundle": 12,
+  "bundle_count": 14,
+  "ready_bundle_count": 14,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "bugfix": 4,
+    "dut": 2,
+    "e2e": 4,
+    "tb": 4
+  },
+  "variant_counts": {
+    "buggy": 2,
+    "fixed": 2,
+    "gold": 10
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/dual_rerun_queue_ct06_split_20260524.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_adc_code_capture_register_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_adc_code_capture_register_dut",
+        "vbr1_l1_adc_code_capture_register"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/dut/gold/tb_adc_code_capture_register.scs",
+      "source_includes": [
+        "adc_code_capture_register.va"
+      ],
+      "source_include_origins": {
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/dut/gold/adc_code_capture_register.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold/gold/tb_adc_code_capture_register.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/dut/gold/gold/adc_code_capture_register.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_adc_code_capture_register_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_adc_code_capture_register_tb",
+        "vbr1_l1_adc_code_capture_register"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/tb/gold/tb_adc_code_capture_register.scs",
+      "source_includes": [
+        "adc_code_capture_register.va"
+      ],
+      "source_include_origins": {
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/tb/gold/adc_code_capture_register.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold/gold/tb_adc_code_capture_register.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/tb/gold/gold/adc_code_capture_register.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_adc_code_capture_register_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_adc_code_capture_register_bugfix",
+        "vbr1_l1_adc_code_capture_register"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
+      "source_includes": [
+        "adc_code_capture_register.va"
+      ],
+      "source_include_origins": {
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed/gold/tb_adc_code_capture_register.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/fixed/gold/adc_code_capture_register.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_adc_code_capture_register_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_adc_code_capture_register_bugfix",
+        "vbr1_l1_adc_code_capture_register"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/tb_adc_code_capture_register.scs",
+      "source_includes": [
+        "adc_code_capture_register.va"
+      ],
+      "source_include_origins": {
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy/gold/tb_adc_code_capture_register.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/bugfix/buggy/gold/adc_code_capture_register.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_adc_code_capture_register",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_adc_code_capture_register_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_adc_code_capture_register_e2e",
+        "vbr1_l1_adc_code_capture_register"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/e2e/gold/tb_adc_code_capture_register.scs",
+      "source_includes": [
+        "adc_code_capture_register.va"
+      ],
+      "source_include_origins": {
+        "adc_code_capture_register.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_adc_code_capture_register/forms/e2e/gold/adc_code_capture_register.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold/gold/tb_adc_code_capture_register.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_adc_code_capture_register/e2e/gold/gold/adc_code_capture_register.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_serial_readout_deserializer_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_serial_readout_deserializer_dut",
+        "vbr1_l1_serial_readout_deserializer"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/dut/gold/tb_serial_readout_deserializer.scs",
+      "source_includes": [
+        "serial_readout_deserializer.va"
+      ],
+      "source_include_origins": {
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/dut/gold/serial_readout_deserializer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold/gold/tb_serial_readout_deserializer.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/dut/gold/gold/serial_readout_deserializer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_serial_readout_deserializer_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_serial_readout_deserializer_tb",
+        "vbr1_l1_serial_readout_deserializer"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/tb/gold/tb_serial_readout_deserializer.scs",
+      "source_includes": [
+        "serial_readout_deserializer.va"
+      ],
+      "source_include_origins": {
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/tb/gold/serial_readout_deserializer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold/gold/tb_serial_readout_deserializer.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/tb/gold/gold/serial_readout_deserializer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_serial_readout_deserializer_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_serial_readout_deserializer_bugfix",
+        "vbr1_l1_serial_readout_deserializer"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
+      "source_includes": [
+        "serial_readout_deserializer.va"
+      ],
+      "source_include_origins": {
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed/gold/tb_serial_readout_deserializer.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/fixed/gold/serial_readout_deserializer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_serial_readout_deserializer_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_serial_readout_deserializer_bugfix",
+        "vbr1_l1_serial_readout_deserializer"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/tb_serial_readout_deserializer.scs",
+      "source_includes": [
+        "serial_readout_deserializer.va"
+      ],
+      "source_include_origins": {
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy/gold/tb_serial_readout_deserializer.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/bugfix/buggy/gold/serial_readout_deserializer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_serial_readout_deserializer",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l1_serial_readout_deserializer_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_serial_readout_deserializer_e2e",
+        "vbr1_l1_serial_readout_deserializer"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/tb_serial_readout_deserializer.scs",
+      "source_includes": [
+        "serial_readout_deserializer.va"
+      ],
+      "source_include_origins": {
+        "serial_readout_deserializer.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l1_serial_readout_deserializer/forms/e2e/gold/serial_readout_deserializer.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold/gold/tb_serial_readout_deserializer.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l1_serial_readout_deserializer/e2e/gold/gold/serial_readout_deserializer.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l2_event_controller_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_event_controller_tb",
+        "vbr1_l2_event_controller",
+        "vbr1_l2_event_controller_tb",
+        "conversion_event_controller_flow",
+        "conversion_event_controller_flow"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/tb/gold/tb_conversion_event_controller.scs",
+      "source_includes": [
+        "conversion_event_controller.va"
+      ],
+      "source_include_origins": {
+        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/tb/gold/conversion_event_controller.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold/gold/tb_conversion_event_controller.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/tb/gold/gold/conversion_event_controller.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_event_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l2_event_controller_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_event_controller_e2e",
+        "vbr1_l2_event_controller",
+        "conversion_event_controller_flow",
+        "conversion_event_controller_flow"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/e2e/gold/tb_conversion_event_controller.scs",
+      "source_includes": [
+        "conversion_event_controller.va"
+      ],
+      "source_include_origins": {
+        "conversion_event_controller.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_event_controller/forms/e2e/gold/conversion_event_controller.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold/gold/tb_conversion_event_controller.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_event_controller/e2e/gold/gold/conversion_event_controller.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l2_serializer_frame_alignment_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_serializer_frame_alignment_flow_tb",
+        "vbr1_l2_serializer_frame_alignment_flow",
+        "vbr1_l2_serializer_frame_alignment_flow_tb",
+        "serializer_frame_monitor_flow",
+        "serializer_frame_monitor_flow"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/tb_serializer_frame_monitor_flow.scs",
+      "source_includes": [
+        "serializer_frame_monitor_flow.va"
+      ],
+      "source_include_origins": {
+        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/tb/gold/serializer_frame_monitor_flow.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold/gold/tb_serializer_frame_monitor_flow.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/tb/gold/gold/serializer_frame_monitor_flow.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_serializer_frame_alignment_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "",
+      "checker_task_id": "vbr1_l2_serializer_frame_alignment_flow_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_serializer_frame_alignment_flow_e2e",
+        "vbr1_l2_serializer_frame_alignment_flow",
+        "serializer_frame_monitor_flow",
+        "serializer_frame_monitor_flow"
+      ],
+      "queue_reason": "targeted_new_task_fresh_dual_validation",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/tb_serializer_frame_monitor_flow.scs",
+      "source_includes": [
+        "serializer_frame_monitor_flow.va"
+      ],
+      "source_include_origins": {
+        "serializer_frame_monitor_flow.va": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_serializer_frame_alignment_flow/forms/e2e/gold/serializer_frame_monitor_flow.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/gold/tb_serializer_frame_monitor_flow.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct06_split_20260524/vbr1_l2_serializer_frame_alignment_flow/e2e/gold/gold/serializer_frame_monitor_flow.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

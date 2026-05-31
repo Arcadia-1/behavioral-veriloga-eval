@@ -1,0 +1,16 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "short_up_pulses_present_for_small_phase_error"
+    - "up_dn_overlap_not_sustained"
+
+parity:
+  required: true
+  tolerance_notes: "Requires EVAS/Spectre dual validation on short-pulse PFD behavior under small REF/DIV phase offsets."

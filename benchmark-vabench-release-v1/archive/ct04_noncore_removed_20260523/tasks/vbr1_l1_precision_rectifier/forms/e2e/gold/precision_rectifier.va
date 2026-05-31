@@ -1,0 +1,7 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module precision_rectifier(vin, vout);
+    input vin; output vout; electrical vin, vout;
+    parameter real tr=500p; real y;
+    analog begin y = V(vin) > 0.0 ? V(vin) : 0.0; V(vout) <+ transition(y,0,tr,tr); end
+endmodule

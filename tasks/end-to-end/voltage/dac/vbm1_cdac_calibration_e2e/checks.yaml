@@ -1,0 +1,27 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "ahdl_include"
+    - "save"
+    - "tran"
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "reset_trim_near_0p45"
+    - "trim_increments_decrements_and_recovers"
+    - "trim_clamped_to_0p05_0p85"
+parity:
+  required: true
+  tolerance_notes: "This task is semantically a trim-voltage generator; do not compare against a full CDAC transfer curve."
+semantic_review:
+  risk: "Historical CDAC wording can be misread as a full capacitor-array DAC transfer-model task."
+  release_decision: "Release as a trim-voltage generator task, not as a full CDAC model."
+  checker_boundary: "Check reset, increment/decrement, and clamp windows; do not score a capacitor-array transfer curve."

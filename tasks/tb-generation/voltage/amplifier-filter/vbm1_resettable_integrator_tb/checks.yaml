@@ -1,0 +1,19 @@
+syntax:
+  must_include:
+    - "ahdl_include"
+    - "tran"
+    - "save"
+  must_not_include:
+    []
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "pre_reset_output_integrates_up"
+    - "reset_clears_integrator"
+    - "post_reset_integration_restarts"
+parity:
+  required: true
+  tolerance_notes: "Use post-reset safe windows rather than exact reset-edge samples."

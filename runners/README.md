@@ -65,6 +65,13 @@ Current implemented executable runner:
   - bridge preflight diagnostics in `summary.json` so misconfigured tunnel /
     Virtuoso / Spectre sessions fail fast instead of hanging until subprocess
     timeout
+- `materialize_main120_inventory.py`
+  Inputs: local `vabench-main-v1-main120` EVAS/Spectre result directories and
+  current `tasks/` metadata.
+  Outputs:
+  - `docs/VABENCH_MAIN120_MATERIALIZATION.md`
+  - `docs/VABENCH_MAIN120_MATERIALIZATION.csv`
+  - source-materialization counts for main120 provenance/recovery work
 
 Recommended Spectre workflow:
 
@@ -77,6 +84,37 @@ Recommended Spectre workflow:
 Keep `start_bridge_tunnel.sh` and `stop_bridge_tunnel.sh` for manual debugging.
 For routine validation runs, prefer the wrapper so background tunnel state does
 not drift away from the command you actually care about.
+
+Direct SUI Spectre backend:
+
+- `--spectre-backend sui-direct` bypasses `virtuoso-bridge-lite` and runs
+  Spectre over SSH on `thu-wei` by default, using `thu-sui` as the SSH jump
+  host.
+- The runner uploads an isolated gold testbench plus `ahdl_include` files to a
+  temporary directory under `/tmp/vaevas-direct-spectre`, runs
+  `spectre -format psfascii`, downloads the raw directory and side-output files,
+  converts PSFASCII to `tran_spectre.csv`, then reuses the same checker path.
+- Direct-SUI Spectre uses a bounded license queue timeout derived from the
+  runner timeout. Override it with `--spectre-license-wait-s`, and make sure
+  `--timeout-s` is larger than the requested license wait.
+- Use it when the bridge listener is the blocker but SSH plus Cadence setup are
+  available:
+
+```bash
+python3 runners/run_gold_dual_suite.py \
+  --spectre-backend sui-direct \
+  --sui-host thu-wei \
+  --task <task_id>
+
+python3 runners/run_vabench_release_dual_rerun.py \
+  --spectre-backend sui-direct \
+  --sui-host thu-wei \
+  --workers 8
+```
+
+The default remains `--spectre-backend bridge`. The direct backend uses
+`/home/cshrc/.cshrc.cadence.IC618SP201` unless overridden by
+`--cadence-cshrc`, `VAEVAS_SUI_CADENCE_CSHRC`, or `VB_CADENCE_CSHRC`.
 
 Useful preflight variants:
 

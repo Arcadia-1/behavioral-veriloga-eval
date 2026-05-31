@@ -4,7 +4,8 @@ Write a Verilog-A module named `sample_hold`.
 
 ## Objective
 
-Create a Sample-and-Hold (S&H) circuit behavioral model in Verilog-A and a minimal EVAS-compatible Spectre testbench.
+Create a clocked sample-and-hold (S&H) circuit behavioral model in Verilog-A
+and a minimal EVAS-compatible Spectre testbench.
 
 ## Specification
 
@@ -23,7 +24,7 @@ Create a Sample-and-Hold (S&H) circuit behavioral model in Verilog-A and a minim
 
 Create a minimal Spectre testbench that:
 - Includes `sample_hold.va` via `ahdl_include`
-- Provides vdd=1.8V, vss=0V
+- Provides vdd=0.9V, vss=0V
 - Generates clock and varying input signal
 - Saves signals: `in`, `clk`, `out`
 - Runs transient for ~1us
@@ -35,9 +36,10 @@ Two files:
 2. `tb_sample_hold.scs` - the Spectre testbench
 
 Expected behavior:
-- When sample=high: output tracks input
-- When sample=low: output holds last sampled value
-- Transition between sample/hold should be clean
+- On each `clk` rising edge, `out` updates to the current `in` voltage.
+- Between `clk` rising edges, `out` holds the last sampled value and does not
+  continuously track `in`.
+- Output transitions should be clean and bounded.
 Ports:
 - `VDD`: inout electrical
 - `VSS`: inout electrical

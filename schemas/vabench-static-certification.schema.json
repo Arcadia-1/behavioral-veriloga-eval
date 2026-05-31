@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release static certification report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "static_certified_release_task_count",
+    "static_failed_release_task_count",
+    "static_certified_entry_count",
+    "entry_count",
+    "issue_count",
+    "task_reports",
+    "entry_reports",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "static_certified_release_task_count": {
+      "type": "integer"
+    },
+    "static_failed_release_task_count": {
+      "type": "integer"
+    },
+    "static_certified_entry_count": {
+      "type": "integer"
+    },
+    "entry_count": {
+      "type": "integer"
+    },
+    "issue_count": {
+      "type": "integer"
+    },
+    "task_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "form",
+          "task_id",
+          "status",
+          "failure_count",
+          "failures",
+          "evidence",
+          "result"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "failure_count": {
+            "type": "integer"
+          },
+          "failures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "entry_reports": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

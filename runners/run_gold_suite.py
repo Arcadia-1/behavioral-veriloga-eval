@@ -6,7 +6,8 @@ import json
 import re
 from pathlib import Path
 
-from simulate_evas import has_behavior_check, run_case
+from simulate_evas import has_behavior_check, resolve_checker_task_id, run_case
+from vabench_policy import should_count_as, validate_or_raise
 
 
 def benchmark_root() -> Path:
@@ -34,6 +35,10 @@ def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
 
 
+def checker_task_id(meta: dict, task_id: str, form: str | None = None) -> str:
+    return resolve_checker_task_id(meta, task_id, form=form)
+
+
 def list_gold_task_dirs(
     selected: set[str] | None = None,
     families: tuple[str, ...] = ("end-to-end",),
@@ -47,7 +52,13 @@ def list_gold_task_dirs(
             gold_dir = task_dir / "gold"
             if not gold_dir.is_dir():
                 continue
-            task_id = read_meta(task_dir).get("id", task_dir.name)
+            meta = read_meta(task_dir)
+            task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+            validate_or_raise(meta, task_dir)
+            if not should_count_as(meta, "benchmark_coverage"):
+                if selected and task_id in selected:
+                    raise ValueError(f"{task_id} is excluded from benchmark-coverage gold-suite counts")
+                continue
             if selected and task_id not in selected:
                 continue
             task_dirs.append(task_dir)
@@ -70,7 +81,8 @@ def ahdl_includes(tb_path: Path) -> list[str]:
 def run_gold_case(task_dir: Path, output_root: Path, timeout_s: int) -> dict:
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
-    task_id = meta.get("task_id", task_dir.name)
+    task_id = meta.get("task_id") or meta.get("id") or task_dir.name
+    checker_id = checker_task_id(meta, task_id, form=task_dir.name)
 
     tb_path = choose_gold_tb(gold_dir)
     if tb_path is None:
@@ -104,11 +116,13 @@ def run_gold_case(task_dir: Path, output_root: Path, timeout_s: int) -> dict:
         output_root=output_root / task_id,
         timeout_s=timeout_s,
         task_id_override=task_id,
+        checker_task_id_override=checker_id,
     )
+    result["checker_task_id"] = checker_id
     result["gold_dir"] = str(gold_dir)
     result["gold_tb"] = str(tb_path)
     result["gold_includes"] = includes
-    result["behavior_check_available"] = has_behavior_check(task_id)
+    result["behavior_check_available"] = has_behavior_check(checker_id)
     return result
 
 

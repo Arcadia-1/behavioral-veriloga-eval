@@ -45,13 +45,28 @@ def _save_columns_from_gold(task_dir: Path) -> list[str]:
     text = _gold_tb_text(task_dir)
     columns: list[str] = []
     seen: set[str] = set()
-    for match in SAVE_RE.finditer(text):
+    logical_lines: list[str] = []
+    pending = ""
+    for raw_line in text.splitlines():
+        line = raw_line.rstrip()
+        if line.endswith("\\"):
+            pending += line[:-1] + " "
+            continue
+        logical_lines.append(pending + line)
+        pending = ""
+    if pending:
+        logical_lines.append(pending)
+
+    for line in logical_lines:
+        match = SAVE_RE.match(line)
+        if not match:
+            continue
         body = match.group(1).strip()
         if body.lower().startswith(("all", "none")):
             continue
         for token in re.split(r"\s+", body):
             token = token.strip()
-            if not token:
+            if not token or token == "\\":
                 continue
             token = re.sub(r"^v\(([^)]+)\)$", r"\1", token, flags=re.IGNORECASE)
             token = token.split(":")[-1].split(".")[-1]

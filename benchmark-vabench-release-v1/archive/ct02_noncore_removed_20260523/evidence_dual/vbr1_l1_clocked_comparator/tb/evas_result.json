@@ -1,0 +1,18 @@
+{
+  "task_id": "vbr1_l1_clocked_comparator:tb",
+  "release_entry_id": "vbr1_l1_clocked_comparator",
+  "source_task_id": "vbr1_l1_clocked_comparator_tb",
+  "backend": "evas",
+  "status": "PENDING",
+  "scores": {
+    "historical_weighted_total": null,
+    "historical_backend_pass": false,
+    "source_equivalence_failure_count": 0
+  },
+  "artifacts": [
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_clocked_comparator/tb/evidence.json"
+  ],
+  "notes": [
+    "no imported dual evidence; EVAS/Spectre rerun required for this selected release task"
+  ]
+}

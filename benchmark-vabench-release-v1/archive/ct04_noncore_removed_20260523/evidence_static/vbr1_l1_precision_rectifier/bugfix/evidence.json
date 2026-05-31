@@ -1,0 +1,35 @@
+{
+  "release_entry_id": "vbr1_l1_precision_rectifier",
+  "task_id": "vbr1_l1_precision_rectifier:bugfix",
+  "task_form": "bugfix",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Baseband Signal Conditioning",
+    "base_function": "Precision rectifier"
+  },
+  "static": "pass",
+  "evas": "pending",
+  "spectre": "pending",
+  "verdict": "not_certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/prompt.md",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/meta.json",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/checks.yaml",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/gold/dut_buggy.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/gold/dut_fixed.va",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/gold/tb_precision_rectifier_buggy.scs",
+    "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_precision_rectifier/forms/bugfix/gold/tb_precision_rectifier_ref.scs"
+  ],
+  "checks": {
+    "must_include": [
+      "transition("
+    ],
+    "must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
+    "failures": []
+  },
+  "notes": "Static release certification only; EVAS and Spectre remain pending."
+}

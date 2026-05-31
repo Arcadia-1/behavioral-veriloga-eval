@@ -1,0 +1,1928 @@
+{
+  "date": "2026-05-23",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 46,
+  "queue_rows_with_ready_primary_bundle": 46,
+  "bundle_count": 56,
+  "ready_bundle_count": 56,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "bugfix": 20,
+    "dut": 10,
+    "e2e": 13,
+    "tb": 13
+  },
+  "variant_counts": {
+    "buggy": 10,
+    "fixed": 10,
+    "gold": 36
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/ct05_dual_rerun_queue_20260523.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "checker_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "vbr1_l1_bang_bang_phase_detector",
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "bbpd_ref",
+        "bbpd",
+        "bbpd_ref",
+        "bbpd"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
+      "source_includes": [
+        "bbpd_ref.va"
+      ],
+      "source_include_origins": {
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/gold/tb_bbpd_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/gold/bbpd_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "checker_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "vbr1_l1_bang_bang_phase_detector",
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "vbr1_l1_bang_bang_phase_detector_bugfix",
+        "bbpd_ref",
+        "bbpd",
+        "bbpd_ref",
+        "bbpd"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/tb_bbpd_ref.scs",
+      "source_includes": [
+        "bbpd_ref.va"
+      ],
+      "source_include_origins": {
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy/gold/tb_bbpd_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/bugfix/buggy/gold/bbpd_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "bbpd",
+      "checker_task_id": "bbpd",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_bang_bang_phase_detector_dut",
+        "vbr1_l1_bang_bang_phase_detector",
+        "bbpd",
+        "bbpd",
+        "bbpd"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/tb_bbpd_ref.scs",
+      "source_includes": [
+        "bbpd_ref.va"
+      ],
+      "source_include_origins": {
+        "bbpd_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/dut/gold/bbpd_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold/gold/tb_bbpd_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/dut/gold/gold/bbpd_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "bbpd_data_edge_alignment_smoke",
+      "checker_task_id": "bbpd_data_edge_alignment_smoke",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_bang_bang_phase_detector_e2e",
+        "vbr1_l1_bang_bang_phase_detector",
+        "bbpd_data_edge_alignment_smoke",
+        "bbpd_data_edge_alignment_smoke",
+        "bbpd_data_edge_alignment_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "source_includes": [
+        "bbpd_data_edge_alignment_ref.va"
+      ],
+      "source_include_origins": {
+        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/e2e/gold/bbpd_data_edge_alignment_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/e2e/gold/gold/bbpd_data_edge_alignment_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_bang_bang_phase_detector_tb",
+      "checker_task_id": "vbr1_l1_bang_bang_phase_detector_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_bang_bang_phase_detector_tb",
+        "vbr1_l1_bang_bang_phase_detector",
+        "vbr1_l1_bang_bang_phase_detector_tb",
+        "vbr1_l1_bang_bang_phase_detector_tb",
+        "bbpd_data_edge_alignment_smoke",
+        "bbpd_data_edge_alignment_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "source_includes": [
+        "bbpd_data_edge_alignment_ref.va"
+      ],
+      "source_include_origins": {
+        "bbpd_data_edge_alignment_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold/gold/tb_bbpd_data_edge_alignment_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_bang_bang_phase_detector/tb/gold/gold/bbpd_data_edge_alignment_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_includes": [
+        "charge_pump_abstraction.va"
+      ],
+      "source_include_origins": {
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed/gold/tb_charge_pump_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/fixed/gold/charge_pump_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction_bugfix",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_includes": [
+        "charge_pump_abstraction.va"
+      ],
+      "source_include_origins": {
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy/gold/tb_charge_pump_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/bugfix/buggy/gold/charge_pump_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_charge_pump_abstraction_dut",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_charge_pump_abstraction_dut",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction_dut",
+        "vbr1_l1_charge_pump_abstraction_dut",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_includes": [
+        "charge_pump_abstraction.va"
+      ],
+      "source_include_origins": {
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold/gold/tb_charge_pump_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/dut/gold/gold/charge_pump_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_charge_pump_abstraction_e2e",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_charge_pump_abstraction_e2e",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction_e2e",
+        "vbr1_l1_charge_pump_abstraction_e2e",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/tb_charge_pump_abstraction.scs",
+      "source_includes": [
+        "charge_pump_abstraction.va"
+      ],
+      "source_include_origins": {
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/e2e/gold/charge_pump_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold/gold/tb_charge_pump_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/e2e/gold/gold/charge_pump_abstraction.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_charge_pump_abstraction_tb",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_charge_pump_abstraction_tb",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction_tb",
+        "vbr1_l1_charge_pump_abstraction_tb",
+        "vbr1_l1_charge_pump_abstraction",
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/tb/gold/tb_charge_pump_abstraction.scs",
+      "source_includes": [
+        "charge_pump_abstraction.va"
+      ],
+      "source_include_origins": {
+        "charge_pump_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_charge_pump_abstraction/forms/dut/gold/charge_pump_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold/gold/tb_charge_pump_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_charge_pump_abstraction/tb/gold/gold/charge_pump_abstraction.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clock_divider",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_clock_divider_bugfix",
+      "checker_task_id": "vbr1_l1_clock_divider_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_clock_divider_bugfix",
+        "vbr1_l1_clock_divider",
+        "vbr1_l1_clock_divider_bugfix",
+        "vbr1_l1_clock_divider_bugfix",
+        "clk_divider_ref",
+        "clk_divider",
+        "clk_divider_ref",
+        "clk_divider"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
+      "source_includes": [
+        "clk_divider_ref.va"
+      ],
+      "source_include_origins": {
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed/gold/tb_clk_divider_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/fixed/gold/clk_divider_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clock_divider",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_clock_divider_bugfix",
+      "checker_task_id": "vbr1_l1_clock_divider_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_clock_divider_bugfix",
+        "vbr1_l1_clock_divider",
+        "vbr1_l1_clock_divider_bugfix",
+        "vbr1_l1_clock_divider_bugfix",
+        "clk_divider_ref",
+        "clk_divider",
+        "clk_divider_ref",
+        "clk_divider"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/tb_clk_divider_ref.scs",
+      "source_includes": [
+        "clk_divider_ref.va"
+      ],
+      "source_include_origins": {
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy/gold/tb_clk_divider_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/bugfix/buggy/gold/clk_divider_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clock_divider",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_resettable_counter_divider_dut",
+      "checker_task_id": "vbm1_resettable_counter_divider_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_clock_divider_dut",
+        "vbr1_l1_clock_divider",
+        "vbm1_resettable_counter_divider_dut",
+        "vbm1_resettable_counter_divider_dut"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/tb_clk_divider_ref.scs",
+      "source_includes": [
+        "clk_divider_ref.va"
+      ],
+      "source_include_origins": {
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/dut/gold/clk_divider_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold/gold/tb_clk_divider_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/dut/gold/gold/clk_divider_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clock_divider",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_resettable_counter_divider_e2e",
+      "checker_task_id": "vbm1_resettable_counter_divider_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_clock_divider_e2e",
+        "vbr1_l1_clock_divider",
+        "vbm1_resettable_counter_divider_e2e",
+        "vbm1_resettable_counter_divider_e2e"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/tb_clk_divider_ref.scs",
+      "source_includes": [
+        "clk_divider_ref.va"
+      ],
+      "source_include_origins": {
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/e2e/gold/clk_divider_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold/gold/tb_clk_divider_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/e2e/gold/gold/clk_divider_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clock_divider",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_resettable_counter_divider_tb",
+      "checker_task_id": "vbm1_resettable_counter_divider_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_clock_divider_tb",
+        "vbr1_l1_clock_divider",
+        "vbm1_resettable_counter_divider_tb",
+        "vbm1_resettable_counter_divider_tb"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/tb_clk_divider_ref.scs",
+      "source_includes": [
+        "clk_divider_ref.va"
+      ],
+      "source_include_origins": {
+        "clk_divider_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_clock_divider/forms/tb/gold/clk_divider_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold/gold/tb_clk_divider_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_clock_divider/tb/gold/gold/clk_divider_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "phase_accumulator_timer_wrap_ref",
+        "phase_accumulator_timer_wrap",
+        "phase_accumulator_timer_wrap_ref",
+        "phase_accumulator_timer_wrap"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_includes": [
+        "./phase_accumulator_timer_wrap_ref.va"
+      ],
+      "source_include_origins": {
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/fixed/gold/phase_accumulator_timer_wrap_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+        "phase_accumulator_timer_wrap_ref",
+        "phase_accumulator_timer_wrap",
+        "phase_accumulator_timer_wrap_ref",
+        "phase_accumulator_timer_wrap"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_includes": [
+        "./phase_accumulator_timer_wrap_ref.va"
+      ],
+      "source_include_origins": {
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/bugfix/buggy/gold/phase_accumulator_timer_wrap_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+        "phase_accumulator_timer_wrap_smoke",
+        "phase_accumulator_timer_wrap_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_includes": [
+        "./phase_accumulator_timer_wrap_ref.va"
+      ],
+      "source_include_origins": {
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/dut/gold/phase_accumulator_timer_wrap_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/dut/gold/gold/phase_accumulator_timer_wrap_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "phase_accumulator_timer_wrap_smoke",
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_e2e",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+        "phase_accumulator_timer_wrap_smoke",
+        "phase_accumulator_timer_wrap_smoke",
+        "phase_accumulator_timer_wrap_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_includes": [
+        "./phase_accumulator_timer_wrap_ref.va"
+      ],
+      "source_include_origins": {
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/e2e/gold/phase_accumulator_timer_wrap_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/e2e/gold/gold/phase_accumulator_timer_wrap_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+        "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+        "phase_accumulator_timer_wrap_smoke",
+        "phase_accumulator_timer_wrap_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "source_includes": [
+        "./phase_accumulator_timer_wrap_ref.va"
+      ],
+      "source_include_origins": {
+        "./phase_accumulator_timer_wrap_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/forms/tb/gold/phase_accumulator_timer_wrap_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold/gold/tb_phase_accumulator_timer_wrap_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_digital_phase_accumulator_with_modulo_wrap/tb/gold/gold/phase_accumulator_timer_wrap_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lock_detector",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_lock_detector_bugfix",
+      "checker_task_id": "vbm1_lock_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lock_detector_bugfix",
+        "vbr1_l1_lock_detector",
+        "vbm1_lock_detector_bugfix",
+        "vbm1_lock_detector_bugfix"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed/gold/tb_lock_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/fixed/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lock_detector",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbm1_lock_detector_bugfix",
+      "checker_task_id": "vbm1_lock_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lock_detector_bugfix",
+        "vbr1_l1_lock_detector",
+        "vbm1_lock_detector_bugfix",
+        "vbm1_lock_detector_bugfix"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/tb_lock_detector_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy/gold/tb_lock_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/bugfix/buggy/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lock_detector",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_lock_detector_dut",
+      "checker_task_id": "vbm1_lock_detector_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lock_detector_dut",
+        "vbr1_l1_lock_detector",
+        "vbm1_lock_detector_dut",
+        "vbm1_lock_detector_dut"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/tb_lock_detector_ref.scs",
+      "source_includes": [
+        "lock_detector.va"
+      ],
+      "source_include_origins": {
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/dut/gold/lock_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold/gold/tb_lock_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/dut/gold/gold/lock_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lock_detector",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_lock_detector_e2e",
+      "checker_task_id": "vbm1_lock_detector_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lock_detector_e2e",
+        "vbr1_l1_lock_detector",
+        "vbm1_lock_detector_e2e",
+        "vbm1_lock_detector_e2e"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/tb_lock_detector_ref.scs",
+      "source_includes": [
+        "lock_detector.va"
+      ],
+      "source_include_origins": {
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/e2e/gold/lock_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold/gold/tb_lock_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/e2e/gold/gold/lock_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_lock_detector",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_lock_detector_tb",
+      "checker_task_id": "vbm1_lock_detector_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_lock_detector_tb",
+        "vbr1_l1_lock_detector",
+        "vbm1_lock_detector_tb",
+        "vbm1_lock_detector_tb"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/tb_lock_detector_ref.scs",
+      "source_includes": [
+        "lock_detector.va"
+      ],
+      "source_include_origins": {
+        "lock_detector.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_lock_detector/forms/tb/gold/lock_detector.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold/gold/tb_lock_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_lock_detector/tb/gold/gold/lock_detector.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_includes": [
+        "loop_filter_abstraction.va"
+      ],
+      "source_include_origins": {
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed/gold/tb_loop_filter_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/fixed/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction_bugfix",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_includes": [
+        "loop_filter_abstraction.va"
+      ],
+      "source_include_origins": {
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy/gold/tb_loop_filter_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/bugfix/buggy/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_loop_filter_abstraction_dut",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction_dut",
+        "vbr1_l1_loop_filter_abstraction_dut",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_includes": [
+        "loop_filter_abstraction.va"
+      ],
+      "source_include_origins": {
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold/gold/tb_loop_filter_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/dut/gold/gold/loop_filter_abstraction.va"
+      ],
+      "notes": [
+        "borrowed_testbench_from_e2e"
+      ]
+    },
+    {
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_loop_filter_abstraction_e2e",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction_e2e",
+        "vbr1_l1_loop_filter_abstraction_e2e",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/tb_loop_filter_abstraction.scs",
+      "source_includes": [
+        "loop_filter_abstraction.va"
+      ],
+      "source_include_origins": {
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/e2e/gold/loop_filter_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold/gold/tb_loop_filter_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/e2e/gold/gold/loop_filter_abstraction.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_loop_filter_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_loop_filter_abstraction_tb",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction_tb",
+        "vbr1_l1_loop_filter_abstraction_tb",
+        "vbr1_l1_loop_filter_abstraction",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/tb/gold/tb_loop_filter_abstraction.scs",
+      "source_includes": [
+        "loop_filter_abstraction.va"
+      ],
+      "source_include_origins": {
+        "loop_filter_abstraction.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_loop_filter_abstraction/forms/dut/gold/loop_filter_abstraction.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold/gold/tb_loop_filter_abstraction.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_loop_filter_abstraction/tb/gold/gold/loop_filter_abstraction.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+      "checker_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "vbr1_l1_pfd_small_phase_error_response",
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "pfd_updn",
+        "pfd_updn"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/gold/tb_pfd_small_phase_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/fixed/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+      "checker_task_id": "vbr1_l1_pfd_small_phase_error_response_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "vbr1_l1_pfd_small_phase_error_response",
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "vbr1_l1_pfd_small_phase_error_response_bugfix",
+        "pfd_updn",
+        "pfd_updn"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/tb_pfd_small_phase_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy/gold/tb_pfd_small_phase_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/bugfix/buggy/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_pfd_small_phase_error_response_dut",
+      "checker_task_id": "vbr1_l1_pfd_small_phase_error_response_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_small_phase_error_response_dut",
+        "vbr1_l1_pfd_small_phase_error_response",
+        "vbm1_pfd_small_phase_error_response_dut",
+        "vbm1_pfd_small_phase_error_response_dut",
+        "vbm1_pfd_small_phase_error_response_dut"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/tb_pfd_small_phase_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/dut/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold/gold/tb_pfd_small_phase_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/dut/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "pfd_small_phase_response_smoke",
+      "checker_task_id": "vbr1_l1_pfd_small_phase_error_response_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_small_phase_error_response_e2e",
+        "vbr1_l1_pfd_small_phase_error_response",
+        "pfd_small_phase_response_smoke",
+        "pfd_small_phase_response_smoke",
+        "pfd_small_phase_response_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/tb_pfd_small_phase_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/e2e/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold/gold/tb_pfd_small_phase_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/e2e/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_small_phase_error_response",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
+      "checker_task_id": "vbr1_l1_pfd_small_phase_error_response_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_small_phase_error_response_tb",
+        "vbr1_l1_pfd_small_phase_error_response",
+        "vbr1_l1_pfd_small_phase_error_response_tb",
+        "vbr1_l1_pfd_small_phase_error_response_tb",
+        "pfd_small_phase_response_smoke",
+        "pfd_small_phase_response_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/tb_pfd_small_phase_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_small_phase_error_response/forms/tb/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold/gold/tb_pfd_small_phase_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_small_phase_error_response/tb/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_task_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_up_dn_logic_bugfix",
+        "vbr1_l1_pfd_up_dn_logic",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_bugfix"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/gold/tb_pfd_reset_race_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_task_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_up_dn_logic_bugfix",
+        "vbr1_l1_pfd_up_dn_logic",
+        "vbm1_pfd_reset_race_bugfix",
+        "vbm1_pfd_reset_race_bugfix"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/tb_pfd_reset_race_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy/gold/tb_pfd_reset_race_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/bugfix/buggy/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_pfd_reset_race_dut",
+      "checker_task_id": "vbm1_pfd_reset_race_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_up_dn_logic_dut",
+        "vbr1_l1_pfd_up_dn_logic",
+        "vbm1_pfd_reset_race_dut",
+        "vbm1_pfd_reset_race_dut"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/tb_pfd_reset_race_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/dut/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold/gold/tb_pfd_reset_race_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/dut/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_pfd_reset_race_e2e",
+      "checker_task_id": "vbm1_pfd_reset_race_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_up_dn_logic_e2e",
+        "vbr1_l1_pfd_up_dn_logic",
+        "vbm1_pfd_reset_race_e2e",
+        "vbm1_pfd_reset_race_e2e"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/tb_pfd_reset_race_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/e2e/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold/gold/tb_pfd_reset_race_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/e2e/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_pfd_reset_race_tb",
+      "checker_task_id": "vbm1_pfd_reset_race_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_pfd_up_dn_logic_tb",
+        "vbr1_l1_pfd_up_dn_logic",
+        "vbm1_pfd_reset_race_tb",
+        "vbm1_pfd_reset_race_tb"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/tb_pfd_reset_race_ref.scs",
+      "source_includes": [
+        "./pfd_updn.va"
+      ],
+      "source_include_origins": {
+        "./pfd_updn.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/tb/gold/pfd_updn.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold/gold/tb_pfd_reset_race_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_pfd_up_dn_logic/tb/gold/gold/pfd_updn.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vbr1_l1_vco_phase_integrator",
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vco_phase_integrator",
+        "vco_phase_integrator"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
+      "source_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "source_include_origins": {
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed/gold/tb_vco_phase_integrator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/fixed/gold/vco_phase_integrator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vbr1_l1_vco_phase_integrator",
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vbr1_l1_vco_phase_integrator_bugfix",
+        "vco_phase_integrator",
+        "vco_phase_integrator"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/tb_vco_phase_integrator_ref.scs",
+      "source_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "source_include_origins": {
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy/gold/tb_vco_phase_integrator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/bugfix/buggy/gold/vco_phase_integrator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_vco_phase_integrator_dut",
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_vco_phase_integrator_dut",
+        "vbr1_l1_vco_phase_integrator",
+        "vbm1_vco_phase_integrator_dut",
+        "vbm1_vco_phase_integrator_dut"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/tb_vco_phase_integrator_ref.scs",
+      "source_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "source_include_origins": {
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/dut/gold/vco_phase_integrator.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold/gold/tb_vco_phase_integrator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/dut/gold/gold/vco_phase_integrator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_vco_phase_integrator_e2e",
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_vco_phase_integrator_e2e",
+        "vbr1_l1_vco_phase_integrator",
+        "vbm1_vco_phase_integrator_e2e",
+        "vbm1_vco_phase_integrator_e2e"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/tb_vco_phase_integrator_ref.scs",
+      "source_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "source_include_origins": {
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/e2e/gold/vco_phase_integrator.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold/gold/tb_vco_phase_integrator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/e2e/gold/gold/vco_phase_integrator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_vco_phase_integrator",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_vco_phase_integrator_tb",
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_vco_phase_integrator_tb",
+        "vbr1_l1_vco_phase_integrator",
+        "vbm1_vco_phase_integrator_tb",
+        "vbm1_vco_phase_integrator_tb"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/tb_vco_phase_integrator_ref.scs",
+      "source_includes": [
+        "vco_phase_integrator.va"
+      ],
+      "source_include_origins": {
+        "vco_phase_integrator.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_vco_phase_integrator/forms/tb/gold/vco_phase_integrator.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold/gold/tb_vco_phase_integrator_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_vco_phase_integrator/tb/gold/gold/vco_phase_integrator.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_xor_phase_detector",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_xor_phase_detector_bugfix",
+      "checker_task_id": "vbr1_l1_xor_phase_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "vbr1_l1_xor_phase_detector",
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "xor_phase_detector_ref",
+        "xor_phase_detector",
+        "xor_phase_detector_ref",
+        "xor_phase_detector"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
+      "source_includes": [
+        "xor_phase_detector_ref.va"
+      ],
+      "source_include_origins": {
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed/gold/tb_xor_phase_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/fixed/gold/xor_phase_detector_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_xor_phase_detector",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbr1_l1_xor_phase_detector_bugfix",
+      "checker_task_id": "vbr1_l1_xor_phase_detector_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "vbr1_l1_xor_phase_detector",
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "vbr1_l1_xor_phase_detector_bugfix",
+        "xor_phase_detector_ref",
+        "xor_phase_detector",
+        "xor_phase_detector_ref",
+        "xor_phase_detector"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/tb_xor_phase_detector_ref.scs",
+      "source_includes": [
+        "xor_phase_detector_ref.va"
+      ],
+      "source_include_origins": {
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy/gold/tb_xor_phase_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/bugfix/buggy/gold/xor_phase_detector_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_xor_phase_detector",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_xor_phase_detector_dut",
+      "checker_task_id": "vbr1_l1_xor_phase_detector_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_xor_phase_detector_dut",
+        "vbr1_l1_xor_phase_detector",
+        "vbr1_l1_xor_phase_detector_dut",
+        "vbr1_l1_xor_phase_detector_dut",
+        "xor_pd_smoke",
+        "xor_pd_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/tb_xor_phase_detector_ref.scs",
+      "source_includes": [
+        "xor_phase_detector_ref.va"
+      ],
+      "source_include_origins": {
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/dut/gold/xor_phase_detector_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold/gold/tb_xor_phase_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/dut/gold/gold/xor_phase_detector_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_xor_phase_detector",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "xor_pd_smoke",
+      "checker_task_id": "vbr1_l1_xor_phase_detector_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_xor_phase_detector_e2e",
+        "vbr1_l1_xor_phase_detector",
+        "xor_pd_smoke",
+        "xor_pd_smoke",
+        "xor_pd_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/tb_xor_phase_detector_ref.scs",
+      "source_includes": [
+        "xor_phase_detector_ref.va"
+      ],
+      "source_include_origins": {
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/e2e/gold/xor_phase_detector_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold/gold/tb_xor_phase_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/e2e/gold/gold/xor_phase_detector_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_xor_phase_detector",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l1_xor_phase_detector_tb",
+      "checker_task_id": "vbr1_l1_xor_phase_detector_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_xor_phase_detector_tb",
+        "vbr1_l1_xor_phase_detector",
+        "vbr1_l1_xor_phase_detector_tb",
+        "vbr1_l1_xor_phase_detector_tb",
+        "xor_pd_smoke",
+        "xor_pd_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/tb_xor_phase_detector_ref.scs",
+      "source_includes": [
+        "xor_phase_detector_ref.va"
+      ],
+      "source_include_origins": {
+        "xor_phase_detector_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_xor_phase_detector/forms/tb/gold/xor_phase_detector_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold/gold/tb_xor_phase_detector_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l1_xor_phase_detector/tb/gold/gold/xor_phase_detector_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "adpll_ratio_hop_smoke",
+      "checker_task_id": "adpll_ratio_hop_smoke",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow_e2e",
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+        "adpll_ratio_hop_smoke",
+        "adpll_ratio_hop_smoke",
+        "adpll_ratio_hop_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/tb_adpll_ratio_hop_ref.scs",
+      "source_includes": [
+        "adpll_ratio_hop_ref.va"
+      ],
+      "source_include_origins": {
+        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold/gold/tb_adpll_ratio_hop_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/gold/gold/adpll_ratio_hop_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+      "checker_task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+        "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+        "adpll_ratio_hop_smoke",
+        "adpll_ratio_hop_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/tb_adpll_ratio_hop_ref.scs",
+      "source_includes": [
+        "adpll_ratio_hop_ref.va"
+      ],
+      "source_include_origins": {
+        "adpll_ratio_hop_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/tb/gold/adpll_ratio_hop_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold/gold/tb_adpll_ratio_hop_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/gold/gold/adpll_ratio_hop_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "cppll_freq_step_reacquire_smoke",
+      "checker_task_id": "cppll_freq_step_reacquire_smoke",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_e2e",
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+        "cppll_freq_step_reacquire_smoke",
+        "cppll_freq_step_reacquire_smoke",
+        "cppll_freq_step_reacquire_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "source_includes": [
+        "cppll_timer_ref.va",
+        "ref_step_clk.va"
+      ],
+      "source_include_origins": {
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/gold/ref_step_clk.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "checker_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+        "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+        "cppll_freq_step_reacquire_smoke",
+        "cppll_freq_step_reacquire_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "source_includes": [
+        "cppll_timer_ref.va",
+        "ref_step_clk.va"
+      ],
+      "source_include_origins": {
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/cppll_timer_ref.va",
+        "ref_step_clk.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/tb/gold/ref_step_clk.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold/tb_cppll_freq_step_reacquire_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/gold/ref_step_clk.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_pll_timing_slice",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "cppll_tracking_smoke",
+      "checker_task_id": "cppll_tracking_smoke",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_pll_timing_slice_e2e",
+        "vbr1_l2_pll_timing_slice",
+        "cppll_tracking_smoke",
+        "cppll_tracking_smoke",
+        "cppll_tracking_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/tb_cppll_tracking_ref.scs",
+      "source_includes": [
+        "cppll_timer_ref.va"
+      ],
+      "source_include_origins": {
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/e2e/gold/cppll_timer_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold/gold/tb_cppll_tracking_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/e2e/gold/gold/cppll_timer_ref.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l2_pll_timing_slice",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbr1_l2_pll_timing_slice_tb",
+      "checker_task_id": "vbr1_l2_pll_timing_slice_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l2_pll_timing_slice_tb",
+        "vbr1_l2_pll_timing_slice",
+        "vbr1_l2_pll_timing_slice_tb",
+        "vbr1_l2_pll_timing_slice_tb",
+        "cppll_tracking_smoke",
+        "cppll_tracking_smoke"
+      ],
+      "queue_reason": "ct05_closure_dual_refresh_after_prompt_checker_gold_edits",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/tb_cppll_tracking_ref.scs",
+      "source_includes": [
+        "cppll_timer_ref.va"
+      ],
+      "source_include_origins": {
+        "cppll_timer_ref.va": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_pll_timing_slice/forms/tb/gold/cppll_timer_ref.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold/gold/tb_cppll_tracking_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct05_20260523/vbr1_l2_pll_timing_slice/tb/gold/gold/cppll_timer_ref.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

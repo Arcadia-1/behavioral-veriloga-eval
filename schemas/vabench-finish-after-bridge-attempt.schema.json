@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench finish-after-bridge attempt report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "reason",
+    "dry_run",
+    "bridge_repo",
+    "profiles",
+    "bridge_diagnostics_status",
+    "bridge_ready_profiles",
+    "rerun_scope",
+    "output_root",
+    "summary",
+    "attempts",
+    "post_attempt_completion_status",
+    "post_attempt_completion_blockers",
+    "next_actions"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "complete_with_failures",
+        "blocked",
+        "dry_run"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "dry_run": {
+      "type": "boolean"
+    },
+    "bridge_repo": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bridge_diagnostics_status": {
+      "enum": [
+        "ready",
+        "blocked",
+        "missing"
+      ]
+    },
+    "bridge_diagnostics_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bridge_ready_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bridge_ssh_ok_profiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rerun_scope": {
+      "type": "object",
+      "required": [
+        "queue_status",
+        "primary_queue_count",
+        "primary_ready_count",
+        "primary_blocked_count",
+        "staging_status",
+        "staging_bundle_count",
+        "staging_ready_bundle_count",
+        "staging_blocked_bundle_count",
+        "include_buggy",
+        "planned_bundle_limit",
+        "latest_summary_status",
+        "latest_import_status",
+        "latest_import_stale_summary"
+      ],
+      "additionalProperties": true
+    },
+    "output_root": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "profile",
+          "command"
+        ],
+        "properties": {
+          "profile": {
+            "type": "string"
+          },
+          "command": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary_status": {
+            "type": "string"
+          },
+          "summary_reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "post_attempt_completion_status": {
+      "type": "string"
+    },
+    "post_attempt_completion_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

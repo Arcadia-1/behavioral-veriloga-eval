@@ -1,0 +1,41 @@
+{
+  "date": "2026-05-16",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "counts_as_release_certification": false,
+  "rows": [
+    {
+      "summary": "results/vabench-release-v1-dual-rerun-smoke-20260516-contract-charge-pump/summary.json",
+      "exists": true,
+      "status": "complete",
+      "entries": [
+        "vbr1_l1_charge_pump_abstraction"
+      ],
+      "tasks_total": 2,
+      "expected_met_count": 2,
+      "expected_miss_count": 0,
+      "certification_role": "partial_smoke_pass",
+      "counts_as_release_certification": false
+    },
+    {
+      "summary": "results/vabench-release-v1-dual-rerun-smoke-20260516-contract-representative-bugfix/summary.json",
+      "exists": true,
+      "status": "complete",
+      "entries": [
+        "vbr1_l1_calibration_deadband_controller",
+        "vbr1_l1_dac_mismatch_unit_weighting_model",
+        "vbr1_l1_loop_filter_abstraction"
+      ],
+      "tasks_total": 6,
+      "expected_met_count": 6,
+      "expected_miss_count": 0,
+      "certification_role": "partial_smoke_pass",
+      "counts_as_release_certification": false
+    }
+  ],
+  "notes": [
+    "This report records representative EVAS/Spectre dual smoke runs only.",
+    "partial_smoke_pass is not full release certification and must not enable benchmark scoring.",
+    "Full certification remains controlled by dual_certification.json and score_denominator_manifest.json."
+  ]
+}

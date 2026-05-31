@@ -1,0 +1,151 @@
+{
+  "generated_at": "2026-05-28T21:00:18.117096+00:00",
+  "model": "deepseek-v4-pro",
+  "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+  "selected_scored_forms": 236,
+  "raw_same_candidates": {
+    "baseline_root": "results/vabench-release-v1-baseline-minimax-deepseek-v4-pro-20260528-wrapper-v1-full",
+    "dual_root": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260529-eventfix9-samecandidates-full236-dual",
+    "completed_dual_count": 232,
+    "incomplete_count": 4,
+    "spectre_final_pass": 52,
+    "strict_dual_pass": 52,
+    "pass_rate_over_236": 0.2203,
+    "pass_rate_over_completed": 0.2241,
+    "evas_pass_spectre_fail_count": 0,
+    "spectre_pass_evas_fail_count": 0,
+    "dual_status_counts": {
+      "PASS": 52,
+      "FAIL_EVAS": 180,
+      "missing": 4
+    },
+    "by_form": {
+      "bugfix": {
+        "total": 52,
+        "spectre_pass": 12,
+        "dual_pass": 12
+      },
+      "dut": {
+        "total": 52,
+        "spectre_pass": 19,
+        "dual_pass": 19
+      },
+      "e2e": {
+        "total": 66,
+        "spectre_pass": 8,
+        "dual_pass": 8
+      },
+      "tb": {
+        "total": 66,
+        "spectre_pass": 13,
+        "dual_pass": 13
+      }
+    }
+  },
+  "latest_overlay_eventfix9": {
+    "basis": "20260528 latest overlay row selection, re-materialized with eventfix9 result roots",
+    "source_roots": {
+      "base": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260529-eventfix9-samecandidates-full236-dual",
+      "changed55": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260529-eventfix9-wrapper-v4-changed55-dual",
+      "include2": "results/vabench-release-v1-baseline-dual-deepseek-v4-pro-20260529-eventfix9-wrapper-v5-include2-dual"
+    },
+    "missing_materialized_rows": [],
+    "completed_or_incomplete_rows": 236,
+    "incomplete_count": 4,
+    "spectre_final_pass": 59,
+    "strict_dual_pass": 59,
+    "pass_rate_over_236": 0.25,
+    "evas_pass_spectre_fail_count": 0,
+    "spectre_pass_evas_fail_count": 0,
+    "dual_status_counts": {
+      "PASS": 59,
+      "FAIL_EVAS": 173,
+      "INCOMPLETE": 4
+    },
+    "by_form": {
+      "bugfix": {
+        "total": 52,
+        "spectre_pass": 13,
+        "dual_pass": 13
+      },
+      "dut": {
+        "total": 52,
+        "spectre_pass": 19,
+        "dual_pass": 19
+      },
+      "e2e": {
+        "total": 66,
+        "spectre_pass": 10,
+        "dual_pass": 10
+      },
+      "tb": {
+        "total": 66,
+        "spectre_pass": 17,
+        "dual_pass": 17
+      }
+    },
+    "by_category": {
+      "Baseband Signal Conditioning": {
+        "total": 30,
+        "spectre_pass": 6,
+        "dual_pass": 6
+      },
+      "Bias Reference and Power Management": {
+        "total": 28,
+        "spectre_pass": 4,
+        "dual_pass": 4
+      },
+      "Calibration, DEM, and Control": {
+        "total": 26,
+        "spectre_pass": 1,
+        "dual_pass": 1
+      },
+      "Comparator and Decision Circuits": {
+        "total": 30,
+        "spectre_pass": 15,
+        "dual_pass": 15
+      },
+      "Data Converter Models": {
+        "total": 44,
+        "spectre_pass": 17,
+        "dual_pass": 17
+      },
+      "PLL Clock and Timing Systems": {
+        "total": 36,
+        "spectre_pass": 9,
+        "dual_pass": 9
+      },
+      "RF and AFE Behavioral Macromodels": {
+        "total": 24,
+        "spectre_pass": 3,
+        "dual_pass": 3
+      },
+      "Sampling and Analog Memory": {
+        "total": 18,
+        "spectre_pass": 4,
+        "dual_pass": 4
+      }
+    }
+  },
+  "mimo_reference_eventfix7": {
+    "dual_root": "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260529-eventfix7-full236-dual",
+    "completed_dual_count": 212,
+    "skipped_count": 24,
+    "spectre_final_pass": 51,
+    "strict_dual_pass": 51,
+    "pass_rate_over_236": 0.2161,
+    "pass_rate_over_completed": 0.2406,
+    "evas_pass_spectre_fail_count": 0,
+    "spectre_pass_evas_fail_count": 0
+  },
+  "incomplete_rows_raw_same_candidates": [
+    "vbr1_l1_bang_bang_phase_detector:bugfix",
+    "vbr1_l1_clock_divider:bugfix",
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:e2e",
+    "vbr1_l2_converter_front_end:e2e"
+  ],
+  "notes": [
+    "Spectre remains the final judge; strict dual pass equals Spectre pass after eventfix9 for both raw same-candidate and latest overlay views.",
+    "Raw same-candidate score evaluates the original wrapper-v1 full DeepSeek outputs; latest overlay preserves the later wrapper-v4/v5 regenerated rows used in the 20260528 current DeepSeek conclusion."
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release EVAS/Spectre dual certification report",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "source",
+    "simulator_rerun",
+    "dual_certified_release_task_count",
+    "dual_failed_release_task_count",
+    "dual_pending_release_task_count",
+    "dual_pass_materialized_entry_count",
+    "dual_pending_materialized_entry_count",
+    "dual_failed_materialized_entry_count",
+    "fully_certified_entry_count",
+    "entry_count",
+    "issue_count",
+    "source_equivalence_failure_count",
+    "source_equivalence_blocked_release_task_count",
+    "evas_pass_spectre_fail_count",
+    "task_reports",
+    "entry_reports",
+    "notes"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "partial",
+        "fail"
+      ]
+    },
+    "source": {
+      "type": "string"
+    },
+    "simulator_rerun": {
+      "type": "boolean"
+    },
+    "dual_certified_release_task_count": {
+      "type": "integer"
+    },
+    "dual_failed_release_task_count": {
+      "type": "integer"
+    },
+    "dual_pending_release_task_count": {
+      "type": "integer"
+    },
+    "dual_pass_materialized_entry_count": {
+      "type": "integer"
+    },
+    "dual_pending_materialized_entry_count": {
+      "type": "integer"
+    },
+    "dual_failed_materialized_entry_count": {
+      "type": "integer"
+    },
+    "fully_certified_entry_count": {
+      "type": "integer"
+    },
+    "entry_count": {
+      "type": "integer"
+    },
+    "issue_count": {
+      "type": "integer"
+    },
+    "source_equivalence_failure_count": {
+      "type": "integer"
+    },
+    "source_equivalence_blocked_release_task_count": {
+      "type": "integer"
+    },
+    "evas_pass_spectre_fail_count": {
+      "type": "integer"
+    },
+    "task_reports": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entry_id",
+          "form",
+          "source_task_id",
+          "status",
+          "backend_status",
+          "failure_count",
+          "source_equivalence_failure_count",
+          "blocker_count",
+          "failures",
+          "pending_blockers",
+          "evidence"
+        ],
+        "properties": {
+          "entry_id": {
+            "type": "string"
+          },
+          "form": {
+            "type": "string"
+          },
+          "source_task_id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "pending",
+              "fail"
+            ]
+          },
+          "backend_status": {
+            "type": "object"
+          },
+          "failure_count": {
+            "type": "integer"
+          },
+          "source_equivalence_failure_count": {
+            "type": "integer"
+          },
+          "blocker_count": {
+            "type": "integer"
+          },
+          "failures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pending_blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": [
+              "string",
+              "object"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "entry_reports": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

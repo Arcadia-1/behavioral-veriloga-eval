@@ -1,0 +1,26 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+    - "RES1"
+    - "RES2"
+    - "DOUT3"
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "all_16_pipeline_codes_present"
+    - "stage1_residue_matches_coarse_decision"
+    - "stage2_residue_matches_backend_decision"
+    - "final_code_matches_stage_concatenation"
+    - "final_code_monotonic_with_vin"
+parity:
+  required: true
+  status: "pending_until_evas_spectre_rerun"
+  tolerance_notes: "Fresh EVAS/Spectre dual validation required before scoring or paper claims."

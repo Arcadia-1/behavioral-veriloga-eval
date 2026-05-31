@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release certification matrix",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "summary",
+    "source_equivalence_blocked_forms",
+    "fresh_dual_rerun_pending_sample",
+    "entry_rows",
+    "form_rows",
+    "claim_boundary",
+    "evidence_sources"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "complete",
+        "partial",
+        "blocked"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "entry_count",
+        "form_count",
+        "fully_certified_entry_count",
+        "pending_entry_count",
+        "certified_form_count",
+        "pending_form_count",
+        "fresh_dual_rerun_pending_form_count",
+        "source_equivalence_blocked_form_count",
+        "dual_failure_form_count",
+        "evas_pass_spectre_fail_count",
+        "scored_entry_count",
+        "scored_form_count"
+      ],
+      "properties": {
+        "entry_count": {
+          "type": "integer"
+        },
+        "form_count": {
+          "type": "integer"
+        },
+        "fully_certified_entry_count": {
+          "type": "integer"
+        },
+        "pending_entry_count": {
+          "type": "integer"
+        },
+        "certified_form_count": {
+          "type": "integer"
+        },
+        "pending_form_count": {
+          "type": "integer"
+        },
+        "fresh_dual_rerun_pending_form_count": {
+          "type": "integer"
+        },
+        "source_equivalence_blocked_form_count": {
+          "type": "integer"
+        },
+        "dual_failure_form_count": {
+          "type": "integer"
+        },
+        "evas_pass_spectre_fail_count": {
+          "type": "integer"
+        },
+        "scored_entry_count": {
+          "type": "integer"
+        },
+        "scored_form_count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    },
+    "source_equivalence_blocked_forms": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fresh_dual_rerun_pending_sample": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "entry_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "level",
+          "category",
+          "base_function",
+          "package_status",
+          "form_count",
+          "certified_form_count",
+          "pending_form_count",
+          "entry_status",
+          "benchmark_score_enabled",
+          "counted_in_score"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "form_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "form",
+          "level",
+          "category",
+          "base_function",
+          "static",
+          "evas",
+          "spectre",
+          "dual_status",
+          "pending_cause",
+          "benchmark_score_enabled",
+          "counted_in_score",
+          "evidence",
+          "release_path"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_sources": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

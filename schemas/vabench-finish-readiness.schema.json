@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench finish readiness gate",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "ready_to_run_fresh_dual",
+    "ready_to_import_fresh_dual",
+    "ready_to_finish_release",
+    "pass_count",
+    "blocked_count",
+    "blocked_check_ids",
+    "run_scope",
+    "checks",
+    "fresh_summary_acceptance_criteria",
+    "next_commands",
+    "claim_boundary",
+    "evidence_sources"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "blocked",
+        "ready_to_run",
+        "ready_to_finish"
+      ]
+    },
+    "ready_to_run_fresh_dual": {
+      "type": "boolean"
+    },
+    "ready_to_import_fresh_dual": {
+      "type": "boolean"
+    },
+    "ready_to_finish_release": {
+      "type": "boolean"
+    },
+    "pass_count": {
+      "type": "integer"
+    },
+    "blocked_count": {
+      "type": "integer"
+    },
+    "blocked_check_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "run_scope": {
+      "type": "object",
+      "required": [
+        "primary_queue_rows",
+        "ready_primary_queue_rows",
+        "staged_bundle_count",
+        "ready_staged_bundle_count",
+        "expected_primary_summary_tasks_total"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "requirement",
+          "evidence",
+          "finding",
+          "recovery"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "blocked"
+            ]
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "finding": {
+            "type": "string"
+          },
+          "recovery": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "fresh_summary_acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_commands": {
+      "type": "object"
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_sources": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,11 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "dut_buggy.va"
+
+Vin (vin 0) vsource type=pwl wave=[0 -0.25 30n -0.25 40n 0.35 75n 0.35 85n -0.1 120n -0.1]
+
+XDUT (vin vout) precision_rectifier
+
+tran tran stop=120n maxstep=500p
+save vin vout

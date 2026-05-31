@@ -1,0 +1,64 @@
+{
+  "id": "vbm1_track_hold_aperture_bugfix",
+  "task_id": "vbm1_track_hold_aperture_bugfix",
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-main-v1",
+  "family": "bugfix",
+  "category": "sample-hold",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "release_form": "true-bugfix",
+  "provenance_status": "reconstructed_badcase",
+  "badcase_origin": "reconstructed",
+  "source_main120_id": "vbm1_track_hold_aperture_bugfix",
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": true
+  },
+  "must_include": [
+    "@(cross(",
+    "@(timer(",
+    "$abstime",
+    "taperture",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt(",
+    "idt("
+  ],
+  "inputs": [
+    "prompt.md",
+    "gold/dut_buggy.va"
+  ],
+  "artifacts": [
+    "dut_fixed.va"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_files": [
+    "gold/dut_buggy.va",
+    "gold/dut_fixed.va",
+    "gold/tb_sample_hold_aperture_buggy.scs",
+    "gold/tb_sample_hold_aperture_ref.scs"
+  ],
+  "bugfix": {
+    "buggy_source": "gold/dut_buggy.va",
+    "fixed_source": "gold/dut_fixed.va",
+    "buggy_testbench": "gold/tb_sample_hold_aperture_buggy.scs",
+    "fixed_testbench": "gold/tb_sample_hold_aperture_ref.scs",
+    "defect": "The buggy implementation samples vin immediately on the clock edge instead of after the configured aperture delay.",
+    "repair": "Arm a timer at $abstime + taperture on each rising clock edge and capture vin from that delayed timer event."
+  },
+  "evidence": {
+    "historical_evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_track_hold_aperture_bugfix/evas_result.json",
+    "historical_spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_track_hold_aperture_bugfix/spectre_result.json",
+    "local_evas_verification": "2026-05-15: fixed source PASS; buggy source FAIL_SIM_CORRECTNESS.",
+    "spectre_status": "2026-05-15: fixed source PASS and buggy source FAIL_SIM_CORRECTNESS."
+  }
+}

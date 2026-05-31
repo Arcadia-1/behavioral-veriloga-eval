@@ -1,0 +1,34 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+    - "vos"
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "clocked_low_vinp_phase_latches_low_output"
+    - "clocked_high_vinp_phase_latches_high_output"
+    - "output_decisions_match_positive_offset_polarity"
+    - "expected_safe_window_sequence_LHHHLLL"
+  sample_times_ns:
+    - 2.5
+    - 6.5
+    - 10.5
+    - 14.5
+    - 18.5
+    - 22.5
+    - 26.5
+bugfix:
+  buggy_expected: "FAIL_SIM_CORRECTNESS"
+  fixed_expected: "PASS"
+  reconstruction_note: "Single-root-cause badcase: offset comparator decision polarity is reversed."
+parity:
+  required: true
+  tolerance_notes: "Decision samples are taken after clock edges and away from input pulse transitions."

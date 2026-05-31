@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench certification evidence",
+  "type": "object",
+  "required": [
+    "release_entry_id",
+    "task_id",
+    "taxonomy",
+    "static",
+    "evas",
+    "spectre",
+    "verdict"
+  ],
+  "properties": {
+    "release_entry_id": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "taxonomy": {
+      "type": "object",
+      "required": [
+        "level",
+        "category",
+        "base_function"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "L1",
+            "L2",
+            "L0"
+          ]
+        },
+        "category": {
+          "type": "string"
+        },
+        "base_function": {
+          "type": "string"
+        }
+      }
+    },
+    "static": {
+      "enum": [
+        "pending",
+        "pass",
+        "fail"
+      ]
+    },
+    "evas": {
+      "enum": [
+        "pending",
+        "pass",
+        "fail"
+      ]
+    },
+    "spectre": {
+      "enum": [
+        "pending",
+        "pass",
+        "fail"
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "not_certified",
+        "certified",
+        "quarantined"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

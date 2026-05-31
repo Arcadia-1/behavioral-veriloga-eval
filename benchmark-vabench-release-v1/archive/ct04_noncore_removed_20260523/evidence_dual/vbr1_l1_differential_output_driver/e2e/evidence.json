@@ -1,0 +1,99 @@
+{
+  "release_entry_id": "vbr1_l1_differential_output_driver",
+  "task_id": "vbr1_l1_differential_output_driver:e2e",
+  "source_task_id": "differential_voltage_output_smoke",
+  "task_form": "e2e",
+  "taxonomy": {
+    "level": "L1",
+    "category": "Baseband Signal Conditioning",
+    "base_function": "Differential output driver"
+  },
+  "static": "pass",
+  "evas": "pass",
+  "spectre": "pass",
+  "verdict": "certified",
+  "artifacts": [
+    "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_differential_output_driver/e2e/gold",
+    "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_differential_output_driver/e2e/gold",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/evas_result.json",
+    "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_differential_output_driver/e2e/spectre_result.json",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_differential_output_driver/forms/e2e/gold/differential_voltage_output_ref.va",
+    "benchmark-vabench-release-v1/tasks/vbr1_l1_differential_output_driver/forms/e2e/gold/tb_differential_voltage_output_ref.scs"
+  ],
+  "historical_evidence": {
+    "evas_result": "",
+    "spectre_result": "",
+    "source": "fresh release dual rerun",
+    "source_equivalence_source": "release_rerun_staging_bundle",
+    "simulator_rerun": true
+  },
+  "release_rerun": {
+    "summary": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l1_differential_output_driver/e2e/gold",
+    "result_root": "results/vabench-release-v1-nonreview-dual-20260518-023558/full/vbr1_l1_differential_output_driver/e2e/gold",
+    "raw_status": "PASS",
+    "expected_result_met": true,
+    "parity": {
+      "status": "passed",
+      "common_window_s": [
+        0.0,
+        1e-07
+      ],
+      "signals_compared": 4,
+      "samples": 1200,
+      "max_rmse_v": 0.03347744383033401,
+      "max_abs_v": 0.4,
+      "mean_nrmse": 0.04184680478791751,
+      "p95_nrmse": 0.08369360957583502,
+      "max_nrmse": 0.08369360957583502,
+      "per_signal": {
+        "din": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "en": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "outn": {
+          "rmse_v": 0.03347744383033401,
+          "max_abs_v": 0.4,
+          "span_v": 0.4,
+          "nrmse": 0.08369360957583502,
+          "kind": "analog"
+        },
+        "outp": {
+          "rmse_v": 0.03347744383033401,
+          "max_abs_v": 0.4,
+          "span_v": 0.4,
+          "nrmse": 0.08369360957583502,
+          "kind": "analog"
+        }
+      }
+    }
+  },
+  "source_equivalence": {
+    "pass": true,
+    "source": "release_rerun_staging_bundle",
+    "failures": [],
+    "release_gold": [
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_differential_output_driver/forms/e2e/gold/differential_voltage_output_ref.va",
+      "benchmark-vabench-release-v1/tasks/vbr1_l1_differential_output_driver/forms/e2e/gold/tb_differential_voltage_output_ref.scs"
+    ]
+  },
+  "failures": [],
+  "pending_blockers": [],
+  "notes": "EVAS/Spectre evidence imported from fresh release rerun staged from release gold assets."
+}

@@ -1,0 +1,36 @@
+{
+  "id": "cross_event_post_side_read",
+  "asset_type": "evas_spectre_conformance",
+  "suite": "evas-spectre",
+  "conformance_axis": "event-sampling",
+  "expected_relation": "waveform_equivalent",
+  "origin": {
+    "source_main120_id": null,
+    "historical_result": null
+  },
+  "minimality_note": "Isolates event-body reads of the same node that triggered a cross event; normal benchmark tasks should use circuit-function checks away from exact threshold samples.",
+  "counts": {
+    "model_capability": false,
+    "benchmark_coverage": false,
+    "bugfix_claim": false,
+    "broad_parity_denominator": false
+  },
+  "source_files": [
+    "gold/cross_event_post_side_read.va",
+    "gold/tb_cross_event_post_side_read.scs"
+  ],
+  "runner_hook": {
+    "required": true,
+    "metric": "post_cross_state_windows",
+    "rise_window_s": [
+      1.5e-8,
+      2.8e-8
+    ],
+    "fall_window_s": [
+      3.4e-8,
+      4.8e-8
+    ],
+    "high_min_v": 0.7,
+    "low_max_v": 0.2
+  }
+}

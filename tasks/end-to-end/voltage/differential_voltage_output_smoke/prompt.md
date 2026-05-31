@@ -4,32 +4,35 @@ Write a Verilog-A module named `differential_voltage_output_ref`.
 
 ## Objective
 
-Write a Verilog-A differential output source that drives a fixed common-mode low leg and a timer-controlled differential high leg using `V(outp, outn) <+ ...`.
+Write a Verilog-A differential output driver with digital-like input and enable controls. The task is a driver model, not a free-running voltage source.
 
 ## Specification
 
 - **Module name**: `differential_voltage_output_ref`
-- **Ports**: `VDD`, `VSS`, `outp`, `outn` - all `electrical`
+- **Ports**: `VDD`, `VSS`, `din`, `en`, `outp`, `outn` - all `electrical`
 - **Behavior**:
-  - Keep `outn` at a fixed common-mode reference of `0.2 V` above `VSS`.
-  - Drive the differential branch `V(outp, outn)` through `transition(...)`.
-  - Start with a differential level of `0.1 V`.
-  - At `20 ns`, switch the differential level to `0.5 V`.
-  - At `40 ns`, switch it back to `0.1 V`.
+  - Use `vcm=0.45 V`, `vod=0.4 V`, and `vth=0.45 V` by default.
+  - When `en` is LOW, drive both outputs to the common-mode level.
+  - When `en` is HIGH and `din` is LOW, drive `outp-outn` negative.
+  - When `en` is HIGH and `din` is HIGH, drive `outp-outn` positive.
+  - Keep both outputs bounded between `VSS` and `VDD` and use finite `transition(...)` edges.
 - **Expected observable behavior**:
-  - `outn` stays near `0.2 V` throughout.
-  - `outp` should sit near `0.3 V`, then `0.7 V`, then `0.3 V`.
-  - The case must rely on true differential contribution semantics rather than two separate single-ended outputs.
+  - Disabled windows have near-zero differential output.
+  - Enabled low-input windows have negative differential output.
+  - Enabled high-input windows have positive differential output.
+  - The output common-mode remains near `vcm`.
 
 ## Constraints
 
-- Use `@(initial_step)`, `@(timer(...))`, `transition(...)`, and `V(outp, outn) <+ ...`.
+- Use `transition(...)` for the driven outputs.
 - Pure voltage-domain only.
 - No `I() <+`, `ddt()`, or `idt()`.
 
 Ports:
 - `VDD`: inout electrical
 - `VSS`: inout electrical
+- `din`: input electrical
+- `en`: input electrical
 - `outp`: output electrical
 - `outn`: output electrical
 
@@ -50,15 +53,15 @@ It does not prescribe the internal implementation or reveal a gold solution.
 Final EVAS transient setting:
 
 ```spectre
-tran tran stop=60n maxstep=20p errpreset=conservative
+tran tran stop=100n maxstep=100p errpreset=conservative
 ```
 
 Required public waveform columns in `tran.csv`:
 
-- `time`, `outp`, `outn`
+- `time`, `din`, `en`, `outp`, `outn`
 
 Use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 Timing/checking-window contract:
 
-- Public stimulus nodes used by the reference harness include: `VDD`, `VSS`.
+- Public stimulus nodes used by the reference harness include: `VDD`, `VSS`, `din`, `en`.

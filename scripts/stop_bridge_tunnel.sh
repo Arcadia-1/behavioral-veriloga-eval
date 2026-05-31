@@ -16,6 +16,14 @@ set -a
 source "$BRIDGE_ENV"
 set +a
 
+BRIDGE_PROFILE="${BRIDGE_PROFILE:-}"
+if [[ -n "$BRIDGE_PROFILE" ]]; then
+  profiled="VB_LOCAL_PORT_${BRIDGE_PROFILE}"
+  if [[ ${!profiled+x} ]]; then
+    export "VB_LOCAL_PORT=${!profiled}"
+  fi
+fi
+
 : "${VB_LOCAL_PORT:=65082}"
 
 PIDS="$(lsof -tiTCP:${VB_LOCAL_PORT} -sTCP:LISTEN -n -P || true)"

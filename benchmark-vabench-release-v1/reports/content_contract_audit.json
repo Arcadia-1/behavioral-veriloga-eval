@@ -1,0 +1,575 @@
+{
+  "date": "2026-05-26",
+  "release": "vabench-release-v1",
+  "status": "pass",
+  "entry_count": 79,
+  "form_count": 271,
+  "track_entry_counts": {
+    "core": 66,
+    "support": 13
+  },
+  "track_form_counts": {
+    "core": 236,
+    "support": 35
+  },
+  "content_denominator_entry_count": 66,
+  "content_denominator_form_count": 236,
+  "content_excluded_entry_count": 13,
+  "content_excluded_entries": {
+    "vbr1_l1_burst_clock_source": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_crossing_metric_writer": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_dither_or_noise_like_deterministic_source": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_edge_interval_timer": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_gain_estimator": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_lfsr_prbs_generator": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_peak_detector": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_ramp_or_step_source": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_settling_time_detector": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l1_sine_periodic_voltage_source": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l2_gain_extraction_convergence_measurement_flow": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l2_measurement_flow": [
+      "support_suite_not_core_circuit_score"
+    ],
+    "vbr1_l2_programmable_stimulus_sequencer": [
+      "support_suite_not_core_circuit_score"
+    ]
+  },
+  "severity_counts": {
+    "INFO": 13
+  },
+  "duplicate_groups": [],
+  "l2_review_table": [
+    {
+      "entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converter Models",
+      "base_function": "Converter static linearity measurement flow",
+      "gold_va_modules": [
+        "converter_static_linearity_measurement_flow"
+      ],
+      "sim_checks": [
+        "ramp_code_coverage",
+        "monotonic_reconstruction",
+        "nonuniform_dnl_metric",
+        "inl_metric_matches_reconstruction_error",
+        "dnl_metric_matches_step_error"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/e2e/gold/converter_static_linearity_measurement_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_converter_static_linearity_measurement_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_flash_adc_mini_array",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converter Models",
+      "base_function": "Flash ADC mini-array",
+      "gold_va_modules": [
+        "flash_adc_3b"
+      ],
+      "sim_checks": [
+        "all_8_flash_codes_present",
+        "comparator_threshold_ladder_matches_vin_bins",
+        "comparator_outputs_form_thermometer_prefix",
+        "binary_code_matches_comparator_count"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/e2e/gold/flash_adc_3b.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_flash_adc_mini_array/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_pipeline_adc_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converter Models",
+      "base_function": "Pipeline ADC residue chain",
+      "gold_va_modules": [
+        "pipeline_adc_chain_4b"
+      ],
+      "sim_checks": [
+        "all_16_pipeline_codes_present",
+        "stage1_residue_matches_coarse_decision",
+        "stage2_residue_matches_backend_decision",
+        "final_code_matches_stage_concatenation",
+        "final_code_monotonic_with_vin"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/gold/pipeline_adc_chain_4b.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_pipeline_adc_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Data Converter Models",
+      "base_function": "Weighted SAR ADC/DAC loop",
+      "gold_va_modules": [
+        "dac_weighted_8b",
+        "sar_adc_weighted_8b",
+        "sh_ideal"
+      ],
+      "sim_checks": [
+        "sar_adc_code_range_sufficient",
+        "sar_adc_unique_code_count",
+        "sar_code_matches_sampled_input",
+        "dac_output_matches_weighted_code",
+        "code_monotonic_with_sampled_input",
+        "dac_output_in_range"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sar_adc_weighted_8b.va",
+        "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/sh_ideal.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_comparator_measurement_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Single-ramp comparator offset measurement flow",
+      "gold_va_modules": [
+        "comparator_offset_search_ref"
+      ],
+      "sim_checks": [
+        "comparator_output_low_before_trip",
+        "comparator_output_high_after_trip",
+        "outp_first_trip_near_static_offset",
+        "measurement_valid_latches_after_trip",
+        "valid_first_assertion_near_trip",
+        "trip_voltage_near_inn_plus_offset",
+        "offset_estimate_near_static_offset",
+        "measurement_outputs_hold_after_valid"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_converter_front_end",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Sampling and Analog Memory",
+      "base_function": "Converter front-end",
+      "gold_va_modules": [
+        "sample_hold_droop_ref"
+      ],
+      "sim_checks": [
+        "aperture_delayed_sample_tracks_vin",
+        "hold_windows_show_bounded_droop",
+        "coarse_decision_matches_held_sample",
+        "valid_pulses_mark_completed_samples"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/gold/sample_hold_droop_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l2_converter_front_end/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_amplifier_filter_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Baseband Signal Conditioning",
+      "base_function": "Amplifier/filter chain",
+      "gold_va_modules": [
+        "amplifier_filter_chain"
+      ],
+      "sim_checks": [
+        "amplified_input",
+        "filtered_output_lags_input",
+        "metric_tracks_settling"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/gold/amplifier_filter_chain.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l2_amplifier_filter_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "ADPLL lock/ratio-hop/timer flow",
+      "gold_va_modules": [
+        "adpll_ratio_hop_ref"
+      ],
+      "sim_checks": [
+        "adpll_ratio_hop_pre_ratio",
+        "adpll_ratio_hop_post_ratio",
+        "adpll_ratio_hop_lock_reacquired"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/gold/adpll_ratio_hop_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_adpll_lock_ratio_hop_timer_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "CPPLL tracking and frequency-step reacquire flow",
+      "gold_va_modules": [
+        "cppll_timer_ref",
+        "ref_step_clk"
+      ],
+      "sim_checks": [
+        "cppll_reacquires_after_reference_step",
+        "late_window_tracks_new_reference",
+        "vctrl_stays_bounded"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/cppll_timer_ref.va",
+        "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/gold/ref_step_clk.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_complete_calibration_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Calibration, DEM, and Control",
+      "base_function": "Complete calibration loop",
+      "gold_va_modules": [
+        "complete_calibration_loop"
+      ],
+      "sim_checks": [
+        "raw_error_is_corrected",
+        "bounded_negative_feedback_response",
+        "metric_tracks_convergence"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/gold/complete_calibration_loop.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l2_complete_calibration_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Bias Reference and Power Management",
+      "base_function": "LDO load-step recovery flow",
+      "gold_va_modules": [
+        "ldo_load_step_recovery_flow"
+      ],
+      "sim_checks": [
+        "load_step_transient_droop_visible",
+        "closed_loop_recovery_after_step",
+        "metric_marks_recovered_regulation"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/gold/ldo_load_step_recovery_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_ldo_load_step_recovery_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "Bias Reference and Power Management",
+      "base_function": "Reference startup/enable flow",
+      "gold_va_modules": [
+        "reference_startup_enable_flow"
+      ],
+      "sim_checks": [
+        "pre_enable_reference_is_held_low",
+        "enabled_reference_startup_settles",
+        "supply_dip_resets_valid_status"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "AGC receiver leveling loop",
+      "gold_va_modules": [
+        "agc_receiver_leveling_loop"
+      ],
+      "sim_checks": [
+        "agc_reduces_gain_on_large_input",
+        "leveled_output_amplitude",
+        "lock_metric_after_settling"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/gold/agc_receiver_leveling_loop.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_agc_receiver_leveling_loop/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_iq_downconversion_chain",
+      "content_denominator_included": true,
+      "content_exclusion_reasons": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "I/Q downconversion chain",
+      "gold_va_modules": [
+        "iq_downconversion_chain"
+      ],
+      "sim_checks": [
+        "quadrature_iq_phase_sequence",
+        "i_and_q_outputs_are_distinct",
+        "common_mode_hold_when_input_centered"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/gold/iq_downconversion_chain.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/CT08_rf_afe_behavioral_macromodels/vbr1_l2_iq_downconversion_chain/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "content_denominator_included": false,
+      "content_exclusion_reasons": [
+        "support_suite_not_core_circuit_score"
+      ],
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Dithered differential gain extraction flow",
+      "gold_va_modules": [
+        "dither_adder",
+        "gain_amp_fixed",
+        "lfsr",
+        "vin_src"
+      ],
+      "sim_checks": [
+        "gain_amplification_present",
+        "differential_gain_above_threshold"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/dither_adder.va",
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/gain_amp_fixed.va",
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/lfsr.va",
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/gold/vin_src.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_measurement_flow",
+      "content_denominator_included": false,
+      "content_exclusion_reasons": [
+        "support_suite_not_core_circuit_score"
+      ],
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Measurement flow",
+      "gold_va_modules": [
+        "final_step_file_metric_ref"
+      ],
+      "sim_checks": [
+        "ref_edges_counted_on_expected_grid",
+        "metric_out_normalizes_final_edge_count",
+        "final_step_writes_candidate_metric_file"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/e2e/gold/final_step_file_metric_ref.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_measurement_flow/forms/e2e/prompt.md"
+    },
+    {
+      "entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "content_denominator_included": false,
+      "content_exclusion_reasons": [
+        "support_suite_not_core_circuit_score"
+      ],
+      "category": "Stimulus and Source Generators",
+      "base_function": "Programmable stimulus sequencer",
+      "gold_va_modules": [
+        "programmable_stimulus_sequencer"
+      ],
+      "sim_checks": [
+        "ramp_segment_monotonic",
+        "swept_chirp_segment_frequency_increases",
+        "burst_prbs_gate_schedule",
+        "mode_switch_continuity"
+      ],
+      "gold_va": [
+        "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/e2e/gold/programmable_stimulus_sequencer.va"
+      ],
+      "checks_path": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/e2e/checks.yaml",
+      "prompt_path": "benchmark-vabench-release-v1/tasks/SUP02_stimulus_and_source_generators/vbr1_l2_programmable_stimulus_sequencer/forms/e2e/prompt.md"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_crossing_metric_writer",
+      "base_function": "Crossing metric writer",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_edge_interval_timer",
+      "base_function": "Edge interval timer",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_gain_estimator",
+      "base_function": "Gain estimator",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_peak_detector",
+      "base_function": "Peak detector",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_settling_time_detector",
+      "base_function": "Settling response measurement helper",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "base_function": "Dithered differential gain extraction flow",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l2_measurement_flow",
+      "base_function": "Measurement flow",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "base_function": "Burst clock source",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "base_function": "Dither or noise-like deterministic source",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "base_function": "PRBS stimulus/dither generator",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "base_function": "Periodic phase-ramp guard source",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "base_function": "Sine/periodic voltage source",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    },
+    {
+      "severity": "INFO",
+      "kind": "content_denominator_excluded_entry",
+      "message": "entry remains in the package as traceable material but is excluded from strong content claims",
+      "entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "base_function": "Programmable stimulus sequencer",
+      "reasons": [
+        "support_suite_not_core_circuit_score"
+      ]
+    }
+  ],
+  "recommended_policy": [
+    "Do not retain exact duplicate L2 kernels in the clean release package; rewrite them before re-admission.",
+    "Keep score disabled; allow only unweighted pass-rate reporting after content review.",
+    "For shallow companion checkers, either add function-level behavior checks or mark the companion as auxiliary outside the strong benchmark claim.",
+    "Treat REVIEW_REQUIRED findings as human semantic review queue, not simulator failures."
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release entry skeleton",
+  "type": "object",
+  "required": [
+    "id",
+    "benchmark",
+    "release_entry_id",
+    "level",
+    "track",
+    "difficulty",
+    "category",
+    "base_function",
+    "package_status",
+    "score_surface",
+    "source_base_id",
+    "source_tasks",
+    "release_tasks",
+    "missing_forms",
+    "certification",
+    "counts",
+    "release_blockers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "benchmark": {
+      "const": "vabench-release-v1"
+    },
+    "release_entry_id": {
+      "type": "string"
+    },
+    "level": {
+      "enum": [
+        "L1",
+        "L2"
+      ]
+    },
+    "track": {
+      "enum": [
+        "core",
+        "support"
+      ]
+    },
+    "difficulty": {
+      "enum": [
+        "D1",
+        "D2",
+        "D3"
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "base_function": {
+      "type": "string"
+    },
+    "package_status": {
+      "enum": [
+        "current_l1_seed",
+        "current_l1_seed_with_review",
+        "selected_l1_addition",
+        "selected_l2_target"
+      ]
+    },
+    "score_surface": {
+      "enum": [
+        "model-capability",
+        "benchmark-e2e"
+      ]
+    },
+    "source_base_id": {
+      "type": "string"
+    },
+    "canonical_kernel": {
+      "type": "string"
+    },
+    "source_registry_status": {
+      "type": "string"
+    },
+    "source_evidence_status": {
+      "type": "string"
+    },
+    "source_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "form",
+          "source_path",
+          "prompt",
+          "meta",
+          "checks",
+          "gold",
+          "asset_complete"
+        ],
+        "properties": {
+          "form": {
+            "enum": [
+              "dut",
+              "tb",
+              "bugfix",
+              "e2e"
+            ]
+          },
+          "source_path": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "boolean"
+          },
+          "meta": {
+            "type": "boolean"
+          },
+          "checks": {
+            "type": "boolean"
+          },
+          "gold": {
+            "type": "boolean"
+          },
+          "asset_complete": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "release_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "form",
+          "release_path",
+          "prompt",
+          "meta",
+          "checks",
+          "gold",
+          "asset_materialized"
+        ],
+        "properties": {
+          "form": {
+            "enum": [
+              "dut",
+              "tb",
+              "bugfix",
+              "e2e"
+            ]
+          },
+          "release_path": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "string"
+          },
+          "gold": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "asset_materialized": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "missing_forms": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "dut",
+          "tb",
+          "bugfix",
+          "e2e"
+        ]
+      }
+    },
+    "certification": {
+      "type": "object",
+      "required": [
+        "static",
+        "evas",
+        "spectre",
+        "evidence"
+      ],
+      "properties": {
+        "static": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "evas": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "spectre": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "benchmark_score",
+        "model_capability",
+        "l0_conformance"
+      ],
+      "properties": {
+        "benchmark_score": {
+          "type": "boolean"
+        },
+        "model_capability": {
+          "const": false
+        },
+        "l0_conformance": {
+          "const": false
+        }
+      }
+    },
+    "release_blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

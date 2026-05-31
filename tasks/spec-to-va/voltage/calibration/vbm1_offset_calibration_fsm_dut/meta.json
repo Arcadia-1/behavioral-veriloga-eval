@@ -1,0 +1,47 @@
+{
+  "id": "vbm1_offset_calibration_fsm_dut",
+  "task_id": "vbm1_offset_calibration_fsm_dut",
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-main-v1",
+  "family": "spec-to-va",
+  "category": "calibration",
+  "domain": "voltage",
+  "difficulty": "medium",
+  "expected_backend": "evas",
+  "release_form": "normal",
+  "provenance_status": "clean",
+  "source_main120_id": "vbm1_offset_calibration_fsm_dut",
+  "counts": {
+    "model_capability": true,
+    "benchmark_coverage": true,
+    "bugfix_claim": false
+  },
+  "must_include": [
+    "@(cross(",
+    "transition("
+  ],
+  "must_not_include": [
+    "I(",
+    "ddt(",
+    "idt("
+  ],
+  "inputs": [
+    "prompt.md"
+  ],
+  "artifacts": [
+    "offset_calibration_fsm.va"
+  ],
+  "scoring": [
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "source_files": [
+    "gold/offset_calibration_fsm.va",
+    "gold/tb_offset_calibration_fsm_ref.scs"
+  ],
+  "evidence": {
+    "evas_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_offset_calibration_fsm_dut/evas_result.json",
+    "spectre_result": "results/vabench-main-v1-main120-gold-spectre-jin-2026-05-08/vbm1_offset_calibration_fsm_dut/spectre_result.json"
+  }
+}

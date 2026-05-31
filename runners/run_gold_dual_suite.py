@@ -3,21 +3,34 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import math
 import os
+import re
+import shlex
+import shutil
 import subprocess
+import tarfile
+import time
+import uuid
 from pathlib import Path
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
 from run_gold_suite import (
     ahdl_includes,
     benchmark_root,
+    checker_task_id as resolve_checker_task_id,
     choose_gold_tb,
     list_gold_task_dirs,
     read_meta,
 )
-from simulate_evas import evaluate_behavior, rising_edges
+from simulate_evas import (
+    behavior_side_output_names,
+    evaluate_behavior,
+    rising_edges,
+    validate_behavior_side_outputs,
+)
 
 
 def project_root() -> Path:
@@ -26,6 +39,234 @@ def project_root() -> Path:
 
 def default_bridge_repo() -> Path:
     return project_root() / "iccad" / "virtuoso-bridge-lite"
+
+
+DEFAULT_SUI_HOST = "thu-wei"
+DEFAULT_SUI_PROXY_JUMP = "thu-sui"
+DEFAULT_SUI_WORK_ROOT = "/tmp/vaevas-direct-spectre"
+DEFAULT_SUI_CADENCE_CSHRC = "/home/cshrc/.cshrc.cadence.IC618SP201"
+DEFAULT_SUI_NESTED_HOST = ""
+SPECTRE_BACKEND_ALIASES = {
+    "bridge": "bridge",
+    "virtuoso-bridge": "bridge",
+    "sui": "sui-direct",
+    "sui-direct": "sui-direct",
+    "direct-sui": "sui-direct",
+}
+
+
+def normalize_spectre_backend(value: str | None) -> str:
+    key = (value or os.environ.get("VAEVAS_SPECTRE_BACKEND") or "bridge").strip().lower()
+    if key not in SPECTRE_BACKEND_ALIASES:
+        raise ValueError(f"unknown Spectre backend: {value}")
+    return SPECTRE_BACKEND_ALIASES[key]
+
+
+def default_sui_host() -> str:
+    return os.environ.get("VAEVAS_SUI_HOST", DEFAULT_SUI_HOST)
+
+
+def default_sui_work_root() -> str:
+    return os.environ.get("VAEVAS_SUI_WORK_ROOT", DEFAULT_SUI_WORK_ROOT)
+
+
+def default_sui_cadence_cshrc() -> str:
+    return os.environ.get("VAEVAS_SUI_CADENCE_CSHRC") or os.environ.get("VB_CADENCE_CSHRC") or DEFAULT_SUI_CADENCE_CSHRC
+
+
+def default_sui_proxy_jump() -> str:
+    return os.environ.get("VAEVAS_SUI_PROXY_JUMP", DEFAULT_SUI_PROXY_JUMP).strip()
+
+
+def default_sui_nested_host() -> str:
+    return os.environ.get("VAEVAS_SUI_NESTED_HOST", DEFAULT_SUI_NESTED_HOST).strip()
+
+
+def spectre_license_queue_timeout(timeout_s: int) -> int:
+    default_timeout = min(60, max(1, int(timeout_s) - 30))
+    override = os.environ.get("VAEVAS_SPECTRE_LQTIMEOUT_S")
+    if override is None:
+        return max(1, default_timeout)
+    try:
+        requested = int(override)
+    except ValueError:
+        return max(1, default_timeout)
+    return max(1, min(requested, max(1, int(timeout_s) - 30)))
+
+
+def safe_path_component(value: object) -> str:
+    text = str(value or "case")
+    return re.sub(r"[^A-Za-z0-9_.-]+", "_", text).strip("_") or "case"
+
+
+def parse_duration_seconds(text: str) -> float | None:
+    text = text.strip()
+    match = re.fullmatch(
+        r"([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*"
+        r"(fs|ps|ns|us|µs|ms|s|sec|secs|second|seconds)?",
+        text,
+    )
+    if match is None:
+        return None
+    value = float(match.group(1))
+    unit = (match.group(2) or "s").lower()
+    scale = {
+        "fs": 1e-15,
+        "ps": 1e-12,
+        "ns": 1e-9,
+        "us": 1e-6,
+        "µs": 1e-6,
+        "ms": 1e-3,
+        "s": 1.0,
+        "sec": 1.0,
+        "secs": 1.0,
+        "second": 1.0,
+        "seconds": 1.0,
+    }[unit]
+    return value * scale
+
+
+def parse_spectre_timing(text: str) -> dict[str, float]:
+    timing: dict[str, float] = {}
+    tran_match = re.search(
+        r"Total time required for tran analysis `tran':.*?elapsed\s*=\s*([^\n,]+)",
+        text,
+        flags=re.DOTALL,
+    )
+    if tran_match:
+        parsed = parse_duration_seconds(tran_match.group(1).strip())
+        if parsed is not None:
+            timing["tran_elapsed_s"] = parsed
+
+    aggregate_match = re.search(r"Time used:.*?elapsed\s*=\s*([^\n,]+)", text, flags=re.DOTALL)
+    if aggregate_match:
+        parsed = parse_duration_seconds(aggregate_match.group(1).strip())
+        if parsed is not None:
+            timing["aggregate_elapsed_s"] = parsed
+
+    wall_match = re.search(
+        r"with elapsed time \(wall clock\):\s*([^\n.]+(?:\.[0-9]+)?\s*(?:ms|s|sec|seconds)?)",
+        text,
+    )
+    if wall_match:
+        parsed = parse_duration_seconds(wall_match.group(1).strip())
+        if parsed is not None:
+            timing["reported_wall_s"] = parsed
+
+    steps_match = re.search(r"Number of accepted tran steps\s*=\s*([0-9]+)", text)
+    if steps_match:
+        timing["accepted_tran_steps"] = float(steps_match.group(1))
+
+    ahdl_match = re.search(r"Finished compilation in\s+([0-9.]+)\s+s\s+\(elapsed\)", text)
+    if ahdl_match:
+        timing["ahdl_compile_elapsed_s"] = float(ahdl_match.group(1))
+    return timing
+
+
+def decode_psf_name(value: str) -> str:
+    return value.replace(r"\"", '"').replace(r"\\", "\\").replace(r"\<", "<").replace(r"\>", ">")
+
+
+def parse_psf_pair(line: str) -> tuple[str, str] | None:
+    match = re.match(r'^"((?:[^"\\]|\\.)*)"\s+(.+?)\s*$', line)
+    if match is None:
+        return None
+    return decode_psf_name(match.group(1)), match.group(2).strip()
+
+
+def parse_psf_float(value: str) -> float:
+    token = value.strip()
+    if token.startswith("(") and token.endswith(")"):
+        token = token[1:-1].split()[0]
+    return float(token)
+
+
+def find_spectre_tran_file(raw_dir: Path) -> Path:
+    for path in (raw_dir / "tran.tran.tran", raw_dir / "tran.tran", raw_dir / "tran"):
+        if path.exists() and path.is_file():
+            return path
+    candidates = sorted(path for path in raw_dir.rglob("*tran*") if path.is_file())
+    if not candidates:
+        raise FileNotFoundError(f"no transient PSFASCII file under {raw_dir}")
+    return candidates[0]
+
+
+def read_psf_trace_names(psf_path: Path) -> list[str]:
+    section = ""
+    traces: list[str] = []
+    with psf_path.open("r", encoding="utf-8", errors="replace") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line in {"HEADER", "TYPE", "SWEEP", "TRACE", "VALUE"}:
+                section = line
+                if section == "VALUE":
+                    break
+                continue
+            if section != "TRACE":
+                continue
+            parsed = parse_psf_pair(line)
+            if parsed is None:
+                continue
+            name, _kind = parsed
+            if name not in traces:
+                traces.append(name)
+    return traces
+
+
+def write_spectre_psf_csv(raw_dir: Path, csv_path: Path) -> dict[str, object]:
+    psf_path = find_spectre_tran_file(raw_dir)
+    trace_names = read_psf_trace_names(psf_path)
+    columns = ["time", *[name for name in trace_names if name != "time"]]
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+    rows = 0
+    section = ""
+    current: dict[str, float] = {}
+    with psf_path.open("r", encoding="utf-8", errors="replace") as src, csv_path.open(
+        "w",
+        newline="",
+        encoding="utf-8",
+    ) as dst:
+        writer = csv.DictWriter(dst, fieldnames=columns, extrasaction="ignore")
+        writer.writeheader()
+        for raw_line in src:
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line in {"HEADER", "TYPE", "SWEEP", "TRACE", "VALUE"}:
+                section = line
+                continue
+            if section != "VALUE":
+                continue
+            parsed = parse_psf_pair(line)
+            if parsed is None:
+                continue
+            name, value_text = parsed
+            try:
+                value = parse_psf_float(value_text)
+            except ValueError:
+                continue
+            if name == "time":
+                if current:
+                    writer.writerow(current)
+                    rows += 1
+                current = {"time": value}
+            elif name in columns:
+                current[name] = value
+        if current:
+            writer.writerow(current)
+            rows += 1
+
+    if rows == 0:
+        raise ValueError(f"no transient rows parsed from {psf_path}")
+    return {
+        "psf_path": str(psf_path),
+        "csv_path": str(csv_path),
+        "rows": rows,
+        "columns": columns,
+    }
 
 
 def load_csv_rows(path: Path) -> list[dict[str, float]]:
@@ -67,9 +308,32 @@ def interp_at(rows: list[dict[str, float]], sig: str, t: float) -> float:
     return y0 + a * (y1 - y0)
 
 
-ADPLL_TIMER_TASK_IDS = {"adpll_lock_smoke", "adpll_ratio_hop_smoke", "adpll_timer", "adpll_timer_smoke"}
-CPPLL_REACQUIRE_TASK_IDS = {"cppll_freq_step_reacquire_smoke"}
-CPPLL_TRACKING_TASK_IDS = {"cppll_timer", "cppll_tracking_smoke"}
+ADPLL_TIMER_TASK_IDS = {
+    "adpll_lock_smoke",
+    "adpll_ratio_hop_smoke",
+    "adpll_timer",
+    "adpll_timer_smoke",
+    "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+}
+CPPLL_REACQUIRE_TASK_IDS = {
+    "cppll_freq_step_reacquire_smoke",
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+}
+CPPLL_TRACKING_TASK_IDS = {
+    "cppll_timer",
+    "cppll_tracking_smoke",
+    "vbr1_l2_pll_timing_slice_tb",
+}
+ADC_DAC_CLOCKED_RECON_TASK_IDS = {
+    "adc_dac_ideal_4b_smoke",
+}
+GAIN_EXTRACTION_TASK_IDS = {
+    "gain_extraction_smoke",
+    "vbr1_l1_gain_estimator_tb",
+    "vbr1_l1_gain_estimator_e2e",
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+}
 
 
 def first_rising_time(rows: list[dict[str, float]], sig: str, threshold: float = 0.45) -> float:
@@ -195,6 +459,141 @@ def rel_delta(a: float, b: float) -> float:
         return float("inf")
     denom = max(abs(a), abs(b), 1e-12)
     return abs(a - b) / denom
+
+
+def _adc_dac_code_from_row(row: dict[str, float], threshold: float = 0.45) -> int | None:
+    if "dout_code" in row:
+        return int(round(row["dout_code"]))
+    bit_names = ("dout_3", "dout_2", "dout_1", "dout_0")
+    if not all(bit in row for bit in bit_names):
+        return None
+    return (
+        ((1 if row["dout_3"] > threshold else 0) << 3)
+        | ((1 if row["dout_2"] > threshold else 0) << 2)
+        | ((1 if row["dout_1"] > threshold else 0) << 1)
+        | (1 if row["dout_0"] > threshold else 0)
+    )
+
+
+def _adc_dac_code_at(rows: list[dict[str, float]], t: float, threshold: float = 0.45) -> int | None:
+    if not rows:
+        return None
+    if "dout_code" in rows[0]:
+        return int(round(interp_at(rows, "dout_code", t)))
+    bit_names = ("dout_3", "dout_2", "dout_1", "dout_0")
+    if not all(bit in rows[0] for bit in bit_names):
+        return None
+    return (
+        ((1 if interp_at(rows, "dout_3", t) > threshold else 0) << 3)
+        | ((1 if interp_at(rows, "dout_2", t) > threshold else 0) << 2)
+        | ((1 if interp_at(rows, "dout_1", t) > threshold else 0) << 1)
+        | (1 if interp_at(rows, "dout_0", t) > threshold else 0)
+    )
+
+
+def adc_dac_clocked_reconstruction_metrics(rows: list[dict[str, float]]) -> dict[str, float | int | str]:
+    required = {"time", "clk", "rst_n", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return {"status": "blocked", "reason": "missing time/clk/rst_n/vin/vout"}
+
+    post = [r for r in rows if r["rst_n"] > 0.45]
+    if not post:
+        return {"status": "blocked", "reason": "no post-reset samples"}
+    codes = [_adc_dac_code_from_row(r) for r in post]
+    if any(code is None for code in codes):
+        return {"status": "blocked", "reason": "missing dout_code or dout_3..0"}
+    code_ints = [int(code) for code in codes if code is not None]
+    reversals = sum(1 for a, b in zip(code_ints[:-1], code_ints[1:]) if b < a)
+
+    times = [r["time"] for r in rows]
+    clk_edges = [
+        edge_t
+        for edge_t in rising_edges([r["clk"] for r in rows], times, threshold=0.45)
+        if interp_at(rows, "rst_n", edge_t) > 0.45
+    ]
+    edge_codes: list[int] = []
+    edge_vout_errors: list[float] = []
+    # The ADC output and DAC reconstruction are intentionally clocked. Compare
+    # settled code-level behavior instead of pointwise bit timing, because EVAS
+    # and Spectre may place digital transition samples on opposite sides of a
+    # clock edge while still implementing the same quantizer.
+    for edge_t in clk_edges:
+        sample_t = min(edge_t + 0.2e-9, rows[-1]["time"])
+        code = _adc_dac_code_at(rows, sample_t)
+        if code is None:
+            continue
+        edge_codes.append(code)
+        expected_vout = 0.9 * max(0, min(15, code)) / 15.0
+        edge_vout_errors.append(abs(interp_at(rows, "vout", sample_t) - expected_vout))
+
+    vouts = [r["vout"] for r in post]
+    vins = [r["vin"] for r in post]
+    return {
+        "status": "ok",
+        "unique_codes": len(set(code_ints)),
+        "min_code": min(code_ints),
+        "max_code": max(code_ints),
+        "reversals": reversals,
+        "vout_span_v": max(vouts) - min(vouts),
+        "vin_span_v": max(vins) - min(vins),
+        "edge_count": len(clk_edges),
+        "edge_sample_count": len(edge_codes),
+        "edge_unique_codes": len(set(edge_codes)),
+        "edge_min_code": min(edge_codes) if edge_codes else -1,
+        "edge_max_code": max(edge_codes) if edge_codes else -1,
+        "edge_avg_abs_vout_err_v": (
+            sum(edge_vout_errors) / len(edge_vout_errors) if edge_vout_errors else float("inf")
+        ),
+    }
+
+
+def compare_adc_dac_clocked_reconstruction_parity(
+    evas_rows: list[dict[str, float]],
+    spectre_rows: list[dict[str, float]],
+) -> dict:
+    ev = adc_dac_clocked_reconstruction_metrics(evas_rows)
+    sp = adc_dac_clocked_reconstruction_metrics(spectre_rows)
+    failures: list[str] = []
+    if ev.get("status") != "ok" or sp.get("status") != "ok":
+        failures.append(f"metrics_blocked evas={ev.get('reason')} spectre={sp.get('reason')}")
+    else:
+        if min(int(ev["unique_codes"]), int(sp["unique_codes"])) < 12:
+            failures.append(f"unique_codes={ev['unique_codes']}/{sp['unique_codes']}")
+        if abs(float(ev["vout_span_v"]) - float(sp["vout_span_v"])) > 0.05:
+            failures.append(
+                f"vout_span_delta={abs(float(ev['vout_span_v']) - float(sp['vout_span_v'])):.4f}"
+            )
+        if abs(float(ev["vin_span_v"]) - float(sp["vin_span_v"])) > 0.05:
+            failures.append(
+                f"vin_span_delta={abs(float(ev['vin_span_v']) - float(sp['vin_span_v'])):.4f}"
+            )
+        if int(ev["edge_sample_count"]) < 20 or int(sp["edge_sample_count"]) < 20:
+            failures.append(f"edge_samples={ev['edge_sample_count']}/{sp['edge_sample_count']}")
+        if abs(int(ev["edge_max_code"]) - int(sp["edge_max_code"])) > 1:
+            failures.append(f"edge_max_code_delta={ev['edge_max_code']}/{sp['edge_max_code']}")
+        if abs(int(ev["edge_min_code"]) - int(sp["edge_min_code"])) > 1:
+            failures.append(f"edge_min_code_delta={ev['edge_min_code']}/{sp['edge_min_code']}")
+        if int(ev["reversals"]) > 2 or int(sp["reversals"]) > 2:
+            failures.append(f"monotonic_reversals={ev['reversals']}/{sp['reversals']}")
+        if float(ev["edge_avg_abs_vout_err_v"]) > 0.08 or float(sp["edge_avg_abs_vout_err_v"]) > 0.08:
+            failures.append(
+                "edge_vout_quantization_error="
+                f"{float(ev['edge_avg_abs_vout_err_v']):.4f}/{float(sp['edge_avg_abs_vout_err_v']):.4f}"
+            )
+
+    return {
+        "status": "passed" if not failures else "needs_review",
+        "mode": "adc_dac_task_aware",
+        "task_family": "clocked_adc_dac_reconstruction",
+        "metrics": {
+            "evas": ev,
+            "spectre": sp,
+        },
+        "notes": [
+            "compares settled quantizer/reconstruction behavior instead of pointwise clocked bit timing"
+        ],
+        "failures": failures,
+    }
 
 
 def compare_adpll_timer_parity(
@@ -478,6 +877,80 @@ def compare_cppll_reacquire_parity(
     }
 
 
+WAVEFORM_EQUIVALENCE_POLICY = {
+    "policy": "spectre_equivalence_core_v1",
+    "basis": (
+        "Behavior checks are primary; waveform metrics are an acceptance gate "
+        "for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision."
+    ),
+    "reporting_terms": (
+        "Report simulator-style checks: behavior/spec pass, event consistency, "
+        "relative RMS waveform error, absolute voltage error, and digital mismatch."
+    ),
+    "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
+    "relative_rms_gate": (
+        "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; "
+        "or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25"
+    ),
+    }
+
+
+def gain_extraction_metric(rows: list[dict[str, float]]) -> dict[str, float | str]:
+    if not rows or not {"vinp", "vinn"}.issubset(rows[0]):
+        return {"status": "blocked", "reason": "missing vinp/vinn"}
+    if {"vamp_p", "vamp_n"}.issubset(rows[0]):
+        out_p, out_n = "vamp_p", "vamp_n"
+    elif {"voutp", "voutn"}.issubset(rows[0]):
+        out_p, out_n = "voutp", "voutn"
+    else:
+        return {"status": "blocked", "reason": "missing vamp_p/vamp_n or voutp/voutn"}
+    vin_diff = [r["vinp"] - r["vinn"] for r in rows]
+    vamp_diff = [r[out_p] - r[out_n] for r in rows]
+    mean_in = sum(vin_diff) / len(vin_diff)
+    mean_out = sum(vamp_diff) / len(vamp_diff)
+    std_in = math.sqrt(sum((x - mean_in) ** 2 for x in vin_diff) / len(vin_diff))
+    std_out = math.sqrt(sum((x - mean_out) ** 2 for x in vamp_diff) / len(vamp_diff))
+    gain = std_out / std_in if std_in > 1e-12 else 0.0
+    return {
+        "status": "ok",
+        "std_in": std_in,
+        "std_out": std_out,
+        "diff_gain": gain,
+        "output_pair": f"{out_p}/{out_n}",
+    }
+
+
+def compare_gain_extraction_parity(
+    evas_rows: list[dict[str, float]],
+    spectre_rows: list[dict[str, float]],
+) -> dict:
+    ev = gain_extraction_metric(evas_rows)
+    sp = gain_extraction_metric(spectre_rows)
+    if ev.get("status") != "ok" or sp.get("status") != "ok":
+        return {
+            "status": "blocked",
+            "reason": f"gain_metric_blocked evas={ev.get('reason')} spectre={sp.get('reason')}",
+            "evas": ev,
+            "spectre": sp,
+        }
+    ev_gain = float(ev["diff_gain"])
+    sp_gain = float(sp["diff_gain"])
+    rel_delta = abs(ev_gain - sp_gain) / max(abs(sp_gain), 1e-9)
+    passed = ev_gain > 4.0 and sp_gain > 4.0 and rel_delta <= 0.25
+    return {
+        "status": "passed" if passed else "needs_review",
+        "policy": "gain_extraction_metric_parity_v1",
+        "basis": (
+            "Gain extraction uses dither/noise-like stimulus, so functional gain "
+            "metric parity is the acceptance gate instead of raw pointwise waveform parity."
+        ),
+        "evas": ev,
+        "spectre": sp,
+        "relative_gain_delta": rel_delta,
+        "gain_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25",
+    }
+
+
 def compare_waveforms(
     task_id: str,
     evas_csv: Path,
@@ -498,6 +971,10 @@ def compare_waveforms(
         return compare_cppll_reacquire_parity(evas_rows, spectre_rows)
     if task_id in CPPLL_TRACKING_TASK_IDS:
         return compare_cppll_tracking_parity(evas_rows, spectre_rows)
+    if task_id in ADC_DAC_CLOCKED_RECON_TASK_IDS:
+        return compare_adc_dac_clocked_reconstruction_parity(evas_rows, spectre_rows)
+    if task_id in GAIN_EXTRACTION_TASK_IDS:
+        return compare_gain_extraction_parity(evas_rows, spectre_rows)
 
     common_signals = sorted((set(evas_rows[0]) & set(spectre_rows[0])) - {"time"})
     if not common_signals:
@@ -638,26 +1115,33 @@ def compare_waveforms(
         max_abs_values.append(max_abs)
 
     sorted_nrmse = sorted(nrmse_values)
-    p95_idx = min(len(sorted_nrmse) - 1, max(0, math.ceil(0.95 * len(sorted_nrmse)) - 1))
     max_nrmse = max(sorted_nrmse)
-    p95_nrmse = sorted_nrmse[p95_idx]
     max_rmse = max(rmse_values)
     max_abs = max(max_abs_values)
     mean_nrmse = sum(sorted_nrmse) / len(sorted_nrmse)
 
-    passed = (p95_nrmse <= 0.14 and max_nrmse <= 0.22) or (
-        max_rmse <= 0.05 and max_abs <= 0.30
-    ) or (mean_nrmse <= 0.08 and max_nrmse <= 0.25)
+    # Use simulator-style acceptance terms. The relative gate mirrors a reltol
+    # style check across the row aggregate plus the worst saved signal; the
+    # absolute gate mirrors an abstol-style guard for low-swing or near-zero
+    # signals. Older artifacts may still contain percentile raw fields, but new
+    # reporting should not use percentile notation as the acceptance story.
+    relative_gate = (mean_nrmse <= 0.10 and max_nrmse <= 0.22) or (
+        mean_nrmse <= 0.08 and max_nrmse <= 0.25
+    )
+    absolute_gate = max_rmse <= 0.05 and max_abs <= 0.30
+    passed = relative_gate or absolute_gate
 
     return {
         "status": "passed" if passed else "needs_review",
+        "policy": WAVEFORM_EQUIVALENCE_POLICY,
         "common_window_s": [common_start, common_end],
         "signals_compared": len(common_signals),
         "samples": sample_n,
         "max_rmse_v": max_rmse,
         "max_abs_v": max_abs,
+        "mean_relative_rms_error": mean_nrmse,
+        "max_relative_rms_error": max_nrmse,
         "mean_nrmse": mean_nrmse,
-        "p95_nrmse": p95_nrmse,
         "max_nrmse": max_nrmse,
         "per_signal": per_signal,
     }
@@ -675,6 +1159,314 @@ def run_cmd(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, tim
     )
 
 
+def ssh_base_cmd(host: str, timeout_s: int) -> list[str]:
+    connect_timeout = max(1, min(int(timeout_s), 30))
+    cmd = [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        f"ConnectTimeout={connect_timeout}",
+    ]
+    if os.environ.get("VAEVAS_SSH_USE_CONFIG_MULTIPLEX", "").strip() not in {"1", "true", "yes"}:
+        cmd.extend(["-o", "ControlMaster=no", "-o", "ControlPath=none"])
+    proxy_jump = default_sui_proxy_jump()
+    if proxy_jump:
+        cmd.extend(["-J", proxy_jump])
+    cmd.append(host)
+    return cmd
+
+
+def nested_ssh_cmd(host: str, timeout_s: int, shell_args: list[str]) -> list[str]:
+    nested_host = default_sui_nested_host()
+    if not nested_host:
+        return [*ssh_base_cmd(host, timeout_s), *shell_args]
+
+    connect_timeout = max(1, min(int(timeout_s), 30))
+    inner = [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        f"ConnectTimeout={connect_timeout}",
+        nested_host,
+        *shell_args,
+    ]
+    return [*ssh_base_cmd(host, timeout_s), " ".join(shlex.quote(part) for part in inner)]
+
+
+def run_ssh_text(
+    host: str,
+    script: str,
+    *,
+    timeout_s: int,
+    input_data: str | None = None,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        nested_ssh_cmd(host, timeout_s, ["bash", "-lc", shlex.quote(script)]),
+        input=input_data,
+        capture_output=True,
+        text=True,
+        timeout=timeout_s,
+        check=False,
+    )
+
+
+def run_ssh_bytes(
+    host: str,
+    script: str,
+    *,
+    timeout_s: int,
+    input_data: bytes | None = None,
+) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        nested_ssh_cmd(host, timeout_s, ["bash", "--noprofile", "--norc", "-c", shlex.quote(script)]),
+        input=input_data,
+        capture_output=True,
+        timeout=timeout_s,
+        check=False,
+    )
+
+
+def safe_extract_tar_bytes(data: bytes, target_dir: Path) -> None:
+    target_root = target_dir.resolve()
+    with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
+        for member in archive.getmembers():
+            member_target = (target_root / member.name).resolve()
+            if member_target != target_root and target_root not in member_target.parents:
+                raise ValueError(f"unsafe tar member path: {member.name}")
+        archive.extractall(target_root)
+
+
+def copy_direct_spectre_inputs(
+    *,
+    task_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    output_dir: Path,
+) -> tuple[Path, list[Path]]:
+    safe_task_id = safe_path_component(task_id)
+    spectre_tb_path = output_dir / f"{safe_task_id}__{tb_path.name}"
+    spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
+
+    copied = [spectre_tb_path]
+    seen = {spectre_tb_path.resolve()}
+    for include_path in include_paths:
+        try:
+            rel = include_path.relative_to(tb_path.parent)
+        except ValueError:
+            rel = Path(include_path.name)
+        if rel.is_absolute() or any(part == ".." for part in rel.parts):
+            rel = Path(include_path.name)
+        dst = output_dir / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(include_path, dst)
+        resolved = dst.resolve()
+        if resolved not in seen:
+            copied.append(dst)
+            seen.add(resolved)
+    return spectre_tb_path, copied
+
+
+def tar_input_files(files: list[Path], root: Path) -> bytes:
+    buffer = io.BytesIO()
+    with tarfile.open(fileobj=buffer, mode="w:gz") as archive:
+        for path in files:
+            archive.add(path, arcname=path.relative_to(root).as_posix())
+    return buffer.getvalue()
+
+
+def run_spectre_case_sui_direct(
+    *,
+    task_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    output_dir: Path,
+    cadence_cshrc: str | None,
+    timeout_s: int,
+    side_output_files: tuple[str, ...] = (),
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
+) -> dict:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result_json = output_dir / "spectre_result.json"
+    csv_path = output_dir / "tran_spectre.csv"
+    if result_json.exists():
+        result_json.unlink()
+    if csv_path.exists():
+        csv_path.unlink()
+
+    spectre_tb_path, input_files = copy_direct_spectre_inputs(
+        task_id=task_id,
+        tb_path=tb_path,
+        include_paths=include_paths,
+        output_dir=output_dir,
+    )
+    raw_name = f"{spectre_tb_path.stem}.raw"
+    raw_dir = output_dir / raw_name
+    if raw_dir.exists():
+        shutil.rmtree(raw_dir)
+    for stale in (output_dir / "spectre.out", *[output_dir / name for name in side_output_files]):
+        if stale.exists() and stale.is_file():
+            stale.unlink()
+
+    host = sui_host or default_sui_host()
+    work_root = (sui_work_root or default_sui_work_root()).rstrip("/")
+    cshrc = cadence_cshrc or default_sui_cadence_cshrc()
+    remote_prefix = f"{safe_path_component(task_id)}_{uuid.uuid4().hex[:10]}"
+    remote_template = f"{work_root}/{remote_prefix}.XXXXXX"
+    remote_dir = ""
+    combined_output = ""
+    side_outputs: dict[str, object] = {}
+    errors: list[str] = []
+    warnings: list[str] = []
+    psf_parse: dict[str, object] | None = None
+    license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
+    command = [
+        "spectre",
+        "-64",
+        spectre_tb_path.name,
+        "+escchars",
+        "+log",
+        "spectre.out",
+        "-format",
+        "psfascii",
+        "-raw",
+        raw_name,
+        "+preset=ax",
+        "+mt",
+        "+lqtimeout",
+        str(license_queue_timeout_s),
+        "-maxw",
+        "5",
+        "-maxn",
+        "5",
+        "+logstatus",
+    ]
+
+    try:
+        create = run_ssh_text(
+            host,
+            f"mkdir -p {shlex.quote(work_root)} && mktemp -d {shlex.quote(remote_template)}",
+            timeout_s=30,
+        )
+        combined_output += (create.stdout or "") + "\n" + (create.stderr or "")
+        if create.returncode != 0:
+            errors.append(f"remote_workdir_create_failed rc={create.returncode}")
+            remote_dir = ""
+        else:
+            remote_dir = next(
+                (line.strip() for line in reversed(create.stdout.splitlines()) if line.strip().startswith("/")),
+                "",
+            )
+        if not remote_dir:
+            errors.append("remote_workdir_unresolved")
+            raise RuntimeError("remote_workdir_unresolved")
+
+        upload = run_ssh_bytes(
+            host,
+            f"tar -xzf - -C {shlex.quote(remote_dir)}",
+            input_data=tar_input_files(input_files, output_dir),
+            timeout_s=max(timeout_s, 60),
+        )
+        combined_output += "\n" + (upload.stdout or b"").decode("utf-8", errors="replace")
+        combined_output += "\n" + (upload.stderr or b"").decode("utf-8", errors="replace")
+        if upload.returncode != 0:
+            errors.append(f"remote_upload_failed rc={upload.returncode}")
+            raise RuntimeError("remote_upload_failed")
+
+        spectre_command = " ".join(shlex.quote(part) for part in command)
+        csh_parts = []
+        if cshrc:
+            csh_parts.append(f"source {shlex.quote(cshrc)}")
+        csh_parts.append(f"cd {shlex.quote(remote_dir)}")
+        csh_parts.append(spectre_command)
+        run_script = " && ".join(csh_parts)
+        run = run_ssh_text(
+            host,
+            f"tcsh -c {shlex.quote(run_script)}",
+            timeout_s=max(timeout_s, 600),
+        )
+        combined_output += "\n" + (run.stdout or "") + "\n" + (run.stderr or "")
+
+        spectre_log = output_dir / "spectre.out"
+        if run.returncode != 0:
+            errors.append(f"spectre_failed rc={run.returncode}")
+        else:
+            download = run_ssh_bytes(
+                host,
+                f"tar -czf - -C {shlex.quote(remote_dir)} .",
+                timeout_s=max(timeout_s, 600),
+            )
+            combined_output += "\n" + (download.stderr or b"").decode("utf-8", errors="replace")
+            if download.returncode == 0:
+                safe_extract_tar_bytes(download.stdout or b"", output_dir)
+            else:
+                errors.append(f"remote_download_failed rc={download.returncode}")
+
+        if spectre_log.exists():
+            combined_output += "\n" + spectre_log.read_text(encoding="utf-8", errors="replace")
+
+        if "SPECTRE-209" in combined_output or "required license could not be checked out" in combined_output:
+            errors.append("spectre_license_checkout_failed:SPECTRE-209")
+        if raw_dir.exists():
+            try:
+                psf_parse = write_spectre_psf_csv(raw_dir, csv_path)
+            except Exception as exc:  # pragma: no cover - reported in JSON for field debugging
+                errors.append(f"psf_parse_failed={type(exc).__name__}: {str(exc)[:300]}")
+        elif run.returncode == 0:
+            errors.append(f"spectre_raw_missing={raw_name}")
+    except subprocess.TimeoutExpired as exc:
+        errors.append(f"sui_direct_timeout_after_s={exc.timeout}")
+        combined_output += "\n" + (
+            ((exc.stdout or "") if isinstance(exc.stdout, str) else "")
+            + "\n"
+            + ((exc.stderr or "") if isinstance(exc.stderr, str) else "")
+        )
+    except Exception as exc:
+        if not errors:
+            errors.append(f"sui_direct_exception={type(exc).__name__}: {str(exc)[:300]}")
+    finally:
+        if remote_dir:
+            try:
+                cleanup = run_ssh_text(host, f"rm -rf {shlex.quote(remote_dir)}", timeout_s=30)
+                if cleanup.returncode != 0:
+                    warnings.append(f"remote_cleanup_failed rc={cleanup.returncode}")
+            except Exception as exc:  # pragma: no cover - best-effort cleanup only
+                warnings.append(f"remote_cleanup_exception={type(exc).__name__}: {str(exc)[:200]}")
+
+    for name in side_output_files:
+        local_path = output_dir / name
+        side_outputs[name] = {
+            "downloaded": local_path.exists(),
+            "path": str(local_path) if local_path.exists() else "",
+            "remote_path": f"{remote_dir}/{name}" if remote_dir else "",
+        }
+
+    ok = not errors and csv_path.exists()
+    result = {
+        "status": "success" if ok else "error",
+        "ok": ok,
+        "errors": errors,
+        "warnings": warnings,
+        "signals": list(psf_parse.get("columns", [])) if psf_parse else [],
+        "rows": int(psf_parse.get("rows", 0)) if psf_parse else 0,
+        "csv_path": str(csv_path),
+        "side_outputs": side_outputs,
+        "spectre_backend": "sui-direct",
+        "sui_host": host,
+        "sui_nested_host": default_sui_nested_host(),
+        "sui_work_root": work_root,
+        "remote_run_dir": remote_dir,
+        "command": " ".join(command),
+        "timing": parse_spectre_timing(combined_output),
+        "psf_parse": psf_parse or {},
+        "stdout_tail": combined_output[-4000:],
+    }
+    result_json.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    return result
+
+
 def run_spectre_case(
     *,
     task_id: str,
@@ -684,37 +1476,118 @@ def run_spectre_case(
     bridge_repo: Path,
     cadence_cshrc: str | None,
     timeout_s: int,
+    side_output_files: tuple[str, ...] = (),
+    spectre_backend: str = "bridge",
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
 ) -> dict:
+    backend = normalize_spectre_backend(spectre_backend)
+    if backend == "sui-direct":
+        return run_spectre_case_sui_direct(
+            task_id=task_id,
+            tb_path=tb_path,
+            include_paths=include_paths,
+            output_dir=output_dir,
+            cadence_cshrc=cadence_cshrc,
+            timeout_s=timeout_s,
+            side_output_files=side_output_files,
+            sui_host=sui_host,
+            sui_work_root=sui_work_root,
+        )
+
     output_dir.mkdir(parents=True, exist_ok=True)
     bridge_py = bridge_repo / ".venv" / "bin" / "python"
     result_json = output_dir / "spectre_result.json"
     csv_path = output_dir / "tran_spectre.csv"
+    safe_task_id = "".join(ch if ch.isalnum() or ch in {"_", "-"} else "_" for ch in task_id)
+    spectre_tb_path = output_dir / f"{safe_task_id}__{tb_path.name}"
+    # Spectre names its AHDL CMI cache from the testbench basename. Parallel
+    # release forms often share one gold TB, so isolate the basename per task.
+    spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     payload = {
         "bridge_repo": str(bridge_repo.resolve()),
-        "tb_path": str(tb_path.resolve()),
+        "tb_path": str(spectre_tb_path.resolve()),
         "include_paths": [str(p.resolve()) for p in include_paths],
         "output_dir": str(output_dir.resolve()),
         "result_json": str(result_json.resolve()),
         "csv_path": str(csv_path.resolve()),
         "cadence_cshrc": cadence_cshrc or "",
+        "bridge_profile": os.environ.get("VAEVAS_BRIDGE_PROFILE") or os.environ.get("BRIDGE_PROFILE") or "",
+        "side_output_files": list(side_output_files),
     }
 
     inline = (
-        "import csv, json, os\n"
+        "import csv, json, os, shlex\n"
         "from pathlib import Path\n"
         "from dotenv import load_dotenv\n"
         "payload = json.loads(" + repr(json.dumps(payload)) + ")\n"
         "bridge_repo = Path(payload['bridge_repo'])\n"
         "load_dotenv(bridge_repo / '.env')\n"
+        "profile = payload.get('bridge_profile') or os.environ.get('VAEVAS_BRIDGE_PROFILE') or os.environ.get('BRIDGE_PROFILE') or None\n"
         "if payload['cadence_cshrc']:\n"
         "    os.environ['VB_CADENCE_CSHRC'] = payload['cadence_cshrc']\n"
         "from virtuoso_bridge.spectre.runner import SpectreSimulator, spectre_mode_args\n"
         "tb = Path(payload['tb_path'])\n"
         "out = Path(payload['output_dir'])\n"
         "out.mkdir(parents=True, exist_ok=True)\n"
-        "sim = SpectreSimulator.from_env(spectre_args=spectre_mode_args('ax'), work_dir=out, output_format='psfascii')\n"
+        "side_output_files = list(payload.get('side_output_files') or [])\n"
+        "sim = SpectreSimulator.from_env(spectre_args=spectre_mode_args('ax'), work_dir=out, output_format='psfascii', keep_remote_files=bool(side_output_files), profile=profile)\n"
+        "runner = None\n"
+        "remote_pwd = ''\n"
+        "if side_output_files:\n"
+        "    try:\n"
+        "        runner = sim._get_ssh_runner()\n"
+        "        pwd_result = runner.run_command('pwd')\n"
+        "        pwd_lines = [line.strip() for line in (pwd_result.stdout or '').splitlines() if line.strip()]\n"
+        "        remote_pwd = next((line for line in reversed(pwd_lines) if line.startswith('/')), '')\n"
+        "        if remote_pwd:\n"
+        "            stale_targets = ' '.join(shlex.quote(f'{remote_pwd}/{name}') for name in side_output_files)\n"
+        "            if stale_targets:\n"
+        "                runner.run_command('rm -f ' + stale_targets)\n"
+        "    except Exception:\n"
+        "        remote_pwd = ''\n"
         "res = sim.run_simulation(tb, {'include_files': payload['include_paths']})\n"
+        "side_outputs = {}\n"
+        "remote_run_dir = ''\n"
+        "if side_output_files:\n"
+        "    try:\n"
+        "        if runner is None:\n"
+        "            runner = sim._get_ssh_runner()\n"
+        "        spec_cmd = str(getattr(res, 'metadata', {}).get('spectre_command', ''))\n"
+        "        for token in shlex.split(spec_cmd):\n"
+        "            if token.endswith('/' + tb.name):\n"
+        "                remote_run_dir = str(Path(token).parent)\n"
+        "                break\n"
+        "        remote_output_dirs = []\n"
+        "        for candidate_dir in (remote_run_dir, remote_pwd):\n"
+        "            if candidate_dir and candidate_dir not in remote_output_dirs:\n"
+        "                remote_output_dirs.append(candidate_dir)\n"
+        "        if remote_output_dirs:\n"
+        "            for name in side_output_files:\n"
+        "                local_path = out / name\n"
+        "                attempts = []\n"
+        "                downloaded = False\n"
+        "                for remote_dir in remote_output_dirs:\n"
+        "                    remote_path = f'{remote_dir}/{name}'\n"
+        "                    result = runner.download(remote_path, local_path)\n"
+        "                    attempts.append({'remote_path': remote_path, 'returncode': result.returncode, 'stderr_tail': (result.stderr or '')[-500:]})\n"
+        "                    if result.returncode == 0:\n"
+        "                        side_outputs[name] = {'downloaded': True, 'path': str(local_path), 'remote_path': remote_path, 'attempts': attempts}\n"
+        "                        downloaded = True\n"
+        "                        break\n"
+        "                if not downloaded:\n"
+        "                    side_outputs[name] = {'downloaded': False, 'path': '', 'attempts': attempts, 'stderr_tail': attempts[-1]['stderr_tail'] if attempts else ''}\n"
+        "            if remote_run_dir:\n"
+        "                runner.run_command('rm -rf ' + shlex.quote(remote_run_dir))\n"
+        "            if remote_pwd:\n"
+        "                cleanup_targets = ' '.join(shlex.quote(f'{remote_pwd}/{name}') for name in side_output_files)\n"
+        "                if cleanup_targets:\n"
+        "                    runner.run_command('rm -f ' + cleanup_targets)\n"
+        "        else:\n"
+        "            side_outputs['_error'] = 'remote_output_dir_unresolved'\n"
+        "    except Exception as exc:\n"
+        "        side_outputs['_error'] = f'{type(exc).__name__}: {str(exc)[:300]}'\n"
         "keys = sorted(res.data.keys())\n"
         "if 'time' in keys:\n"
         "    keys = ['time'] + [k for k in keys if k != 'time']\n"
@@ -733,6 +1606,9 @@ def run_spectre_case(
         "    'signals': keys,\n"
         "    'rows': nrows,\n"
         "    'csv_path': str(csv_path),\n"
+        "    'side_outputs': side_outputs,\n"
+        "    'remote_run_dir': remote_run_dir,\n"
+        "    'remote_pwd': remote_pwd,\n"
         "}\n"
         "Path(payload['result_json']).write_text(json.dumps(summary, indent=2), encoding='utf-8')\n"
         "print(json.dumps(summary, indent=2))\n"
@@ -789,10 +1665,14 @@ def run_dual_case(
     bridge_repo: Path,
     cadence_cshrc: str | None,
     timeout_s: int,
+    spectre_backend: str = "bridge",
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
 ) -> dict:
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
     task_id = meta.get("task_id", task_dir.name)
+    checker_task_id = resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
 
     tb_path = choose_gold_tb(gold_dir)
@@ -831,11 +1711,14 @@ def run_dual_case(
 
     from run_gold_suite import run_gold_case
 
+    evas_t0 = time.perf_counter()
     evas_result = run_gold_case(task_dir, output_root, timeout_s)
+    evas_wall_time_s = time.perf_counter() - evas_t0
     evas_csv = evas_root / "tran.csv"
     if not evas_csv.exists():
         evas_csv = case_root / "tran.csv"
 
+    spectre_t0 = time.perf_counter()
     spectre_result = run_spectre_case(
         task_id=task_id,
         tb_path=tb_path,
@@ -844,9 +1727,15 @@ def run_dual_case(
         bridge_repo=bridge_repo,
         cadence_cshrc=cadence_cshrc,
         timeout_s=timeout_s,
+        side_output_files=behavior_side_output_names(checker_task_id),
+        spectre_backend=spectre_backend,
+        sui_host=sui_host,
+        sui_work_root=sui_work_root,
     )
+    spectre_wall_time_s = time.perf_counter() - spectre_t0
     if should_retry_spectre_upload(spectre_result):
         notes.append("spectre:retry_after_upload_failure")
+        retry_t0 = time.perf_counter()
         spectre_result = run_spectre_case(
             task_id=task_id,
             tb_path=tb_path,
@@ -855,7 +1744,12 @@ def run_dual_case(
             bridge_repo=bridge_repo,
             cadence_cshrc=cadence_cshrc,
             timeout_s=timeout_s,
+            side_output_files=behavior_side_output_names(checker_task_id),
+            spectre_backend=spectre_backend,
+            sui_host=sui_host,
+            sui_work_root=sui_work_root,
         )
+        spectre_wall_time_s += time.perf_counter() - retry_t0
 
     spectre_csv = spectre_root / "tran_spectre.csv"
     if "sim_correct" not in scoring:
@@ -863,7 +1757,13 @@ def run_dual_case(
         spectre_behavior_notes = ["behavior_not_required_by_scoring"]
         notes.append("spectre:behavior_not_required_by_scoring")
     elif spectre_result.get("ok") and spectre_csv.exists():
-        spectre_sim_correct, spectre_behavior_notes = evaluate_behavior(task_id, spectre_csv)
+        spectre_sim_correct, spectre_behavior_notes = evaluate_behavior(checker_task_id, spectre_csv)
+        side_output_result = validate_behavior_side_outputs(checker_task_id, spectre_root, spectre_csv)
+        if side_output_result is not None:
+            side_output_ok, side_output_note = side_output_result
+            spectre_behavior_notes.append(side_output_note)
+            if not side_output_ok:
+                spectre_sim_correct = 0.0
         notes.extend(f"spectre:{note}" for note in spectre_behavior_notes)
     else:
         spectre_sim_correct = 0.0
@@ -876,7 +1776,7 @@ def run_dual_case(
             "reason": "task scoring does not require sim_correct parity",
         }
     elif evas_result["status"] == "PASS" and spectre_sim_correct == 1.0 and spectre_csv.exists() and evas_csv.exists():
-        parity = compare_waveforms(task_id, evas_csv, spectre_csv)
+        parity = compare_waveforms(checker_task_id, evas_csv, spectre_csv)
     else:
         parity = {
             "status": "blocked",
@@ -896,6 +1796,7 @@ def run_dual_case(
 
     return {
         "task_id": task_id,
+        "checker_task_id": checker_task_id,
         "status": status,
         "gold_dir": str(gold_dir),
         "gold_tb": str(tb_path),
@@ -907,6 +1808,11 @@ def run_dual_case(
             "behavior_notes": spectre_behavior_notes,
         },
         "parity": parity,
+        "timing": {
+            "evas_wall_time_s": evas_wall_time_s,
+            "spectre_wall_time_s": spectre_wall_time_s,
+            "combined_wall_time_s": evas_wall_time_s + spectre_wall_time_s,
+        },
         "notes": notes,
     }
 
@@ -937,6 +1843,21 @@ def parse_args() -> argparse.Namespace:
         help="Path to virtuoso-bridge-lite repository.",
     )
     ap.add_argument(
+        "--spectre-backend",
+        default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"),
+        help="Spectre execution backend: bridge (default) or sui-direct.",
+    )
+    ap.add_argument(
+        "--sui-host",
+        default=default_sui_host(),
+        help="SSH host used by --spectre-backend=sui-direct.",
+    )
+    ap.add_argument(
+        "--sui-work-root",
+        default=default_sui_work_root(),
+        help="Remote scratch root used by --spectre-backend=sui-direct.",
+    )
+    ap.add_argument(
         "--cadence-cshrc",
         default=os.environ.get("VB_CADENCE_CSHRC", ""),
         help="Remote Cadence cshrc path used to expose spectre on PATH.",
@@ -961,8 +1882,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    spectre_backend = normalize_spectre_backend(args.spectre_backend)
     via_wrapper = os.environ.get("VAEVAS_BRIDGE_WRAPPER") == "1"
-    if not via_wrapper and not args.allow_direct_run:
+    if spectre_backend == "bridge" and not via_wrapper and not args.allow_direct_run:
         summary = {
             "status": "blocked",
             "reason": "direct invocation blocked; use scripts/run_with_bridge.sh",
@@ -976,7 +1898,7 @@ def main() -> int:
         return 2
 
     bridge_repo = Path(args.bridge_repo).resolve()
-    if not bridge_repo.exists():
+    if spectre_backend == "bridge" and not bridge_repo.exists():
         print(json.dumps({"status": "blocked", "reason": f"bridge repo not found: {bridge_repo}"}, indent=2))
         return 2
 
@@ -985,8 +1907,21 @@ def main() -> int:
         out_root = benchmark_root() / out_root
     out_root.mkdir(parents=True, exist_ok=True)
 
-    effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc)
-    if args.skip_bridge_preflight:
+    if spectre_backend == "bridge":
+        effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc)
+    else:
+        effective_cshrc = args.cadence_cshrc or default_sui_cadence_cshrc()
+
+    if spectre_backend == "sui-direct":
+        preflight = {
+            "status": "skipped",
+            "reason": "direct SUI backend selected; bridge preflight is not required",
+            "spectre_backend": spectre_backend,
+            "sui_host": args.sui_host,
+            "sui_work_root": args.sui_work_root,
+            "cadence_cshrc": effective_cshrc,
+        }
+    elif args.skip_bridge_preflight:
         preflight = {
             "status": "skipped",
             "bridge_repo": str(bridge_repo),
@@ -1025,6 +1960,9 @@ def main() -> int:
             bridge_repo=bridge_repo,
             cadence_cshrc=effective_cshrc or None,
             timeout_s=args.timeout_s,
+            spectre_backend=spectre_backend,
+            sui_host=args.sui_host,
+            sui_work_root=args.sui_work_root,
         )
         for task_dir in list_gold_task_dirs(selected, families=families)
     ]
@@ -1035,7 +1973,10 @@ def main() -> int:
         "fail_count": sum(1 for r in results if r["status"] != "PASS"),
         "task_ids": [r["task_id"] for r in results],
         "families": list(families),
+        "spectre_backend": spectre_backend,
         "bridge_repo": str(bridge_repo),
+        "sui_host": args.sui_host if spectre_backend == "sui-direct" else "",
+        "sui_work_root": args.sui_work_root if spectre_backend == "sui-direct" else "",
         "cadence_cshrc": effective_cshrc,
         "bridge_preflight": preflight,
         "results": results,

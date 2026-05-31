@@ -32,16 +32,32 @@ analog begin
         pd_level = 0.0;
     end
 
-    @(cross(V(REF) - vth, +1) or cross(V(REF) - vth, -1)) begin
-        ref_hi = (V(REF) > vth) ? 1 : 0;
+    @(cross(V(REF) - vth, +1)) begin
+        ref_hi = 1;
         xor_out = ref_hi ^ div_hi;
         pd_level = xor_out ? V(VDD) : V(VSS);
         $strobe("[xor_pd] t=%.3f ns | REF=%d DIV=%d OUT=%d",
                 $abstime*1e9, ref_hi, div_hi, xor_out);
     end
 
-    @(cross(V(DIV) - vth, +1) or cross(V(DIV) - vth, -1)) begin
-        div_hi = (V(DIV) > vth) ? 1 : 0;
+    @(cross(V(REF) - vth, -1)) begin
+        ref_hi = 0;
+        xor_out = ref_hi ^ div_hi;
+        pd_level = xor_out ? V(VDD) : V(VSS);
+        $strobe("[xor_pd] t=%.3f ns | REF=%d DIV=%d OUT=%d",
+                $abstime*1e9, ref_hi, div_hi, xor_out);
+    end
+
+    @(cross(V(DIV) - vth, +1)) begin
+        div_hi = 1;
+        xor_out = ref_hi ^ div_hi;
+        pd_level = xor_out ? V(VDD) : V(VSS);
+        $strobe("[xor_pd] t=%.3f ns | REF=%d DIV=%d OUT=%d",
+                $abstime*1e9, ref_hi, div_hi, xor_out);
+    end
+
+    @(cross(V(DIV) - vth, -1)) begin
+        div_hi = 0;
         xor_out = ref_hi ^ div_hi;
         pd_level = xor_out ? V(VDD) : V(VSS);
         $strobe("[xor_pd] t=%.3f ns | REF=%d DIV=%d OUT=%d",

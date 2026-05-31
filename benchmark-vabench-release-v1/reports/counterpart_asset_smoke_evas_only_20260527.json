@@ -1,0 +1,255 @@
+{
+  "manifest": "benchmark-vabench-release-v1/reports/counterpart_asset_smoke_staging_manifest_20260527.json",
+  "output_root": "results/vabench-release-v1-counterpart-smoke-20260527-evas-only-r1",
+  "bundle_count": 15,
+  "pass_count": 12,
+  "nonpass_count": 3,
+  "expected_met_count": 15,
+  "expected_miss_count": 0,
+  "status_counts": {
+    "PASS": 12,
+    "FAIL_SIM_CORRECTNESS": 3
+  },
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "dac_weight_samples 7ns:0.0598/0.0598 15ns:0.1207/0.1207 25ns:0.4171/0.4171 35ns:0.9000/0.9000"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_dut",
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_dut"
+    },
+    {
+      "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "dac_weight_samples 7ns:0.0598/0.0598 15ns:0.1207/0.1207 25ns:0.4171/0.4171 35ns:0.9000/0.9000"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_tb",
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_tb"
+    },
+    {
+      "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "dac_weight_samples 7ns:0.0598/0.0598 15ns:0.1207/0.1207 25ns:0.4171/0.4171 35ns:0.9000/0.9000"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_bugfix_fixed",
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "dac_weight_mismatches=1 7ns:0.0600/0.0598 15ns:0.1200/0.1207 25ns:0.4200/0.4171 35ns:0.9000/0.9000"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_bugfix_buggy",
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "dac_weight_samples 7ns:0.0598/0.0598 15ns:0.1207/0.1207 25ns:0.4171/0.4171 35ns:0.9000/0.9000"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_e2e",
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_e2e"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_two_pole_filter rise=0.539->0.861 fall=0.693->0.291 metric_span=0.661"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_higher_order_filter_dut",
+      "checker_task_id": "vbr1_l1_higher_order_filter_dut"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_two_pole_filter rise=0.539->0.861 fall=0.693->0.291 metric_span=0.661"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_higher_order_filter_tb",
+      "checker_task_id": "vbr1_l1_higher_order_filter_tb"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_two_pole_filter rise=0.539->0.861 fall=0.693->0.291 metric_span=0.661"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_higher_order_filter_bugfix_fixed",
+      "checker_task_id": "vbr1_l1_higher_order_filter_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "two_pole_missing_lagged_rise early=0.753 late=0.900"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_higher_order_filter_bugfix_buggy",
+      "checker_task_id": "vbr1_l1_higher_order_filter_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_higher_order_filter",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_two_pole_filter rise=0.539->0.861 fall=0.693->0.291 metric_span=0.661"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_higher_order_filter_e2e",
+      "checker_task_id": "vbr1_l1_higher_order_filter_e2e"
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_charge_pump reset=0.450 span=0.400 polarity up=6/6 down=4/4"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_charge_pump_abstraction_dut",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_dut"
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_charge_pump reset=0.450 span=0.400 polarity up=6/6 down=4/4"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_charge_pump_abstraction_tb",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_tb"
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_charge_pump reset=0.450 span=0.400 polarity up=6/6 down=4/4"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_charge_pump_abstraction_bugfix_fixed",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "charge_pump_polarity up=0/6 down=0/4"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_charge_pump_abstraction_bugfix_buggy",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_bugfix"
+    },
+    {
+      "entry_id": "vbr1_l1_charge_pump_abstraction",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "status": "PASS",
+      "expected_met": true,
+      "returncode": 0,
+      "notes": [
+        "returncode=0",
+        "release_charge_pump reset=0.450 span=0.400 polarity up=6/6 down=4/4"
+      ],
+      "errors": [],
+      "task_id": "vbr1_l1_charge_pump_abstraction_e2e",
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_e2e"
+    }
+  ]
+}

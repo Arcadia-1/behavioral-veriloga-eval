@@ -1,0 +1,15 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module offset_calibration_fsm(clk,rst,comp,trim);
+    input clk,rst,comp; output trim; electrical clk,rst,comp,trim;
+    parameter real vth=0.45; parameter real tr=500p; real acc;
+    analog begin
+        @(initial_step) acc=0.45;
+        @(cross(V(clk)-vth,+1)) begin
+            if (V(rst)>vth) acc=0.45;
+            else if (V(comp)>vth) acc=acc+0.08; else acc=acc-0.08;
+            if (acc>0.85) acc=0.85; if (acc<0.05) acc=0.05;
+        end
+        V(trim) <+ transition(acc,0,tr,tr);
+    end
+endmodule

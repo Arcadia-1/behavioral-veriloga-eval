@@ -58,3 +58,34 @@ def test_clk_divider_checker_rejects_mixed_periods_even_if_average_ratio_matches
     assert not ok
     assert "ratio_code=5" in note
     assert "period_match=" in note
+
+
+def _rows_for_burst_clock(*, extra_pass_cycle: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    step = 0.05
+    for idx in range(int(25.0 / step) + 1):
+        t = idx * step
+        phase = t % 1.0
+        clk = 0.9 if 0.05 <= phase < 0.5 else 0.0
+        cycle = int(t // 1.0)
+        frame_pos = cycle % 8
+        pass_cycle = frame_pos < (3 if extra_pass_cycle else 2)
+        clk_out = 0.9 if pass_cycle and clk > 0.45 else 0.0
+        rows.append({"time": t, "CLK": clk, "RST_N": 0.9, "CLK_OUT": clk_out})
+    return rows
+
+
+def test_clk_burst_checker_accepts_two_pulses_per_eight_cycle_frame() -> None:
+    ok, note = sim.check_clk_burst_gen(_rows_for_burst_clock())
+
+    assert ok
+    assert "high_phase_failures=0" in note
+    assert "low_phase_failures=0" in note
+
+
+def test_clk_burst_checker_rejects_third_passed_cycle() -> None:
+    ok, note = sim.check_clk_burst_gen(_rows_for_burst_clock(extra_pass_cycle=True))
+
+    assert not ok
+    assert "high_phase_failures=" in note
+    assert "high_phase_failures=0" not in note

@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release task",
+  "type": "object",
+  "required": [
+    "id",
+    "benchmark",
+    "release_entry_id",
+    "level",
+    "track",
+    "difficulty",
+    "category",
+    "base_function",
+    "family",
+    "domain",
+    "score_surface",
+    "artifacts",
+    "certification",
+    "counts"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "benchmark": {
+      "const": "vabench-release-v1"
+    },
+    "release_entry_id": {
+      "type": "string"
+    },
+    "level": {
+      "enum": [
+        "L1",
+        "L2"
+      ]
+    },
+    "track": {
+      "enum": [
+        "core",
+        "support"
+      ]
+    },
+    "difficulty": {
+      "enum": [
+        "D1",
+        "D2",
+        "D3"
+      ]
+    },
+    "category": {
+      "type": "string"
+    },
+    "base_function": {
+      "type": "string"
+    },
+    "family": {
+      "enum": [
+        "spec-to-va",
+        "tb-generation",
+        "bugfix",
+        "end-to-end"
+      ]
+    },
+    "domain": {
+      "const": "voltage"
+    },
+    "score_surface": {
+      "enum": [
+        "model-capability",
+        "benchmark-e2e"
+      ]
+    },
+    "artifacts": {
+      "type": "object",
+      "required": [
+        "prompt",
+        "meta",
+        "checks",
+        "gold"
+      ],
+      "properties": {
+        "prompt": {
+          "type": "string"
+        },
+        "meta": {
+          "type": "string"
+        },
+        "checks": {
+          "type": "string"
+        },
+        "gold": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "certification": {
+      "type": "object",
+      "required": [
+        "static",
+        "evas",
+        "spectre",
+        "evidence"
+      ],
+      "properties": {
+        "static": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "evas": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "spectre": {
+          "enum": [
+            "pending",
+            "pass",
+            "fail"
+          ]
+        },
+        "evidence": {
+          "type": "string"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "benchmark_score",
+        "model_capability",
+        "l0_conformance"
+      ],
+      "properties": {
+        "benchmark_score": {
+          "type": "boolean"
+        },
+        "model_capability": {
+          "type": "boolean"
+        },
+        "l0_conformance": {
+          "const": false
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

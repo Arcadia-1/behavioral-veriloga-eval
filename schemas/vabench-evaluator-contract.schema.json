@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench release evaluator contract",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "contract_version",
+    "inputs",
+    "schemas",
+    "task_selection",
+    "backend_roles",
+    "result_contract",
+    "score_gate",
+    "baseline_protocol",
+    "commands",
+    "claim_boundary"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "in_progress",
+        "blocked"
+      ]
+    },
+    "contract_version": {
+      "type": "string"
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "schemas": {
+      "type": "object",
+      "required": [
+        "release_entry",
+        "release_task",
+        "evidence",
+        "result",
+        "package_manifest",
+        "evaluator_contract",
+        "speed_debug_artifact",
+        "baseline_artifact",
+        "paper_artifacts",
+        "claim_gate",
+        "score_denominator",
+        "dual_rerun_queue",
+        "dual_rerun_staging",
+        "dual_rerun_import",
+        "bridge_diagnostics",
+        "external_blockers",
+        "finish_readiness",
+        "completion_audit",
+        "finish_after_bridge_attempt",
+        "conformance_manifest",
+        "artifact_index",
+        "checksum_manifest",
+        "paper_tables",
+        "release_task_manifest_sync",
+        "release_status",
+        "asset_integrity",
+        "static_certification",
+        "dual_certification",
+        "certification_matrix",
+        "remaining_work"
+      ],
+      "properties": {
+        "release_entry": {
+          "type": "string"
+        },
+        "release_task": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "package_manifest": {
+          "type": "string"
+        },
+        "evaluator_contract": {
+          "type": "string"
+        },
+        "speed_debug_artifact": {
+          "type": "string"
+        },
+        "baseline_artifact": {
+          "type": "string"
+        },
+        "paper_artifacts": {
+          "type": "string"
+        },
+        "claim_gate": {
+          "type": "string"
+        },
+        "score_denominator": {
+          "type": "string"
+        },
+        "dual_rerun_queue": {
+          "type": "string"
+        },
+        "dual_rerun_staging": {
+          "type": "string"
+        },
+        "dual_rerun_import": {
+          "type": "string"
+        },
+        "bridge_diagnostics": {
+          "type": "string"
+        },
+        "external_blockers": {
+          "type": "string"
+        },
+        "finish_readiness": {
+          "type": "string"
+        },
+        "completion_audit": {
+          "type": "string"
+        },
+        "finish_after_bridge_attempt": {
+          "type": "string"
+        },
+        "conformance_manifest": {
+          "type": "string"
+        },
+        "artifact_index": {
+          "type": "string"
+        },
+        "checksum_manifest": {
+          "type": "string"
+        },
+        "paper_tables": {
+          "type": "string"
+        },
+        "release_task_manifest_sync": {
+          "type": "string"
+        },
+        "release_status": {
+          "type": "string"
+        },
+        "asset_integrity": {
+          "type": "string"
+        },
+        "static_certification": {
+          "type": "string"
+        },
+        "dual_certification": {
+          "type": "string"
+        },
+        "certification_matrix": {
+          "type": "string"
+        },
+        "remaining_work": {
+          "type": "string"
+        }
+      }
+    },
+    "task_selection": {
+      "type": "object",
+      "required": [
+        "source_of_truth",
+        "scored_entries",
+        "scored_forms",
+        "l0_conformance_excluded",
+        "unscored_rows_excluded"
+      ],
+      "properties": {
+        "source_of_truth": {
+          "type": "string"
+        },
+        "scored_entries": {
+          "type": "integer"
+        },
+        "scored_forms": {
+          "type": "integer"
+        },
+        "l0_conformance_excluded": {
+          "type": "boolean"
+        },
+        "unscored_rows_excluded": {
+          "type": "boolean"
+        }
+      }
+    },
+    "backend_roles": {
+      "type": "object"
+    },
+    "result_contract": {
+      "type": "object"
+    },
+    "score_gate": {
+      "type": "object"
+    },
+    "baseline_protocol": {
+      "type": "object"
+    },
+    "commands": {
+      "type": "object"
+    },
+    "claim_boundary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

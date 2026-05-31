@@ -1,0 +1,336 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench score denominator manifest",
+  "type": "object",
+  "required": [
+    "date",
+    "release",
+    "status",
+    "summary",
+    "claim_rule",
+    "entry_rows",
+    "form_rows",
+    "evidence_sources"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "release": {
+      "const": "vabench-release-v1"
+    },
+    "status": {
+      "enum": [
+        "disabled_until_full_certification",
+        "disabled_until_score_enablement",
+        "score_enabled"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "planned_entry_count",
+        "release_form_count",
+        "core_entry_count",
+        "support_entry_count",
+        "core_form_count",
+        "support_form_count",
+        "certified_entry_count",
+        "certified_form_count",
+        "benchmark_score_enabled_entry_count",
+        "benchmark_score_enabled_form_count",
+        "scored_entry_count",
+        "scored_form_count",
+        "core_scored_entry_count",
+        "core_scored_form_count",
+        "support_scored_entry_count",
+        "support_scored_form_count",
+        "l0_conformance_counted_in_denominator",
+        "entry_exclusion_reason_counts",
+        "form_exclusion_reason_counts"
+      ],
+      "properties": {
+        "planned_entry_count": {
+          "type": "integer"
+        },
+        "release_form_count": {
+          "type": "integer"
+        },
+        "core_entry_count": {
+          "type": "integer"
+        },
+        "support_entry_count": {
+          "type": "integer"
+        },
+        "core_form_count": {
+          "type": "integer"
+        },
+        "support_form_count": {
+          "type": "integer"
+        },
+        "certified_entry_count": {
+          "type": "integer"
+        },
+        "certified_form_count": {
+          "type": "integer"
+        },
+        "benchmark_score_enabled_entry_count": {
+          "type": "integer"
+        },
+        "benchmark_score_enabled_form_count": {
+          "type": "integer"
+        },
+        "scored_entry_count": {
+          "type": "integer"
+        },
+        "scored_form_count": {
+          "type": "integer"
+        },
+        "core_scored_entry_count": {
+          "type": "integer"
+        },
+        "core_scored_form_count": {
+          "type": "integer"
+        },
+        "support_scored_entry_count": {
+          "type": "integer"
+        },
+        "support_scored_form_count": {
+          "type": "integer"
+        },
+        "l0_conformance_counted_in_denominator": {
+          "type": "integer"
+        },
+        "entry_exclusion_reason_counts": {
+          "type": "object"
+        },
+        "form_exclusion_reason_counts": {
+          "type": "object"
+        }
+      }
+    },
+    "claim_rule": {
+      "type": "object",
+      "required": [
+        "source_of_truth",
+        "denominator_policy",
+        "score_claim_allowed"
+      ],
+      "properties": {
+        "source_of_truth": {
+          "type": "string"
+        },
+        "denominator_policy": {
+          "type": "string"
+        },
+        "score_claim_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "entry_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "level",
+          "track",
+          "difficulty",
+          "category",
+          "base_function",
+          "score_surface",
+          "required_forms",
+          "missing_forms",
+          "release_blockers",
+          "manifest",
+          "certified",
+          "benchmark_score_enabled",
+          "counted_in_score",
+          "exclusion_reasons"
+        ],
+        "properties": {
+          "release_entry_id": {
+            "type": "string"
+          },
+          "level": {
+            "enum": [
+              "L1",
+              "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
+            ]
+          },
+          "category": {
+            "type": "string"
+          },
+          "base_function": {
+            "type": "string"
+          },
+          "score_surface": {
+            "type": "string"
+          },
+          "required_forms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "missing_forms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "release_blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "manifest": {
+            "type": "string"
+          },
+          "certified": {
+            "type": "boolean"
+          },
+          "benchmark_score_enabled": {
+            "type": "boolean"
+          },
+          "counted_in_score": {
+            "type": "boolean"
+          },
+          "exclusion_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "form_rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "release_entry_id",
+          "task_id",
+          "form",
+          "level",
+          "track",
+          "difficulty",
+          "category",
+          "base_function",
+          "score_surface",
+          "manifest",
+          "static",
+          "evas",
+          "spectre",
+          "certified",
+          "benchmark_score_enabled",
+          "counted_in_score",
+          "exclusion_reasons"
+        ],
+        "properties": {
+          "release_entry_id": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "form": {
+            "enum": [
+              "dut",
+              "tb",
+              "bugfix",
+              "e2e"
+            ]
+          },
+          "level": {
+            "enum": [
+              "L1",
+              "L2"
+            ]
+          },
+          "track": {
+            "enum": [
+              "core",
+              "support"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "D1",
+              "D2",
+              "D3"
+            ]
+          },
+          "category": {
+            "type": "string"
+          },
+          "base_function": {
+            "type": "string"
+          },
+          "score_surface": {
+            "type": "string"
+          },
+          "manifest": {
+            "type": "string"
+          },
+          "static": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "evas": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "spectre": {
+            "enum": [
+              "pending",
+              "pass",
+              "fail"
+            ]
+          },
+          "certified": {
+            "type": "boolean"
+          },
+          "benchmark_score_enabled": {
+            "type": "boolean"
+          },
+          "counted_in_score": {
+            "type": "boolean"
+          },
+          "exclusion_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "evidence_sources": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

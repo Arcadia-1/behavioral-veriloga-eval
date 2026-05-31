@@ -38,14 +38,24 @@ def load_env_pairs(env_path: Path) -> dict[str, str]:
     return pairs
 
 
-def resolve_cadence_cshrc(bridge_repo: Path, override: str | None = None) -> str:
+def env_key(key: str, profile: str | None = None) -> str:
+    return f"{key}_{profile}" if profile else key
+
+
+def resolve_cadence_cshrc(bridge_repo: Path, override: str | None = None, profile: str | None = None) -> str:
     override = (override or "").strip()
     if override:
         return override
+    env_val = os.environ.get(env_key("VB_CADENCE_CSHRC", profile), "").strip()
+    if env_val:
+        return env_val
     env_val = os.environ.get("VB_CADENCE_CSHRC", "").strip()
     if env_val:
         return env_val
     bridge_env = load_env_pairs(bridge_repo / ".env")
+    profiled = bridge_env.get(env_key("VB_CADENCE_CSHRC", profile), "").strip()
+    if profiled:
+        return profiled
     return bridge_env.get("VB_CADENCE_CSHRC", "").strip()
 
 
@@ -53,11 +63,17 @@ def bridge_cli_path(bridge_repo: Path) -> Path:
     return bridge_repo / ".venv" / "bin" / "virtuoso-bridge"
 
 
-def resolve_local_port(bridge_repo: Path) -> int:
+def resolve_local_port(bridge_repo: Path, profile: str | None = None) -> int:
+    env_val = os.environ.get(env_key("VB_LOCAL_PORT", profile), "").strip()
+    if env_val.isdigit():
+        return int(env_val)
     env_val = os.environ.get("VB_LOCAL_PORT", "").strip()
     if env_val.isdigit():
         return int(env_val)
     bridge_env = load_env_pairs(bridge_repo / ".env")
+    bridge_port = bridge_env.get(env_key("VB_LOCAL_PORT", profile), "").strip()
+    if bridge_port.isdigit():
+        return int(bridge_port)
     bridge_port = bridge_env.get("VB_LOCAL_PORT", "").strip()
     if bridge_port.isdigit():
         return int(bridge_port)
@@ -145,14 +161,17 @@ def bridge_preflight(
     cadence_cshrc: str | None = None,
     require_daemon: bool = False,
     timeout_s: int = 20,
+    profile: str | None = None,
 ) -> dict:
     bridge_repo = bridge_repo.resolve()
     cli_path = bridge_cli_path(bridge_repo)
-    resolved_cshrc = resolve_cadence_cshrc(bridge_repo, cadence_cshrc)
+    profile = (profile or os.environ.get("BRIDGE_PROFILE", "")).strip() or None
+    resolved_cshrc = resolve_cadence_cshrc(bridge_repo, cadence_cshrc, profile)
 
     preflight = {
         "status": "ok",
         "bridge_repo": str(bridge_repo),
+        "bridge_profile": profile or "",
         "bridge_cli": str(cli_path),
         "cadence_cshrc": resolved_cshrc,
         "require_daemon": require_daemon,
@@ -178,13 +197,16 @@ def bridge_preflight(
     env = os.environ.copy()
     if resolved_cshrc:
         env["VB_CADENCE_CSHRC"] = resolved_cshrc
-    local_port = resolve_local_port(bridge_repo)
+    local_port = resolve_local_port(bridge_repo, profile)
     listener_pids = local_port_listener_pids(local_port)
     manual_tunnel_up = bool(listener_pids) or local_port_listening(local_port)
+    status_cmd = [str(cli_path), "status"]
+    if profile:
+        status_cmd.extend(["-p", profile])
 
     try:
         proc = subprocess.run(
-            [str(cli_path), "status"],
+            status_cmd,
             cwd=str(bridge_repo),
             env=env,
             capture_output=True,
@@ -282,6 +304,7 @@ def _format_summary(preflight: dict) -> str:
     lines = [
         f"status={preflight.get('status')}",
         f"bridge_repo={preflight.get('bridge_repo')}",
+        f"bridge_profile={preflight.get('bridge_profile')}",
         f"tunnel_running={preflight.get('tunnel_running')}",
         f"daemon_ok={preflight.get('daemon_ok')}",
         f"spectre_ok={preflight.get('spectre_ok')}",
@@ -317,6 +340,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Remote Cadence cshrc path used to expose spectre on PATH.",
     )
     ap.add_argument(
+        "--profile",
+        default="",
+        help="Bridge connection profile, e.g. jin or ci. Reads VB_*_<profile> values.",
+    )
+    ap.add_argument(
         "--require-daemon",
         action="store_true",
         help="Treat a disconnected Virtuoso daemon as a hard blocker.",
@@ -332,6 +360,7 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.bridge_repo),
         cadence_cshrc=args.cadence_cshrc or None,
         require_daemon=args.require_daemon,
+        profile=args.profile or None,
     )
     if args.json:
         print(json.dumps(preflight, indent=2))

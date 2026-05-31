@@ -1,0 +1,191 @@
+{
+  "date": "2026-05-24",
+  "release": "vabench-release-v1",
+  "status": "ready",
+  "queue_row_count": 4,
+  "queue_rows_with_ready_primary_bundle": 4,
+  "bundle_count": 5,
+  "ready_bundle_count": 5,
+  "blocked_bundle_count": 0,
+  "form_counts": {
+    "bugfix": 2,
+    "dut": 1,
+    "e2e": 1,
+    "tb": 1
+  },
+  "variant_counts": {
+    "buggy": 1,
+    "fixed": 1,
+    "gold": 3
+  },
+  "blocker_counts": {},
+  "queue_json": "benchmark-vabench-release-v1/reports/ct07_dual_rerun_queue_20260524.json",
+  "staging_root": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524",
+  "bundles": [
+    {
+      "entry_id": "vbr1_l1_element_shuffler",
+      "form": "dut",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_element_shuffler_dut",
+      "checker_task_id": "vbr1_l1_element_shuffler_dut",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_element_shuffler_dut",
+        "vbr1_l1_element_shuffler",
+        "vbm1_element_shuffler_dut",
+        "vbm1_element_shuffler_dut"
+      ],
+      "queue_reason": "ct07_element_shuffler_permutation_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/tb_element_shuffler_ref.scs",
+      "source_includes": [
+        "element_shuffler.va"
+      ],
+      "source_include_origins": {
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/dut/gold/element_shuffler.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold/gold/tb_element_shuffler_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/dut/gold/gold/element_shuffler.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_element_shuffler",
+      "form": "tb",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_element_shuffler_tb",
+      "checker_task_id": "vbr1_l1_element_shuffler_tb",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_element_shuffler_tb",
+        "vbr1_l1_element_shuffler",
+        "vbm1_element_shuffler_tb",
+        "vbm1_element_shuffler_tb"
+      ],
+      "queue_reason": "ct07_element_shuffler_permutation_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/tb_element_shuffler_ref.scs",
+      "source_includes": [
+        "element_shuffler.va"
+      ],
+      "source_include_origins": {
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/tb/gold/element_shuffler.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold/gold/tb_element_shuffler_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/tb/gold/gold/element_shuffler.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_element_shuffler",
+      "form": "bugfix",
+      "variant": "fixed",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_element_shuffler_bugfix",
+      "checker_task_id": "vbr1_l1_element_shuffler_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_element_shuffler_bugfix",
+        "vbr1_l1_element_shuffler",
+        "vbm1_element_shuffler_bugfix",
+        "vbm1_element_shuffler_bugfix"
+      ],
+      "queue_reason": "ct07_element_shuffler_permutation_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_fixed.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed/gold/tb_element_shuffler_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/fixed/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_element_shuffler",
+      "form": "bugfix",
+      "variant": "buggy",
+      "expected_result": "fail",
+      "source_task_id": "vbm1_element_shuffler_bugfix",
+      "checker_task_id": "vbr1_l1_element_shuffler_bugfix",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_element_shuffler_bugfix",
+        "vbr1_l1_element_shuffler",
+        "vbm1_element_shuffler_bugfix",
+        "vbm1_element_shuffler_bugfix"
+      ],
+      "queue_reason": "ct07_element_shuffler_permutation_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/tb_element_shuffler_ref.scs",
+      "source_includes": [
+        "dut_fixed.va"
+      ],
+      "source_include_origins": {
+        "dut_fixed.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/bugfix/gold/dut_buggy.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy/gold/tb_element_shuffler_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/bugfix/buggy/gold/dut_fixed.va"
+      ],
+      "notes": []
+    },
+    {
+      "entry_id": "vbr1_l1_element_shuffler",
+      "form": "e2e",
+      "variant": "gold",
+      "expected_result": "pass",
+      "source_task_id": "vbm1_element_shuffler_e2e",
+      "checker_task_id": "vbr1_l1_element_shuffler_e2e",
+      "checker_available": true,
+      "checker_candidates": [
+        "vbr1_l1_element_shuffler_e2e",
+        "vbr1_l1_element_shuffler",
+        "vbm1_element_shuffler_e2e",
+        "vbm1_element_shuffler_e2e"
+      ],
+      "queue_reason": "ct07_element_shuffler_permutation_refresh",
+      "status": "ready",
+      "blockers": [],
+      "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold",
+      "staged_gold_dir": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold/gold",
+      "source_testbench": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/tb_element_shuffler_ref.scs",
+      "source_includes": [
+        "element_shuffler.va"
+      ],
+      "source_include_origins": {
+        "element_shuffler.va": "benchmark-vabench-release-v1/tasks/CT06_calibration_dem_and_control/vbr1_l1_element_shuffler/forms/e2e/gold/element_shuffler.va"
+      },
+      "staged_testbench": "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold/gold/tb_element_shuffler_ref.scs",
+      "staged_includes": [
+        "benchmark-vabench-release-v1/rerun_staging_ct07_20260524/vbr1_l1_element_shuffler/e2e/gold/gold/element_shuffler.va"
+      ],
+      "notes": []
+    }
+  ],
+  "notes": [
+    "A primary bundle is the gold/fixed runnable task_dir used to turn a pending release form into fresh EVAS/Spectre evidence.",
+    "Bugfix rows also get a buggy companion bundle when dut_buggy.va exists; those bundles are expected to fail the behavioral contract.",
+    "This manifest prepares execution inputs only; it is not EVAS/Spectre pass evidence."
+  ]
+}

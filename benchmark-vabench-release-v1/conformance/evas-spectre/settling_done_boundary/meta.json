@@ -1,0 +1,29 @@
+{
+  "id": "settling_done_boundary",
+  "asset_type": "evas_spectre_conformance",
+  "suite": "evas-spectre",
+  "conformance_axis": "solver-time-sampling",
+  "expected_relation": "binary_outcome_equal",
+  "origin": {
+    "source_main120_id": "vbm1_settling_time_measurement_tb_bugfix",
+    "historical_result": "results/vabench-main-v1-main120-gold-evas-2026-05-08/vbm1_settling_time_measurement_tb_bugfix/evas_result.json"
+  },
+  "minimality_note": "Isolates the strict $abstime > 120 ns boundary on a timer-driven measurement flag; no model repair badcase is claimed.",
+  "counts": {
+    "model_capability": false,
+    "benchmark_coverage": false,
+    "bugfix_claim": false,
+    "broad_parity_denominator": false
+  },
+  "source_files": [
+    "gold/settling_time_measurement_tb.va",
+    "gold/tb_settling_time_measurement_tb_ref.scs"
+  ],
+  "runner_hook": {
+    "required": true,
+    "metric": "done_boundary",
+    "low_sample_time_s": 1.2e-7,
+    "high_sample_time_s": 1.22e-7,
+    "threshold_v": 0.45
+  }
+}

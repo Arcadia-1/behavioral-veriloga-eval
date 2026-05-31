@@ -1,0 +1,22 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "comparator_output_low_before_trip"
+    - "comparator_output_high_after_trip"
+    - "measurement_valid_latches_after_trip"
+    - "trip_voltage_near_inn_plus_offset"
+    - "offset_estimate_near_static_offset"
+    - "measurement_outputs_hold_after_valid"
+
+parity:
+  reference: "spectre"
+  status: "pending"
+  notes:
+    - "Fresh EVAS/Spectre dual rerun required after L2 measurement-flow prompt/checker/gold redesign."

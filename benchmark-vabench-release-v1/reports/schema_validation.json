@@ -1,0 +1,225 @@
+{
+  "date": "2026-05-27",
+  "release": "vabench-release-v1",
+  "status": "pass",
+  "validated_file_count": 1731,
+  "issue_count": 0,
+  "count_issue_count": 0,
+  "count_issues": [],
+  "validations": [
+    {
+      "schema": "package_manifest",
+      "schema_path": "schemas/vabench-package-manifest.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "evaluator_contract",
+      "schema_path": "schemas/vabench-evaluator-contract.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "speed_debug_artifact",
+      "schema_path": "schemas/vabench-speed-debug-artifact.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "baseline_artifact",
+      "schema_path": "schemas/vabench-baseline-artifact.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "paper_artifacts",
+      "schema_path": "schemas/vabench-paper-artifacts.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "claim_gate",
+      "schema_path": "schemas/vabench-claim-gate.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "score_denominator",
+      "schema_path": "schemas/vabench-score-denominator.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "dual_rerun_queue",
+      "schema_path": "schemas/vabench-dual-rerun-queue.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "dual_rerun_staging",
+      "schema_path": "schemas/vabench-dual-rerun-staging.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "dual_rerun_import",
+      "schema_path": "schemas/vabench-dual-rerun-import.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "bridge_diagnostics",
+      "schema_path": "schemas/vabench-bridge-diagnostics.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "external_blockers",
+      "schema_path": "schemas/vabench-external-blockers.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "finish_readiness",
+      "schema_path": "schemas/vabench-finish-readiness.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "completion_audit",
+      "schema_path": "schemas/vabench-completion-audit.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "finish_after_bridge_attempt",
+      "schema_path": "schemas/vabench-finish-after-bridge-attempt.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "conformance_manifest",
+      "schema_path": "schemas/vabench-conformance-manifest.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "artifact_index",
+      "schema_path": "schemas/vabench-artifact-index.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "checksum_manifest",
+      "schema_path": "schemas/vabench-checksum-manifest.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "paper_tables",
+      "schema_path": "schemas/vabench-paper-tables.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "release_task_manifest_sync",
+      "schema_path": "schemas/vabench-release-task-manifest-sync.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "release_status",
+      "schema_path": "schemas/vabench-release-status.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "asset_integrity",
+      "schema_path": "schemas/vabench-asset-integrity.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "static_certification",
+      "schema_path": "schemas/vabench-static-certification.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "dual_certification",
+      "schema_path": "schemas/vabench-dual-certification.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "certification_matrix",
+      "schema_path": "schemas/vabench-certification-matrix.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "remaining_work",
+      "schema_path": "schemas/vabench-remaining-work.schema.json",
+      "file_count": 1,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "release_entry",
+      "schema_path": "schemas/vabench-release-entry.schema.json",
+      "file_count": 79,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "release_task",
+      "schema_path": "schemas/vabench-release-task.schema.json",
+      "file_count": 271,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "evidence",
+      "schema_path": "schemas/vabench-evidence.schema.json",
+      "file_count": 542,
+      "failure_count": 0,
+      "failures": []
+    },
+    {
+      "schema": "result",
+      "schema_path": "schemas/vabench-release-result.schema.json",
+      "file_count": 813,
+      "failure_count": 0,
+      "failures": []
+    }
+  ],
+  "notes": [
+    "This report validates release entry, release task, evidence, and result JSON against release schemas.",
+    "Schema validity does not imply EVAS/Spectre certification; claim gates remain in paper_artifacts.json and completion_audit.json."
+  ]
+}

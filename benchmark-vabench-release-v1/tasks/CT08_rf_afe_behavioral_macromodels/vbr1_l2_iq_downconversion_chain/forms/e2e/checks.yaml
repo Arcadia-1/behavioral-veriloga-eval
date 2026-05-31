@@ -1,0 +1,21 @@
+syntax:
+  must_include:
+    - "transition("
+    - "@(cross("
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "quadrature_iq_phase_sequence"
+    - "i_and_q_outputs_are_distinct"
+    - "common_mode_hold_when_input_centered"
+parity:
+  reference: "spectre"
+  status: "certified"
+  notes:
+    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."

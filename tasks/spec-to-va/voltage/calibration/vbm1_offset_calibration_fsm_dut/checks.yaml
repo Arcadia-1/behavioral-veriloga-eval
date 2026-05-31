@@ -1,0 +1,21 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "trim_increases_on_high_comparator"
+    - "trim_decreases_on_low_comparator"
+    - "trim_recovers_on_late_high_comparator"
+    - "trim_clamped"
+parity:
+  required: true
+  tolerance_notes: "Use fixed post-clock sample windows."

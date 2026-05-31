@@ -1,0 +1,22 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "fixed_time_active_output_sequence_at_20_40_60_80_100_120ns"
+    - "expected_sequence_1_2_3_0_1_2"
+bugfix:
+  buggy_expected: "FAIL_SIM_CORRECTNESS"
+  fixed_expected: "PASS"
+  reconstruction_note: "Single-root-cause badcase: direct state-to-output mapping omits the shuffled output assignment."
+parity:
+  required: true
+  tolerance_notes: "Sequence assertions use safe-time samples away from clock edges."

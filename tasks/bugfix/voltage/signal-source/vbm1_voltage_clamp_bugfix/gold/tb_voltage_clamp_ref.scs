@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "dut_fixed.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0
+Vsig (raw_level 0) vsource type=pwl wave=[ 0 0.0 25n 0.1 50n 0.45 75n 0.85 100n 0.9 120n 0.35 ]
+
+XDUT (raw_level vdd vss clamped_level) voltage_clamp
+
+tran tran stop=120n maxstep=500p
+save raw_level clamped_level
