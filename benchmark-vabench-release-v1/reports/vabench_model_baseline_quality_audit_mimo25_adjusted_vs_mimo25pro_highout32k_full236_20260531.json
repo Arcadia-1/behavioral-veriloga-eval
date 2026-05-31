@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-31T11:40:18.830853+00:00",
+  "generated_at": "2026-05-31T11:42:36.448266+00:00",
   "models": [
-    "mimo-v2.5",
+    "mimo-v2.5-adjusted",
     "mimo-v2.5-pro-highout32k"
   ],
   "sources": {
-    "mimo-v2.5": "benchmark-vabench-release-v1/reports/mimo_v25_full236_dual_triage_20260530.json",
+    "mimo-v2.5-adjusted": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_adjusted_current_20260531.json",
     "mimo-v2.5-pro-highout32k": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_20260531.json"
   },
   "summary": {
@@ -14,15 +14,14 @@
   },
   "model_summaries": [
     {
-      "model": "mimo-v2.5",
+      "model": "mimo-v2.5-adjusted",
       "total_rows": 236,
       "strict_dual_pass_rows": 85,
       "strict_dual_pass_rate_pct": 36.02,
       "axis_counts": {
-        "evas_spectre_mismatch": 5,
         "generation": 2,
         "model_behavior": 68,
-        "model_dut_compile": 47,
+        "model_dut_compile": 52,
         "model_spectre_ahdl_compile": 19,
         "model_spectre_elab_or_topology": 2,
         "model_spectre_tb_source": 2,
@@ -162,7 +161,7 @@
   },
   "difficulty_audit": [
     {
-      "model": "mimo-v2.5",
+      "model": "mimo-v2.5-adjusted",
       "D1_pass_rate_pct": 61.11,
       "D1_rows": 36,
       "D2_pass_rate_pct": 30.0,
@@ -197,7 +196,7 @@
       "behavior_ready_pass_rows": 37,
       "behavior_ready_pass_rate_pct": 77.08,
       "non_model_or_inconclusive_rows": 1,
-      "model": "mimo-v2.5"
+      "model": "mimo-v2.5-adjusted"
     },
     {
       "form": "dut",
@@ -209,7 +208,7 @@
       "behavior_ready_pass_rows": 12,
       "behavior_ready_pass_rate_pct": 66.67,
       "non_model_or_inconclusive_rows": 1,
-      "model": "mimo-v2.5"
+      "model": "mimo-v2.5-adjusted"
     },
     {
       "form": "e2e",
@@ -221,7 +220,7 @@
       "behavior_ready_pass_rows": 3,
       "behavior_ready_pass_rate_pct": 10.34,
       "non_model_or_inconclusive_rows": 0,
-      "model": "mimo-v2.5"
+      "model": "mimo-v2.5-adjusted"
     },
     {
       "form": "tb",
@@ -233,7 +232,7 @@
       "behavior_ready_pass_rows": 33,
       "behavior_ready_pass_rate_pct": 56.9,
       "non_model_or_inconclusive_rows": 0,
-      "model": "mimo-v2.5"
+      "model": "mimo-v2.5-adjusted"
     },
     {
       "form": "bugfix",
@@ -298,7 +297,7 @@
       "common_artifact_or_protocol_fail_rows": 9,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -314,7 +313,7 @@
       "common_artifact_or_protocol_fail_rows": 8,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -327,10 +326,10 @@
       "first_pass_rate_pct": 19.23,
       "second_pass_rate_pct": 23.08,
       "common_behavior_fail_rows": 8,
-      "common_artifact_or_protocol_fail_rows": 10,
+      "common_artifact_or_protocol_fail_rows": 11,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -346,7 +345,7 @@
       "common_artifact_or_protocol_fail_rows": 5,
       "risk_label": "balanced",
       "recommended_action": "Keep as normal benchmark coverage; inspect row-level failures only if paper wording overclaims.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -362,7 +361,7 @@
       "common_artifact_or_protocol_fail_rows": 11,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -378,7 +377,7 @@
       "common_artifact_or_protocol_fail_rows": 12,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -394,7 +393,7 @@
       "common_artifact_or_protocol_fail_rows": 6,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     },
     {
@@ -410,7 +409,7 @@
       "common_artifact_or_protocol_fail_rows": 5,
       "risk_label": "protocol_noise_sensitive",
       "recommended_action": "Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.",
-      "first_model": "mimo-v2.5",
+      "first_model": "mimo-v2.5-adjusted",
       "second_model": "mimo-v2.5-pro-highout32k"
     }
   ],
@@ -422,11 +421,11 @@
       "form": "bugfix",
       "category": "RF and AFE Behavioral Macromodels",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.250011668656018e-05, \"max_nrmse\": 4.8018519087464e-06, \"max_relative_rms_error\": 4.8018519087464e-06, \"max_rmse_v\": 3.6013889315598e-06, \"mean_nrmse\": 1.6969830177744142e-06, \"mean_relativ...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.250011668656018e-05, \"max_nrmse\": 4.8018519087464e-06, \"max_relative_rms_error\": 4.8018519087464e-06, \"max_rmse_v\": 3.6013889315598e-06, \"mean_nrmse\": 1.6969830177744142e-06, \"mean_relativ...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 6.249493097459924e-05, \"max_nrmse\": 1.3044521645445414e-05, \"max_relative_rms_error\": 1.3044521645445414e-05, \"max_rmse_v\": 9.78339123408406e-06, \"mean_nrmse\": 5.018618309330382e-06, \"mean_r..."
     },
     {
@@ -436,11 +435,11 @@
       "form": "tb",
       "category": "RF and AFE Behavioral Macromodels",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.250011668656018e-05, \"max_nrmse\": 4.801851909013969e-06, \"max_relative_rms_error\": 4.801851909013969e-06, \"max_rmse_v\": 3.601388931760477e-06, \"mean_nrmse\": 1.5239502894956893e-06, \"mean_r...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.250011668656018e-05, \"max_nrmse\": 4.801851909013969e-06, \"max_relative_rms_error\": 4.801851909013969e-06, \"max_rmse_v\": 3.601388931760477e-06, \"mean_nrmse\": 1.5239502894956893e-06, \"mean_r...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.250011668656018e-05, \"max_nrmse\": 4.801851909013969e-06, \"max_relative_rms_error\": 4.801851909013969e-06, \"max_rmse_v\": 3.601388931760477e-06, \"mean_nrmse\": 1.5239502894956893e-06, \"mean_r..."
     },
     {
@@ -450,11 +449,11 @@
       "form": "tb",
       "category": "RF and AFE Behavioral Macromodels",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00010276576447842967, \"max_nrmse\": 6.977379045996347e-06, \"max_relative_rms_error\": 6.977379045996347e-06, \"max_rmse_v\": 5.735405575808997e-06, \"mean_nrmse\": 1.3954758099515683e-06, \"mean_...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00010276576447842967, \"max_nrmse\": 6.977379045996347e-06, \"max_relative_rms_error\": 6.977379045996347e-06, \"max_rmse_v\": 5.735405575808997e-06, \"mean_nrmse\": 1.3954758099515683e-06, \"mean_...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00010276576447842967, \"max_nrmse\": 6.977379045996347e-06, \"max_relative_rms_error\": 6.977379045996347e-06, \"max_rmse_v\": 5.735405575808997e-06, \"mean_nrmse\": 1.3954758099515683e-06, \"mean_..."
     },
     {
@@ -464,11 +463,11 @@
       "form": "bugfix",
       "category": "Data Converter Models",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 3e-07], \"max_abs_v\": 2.2494697525798912e-05, \"max_nrmse\": 4.994592242044036e-06, \"max_relative_rms_error\": 4.994592242044036e-06, \"max_rmse_v\": 8.990266035679267e-07, \"mean_nrmse\": 8.324320405224355e-07, \"mean_r...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 3e-07], \"max_abs_v\": 2.2494697525798912e-05, \"max_nrmse\": 4.994592242044036e-06, \"max_relative_rms_error\": 4.994592242044036e-06, \"max_rmse_v\": 8.990266035679267e-07, \"mean_nrmse\": 8.324320405224355e-07, \"mean_r...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 3e-07], \"max_abs_v\": 2.2494697525798912e-05, \"max_nrmse\": 4.994592242044036e-06, \"max_relative_rms_error\": 4.994592242044036e-06, \"max_rmse_v\": 8.990266035679267e-07, \"mean_nrmse\": 8.324320405224355e-07, \"mean_r..."
     },
     {
@@ -478,11 +477,11 @@
       "form": "e2e",
       "category": "Data Converter Models",
       "reason": "D1 row failed by both baselines; check whether the task is under-specified, mislabeled, or genuinely not basic.",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "evas_spectre_mismatch",
-      "mimo-v2.5_family": "converter_code_or_transfer_behavior",
+      "mimo-v2.5-adjusted_family": "converter_code_or_transfer_behavior",
       "mimo-v2.5-pro-highout32k_family": "spectre_rejects_evas_accepted_candidate",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (SFE-1997):"
     },
     {
@@ -492,11 +491,11 @@
       "form": "tb",
       "category": "Baseband Signal Conditioning",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.0002828062724473668, \"max_nrmse\": 2.110592847694592e-05, \"max_relative_rms_error\": 2.110592847694592e-05, \"max_rmse_v\": 1.8995335629251327e-05, \"mean_nrmse\": 5.193860845850648e-06, \"mean_r...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.0002828062724473668, \"max_nrmse\": 2.110592847694592e-05, \"max_relative_rms_error\": 2.110592847694592e-05, \"max_rmse_v\": 1.8995335629251327e-05, \"mean_nrmse\": 5.193860845850648e-06, \"mean_r...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.0002828062724473668, \"max_nrmse\": 2.110592847694592e-05, \"max_relative_rms_error\": 2.110592847694592e-05, \"max_rmse_v\": 1.8995335629251327e-05, \"mean_nrmse\": 5.193860845850648e-06, \"mean_r..."
     },
     {
@@ -506,11 +505,11 @@
       "form": "e2e",
       "category": "Comparator and Decision Circuits",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 1.0, \"max_nrmse\": 0.004166666666666667, \"max_relative_rms_error\": 0.004166666666666667, \"max_rmse_v\": 0.06454972243679027, \"mean_nrmse\": 0.001388888888888889, \"mean_relative_rms_error\": 0.00...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 1.0, \"max_nrmse\": 0.004166666666666667, \"max_relative_rms_error\": 0.004166666666666667, \"max_rmse_v\": 0.06454972243679027, \"mean_nrmse\": 0.001388888888888889, \"mean_relative_rms_error\": 0.00...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 0.0, \"max_nrmse\": 0.0, \"max_relative_rms_error\": 0.0, \"max_rmse_v\": 0.0, \"mean_nrmse\": 0.0, \"mean_relative_rms_error\": 0.0, \"per_signal\": {\"inn\": {\"best_lag_s\": 0.0, \"best_lag_samples\": 0, \"..."
     },
     {
@@ -520,11 +519,11 @@
       "form": "tb",
       "category": "Comparator and Decision Circuits",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 0.0, \"max_nrmse\": 0.0, \"max_relative_rms_error\": 0.0, \"max_rmse_v\": 0.0, \"mean_nrmse\": 0.0, \"mean_relative_rms_error\": 0.0, \"per_signal\": {\"inn\": {\"best_lag_s\": 0.0, \"best_lag_samples\": 0, \"...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 0.0, \"max_nrmse\": 0.0, \"max_relative_rms_error\": 0.0, \"max_rmse_v\": 0.0, \"mean_nrmse\": 0.0, \"mean_relative_rms_error\": 0.0, \"per_signal\": {\"inn\": {\"best_lag_s\": 0.0, \"best_lag_samples\": 0, \"...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 1e-07], \"max_abs_v\": 0.0, \"max_nrmse\": 0.0, \"max_relative_rms_error\": 0.0, \"max_rmse_v\": 0.0, \"mean_nrmse\": 0.0, \"mean_relative_rms_error\": 0.0, \"per_signal\": {\"inn\": {\"best_lag_s\": 0.0, \"best_lag_samples\": 0, \"..."
     },
     {
@@ -534,11 +533,11 @@
       "form": "tb",
       "category": "PLL Clock and Timing Systems",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"failures\": [], \"metrics\": {\"disturb_lock_window_delta\": 7.12198020313276e-05, \"evas\": {\"disturb_lock_high_frac\": 0.10393333333333309, \"late_edge_ratio\": 0.987012987012987, \"late_fb_freq_hz\": 50181145.96572816, \"late_vctrl_mean_v\": 0.46...",
+      "mimo-v2.5-adjusted_evidence": "{\"failures\": [], \"metrics\": {\"disturb_lock_window_delta\": 7.12198020313276e-05, \"evas\": {\"disturb_lock_high_frac\": 0.10393333333333309, \"late_edge_ratio\": 0.987012987012987, \"late_fb_freq_hz\": 50181145.96572816, \"late_vctrl_mean_v\": 0.46...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"failures\": [], \"metrics\": {\"disturb_lock_window_delta\": 4.553135364501748e-06, \"evas\": {\"disturb_lock_high_frac\": 0.10399999999999991, \"late_edge_ratio\": 0.987012987012987, \"late_fb_freq_hz\": 50227046.18887759, \"late_vctrl_mean_v\": 0.4..."
     },
     {
@@ -548,11 +547,11 @@
       "form": "tb",
       "category": "Data Converter Models",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8.6e-08], \"max_abs_v\": 9.880984919163893e-15, \"max_nrmse\": 6.456933124621693e-16, \"max_relative_rms_error\": 6.456933124621693e-16, \"max_rmse_v\": 5.084834835639583e-16, \"mean_nrmse\": 5.380777603851411e-17, \"mean_...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8.6e-08], \"max_abs_v\": 9.880984919163893e-15, \"max_nrmse\": 6.456933124621693e-16, \"max_relative_rms_error\": 6.456933124621693e-16, \"max_rmse_v\": 5.084834835639583e-16, \"mean_nrmse\": 5.380777603851411e-17, \"mean_...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8.6e-08], \"max_abs_v\": 0.0, \"max_nrmse\": 0.0, \"max_relative_rms_error\": 0.0, \"max_rmse_v\": 0.0, \"mean_nrmse\": 0.0, \"mean_relative_rms_error\": 0.0, \"per_signal\": {\"clk\": {\"best_lag_s\": 0.0, \"best_lag_samples\": 0,..."
     },
     {
@@ -562,11 +561,11 @@
       "form": "tb",
       "category": "RF and AFE Behavioral Macromodels",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.274239696251293e-05, \"max_nrmse\": 1.3501941852155422e-05, \"max_relative_rms_error\": 1.3501941852155422e-05, \"max_rmse_v\": 9.11381075020491e-06, \"mean_nrmse\": 5.379985661409555e-06, \"mean_r...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.274239696251293e-05, \"max_nrmse\": 1.3501941852155422e-05, \"max_relative_rms_error\": 1.3501941852155422e-05, \"max_rmse_v\": 9.11381075020491e-06, \"mean_nrmse\": 5.379985661409555e-06, \"mean_r...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 5.274239696251293e-05, \"max_nrmse\": 1.3501941852155422e-05, \"max_relative_rms_error\": 1.3501941852155422e-05, \"max_rmse_v\": 9.11381075020491e-06, \"mean_nrmse\": 5.379985661409555e-06, \"mean_r..."
     },
     {
@@ -576,11 +575,11 @@
       "form": "tb",
       "category": "Bias Reference and Power Management",
       "reason": "D3 row passed by both baselines; check whether it is truly integration-level or over-labeled.",
-      "mimo-v2.5_axis": "pass",
+      "mimo-v2.5-adjusted_axis": "pass",
       "mimo-v2.5-pro-highout32k_axis": "pass",
-      "mimo-v2.5_family": "strict_dual_pass",
+      "mimo-v2.5-adjusted_family": "strict_dual_pass",
       "mimo-v2.5-pro-highout32k_family": "strict_dual_pass",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00011250025000429653, \"max_nrmse\": 6.995964727242288e-06, \"max_relative_rms_error\": 6.995964727242288e-06, \"max_rmse_v\": 6.2963682545180596e-06, \"mean_nrmse\": 2.550917206252595e-06, \"mean_...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00011250025000429653, \"max_nrmse\": 6.995964727242288e-06, \"max_relative_rms_error\": 6.995964727242288e-06, \"max_rmse_v\": 6.2963682545180596e-06, \"mean_nrmse\": 2.550917206252595e-06, \"mean_...",
       "mimo-v2.5-pro-highout32k_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 0.00011250025000429653, \"max_nrmse\": 6.995964727242288e-06, \"max_relative_rms_error\": 6.995964727242288e-06, \"max_rmse_v\": 6.2963682545180596e-06, \"mean_nrmse\": 2.550917206252595e-06, \"mean_..."
     }
   ],
@@ -591,11 +590,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "baseband_dynamic_behavior",
+      "mimo-v2.5-adjusted_family": "baseband_dynamic_behavior",
       "mimo-v2.5-pro-highout32k_family": "baseband_dynamic_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -604,11 +603,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_elab_or_topology",
+      "mimo-v2.5-adjusted_axis": "model_spectre_elab_or_topology",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "spectre_elaboration_parameter_or_topology_reject",
+      "mimo-v2.5-adjusted_family": "spectre_elaboration_parameter_or_topology_reject",
       "mimo-v2.5-pro-highout32k_family": "guarded_transition_contribution",
-      "mimo-v2.5_evidence": "spectre_failed rc=1",
+      "mimo-v2.5-adjusted_evidence": "spectre_failed rc=1",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2143): \"higher_order_filter.va\", line 18: Encountered the"
     },
     {
@@ -617,11 +616,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "guarded_transition_contribution",
+      "mimo-v2.5-adjusted_family": "guarded_transition_contribution",
       "mimo-v2.5-pro-highout32k_family": "veriloga_embedded_declaration",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"env_val = env_val - ((env_val - rect_val) * $realtime",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"env_val = env_val - ((env_val - rect_val) * $realtime",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-1917): \"precision_rectifier_envelope_detector.va\", line 26:"
     },
     {
@@ -630,11 +629,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "baseband_dynamic_behavior",
+      "mimo-v2.5-adjusted_family": "baseband_dynamic_behavior",
       "mimo-v2.5-pro-highout32k_family": "baseband_dynamic_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:rectifier_positive_half_not_rectified=0.447"
     },
     {
@@ -643,11 +642,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "restricted_analog_operator_placement",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"parameter real vcm = 0.5 from (0:0.001:<<--? 1.0);\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"parameter real vcm = 0.5 from (0:0.001:<<--? 1.0);\"",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2146): \"programmable_gain_amplifier.va\", line 39: Encountered"
     },
     {
@@ -656,11 +655,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "guarded_transition_contribution",
+      "mimo-v2.5-adjusted_family": "guarded_transition_contribution",
       "mimo-v2.5-pro-highout32k_family": "baseband_dynamic_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2143): \"resettable_integrator.va\", line 23: Encountered the",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2143): \"resettable_integrator.va\", line 23: Encountered the",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -669,11 +668,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "guarded_transition_contribution",
+      "mimo-v2.5-adjusted_family": "guarded_transition_contribution",
       "mimo-v2.5-pro-highout32k_family": "guarded_transition_contribution",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2143): \"resettable_integrator.va\", line 41: Encountered the",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2143): \"resettable_integrator.va\", line 41: Encountered the",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2143): \"resettable_integrator.va\", line 14: Encountered the"
     },
     {
@@ -682,11 +681,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "veriloga_embedded_declaration",
+      "mimo-v2.5-adjusted_family": "veriloga_embedded_declaration",
       "mimo-v2.5-pro-highout32k_family": "veriloga_embedded_declaration",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1917): \"slew_rate_limiter.va\", line 23: Encountered an",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1917): \"slew_rate_limiter.va\", line 23: Encountered an",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-1917): \"slew_rate_limiter.va\", line 15: Encountered an"
     },
     {
@@ -695,11 +694,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "guarded_transition_contribution",
+      "mimo-v2.5-adjusted_family": "guarded_transition_contribution",
       "mimo-v2.5-pro-highout32k_family": "baseband_dynamic_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2143): \"slew_rate_limiter.va\", line 29: Encountered the",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2143): \"slew_rate_limiter.va\", line 29: Encountered the",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:slew_samples=0.450,0.150,0.000,0.000,0.000 input_sequence=False rising_limited=False high_reached=False falling_limited=False low_reached=False not_passthrough=False"
     },
     {
@@ -708,11 +707,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "bugfix",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "baseband_dynamic_behavior",
+      "mimo-v2.5-adjusted_family": "baseband_dynamic_behavior",
       "mimo-v2.5-pro-highout32k_family": "baseband_dynamic_behavior",
-      "mimo-v2.5_evidence": "spectre:soft_limiter_metric_not_stateful high=0.000/0.000 low=0.000/0.000",
+      "mimo-v2.5-adjusted_evidence": "spectre:soft_limiter_metric_not_stateful high=0.000/0.000 low=0.000/0.000",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:soft_limiter_metric_not_stateful high=0.526/0.450 low=0.376/0.483"
     },
     {
@@ -721,11 +720,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "other_compile_failure",
+      "mimo-v2.5-adjusted_family": "other_compile_failure",
       "mimo-v2.5-pro-highout32k_family": "guarded_transition_contribution",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1552): \"soft_hysteretic_limiter.va\", line 34: Encountered",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1552): \"soft_hysteretic_limiter.va\", line 34: Encountered",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2143): \"soft_hysteretic_limiter.va\", line 68: Encountered the"
     },
     {
@@ -734,11 +733,11 @@
       "category": "Baseband Signal Conditioning",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_spectre_ahdl_compile",
-      "mimo-v2.5_family": "baseband_dynamic_behavior",
+      "mimo-v2.5-adjusted_family": "baseband_dynamic_behavior",
       "mimo-v2.5-pro-highout32k_family": "spectre_ahdl_syntax_scope_or_operator_reject",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (SFE-23):"
     },
     {
@@ -747,11 +746,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "bugfix",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "reference_power_behavior",
+      "mimo-v2.5-adjusted_family": "reference_power_behavior",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "spectre:bandgap_brownout_not_reset=0.550",
+      "mimo-v2.5-adjusted_evidence": "spectre:bandgap_brownout_not_reset=0.550",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:bandgap_brownout_not_reset=0.550"
     },
     {
@@ -760,11 +759,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"task update_state;<<--? \"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"task update_state;<<--? \"",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:bandgap_brownout_not_reset=0.550"
     },
     {
@@ -773,11 +772,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - v_threshold)<<--? ) begin\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - v_threshold)<<--? ) begin\"",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -786,11 +785,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "reference_power_behavior",
+      "mimo-v2.5-adjusted_family": "reference_power_behavior",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -799,11 +798,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "bugfix",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "reference_power_behavior",
+      "mimo-v2.5-adjusted_family": "reference_power_behavior",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -812,11 +811,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_spectre_ahdl_compile",
-      "mimo-v2.5_family": "other_compile_failure",
+      "mimo-v2.5-adjusted_family": "other_compile_failure",
       "mimo-v2.5-pro-highout32k_family": "spectre_ahdl_syntax_scope_or_operator_reject",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"parameter real nominal_voltage = 0.6 from (0.0,<<--?",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"parameter real nominal_voltage = 0.6 from (0.0,<<--?",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2212): \"ldo_regulator_macro_model.va\", line 53: Encountered"
     },
     {
@@ -825,11 +824,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "reference_power_behavior",
+      "mimo-v2.5-adjusted_family": "reference_power_behavior",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -838,11 +837,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "unsupported_event_variable_or_wait",
+      "mimo-v2.5-adjusted_family": "unsupported_event_variable_or_wait",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"initial<<--? step begin\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"initial<<--? step begin\"",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:por_initial_not_asserted=0.000"
     },
     {
@@ -851,11 +850,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - threshold)<<--? ) begin\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - threshold)<<--? ) begin\"",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:por_not_released=1.000"
     },
     {
@@ -864,11 +863,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "unsupported_event_variable_or_wait",
+      "mimo-v2.5-adjusted_family": "unsupported_event_variable_or_wait",
       "mimo-v2.5-pro-highout32k_family": "veriloga_embedded_declaration",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1743): \"ptat_ctat_reference_generator.va\", line 12:",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1743): \"ptat_ctat_reference_generator.va\", line 12:",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2143): \"ptat_ctat_reference_generator.va\", line 26:"
     },
     {
@@ -877,11 +876,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "reference_power_behavior",
+      "mimo-v2.5-adjusted_family": "reference_power_behavior",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "spectre:ptat_metric_not_monotonic cold=0.000 hot=0.000",
+      "mimo-v2.5-adjusted_evidence": "spectre:ptat_metric_not_monotonic cold=0.000 hot=0.000",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -890,11 +889,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "parity",
+      "mimo-v2.5-adjusted_axis": "parity",
       "mimo-v2.5-pro-highout32k_axis": "evas_spectre_mismatch",
-      "mimo-v2.5_family": "waveform_parity_gate",
+      "mimo-v2.5-adjusted_family": "waveform_parity_gate",
       "mimo-v2.5-pro-highout32k_family": "spectre_pass_evas_fail_behavior",
-      "mimo-v2.5_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 1.0, \"max_nrmse\": 0.3308238846211788, \"max_relative_rms_error\": 0.3308238846211788, \"max_rmse_v\": 0.5, \"mean_nrmse\": 0.11799811178549109, \"mean_relative_rms_error\": 0.11799811178549109, \"per...",
+      "mimo-v2.5-adjusted_evidence": "{\"common_window_s\": [0.0, 8e-08], \"max_abs_v\": 1.0, \"max_nrmse\": 0.3308238846211788, \"max_relative_rms_error\": 0.3308238846211788, \"max_rmse_v\": 0.5, \"mean_nrmse\": 0.11799811178549109, \"mean_relative_rms_error\": 0.11799811178549109, \"per...",
       "mimo-v2.5-pro-highout32k_evidence": "ptat_metric_not_monotonic cold=0.000 hot=0.000"
     },
     {
@@ -903,11 +902,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D3",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - 0.5,<<--? 1)) begin\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1552): \"@(cross(rst - 0.5,<<--? 1)) begin\"",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -916,11 +915,11 @@
       "category": "Bias Reference and Power Management",
       "difficulty": "D3",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "veriloga_embedded_declaration",
+      "mimo-v2.5-adjusted_family": "veriloga_embedded_declaration",
       "mimo-v2.5-pro-highout32k_family": "reference_power_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1917): \"reference_startup_enable_flow.va\", line 91:",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1917): \"reference_startup_enable_flow.va\", line 91:",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -929,11 +928,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_dut_compile",
-      "mimo-v2.5_family": "veriloga_embedded_declaration",
+      "mimo-v2.5-adjusted_family": "veriloga_embedded_declaration",
       "mimo-v2.5-pro-highout32k_family": "veriloga_embedded_declaration",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1917): \"calibration_deadband_controller.va\", line 31:",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1917): \"calibration_deadband_controller.va\", line 31:",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-1917): \"calibration_deadband_controller.va\", line 40:"
     },
     {
@@ -942,11 +941,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "veriloga_embedded_declaration",
+      "mimo-v2.5-adjusted_family": "veriloga_embedded_declaration",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1917): \"calibration_deadband_controller.va\", line 36:",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1917): \"calibration_deadband_controller.va\", line 36:",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -955,11 +954,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "model_spectre_tb_source",
+      "mimo-v2.5-adjusted_axis": "model_spectre_tb_source",
       "mimo-v2.5-pro-highout32k_axis": "evas_spectre_mismatch",
-      "mimo-v2.5_family": "spectre_tb_source_or_waveform_reject",
+      "mimo-v2.5-adjusted_family": "spectre_tb_source_or_waveform_reject",
       "mimo-v2.5-pro-highout32k_family": "spectre_pass_evas_fail_behavior",
-      "mimo-v2.5_evidence": "ERROR (CMI-2194): Vvin: Waveform type must be specified if any waveform",
+      "mimo-v2.5-adjusted_evidence": "ERROR (CMI-2194): Vvin: Waveform type must be specified if any waveform",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -968,11 +967,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_tb_compile",
+      "mimo-v2.5-adjusted_axis": "model_tb_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_tb_compile",
-      "mimo-v2.5_family": "unsupported_event_variable_or_wait",
+      "mimo-v2.5-adjusted_family": "unsupported_event_variable_or_wait",
       "mimo-v2.5-pro-highout32k_family": "guarded_transition_contribution",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2157): \"v2b_4b.va\", line 46: Encountered a contribution",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2157): \"v2b_4b.va\", line 46: Encountered a contribution",
       "mimo-v2.5-pro-highout32k_evidence": "ERROR (VACOMP-2143): \"v2b_4b.va\", line 40: Encountered the `transition'"
     },
     {
@@ -981,11 +980,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_tb_compile",
+      "mimo-v2.5-adjusted_axis": "model_tb_compile",
       "mimo-v2.5-pro-highout32k_axis": "generation",
-      "mimo-v2.5_family": "guarded_transition_contribution",
+      "mimo-v2.5-adjusted_family": "guarded_transition_contribution",
       "mimo-v2.5-pro-highout32k_family": "incomplete_generation",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-1192): \"V(cell_en_o[i])<<--? <+ transition(0, 0, 1n, 1n);\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-1192): \"V(cell_en_o[i])<<--? <+ transition(0, 0, 1n, 1n);\"",
       "mimo-v2.5-pro-highout32k_evidence": "no_code_extracted"
     },
     {
@@ -994,11 +993,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "calibration_control_behavior",
+      "mimo-v2.5-adjusted_family": "calibration_control_behavior",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -1007,11 +1006,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "bugfix",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "calibration_control_behavior",
+      "mimo-v2.5-adjusted_family": "calibration_control_behavior",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "spectre:active_sequence=0,3,1,2,0,3 expected=2,0,3,1,2,0 failures=20ns_active=[0]_expected=2 40ns_active=[3]_expected=0 60ns_active=[1]_expected=3 80ns_active=[2]_expected=1 100ns_active=[0]_expected=2 120ns_active=[3]_expected=0",
+      "mimo-v2.5-adjusted_evidence": "spectre:active_sequence=0,3,1,2,0,3 expected=2,0,3,1,2,0 failures=20ns_active=[0]_expected=2 40ns_active=[3]_expected=0 60ns_active=[1]_expected=3 80ns_active=[2]_expected=1 100ns_active=[0]_expected=2 120ns_active=[3]_expected=0",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:active_sequence=2,0,2,0,2,0 expected=2,0,3,1,2,0 failures=60ns_active=[2]_expected=3 80ns_active=[0]_expected=1"
     },
     {
@@ -1020,11 +1019,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "model_dut_compile",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "unsupported_event_variable_or_wait",
+      "mimo-v2.5-adjusted_family": "unsupported_event_variable_or_wait",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"out out0<<--? , out1, out2, out3;\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"out out0<<--? , out1, out2, out3;\"",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:active_sequence=1,2,3,0,1,2 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns_active=[2]_expected=0 80ns_active=[0]_expected=1 100ns_active=[1]_expected=2 120ns_active=[2]_expected=0"
     },
     {
@@ -1033,11 +1032,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2259): \"initial<<--? state = 0;\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2259): \"initial<<--? state = 0;\"",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:active_sequence=-,2,0,3,1,2 expected=2,0,3,1,2,0 failures=20ns_active=[]_expected=2 40ns_active=[2]_expected=0 60ns_active=[0]_expected=3 80ns_active=[3]_expected=1 100ns_active=[1]_expected=2 120ns_active=[2]_expected=0"
     },
     {
@@ -1046,11 +1045,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "calibration_control_behavior",
+      "mimo-v2.5-adjusted_family": "calibration_control_behavior",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "spectre:active_sequence=1,1,1,1,1,1 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns_active=[1]_expected=0 60ns_active=[1]_expected=3 100ns_active=[1]_expected=2 120ns_active=[1]_expected=0",
+      "mimo-v2.5-adjusted_evidence": "spectre:active_sequence=1,1,1,1,1,1 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns_active=[1]_expected=0 60ns_active=[1]_expected=3 100ns_active=[1]_expected=2 120ns_active=[1]_expected=0",
       "mimo-v2.5-pro-highout32k_evidence": "spectre:active_sequence=1,2,0,3,1,2 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns_active=[2]_expected=0 60ns_active=[0]_expected=3 80ns_active=[3]_expected=1 100ns_active=[1]_expected=2 120ns_active=[2]_expected=0"
     },
     {
@@ -1059,11 +1058,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "calibration_control_behavior",
+      "mimo-v2.5-adjusted_family": "calibration_control_behavior",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -1072,11 +1071,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "tb",
-      "mimo-v2.5_axis": "model_behavior",
+      "mimo-v2.5-adjusted_axis": "model_behavior",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "calibration_control_behavior",
+      "mimo-v2.5-adjusted_family": "calibration_control_behavior",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "FAIL_SIM_CORRECTNESS",
+      "mimo-v2.5-adjusted_evidence": "FAIL_SIM_CORRECTNESS",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -1085,11 +1084,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "dut",
-      "mimo-v2.5_axis": "evas_spectre_mismatch",
+      "mimo-v2.5-adjusted_axis": "model_dut_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_rejects_evas_accepted_candidate",
+      "mimo-v2.5-adjusted_family": "unsupported_event_variable_or_wait",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2177): \"parameter real initial_step<<--? = 0.45;\"",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2177): \"parameter real initial_step<<--? = 0.45;\"",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     },
     {
@@ -1098,11 +1097,11 @@
       "category": "Calibration, DEM, and Control",
       "difficulty": "D2",
       "form": "e2e",
-      "mimo-v2.5_axis": "model_spectre_ahdl_compile",
+      "mimo-v2.5-adjusted_axis": "model_spectre_ahdl_compile",
       "mimo-v2.5-pro-highout32k_axis": "model_behavior",
-      "mimo-v2.5_family": "spectre_ahdl_syntax_scope_or_operator_reject",
+      "mimo-v2.5-adjusted_family": "spectre_ahdl_syntax_scope_or_operator_reject",
       "mimo-v2.5-pro-highout32k_family": "calibration_control_behavior",
-      "mimo-v2.5_evidence": "ERROR (VACOMP-2177): \"parameter real initial_step<<--? = full_scale /",
+      "mimo-v2.5-adjusted_evidence": "ERROR (VACOMP-2177): \"parameter real initial_step<<--? = full_scale /",
       "mimo-v2.5-pro-highout32k_evidence": "FAIL_SIM_CORRECTNESS"
     }
   ],

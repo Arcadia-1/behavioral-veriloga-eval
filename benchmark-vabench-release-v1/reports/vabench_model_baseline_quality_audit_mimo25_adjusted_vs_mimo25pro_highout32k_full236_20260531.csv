@@ -1,7 +1,7 @@
 category,row_count,both_pass,first_only_pass,second_only_pass,both_fail,first_pass_rate_pct,second_pass_rate_pct,common_behavior_fail_rows,common_artifact_or_protocol_fail_rows,risk_label,recommended_action
 Baseband Signal Conditioning,30,11,0,7,12,36.67,60.0,3,9,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
 Bias Reference and Power Management,28,8,1,5,14,32.14,46.43,5,8,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
-"Calibration, DEM, and Control",26,4,1,2,19,19.23,23.08,8,10,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
+"Calibration, DEM, and Control",26,4,1,2,19,19.23,23.08,8,11,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
 Comparator and Decision Circuits,30,14,2,6,8,53.33,66.67,3,5,balanced,Keep as normal benchmark coverage; inspect row-level failures only if paper wording overclaims.
 Data Converter Models,44,16,3,4,21,43.18,45.45,8,11,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.
 PLL Clock and Timing Systems,36,8,2,6,20,27.78,38.89,7,12,protocol_noise_sensitive,Separate language/protocol failures from behavior claims and inspect public contracts for missing syntax constraints.

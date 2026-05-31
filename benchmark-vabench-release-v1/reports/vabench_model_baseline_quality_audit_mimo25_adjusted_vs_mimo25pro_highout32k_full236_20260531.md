@@ -1,6 +1,6 @@
 # vaBench Model Baseline Quality Audit
 
-Generated: 2026-05-31T11:40:18.830853+00:00
+Generated: 2026-05-31T11:42:36.448266+00:00
 
 This report audits benchmark-quality risks exposed by model baselines.
 It is diagnostic: flagged rows/categories require human review before metadata changes.
@@ -9,9 +9,9 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 
 | Model | Slice | Rows | Strict dual pass | Pass rate | Meaning |
 | --- | --- | ---: | ---: | ---: | --- |
-| mimo-v2.5 | `full_strict` | 236 | 85 | 36.02% | All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures. |
-| mimo-v2.5 | `valid_candidate` | 234 | 85 | 36.32% | Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failure... |
-| mimo-v2.5 | `behavior_ready` | 153 | 85 | 55.56% | Rows that reached the functional checker: strict dual pass plus model_behavior failure rows. |
+| mimo-v2.5-adjusted | `full_strict` | 236 | 85 | 36.02% | All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures. |
+| mimo-v2.5-adjusted | `valid_candidate` | 234 | 85 | 36.32% | Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failure... |
+| mimo-v2.5-adjusted | `behavior_ready` | 153 | 85 | 55.56% | Rows that reached the functional checker: strict dual pass plus model_behavior failure rows. |
 | mimo-v2.5-pro-highout32k | `full_strict` | 236 | 110 | 46.61% | All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures. |
 | mimo-v2.5-pro-highout32k | `valid_candidate` | 227 | 110 | 48.46% | Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failure... |
 | mimo-v2.5-pro-highout32k | `behavior_ready` | 188 | 110 | 58.51% | Rows that reached the functional checker: strict dual pass plus model_behavior failure rows. |
@@ -22,7 +22,7 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 | --- | ---: |
 | row count | 236 |
 | both pass | 73 |
-| mimo-v2.5 only pass | 12 |
+| mimo-v2.5-adjusted only pass | 12 |
 | mimo-v2.5-pro-highout32k only pass | 37 |
 | both fail | 114 |
 | missing in one report | 0 |
@@ -31,16 +31,16 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 
 | Model | D1 rate | D1 rows | D2 rate | D2 rows | D3 rate | D3 rows | Flags | Interpretation |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| mimo-v2.5 | 61.11% | 36 | 30.00% | 160 | 37.50% | 40 | D3_not_harder_than_D2 | Treat difficulty labels as requiring manual calibration; do not claim calibrated difficulty tiers... |
+| mimo-v2.5-adjusted | 61.11% | 36 | 30.00% | 160 | 37.50% | 40 | D3_not_harder_than_D2 | Treat difficulty labels as requiring manual calibration; do not claim calibrated difficulty tiers... |
 | mimo-v2.5-pro-highout32k | 91.67% | 36 | 38.75% | 160 | 37.50% | 40 | none | No monotonicity warning from this model alone. |
 
 ## Category Risk Audit
 
-| Category | Rows | Both pass | mimo-v2.5 only | mimo-v2.5-pro-highout32k only | Both fail | mimo-v2.5 rate | mimo-v2.5-pro-highout32k rate | Common behavior fail | Artifact/protocol fail | Risk | Action |
+| Category | Rows | Both pass | mimo-v2.5-adjusted only | mimo-v2.5-pro-highout32k only | Both fail | mimo-v2.5-adjusted rate | mimo-v2.5-pro-highout32k rate | Common behavior fail | Artifact/protocol fail | Risk | Action |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
 | Baseband Signal Conditioning | 30 | 11 | 0 | 7 | 12 | 36.67% | 60.00% | 3 | 9 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
 | Bias Reference and Power Management | 28 | 8 | 1 | 5 | 14 | 32.14% | 46.43% | 5 | 8 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
-| Calibration, DEM, and Control | 26 | 4 | 1 | 2 | 19 | 19.23% | 23.08% | 8 | 10 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
+| Calibration, DEM, and Control | 26 | 4 | 1 | 2 | 19 | 19.23% | 23.08% | 8 | 11 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
 | Comparator and Decision Circuits | 30 | 14 | 2 | 6 | 8 | 53.33% | 66.67% | 3 | 5 | `balanced` | Keep as normal benchmark coverage; inspect row-level failures only if paper wording overclaims. |
 | Data Converter Models | 44 | 16 | 3 | 4 | 21 | 43.18% | 45.45% | 8 | 11 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
 | PLL Clock and Timing Systems | 36 | 8 | 2 | 6 | 20 | 27.78% | 38.89% | 7 | 12 | `protocol_noise_sensitive` | Separate language/protocol failures from behavior claims and inspect public contracts for missing... |
@@ -51,10 +51,10 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 
 | Model | Form | Rows | Strict pass | Strict rate | Behavior-ready rows | Behavior-ready pass rate | Non-model/inconclusive |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| mimo-v2.5 | `bugfix` | 52 | 37 | 71.15% | 48 | 77.08% | 1 |
-| mimo-v2.5 | `dut` | 52 | 12 | 23.08% | 18 | 66.67% | 1 |
-| mimo-v2.5 | `e2e` | 66 | 3 | 4.55% | 29 | 10.34% | 0 |
-| mimo-v2.5 | `tb` | 66 | 33 | 50.00% | 58 | 56.90% | 0 |
+| mimo-v2.5-adjusted | `bugfix` | 52 | 37 | 71.15% | 48 | 77.08% | 1 |
+| mimo-v2.5-adjusted | `dut` | 52 | 12 | 23.08% | 18 | 66.67% | 1 |
+| mimo-v2.5-adjusted | `e2e` | 66 | 3 | 4.55% | 29 | 10.34% | 0 |
+| mimo-v2.5-adjusted | `tb` | 66 | 33 | 50.00% | 58 | 56.90% | 0 |
 | mimo-v2.5-pro-highout32k | `bugfix` | 52 | 42 | 80.77% | 51 | 82.35% | 1 |
 | mimo-v2.5-pro-highout32k | `dut` | 52 | 20 | 38.46% | 36 | 55.56% | 0 |
 | mimo-v2.5-pro-highout32k | `e2e` | 66 | 16 | 24.24% | 46 | 34.78% | 6 |
@@ -62,7 +62,7 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 
 ## Difficulty Relabel Review Candidates
 
-| Task | Difficulty | Form | Category | Reason | mimo-v2.5 family | mimo-v2.5-pro-highout32k family |
+| Task | Difficulty | Form | Category | Reason | mimo-v2.5-adjusted family | mimo-v2.5-pro-highout32k family |
 | --- | --- | --- | --- | --- | --- | --- |
 | `vbr1_l1_log_rssi_power_detector:bugfix` | `D3` | `bugfix` | RF and AFE Behavioral Macromodels | D3 row passed by both baselines; check whether it is truly integration-level or over-labeled. | strict_dual_pass | strict_dual_pass |
 | `vbr1_l1_log_rssi_power_detector:tb` | `D3` | `tb` | RF and AFE Behavioral Macromodels | D3 row passed by both baselines; check whether it is truly integration-level or over-labeled. | strict_dual_pass | strict_dual_pass |
@@ -79,7 +79,7 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 
 ## Common Failure Examples
 
-| Task | Difficulty | Form | Category | mimo-v2.5 axis/family | mimo-v2.5-pro-highout32k axis/family | mimo-v2.5 evidence | mimo-v2.5-pro-highout32k evidence |
+| Task | Difficulty | Form | Category | mimo-v2.5-adjusted axis/family | mimo-v2.5-pro-highout32k axis/family | mimo-v2.5-adjusted evidence | mimo-v2.5-pro-highout32k evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `vbr1_l1_higher_order_filter:dut` | `D2` | `dut` | Baseband Signal Conditioning | model_behavior/baseband_dynamic_behavior | model_behavior/baseband_dynamic_behavior | FAIL_SIM_CORRECTNESS | FAIL_SIM_CORRECTNESS |
 | `vbr1_l1_higher_order_filter:e2e` | `D2` | `e2e` | Baseband Signal Conditioning | model_spectre_elab_or_topology/spectre_elaboration_parameter_or_topology_reject | model_dut_compile/guarded_transition_contribution | spectre_failed rc=1 | ERROR (VACOMP-2143): "higher_order_filter.va", line 18: Encountered the |
@@ -119,7 +119,7 @@ It is diagnostic: flagged rows/categories require human review before metadata c
 | `vbr1_l1_element_shuffler:tb` | `D2` | `tb` | Calibration, DEM, and Control | model_behavior/calibration_control_behavior | model_behavior/calibration_control_behavior | spectre:active_sequence=1,1,1,1,1,1 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns... | spectre:active_sequence=1,2,0,3,1,2 expected=2,0,3,1,2,0 failures=20ns_active=[1]_expected=2 40ns... |
 | `vbr1_l1_gain_trim_controller:e2e` | `D2` | `e2e` | Calibration, DEM, and Control | model_behavior/calibration_control_behavior | model_behavior/calibration_control_behavior | FAIL_SIM_CORRECTNESS | FAIL_SIM_CORRECTNESS |
 | `vbr1_l1_gain_trim_controller:tb` | `D2` | `tb` | Calibration, DEM, and Control | model_behavior/calibration_control_behavior | model_behavior/calibration_control_behavior | FAIL_SIM_CORRECTNESS | FAIL_SIM_CORRECTNESS |
-| `vbr1_l1_successive_approximation_calibration_search_fsm:dut` | `D2` | `dut` | Calibration, DEM, and Control | evas_spectre_mismatch/spectre_rejects_evas_accepted_candidate | model_behavior/calibration_control_behavior | ERROR (VACOMP-2177): "parameter real initial_step<<--? = 0.45;" | FAIL_SIM_CORRECTNESS |
+| `vbr1_l1_successive_approximation_calibration_search_fsm:dut` | `D2` | `dut` | Calibration, DEM, and Control | model_dut_compile/unsupported_event_variable_or_wait | model_behavior/calibration_control_behavior | ERROR (VACOMP-2177): "parameter real initial_step<<--? = 0.45;" | FAIL_SIM_CORRECTNESS |
 | `vbr1_l1_successive_approximation_calibration_search_fsm:e2e` | `D2` | `e2e` | Calibration, DEM, and Control | model_spectre_ahdl_compile/spectre_ahdl_syntax_scope_or_operator_reject | model_behavior/calibration_control_behavior | ERROR (VACOMP-2177): "parameter real initial_step<<--? = full_scale / | FAIL_SIM_CORRECTNESS |
 
 ## Recommended Next Actions
