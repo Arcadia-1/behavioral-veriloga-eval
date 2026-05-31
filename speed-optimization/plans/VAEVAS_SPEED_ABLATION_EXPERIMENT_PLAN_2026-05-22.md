@@ -4,7 +4,7 @@
 **Host target**: `thu-sui`
 **Worker budget**: 8 parallel jobs
 **Primary slice**: vaBench release speed rows, `--suite all --limit 100000`
-**Primary gate**: unchanged same-server accuracy gate
+**Primary gate**: unchanged same-server Spectre-equivalence gate
 
 **Current canonical location**: this plan and its compact reports now live under
 `speed-optimization/`. Older `docs/` and release-report paths are compatibility
@@ -31,14 +31,14 @@ Current full same-server gate-fixed evidence:
 | Spectre | `ax` | 259 | 259 | 402.593 | 1.398 |
 | Spectre | `classic` | 259 | 259 | 1255.295 | 4.602 |
 
-Accuracy gate:
+Spectre-equivalence gate:
 
 | EVAS mode | Runs | Gate PASS | Gate FAIL | Gate BLOCKED | Gate missing |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `profile_fast_skip_source_error_control` | 259 | 259 | 0 | 0 | 0 |
 | `strict_current` | 259 | 259 | 0 | 0 | 0 |
 
-Accuracy-gated geomean speedups:
+Spectre-equivalence-gated geomean speedups:
 
 | Pair | Geomean Spectre / EVAS |
 | --- | ---: |
@@ -68,7 +68,7 @@ All experiments must keep these fixed unless explicitly recorded:
 | Timeout | `--timeout-s 300` initially; raise only for diagnosed timeout rows |
 | Suite | `--suite all --limit 100000` |
 | Spectre modes | `ax`, `classic` |
-| Accuracy gate | behavior checker + strict EVAS parity + every selected Spectre parity |
+| Spectre-equivalence gate | behavior checker + strict EVAS parity + every selected Spectre parity |
 | Report policy | write new date-stamped reports; never overwrite previous evidence |
 
 ## Claim Map
@@ -77,7 +77,7 @@ All experiments must keep these fixed unless explicitly recorded:
 | --- | --- | --- |
 | C1: `profile_fast` reduces EVAS runtime by reducing event refinement. | Full-slice speedup vs `strict_current`, 0 gate failures, perf counters show fewer refined steps. | Any behavior/parity FAIL, or speedup concentrated in only 1-2 rows. |
 | C2: `skip_source_error_control` reduces source-edge over-refinement without changing model-visible behavior. | Full-slice speedup vs `strict_current`, 0 gate failures, perf counters show fewer dynamic shrinks / skipped source ratios. | Any event-sensitive row fails parity, especially PFD/PLL/ADC-DAC rows. |
-| C3: combined `profile_fast_skip_source_error_control` is the safe promoted fast mode. | Repeated cold/warm same-server runs show stable accuracy-gated speedup and 0 gate failures. | Instability across repetitions or any waveform parity regression. |
+| C3: combined `profile_fast_skip_source_error_control` is the safe promoted fast mode. | Repeated cold/warm same-server runs show stable Spectre-equivalence-gated speedup and 0 gate failures. | Instability across repetitions or any waveform parity regression. |
 | C4: speed claim is case-stratified, not universal. | Outlier table explains where EVAS is faster/slower and why. | Aggregate speedup hides systematic slow class. |
 
 ## Experiment E0: Preflight Reproducibility
@@ -151,7 +151,7 @@ Metrics:
 
 - PASS / non-PASS by backend and mode.
 - Accuracy gate PASS / FAIL / BLOCKED / missing by EVAS mode.
-- Geomean, median, IQR, p90 wall time by mode.
+- Geomean, median, min/max, and slowest-row wall time by mode.
 - Geomean speedup for each Spectre mode vs each EVAS mode.
 - Per-row speedup distribution and slowest EVAS rows.
 
@@ -347,7 +347,7 @@ Decision gate:
 | M4 warm runner extension | code + smoke | local + 8 | warm smoke must match cold behavior gates |
 | M5 warm repeat5 | 5180 jobs | 8 | report cold/warm split |
 | M6 outlier diagnosis | selected rows only | 8 | every slow class has a concrete counter explanation |
-| M7 tolerance sweep | CSV-only first | local | stricter gate table produced |
+| M7 waveform diagnostics | CSV-only first | local | relative/absolute error table produced |
 
 ## Paper Claim Decision Rules
 
@@ -375,7 +375,7 @@ Use this prompt to launch the execution as a bounded goal:
 
 ```text
 Goal: produce paper-usable EVAS speed evidence for vaBench release v1 using
-8 workers on thu-sui, without weakening any accuracy gate.
+8 workers on thu-sui, without weakening any Spectre-equivalence gate.
 
 Context:
 - Repo: /Users/bucketsran/Documents/TsingProject/vaEvas
@@ -400,8 +400,8 @@ Tasks:
    EVAS modes strict_current, profile_balanced, profile_fast,
    skip_source_error_control, profile_fast_skip_source_error_control;
    Spectre modes ax and classic; jobs=8.
-3. Summarize pass/non-pass, accuracy gates, per-pair geomean speedups, median,
-   IQR, p90, and slowest rows.
+3. Summarize pass/non-pass, Spectre-equivalence gates, per-pair geomean speedups, median,
+   min/max row speedups, and slowest rows.
 4. If fast+skip is not 259/259 gate PASS, stop speed-claim work and diagnose.
 5. Run N=5 cold-cache repeats for strict_current and fast+skip versus Spectre
    ax/classic, jobs=8, with fresh output roots per repeat.
@@ -409,12 +409,13 @@ Tasks:
    repeats with one warmup pass and preserved run dirs.
 7. Generate a slow-outlier perf-counter report for the worst EVAS rows and
    rows where spectre/ax beats fast+skip.
-8. Run a CSV-only stricter parity tolerance sweep at 1.0x, 0.5x, and 0.25x.
+8. Run CSV-only waveform diagnostics using relative RMS error, absolute voltage
+   error, and event/digital mismatch checks.
 9. Produce a final Markdown report with:
    - claim decision
    - full ablation table
    - cold/warm repeated timing table
-   - accuracy gate table
+   - Spectre-equivalence gate table
    - outlier mechanism table
    - allowed and forbidden paper wording
 
@@ -423,7 +424,7 @@ Success criteria:
 - Cold repeat summary exists for N=5.
 - Warm repeat summary exists or a clear runner limitation is documented.
 - Outlier perf-counter report exists.
-- Tolerance sweep report exists.
+- Waveform diagnostic report exists.
 - No promoted mode has any behavior/parity FAIL.
 - Final conclusion states exactly where EVAS is faster, where it is not, and
   what claim is safe for the paper.

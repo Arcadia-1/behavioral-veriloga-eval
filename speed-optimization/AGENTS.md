@@ -20,5 +20,5 @@ Compatibility policy:
 
 Claim policy:
 - Paper-facing speed claims must use same-server EVAS/Spectre timing.
-- Report only accuracy-gated rows.
+- Report only Spectre-equivalence-gated rows.
 - Treat EVAS-only timing reports and failed/rejected repeats as diagnostic evidence, not as claim evidence.

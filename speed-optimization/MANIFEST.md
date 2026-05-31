@@ -1,71 +1,60 @@
 # Speed Optimization Manifest
 
-This manifest classifies speed-related artifacts after consolidation.
+This manifest defines the compact speed-report surface after cleanup.
 
 ## Canonical Source
 
 Speed-specific reports and plans now live under `speed-optimization/`.
 
-Compatibility links remain at the old paths:
+Only two human-readable speed reports are retained:
 
-- `benchmark-vabench-release-v1/reports/same_server_speed_*`
-- `benchmark-vabench-release-v1/reports/evas_speed_*`
-- `benchmark-vabench-release-v1/reports/speed_*`
-- `docs/VAEVAS_SPEED_ABLATION_EXPERIMENT_PLAN_2026-05-22.md`
+- `reports/evas_speed_experiment_results_and_standard_20260522.md`
+- `reports/evas_speed_result_analysis_20260522.md`
+
+Compatibility links at the old release-report paths are limited to retained
+machine-readable JSON data. Old split Markdown links were removed to keep a
+single reader-facing report surface.
 
 ## Claimable Current Evidence
 
-Use these for the current paper-facing speed statement:
+Use these two Markdown files for the current paper-facing speed statement:
 
-- `reports/same_server_speed_goal_findings_20260522.md`
+- `reports/evas_speed_experiment_results_and_standard_20260522.md`
+- `reports/evas_speed_result_analysis_20260522.md`
+
+Use these JSON files for recomputation and audit:
+
 - `reports/same_server_speed_goal_summary_final_20260522.json`
-- `reports/same_server_speed_goal_summary_final_20260522.md`
-- `reports/same_server_speed_goal_summary_all_r1_r5_with_r3_watchdog_20260522.json`
-- `reports/same_server_speed_goal_summary_all_r1_r5_with_r3_watchdog_20260522.md`
+- `reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json`
 
-Clean repeat inputs:
+## Next Precision-Ranking Plan
 
-- `reports/same_server_speed_cold_r1_goal_20260522.json`
-- `reports/same_server_speed_cold_r1_goal_20260522.md`
-- `reports/same_server_speed_repeat_r2_goal_20260522.json`
-- `reports/same_server_speed_repeat_r2_goal_20260522.md`
-- `reports/same_server_speed_repeat_r4_goal_20260522.json`
-- `reports/same_server_speed_repeat_r4_goal_20260522.md`
-- `reports/same_server_speed_repeat_r5_goal_20260522.json`
-- `reports/same_server_speed_repeat_r5_goal_20260522.md`
+Use these before claiming that EVAS fast is more accurate or more
+reference-consistent than the Spectre high-performance preset baseline:
+
+- `plans/VAEVAS_SPECTRE_REFERENCE_STANDARD_2026-05-26.md`
+- `plans/VAEVAS_PRECISION_RANKING_EXPERIMENT_PLAN_2026-05-26.md`
+- `plans/VAEVAS_PRECISION_RANKING_EXPERIMENT_TRACKER_2026-05-26.md`
 
 ## Ablation Evidence
 
-Use these to explain which acceleration mechanism matters:
+Use this JSON to explain which acceleration mechanism matters:
 
-- `reports/same_server_speed_ablation_full_goal_20260522.json`
-- `reports/same_server_speed_ablation_full_goal_20260522.md`
 - `reports/same_server_speed_ablation_goal_summary_20260522.json`
-- `reports/same_server_speed_ablation_goal_summary_20260522.md`
 
-## Diagnostic Evidence
+## Deleted During Cleanup
 
-Use these to explain rejected or special-case runs:
+The following classes were removed from `speed-optimization/reports/` to keep the
+paper-facing surface small: per-repeat inputs, R3/watchdog diagnostic summaries,
+historical SUI smoke/repro reports, old EVAS-only speed reports, raw ablation
+full reports, speed debug artifacts, remaining-queue manifests, and compatibility
+symlinks that would otherwise point to deleted files. The previous split
+Markdown reports for main speed summary, ablation summary, Spectre ax-mode/classic
+self-consistency, and findings analysis were consolidated into the two retained
+Markdown reports above.
 
-- `reports/same_server_speed_repeat_r3_goal_20260522.json`
-- `reports/same_server_speed_repeat_r3_goal_20260522.md`
-- `reports/same_server_speed_targeted_deadband_watchdog_fix_20260522.json`
-- `reports/same_server_speed_targeted_deadband_watchdog_fix_20260522.md`
-- `reports/speed_preflight_fixtures_20260522.md`
-
-## Historical Evidence
-
-These files are useful for audit history but should not drive the current speed claim:
-
-- `reports/same_server_speed_sui_smoke.*`
-- `reports/same_server_speed_sui_smoke_classic.*`
-- `reports/same_server_speed_sui_limit2_v2.*`
-- `reports/same_server_speed_sui_repro_*`
-- `reports/evas_speed_experiment_p0_p3*`
-- `reports/evas_speed_server_feasibility_20260521.md`
-- `reports/speed_debug_artifact.*`
-- `reports/speed_remaining_queue.*`
-- `reports/speed_remaining_staging_manifest.*`
+Regenerate these from the benchmark runner or remote raw result roots if audit
+history is needed later; do not cite them as current paper evidence.
 
 ## Runner Source
 
@@ -76,6 +65,7 @@ Speed-specific runner defaults now point to `speed-optimization/reports/`:
 - `../runners/run_vabench_release_same_server_speed.py`
 - `../runners/run_vabench_release_evas_speed_experiment.py`
 - `../runners/report_vabench_release_same_server_speed_goal.py`
+- `../runners/report_spectre_mode_self_consistency.py`
 
 ## Raw Result Policy
 
