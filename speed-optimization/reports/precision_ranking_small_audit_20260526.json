@@ -1,0 +1,178 @@
+{
+  "schema_version": "same-server-fixture-audit.v1",
+  "artifact_kind": "vabench_release_fixture_materialization_audit",
+  "date": "2026-05-26",
+  "created_at": "2026-05-26T12:00:59",
+  "selected_rows": 10,
+  "output_root": "results/precision-ranking-small-audit-20260526",
+  "pass_count": 10,
+  "fail_count": 0,
+  "results": [
+    {
+      "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbm1_simple_binary_voltage_dac_4b_e2e",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_binary_weighted_voltage_dac/e2e/gold/vbm1_simple_binary_voltage_dac_4b_e2e",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_binary_weighted_voltage_dac/e2e/gold/vbm1_simple_binary_voltage_dac_4b_e2e/tb_simple_binary_voltage_dac_4b_ref.scs",
+      "includes": [
+        "simple_binary_voltage_dac_4b.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "clk_burst_gen_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_burst_clock_source/e2e/gold/clk_burst_gen_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_burst_clock_source/e2e/gold/clk_burst_gen_smoke/tb_clk_burst_gen_ref.scs",
+      "includes": [
+        "clk_burst_gen.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbr1_l1_calibration_deadband_controller_e2e",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_calibration_deadband_controller/e2e/gold/vbr1_l1_calibration_deadband_controller_e2e",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_calibration_deadband_controller/e2e/gold/vbr1_l1_calibration_deadband_controller_e2e/tb_calibration_deadband_controller.scs",
+      "includes": [
+        "calibration_deadband_controller.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbr1_l1_clocked_sample_and_hold_e2e",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_clocked_sample_and_hold/e2e/gold/vbr1_l1_clocked_sample_and_hold_e2e",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_clocked_sample_and_hold/e2e/gold/vbr1_l1_clocked_sample_and_hold_e2e/tb_sample_hold_ref.scs",
+      "includes": [
+        "sample_hold.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "gain_extraction_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_gain_estimator/e2e/gold/gain_extraction_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_gain_estimator/e2e/gold/gain_extraction_smoke/tb_gain_extraction_ref.scs",
+      "includes": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbm1_pfd_reset_race_e2e",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_pfd_up_dn_logic/e2e/gold/vbm1_pfd_reset_race_e2e",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_pfd_up_dn_logic/e2e/gold/vbm1_pfd_reset_race_e2e/tb_pfd_reset_race_ref.scs",
+      "includes": [
+        "./pfd_updn.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "bound_step_period_guard_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_ramp_or_step_source/e2e/gold/bound_step_period_guard_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_ramp_or_step_source/e2e/gold/bound_step_period_guard_smoke/tb_bound_step_period_guard_ref.scs",
+      "includes": [
+        "./bound_step_period_guard_ref.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l1_threshold_comparator",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "comparator_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_threshold_comparator/e2e/gold/comparator_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l1_threshold_comparator/e2e/gold/comparator_smoke/tb_comparator_ref.scs",
+      "includes": [
+        "comparator.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "cppll_freq_step_reacquire_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/tb_cppll_freq_step_reacquire_ref.scs",
+      "includes": [
+        "cppll_timer_ref.va",
+        "ref_step_clk.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    },
+    {
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "sar_adc_dac_weighted_8b_smoke",
+      "result_root": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold/sar_adc_dac_weighted_8b_smoke",
+      "ok": true,
+      "status": "PASS",
+      "notes": [],
+      "tb_path": "results/precision-ranking-small-audit-20260526/fixture_audit/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold/sar_adc_dac_weighted_8b_smoke/tb_sar_adc_dac_weighted_8b_ref.scs",
+      "includes": [
+        "sar_adc_weighted_8b.va",
+        "dac_weighted_8b.va",
+        "sh_ideal.va"
+      ],
+      "fixture_notes": [],
+      "missing_includes": []
+    }
+  ]
+}

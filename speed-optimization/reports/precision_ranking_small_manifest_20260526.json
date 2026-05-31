@@ -1,0 +1,68 @@
+{
+  "schema_version": "precision-ranking-small-manifest.v1",
+  "artifact_kind": "vabench_precision_ranking_small_input",
+  "date": "2026-05-26",
+  "selection_policy": "Representative release e2e rows covering data converter, comparator, sample/hold, event timing, source, measurement, and control categories. This is a first formal small-slice experiment, not a release-wide claim.",
+  "rows": [
+    {
+      "entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 data converter"
+    },
+    {
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L2 converter loop"
+    },
+    {
+      "entry_id": "vbr1_l1_threshold_comparator",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 comparator"
+    },
+    {
+      "entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 sample/hold"
+    },
+    {
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 event timing"
+    },
+    {
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L2 PLL/control flow"
+    },
+    {
+      "entry_id": "vbr1_l1_ramp_or_step_source",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 stimulus/source"
+    },
+    {
+      "entry_id": "vbr1_l1_burst_clock_source",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 burst/event source"
+    },
+    {
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 measurement"
+    },
+    {
+      "entry_id": "vbr1_l1_calibration_deadband_controller",
+      "form": "e2e",
+      "variant": "gold",
+      "category_note": "L1 calibration/control"
+    }
+  ]
+}
