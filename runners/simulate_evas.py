@@ -4715,7 +4715,48 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
     required = {"time", "vin", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/out"
-    out_vals = [r["out"] for r in rows]
+
+    ordered = sorted(rows, key=lambda row: row["time"])
+
+    def interpolate(signal: str, t: float) -> float:
+        if t <= ordered[0]["time"]:
+            return ordered[0][signal]
+        if t >= ordered[-1]["time"]:
+            return ordered[-1][signal]
+        lo = 0
+        hi = len(ordered) - 1
+        while hi - lo > 1:
+            mid = (lo + hi) // 2
+            if ordered[mid]["time"] <= t:
+                lo = mid
+            else:
+                hi = mid
+        left = ordered[lo]
+        right = ordered[hi]
+        dt = right["time"] - left["time"]
+        if dt <= 0:
+            return right[signal]
+        alpha = (t - left["time"]) / dt
+        return left[signal] + alpha * (right[signal] - left[signal])
+
+    # Spectre may save only adaptive breakpoints even when EVAS writes a dense
+    # tran.csv. Judge the window function on a common time grid instead of
+    # counting raw output samples.
+    t0 = ordered[0]["time"]
+    t1 = ordered[-1]["time"]
+    if t1 <= t0:
+        return False, "invalid_time_range"
+    sample_count = 361
+    eval_rows = [
+        {
+            "time": t0 + (t1 - t0) * idx / (sample_count - 1),
+            "vin": interpolate("vin", t0 + (t1 - t0) * idx / (sample_count - 1)),
+            "out": interpolate("out", t0 + (t1 - t0) * idx / (sample_count - 1)),
+        }
+        for idx in range(sample_count)
+    ]
+
+    out_vals = [r["out"] for r in eval_rows]
     lo = min(out_vals)
     hi = max(out_vals)
     span = hi - lo
@@ -4723,17 +4764,17 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
         return False, f"out_span_too_small={span:.3f}"
 
     vth = lo + 0.5 * span
-    t_mid = 0.5 * (rows[0]["time"] + rows[-1]["time"])
+    t_mid = 0.5 * (t0 + t1)
 
     def frac_high(selected: list[dict[str, float]]) -> float:
         if not selected:
             return 0.0
         return sum(1 for row in selected if row["out"] > vth) / len(selected)
 
-    below = [r for r in rows if r["vin"] <= 0.18]
-    above = [r for r in rows if r["vin"] >= 0.72]
-    inside_rise = [r for r in rows if r["time"] <= t_mid and 0.34 <= r["vin"] <= 0.56]
-    inside_fall = [r for r in rows if r["time"] > t_mid and 0.34 <= r["vin"] <= 0.56]
+    below = [r for r in eval_rows if r["vin"] <= 0.18]
+    above = [r for r in eval_rows if r["vin"] >= 0.72]
+    inside_rise = [r for r in eval_rows if r["time"] <= t_mid and 0.34 <= r["vin"] <= 0.56]
+    inside_fall = [r for r in eval_rows if r["time"] > t_mid and 0.34 <= r["vin"] <= 0.56]
 
     if min(len(below), len(above), len(inside_rise), len(inside_fall)) < 3:
         return (
