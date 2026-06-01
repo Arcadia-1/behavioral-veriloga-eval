@@ -32,6 +32,12 @@ Paper-facing claims for this row are limited to the public behavior checks below
 - `sar_adc_weighted_8b.va` declares module `sar_adc_weighted_8b` with positional ports: `VIN`, `CLKS`, `RST_N`, `DOUT`, `BIT_INDEX`, `TRIAL_CODE_MON`, `TRIAL_VDAC`, `CMP_DECISION`, `CONV_DONE`, `VIN_SAMPLE`.
 - `sh_ideal.va` declares module `sh_ideal` with positional ports: `vin`, `clk`, `vdd`, `vss`, `rst_n`, `vout`.
 
+For `sar_adc_weighted_8b`, declare `DOUT` as an 8-bit electrical vector
+output and let the Spectre positional instance map the eight scalar nodes
+`dout_7 ... dout_0` onto that vector. Do not replace the vector with unrelated
+private port names; `dout_7` is the MSB and `dout_0` is the LSB in the public
+testbench connection.
+
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
@@ -142,6 +148,35 @@ The public relation is: sampled input `vin_sh`/`vin_sample` -> visible SAR trial
 sequence -> final SAR code bits -> weighted DAC `vout`. The evaluator checks
 trial-bit visibility, trial-DAC/comparator consistency, range, unique-code
 coverage, monotonicity, and code-to-DAC consistency from saved waveforms.
+
+Concrete public implementation guidance:
+
+- A compact behavioral state machine is sufficient; do not build transistor
+  devices, switched-capacitor physics, or an ideal mathematical lookup hidden
+  from the public monitors.
+- Use one public sampling phase and one MSB-to-LSB trial sequence. A practical
+  pattern is: sample `VIN` into an internal held value on one `CLKS` edge while
+  idle, then resolve one tentative SAR bit on each following rising edge.
+- Test trial weights in this order: 128, 64, 32, 16, 8, 4, 2, 1. For each
+  trial, compute `trial_vdac = trial_code / 255 * vdd`; keep the bit when the
+  held sample is greater than or equal to that trial DAC value.
+- Drive `trial_code_mon` as `trial_code / 255 * vdd`, `bit_index` as a
+  voltage-coded public bit-position monitor, `cmp_decision` as 0 V or `vdd`,
+  `vin_sample` as the held sample, and `conv_done` high only after the final
+  LSB decision.
+- Keep the implementation short and deterministic. The goal is observable
+  behavioral consistency, not a full SAR controller with nonideal capacitor
+  switching.
+
+Public stimulus guidance for the generated testbench:
+
+- Use `parameters vdd=0.9 fin=100e3`.
+- Drive `clks` as a 50 MHz pulse clock with 0 V/`vdd` levels.
+- Keep active-low `rst_n` low for the first few clock cycles, then high for the
+  rest of the 20 us transient.
+- Drive `vin` with a full-swing sine around mid-supply, for example
+  `sinedc=0.45`, `ampl=0.45`, and `freq=fin`, so many post-reset samples cover
+  the ADC range.
 
 ## Output Contract
 

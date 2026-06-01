@@ -96,6 +96,9 @@ Implement the chain as visible behavioral stages:
 1. Gain stage:
    - Compute a bounded amplified target from `vin`.
    - Expose this pre-filter target on both `metric` and `preamp_mon`.
+   - `metric` and `preamp_mon` are not filtered outputs. They should update
+     directly to the current bounded gain-stage target on each clocked update,
+     before the two low-pass states move.
 
 2. Two-pole filter stage:
    - Drive `filt1_mon` as the first lagged pole toward `preamp_mon`.
@@ -136,6 +139,22 @@ targets:
   30.0 ns to 30.1 ns.
 - Hold each input value stable across its measurement window rather than
   ramping through that window.
+
+Concrete public implementation guidance:
+
+- Initialize `preamp_mon`, `metric`, `filt1_mon`, `filt2_mon`, and `out` near
+  mid-supply during reset.
+- On each rising `clk` edge after reset, compute
+  `target = clip(0.45 + gain * (vin - 0.45), 0, 0.9)`.
+- Drive both `metric` and `preamp_mon` from `target` immediately. This is the
+  public observable for the gain-stage target.
+- Then update two explicit lag states, for example
+  `filt1 = filt1 + alpha * (target - filt1)` and
+  `filt2 = filt2 + alpha * (filt1 - filt2)`, with a stable `alpha` between 0
+  and 1. Drive `out` from `filt2`.
+- Drive `settle_metric` as a voltage-coded flag: low while `out` is far from
+  the current target, high after the filtered output has visibly settled toward
+  the target.
 
 ## Output Contract
 

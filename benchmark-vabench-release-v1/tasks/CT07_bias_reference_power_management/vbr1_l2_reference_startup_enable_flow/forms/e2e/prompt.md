@@ -106,6 +106,9 @@ Implement the flow as a visible startup sequence, not as a direct output lookup:
    - Hold `out` low while supply is off or enable is low.
    - After supply-good and enable are both asserted, let `out` settle gradually
      toward the reference target around 0.55 V.
+   - Treat `out` as the analog reference voltage. Treat `metric` as a
+     voltage-coded valid-status flag, not as a copy of the 0.55 V reference
+     level.
    - Drive `startup_mon` as a monotonic startup-progress observable.
    - Drive `state_mon` through off/disabled/startup/valid states, voltage-coded
      between 0 V and 0.9 V.
@@ -115,6 +118,24 @@ Implement the flow as a visible startup sequence, not as a direct output lookup:
      pull `out`/`metric` low.
    - When the supply returns while enable remains high, the flow must restart
      and recover valid status.
+
+Concrete public implementation guidance:
+
+- Use a simple clocked state machine. A useful public state coding is:
+  off/reset near 0 V, disabled near 0.3 V, startup near 0.6 V, and valid near
+  0.9 V on `state_mon`.
+- Drive `supply_ok` high only when `vdd_in` is above the public supply-good
+  threshold, and low again during the supply dip.
+- Drive `enable_mon` directly from the public enable input after reset and
+  supply-good qualification.
+- During startup, increase an internal progress counter or progress real value
+  on clock edges. Drive `startup_mon` monotonically from 0 V toward 0.9 V while
+  the reference starts.
+- Drive `out` gradually toward about 0.55 V after supply-good and enable are
+  true. Drive `metric` low during off/disabled/startup and high near 0.9 V only
+  after the reference has settled enough to be considered valid.
+- On reset or supply dip, clear the progress/state, pull `metric` low, and pull
+  `out` back down before allowing a later restart.
 
 ## Output Contract
 

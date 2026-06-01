@@ -33,6 +33,11 @@ Paper-facing claims for this row are limited to the public behavior checks below
 - `sar_adc_weighted_8b.va` declares module `sar_adc_weighted_8b` with positional ports: `VIN`, `CLKS`, `RST_N`, `DOUT`, `BIT_INDEX`, `TRIAL_CODE_MON`, `TRIAL_VDAC`, `CMP_DECISION`, `CONV_DONE`, `VIN_SAMPLE`.
 - `sh_ideal.va` declares module `sh_ideal` with positional ports: `vin`, `clk`, `vdd`, `vss`, `rst_n`, `vout`.
 
+The supplied SAR ADC exposes `DOUT` as an 8-bit electrical vector. In the
+Spectre positional instance, list the public scalar nodes `dout_7 ... dout_0`
+in the `DOUT` position so they map to the vector bits. `dout_7` is the MSB and
+`dout_0` is the LSB.
+
 ## Public Testbench And Observable Contract
 
 Public transient setting used by the release harness:
@@ -137,6 +142,18 @@ encode that held input, and `vout` follows the weighted reconstruction of the
 same saved code. Do not generate checker logic; the evaluator checks trial
 visibility, comparator/trial-DAC consistency, coverage, monotonicity, and
 code-to-DAC consistency.
+
+Concrete public stimulus guidance:
+
+- Use `parameters vdd=0.9 fin=100e3`.
+- Drive `clks` as a 50 MHz pulse clock with 0 V/`vdd` levels.
+- Keep active-low `rst_n` low for the first few clock cycles, then high for the
+  rest of the 20 us transient.
+- Drive `vin` with a full-swing sine around mid-supply, for example
+  `sinedc=0.45`, `ampl=0.45`, and `freq=fin`, so many post-reset samples cover
+  the ADC range.
+- The testbench should instantiate all three supplied modules in the chain:
+  `vin -> sh_ideal -> sar_adc_weighted_8b -> dac_weighted_8b -> vout`.
 
 ## Output Contract
 
