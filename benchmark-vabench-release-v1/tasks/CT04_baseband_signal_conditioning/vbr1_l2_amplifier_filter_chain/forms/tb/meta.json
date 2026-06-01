@@ -23,8 +23,11 @@
   ],
   "behavior_checks": [
     "amplified_input",
+    "preamp_monitor_matches_metric",
+    "two_pole_internal_lag_visible",
     "filtered_output_lags_input",
-    "metric_tracks_settling"
+    "metric_tracks_settling",
+    "settle_status_asserts_after_output_recovery"
   ],
   "designed_source": true
 }

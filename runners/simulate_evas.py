@@ -1787,7 +1787,20 @@ def check_vbm1_thermometer_dac_15seg(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vin_sh", "clks", "vout", "rst_n"}
+    required = {
+        "time",
+        "vin",
+        "vin_sh",
+        "clks",
+        "vout",
+        "rst_n",
+        "bit_index",
+        "trial_code_mon",
+        "trial_vdac",
+        "cmp_decision",
+        "conv_done",
+        "vin_sample",
+    }
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, f"missing_columns={','.join(missing)}"
@@ -1800,34 +1813,66 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
 
     times = [r["time"] for r in rows]
     edge_times = rising_edges([r["clks"] for r in rows], times)
-    sample_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
-    if len(sample_rows) < 64:
-        return False, f"too_few_post_reset_samples={len(sample_rows)}"
+    clock_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
+    sample_rows = [r for r in clock_rows if r["conv_done"] > 0.45]
+    if len(sample_rows) < 48:
+        return False, f"too_few_completed_conversions={len(sample_rows)}"
+
+    active_rows = [
+        r for r in rows
+        if r["rst_n"] > 0.45 and 0.05 < r["bit_index"] < 0.95 and r["conv_done"] <= 0.45
+    ]
+    if len(active_rows) < 64:
+        return False, f"too_few_visible_trial_rows={len(active_rows)}"
+    bit_levels = sorted({
+        level
+        for r in active_rows
+        for level in [max(0, min(8, int(round(r["bit_index"] / 0.9 * 8.0))))]
+        if level > 0
+    })
+    if bit_levels != list(range(1, 9)):
+        return False, f"sar_trial_bits_not_visible={bit_levels}"
+
+    trial_dac_err = max(abs(r["trial_code_mon"] - r["trial_vdac"]) for r in active_rows)
+    if trial_dac_err > 0.035:
+        return False, f"sar_trial_code_dac_mismatch={trial_dac_err:.4f}"
+    cmp_eval_rows = [r for r in active_rows if abs(r["vin_sample"] - r["trial_vdac"]) > 0.015]
+    if len(cmp_eval_rows) < 32:
+        return False, f"sar_too_few_nonborderline_comparator_trials={len(cmp_eval_rows)}"
+    cmp_agree = sum(
+        1 for r in cmp_eval_rows
+        if ((r["vin_sample"] >= r["trial_vdac"]) == (r["cmp_decision"] > 0.45))
+    )
+    cmp_frac = cmp_agree / len(cmp_eval_rows)
+    if cmp_frac < 0.94:
+        return False, f"sar_comparator_trial_decision_mismatch={cmp_frac:.3f}"
 
     codes = decode_bus(sample_rows, bit_names)
     vinsh = [r["vin_sh"] for r in sample_rows]
+    vinsamp = [r["vin_sample"] for r in sample_rows]
     vouts = [r["vout"] for r in sample_rows]
     vdd = 0.9
     code_voltages = [code / 255.0 * vdd for code in codes]
     unique_codes = len(set(codes))
     code_min = min(codes)
     code_max = max(codes)
-    sample_span = max(vinsh) - min(vinsh)
+    sample_span = max(vinsamp) - min(vinsamp)
     vout_span = max(vouts) - min(vouts)
-    avg_quant_err = sum(abs(sample - code_v) for sample, code_v in zip(vinsh, code_voltages)) / len(sample_rows)
-    max_quant_err = max(abs(sample - code_v) for sample, code_v in zip(vinsh, code_voltages))
+    avg_quant_err = sum(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages)) / len(sample_rows)
+    max_quant_err = max(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages))
     avg_dac_err = sum(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages)) / len(sample_rows)
     max_dac_err = max(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages))
-    avg_roundtrip_err = sum(abs(sample - vout) for sample, vout in zip(vinsh, vouts)) / len(sample_rows)
+    avg_roundtrip_err = sum(abs(sample - vout) for sample, vout in zip(vinsamp, vouts)) / len(sample_rows)
+    max_sample_hold_err = max(abs(sample - held) for sample, held in zip(vinsamp, vinsh))
 
-    sorted_pairs = sorted(zip(vinsh, codes), key=lambda item: item[0])
+    sorted_pairs = sorted(zip(vinsamp, codes), key=lambda item: item[0])
     monotonic_reversals = sum(
         1 for (_, prev_code), (_, curr_code) in zip(sorted_pairs, sorted_pairs[1:])
         if curr_code + 2 < prev_code
     )
 
     ok = (
-        unique_codes >= 96
+        unique_codes >= 48
         and code_min <= 8
         and code_max >= 247
         and sample_span > 0.75
@@ -1837,6 +1882,7 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
         and avg_dac_err < 0.020
         and max_dac_err < 0.060
         and avg_roundtrip_err < 0.030
+        and max_sample_hold_err < 0.090
         and monotonic_reversals <= max(2, len(sorted_pairs) // 50)
         and min(vouts) >= -0.02
         and max(vouts) <= vdd + 0.02
@@ -1846,7 +1892,8 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
         f"sample_span={sample_span:.3f} vout_span={vout_span:.3f} "
         f"avg_quant_err={avg_quant_err:.4f} max_quant_err={max_quant_err:.4f} "
         f"avg_dac_err={avg_dac_err:.4f} max_dac_err={max_dac_err:.4f} "
-        f"avg_roundtrip_err={avg_roundtrip_err:.4f} monotonic_reversals={monotonic_reversals}"
+        f"avg_roundtrip_err={avg_roundtrip_err:.4f} max_sample_hold_err={max_sample_hold_err:.4f} "
+        f"trial_bits={bit_levels} cmp_frac={cmp_frac:.3f} monotonic_reversals={monotonic_reversals}"
     )
 
 
@@ -6011,26 +6058,61 @@ def check_release_two_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, s
 
 
 def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "vin",
+        "out",
+        "metric",
+        "preamp_mon",
+        "filt1_mon",
+        "filt2_mon",
+        "settle_metric",
+    }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     early_high_out = mean_in_window(rows, "out", 12.5e-9, 15.0e-9)
     late_high_out = mean_in_window(rows, "out", 24.0e-9, 28.0e-9)
     early_high_metric = mean_in_window(rows, "metric", 12.5e-9, 15.0e-9)
     late_high_metric = mean_in_window(rows, "metric", 24.0e-9, 28.0e-9)
+    early_preamp = mean_in_window(rows, "preamp_mon", 12.5e-9, 15.0e-9)
+    early_filt1 = mean_in_window(rows, "filt1_mon", 12.5e-9, 15.0e-9)
+    early_filt2 = mean_in_window(rows, "filt2_mon", 12.5e-9, 15.0e-9)
+    late_filt2 = mean_in_window(rows, "filt2_mon", 24.0e-9, 28.0e-9)
     mid_metric = mean_in_window(rows, "metric", 33.0e-9, 36.0e-9)
     low_metric = mean_in_window(rows, "metric", 46.0e-9, 55.0e-9)
     low_out = mean_in_window(rows, "out", 54.0e-9, 58.0e-9)
-    if None in (early_high_out, late_high_out, early_high_metric, late_high_metric, mid_metric, low_metric, low_out):
+    low_settle = mean_in_window(rows, "settle_metric", 54.0e-9, 58.0e-9)
+    if None in (
+        early_high_out,
+        late_high_out,
+        early_high_metric,
+        late_high_metric,
+        early_preamp,
+        early_filt1,
+        early_filt2,
+        late_filt2,
+        mid_metric,
+        low_metric,
+        low_out,
+        low_settle,
+    ):
         return False, "amp_filter_missing_sample_windows"
     assert early_high_out is not None
     assert late_high_out is not None
     assert early_high_metric is not None
     assert late_high_metric is not None
+    assert early_preamp is not None
+    assert early_filt1 is not None
+    assert early_filt2 is not None
+    assert late_filt2 is not None
     assert mid_metric is not None
     assert low_metric is not None
     assert low_out is not None
+    assert low_settle is not None
 
     post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 70e-9]
     if len(post_rows) < 10:
@@ -6046,6 +6128,15 @@ def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[
             "amp_filter_metric_not_preamp_target "
             f"early={early_high_metric:.3f} late={late_high_metric:.3f} low={low_metric:.3f}"
         )
+    if abs(early_preamp - early_high_metric) > 0.04:
+        return False, f"amp_filter_preamp_metric_mismatch={early_preamp:.3f}/{early_high_metric:.3f}"
+    if early_preamp - early_filt1 < 0.08 or early_filt1 - early_filt2 < 0.03:
+        return False, (
+            "amp_filter_missing_two_pole_internal_lag "
+            f"preamp/f1/f2={early_preamp:.3f}/{early_filt1:.3f}/{early_filt2:.3f}"
+        )
+    if abs(late_filt2 - late_high_out) > 0.04:
+        return False, f"amp_filter_filt2_not_output={late_filt2:.3f}/{late_high_out:.3f}"
     if abs(mid_metric - 0.45) > 0.08:
         return False, f"amp_filter_mid_metric_not_common_mode={mid_metric:.3f}"
     if late_high_out <= early_high_out + 0.09:
@@ -6054,9 +6145,12 @@ def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[
         return False, f"amp_filter_output_not_lagging_metric gap={early_high_metric - early_high_out:.3f}"
     if low_out > 0.35:
         return False, f"amp_filter_output_not_falling low={low_out:.3f}"
+    if low_settle < 0.70:
+        return False, f"amp_filter_settle_metric_not_asserted={low_settle:.3f}"
     return True, (
         "release_amplifier_filter_chain "
         f"metric_high_low={early_high_metric:.3f}/{low_metric:.3f} "
+        f"preamp/f1/f2={early_preamp:.3f}/{early_filt1:.3f}/{early_filt2:.3f} "
         f"out_lag={early_high_out:.3f}->{late_high_out:.3f}"
     )
 
@@ -6383,9 +6477,22 @@ def check_ldo_regulator_macro_model(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon",
+    }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     supply_off = mean_in_window(rows, "out", 5.0e-9, 9.0e-9)
     pre_enable = mean_in_window(rows, "out", 15.0e-9, 22.0e-9)
@@ -6393,7 +6500,28 @@ def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[b
     startup_metric = mean_in_window(rows, "metric", 39.0e-9, 52.0e-9)
     dip_reset = mean_in_window(rows, "out", 57.0e-9, 61.0e-9)
     recovered_metric = mean_in_window(rows, "metric", 74.0e-9, 79.0e-9)
-    if None in (supply_off, pre_enable, startup_ref, startup_metric, dip_reset, recovered_metric):
+    pre_supply_ok = mean_in_window(rows, "supply_ok", 15.0e-9, 22.0e-9)
+    pre_enable_mon = mean_in_window(rows, "enable_mon", 15.0e-9, 22.0e-9)
+    startup_enable_mon = mean_in_window(rows, "enable_mon", 39.0e-9, 52.0e-9)
+    startup_state = mean_in_window(rows, "state_mon", 39.0e-9, 52.0e-9)
+    startup_progress = mean_in_window(rows, "startup_mon", 39.0e-9, 52.0e-9)
+    dip_supply_ok = mean_in_window(rows, "supply_ok", 57.0e-9, 61.0e-9)
+    recovery_state = mean_in_window(rows, "state_mon", 74.0e-9, 79.0e-9)
+    if None in (
+        supply_off,
+        pre_enable,
+        startup_ref,
+        startup_metric,
+        dip_reset,
+        recovered_metric,
+        pre_supply_ok,
+        pre_enable_mon,
+        startup_enable_mon,
+        startup_state,
+        startup_progress,
+        dip_supply_ok,
+        recovery_state,
+    ):
         return False, "ref_startup_missing_sample_windows"
     assert supply_off is not None
     assert pre_enable is not None
@@ -6401,22 +6529,44 @@ def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[b
     assert startup_metric is not None
     assert dip_reset is not None
     assert recovered_metric is not None
+    assert pre_supply_ok is not None
+    assert pre_enable_mon is not None
+    assert startup_enable_mon is not None
+    assert startup_state is not None
+    assert startup_progress is not None
+    assert dip_supply_ok is not None
+    assert recovery_state is not None
 
     if supply_off > 0.08:
         return False, f"ref_startup_supply_off_not_low={supply_off:.3f}"
     if pre_enable > 0.12:
         return False, f"ref_startup_ignores_enable={pre_enable:.3f}"
+    if pre_supply_ok < 0.70 or pre_enable_mon > 0.10:
+        return False, (
+            "ref_startup_supply_enable_monitors_wrong "
+            f"supply_ok={pre_supply_ok:.3f} enable={pre_enable_mon:.3f}"
+        )
     if startup_ref < 0.48 or startup_ref > 0.60:
         return False, f"ref_startup_wrong_reference={startup_ref:.3f}"
     if startup_metric < 0.65:
         return False, f"ref_startup_valid_metric_low={startup_metric:.3f}"
+    if startup_enable_mon < 0.70 or startup_state < 0.72 or startup_progress < 0.60:
+        return False, (
+            "ref_startup_internal_state_not_valid "
+            f"enable={startup_enable_mon:.3f} state={startup_state:.3f} progress={startup_progress:.3f}"
+        )
     if dip_reset > 0.10:
         return False, f"ref_startup_supply_dip_not_reset={dip_reset:.3f}"
+    if dip_supply_ok > 0.10:
+        return False, f"ref_startup_supply_ok_not_cleared_on_dip={dip_supply_ok:.3f}"
     if recovered_metric < 0.45:
         return False, f"ref_startup_no_recovery_metric={recovered_metric:.3f}"
+    if recovery_state < 0.45:
+        return False, f"ref_startup_state_not_recovering={recovery_state:.3f}"
     return True, (
         "reference_startup_enable_flow "
-        f"pre_enable={pre_enable:.3f} startup={startup_ref:.3f} dip={dip_reset:.3f}"
+        f"pre_enable={pre_enable:.3f} startup={startup_ref:.3f} "
+        f"state={startup_state:.3f} progress={startup_progress:.3f} dip={dip_reset:.3f}"
     )
 
 
@@ -6743,22 +6893,66 @@ def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {"time", "clk", "rst", "vin", "out", "metric", "lo_i", "lo_q", "mix_i", "mix_q", "phase_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     i_hi = mean_in_window(rows, "out", 12.2e-9, 13.5e-9)
     q_hi = mean_in_window(rows, "metric", 14.2e-9, 15.5e-9)
     i_lo = mean_in_window(rows, "out", 16.2e-9, 17.5e-9)
     q_lo = mean_in_window(rows, "metric", 18.2e-9, 19.5e-9)
+    lo_i_hi = mean_in_window(rows, "lo_i", 12.2e-9, 13.5e-9)
+    lo_q_hi = mean_in_window(rows, "lo_q", 14.2e-9, 15.5e-9)
+    lo_i_lo = mean_in_window(rows, "lo_i", 16.2e-9, 17.5e-9)
+    lo_q_lo = mean_in_window(rows, "lo_q", 18.2e-9, 19.5e-9)
+    mix_i_hi = mean_in_window(rows, "mix_i", 12.2e-9, 13.5e-9)
+    mix_q_hi = mean_in_window(rows, "mix_q", 14.2e-9, 15.5e-9)
+    mix_i_lo = mean_in_window(rows, "mix_i", 16.2e-9, 17.5e-9)
+    mix_q_lo = mean_in_window(rows, "mix_q", 18.2e-9, 19.5e-9)
+    phase_i_hi = mean_in_window(rows, "phase_mon", 12.2e-9, 13.5e-9)
+    phase_q_hi = mean_in_window(rows, "phase_mon", 14.2e-9, 15.5e-9)
+    phase_i_lo = mean_in_window(rows, "phase_mon", 16.2e-9, 17.5e-9)
+    phase_q_lo = mean_in_window(rows, "phase_mon", 18.2e-9, 19.5e-9)
     i_cm = mean_in_window(rows, "out", 58.0e-9, 64.0e-9)
     q_cm = mean_in_window(rows, "metric", 58.0e-9, 64.0e-9)
-    if None in (i_hi, q_hi, i_lo, q_lo, i_cm, q_cm):
+    if None in (
+        i_hi,
+        q_hi,
+        i_lo,
+        q_lo,
+        lo_i_hi,
+        lo_q_hi,
+        lo_i_lo,
+        lo_q_lo,
+        mix_i_hi,
+        mix_q_hi,
+        mix_i_lo,
+        mix_q_lo,
+        phase_i_hi,
+        phase_q_hi,
+        phase_i_lo,
+        phase_q_lo,
+        i_cm,
+        q_cm,
+    ):
         return False, "iq_missing_sample_windows"
     assert i_hi is not None
     assert q_hi is not None
     assert i_lo is not None
     assert q_lo is not None
+    assert lo_i_hi is not None
+    assert lo_q_hi is not None
+    assert lo_i_lo is not None
+    assert lo_q_lo is not None
+    assert mix_i_hi is not None
+    assert mix_q_hi is not None
+    assert mix_i_lo is not None
+    assert mix_q_lo is not None
+    assert phase_i_hi is not None
+    assert phase_q_hi is not None
+    assert phase_i_lo is not None
+    assert phase_q_lo is not None
     assert i_cm is not None
     assert q_cm is not None
 
@@ -6766,9 +6960,35 @@ def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, s
         return False, f"iq_positive_quadrature_missing i={i_hi:.3f} q={q_hi:.3f}"
     if i_lo > 0.22 or q_lo > 0.22:
         return False, f"iq_negative_quadrature_missing i={i_lo:.3f} q={q_lo:.3f}"
+    if lo_i_hi < 0.78 or lo_q_hi < 0.78 or lo_i_lo > 0.12 or lo_q_lo > 0.12:
+        return False, (
+            "iq_lo_quadrature_sequence_wrong "
+            f"lo_i_hi={lo_i_hi:.3f} lo_q_hi={lo_q_hi:.3f} "
+            f"lo_i_lo={lo_i_lo:.3f} lo_q_lo={lo_q_lo:.3f}"
+        )
+    if abs(i_hi - mix_i_hi) > 0.08 or abs(q_hi - mix_q_hi) > 0.08 or abs(i_lo - mix_i_lo) > 0.08 or abs(q_lo - mix_q_lo) > 0.08:
+        return False, (
+            "iq_baseband_not_tracking_mixer "
+            f"i_hi={i_hi:.3f}/{mix_i_hi:.3f} q_hi={q_hi:.3f}/{mix_q_hi:.3f} "
+            f"i_lo={i_lo:.3f}/{mix_i_lo:.3f} q_lo={q_lo:.3f}/{mix_q_lo:.3f}"
+        )
+    if not (
+        phase_i_hi < 0.10
+        and 0.20 < phase_q_hi < 0.40
+        and 0.50 < phase_i_lo < 0.70
+        and phase_q_lo > 0.80
+    ):
+        return False, (
+            "iq_phase_monitor_sequence_wrong "
+            f"phase={phase_i_hi:.3f}/{phase_q_hi:.3f}/{phase_i_lo:.3f}/{phase_q_lo:.3f}"
+        )
     if abs(i_cm - 0.45) > 0.08 or abs(q_cm - 0.45) > 0.08:
         return False, f"iq_common_mode_hold_wrong i={i_cm:.3f} q={q_cm:.3f}"
-    return True, f"iq_downconversion_chain i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f}"
+    return True, (
+        "iq_downconversion_chain "
+        f"i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f} "
+        f"phase={phase_i_hi:.3f}/{phase_q_hi:.3f}/{phase_i_lo:.3f}/{phase_q_lo:.3f}"
+    )
 
 
 def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -7237,6 +7457,7 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_strongarm_style_latch_comparator": check_release_strongarm_latch_comparator,
     "vbr1_l1_threshold_comparator": check_release_threshold_comparator,
     "vbr1_l1_unit_element_thermometer_dac": check_vbm1_thermometer_dac_15seg,
+    "vbr1_l2_weighted_sar_adc_dac_loop": check_sar_adc_dac_weighted_8b,
     "vbr1_l1_vco_phase_integrator": check_vbm1_vco_phase_integrator,
     "vbr1_l1_window_comparator_detector": check_true_window_comparator,
     # Release-generic checks are intentionally conservative behavior guards for

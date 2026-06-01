@@ -29,8 +29,8 @@ Paper-facing claims for this row are limited to the public behavior checks below
 
 ## Public DUT Interface To Instantiate
 
-- `dac_weighted_8b.va` declares module `dac_weighted_8b` with positional ports: `DIN`, `VOUT`.
-- `sar_adc_weighted_8b.va` declares module `sar_adc_weighted_8b` with positional ports: `VIN`, `CLKS`, `RST_N`, `DOUT`.
+- `dac_weighted_8b.va` declares module `dac_weighted_8b` with positional scalar ports: `DIN7`, `DIN6`, `DIN5`, `DIN4`, `DIN3`, `DIN2`, `DIN1`, `DIN0`, `VOUT`.
+- `sar_adc_weighted_8b.va` declares module `sar_adc_weighted_8b` with positional ports: `VIN`, `CLKS`, `RST_N`, `DOUT`, `BIT_INDEX`, `TRIAL_CODE_MON`, `TRIAL_VDAC`, `CMP_DECISION`, `CONV_DONE`, `VIN_SAMPLE`.
 - `sh_ideal.va` declares module `sh_ideal` with positional ports: `vin`, `clk`, `vdd`, `vss`, `rst_n`, `vout`.
 
 ## Public Testbench And Observable Contract
@@ -38,7 +38,7 @@ Paper-facing claims for this row are limited to the public behavior checks below
 Public transient setting used by the release harness:
 
 ```spectre
-tran tran stop=10u maxstep=5n
+tran tran stop=20u maxstep=5n
 ```
 
 The release harness expects these exact public scalar observables:
@@ -56,6 +56,12 @@ The release harness expects these exact public scalar observables:
 - `dout_2`
 - `dout_1`
 - `dout_0`
+- `bit_index`
+- `trial_code_mon`
+- `trial_vdac`
+- `cmp_decision`
+- `conv_done`
+- `vin_sample`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -81,12 +87,12 @@ ahdl_include "sh_ideal.va"
 Vvdd (vdd 0) vsource dc=vdd
 Vvss (vss 0) vsource dc=0
 
-IADC (vin clks rst_n dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0) sar_adc_weighted_8b vdd=vdd
+IADC (vin_sh clks rst_n dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0 bit_index trial_code_mon trial_vdac cmp_decision conv_done vin_sample) sar_adc_weighted_8b vdd=vdd
 IDAC (dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0 vout) dac_weighted_8b vdd=vdd
 ISH (vin clks vdd vss rst_n vin_sh) sh_ideal
 
-tran tran stop=10u maxstep=5n
-save vin vin_sh clks rst_n vout dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0
+tran tran stop=20u maxstep=5n
+save vin vin_sh clks rst_n vout dout_7 dout_6 dout_5 dout_4 dout_3 dout_2 dout_1 dout_0 bit_index trial_code_mon trial_vdac cmp_decision conv_done vin_sample
 ```
 
 Critical syntax rules:
@@ -101,6 +107,9 @@ Critical syntax rules:
 - `transient_analysis_present`
 - `public_observables_saved`
 - `dut_or_system_instantiated`
+- `sar_bit_trial_sequence_visible`
+- `trial_dac_matches_trial_code_monitor`
+- `comparator_decision_matches_sample_and_trial`
 - `sar_adc_code_range_sufficient`
 - `sar_adc_unique_code_count`
 - `sar_code_matches_sampled_input`
@@ -117,15 +126,17 @@ the sample, conversion code, and reconstruction visible:
    after reset.
 2. Drive the sampling/conversion clock long enough for many completed
    conversions.
-3. Save the held sample `vin_sh`, all eight SAR output bits, and the weighted
-   DAC output `vout`.
-4. Connect the SAR output bits into the weighted DAC path so `vout` is
-   reconstructable from the saved code.
+3. Save the held sample `vin_sh`, the ADC's `vin_sample`, all eight SAR output
+   bits, the trial monitor outputs, and the weighted DAC output `vout`.
+4. Feed `vin_sh` into the SAR ADC input, then connect the SAR output bits into
+   the weighted DAC path so `vout` is reconstructable from the saved code.
 
-The expected public relation is: `vin` is sampled to `vin_sh`, the SAR bits
+The expected public relation is: `vin` is sampled to `vin_sh`/`vin_sample`, the
+SAR trial monitors show an MSB-to-LSB approximation sequence, the final SAR bits
 encode that held input, and `vout` follows the weighted reconstruction of the
-same saved code. Do not generate checker logic; the evaluator checks coverage,
-monotonicity, and code-to-DAC consistency.
+same saved code. Do not generate checker logic; the evaluator checks trial
+visibility, comparator/trial-DAC consistency, coverage, monotonicity, and
+code-to-DAC consistency.
 
 ## Output Contract
 
@@ -153,6 +164,7 @@ Public requirements:
 - save the public observables needed by the checker
 - include or instantiate the Verilog-A behavioral module under test
 - drive enough full-swing input samples after reset for broad 8-bit code coverage
+- save `bit_index`, `trial_code_mon`, `trial_vdac`, `cmp_decision`, `conv_done`, and `vin_sample` so the approximation loop is observable
 - connect the SAR ADC output bits into the weighted DAC so `vout` is reconstructable from the saved code
 - avoid transistor-level devices, AC/noise analysis, and current-domain
   solver assumptions

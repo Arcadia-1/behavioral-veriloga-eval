@@ -28,7 +28,7 @@ Paper-facing claims for this row are limited to the public behavior checks below
 
 ## Public Verilog-A Interface
 
-- `reference_startup_enable_flow.va` declares module `reference_startup_enable_flow` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- `reference_startup_enable_flow.va` declares module `reference_startup_enable_flow` with positional ports: `clk`, `rst`, `vdd_in`, `en`, `out`, `metric`, `supply_ok`, `enable_mon`, `state_mon`, `startup_mon`.
 
 ## Public Testbench And Observable Contract
 
@@ -42,9 +42,14 @@ The release harness expects these exact public scalar observables:
 
 - `clk`
 - `rst`
-- `vin`
+- `vdd_in`
+- `en`
 - `out`
 - `metric`
+- `supply_ok`
+- `enable_mon`
+- `state_mon`
+- `startup_mon`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -52,7 +57,8 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `clk`
 - `rst`
-- `vin`
+- `vdd_in`
+- `en`
 
 ## Public Spectre Testbench Scaffold
 
@@ -63,10 +69,10 @@ simulator lang=spectre
 global 0
 ahdl_include "reference_startup_enable_flow.va"
 
-XDUT (clk rst vin out metric) reference_startup_enable_flow
+XDUT (clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon) reference_startup_enable_flow
 
 tran tran stop=80n maxstep=0.5n
-save clk rst vin out metric
+save clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon
 ```
 
 Critical syntax rules:
@@ -78,9 +84,37 @@ Critical syntax rules:
 
 ## Public Behavior Checks
 
+- `supply_good_and_enable_monitors_are_visible`
 - `pre_enable_reference_is_held_low`
 - `enabled_reference_startup_settles`
+- `startup_progress_and_state_transition_visible`
 - `supply_dip_resets_valid_status`
+- `state_and_valid_status_recover_after_supply_return`
+
+## Public L2 Behavior Contract
+
+Implement the flow as a visible startup sequence, not as a direct output lookup:
+
+1. Supply-good and enable stage:
+   - Interpret `vdd_in` as the public supply voltage and `en` as the public
+     enable command.
+   - Drive `supply_ok` high only when `vdd_in` is above the supply-good
+     threshold.
+   - Drive `enable_mon` high only when `en` is asserted.
+
+2. Reference startup stage:
+   - Hold `out` low while supply is off or enable is low.
+   - After supply-good and enable are both asserted, let `out` settle gradually
+     toward the reference target around 0.55 V.
+   - Drive `startup_mon` as a monotonic startup-progress observable.
+   - Drive `state_mon` through off/disabled/startup/valid states, voltage-coded
+     between 0 V and 0.9 V.
+
+3. Recovery stage:
+   - A public supply dip must clear `supply_ok`, reset startup progress, and
+     pull `out`/`metric` low.
+   - When the supply returns while enable remains high, the flow must restart
+     and recover valid status.
 
 ## Output Contract
 
@@ -111,20 +145,20 @@ This is a voltage-domain macro-model task for bias/reference/power management be
 Public port contract:
 
 ```verilog
-module reference_startup_enable_flow(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+module reference_startup_enable_flow(clk, rst, vdd_in, en, out, metric, supply_ok, enable_mon, state_mon, startup_mon);
+input clk, rst, vdd_in, en;
+output out, metric, supply_ok, enable_mon, state_mon, startup_mon;
+electrical clk, rst, vdd_in, en, out, metric, supply_ok, enable_mon, state_mon, startup_mon;
 ```
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals. vin encodes the public supply/enable schedule: low is supply-off, mid is supply-good with enable low, and high is supply-good with enable asserted. out is the reference startup voltage. metric marks valid settled reference status.
+clk and rst are voltage-coded logic signals. vdd_in is the public supply waveform and en is the public enable command. out is the reference startup voltage. metric marks valid settled reference status. supply_ok exposes supply-good detection, enable_mon exposes the enable latch, state_mon exposes off/disabled/startup/valid state, and startup_mon exposes startup progress.
 
 Saved waveform columns:
 
 ```text
-clk rst vin out metric
+clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon
 ```
 
 Public transient contract:

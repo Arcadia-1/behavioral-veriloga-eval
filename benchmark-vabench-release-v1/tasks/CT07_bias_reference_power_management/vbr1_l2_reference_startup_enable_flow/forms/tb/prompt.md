@@ -29,7 +29,7 @@ Paper-facing claims for this row are limited to the public behavior checks below
 
 ## Public DUT Interface To Instantiate
 
-- `reference_startup_enable_flow.va` declares module `reference_startup_enable_flow` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- `reference_startup_enable_flow.va` declares module `reference_startup_enable_flow` with positional ports: `clk`, `rst`, `vdd_in`, `en`, `out`, `metric`, `supply_ok`, `enable_mon`, `state_mon`, `startup_mon`.
 
 ## Public Testbench And Observable Contract
 
@@ -43,9 +43,14 @@ The release harness expects these exact public scalar observables:
 
 - `clk`
 - `rst`
-- `vin`
+- `vdd_in`
+- `en`
 - `out`
 - `metric`
+- `supply_ok`
+- `enable_mon`
+- `state_mon`
+- `startup_mon`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -53,7 +58,8 @@ Public stimulus/source nodes visible in the reference harness include:
 
 - `clk`
 - `rst`
-- `vin`
+- `vdd_in`
+- `en`
 
 ## Public Stimulus Schedule Contract
 
@@ -64,7 +70,8 @@ Public schedule source: `tb_reference_startup_enable_flow.scs`.
 ```spectre
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
 Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]
-Vvin (vin 0) vsource type=pwl wave=[0 0.15 9.9n 0.15 10n 0.40 23.9n 0.40 24n 0.70 53.9n 0.70 54n 0.20 62.9n 0.20 63n 0.70 80n 0.70]
+Vvdd_in (vdd_in 0) vsource type=pwl wave=[0 0.15 9.9n 0.15 10n 0.70 53.9n 0.70 54n 0.20 62.9n 0.20 63n 0.70 80n 0.70]
+Ven (en 0) vsource type=pwl wave=[0 0 23.9n 0 24n 0.9 80n 0.9]
 ```
 
 ## Public Spectre Testbench Scaffold
@@ -76,10 +83,10 @@ simulator lang=spectre
 global 0
 ahdl_include "reference_startup_enable_flow.va"
 
-XDUT (clk rst vin out metric) reference_startup_enable_flow
+XDUT (clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon) reference_startup_enable_flow
 
 tran tran stop=80n maxstep=0.5n
-save clk rst vin out metric
+save clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon
 ```
 
 Critical syntax rules:
@@ -91,9 +98,26 @@ Critical syntax rules:
 
 ## Public Behavior Checks
 
+- `supply_good_and_enable_monitors_are_visible`
 - `pre_enable_reference_is_held_low`
 - `enabled_reference_startup_settles`
+- `startup_progress_and_state_transition_visible`
 - `supply_dip_resets_valid_status`
+- `state_and_valid_status_recover_after_supply_return`
+
+## Public L2 Behavior Contract
+
+The testbench must expose a complete startup and recovery flow:
+
+1. Drive `vdd_in` through supply-off, supply-good, supply-dip, and recovery
+   plateaus.
+2. Keep `en` low during the pre-enable supply-good window, then assert it for
+   startup and keep it asserted through the supply dip/recovery.
+3. Save `supply_ok`, `enable_mon`, `state_mon`, and `startup_mon` so the
+   evaluator can distinguish supply detection, enable gating, startup progress,
+   and valid/recovery state from the final reference output.
+4. Do not generate checker logic; the evaluator checks the public waveform
+   relation from saved nodes.
 
 ## Output Contract
 
@@ -120,20 +144,20 @@ This is a voltage-domain macro-model task for bias/reference/power management be
 Public port contract:
 
 ```verilog
-module reference_startup_enable_flow(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+module reference_startup_enable_flow(clk, rst, vdd_in, en, out, metric, supply_ok, enable_mon, state_mon, startup_mon);
+input clk, rst, vdd_in, en;
+output out, metric, supply_ok, enable_mon, state_mon, startup_mon;
+electrical clk, rst, vdd_in, en, out, metric, supply_ok, enable_mon, state_mon, startup_mon;
 ```
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals. vin encodes the public supply/enable schedule: low is supply-off, mid is supply-good with enable low, and high is supply-good with enable asserted. out is the reference startup voltage. metric marks valid settled reference status.
+clk and rst are voltage-coded logic signals. vdd_in is the public supply waveform and en is the public enable command. out is the reference startup voltage. metric marks valid settled reference status. supply_ok exposes supply-good detection, enable_mon exposes the enable latch, state_mon exposes off/disabled/startup/valid state, and startup_mon exposes startup progress.
 
 Saved waveform columns:
 
 ```text
-clk rst vin out metric
+clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon
 ```
 
 Public transient contract:

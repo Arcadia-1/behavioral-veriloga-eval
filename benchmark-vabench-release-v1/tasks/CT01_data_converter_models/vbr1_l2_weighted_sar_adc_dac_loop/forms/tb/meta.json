@@ -23,5 +23,16 @@
     "tb_compile",
     "sim_correct"
   ],
+  "behavior_checks": [
+    "sar_bit_trial_sequence_visible",
+    "trial_dac_matches_trial_code_monitor",
+    "comparator_decision_matches_sample_and_trial",
+    "sar_adc_code_range_sufficient",
+    "sar_adc_unique_code_count",
+    "sar_code_matches_sampled_input",
+    "dac_output_matches_weighted_code",
+    "code_monotonic_with_sampled_input",
+    "dac_output_in_range"
+  ],
   "source": "tb_companion_from_e2e"
 }

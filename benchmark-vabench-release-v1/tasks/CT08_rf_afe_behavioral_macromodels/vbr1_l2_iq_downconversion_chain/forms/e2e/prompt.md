@@ -28,7 +28,7 @@ Paper-facing claims for this row are limited to the public behavior checks below
 
 ## Public Verilog-A Interface
 
-- `iq_downconversion_chain.va` declares module `iq_downconversion_chain` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- `iq_downconversion_chain.va` declares module `iq_downconversion_chain` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`, `lo_i`, `lo_q`, `mix_i`, `mix_q`, `phase_mon`.
 
 ## Public Testbench And Observable Contract
 
@@ -45,6 +45,11 @@ The release harness expects these exact public scalar observables:
 - `vin`
 - `out`
 - `metric`
+- `lo_i`
+- `lo_q`
+- `mix_i`
+- `mix_q`
+- `phase_mon`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -75,10 +80,10 @@ simulator lang=spectre
 global 0
 ahdl_include "iq_downconversion_chain.va"
 
-XDUT (clk rst vin out metric) iq_downconversion_chain
+XDUT (clk rst vin out metric lo_i lo_q mix_i mix_q phase_mon) iq_downconversion_chain
 
 tran tran stop=80n maxstep=0.5n
-save clk rst vin out metric
+save clk rst vin out metric lo_i lo_q mix_i mix_q phase_mon
 ```
 
 Critical syntax rules:
@@ -91,8 +96,33 @@ Critical syntax rules:
 ## Public Behavior Checks
 
 - `quadrature_iq_phase_sequence`
+- `lo_iq_phase_monitors_are_visible`
+- `mixer_outputs_track_lo_polarity_and_input`
 - `i_and_q_outputs_are_distinct`
+- `baseband_outputs_follow_mixer_paths`
 - `common_mode_hold_when_input_centered`
+
+## Public L2 Behavior Contract
+
+Implement the chain as a visible receiver-style behavioral flow:
+
+1. Quadrature LO/state stage:
+   - Advance a four-phase quadrature sequence on the public `clk`.
+   - Expose phase on `phase_mon`.
+   - Expose voltage-coded LO polarity on `lo_i` and `lo_q`.
+
+2. Mixer stage:
+   - Treat `vin` as an RF/envelope input around 0.45 V common mode.
+   - Drive `mix_i` and `mix_q` as bounded mixer products using the I/Q LO
+     polarity.
+
+3. Baseband output stage:
+   - Drive `out` from the I-path baseband response and `metric` from the Q-path
+     baseband response.
+   - `out` and `metric` should follow the corresponding mixer paths while
+     remaining bounded in the 0 V to 0.9 V signal range.
+   - When `vin` returns to common mode, both baseband observables should return
+     near common mode.
 
 ## Output Contract
 
@@ -123,20 +153,20 @@ This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gai
 Public port contract:
 
 ```verilog
-module iq_downconversion_chain(clk, rst, vin, out, metric);
+module iq_downconversion_chain(clk, rst, vin, out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon);
 input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+output out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon;
+electrical clk, rst, vin, out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon;
 ```
 
 Signal contract:
 
-clk is the quadrature LO phase-advance clock and rst is voltage-coded reset. vin is the RF input envelope around 0.45 V common mode. out is the I-path baseband observable and metric is the Q-path baseband observable.
+clk is the quadrature LO phase-advance clock and rst is voltage-coded reset. vin is the RF input envelope around 0.45 V common mode. phase_mon exposes the four-phase LO state, lo_i and lo_q expose voltage-coded I/Q LO polarity, mix_i and mix_q expose bounded mixer outputs, out is the I-path baseband observable, and metric is the Q-path baseband observable.
 
 Saved waveform columns:
 
 ```text
-clk rst vin out metric
+clk rst vin out metric lo_i lo_q mix_i mix_q phase_mon
 ```
 
 Public transient contract:
