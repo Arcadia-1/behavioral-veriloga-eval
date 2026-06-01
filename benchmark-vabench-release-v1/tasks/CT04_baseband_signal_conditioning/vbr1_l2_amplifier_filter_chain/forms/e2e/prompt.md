@@ -140,12 +140,14 @@ targets:
 - Hold each input value stable across its measurement window rather than
   ramping through that window.
 
-Concrete public implementation guidance:
+Acceptable public behavioral abstraction:
 
 - Initialize `preamp_mon`, `metric`, `filt1_mon`, `filt2_mon`, and `out` near
   mid-supply during reset.
-- On each rising `clk` edge after reset, compute
-  `target = clip(0.45 + gain * (vin - 0.45), 0, 0.9)`.
+- On each rising `clk` edge after reset, compute a bounded gain-stage target
+  from `vin` around mid-supply. Higher `vin` should produce a higher target,
+  lower `vin` should produce a lower target, and the target must stay within
+  the 0 V to 0.9 V signal range.
 - Drive both `metric` and `preamp_mon` from `target` immediately. This is the
   public observable for the gain-stage target.
 - Then update two explicit lag states, for example

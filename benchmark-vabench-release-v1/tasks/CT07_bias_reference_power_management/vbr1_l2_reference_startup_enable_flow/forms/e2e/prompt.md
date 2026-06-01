@@ -119,11 +119,11 @@ Implement the flow as a visible startup sequence, not as a direct output lookup:
    - When the supply returns while enable remains high, the flow must restart
      and recover valid status.
 
-Concrete public implementation guidance:
+Acceptable public behavioral abstraction:
 
-- Use a simple clocked state machine. A useful public state coding is:
-  off/reset near 0 V, disabled near 0.3 V, startup near 0.6 V, and valid near
-  0.9 V on `state_mon`.
+- Use a simple clocked state machine. `state_mon` should make off/reset,
+  disabled, startup, and valid states visibly distinguishable with monotonic
+  voltage-coded levels between 0 V and 0.9 V.
 - Drive `supply_ok` high only when `vdd_in` is above the public supply-good
   threshold, and low again during the supply dip.
 - Drive `enable_mon` directly from the public enable input after reset and
