@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-06-01",
+  "scope": "MiMo 2.5-pro highout32k full236 EVAS/Spectre conformance refresh",
+  "candidate_run": "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260601-full236-highout32k-currentevas-v4-dual",
+  "triage_report": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v4_20260601.json",
+  "summary": {
+    "scored_forms": 236,
+    "completed_dual_rows": 228,
+    "skipped_generation_rows": 8,
+    "spectre_checker_pass_rows": 113,
+    "strict_dual_pass_rows": 113,
+    "evas_pass_spectre_fail_rows": 0,
+    "spectre_pass_evas_fail_rows": 0,
+    "waveform_parity_gate_rows": 0
+  },
+  "resolved_l0_findings": [
+    {
+      "finding": "waveform parity gate on resettable counter divider",
+      "previous_evidence": "pre-v4 full236 triage showed one waveform parity gate on vbm1_resettable_counter_divider_tb",
+      "classification": "EVAS source scheduling semantics",
+      "root_cause": "EVAS treated a Spectre pulse source with no period as a DC-high source. Spectre applies a nonperiodic one-shot pulse: the source stays at val0 until delay, rises once to val1, and stays there unless width is specified.",
+      "fix": "Implement nonperiodic pulse semantics in EVAS pulse() and _add_spectre_source(), including one-shot width fallback.",
+      "regression_tests": [
+        "tests/test_netlist.py::TestAddSpectreSourceDegenerateCases::test_pulse_missing_period_but_different_vals_warns",
+        "tests/test_netlist.py::TestAddSpectreSourceDegenerateCases::test_nonperiodic_pulse_width_falls_once"
+      ],
+      "current_status": "resolved; current full236 v4 has zero waveform parity gate rows"
+    },
+    {
+      "finding": "Spectre PASS / EVAS FAIL on calibration deadband boundary",
+      "previous_evidence": "pre-v4 mismatch rerun showed a calibration-deadband boundary false negative",
+      "classification": "checker window calibration",
+      "root_cause": "Both simulators followed the same trim sequence, but an exact 0.120 V span boundary could land on opposite sides of the threshold due to transition sampling granularity.",
+      "fix": "Relax the boundary by 1e-6 V in the release calibration-loop checker.",
+      "regression_tests": [
+        "full236 currentevas v4 dual refresh"
+      ],
+      "current_status": "resolved; current full236 v4 has zero Spectre PASS / EVAS FAIL rows"
+    },
+    {
+      "finding": "Spectre PASS / EVAS FAIL on pipeline ADC stage bugfix",
+      "previous_evidence": "pre-v4 full236 triage showed Spectre PASS / EVAS FAIL on vbr1_l1_pipeline_adc_stage:bugfix",
+      "classification": "EVAS Verilog-A identifier compatibility",
+      "root_cause": "EVAS used a case-insensitive preflight check for parameter/port collisions. Verilog-A identifiers are case-sensitive, so port VDD and parameter vdd are distinct and Spectre accepts the candidate.",
+      "fix": "Make the parameter/port collision preflight case-sensitive and add a regression that permits case-distinct supply identifiers.",
+      "regression_tests": [
+        "tests/test_netlist.py::TestRunnerSpectreCompatibility::test_case_distinct_parameter_and_port_names_are_allowed",
+        "tests/test_netlist.py::TestRunnerSpectreCompatibility::test_parameter_port_name_collision_fails"
+      ],
+      "current_status": "resolved; current full236 v4 has zero Spectre PASS / EVAS FAIL rows"
+    },
+    {
+      "finding": "EVAS accepted Spectre-rejected PWL inline arithmetic and too-few instance terminals",
+      "previous_evidence": "pre-v4 full236 triage exposed PWL inline arithmetic and positional arity false positives",
+      "classification": "EVAS front-end compatibility",
+      "root_cause": "EVAS accepted PWL wave tokens such as 30n+10p and positional instances with fewer terminals than the target Verilog-A module. Spectre rejects both.",
+      "fix": "Reject inline arithmetic inside PWL wave=[...] and validate expanded positional instance arity before simulation.",
+      "regression_tests": [
+        "tests/test_netlist.py::TestSaveAndPwlRegressions::test_pwl_inline_arithmetic_rejected",
+        "tests/test_netlist.py::TestRunnerSpectreCompatibility::test_instance_terminal_count_mismatch_fails"
+      ],
+      "current_status": "resolved; current full236 v4 has zero EVAS PASS / Spectre FAIL rows"
+    }
+  ],
+  "conclusion": "The remaining parity-gate investigation resolved as EVAS source semantics plus one checker-window calibration case; after current EVAS v4, the full236 MiMo 2.5-pro highout32k run has no EVAS/Spectre binary mismatches and no waveform parity gate rows."
+}
