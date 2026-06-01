@@ -1,6 +1,6 @@
 # vaBench Release Paper Tables
 
-Date: 2026-05-29
+Date: 2026-06-01
 
 These tables are generated from the release reports and claim gate. They
 are designed for paper drafting without turning pending evidence into
@@ -14,7 +14,7 @@ claims.
 | `parity` | 9 | `benchmark-vabench-release-v1/reports/paper_tables/parity.csv` | EVAS/Spectre parity status for certified release forms; score, speed/debug, and model baselines are separate gates. |
 | `claim_gate` | 9 | `benchmark-vabench-release-v1/reports/paper_tables/claim_gate.csv` | Use only safe_wording for allowed claims; blocked claims must not be used as conclusions. |
 | `external_blockers` | 1 | `benchmark-vabench-release-v1/reports/paper_tables/external_blockers.csv` | External blockers explain unavailable fresh Spectre evidence; they are not certification evidence. |
-| `speed_baseline` | 3 | `benchmark-vabench-release-v1/reports/paper_tables/speed_baseline.csv` | Speed/debug and baseline results are pending until the score denominator is enabled and same-slice evidence exists. |
+| `speed_baseline` | 3 | `benchmark-vabench-release-v1/reports/paper_tables/speed_baseline.csv` | Speed/debug remains blocked until same-slice timing covers the scored denominator; model baselines are claimable only when same-protocol final-judge reports match the fixed score denominator and expose hygiene slices. |
 
 ## Coverage
 
@@ -54,7 +54,7 @@ claims.
 | C4_full_release_dual_certified | allowed | True | The full release package has EVAS/Spectre certification for 271 forms with zero dual failures and zero EVAS PASS / Spectre FAIL mismatches. |
 | C5_score_denominator_enabled | allowed | True | The release benchmark score denominator is enabled for 66 certified content-denominator entries and 236 forms. |
 | C6_speed_debug_claim | blocked | True | Speed/debug has subset timing evidence, but release-wide speedup remains blocked until the dedicated artifact marks the speed claim allowed. |
-| C7_model_baseline_claim | blocked | True | Model baseline reporting is pending until baseline runs report against the enabled score denominator. |
+| C7_model_baseline_claim | allowed | True | Same-protocol fixed-budget model baselines are claimable on the 236 scored core forms with Spectre as final judge: mimo-v2.5 92/236 (38.98%); mimo-v2.5-pro 112/236 (47.46%). Report form/category/difficulty and failure-axis slices alongside the headline full_strict score. |
 | C8_l0_conformance_separate | allowed | True | L0 conformance has 4 cases and contributes 0 entries to benchmark coverage. |
 | C9_release_package_complete | allowed | True | The clean vaBench release package structure, source assets, EVAS/Spectre certification, and score denominator are complete; speed/debug and model baselines remain separate gated claims. |
 
@@ -62,14 +62,14 @@ claims.
 
 | blocker_id | status | scope | stop_condition |
 | --- | --- | --- | --- |
-| B4_downstream_paper_claims_disabled | pending | speed/debug, model baseline artifacts | paper_artifacts claim gates allow scored benchmark, speedup, and baseline claims only after their dedicated artifacts support them. |
+| B4_downstream_paper_claims_disabled | pending | speed/debug artifacts | paper_artifacts claim gates allow scored benchmark, speedup, and baseline claims only after their dedicated artifacts support them. |
 
 ## Speed / Baseline
 
 | artifact | status | claim_allowed | claim_status |
 | --- | --- | --- | --- |
-| speed_debug | measured_subset | False | blocked |
-| baseline | ready_for_baseline_runs | False | blocked |
+| speed_debug | pending_measurement | False | blocked |
+| baseline | claim_ready | True | allowed |
 | score_denominator | score_enabled | True | allowed |
 
 ## Claim Boundary
@@ -77,3 +77,4 @@ claims.
 - These tables are presentation artifacts; they do not create new certification evidence.
 - Parity rows must be captioned according to whether they cover the full release or only an imported subset.
 - Rows with blocked claim_status must not be used as paper conclusions.
+- Allowed model-baseline rows still require full_strict headline scores plus form/category/difficulty and failure-axis slices.

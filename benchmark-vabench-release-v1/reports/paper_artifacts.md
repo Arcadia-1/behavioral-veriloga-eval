@@ -1,6 +1,6 @@
 # vaBench Paper-Facing Artifact Summary
 
-Date: 2026-05-29
+Date: 2026-06-01
 
 This is a claim-gated summary for paper writing. It records what can be
 cited from the current release package and what must remain pending.
@@ -62,21 +62,32 @@ cited from the current release package and what must remain pending.
 | external blockers | `pending` |
 | external blocked count | 0 |
 | external pending count | 1 |
-| stale rerun summary rejected | `False` |
-| import status | `imported` |
+| stale rerun summary rejected | `True` |
+| import status | `partial_imported` |
 
 ## Speed / Debug
 
-- Status: `measured_subset`
+- Status: `pending_measurement`
 - Claim allowed: `False`
-- Reason: Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.
+- Reason: Stale dual rerun timing summary rejected: summary tasks_total=8, current queue_count=54.
 
 ## Baselines
 
-- Status: `ready_for_baseline_runs`
-- Claim allowed: `False`
-- Reason: Score denominator is enabled, but no claimable model baseline summary has been produced yet.
+- Status: `claim_ready`
+- Claim allowed: `True`
+- Reason: Current same-protocol model baselines cover the scored denominator with Spectre as final judge; report full_strict, form/category/difficulty slices, and failure-axis breakdowns together.
+- Final-judge baseline reports: 2
 
+## Evaluation Hygiene
+
+- Primary metric: full_strict pass@1 on the 236 scored core forms
+- Required stratification: `model, form, category, difficulty, failure_axis`
+- Claim boundaries:
+  - Use full_strict as the headline fixed-budget baseline metric.
+  - Report valid_candidate and behavior_ready as diagnostic slices, not replacement denominators.
+  - Do not claim calibrated D1/D2/D3 difficulty tiers until difficulty monotonicity is manually resolved.
+  - Separate syntax/protocol failures from circuit-behavior failures in model-capability discussion.
+  - Do not use support measurement/stimulus rows in core benchmark scores.
 ## Claim Gates
 
 | Claim | Allowed |
@@ -87,7 +98,7 @@ cited from the current release package and what must remain pending.
 | `can_claim_scored_benchmark` | `True` |
 | `can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence` | `True` |
 | `can_claim_speedup` | `False` |
-| `can_claim_model_baseline` | `False` |
+| `can_claim_model_baseline` | `True` |
 
 ## Remaining Counts
 
@@ -103,4 +114,3 @@ cited from the current release package and what must remain pending.
 
 - external blocker report active: 0 blocked, 1 pending
 - speed/debug timing artifact not claimable
-- release model baseline artifact pending

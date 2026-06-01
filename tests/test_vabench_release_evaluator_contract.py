@@ -29,7 +29,7 @@ def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
     assert selection["unscored_rows_excluded"] is True
     assert score_gate["status"] == "score_enabled"
     assert score_gate["score_claim_allowed"] is True
-    assert score_gate["ready_to_finish_release"] is True
+    assert score_gate["ready_to_finish_release"] is False
 
 
 def test_evaluator_contract_declares_backend_and_result_semantics() -> None:
@@ -75,18 +75,21 @@ def test_evaluator_contract_declares_backend_and_result_semantics() -> None:
     assert "result" in contract["schemas"]
 
 
-def test_evaluator_contract_keeps_baseline_speed_and_claims_blocked() -> None:
+def test_evaluator_contract_keeps_baseline_and_speed_as_independent_gates() -> None:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
     baseline = contract["baseline_protocol"]
     speed = contract["speed_debug_protocol"]
     commands = contract["commands"]
     boundary = "\n".join(contract["claim_boundary"])
 
-    assert baseline["status"] == "ready_for_baseline_runs"
-    assert baseline["claim_allowed"] is False
-    assert speed["status"] == "measured_subset"
+    assert baseline["status"] == "claim_ready"
+    assert baseline["claim_allowed"] is True
+    assert baseline["claim_status"] == "same_protocol_current_evas_final_judge_claim_ready"
+    assert baseline["final_judge_baseline_count"] == 2
+    assert speed["status"] == "pending_measurement"
     assert speed["claim_allowed"] is False
     assert commands["finish_after_bridge"] == "python3 runners/finish_vabench_release_after_bridge.py"
     assert commands["primary_dual_rerun"].startswith("./scripts/run_with_bridge.sh")
     assert "not simulator certification evidence" in boundary
     assert "Spectre is the final judge" in boundary
+    assert "Baseline and speed/debug claims are independent" in boundary

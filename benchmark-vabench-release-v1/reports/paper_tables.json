@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-01",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "table_count": 5,
@@ -37,7 +37,7 @@
       "title": "Speed/debug, scoring, and baseline gates",
       "csv": "benchmark-vabench-release-v1/reports/paper_tables/speed_baseline.csv",
       "row_count": 3,
-      "caption": "Speed/debug and baseline results are pending until the score denominator is enabled and same-slice evidence exists."
+      "caption": "Speed/debug remains blocked until same-slice timing covers the scored denominator; model baselines are claimable only when same-protocol final-judge reports match the fixed score denominator and expose hygiene slices."
     }
   ],
   "source_reports": {
@@ -267,11 +267,11 @@
       },
       {
         "claim_id": "C7_model_baseline_claim",
-        "status": "blocked",
+        "status": "allowed",
         "completion_required": true,
-        "safe_wording": "Model baseline reporting is pending until baseline runs report against the enabled score denominator.",
-        "blocked_until": "baseline runs must report against counted release entries/forms only",
-        "evidence": "benchmark-vabench-release-v1/reports/baseline_artifact.json; benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
+        "safe_wording": "Same-protocol fixed-budget model baselines are claimable on the 236 scored core forms with Spectre as final judge: mimo-v2.5 92/236 (38.98%); mimo-v2.5-pro 112/236 (47.46%). Report form/category/difficulty and failure-axis slices alongside the headline full_strict score.",
+        "blocked_until": "",
+        "evidence": "benchmark-vabench-release-v1/reports/baseline_artifact.json; benchmark-vabench-release-v1/reports/score_denominator_manifest.json; benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_highout32k_sameprotocol_currentevas_v5_20260601.json; benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v5_20260601.json; benchmark-vabench-release-v1/reports/vabench_model_baseline_quality_audit_mimo25_vs_mimo25pro_sameprotocol_highout32k_currentevas_v5_20260601.json"
       },
       {
         "claim_id": "C8_l0_conformance_separate",
@@ -294,9 +294,9 @@
       {
         "blocker_id": "B4_downstream_paper_claims_disabled",
         "status": "pending",
-        "scope": "speed/debug, model baseline artifacts",
+        "scope": "speed/debug artifacts",
         "diagnosis": "downstream paper claims remain disabled until their dedicated artifacts are explicitly enabled",
-        "claim_impact": "do not claim EVAS speedup/debug advantage; do not claim model baseline results on the release package",
+        "claim_impact": "do not claim EVAS speedup/debug advantage",
         "stop_condition": "paper_artifacts claim gates allow scored benchmark, speedup, and baseline claims only after their dedicated artifacts support them.",
         "evidence": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json; benchmark-vabench-release-v1/reports/speed_debug_artifact.json; benchmark-vabench-release-v1/reports/baseline_artifact.json; benchmark-vabench-release-v1/reports/paper_artifacts.json"
       }
@@ -304,20 +304,20 @@
     "speed_baseline": [
       {
         "artifact": "speed_debug",
-        "status": "measured_subset",
+        "status": "pending_measurement",
         "claim_allowed": false,
         "claim_status": "blocked",
-        "current_value": "Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.",
+        "current_value": "Stale dual rerun timing summary rejected: summary tasks_total=8, current queue_count=54.",
         "required_before_claim": "Run same-slice EVAS/Spectre timing for every scored release form, or state a narrower subset-only claim.; Stratify or fix EVAS slow outliers before claiming aggregate speedup on the release package.; Keep per-row EVAS and Spectre wall-clock timings from run_gold_dual_suite timing fields.; Keep Spectre-reported runtime from spectre.out alongside wrapper wall-clock timings.; Report machine/bridge/Cadence configuration with the timing artifact.; Do not compute speedup from historical main120 summaries because they lack same-slice runtime metadata.",
         "evidence": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json"
       },
       {
         "artifact": "baseline",
-        "status": "ready_for_baseline_runs",
-        "claim_allowed": false,
-        "claim_status": "blocked",
-        "current_value": "summaries=7; scored_entries=66",
-        "required_before_claim": "Use the enabled score_denominator_manifest.json as the denominator source of truth.; Run baseline model outputs through the release evaluator on scored rows.; Publish pass@1 / axis rates / failure taxonomy with Spectre as the final judge.; Keep baseline methods simple and describe them as stress tests, not as the paper's core method.",
+        "status": "claim_ready",
+        "claim_allowed": true,
+        "claim_status": "allowed",
+        "current_value": "final_judge_reports=2; scored_forms=236",
+        "required_before_claim": "Use the enabled score_denominator_manifest.json as the denominator source of truth.; Run baseline model outputs through the release evaluator on scored rows.; Publish full_strict pass@1, category macro averages, form slices, axis rates, and failure taxonomy with Spectre as the final judge.; Keep baseline methods simple and describe them as benchmark stress tests, not as the paper's core method.",
         "evidence": "benchmark-vabench-release-v1/reports/baseline_artifact.json"
       },
       {
@@ -334,7 +334,8 @@
   "claim_boundary": [
     "These tables are presentation artifacts; they do not create new certification evidence.",
     "Parity rows must be captioned according to whether they cover the full release or only an imported subset.",
-    "Rows with blocked claim_status must not be used as paper conclusions."
+    "Rows with blocked claim_status must not be used as paper conclusions.",
+    "Allowed model-baseline rows still require full_strict headline scores plus form/category/difficulty and failure-axis slices."
   ],
   "matrix_summary_snapshot": {
     "entry_count": 79,

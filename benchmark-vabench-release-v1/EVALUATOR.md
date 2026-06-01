@@ -1,6 +1,6 @@
 # vaBench Release Evaluator Contract
 
-Date: 2026-05-29
+Date: 2026-06-01
 
 This contract describes how the release package is consumed by evaluators
 and paper-facing baselines. It does not create certification evidence.
@@ -28,9 +28,9 @@ and paper-facing baselines. It does not create certification evidence.
 ## Gates
 
 - Score gate: `score_enabled`; scored entries/forms = 66/236
-- Finish readiness: `ready_to_finish`
-- Baseline gate: `ready_for_baseline_runs`; claim allowed = `False`
-- Speed/debug gate: `measured_subset`; claim allowed = `False`
+- Finish readiness: `ready_to_run`
+- Baseline gate: `claim_ready`; claim allowed = `True`
+- Speed/debug gate: `pending_measurement`; claim allowed = `False`
 
 ## Commands
 
@@ -49,5 +49,6 @@ and paper-facing baselines. It does not create certification evidence.
 - Spectre is the final judge for release scoring.
 - EVAS is a fast filter/debug evaluator and cannot certify a task by itself.
 - L0 conformance cases are evaluator health checks and never scored benchmark rows.
-- Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.
+- Baseline and speed/debug claims are independent dedicated gates; one may be allowed while the other remains blocked.
+- Model baselines must use the fixed scored denominator and report hygiene slices when claimable.
 - claim_gate_status=in_progress

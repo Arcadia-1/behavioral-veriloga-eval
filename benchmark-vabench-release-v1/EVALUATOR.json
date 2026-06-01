@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-01",
   "release": "vabench-release-v1",
   "status": "ready",
   "contract_version": "v1",
@@ -108,13 +108,51 @@
     "scored_entries": 66,
     "scored_forms": 236,
     "blocking_reason": "",
-    "finish_readiness_status": "ready_to_finish",
-    "ready_to_finish_release": true
+    "finish_readiness_status": "ready_to_run",
+    "ready_to_finish_release": false
   },
   "baseline_protocol": {
-    "status": "ready_for_baseline_runs",
+    "status": "claim_ready",
     "ready_for_baseline_runs": true,
-    "claim_allowed": false,
+    "claim_allowed": true,
+    "claim_status": "same_protocol_current_evas_final_judge_claim_ready",
+    "final_judge_baseline_count": 2,
+    "evaluation_hygiene": {
+      "primary_metric": "full_strict pass@1 on the 236 scored core forms",
+      "secondary_metrics": [
+        "valid_candidate pass@1",
+        "behavior_ready pass rate",
+        "category macro-average pass rate",
+        "form-level pass rates",
+        "failure-axis counts"
+      ],
+      "denominator_policy": {
+        "source": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+        "scored_entries": 66,
+        "scored_forms": 236,
+        "support_rows_excluded": true,
+        "fixed_budget_incomplete_generations_count_as_failures": true
+      },
+      "stratification_required": [
+        "model",
+        "form",
+        "category",
+        "difficulty",
+        "failure_axis"
+      ],
+      "claim_boundaries": [
+        "Use full_strict as the headline fixed-budget baseline metric.",
+        "Report valid_candidate and behavior_ready as diagnostic slices, not replacement denominators.",
+        "Do not claim calibrated D1/D2/D3 difficulty tiers until difficulty monotonicity is manually resolved.",
+        "Separate syntax/protocol failures from circuit-behavior failures in model-capability discussion.",
+        "Do not use support measurement/stimulus rows in core benchmark scores."
+      ],
+      "current_warnings": [
+        "MiMo-2.5 shows D3_not_harder_than_D2 in the current quality audit.",
+        "All core categories remain protocol-noise-sensitive; report failure axes explicitly.",
+        "e2e is much harder than bugfix and must be reported as a separate form."
+      ]
+    },
     "minimal_lanes": [
       "prompt_only_generation",
       "evas_feedback_debug_generation",
@@ -138,14 +176,14 @@
     "unscored_rows_excluded": true
   },
   "speed_debug_protocol": {
-    "status": "measured_subset",
+    "status": "pending_measurement",
     "claim_allowed": false,
     "required_timing_fields": [
       "raw_result.timing.evas_wall_time_s",
       "raw_result.timing.spectre_wall_time_s",
       "raw_result.timing.combined_wall_time_s"
     ],
-    "timed_rows": 54
+    "timed_rows": 0
   },
   "commands": {
     "refresh_package": "python3 runners/run_vabench_release_longrun.py",
@@ -160,7 +198,8 @@
     "Spectre is the final judge for release scoring.",
     "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
     "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
-    "Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.",
+    "Baseline and speed/debug claims are independent dedicated gates; one may be allowed while the other remains blocked.",
+    "Model baselines must use the fixed scored denominator and report hygiene slices when claimable.",
     "claim_gate_status=in_progress"
   ]
 }

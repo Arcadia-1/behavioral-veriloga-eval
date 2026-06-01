@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-01",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "coverage_summary": {
@@ -99,35 +99,35 @@
     "bridge_ssh_ok_profiles": []
   },
   "speed_debug_summary": {
-    "status": "measured_subset",
+    "status": "pending_measurement",
     "claim_allowed": false,
-    "reason": "Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.",
+    "reason": "Stale dual rerun timing summary rejected: summary tasks_total=8, current queue_count=54.",
     "required_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "measurement_scope": {
-      "summary": "results/vabench-release-v1-dual-rerun/summary.json",
+      "summary": "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json",
       "summaries": [
-        "results/vabench-release-v1-dual-rerun/summary.json"
+        "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json"
       ],
       "summary_selection": {
         "source": "dual_rerun_import",
-        "imported_summary": "results/vabench-release-v1-dual-rerun/summary.json",
+        "imported_summary": "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json",
         "imported_summary_rejected_reason": "",
         "selected_summaries": [
-          "results/vabench-release-v1-dual-rerun/summary.json"
+          "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json"
         ]
       },
       "staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
       "queue_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
       "planned_primary_rerun_rows": 54,
       "planned_staged_bundles": 65,
-      "timed_rows": 54,
-      "stale_summary_rejected": false,
+      "timed_rows": 0,
+      "stale_summary_rejected": true,
       "scored_form_count": 236,
-      "timed_form_count": 54,
-      "timed_scored_form_count": 52,
-      "missing_scored_form_count": 184,
-      "timed_unscored_form_count": 2,
-      "score_denominator_coverage_fraction": 0.22033898305084745,
+      "timed_form_count": 0,
+      "timed_scored_form_count": 0,
+      "missing_scored_form_count": 236,
+      "timed_unscored_form_count": 0,
+      "score_denominator_coverage_fraction": 0.0,
       "full_score_denominator_timed": false,
       "missing_scored_form_examples": [
         {
@@ -163,35 +163,26 @@
           "form": "tb"
         },
         {
-          "entry_id": "vbr1_l1_bang_bang_phase_detector",
+          "entry_id": "vbr1_l1_bandgap_reference_macro_model",
           "form": "bugfix"
         },
         {
-          "entry_id": "vbr1_l1_bang_bang_phase_detector",
+          "entry_id": "vbr1_l1_bandgap_reference_macro_model",
           "form": "dut"
         }
       ],
-      "timed_unscored_form_examples": [
-        {
-          "entry_id": "vbr1_l1_gain_estimator",
-          "form": "e2e"
-        },
-        {
-          "entry_id": "vbr1_l1_gain_estimator",
-          "form": "tb"
-        }
-      ]
+      "timed_unscored_form_examples": []
     },
     "timing_totals": {
-      "evas_wall_time_s": 43.617206748,
-      "spectre_wall_time_s": 288.042362961,
-      "spectre_over_evas_speedup": 6.603869996196116,
-      "evas_reported_total_elapsed_s": 9.799999999999986,
-      "spectre_reported_total_elapsed_s": 37.962,
-      "reported_total_spectre_over_evas_speedup": 3.873673469387761,
-      "evas_reported_tran_elapsed_s": 7.935100000000002,
-      "spectre_reported_tran_elapsed_s": 1.5394783000000003,
-      "tran_spectre_over_evas_speedup": 0.19400868294035362
+      "evas_wall_time_s": null,
+      "spectre_wall_time_s": null,
+      "spectre_over_evas_speedup": null,
+      "evas_reported_total_elapsed_s": null,
+      "spectre_reported_total_elapsed_s": null,
+      "reported_total_spectre_over_evas_speedup": null,
+      "evas_reported_tran_elapsed_s": null,
+      "spectre_reported_tran_elapsed_s": null,
+      "tran_spectre_over_evas_speedup": null
     },
     "current_debug_evidence": [
       "benchmark-vabench-release-v1/reports/remaining_work.json",
@@ -201,15 +192,211 @@
     ]
   },
   "baseline_summary": {
-    "status": "ready_for_baseline_runs",
-    "claim_allowed": false,
-    "reason": "Score denominator is enabled, but no claimable model baseline summary has been produced yet.",
+    "status": "claim_ready",
+    "claim_allowed": true,
+    "reason": "Current same-protocol model baselines cover the scored denominator with Spectre as final judge; report full_strict, form/category/difficulty slices, and failure-axis breakdowns together.",
     "required_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
     "current_scored_release_entries": 66,
     "current_scored_release_forms": 236,
     "score_denominator_status": "score_enabled",
     "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "baseline_summary_count": 7,
+    "baseline_summary_count": 112,
+    "final_judge_baseline_count": 2,
+    "final_judge_baselines": [
+      {
+        "model": "mimo-v2.5",
+        "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_highout32k_sameprotocol_currentevas_v5_20260601.json",
+        "exists": true,
+        "protocol": "same_protocol_current_evas_v5_highout32k",
+        "judge": "Spectre final judge with EVAS/Spectre parity gate",
+        "total_rows": 236,
+        "expected_scored_forms": 236,
+        "denominator_matches_score_manifest": true,
+        "strict_dual_pass_rows": 92,
+        "strict_dual_pass_rate_pct": 38.98,
+        "valid_candidate_rows": 234,
+        "behavior_ready_rows": 150,
+        "incomplete_generation_rows": 2,
+        "runner_inconclusive_rows": 0,
+        "evas_pass_spectre_fail_rows": 0,
+        "spectre_pass_evas_fail_rows": 0,
+        "parity_gate_rows": 0,
+        "mismatch_count": 0,
+        "category_macro_pass_rate_pct": 38.33,
+        "category_pass_rates_pct": {
+          "Baseband Signal Conditioning": 46.67,
+          "Bias Reference and Power Management": 53.57,
+          "Calibration, DEM, and Control": 30.77,
+          "Comparator and Decision Circuits": 46.67,
+          "Data Converter Models": 38.64,
+          "PLL Clock and Timing Systems": 30.56,
+          "RF and AFE Behavioral Macromodels": 37.5,
+          "Sampling and Analog Memory": 22.22
+        },
+        "form_pass_rates_pct": {
+          "bugfix": 82.69,
+          "dut": 19.23,
+          "e2e": 12.12,
+          "tb": 46.97
+        },
+        "difficulty_pass_rates_pct": {
+          "D1": 69.44,
+          "D2": 33.12,
+          "D3": 35.0
+        },
+        "score_slices": [
+          {
+            "slice": "full_strict",
+            "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
+            "total_rows": 236,
+            "strict_dual_pass_rows": 92,
+            "strict_dual_pass_rate_pct": 38.98,
+            "non_pass_rows": 144
+          },
+          {
+            "slice": "valid_candidate",
+            "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
+            "total_rows": 234,
+            "strict_dual_pass_rows": 92,
+            "strict_dual_pass_rate_pct": 39.32,
+            "non_pass_rows": 142
+          },
+          {
+            "slice": "behavior_ready",
+            "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
+            "total_rows": 150,
+            "strict_dual_pass_rows": 92,
+            "strict_dual_pass_rate_pct": 61.33,
+            "non_pass_rows": 58
+          }
+        ],
+        "axis_counts": {
+          "generation": 2,
+          "model_behavior": 58,
+          "model_dut_compile": 63,
+          "model_spectre_ahdl_compile": 14,
+          "model_spectre_elab_or_topology": 2,
+          "model_spectre_tb_source": 1,
+          "model_tb_compile": 4,
+          "pass": 92
+        }
+      },
+      {
+        "model": "mimo-v2.5-pro",
+        "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v5_20260601.json",
+        "exists": true,
+        "protocol": "same_protocol_current_evas_v5_highout32k",
+        "judge": "Spectre final judge with EVAS/Spectre parity gate",
+        "total_rows": 236,
+        "expected_scored_forms": 236,
+        "denominator_matches_score_manifest": true,
+        "strict_dual_pass_rows": 112,
+        "strict_dual_pass_rate_pct": 47.46,
+        "valid_candidate_rows": 224,
+        "behavior_ready_rows": 190,
+        "incomplete_generation_rows": 8,
+        "runner_inconclusive_rows": 4,
+        "evas_pass_spectre_fail_rows": 0,
+        "spectre_pass_evas_fail_rows": 0,
+        "parity_gate_rows": 0,
+        "mismatch_count": 0,
+        "category_macro_pass_rate_pct": 47.03,
+        "category_pass_rates_pct": {
+          "Baseband Signal Conditioning": 56.67,
+          "Bias Reference and Power Management": 50.0,
+          "Calibration, DEM, and Control": 26.92,
+          "Comparator and Decision Circuits": 66.67,
+          "Data Converter Models": 45.45,
+          "PLL Clock and Timing Systems": 41.67,
+          "RF and AFE Behavioral Macromodels": 50.0,
+          "Sampling and Analog Memory": 38.89
+        },
+        "form_pass_rates_pct": {
+          "bugfix": 80.77,
+          "dut": 36.54,
+          "e2e": 24.24,
+          "tb": 53.03
+        },
+        "difficulty_pass_rates_pct": {
+          "D1": 88.89,
+          "D2": 40.62,
+          "D3": 37.5
+        },
+        "score_slices": [
+          {
+            "slice": "full_strict",
+            "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
+            "total_rows": 236,
+            "strict_dual_pass_rows": 112,
+            "strict_dual_pass_rate_pct": 47.46,
+            "non_pass_rows": 124
+          },
+          {
+            "slice": "valid_candidate",
+            "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
+            "total_rows": 224,
+            "strict_dual_pass_rows": 112,
+            "strict_dual_pass_rate_pct": 50.0,
+            "non_pass_rows": 112
+          },
+          {
+            "slice": "behavior_ready",
+            "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
+            "total_rows": 190,
+            "strict_dual_pass_rows": 112,
+            "strict_dual_pass_rate_pct": 58.95,
+            "non_pass_rows": 78
+          }
+        ],
+        "axis_counts": {
+          "generation": 8,
+          "model_behavior": 78,
+          "model_dut_compile": 27,
+          "model_spectre_ahdl_compile": 2,
+          "model_spectre_elab_or_topology": 1,
+          "model_spectre_tb_source": 2,
+          "model_tb_compile": 2,
+          "pass": 112,
+          "runner": 4
+        }
+      }
+    ],
+    "evaluation_hygiene": {
+      "primary_metric": "full_strict pass@1 on the 236 scored core forms",
+      "secondary_metrics": [
+        "valid_candidate pass@1",
+        "behavior_ready pass rate",
+        "category macro-average pass rate",
+        "form-level pass rates",
+        "failure-axis counts"
+      ],
+      "denominator_policy": {
+        "source": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+        "scored_entries": 66,
+        "scored_forms": 236,
+        "support_rows_excluded": true,
+        "fixed_budget_incomplete_generations_count_as_failures": true
+      },
+      "stratification_required": [
+        "model",
+        "form",
+        "category",
+        "difficulty",
+        "failure_axis"
+      ],
+      "claim_boundaries": [
+        "Use full_strict as the headline fixed-budget baseline metric.",
+        "Report valid_candidate and behavior_ready as diagnostic slices, not replacement denominators.",
+        "Do not claim calibrated D1/D2/D3 difficulty tiers until difficulty monotonicity is manually resolved.",
+        "Separate syntax/protocol failures from circuit-behavior failures in model-capability discussion.",
+        "Do not use support measurement/stimulus rows in core benchmark scores."
+      ],
+      "current_warnings": [
+        "MiMo-2.5 shows D3_not_harder_than_D2 in the current quality audit.",
+        "All core categories remain protocol-noise-sensitive; report failure axes explicitly.",
+        "e2e is much harder than bugfix and must be reported as a separate form."
+      ]
+    },
     "baseline_protocol": {
       "minimal_lanes": [
         "prompt_only_generation",
@@ -239,6 +426,42 @@
       }
     }
   },
+  "evaluation_hygiene_summary": {
+    "primary_metric": "full_strict pass@1 on the 236 scored core forms",
+    "secondary_metrics": [
+      "valid_candidate pass@1",
+      "behavior_ready pass rate",
+      "category macro-average pass rate",
+      "form-level pass rates",
+      "failure-axis counts"
+    ],
+    "denominator_policy": {
+      "source": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+      "scored_entries": 66,
+      "scored_forms": 236,
+      "support_rows_excluded": true,
+      "fixed_budget_incomplete_generations_count_as_failures": true
+    },
+    "stratification_required": [
+      "model",
+      "form",
+      "category",
+      "difficulty",
+      "failure_axis"
+    ],
+    "claim_boundaries": [
+      "Use full_strict as the headline fixed-budget baseline metric.",
+      "Report valid_candidate and behavior_ready as diagnostic slices, not replacement denominators.",
+      "Do not claim calibrated D1/D2/D3 difficulty tiers until difficulty monotonicity is manually resolved.",
+      "Separate syntax/protocol failures from circuit-behavior failures in model-capability discussion.",
+      "Do not use support measurement/stimulus rows in core benchmark scores."
+    ],
+    "current_warnings": [
+      "MiMo-2.5 shows D3_not_harder_than_D2 in the current quality audit.",
+      "All core categories remain protocol-noise-sensitive; report failure axes explicitly.",
+      "e2e is much harder than bugfix and must be reported as a separate form."
+    ]
+  },
   "certification_gap_summary": {
     "assets_materialized": true,
     "static_certification_complete": true,
@@ -256,9 +479,9 @@
     "external_blockers_status": "pending",
     "external_blocked_count": 0,
     "external_pending_count": 1,
-    "stale_rerun_summary_rejected": false,
-    "import_status": "imported",
-    "import_reason": "Fresh dual rerun imported; all primary rows passed EVAS/Spectre certification."
+    "stale_rerun_summary_rejected": true,
+    "import_status": "partial_imported",
+    "import_reason": "Stale-count dual rerun summary was partially imported by exact entry/form match; unmatched rows remain skipped and missing rows remain pending."
   },
   "claim_gates": {
     "can_claim_release_assets_materialized": true,
@@ -267,11 +490,10 @@
     "can_claim_scored_benchmark": true,
     "can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence": true,
     "can_claim_speedup": false,
-    "can_claim_model_baseline": false,
+    "can_claim_model_baseline": true,
     "blocking_conditions": [
       "external blocker report active: 0 blocked, 1 pending",
-      "speed/debug timing artifact not claimable",
-      "release model baseline artifact pending"
+      "speed/debug timing artifact not claimable"
     ]
   },
   "evidence_sources": {
@@ -287,7 +509,7 @@
     "speed_debug_artifact": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json",
     "baseline_artifact": "benchmark-vabench-release-v1/reports/baseline_artifact.json",
     "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "latest_dual_rerun_attempt": "results/vabench-release-v1-dual-rerun/summary.json",
+    "latest_dual_rerun_attempt": "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json",
     "conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
     "remaining_work": "benchmark-vabench-release-v1/reports/remaining_work.json",
     "certification_matrix": "benchmark-vabench-release-v1/reports/certification_matrix.json"

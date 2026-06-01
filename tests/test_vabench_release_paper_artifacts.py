@@ -19,7 +19,7 @@ def test_paper_artifacts_report_is_claim_gated() -> None:
     assert gates["can_claim_scored_benchmark"] is True
     assert gates["can_claim_zero_evas_pass_spectre_fail_on_imported_release_evidence"] is True
     assert gates["can_claim_speedup"] is False
-    assert gates["can_claim_model_baseline"] is False
+    assert gates["can_claim_model_baseline"] is True
     assert "release entries are not scored yet" not in gates["blocking_conditions"]
     assert "selected source design pending" not in gates["blocking_conditions"]
     assert "release entries with missing required forms remain unscored" not in gates["blocking_conditions"]
@@ -81,8 +81,8 @@ def test_paper_artifacts_summarize_coverage_and_parity_without_overclaiming() ->
     assert gap["external_blockers_status"] == "pending"
     assert gap["external_blocked_count"] == 0
     assert gap["external_pending_count"] == 1
-    assert gap["stale_rerun_summary_rejected"] is False
-    assert gap["import_status"] == "imported"
+    assert gap["stale_rerun_summary_rejected"] is True
+    assert gap["import_status"] == "partial_imported"
 
     assert remaining == {
         "source_design_pending_entry_count": 0,
@@ -98,17 +98,19 @@ def test_speed_artifact_is_pending_after_current_release_changes() -> None:
 
     speed = report["speed_debug_summary"]
     baseline = report["baseline_summary"]
-    assert speed["status"] == "measured_subset"
+    assert speed["status"] == "pending_measurement"
     assert speed["claim_allowed"] is False
     assert speed["measurement_scope"]["planned_primary_rerun_rows"] == 54
-    assert speed["measurement_scope"]["timed_rows"] == 54
-    assert speed["measurement_scope"]["timed_scored_form_count"] == 52
-    assert speed["measurement_scope"]["missing_scored_form_count"] == 184
-    assert speed["measurement_scope"]["timed_unscored_form_count"] == 2
+    assert speed["measurement_scope"]["timed_rows"] == 0
+    assert speed["measurement_scope"]["timed_scored_form_count"] == 0
+    assert speed["measurement_scope"]["missing_scored_form_count"] == 236
+    assert speed["measurement_scope"]["timed_unscored_form_count"] == 0
     assert speed["measurement_scope"]["full_score_denominator_timed"] is False
-    assert speed["measurement_scope"]["stale_summary_rejected"] is False
-    assert baseline["status"] == "ready_for_baseline_runs"
-    assert baseline["claim_allowed"] is False
+    assert speed["measurement_scope"]["stale_summary_rejected"] is True
+    assert baseline["status"] == "claim_ready"
+    assert baseline["claim_allowed"] is True
     assert baseline["current_scored_release_entries"] == 66
     assert baseline["current_scored_release_forms"] == 236
     assert baseline["score_denominator_status"] == "score_enabled"
+    assert baseline["final_judge_baseline_count"] == 2
+    assert "full_strict" in baseline["evaluation_hygiene"]["primary_metric"]
