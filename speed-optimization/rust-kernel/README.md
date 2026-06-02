@@ -26,6 +26,7 @@
 | 017 | `audits/017-static-branch-node-id-direct-array.md` | done | 让 opt-in static branch fastpath 在 indexed arrays 下直接读写 node-id array slot，进一步减少 Python string/dict/object 开销 |
 | 018 | `audits/018-event-interpolation-ir-boundary.md` | done | 显式拆分 event trigger read 和 event body read 的 node-id metadata，保护 crossing-time interpolation 语义 |
 | 019 | `audits/019-dynamic-bus-lowering-prototype.md` | done | 为 `V(bus[i])` / `V(bus[i][j])` 建立 role/base/dimension/context metadata，作为 bus base+offset lowering 前置 IR |
+| 020 | `audits/020-indexed-model-state-arrays.md` | done | 为 scalar state 和 array state 建立 indexed layout metadata，作为 Rust model-evaluate ABI 的 state 侧准备 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -54,6 +55,7 @@
 | 2026-06-03 | Static branch node-id direct array | `EVAS_STATIC_BRANCH_FASTPATH=1` + `EVAS_INDEXED_ARRAYS=1` 时普通静态 branch read/write 直接访问 indexed voltage array slot；本地 microbenchmark 相对 slot fallback helper 约 `1.64x` | EVAS commit `e178909` |
 | 2026-06-03 | Event interpolation IR boundary | compiled/indexed metadata 显式区分 event trigger voltage read 和 event body voltage read；不改 `_check_cross()`、`_get_voltage()` 或 event ordering | EVAS commit `6c67aaf` |
 | 2026-06-03 | Dynamic bus lowering prototype | compiled/indexed metadata 记录 dynamic branch access 的 role/base/dimension/context；不改当前 f-string runtime path，并记录一个已有 2D state-index codegen 风险 | EVAS commit `75e10b5` |
+| 2026-06-03 | Indexed model state arrays | compiled/indexed metadata 记录 scalar state ids、integer state 和 array state range；不替换 `self.state` / `self.arrays` runtime storage | EVAS commit `708ebf7` |
 
 ## 后续候选项目
 
@@ -61,7 +63,6 @@
 
 | 优先级 | 项目 | 核心目标 | 主要风险 |
 |---|---|---|---|
-| P1 | Indexed model state arrays | 把 `self.state["x"]` / array state 迁移到 indexed storage | integer rounding、状态初始化、array bounds |
 | P1 | Rust model-evaluate ABI prototype | 先迁移最简单 static read/write evaluate 到 Rust | Python/Rust 边界设计和 fallback 协议 |
 | P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
 | P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
@@ -102,6 +103,7 @@ audits/016-static-branch-fast-helper-prototype.md
 audits/017-static-branch-node-id-direct-array.md
 audits/018-event-interpolation-ir-boundary.md
 audits/019-dynamic-bus-lowering-prototype.md
+audits/020-indexed-model-state-arrays.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
