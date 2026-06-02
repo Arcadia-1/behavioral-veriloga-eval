@@ -50,6 +50,7 @@ Use this directory for the ongoing EVAS indexed/Rust backend engineering record:
 - `rust-kernel/audits/000-rust-kernel-design.md`
 - `rust-kernel/audits/001-indexed-sidecar-and-rust-smoke.md`
 - `rust-kernel/audits/002-python-indexed-ir-parity.md`
+- `rust-kernel/audits/003-python-indexed-voltage-snapshot.md`
 - `rust-kernel/templates/change-audit-template.md`
 
 These documents explain implementation principles, before/after evidence,
