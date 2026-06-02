@@ -28,6 +28,11 @@
 | 019 | `audits/019-dynamic-bus-lowering-prototype.md` | done | 为 `V(bus[i])` / `V(bus[i][j])` 建立 role/base/dimension/context metadata，作为 bus base+offset lowering 前置 IR |
 | 020 | `audits/020-indexed-model-state-arrays.md` | done | 为 scalar state 和 array state 建立 indexed layout metadata，作为 Rust model-evaluate ABI 的 state 侧准备 |
 | 021 | `audits/021-rust-model-evaluate-abi-prototype.md` | done | 新增 Rust `model-abi` prototype kernel，验证 node/state id ABI 可以驱动 native `Vec<f64>` evaluate loop |
+| 022 | `audits/022-rust-ffi-batch-evaluate-boundary.md` | done | 新增零依赖 Rust `cdylib` 和 Python `ctypes` loader，建立 production 可调用的 static affine batch ABI |
+| 023 | `audits/023-dynamic-bus-runtime-codegen-fix.md` | done | 把 dynamic bus 节点名生成改成 helper，修复 state-index 表达式可能生成非法 nested f-string 的风险 |
+| 024 | `audits/024-compiled-model-rust-replay-smoke.md` | done | 用真实 parser/compiler/simulator/netlist 路径上的临时 static affine 模型验证 Rust replay |
+| 025 | `audits/025-production-opt-in-rust-backend-channel.md` | done | 接入 `EVAS_RUST_STATIC_EVAL` / `evas_rust_static_eval=true` 和 Rust runtime counters |
+| 026 | `audits/026-opt-in-static-continuous-model-rust-eval.md` | done | 完成 opt-in static affine model Rust evaluate；功能正确，但 microbenchmark 暴露 per-model FFI 小调用导致变慢 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -58,6 +63,7 @@
 | 2026-06-03 | Dynamic bus lowering prototype | compiled/indexed metadata 记录 dynamic branch access 的 role/base/dimension/context；不改当前 f-string runtime path，并记录一个已有 2D state-index codegen 风险 | EVAS commit `75e10b5` |
 | 2026-06-03 | Indexed model state arrays | compiled/indexed metadata 记录 scalar state ids、integer state 和 array state range；不替换 `self.state` / `self.arrays` runtime storage | EVAS commit `708ebf7` |
 | 2026-06-03 | Rust model evaluate ABI prototype | `prototypes/rust-kernel-smoke` 新增 `model-abi` kernel，用 node/state ids 驱动 Rust `Vec<f64>` evaluate loop；仍是 prototype-only | EVAS commit `0263986` |
+| 2026-06-03 | Rust production ABI and opt-in static affine eval | 新增 `evas/rust_core` + `ctypes` loader + `EVAS_RUST_STATIC_EVAL`；static affine 模型功能正确，但 64-model local microbenchmark 显示 per-model FFI 让 Rust median `0.8521s` 慢于 Python `0.1788s` | EVAS commit `8930bb9` |
 
 ## 后续候选项目
 
@@ -65,8 +71,8 @@
 
 | 优先级 | 项目 | 核心目标 | 主要风险 |
 |---|---|---|---|
-| P1 | Rust FFI batch evaluate plan | 设计 Python/Rust batch 边界，避免每 model 每 step 小调用 | FFI 边界成本、fallback 协议和 parity fixture |
-| P1 | Dynamic bus runtime lowering | 把 019 暴露的 bus metadata 进一步落到稳定 runtime/codegen | dynamic index、2D bus 和 integer state coercion |
+| P1 | Rust consecutive model segment batch | 把 026 暴露的 `model × step` FFI 小调用收成 per-step eligible segment 调用 | model ordering、prepare_step/post_update 边界、output sync |
+| P1 | Dynamic bus runtime lowering | 把 019/023 暴露的 bus metadata/helper 进一步落到稳定 base+offset runtime | dynamic index、2D bus 和 integer state coercion |
 | P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
 | P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
 
@@ -108,6 +114,11 @@ audits/018-event-interpolation-ir-boundary.md
 audits/019-dynamic-bus-lowering-prototype.md
 audits/020-indexed-model-state-arrays.md
 audits/021-rust-model-evaluate-abi-prototype.md
+audits/022-rust-ffi-batch-evaluate-boundary.md
+audits/023-dynamic-bus-runtime-codegen-fix.md
+audits/024-compiled-model-rust-replay-smoke.md
+audits/025-production-opt-in-rust-backend-channel.md
+audits/026-opt-in-static-continuous-model-rust-eval.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
