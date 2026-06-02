@@ -22,6 +22,7 @@
 | 013 | `audits/013-node-resolution-run-cache.md` | done | 在 run 周期内缓存 local node 到 external node 的解析结果，减少 mapped read/write 和 `@parent:` 路径重复 dict/string 开销 |
 | 014 | `audits/014-model-io-profile-counters.md` | done | 新增 opt-in model IO counters，量化 examples 中普通 `V(node)` read/output write 调用密度，指导下一步 node-id/Rust lowering |
 | 015 | `audits/015-static-branch-io-node-id-plan.md` | done | 给 compiled model 增加静态 branch IO metadata，并把 static/event/dynamic IO 边界接入 indexed model IO node-id plan |
+| 016 | `audits/016-static-branch-fast-helper-prototype.md` | done | 新增 opt-in static branch fast helper codegen，验证普通静态 `V(node)` read/write lowering 的局部速度潜力 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -46,6 +47,21 @@
 | 2026-06-03 | Node resolution run cache | 在 `Simulator.run()` 内缓存本地端口名到外部节点名的解析结果；microbenchmark 显示 mapped/parent helper 热路径约 `1.33x` 到 `1.84x`，但它不是 release-wide 速度 claim | EVAS commit `b56454c` |
 | 2026-06-03 | Model IO profile counters | `EVAS_PROFILE_MODEL_IO=1` 统计普通 read/write 调用密度；本地 examples 显示 `adc_ramp` 约 `22.48` reads/internal-step，`cmp_delay` 约 `5` reads/internal-step | EVAS commit `dff5e56` |
 | 2026-06-03 | Static branch IO node-id plan | compiled model 暴露 ordinary read、event-body read、static write 和 dynamic branch IO metadata；indexed model IO plan 可解析到 node ids，但不改执行代码 | EVAS commit `7d619e2` |
+| 2026-06-03 | Static branch fast helper prototype | `EVAS_STATIC_BRANCH_FASTPATH=1` 让静态 `V(node)` read/write 生成专门 helper；mapped pass-through microbenchmark 显示局部约 `1.45x`，但仍不是 release-wide speed claim | EVAS commit `1cb5d34` |
+
+## 后续候选项目
+
+这些项目按“先低风险数据结构，再高风险内核替换”的顺序排列，后续可以逐个写成 017 之后的审计文档。
+
+| 优先级 | 项目 | 核心目标 | 主要风险 |
+|---|---|---|---|
+| P0 | Static branch node-id direct array | 把普通静态 branch read/write 从 helper 降到 `values[node_id]` | mapped/parent node id 绑定错误 |
+| P0 | Event interpolation IR | 把 event-body read 和 crossing-time interpolation 单独建模 | event ordering 和采样时间偏移 |
+| P1 | Dynamic bus lowering | 把 `V(bus[i])` 从字符串拼接降到 base id + offset | bus 顺序、二维 bus、稀疏节点 |
+| P1 | Indexed model state arrays | 把 `self.state["x"]` / array state 迁移到 indexed storage | integer rounding、状态初始化、array bounds |
+| P1 | Rust model-evaluate ABI prototype | 先迁移最简单 static read/write evaluate 到 Rust | Python/Rust 边界设计和 fallback 协议 |
+| P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
+| P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
 
 ## 后续每次改动必须回答的问题
 
@@ -79,6 +95,7 @@ audits/012-profile-guided-kernel-sample.md
 audits/013-node-resolution-run-cache.md
 audits/014-model-io-profile-counters.md
 audits/015-static-branch-io-node-id-plan.md
+audits/016-static-branch-fast-helper-prototype.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
