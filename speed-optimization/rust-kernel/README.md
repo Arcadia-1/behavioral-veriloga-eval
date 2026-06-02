@@ -12,6 +12,7 @@
 | 003 | `audits/003-python-indexed-voltage-snapshot.md` | done | 增加 opt-in indexed snapshot profile，量化 dict copy、Python sidecar 和纯数组 snapshot 差异 |
 | 004 | `audits/004-python-indexed-kernel-arrays.md` | done | 增加 opt-in persistent indexed voltage array，让 source/record/err_ratio 低风险路径开始消费 array mirror |
 | 005 | `audits/005-indexed-model-io-boundary.md` | done | 增加 per-model IO node-id plan，把 mapped ports、outputs 和 `@parent:` 层次映射显式编号 |
+| 006 | `audits/006-indexed-model-output-write-through.md` | done | 让 `_set_output()` 在 opt-in indexed path 下 write-through 到 array mirror，并用 repair stats 守住绕行路径 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -26,6 +27,7 @@
 | 2026-06-02 | Python indexed snapshot profile | 默认 backend 不变；新增 `EVAS_INDEXED_SNAPSHOT_PROFILE=1`，证明 Python sidecar 不是加速终点，真正目标应是 array/Rust hot loop | `EVAS/evas/simulator/engine.py` |
 | 2026-06-02 | Python indexed kernel arrays | 默认 backend 不变；新增 `EVAS_INDEXED_ARRAYS=1`，source update、record point、err_ratio scan 可 opt-in 使用 persistent array mirror | EVAS commit `fe6d142` |
 | 2026-06-02 | Indexed model IO boundary | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时生成 per-model mapped port/output node-id plan，为 model evaluate Rust 化准备边界 IR | EVAS commit `034ca66` |
+| 2026-06-02 | Indexed model output write-through | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时 `_set_output()` 同步写 array mirror，post-model sync 变成 validate/repair guard | EVAS commit `1d94807` |
 
 ## 后续每次改动必须回答的问题
 
@@ -50,6 +52,7 @@ audits/003-python-indexed-voltage-snapshot.md
 audits/004-python-indexed-kernel-arrays.md
 audits/005-indexed-model-io-boundary.md
 audits/006-indexed-model-output-write-through.md
+audits/007-indexed-model-input-read-probe.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
