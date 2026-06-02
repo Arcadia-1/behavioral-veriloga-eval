@@ -15,6 +15,7 @@
 | 006 | `audits/006-indexed-model-output-write-through.md` | done | 让 `_set_output()` 在 opt-in indexed path 下 write-through 到 array mirror，并用 repair stats 守住绕行路径 |
 | 007 | `audits/007-indexed-model-input-read-probe.md` | done | 给 `_get_voltage()` 增加 opt-in input-read probe，只比较普通读的 dict/array 值，不改变返回值 |
 | 008 | `audits/008-indexed-non-event-voltage-read.md` | done | 让 `_get_voltage()` 的 non-event 普通输入读在 opt-in indexed path 下从 array mirror 返回，event 插值路径保持原样 |
+| 009 | `audits/009-indexed-model-evaluate-profile.md` | done | 增加显式 `EVAS_PROFILE_MODEL_EVAL` per-model timing，用于后续判断 evaluate、timer、event 哪条热路径优先优化 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -32,6 +33,7 @@
 | 2026-06-02 | Indexed model output write-through | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时 `_set_output()` 同步写 array mirror，post-model sync 变成 validate/repair guard | EVAS commit `1d94807` |
 | 2026-06-02 | Indexed model input read probe | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时 `_get_voltage()` 对普通读做 dict/array probe compare，event-context reads 只计数跳过 | EVAS commit `c24a2c9` |
 | 2026-06-02 | Indexed non-event voltage read | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时 non-event `_get_voltage()` 优先从 array mirror 返回，event-context reads 继续走 crossing-time interpolation | EVAS commit `63c1eb2` |
+| 2026-06-02 | Per-model evaluate profile | 默认关闭；新增 `EVAS_PROFILE_MODEL_EVAL=1`，按 model 聚合 prepare/evaluate/post_update 时间，辅助后续内核优化排序 | EVAS commit `c039159` |
 
 ## 后续每次改动必须回答的问题
 
@@ -58,6 +60,7 @@ audits/005-indexed-model-io-boundary.md
 audits/006-indexed-model-output-write-through.md
 audits/007-indexed-model-input-read-probe.md
 audits/008-indexed-non-event-voltage-read.md
+audits/009-indexed-model-evaluate-profile.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
