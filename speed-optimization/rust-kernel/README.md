@@ -19,6 +19,7 @@
 | 010 | `audits/010-post-update-empty-scan-fastpath.md` | done | 利用编译期 post-update event flag，跳过静态模型每步必然为空的 `post_update_events()` 调用 |
 | 011 | `audits/011-timer-breakpoint-scan-profile.md` | done | 汇总 source/model/bound_step scan 调用规模和模型级 timer cache counters，给后续 event/timer 优化提供证据 |
 | 012 | `audits/012-profile-guided-kernel-sample.md` | done | 用本地 bundled examples 做 profile-guided sample，结论是当前样本优先继续 model evaluate/indexed/Rust 路线 |
+| 013 | `audits/013-node-resolution-run-cache.md` | done | 在 run 周期内缓存 local node 到 external node 的解析结果，减少 mapped read/write 和 `@parent:` 路径重复 dict/string 开销 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -40,6 +41,7 @@
 | 2026-06-02 | Post-update empty scan fastpath | 编译期证明无 post-update cross/above 的模型，在主循环跳过空 `post_update_events()`；事件模型保留原路径 | EVAS commit `4f4b58a` |
 | 2026-06-02 | Timer/breakpoint scan profile | 新增 simulator-level scan counters 和 timer cache 汇总，不改变 dt/event ordering，用于判断后续是否值得做 event queue | EVAS commit `608551b` |
 | 2026-06-02 | Profile-guided kernel sample | 5 个本地 examples 中 `model_evaluate_s` 占 model-loop timing 的 72% 到 91%；下一步优先 evaluate/indexed/Rust，而不是 event queue | scratch logs `/private/tmp/evas-profile-012` |
+| 2026-06-03 | Node resolution run cache | 在 `Simulator.run()` 内缓存本地端口名到外部节点名的解析结果；microbenchmark 显示 mapped/parent helper 热路径约 `1.33x` 到 `1.84x`，但它不是 release-wide 速度 claim | EVAS commit `b56454c` |
 
 ## 后续每次改动必须回答的问题
 
@@ -70,6 +72,7 @@ audits/009-indexed-model-evaluate-profile.md
 audits/010-post-update-empty-scan-fastpath.md
 audits/011-timer-breakpoint-scan-profile.md
 audits/012-profile-guided-kernel-sample.md
+audits/013-node-resolution-run-cache.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
