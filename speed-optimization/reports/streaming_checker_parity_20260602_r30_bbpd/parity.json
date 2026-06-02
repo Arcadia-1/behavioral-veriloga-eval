@@ -1,0 +1,69 @@
+{
+  "summary": {
+    "mode": "streaming_checker_parity",
+    "fixture_suite": false,
+    "result_roots": [
+      "results/e2e-wall-unified-full-20260602-r28-edge-interval-streaming-evas-only-r14-exactrows"
+    ],
+    "tasks": [
+      "bbpd",
+      "vbr1_l1_bang_bang_phase_detector_bugfix"
+    ],
+    "case_count": 2,
+    "comparable_count": 2,
+    "match_count": 2,
+    "mismatch_count": 0,
+    "original_timeout_count": 0,
+    "status_counts": {
+      "match": 2
+    },
+    "by_task": {
+      "bbpd": {
+        "case_count": 1,
+        "comparable_count": 1,
+        "match_count": 1,
+        "mismatch_count": 0,
+        "original_timeout_count": 0
+      },
+      "vbr1_l1_bang_bang_phase_detector_bugfix": {
+        "case_count": 1,
+        "comparable_count": 1,
+        "match_count": 1,
+        "mismatch_count": 0,
+        "original_timeout_count": 0
+      }
+    }
+  },
+  "rows": [
+    {
+      "task_id": "bbpd",
+      "case_id": "profile_fast_skip_source_error_control",
+      "csv_path": "results/e2e-wall-unified-full-20260602-r28-edge-interval-streaming-evas-only-r14-exactrows/evas/vbr1_l1_bang_bang_phase_detector/dut/gold/bbpd/profile_fast_skip_source_error_control/tran.csv",
+      "csv_mb": 0.235,
+      "original_kind": "ok",
+      "original_score": 1.0,
+      "original_elapsed_s": 0.899,
+      "original_notes": "data_edges=150 up_edges=60 down_edges=60 overlap_frac=0.0000 direction_up=60/60 direction_down=90/90 wrong_direction=0 missing_direction=0",
+      "streaming_kind": "ok",
+      "streaming_score": 1.0,
+      "streaming_elapsed_s": 0.249,
+      "streaming_notes": "streaming_checker:data_edges=150 up_edges=60 down_edges=60 overlap_frac=0.0000 direction_up=60/60 direction_down=90/90 wrong_direction=0 missing_direction=0",
+      "parity_status": "match"
+    },
+    {
+      "task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "case_id": "profile_fast_skip_source_error_control",
+      "csv_path": "results/e2e-wall-unified-full-20260602-r28-edge-interval-streaming-evas-only-r14-exactrows/evas/vbr1_l1_bang_bang_phase_detector/bugfix/fixed/vbr1_l1_bang_bang_phase_detector_bugfix/profile_fast_skip_source_error_control/tran.csv",
+      "csv_mb": 0.235,
+      "original_kind": "ok",
+      "original_score": 1.0,
+      "original_elapsed_s": 0.848,
+      "original_notes": "data_edges=150 up_edges=60 down_edges=60 overlap_frac=0.0000 direction_up=60/60 direction_down=90/90 wrong_direction=0 missing_direction=0",
+      "streaming_kind": "ok",
+      "streaming_score": 1.0,
+      "streaming_elapsed_s": 0.242,
+      "streaming_notes": "streaming_checker:data_edges=150 up_edges=60 down_edges=60 overlap_frac=0.0000 direction_up=60/60 direction_down=90/90 wrong_direction=0 missing_direction=0",
+      "parity_status": "match"
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import warnings
 from pathlib import Path
 
@@ -320,6 +321,28 @@ def _float_cell(row: dict[str, str], key: str, default: float = 0.0) -> float:
         return default
 
 
+def _csv_header_indices(csv_path: Path) -> tuple[list[str], dict[str, int]]:
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        header = next(reader, [])
+    return header, {name: idx for idx, name in enumerate(header)}
+
+
+def _csv_required_indices(csv_path: Path, required: set[str]) -> tuple[dict[str, int] | None, list[str]]:
+    header, index = _csv_header_indices(csv_path)
+    missing = sorted(required - set(header))
+    if missing:
+        return None, missing
+    return {name: index[name] for name in required}, []
+
+
+def _float_at(row: list[str], index: int, default: float = 0.0) -> float:
+    try:
+        return float(row[index])
+    except (IndexError, TypeError, ValueError):
+        return default
+
+
 def _stream_max(csv_path: Path, key: str) -> float:
     max_val = 0.0
     with csv_path.open(newline="", encoding="utf-8") as f:
@@ -468,6 +491,88 @@ def _stream_pfd_reset_race_csv(csv_path: Path) -> tuple[float, list[str]]:
         f"up_pulses_first={int(first['up_pulses'])} "
         f"dn_pulses_second={int(second['dn_pulses'])} "
         f"overlap_frac={overlap_frac:.4f}"
+    ]
+
+
+def _stream_cppll_freq_step_reacquire_csv(csv_path: Path) -> tuple[float, list[str]]:
+    fields = _csv_fields(csv_path)
+    required = {"time", "ref_clk", "fb_clk", "lock", "vctrl_mon"}
+    if not required.issubset(fields):
+        return 0.0, ["missing ref_clk/fb_clk/lock/vctrl_mon"]
+
+    vth = 0.45
+    ref_edges: list[float] = []
+    fb_edges: list[float] = []
+    lock_edges: list[float] = []
+    lock_window_total_dt = 0.0
+    lock_window_high_dt = 0.0
+    vctrl_min = float("inf")
+    vctrl_max = float("-inf")
+    vctrl_in_range = True
+    prev: dict[str, float] | None = None
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            cur = {
+                "time": _float_cell(row, "time"),
+                "ref_clk": _float_cell(row, "ref_clk"),
+                "fb_clk": _float_cell(row, "fb_clk"),
+                "lock": _float_cell(row, "lock"),
+                "vctrl_mon": _float_cell(row, "vctrl_mon"),
+            }
+            vctrl_min = min(vctrl_min, cur["vctrl_mon"])
+            vctrl_max = max(vctrl_max, cur["vctrl_mon"])
+            if not (-1e-6 <= cur["vctrl_mon"] <= 0.95):
+                vctrl_in_range = False
+            if prev is not None:
+                if prev["ref_clk"] < vth <= cur["ref_clk"]:
+                    ref_edges.append(cur["time"])
+                if prev["fb_clk"] < vth <= cur["fb_clk"]:
+                    fb_edges.append(cur["time"])
+                if prev["lock"] < vth <= cur["lock"]:
+                    lock_edges.append(cur["time"])
+                dt = cur["time"] - prev["time"]
+                if dt > 0.0 and 2.05e-6 <= prev["time"] and cur["time"] <= 2.8e-6:
+                    lock_window_total_dt += dt
+                    if 0.5 * (prev["lock"] + cur["lock"]) > vth:
+                        lock_window_high_dt += dt
+            prev = cur
+
+    if len(ref_edges) < 12 or len(fb_edges) < 12:
+        return 0.0, [f"not_enough_edges ref={len(ref_edges)} fb={len(fb_edges)}"]
+
+    ref_late = [t for t in ref_edges if 4.5e-6 <= t <= 5.9e-6]
+    fb_late = [t for t in fb_edges if 4.5e-6 <= t <= 5.9e-6]
+    if len(ref_late) < 4 or len(fb_late) < 4:
+        return 0.0, [
+            f"not_enough_late_edges ref_late={len(ref_late)} fb_late={len(fb_late)}"
+        ]
+
+    ref_periods = [b - a for a, b in zip(ref_late, ref_late[1:])]
+    fb_periods = [b - a for a, b in zip(fb_late, fb_late[1:])]
+    ref_period = sum(ref_periods) / len(ref_periods)
+    fb_period = sum(fb_periods) / len(fb_periods)
+    if ref_period <= 0.0 or fb_period <= 0.0:
+        return 0.0, ["non_positive_period"]
+    freq_ratio = ref_period / fb_period
+
+    pre_lock_edges = [t for t in lock_edges if t < 2.0e-6]
+    post_lock_edges = [t for t in lock_edges if 2.2e-6 <= t <= 5.9e-6]
+    relock_time = post_lock_edges[0] if post_lock_edges else float("nan")
+    lock_high_frac = lock_window_high_dt / max(lock_window_total_dt, 1e-18)
+    disturb_low_frac = 1.0 - lock_high_frac
+    ok = (
+        bool(pre_lock_edges)
+        and disturb_low_frac >= 0.25
+        and bool(post_lock_edges)
+        and 0.97 <= freq_ratio <= 1.03
+        and vctrl_in_range
+    )
+    return (1.0 if ok else 0.0), [
+        f"freq_ratio={freq_ratio:.4f} relock_time={relock_time:.3e} "
+        f"disturb_low_frac={disturb_low_frac:.3f} "
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f}"
     ]
 
 
@@ -792,6 +897,115 @@ def _stream_gain_extraction_csv(csv_path: Path) -> tuple[float, list[str]]:
     return (1.0 if ok else 0.0), [f"diff_gain={gain:.2f}"]
 
 
+def _stream_gain_estimator_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "vinp", "vinn", "voutp", "voutn", "gain_out", "valid"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        # The row-based checker has no aliases for these required outputs, so
+        # missing columns would fail after loading the full CSV.
+        return 0.0, [f"required_columns_missing={'/'.join(missing)}"]
+    assert indices is not None
+
+    last_time = 0.0
+    final_valid = 0.0
+    max_valid = 0.0
+    valid_count = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            last_time = _float_at(row, indices["time"])
+            valid = final_valid = _float_at(row, indices["valid"])
+            if valid > 0.45:
+                valid_count += 1
+            if valid > max_valid:
+                max_valid = valid
+
+    if valid_count < 20:
+        return 0.0, [f"insufficient_valid_samples={valid_count}"]
+
+    late_start = last_time * 0.65
+    late_valid_count = 0
+    vin_min = math.inf
+    vin_max = -math.inf
+    vout_min = math.inf
+    vout_max = -math.inf
+    gain_sum = 0.0
+    vdd_est = max(max_valid, 1e-6)
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_value = _float_at(row, indices["time"])
+            if time_value < late_start:
+                continue
+            valid = _float_at(row, indices["valid"])
+            if valid <= 0.45:
+                continue
+            vin_diff = _float_at(row, indices["vinp"]) - _float_at(row, indices["vinn"])
+            vout_diff = _float_at(row, indices["voutp"]) - _float_at(row, indices["voutn"])
+            vin_min = min(vin_min, vin_diff)
+            vin_max = max(vin_max, vin_diff)
+            vout_min = min(vout_min, vout_diff)
+            vout_max = max(vout_max, vout_diff)
+            gain_sum += _float_at(row, indices["gain_out"]) / vdd_est * 10.0
+            late_valid_count += 1
+
+    if late_valid_count < 10:
+        return 0.0, [f"late_valid_samples={late_valid_count}"]
+
+    in_span = vin_max - vin_min
+    out_span = vout_max - vout_min
+    waveform_gain = out_span / in_span if in_span > 1e-12 else 0.0
+    gain_est = gain_sum / late_valid_count
+    gain_err = abs(gain_est - waveform_gain)
+    valid_final = final_valid > 0.45
+    ok = (
+        valid_final
+        and 0.045 <= in_span <= 0.075
+        and 0.27 <= out_span <= 0.45
+        and 5.0 <= waveform_gain <= 7.2
+        and gain_err <= 0.35
+    )
+    return (1.0 if ok else 0.0), [
+        f"in_span={in_span:.4f} out_span={out_span:.4f} "
+        f"waveform_gain={waveform_gain:.2f} gain_est={gain_est:.2f} "
+        f"gain_err={gain_err:.2f} valid_final={valid_final}"
+    ]
+
+
+def _stream_cdac_cal_csv(csv_path: Path) -> tuple[float, list[str]]:
+    header, indices = _csv_header_indices(csv_path)
+    vdac_cols = [col for col in header if "vdac" in col.lower() or "vcap" in col.lower() or "vout" in col.lower()]
+    if not vdac_cols:
+        return 0.0, [f"missing vdac columns; keys={header[:10]}"]
+
+    cols = vdac_cols[:2]
+    mins = {col: math.inf for col in cols}
+    maxs = {col: -math.inf for col in cols}
+    count = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            count += 1
+            for col in cols:
+                value = _float_at(row, indices[col])
+                if value < mins[col]:
+                    mins[col] = value
+                if value > maxs[col]:
+                    maxs[col] = value
+
+    if count == 0:
+        return 0.0, ["empty"]
+    for col in cols:
+        value_range = maxs[col] - mins[col]
+        if value_range > 0.05:
+            return 1.0, [f"vdac_activity col={col} range={value_range:.3f}"]
+    return 0.0, [f"no vdac activity in {vdac_cols[:4]}"]
+
+
 def _stream_multimod_divider_ratio_switch_csv(csv_path: Path) -> tuple[float, list[str]]:
     fields = _csv_fields(csv_path)
     required = {"time", "clk_in", "div_out"}
@@ -838,9 +1052,878 @@ def _stream_multimod_divider_ratio_switch_csv(csv_path: Path) -> tuple[float, li
     return 1.0, [";".join(details)]
 
 
+def _stream_lfsr_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"dpn", "rstb"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    count = 0
+    hi_count = 0
+    transitions = 0
+    prev_bit: int | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if _float_at(row, indices["rstb"]) <= 0.45:
+                continue
+            bit = 1 if _float_at(row, indices["dpn"]) > 0.45 else 0
+            count += 1
+            hi_count += bit
+            if prev_bit is not None and bit != prev_bit:
+                transitions += 1
+            prev_bit = bit
+
+    if count < 2:
+        return 0.0, ["not enough post-reset samples"]
+    hi_frac = hi_count / count
+    ok = 0.05 < hi_frac < 0.95 and transitions >= 10
+    return (1.0 if ok else 0.0), [f"transitions={transitions} hi_frac={hi_frac:.3f}"]
+
+
+def _stream_prbs7_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst_n", "en", "serial_out"} | {f"state_{idx}" for idx in range(7)}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing_columns={','.join(missing)}"]
+    assert indices is not None
+
+    def logic(row: list[str], name: str) -> int | None:
+        value = _float_at(row, indices[name])
+        if value >= 0.7:
+            return 1
+        if value <= 0.2:
+            return 0
+        return None
+
+    stable_codes: list[int] = []
+    serial_bits: list[int] = []
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if (
+                _float_at(row, indices["time"]) <= 2e-9
+                or _float_at(row, indices["rst_n"]) <= 0.7
+                or _float_at(row, indices["en"]) <= 0.7
+            ):
+                continue
+            state = 0
+            stable = True
+            for idx in range(7):
+                bit = logic(row, f"state_{idx}")
+                if bit is None:
+                    stable = False
+                    break
+                state |= bit << idx
+            serial = logic(row, "serial_out")
+            if not stable or serial is None:
+                continue
+            if serial != ((state >> 6) & 1):
+                return 0.0, [f"serial_state_mismatch code={state}"]
+            if not stable_codes or stable_codes[-1] != state:
+                stable_codes.append(state)
+                serial_bits.append(serial)
+
+    if len(stable_codes) < 10:
+        return 0.0, [f"unique_state_steps={len(stable_codes)}"]
+    if 0 in stable_codes:
+        return 0.0, ["entered_zero_state"]
+
+    mismatches = 0
+    checked = 0
+    for current, observed_next in zip(stable_codes, stable_codes[1:]):
+        feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
+        expected_next = ((current & 0x3F) << 1) | feedback
+        checked += 1
+        if observed_next != expected_next:
+            mismatches += 1
+
+    serial_transitions = sum(1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1])
+    ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
+    return (1.0 if ok else 0.0), [
+        f"state_steps={len(stable_codes)} checked_transitions={checked} "
+        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+    ]
+
+
+def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "data", "clk", "retimed_data", "up", "down"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, ["missing time/data/clk/retimed_data/up/down"]
+    assert indices is not None
+
+    vth = 0.45
+    response_window_s = 0.2e-9
+    total_rows = 0
+    overlap = 0
+    data_edges = 0
+    up_edges = 0
+    down_edges = 0
+    directional_counts = {
+        "up_expected": 0,
+        "down_expected": 0,
+        "up_correct": 0,
+        "down_correct": 0,
+        "wrong": 0,
+        "missing": 0,
+    }
+    pending_windows: list[dict[str, object]] = []
+
+    def update_window(window: dict[str, object], up: float, down: float) -> None:
+        expected = str(window["expected"])
+        wrong = str(window["wrong"])
+        if (expected == "up" and up > vth) or (expected == "down" and down > vth):
+            window["expected_hit"] = True
+        if (wrong == "up" and up > vth) or (wrong == "down" and down > vth):
+            window["wrong_hit"] = True
+
+    def finalize_window(window: dict[str, object]) -> None:
+        expected = str(window["expected"])
+        if bool(window["expected_hit"]) and not bool(window["wrong_hit"]):
+            directional_counts[f"{expected}_correct"] += 1
+        elif bool(window["wrong_hit"]):
+            directional_counts["wrong"] += 1
+        else:
+            directional_counts["missing"] += 1
+
+    prev_data: float | None = None
+    prev_up: float | None = None
+    prev_down: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            total_rows += 1
+            time_s = _float_at(row, indices["time"])
+            data = _float_at(row, indices["data"])
+            clk = _float_at(row, indices["clk"])
+            retimed_data = _float_at(row, indices["retimed_data"])
+            up = _float_at(row, indices["up"])
+            down = _float_at(row, indices["down"])
+
+            if up > vth and down > vth:
+                overlap += 1
+
+            active_windows: list[dict[str, object]] = []
+            for window in pending_windows:
+                if time_s <= float(window["end_time"]):
+                    update_window(window, up, down)
+                    active_windows.append(window)
+                else:
+                    finalize_window(window)
+            pending_windows = active_windows
+
+            if prev_data is not None and prev_up is not None and prev_down is not None:
+                if prev_up < vth <= up:
+                    up_edges += 1
+                if prev_down < vth <= down:
+                    down_edges += 1
+                if (prev_data < vth <= data) or (prev_data > vth >= data):
+                    data_edges += 1
+                    clk_high = clk > vth
+                    retimed_high = retimed_data > vth
+                    if clk_high and not retimed_high:
+                        expected = "up"
+                    elif not clk_high and retimed_high:
+                        expected = "down"
+                    else:
+                        expected = None
+                    if expected is not None:
+                        directional_counts[f"{expected}_expected"] += 1
+                        wrong = "down" if expected == "up" else "up"
+                        window = {
+                            "end_time": time_s + response_window_s,
+                            "expected": expected,
+                            "wrong": wrong,
+                            "expected_hit": False,
+                            "wrong_hit": False,
+                        }
+                        update_window(window, up, down)
+                        pending_windows.append(window)
+
+            prev_data = data
+            prev_up = up
+            prev_down = down
+
+    for window in pending_windows:
+        finalize_window(window)
+
+    if data_edges < 6:
+        return 0.0, ["not enough data edges"]
+
+    overlap_frac = overlap / max(total_rows, 1)
+    edge_trigger_ok = up_edges + down_edges >= max(4, data_edges // 4)
+    pulse_presence_ok = up_edges >= 2 and down_edges >= 2
+    non_overlap_ok = overlap_frac < 0.02
+    directional_ok = (
+        directional_counts["up_expected"] >= 2
+        and directional_counts["down_expected"] >= 2
+        and directional_counts["up_correct"] >= max(2, int(0.75 * directional_counts["up_expected"]))
+        and directional_counts["down_correct"] >= max(2, int(0.75 * directional_counts["down_expected"]))
+        and directional_counts["wrong"] == 0
+    )
+    ok = edge_trigger_ok and pulse_presence_ok and non_overlap_ok and directional_ok
+    return (1.0 if ok else 0.0), [
+        f"data_edges={data_edges} up_edges={up_edges} down_edges={down_edges} "
+        f"overlap_frac={overlap_frac:.4f} "
+        f"direction_up={directional_counts['up_correct']}/{directional_counts['up_expected']} "
+        f"direction_down={directional_counts['down_correct']}/{directional_counts['down_expected']} "
+        f"wrong_direction={directional_counts['wrong']} missing_direction={directional_counts['missing']}"
+    ]
+
+
+def _stream_cross_hysteresis_window_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "vin", "out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    out_min = float("inf")
+    out_max = float("-inf")
+    windows = {
+        "low1": [0.0, 0],
+        "high": [0.0, 0],
+        "low2": [0.0, 0],
+    }
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            out = _float_at(row, indices["out"])
+            out_min = min(out_min, out)
+            out_max = max(out_max, out)
+            if time_s <= 20e-9:
+                windows["low1"][0] += out
+                windows["low1"][1] += 1
+            if 35e-9 <= time_s <= 55e-9:
+                windows["high"][0] += out
+                windows["high"][1] += 1
+            if time_s >= 75e-9:
+                windows["low2"][0] += out
+                windows["low2"][1] += 1
+
+    span = out_max - out_min
+    if span < 0.3:
+        return 0.0, [f"out_span_too_small={span:.3f}"]
+    if any(count == 0 for _, count in windows.values()):
+        return 0.0, ["insufficient_window_samples"]
+    low1 = windows["low1"][0] / windows["low1"][1]
+    high = windows["high"][0] / windows["high"][1]
+    low2 = windows["low2"][0] / windows["low2"][1]
+    ok = (high - low1) > 0.45 * span and (high - low2) > 0.45 * span
+    return (1.0 if ok else 0.0), [f"low1={low1:.3f} high={high:.3f} low2={low2:.3f} span={span:.3f}"]
+
+
+def _stream_cross_interval_163p333_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "delay_out", "seen_out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    seen_hi = 0.0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            seen_hi = max(seen_hi, _float_at(row, indices["seen_out"]))
+    if seen_hi < 0.3:
+        return 0.0, [f"seen_out_never_high={seen_hi:.3f}"]
+
+    seen_th = 0.5 * seen_hi
+    first_seen_time: float | None = None
+    seen_delay_values: list[float] = []
+    settled_delay_values: list[float] = []
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_value = _float_at(row, indices["time"])
+            seen = _float_at(row, indices["seen_out"])
+            if seen <= seen_th:
+                continue
+            if first_seen_time is None:
+                first_seen_time = time_value
+            delay = _float_at(row, indices["delay_out"])
+            seen_delay_values.append(delay)
+            if time_value >= first_seen_time + 0.2e-9:
+                settled_delay_values.append(delay)
+
+    if first_seen_time is None:
+        return 0.0, ["seen_out_no_logic_high_samples"]
+    if len(settled_delay_values) < 3:
+        settled_delay_values = seen_delay_values
+    tail_count = min(len(settled_delay_values), max(5, len(settled_delay_values) // 3))
+    tail = sorted(settled_delay_values[-tail_count:])
+    if not tail:
+        return 0.0, ["no_post_seen_delay_samples"]
+    delay_level = tail[len(tail) // 2]
+    delay_ps = delay_level / max(seen_hi, 1e-6) * 200.0
+    ok = 130.0 <= delay_ps <= 190.0
+    return (1.0 if ok else 0.0), [
+        f"delay_ps={delay_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_delay_values)}"
+    ]
+
+
+def _stream_phase_accumulator_timer_wrap_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "clk_out", "phase_out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    phase_min = float("inf")
+    phase_max = float("-inf")
+    clk_min = float("inf")
+    clk_max = float("-inf")
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            phase = _float_at(row, indices["phase_out"])
+            clk = _float_at(row, indices["clk_out"])
+            phase_min = min(phase_min, phase)
+            phase_max = max(phase_max, phase)
+            clk_min = min(clk_min, clk)
+            clk_max = max(clk_max, clk)
+
+    phase_span = phase_max - phase_min
+    if phase_span < 0.4:
+        return 0.0, [f"phase_span_too_small={phase_span:.3f}"]
+    high_th = phase_min + 0.70 * phase_span
+    low_th = phase_min + 0.30 * phase_span
+    clk_th = 0.5 * (clk_max + clk_min)
+
+    wraps = 0
+    armed = False
+    clk_rises = 0
+    prev_clk: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            phase = _float_at(row, indices["phase_out"])
+            clk = _float_at(row, indices["clk_out"])
+            if phase >= high_th:
+                armed = True
+            elif armed and phase <= low_th:
+                wraps += 1
+                armed = False
+            if prev_clk is not None and prev_clk < clk_th <= clk:
+                clk_rises += 1
+            prev_clk = clk
+
+    ok = wraps >= 3 and clk_rises >= 3
+    return (1.0 if ok else 0.0), [f"wraps={wraps} clk_rises={clk_rises} phase_span={phase_span:.3f}"]
+
+
+def _stream_precision_rectifier_envelope_detector_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst", "vin", "rect", "env", "metric"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    mean_windows = {
+        "reset_rect": (0.5e-9, 2.0e-9, "rect", 0.0, 0),
+        "reset_env": (0.5e-9, 2.0e-9, "env", 0.0, 0),
+        "pos_rect": (7.0e-9, 10.0e-9, "rect", 0.0, 0),
+        "center_rect": (15.0e-9, 17.0e-9, "rect", 0.0, 0),
+        "neg_rect": (22.0e-9, 26.0e-9, "rect", 0.0, 0),
+        "peak_env": (43.0e-9, 48.0e-9, "env", 0.0, 0),
+        "hold_env": (56.0e-9, 64.0e-9, "env", 0.0, 0),
+        "hold_rect": (56.0e-9, 64.0e-9, "rect", 0.0, 0),
+        "hold_metric": (56.0e-9, 64.0e-9, "metric", 0.0, 0),
+    }
+    post_count = 0
+    below_rect = 0
+    errors: list[float] = []
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            rst = _float_at(row, indices["rst"])
+            vin = _float_at(row, indices["vin"])
+            rect = _float_at(row, indices["rect"])
+            env = _float_at(row, indices["env"])
+            metric = _float_at(row, indices["metric"])
+            values = {"rect": rect, "env": env, "metric": metric}
+            for label, (start, stop, signal, total, count) in list(mean_windows.items()):
+                if start <= time_s <= stop:
+                    mean_windows[label] = (start, stop, signal, total + values[signal], count + 1)
+            if rst <= 0.45 and time_s > 3e-9:
+                post_count += 1
+                if env + 0.06 < rect:
+                    below_rect += 1
+                if 5e-9 <= time_s <= 30e-9 or 40e-9 <= time_s <= 68e-9:
+                    errors.append(abs(rect - min(0.9, 0.45 + abs(vin - 0.45))))
+
+    means: dict[str, float] = {}
+    for label, (_, _, _, total, count) in mean_windows.items():
+        if count == 0:
+            return 0.0, ["rectifier_missing_sample_windows"]
+        means[label] = total / count
+
+    if abs(means["reset_rect"] - 0.45) > 0.10 or abs(means["reset_env"] - 0.45) > 0.10:
+        return 0.0, [f"rectifier_reset_common_mode rect={means['reset_rect']:.3f} env={means['reset_env']:.3f}"]
+    if means["pos_rect"] < 0.62:
+        return 0.0, [f"rectifier_positive_half_not_rectified={means['pos_rect']:.3f}"]
+    if means["neg_rect"] < 0.62:
+        return 0.0, [f"rectifier_negative_half_not_rectified={means['neg_rect']:.3f}"]
+    if abs(means["center_rect"] - 0.45) > 0.08:
+        return 0.0, [f"rectifier_center_not_common_mode={means['center_rect']:.3f}"]
+    if means["peak_env"] < 0.74:
+        return 0.0, [f"rectifier_envelope_peak_too_low={means['peak_env']:.3f}"]
+    if means["hold_env"] < means["hold_rect"] + 0.10 or means["hold_metric"] < 0.35:
+        return 0.0, [
+            "rectifier_envelope_hold_missing "
+            f"env={means['hold_env']:.3f} rect={means['hold_rect']:.3f} metric={means['hold_metric']:.3f}"
+        ]
+    if post_count == 0:
+        return 0.0, ["rectifier_no_post_reset_rows"]
+    if below_rect > max(2, post_count // 20):
+        return 0.0, [f"rectifier_envelope_below_rect_count={below_rect}"]
+    if errors:
+        p90 = sorted(errors)[int(0.90 * (len(errors) - 1))]
+        if p90 > 0.09:
+            return 0.0, [f"rectifier_rect_abs_tracking_p90={p90:.3f}"]
+
+    return 1.0, [
+        "precision_rectifier_envelope_detector "
+        f"pos/neg={means['pos_rect']:.3f}/{means['neg_rect']:.3f} "
+        f"env_peak={means['peak_env']:.3f} "
+        f"hold={means['hold_env']:.3f}/{means['hold_rect']:.3f}"
+    ]
+
+
+def _stream_samples_at_times(
+    csv_path: Path,
+    signal: str,
+    target_times: list[float],
+) -> dict[float, float | None]:
+    indices, missing = _csv_required_indices(csv_path, {"time", signal})
+    if indices is None:
+        return {target: None for target in target_times}
+    assert indices is not None
+
+    targets = sorted(target_times)
+    samples: dict[float, float | None] = {target: None for target in targets}
+    target_idx = 0
+    prev_t: float | None = None
+    prev_v: float | None = None
+    last_v: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            value = _float_at(row, indices[signal])
+            if prev_t is None:
+                while target_idx < len(targets) and targets[target_idx] <= time_s:
+                    samples[targets[target_idx]] = value
+                    target_idx += 1
+            else:
+                while target_idx < len(targets) and prev_t <= targets[target_idx] <= time_s:
+                    dt = time_s - prev_t
+                    if dt <= 0.0:
+                        samples[targets[target_idx]] = value
+                    else:
+                        alpha = (targets[target_idx] - prev_t) / dt
+                        assert prev_v is not None
+                        samples[targets[target_idx]] = prev_v + alpha * (value - prev_v)
+                    target_idx += 1
+            prev_t = time_s
+            prev_v = value
+            last_v = value
+    if last_v is not None:
+        while target_idx < len(targets):
+            samples[targets[target_idx]] = last_v
+            target_idx += 1
+    return samples
+
+
+def _stream_programmable_stimulus_sequencer_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst", "mode", "gate", "out", "metric"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    ramp_count = 0
+    ramp_drops = 0
+    ramp_first: float | None = None
+    ramp_last: float | None = None
+    sine_count = 0
+    sine_min = float("inf")
+    sine_max = float("-inf")
+    sine_sum = 0.0
+    sine_prev_t: float | None = None
+    sine_prev_center: float | None = None
+    crossing_times: list[float] = []
+    burst_count = 0
+    burst_min = float("inf")
+    burst_max = float("-inf")
+    burst_transitions = 0
+    burst_prev_out: float | None = None
+    gate_low_sum = 0.0
+    gate_low_count = 0
+    metric_windows = {
+        "ramp": (8.0e-9, 22.0e-9, 0.0, 0),
+        "sine": (32.0e-9, 56.0e-9, 0.0, 0),
+        "burst": (67.0e-9, 75.0e-9, 0.0, 0),
+        "idle": (76.5e-9, 79.0e-9, 0.0, 0),
+    }
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            rst = _float_at(row, indices["rst"])
+            gate = _float_at(row, indices["gate"])
+            out = _float_at(row, indices["out"])
+            metric = _float_at(row, indices["metric"])
+            if rst <= 0.45:
+                if 6.0e-9 <= time_s <= 24.0e-9:
+                    ramp_count += 1
+                    if ramp_first is None:
+                        ramp_first = out
+                    if ramp_last is not None and out < ramp_last - 0.02:
+                        ramp_drops += 1
+                    ramp_last = out
+                if 30.0e-9 <= time_s <= 58.0e-9:
+                    sine_count += 1
+                    sine_min = min(sine_min, out)
+                    sine_max = max(sine_max, out)
+                    sine_sum += out
+                    cur_center = out - 0.45
+                    if sine_prev_center is not None and sine_prev_t is not None:
+                        if sine_prev_center == 0.0:
+                            crossing_times.append(sine_prev_t)
+                        elif sine_prev_center * cur_center < 0.0:
+                            frac = abs(sine_prev_center) / (abs(sine_prev_center) + abs(cur_center))
+                            crossing_times.append(sine_prev_t + frac * (time_s - sine_prev_t))
+                    sine_prev_t = time_s
+                    sine_prev_center = cur_center
+                if 66.0e-9 <= time_s <= 88.0e-9 and gate > 0.45:
+                    burst_count += 1
+                    burst_min = min(burst_min, out)
+                    burst_max = max(burst_max, out)
+                    if burst_prev_out is not None and (
+                        (burst_prev_out <= 0.45 < out) or (burst_prev_out >= 0.45 > out)
+                    ):
+                        burst_transitions += 1
+                    burst_prev_out = out
+                if 76.0e-9 <= time_s <= 79.5e-9 and gate <= 0.45:
+                    gate_low_sum += out
+                    gate_low_count += 1
+            for label, (start, stop, total, count) in list(metric_windows.items()):
+                if start <= time_s <= stop:
+                    metric_windows[label] = (start, stop, total + metric, count + 1)
+
+    if min(ramp_count, sine_count, burst_count) < 6 or gate_low_count < 3:
+        return 0.0, [
+            "sequencer_missing_windows "
+            f"ramp={ramp_count} sine={sine_count} burst={burst_count} gate_low={gate_low_count}"
+        ]
+    assert ramp_first is not None and ramp_last is not None
+    ramp_delta = ramp_last - ramp_first
+    if ramp_drops or ramp_delta < 0.16 or not (0.16 <= ramp_first <= 0.30):
+        return 0.0, [
+            "sequencer_ramp_not_monotonic "
+            f"drops={ramp_drops} delta={ramp_delta:.3f} start={ramp_first:.3f}"
+        ]
+    sine_mean = sine_sum / sine_count
+    center_crossings = len(crossing_times)
+    if sine_min > 0.34 or sine_max < 0.56 or abs(sine_mean - 0.45) > 0.05 or center_crossings < 4:
+        return 0.0, [
+            "sequencer_chirp_segment_wrong "
+            f"min={sine_min:.3f} max={sine_max:.3f} mean={sine_mean:.3f} crossings={center_crossings}"
+        ]
+    half_periods = [cur - prev for prev, cur in zip(crossing_times, crossing_times[1:])]
+    if len(half_periods) < 3:
+        return 0.0, [f"sequencer_chirp_missing_periods={len(half_periods)}"]
+    early_half_period = sum(half_periods[:2]) / min(2, len(half_periods[:2]))
+    late_half_period = sum(half_periods[-2:]) / min(2, len(half_periods[-2:]))
+    if late_half_period >= early_half_period * 0.90:
+        return 0.0, [
+            "sequencer_chirp_frequency_not_increasing "
+            f"early_half_period={early_half_period:.3e} late_half_period={late_half_period:.3e}"
+        ]
+
+    switch_times = [25.8e-9, 26.3e-9, 61.8e-9, 62.3e-9]
+    switch_samples = _stream_samples_at_times(csv_path, "out", switch_times)
+    if any(switch_samples[target] is None for target in switch_times):
+        return 0.0, ["sequencer_missing_switch_samples"]
+    switch_1_delta = abs(float(switch_samples[26.3e-9]) - float(switch_samples[25.8e-9]))
+    switch_2_delta = abs(float(switch_samples[62.3e-9]) - float(switch_samples[61.8e-9]))
+    if switch_1_delta > 0.12 or switch_2_delta > 0.12:
+        return 0.0, [f"sequencer_mode_switch_discontinuity={switch_1_delta:.3f}/{switch_2_delta:.3f}"]
+
+    gate_low_mean = gate_low_sum / gate_low_count
+    if burst_min > 0.36 or burst_max < 0.54 or burst_transitions < 2 or abs(gate_low_mean - 0.45) > 0.08:
+        return 0.0, [
+            "sequencer_burst_schedule_wrong "
+            f"low={burst_min:.3f} high={burst_max:.3f} transitions={burst_transitions} "
+            f"gate_low_mean={gate_low_mean:.3f}"
+        ]
+
+    metric_means: dict[str, float] = {}
+    for label, (_, _, total, count) in metric_windows.items():
+        if count == 0:
+            return 0.0, ["sequencer_missing_metric_windows"]
+        metric_means[label] = total / count
+    if not (0.12 <= metric_means["ramp"] <= 0.30 and 0.42 <= metric_means["sine"] <= 0.58 and metric_means["burst"] >= 0.70):
+        return 0.0, [
+            "sequencer_metric_does_not_mark_modes "
+            f"ramp={metric_means['ramp']:.3f} sine={metric_means['sine']:.3f} burst={metric_means['burst']:.3f}"
+        ]
+    if metric_means["idle"] < 0.55 or metric_means["idle"] > metric_means["burst"] - 0.05:
+        return 0.0, [f"sequencer_idle_metric_wrong idle={metric_means['idle']:.3f} burst={metric_means['burst']:.3f}"]
+
+    return 1.0, [
+        "programmable_stimulus_sequencer "
+        f"ramp_delta={ramp_delta:.3f} sine={sine_min:.3f}/{sine_max:.3f} "
+        f"chirp_half_period={early_half_period:.3e}->{late_half_period:.3e} "
+        f"switch={switch_1_delta:.3f}/{switch_2_delta:.3f} "
+        f"burst={burst_min:.3f}/{burst_max:.3f} transitions={burst_transitions}"
+    ]
+
+
+def _stream_edge_ratio(
+    csv_path: Path,
+    indices: dict[str, int],
+    num_signal: str,
+    den_signal: str,
+    t_start: float,
+    t_end: float,
+) -> tuple[float, str]:
+    prev_num: float | None = None
+    prev_den: float | None = None
+    num_edges: list[float] = []
+    den_edges: list[float] = []
+    rows_in_window = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            if time_s < t_start or time_s > t_end:
+                continue
+            rows_in_window += 1
+            num = _float_at(row, indices[num_signal])
+            den = _float_at(row, indices[den_signal])
+            if prev_num is not None and prev_num < 0.45 <= num:
+                num_edges.append(time_s)
+            if prev_den is not None and prev_den < 0.45 <= den:
+                den_edges.append(time_s)
+            prev_num = num
+            prev_den = den
+    if rows_in_window < 4:
+        return float("nan"), "missing_window_or_signals"
+    if len(num_edges) < 3 or len(den_edges) < 3:
+        return float("nan"), f"not_enough_edges num={len(num_edges)} den={len(den_edges)}"
+    num_freq = (len(num_edges) - 1) / max(num_edges[-1] - num_edges[0], 1e-18)
+    den_freq = (len(den_edges) - 1) / max(den_edges[-1] - den_edges[0], 1e-18)
+    return num_freq / max(den_freq, 1e-18), "ok"
+
+
+def _stream_weighted_high_fraction_window(
+    csv_path: Path,
+    indices: dict[str, int],
+    signal: str,
+    threshold: float,
+    t_start: float,
+    t_end: float,
+) -> float:
+    first_t: float | None = None
+    last_t: float | None = None
+    high_dt = 0.0
+    prev_t: float | None = None
+    prev_v: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            if time_s < t_start or time_s > t_end:
+                continue
+            value = _float_at(row, indices[signal])
+            if first_t is None:
+                first_t = time_s
+            if prev_t is not None and prev_v is not None:
+                dt = time_s - prev_t
+                if dt > 0.0 and 0.5 * (prev_v + value) > threshold:
+                    high_dt += dt
+            prev_t = time_s
+            prev_v = value
+            last_t = time_s
+    if first_t is None or last_t is None or last_t <= first_t:
+        return 0.0
+    return high_dt / (last_t - first_t)
+
+
+def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "ref_clk", "ratio_ctrl", "fb_clk", "vout", "lock", "vctrl_mon"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    hop_t = float("nan")
+    lock_max = float("-inf")
+    vctrl_in_range = True
+    prev_ratio: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            ratio_ctrl = _float_at(row, indices["ratio_ctrl"])
+            lock = _float_at(row, indices["lock"])
+            vctrl = _float_at(row, indices["vctrl_mon"])
+            lock_max = max(lock_max, lock)
+            if not (-1e-6 <= vctrl <= 1.2):
+                vctrl_in_range = False
+            if not math.isfinite(hop_t) and prev_ratio is not None and prev_ratio < 5.0 <= ratio_ctrl:
+                hop_t = time_s
+            prev_ratio = ratio_ctrl
+
+    if not math.isfinite(hop_t):
+        return 0.0, ["ratio_hop_not_detected"]
+
+    windows = {
+        "pre": (hop_t - 1.0e-6, hop_t - 2.0e-7),
+        "post": (hop_t + 1.2e-6, hop_t + 2.5e-6),
+    }
+    pre_ratio, pre_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["pre"])
+    post_ratio, post_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["post"])
+    pre_div_ratio, pre_div_note = _stream_edge_ratio(csv_path, indices, "vout", "fb_clk", *windows["pre"])
+    post_div_ratio, post_div_note = _stream_edge_ratio(csv_path, indices, "vout", "fb_clk", *windows["post"])
+    pre_fb_ref_ratio, pre_fb_ref_note = _stream_edge_ratio(csv_path, indices, "fb_clk", "ref_clk", *windows["pre"])
+    post_fb_ref_ratio, post_fb_ref_note = _stream_edge_ratio(csv_path, indices, "fb_clk", "ref_clk", *windows["post"])
+    if pre_note != "ok":
+        return 0.0, [f"pre_window_{pre_note}"]
+    if post_note != "ok":
+        return 0.0, [f"post_window_{post_note}"]
+    if pre_div_note != "ok":
+        return 0.0, [f"pre_divider_window_{pre_div_note}"]
+    if post_div_note != "ok":
+        return 0.0, [f"post_divider_window_{post_div_note}"]
+    if pre_fb_ref_note != "ok":
+        return 0.0, [f"pre_feedback_window_{pre_fb_ref_note}"]
+    if post_fb_ref_note != "ok":
+        return 0.0, [f"post_feedback_window_{post_fb_ref_note}"]
+
+    vth = lock_max * 0.5
+    pre_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
+    post_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t + 1.8e-6, hop_t + 2.8e-6)
+    ok = (
+        abs(pre_ratio - 4.0) <= 0.25
+        and abs(post_ratio - 6.0) <= 0.35
+        and abs(pre_div_ratio - 4.0) <= 0.25
+        and abs(post_div_ratio - 6.0) <= 0.35
+        and abs(pre_fb_ref_ratio - 1.0) <= 0.15
+        and abs(post_fb_ref_ratio - 1.0) <= 0.15
+        and pre_lock >= 0.8
+        and post_lock >= 0.8
+        and vctrl_in_range
+    )
+    return (1.0 if ok else 0.0), [
+        f"hop_t={hop_t:.3e} "
+        f"pre_vout_ref={pre_ratio:.3f} "
+        f"post_vout_ref={post_ratio:.3f} "
+        f"pre_vout_fb={pre_div_ratio:.3f} "
+        f"post_vout_fb={post_div_ratio:.3f} "
+        f"pre_fb_ref={pre_fb_ref_ratio:.3f} "
+        f"post_fb_ref={post_fb_ref_ratio:.3f} "
+        f"pre_lock={pre_lock:.3f} "
+        f"post_lock={post_lock:.3f} "
+        f"vctrl_range_ok={vctrl_in_range}"
+    ]
+
+
+def _stream_sample_hold_droop_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "vin", "clk", "vout"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    times: list[float] = []
+    clk: list[float] = []
+    vin: list[float] = []
+    vout: list[float] = []
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            times.append(_float_at(row, indices["time"]))
+            clk.append(_float_at(row, indices["clk"]))
+            vin.append(_float_at(row, indices["vin"]))
+            vout.append(_float_at(row, indices["vout"]))
+
+    edge_idx = [idx for idx in range(1, len(clk)) if clk[idx - 1] <= 0.45 < clk[idx]]
+    if len(edge_idx) < 6:
+        return 0.0, [f"too_few_clock_edges={len(edge_idx)}"]
+
+    sample_mismatch = 0
+    checked_samples = 0
+    for edge_pos in range(min(6, len(edge_idx) - 1)):
+        idx = edge_idx[edge_pos]
+        t_target = times[idx] + 1.2e-9
+        settle_idx = next((j for j in range(idx, len(times)) if times[j] >= t_target), len(times) - 1)
+        err = abs(vout[settle_idx] - vin[idx])
+        checked_samples += 1
+        if err > 0.04:
+            sample_mismatch += 1
+    if checked_samples == 0 or sample_mismatch > 1:
+        return 0.0, [f"sample_mismatch={sample_mismatch}/{max(checked_samples, 1)}"]
+
+    droop_windows = 0
+    droop_failures = 0
+    for edge_pos in range(min(6, len(edge_idx) - 1)):
+        start_i = edge_idx[edge_pos]
+        end_i = edge_idx[edge_pos + 1]
+        t_start = times[start_i] + 1.5e-9
+        t_end = times[end_i] - 1.5e-9
+        idxs = [idx for idx in range(start_i, end_i) if t_start <= times[idx] <= t_end]
+        if len(idxs) < 6:
+            continue
+        first = vout[idxs[0]]
+        if first < 0.55:
+            continue
+        last = vout[idxs[-1]]
+        droop = first - last
+        upward_steps = sum(1 for a, b in zip(idxs[:-1], idxs[1:]) if (vout[b] - vout[a]) > 0.004)
+        droop_windows += 1
+        if droop < 0.006 or droop > 0.30:
+            droop_failures += 1
+        if upward_steps > max(1, len(idxs) // 8):
+            droop_failures += 1
+
+    if droop_windows < 2:
+        return 0.0, [f"insufficient_high_hold_windows={droop_windows}"]
+    if droop_failures > 0:
+        return 0.0, [f"droop_failures={droop_failures} windows={droop_windows}"]
+    return 1.0, [f"edges={len(edge_idx)} sample_mismatch={sample_mismatch}/{checked_samples} droop_windows={droop_windows}"]
+
+
 STREAMING_BEHAVIOR_CHECKS = {
     "pfd_deadzone_smoke": _stream_pfd_deadzone_csv,
+    "pfd_small_phase_response_smoke": _stream_pfd_deadzone_csv,
+    "vbm1_pfd_small_phase_error_response_dut": _stream_pfd_deadzone_csv,
     "pfd_reset_race_smoke": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_dut": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_tb": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_bugfix": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_e2e": _stream_pfd_reset_race_csv,
+    "cppll_freq_step_reacquire_smoke": _stream_cppll_freq_step_reacquire_csv,
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb": _stream_cppll_freq_step_reacquire_csv,
     "dac_binary_clk_4b_smoke": _stream_dac_binary_clk_4b_csv,
     "sar_adc_dac_weighted_8b_smoke": _stream_sar_adc_dac_weighted_8b_csv,
     "dwa_ptr_gen_no_overlap_smoke": _stream_dwa_ptr_gen_no_overlap_csv,
@@ -848,6 +1931,28 @@ STREAMING_BEHAVIOR_CHECKS = {
     "gray_counter_one_bit_change_smoke": _stream_gray_counter_one_bit_change_csv,
     "dwa_wraparound_smoke": _stream_dwa_wraparound_csv,
     "gain_extraction_smoke": _stream_gain_extraction_csv,
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_tb": _stream_gain_extraction_csv,
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e": _stream_gain_extraction_csv,
+    "vbr1_l1_gain_estimator_tb": _stream_gain_estimator_csv,
+    "vbr1_l1_gain_estimator_e2e": _stream_gain_estimator_csv,
+    "cdac_cal": _stream_cdac_cal_csv,
+    "lfsr_smoke": _stream_lfsr_csv,
+    "vbr1_l1_lfsr_prbs_generator_tb": _stream_lfsr_csv,
+    "vbr1_l1_lfsr_prbs_generator_e2e": _stream_lfsr_csv,
+    "prbs7": _stream_prbs7_csv,
+    "vbr1_l1_lfsr_prbs_generator_bugfix": _stream_prbs7_csv,
+    "bbpd": _stream_bbpd_csv,
+    "vbr1_l1_bang_bang_phase_detector_bugfix": _stream_bbpd_csv,
+    "cross_hysteresis_window_smoke": _stream_cross_hysteresis_window_csv,
+    "cross_interval_163p333_smoke": _stream_cross_interval_163p333_csv,
+    "vbr1_l1_edge_interval_timer_tb": _stream_cross_interval_163p333_csv,
+    "vbr1_l1_edge_interval_timer_e2e": _stream_cross_interval_163p333_csv,
+    "phase_accumulator_timer_wrap_smoke": _stream_phase_accumulator_timer_wrap_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector_e2e": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l2_programmable_stimulus_sequencer_e2e": _stream_programmable_stimulus_sequencer_csv,
+    "adpll_ratio_hop_smoke": _stream_adpll_ratio_hop_csv,
+    "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb": _stream_adpll_ratio_hop_csv,
+    "sample_hold_droop_smoke": _stream_sample_hold_droop_csv,
     "multimod_divider_ratio_switch_smoke": _stream_multimod_divider_ratio_switch_csv,
 }
 
@@ -882,6 +1987,37 @@ def evaluate_streaming_behavior(task_id: str, csv_path: Path) -> tuple[float, li
     if not force_streaming and _streaming_notes_require_row_fallback(notes):
         return None
     return score, [f"streaming_checker:{note}" for note in notes]
+
+
+def behavior_checker_policy(task_id: str, notes: list[str] | None = None) -> dict[str, object]:
+    """Describe the checker implementation used for artifact-level timing claims."""
+    notes = notes or []
+    streaming_registered = task_id in STREAMING_BEHAVIOR_CHECKS
+    streaming_validated = task_id in VALIDATED_FAST_CHECKER_TASKS
+    streaming_used = any(note.startswith("streaming_checker:") for note in notes)
+    forced = _env_enabled("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS")
+    disabled = _env_enabled("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS")
+    if task_id not in CHECKS:
+        implementation = "no_checker"
+    elif streaming_used:
+        implementation = "streaming_validated" if streaming_validated else "streaming_experimental"
+    elif disabled and streaming_registered:
+        implementation = "row_based_streaming_disabled"
+    elif streaming_validated:
+        implementation = "row_based_fallback_from_streaming"
+    elif task_id in {"noise_gen", "noise_gen_smoke"}:
+        implementation = "custom_noise"
+    else:
+        implementation = "row_based"
+    return {
+        "checker_id": task_id,
+        "implementation": implementation,
+        "streaming_registered": streaming_registered,
+        "streaming_validated": streaming_validated,
+        "streaming_used": streaming_used,
+        "streaming_forced": forced,
+        "streaming_disabled": disabled,
+    }
 
 
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
@@ -7664,6 +8800,12 @@ def parse_evas_timing(text: str) -> dict[str, float]:
         timing["total_elapsed_s"] = _duration_to_seconds(total_match.group(1), total_match.group(2))
     if steps_match:
         timing["accepted_tran_steps"] = float(steps_match.group(1))
+    for section_match in re.finditer(
+        r"^\s+([A-Za-z0-9_]+_s)\s*=\s*([0-9.eE+-]+)\s*s\s*$",
+        text,
+        flags=re.MULTILINE,
+    ):
+        timing[section_match.group(1)] = float(section_match.group(2))
     return timing
 
 
@@ -7678,6 +8820,8 @@ def run_case(
     task_id_override: str | None = None,
     checker_task_id_override: str | None = None,
 ) -> dict:
+    t_case_start = time.perf_counter()
+    timing_split: dict[str, float] = {}
     meta = read_meta(task_dir)
     task_id = task_id_override or meta.get("id") or meta.get("task_id") or task_dir.name
     checker_task_id = (
@@ -7686,8 +8830,11 @@ def run_case(
     )
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
 
+    t0 = time.perf_counter()
     temp_ctx = tempfile.TemporaryDirectory(prefix=f"{task_id}_")
+    timing_split["tempdir_create_s"] = time.perf_counter() - t0
     try:
+        t0 = time.perf_counter()
         run_dir = Path(temp_ctx.name)
         out_dir = output_root.resolve() if output_root else run_dir / "output"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -7695,13 +8842,21 @@ def run_case(
             stale_path = out_dir / stale_name
             if stale_path.exists():
                 stale_path.unlink()
+        timing_split["output_setup_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         dut_dst, tb_dst = copy_inputs(run_dir, dut_path, tb_path)
+        timing_split["copy_inputs_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         preflight_failures = spectre_aligned_veriloga_preflight(run_dir)
+        timing_split["preflight_s"] = time.perf_counter() - t0
         if preflight_failures:
             notes = ["spectre_aligned_preflight_failed", *preflight_failures]
             return {
                 "task_id": task_id,
                 "checker_task_id": checker_task_id,
+                "checker_policy": behavior_checker_policy(checker_task_id, notes),
                 "status": "FAIL_DUT_COMPILE",
                 "backend_used": "evas",
                 "scores": {
@@ -7718,10 +8873,16 @@ def run_case(
                 ],
                 "notes": notes,
                 "timing": {},
+                "timing_split": timing_split,
                 "stdout_tail": "\n".join(notes),
             }
+        t0 = time.perf_counter()
         _remove_stale_metric_file(checker_task_id, run_dir)
+        timing_split["metric_cleanup_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         proc = run_evas(run_dir, tb_dst, out_dir, timeout_s)
+        timing_split["evas_subprocess_wall_s"] = time.perf_counter() - t0
         combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
 
         dut_compile = 1.0 if "Compiled Verilog-A module:" in combined else 0.0
@@ -7735,13 +8896,17 @@ def run_case(
 
         csv_path = out_dir / "tran.csv"
         if "sim_correct" in scoring and proc.returncode == 0 and csv_path.exists():
+            t0 = time.perf_counter()
             sim_correct, behavior_notes = evaluate_behavior_with_timeout(
                 checker_task_id,
                 csv_path,
                 timeout_s=timeout_s,
             )
+            timing_split["behavior_checker_s"] = time.perf_counter() - t0
             notes.extend(behavior_notes)
+            t0 = time.perf_counter()
             metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
+            timing_split["side_output_validation_s"] = time.perf_counter() - t0
             if metric_result is not None:
                 metric_ok, metric_note = metric_result
                 notes.append(metric_note)
@@ -7753,6 +8918,7 @@ def run_case(
         else:
             sim_correct = 1.0
             notes.append("sim_correct not required by scoring")
+        checker_policy = behavior_checker_policy(checker_task_id, notes)
 
         required_axes: list[tuple[str, float]] = []
         if "dut_compile" in scoring or "syntax" in scoring:
@@ -7779,6 +8945,7 @@ def run_case(
         return {
             "task_id": task_id,
             "checker_task_id": checker_task_id,
+            "checker_policy": checker_policy,
             "status": status,
             "backend_used": "evas",
             "scores": {
@@ -7795,11 +8962,15 @@ def run_case(
             ],
             "notes": notes,
             "timing": parse_evas_timing(combined),
+            "timing_split": timing_split,
             "stdout_tail": combined[-4000:],
         }
     finally:
         if not keep_run_dir:
+            t0 = time.perf_counter()
             temp_ctx.cleanup()
+            timing_split["temp_cleanup_s"] = time.perf_counter() - t0
+        timing_split["run_case_wall_s"] = time.perf_counter() - t_case_start
 
 
 def main() -> None:

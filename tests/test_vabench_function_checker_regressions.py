@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -507,6 +508,31 @@ def test_bbpd_checker_rejects_swapped_up_down_direction() -> None:
     assert not sim.check_bbpd(_bbpd_rows(swapped_outputs=True))[0]
 
 
+def test_bbpd_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = _bbpd_rows()
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "data", "clk", "retimed_data", "up", "down"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("bbpd", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("bbpd", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+
+
 def _dwa_rows(*, corrupt_cell_span: bool = False) -> list[dict[str, float]]:
     codes = [3, 7, 2, 5, 1, 8, 4, 6, 6]
     rows: list[dict[str, float]] = []
@@ -901,6 +927,143 @@ def test_gain_estimator_checker_requires_late_valid_and_gain_output() -> None:
     assert sim.check_gain_estimator(_gain_estimator_rows())[0]
     assert not sim.check_gain_estimator(_gain_estimator_rows(bad_gain_out=True))[0]
     assert not sim.check_gain_estimator(_gain_estimator_rows(missing_valid=True))[0]
+
+
+def test_gain_estimator_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = _gain_estimator_rows()
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "vinp", "vinn", "voutp", "voutn", "gain_out", "valid"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("vbr1_l1_gain_estimator_tb", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("vbr1_l1_gain_estimator_tb", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+
+
+def test_cdac_cal_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = [
+        {"time": idx * 1e-9, "voutp": 0.2 + 0.01 * idx, "voutn": 0.7 - 0.001 * idx}
+        for idx in range(12)
+    ]
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "voutp", "voutn"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("cdac_cal", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("cdac_cal", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+
+
+def test_release_lfsr_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = [
+        {"time": idx * 1e-9, "rstb": 0.0 if idx < 2 else 0.9, "dpn": 0.9 if (idx * 5) % 11 < 5 else 0.0}
+        for idx in range(80)
+    ]
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "rstb", "dpn"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("vbr1_l1_lfsr_prbs_generator_tb", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("vbr1_l1_lfsr_prbs_generator_tb", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+
+
+def test_prbs7_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = _prbs7_rows()
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "clk", "rst_n", "en", "serial_out", *(f"state_{idx}" for idx in range(7))]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("prbs7", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("prbs7", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+
+
+def test_edge_interval_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = []
+    for idx in range(120):
+        time = idx * 1e-9
+        seen = 0.9 if time >= 50e-9 else 0.0
+        delay = 0.72 if time >= 51e-9 else 0.0
+        rows.append({"time": time, "delay_out": delay, "seen_out": seen})
+
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "delay_out", "seen_out"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("vbr1_l1_edge_interval_timer_tb", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("vbr1_l1_edge_interval_timer_tb", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
 
 
 def test_final_step_metric_side_output_requires_candidate_file(tmp_path: Path) -> None:
