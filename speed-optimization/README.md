@@ -14,6 +14,10 @@ The goal is to keep the speed story versionable and auditable:
 speed-optimization/
   AGENTS.md
   MANIFEST.md
+  rust-kernel/
+    README.md
+    audits/
+    templates/
   plans/
     VAEVAS_SPEED_ABLATION_EXPERIMENT_PLAN_2026-05-22.md
     VAEVAS_SPECTRE_REFERENCE_STANDARD_2026-05-26.md
@@ -50,6 +54,12 @@ Use these files before launching the next precision-ranking experiments:
 - `plans/VAEVAS_PRECISION_RANKING_EXPERIMENT_PLAN_2026-05-26.md`
 - `plans/VAEVAS_PRECISION_RANKING_EXPERIMENT_TRACKER_2026-05-26.md`
 
+Use this directory before starting or reviewing EVAS indexed/Rust kernel work:
+
+- `rust-kernel/README.md`
+- `rust-kernel/audits/000-rust-kernel-design.md`
+- `rust-kernel/templates/change-audit-template.md`
+
 ## Current Result Snapshot
 
 The current Spectre-equivalence-gated result is:
@@ -68,6 +78,8 @@ These are same-server timing claims. They should not be mixed with older EVAS-on
 Files previously under `benchmark-vabench-release-v1/reports/` were moved here when they were speed-specific. Old Markdown compatibility links were removed during consolidation so the current reader-facing surface has exactly two reports. Retained JSON compatibility links may remain only for scripts or audit tooling that need machine-readable data.
 
 Future speed reports should use `speed-optimization/reports/` directly. The speed runner defaults have been updated to write there.
+
+Future EVAS kernel-speed implementation notes should use `speed-optimization/rust-kernel/audits/` with numbered audit documents. These are engineering audit records, not release-wide speed claims by themselves.
 
 ## What Not To Commit As Evidence
 

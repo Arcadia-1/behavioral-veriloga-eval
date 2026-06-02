@@ -42,6 +42,19 @@ Use this JSON to explain which acceleration mechanism matters:
 
 - `reports/same_server_speed_ablation_goal_summary_20260522.json`
 
+## Rust Kernel Optimization Program
+
+Use this directory for the ongoing EVAS indexed/Rust backend engineering record:
+
+- `rust-kernel/README.md`
+- `rust-kernel/audits/000-rust-kernel-design.md`
+- `rust-kernel/audits/001-indexed-sidecar-and-rust-smoke.md`
+- `rust-kernel/templates/change-audit-template.md`
+
+These documents explain implementation principles, before/after evidence,
+learning notes, risks, and rollback points for each kernel-speed change. They
+do not replace same-server, Spectre-equivalence-gated speed reports.
+
 ## Deleted During Cleanup
 
 The following classes were removed from `speed-optimization/reports/` to keep the
