@@ -8,6 +8,7 @@
 |---|---|---|---|
 | 000 | `audits/000-rust-kernel-design.md` | active | 统一 Rust 化目标、原理、风险和学习路线 |
 | 001 | `audits/001-indexed-sidecar-and-rust-smoke.md` | done | 记录当前 checkpoint：indexed sidecar、Rust toy kernel、覆盖 manifest |
+| 002 | `audits/002-python-indexed-ir-parity.md` | done | 增加 opt-in Python indexed IR/parity harness，验证 lowering 不改变结果表达 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -18,6 +19,7 @@
 | 2026-06-02 | Rust/kernel feasibility smoke | Rust indexed hot loop 和 event queue toy 显示出足够大的潜在收益，但不能直接当 paper-facing claim | `EVAS/prototypes/rust-kernel-smoke/` |
 | 2026-06-02 | migration guardrail | 新 backend 不能缩小 EVAS 当前可仿真能力；16 个 bundled example testbench 进入 capability manifest | `EVAS/evas/examples/backend_migration_capability_manifest.json` |
 | 2026-06-02 | rollback checkpoint | 正式大改前保存干净回退点 | EVAS commit `37c451a` |
+| 2026-06-02 | Python indexed IR parity | 默认 backend 不变；新增 `EVAS_INDEXED_PARITY=1` 旁路检查，验证 dict waveform 可无损 lowering/round-trip 为 indexed trace | `EVAS/evas/simulator/indexed.py` |
 
 ## 后续每次改动必须回答的问题
 
