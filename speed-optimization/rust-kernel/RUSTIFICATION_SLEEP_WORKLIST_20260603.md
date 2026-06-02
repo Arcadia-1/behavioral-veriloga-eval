@@ -27,7 +27,7 @@ Rust segment median:  0.555189333 s
 | Order | Audit | Work Item | Track | Goal | Main Risk | Success Evidence |
 |---:|---|---|---|---|---|---|
 | 028 | `028-rust-output-node-sync-deferral.md` | Rust output node sync deferral | production opt-in | 每步保留 `node_voltages`，延迟 `output_nodes` 写入 | stale `output_nodes` | done: full pytest + counters |
-| 029 | `029-indexed-dirty-sync-validation.md` | Dirty-node indexed validation | production opt-in | 用 dirty node set 替代每步全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | mismatch injection test; checked values 下降 |
+| 029 | `029-indexed-dirty-validation-fastpath.md` | Dirty-node indexed validation | production opt-in | 用预计算 dirty node tuple 替代冗余全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | done: full pytest + checked values 下降 |
 | 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | production opt-in | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | eligibility guard 过宽 | eligibility guard + full pytest |
 | 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | parser/compiler tests + netlist parameter smoke |
 | 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base+offset runtime lowering | production/prototype | 把 `V(bus[i])` 简单场景从字符串格式化降为 id offset | 2D bus、state-index、event context | bus lowering regression tests |
