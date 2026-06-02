@@ -24,15 +24,31 @@ Rust segment median:  0.555189333 s
 
 ## Sleep-After Priority
 
-| Order | Audit | Work Item | Goal | Main Risk | Success Evidence |
-|---:|---|---|---|---|---|
-| 028 | `028-rust-output-sync-gating.md` | Rust output sync gating / deferred sync | 只把后续 Python 路径真正需要的 Rust outputs 写回 dict/output_nodes | Python fallback model 或 recorder 读到 stale dict | affine parity tests pass; output_syncs 明显下降 |
-| 029 | `029-indexed-dirty-sync-validation.md` | Dirty-node indexed validation | 用 dirty node set 或 sampling 替代每步全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | targeted mismatch injection test; sync checked values 下降 |
-| 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | 跳过了未来会影响 event/bound_step 的模型 | eligibility guard + full pytest |
-| 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | 支持 `gain/bias` 来自 parameters 的 affine model | 参数变更或类型 coercion 处理错 | parser/compiler tests + netlist parameter smoke |
-| 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base+offset runtime lowering | 把 `V(bus[i])` 简单场景从字符串格式化降为 id offset | 2D bus、state-index、event context 错配 | bus lowering regression tests |
-| 033 | `033-rust-event-timer-queue-prototype.md` | Rust event/timer queue prototype | 对 PLL/timer-heavy 任务减少每步扫描 | missed event / breakpoint ordering | timer/cross parity fixture |
-| 034 | `034-vabench-rust-coverage-smoke.md` | vaBench Rust eligibility coverage smoke | 统计 release rows 中可 Rust 化模型比例 | 把 coverage 误解为速度 claim | coverage report only, no speed claim |
+| Order | Audit | Work Item | Track | Goal | Main Risk | Success Evidence |
+|---:|---|---|---|---|---|---|
+| 028 | `028-rust-output-node-sync-deferral.md` | Rust output node sync deferral | production opt-in | 每步保留 `node_voltages`，延迟 `output_nodes` 写入 | stale `output_nodes` | done: full pytest + counters |
+| 029 | `029-indexed-dirty-sync-validation.md` | Dirty-node indexed validation | production opt-in | 用 dirty node set 替代每步全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | mismatch injection test; checked values 下降 |
+| 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | production opt-in | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | eligibility guard 过宽 | eligibility guard + full pytest |
+| 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | parser/compiler tests + netlist parameter smoke |
+| 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base+offset runtime lowering | production/prototype | 把 `V(bus[i])` 简单场景从字符串格式化降为 id offset | 2D bus、state-index、event context | bus lowering regression tests |
+| 033 | `033-indexed-state-runtime-storage.md` | Indexed state runtime storage | prototype | 把 scalar/int/array state 映射到 indexed storage | Python/Rust state divergence | state parity tests |
+| 034 | `034-vabench-rust-coverage-smoke.md` | vaBench Rust eligibility coverage smoke | audit | 统计 release rows 中可 Rust 化模型比例 | coverage 被误解为 speed claim | coverage report only |
+| 035 | `035-rust-expression-ir.md` | Rust expression IR | prototype | 把普通 arithmetic expression lowering 成 Rust op tree | Verilog-A coercion 语义 | expression parity fixture |
+| 036 | `036-rust-static-branch-evaluator.md` | Rust static branch evaluator | prototype | 支持更一般的无事件 continuous assignments | unsupported operator 漏判 | operator eligibility tests |
+| 037 | `037-rust-model-state-abi.md` | Rust model state ABI | prototype | Rust 读写 indexed scalar/int/array state | state lifecycle | state round-trip tests |
+| 038 | `038-rust-event-condition-ir.md` | Rust event condition IR | prototype | lowering `cross/above/timer` trigger metadata | event interpolation | event trigger metadata tests |
+| 039 | `039-rust-timer-breakpoint-queue.md` | Rust timer/breakpoint queue | prototype | 减少 timer-heavy 任务每步扫描 | missed breakpoint | timer/cross parity fixture |
+| 040 | `040-rust-event-body-executor.md` | Rust event body executor | prototype | 简单 event body 在 Rust 执行 | event ordering | event body parity tests |
+| 041 | `041-rust-transition-operator.md` | Rust transition operator | prototype | Rust 化 transition 状态机 | delay/rise/fall 语义 | transition waveform fixture |
+| 042 | `042-rust-random-noise-subset.md` | Rust random/noise subset | prototype | 可控 lowering `$random` / distribution subset | determinism | seeded parity tests |
+| 043 | `043-rust-record-sparse-trace.md` | Rust record/sparse trace | production/prototype | 直接输出 checker 必需信号或 sparse trace | CSV/checker schema | trace parity tests |
+| 044 | `044-native-checker-bridge.md` | Native checker bridge | prototype | 简单 checker 直接消费 sparse trace | checker compatibility | checker parity report |
+| 045 | `045-rust-simulator-loop-prototype.md` | Rust simulator loop prototype | prototype | 纯静态/简单事件模型由 Rust loop 跑完整 transient | Python/Rust scheduler divergence | Python/Rust trace parity |
+| 046 | `046-hybrid-scheduler.md` | Hybrid scheduler | design/prototype | Python 调度 + Rust segment kernel | boundary complexity | scheduler design + smoke |
+| 047 | `047-full-rust-scheduler.md` | Full Rust scheduler | design/prototype | Rust 管 step/source/event/record | broad parity risk | limited-scope prototype only |
+| 048 | `048-vabench-full-coverage-audit.md` | vaBench full coverage audit | audit | 全量 EVAS 可仿任务的 Rust support matrix | 功能缩减 | no-regression manifest |
+| 049 | `049-same-slice-evas-spectre-ax-rerun.md` | Same-slice EVAS/Spectre/AX rerun | experiment | 统一条件速度/精度表 | Cadence environment | same-slice timing report |
+| 050 | `050-claim-gate-update.md` | Claim gate update | paper/report | 只根据证据更新论文口径 | overclaim | claim gate report |
 
 ## Recommended Night Run
 
