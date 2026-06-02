@@ -33,6 +33,8 @@
 | 024 | `audits/024-compiled-model-rust-replay-smoke.md` | done | 用真实 parser/compiler/simulator/netlist 路径上的临时 static affine 模型验证 Rust replay |
 | 025 | `audits/025-production-opt-in-rust-backend-channel.md` | done | 接入 `EVAS_RUST_STATIC_EVAL` / `evas_rust_static_eval=true` 和 Rust runtime counters |
 | 026 | `audits/026-opt-in-static-continuous-model-rust-eval.md` | done | 完成 opt-in static affine model Rust evaluate；功能正确，但 microbenchmark 暴露 per-model FFI 小调用导致变慢 |
+| 027 | `audits/027-rust-consecutive-model-segment-batch.md` | done | 把连续 eligible static affine models 合成 per-step segment batch，Rust FFI calls 从 `64064` 降到 `1001` |
+| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，重点收掉 output sync、indexed validation 和 lifecycle bookkeeping |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -64,6 +66,7 @@
 | 2026-06-03 | Indexed model state arrays | compiled/indexed metadata 记录 scalar state ids、integer state 和 array state range；不替换 `self.state` / `self.arrays` runtime storage | EVAS commit `708ebf7` |
 | 2026-06-03 | Rust model evaluate ABI prototype | `prototypes/rust-kernel-smoke` 新增 `model-abi` kernel，用 node/state ids 驱动 Rust `Vec<f64>` evaluate loop；仍是 prototype-only | EVAS commit `0263986` |
 | 2026-06-03 | Rust production ABI and opt-in static affine eval | 新增 `evas/rust_core` + `ctypes` loader + `EVAS_RUST_STATIC_EVAL`；static affine 模型功能正确，但 64-model local microbenchmark 显示 per-model FFI 让 Rust median `0.8521s` 慢于 Python `0.1788s` | EVAS commit `8930bb9` |
+| 2026-06-03 | Rust consecutive segment batch | 连续 eligible static affine models 合成一个 per-step Rust segment，FFI calls 从 `64064` 降到 `1001`；Rust median 从 `0.8521s` 改到 `0.3255s`，但默认 Python sample 仍更快 | EVAS commit `b9d5065` |
 
 ## 后续候选项目
 
@@ -71,7 +74,9 @@
 
 | 优先级 | 项目 | 核心目标 | 主要风险 |
 |---|---|---|---|
-| P1 | Rust consecutive model segment batch | 把 026 暴露的 `model × step` FFI 小调用收成 per-step eligible segment 调用 | model ordering、prepare_step/post_update 边界、output sync |
+| P1 | Rust output sync gating | 027 后 `output_syncs = 64064`，下一步只同步 Python fallback/record/checker 需要的节点 | stale dict/output_nodes |
+| P1 | Indexed dirty sync / validation fastpath | 027 后每步仍全量 array/dict validate，下一步改成 dirty-node 或抽样验证 | 漏掉 dict/array divergence |
+| P1 | Segment lifecycle fastpath | 对 compiler-proven static segment 跳过空 prepare/timer/post-update bookkeeping | eligibility guard 过宽 |
 | P1 | Dynamic bus runtime lowering | 把 019/023 暴露的 bus metadata/helper 进一步落到稳定 base+offset runtime | dynamic index、2D bus 和 integer state coercion |
 | P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
 | P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
@@ -119,6 +124,7 @@ audits/023-dynamic-bus-runtime-codegen-fix.md
 audits/024-compiled-model-rust-replay-smoke.md
 audits/025-production-opt-in-rust-backend-channel.md
 audits/026-opt-in-static-continuous-model-rust-eval.md
+audits/027-rust-consecutive-model-segment-batch.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
