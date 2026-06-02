@@ -11,6 +11,7 @@
 | 002 | `audits/002-python-indexed-ir-parity.md` | done | 增加 opt-in Python indexed IR/parity harness，验证 lowering 不改变结果表达 |
 | 003 | `audits/003-python-indexed-voltage-snapshot.md` | done | 增加 opt-in indexed snapshot profile，量化 dict copy、Python sidecar 和纯数组 snapshot 差异 |
 | 004 | `audits/004-python-indexed-kernel-arrays.md` | done | 增加 opt-in persistent indexed voltage array，让 source/record/err_ratio 低风险路径开始消费 array mirror |
+| 005 | `audits/005-indexed-model-io-boundary.md` | done | 增加 per-model IO node-id plan，把 mapped ports、outputs 和 `@parent:` 层次映射显式编号 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -24,6 +25,7 @@
 | 2026-06-02 | Python indexed IR parity | 默认 backend 不变；新增 `EVAS_INDEXED_PARITY=1` 旁路检查，验证 dict waveform 可无损 lowering/round-trip 为 indexed trace | `EVAS/evas/simulator/indexed.py` |
 | 2026-06-02 | Python indexed snapshot profile | 默认 backend 不变；新增 `EVAS_INDEXED_SNAPSHOT_PROFILE=1`，证明 Python sidecar 不是加速终点，真正目标应是 array/Rust hot loop | `EVAS/evas/simulator/engine.py` |
 | 2026-06-02 | Python indexed kernel arrays | 默认 backend 不变；新增 `EVAS_INDEXED_ARRAYS=1`，source update、record point、err_ratio scan 可 opt-in 使用 persistent array mirror | EVAS commit `fe6d142` |
+| 2026-06-02 | Indexed model IO boundary | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时生成 per-model mapped port/output node-id plan，为 model evaluate Rust 化准备边界 IR | EVAS commit `034ca66` |
 
 ## 后续每次改动必须回答的问题
 
@@ -47,6 +49,7 @@ audits/002-python-indexed-ir-parity.md
 audits/003-python-indexed-voltage-snapshot.md
 audits/004-python-indexed-kernel-arrays.md
 audits/005-indexed-model-io-boundary.md
+audits/006-indexed-model-output-write-through.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
