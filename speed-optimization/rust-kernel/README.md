@@ -17,6 +17,7 @@
 | 008 | `audits/008-indexed-non-event-voltage-read.md` | done | 让 `_get_voltage()` 的 non-event 普通输入读在 opt-in indexed path 下从 array mirror 返回，event 插值路径保持原样 |
 | 009 | `audits/009-indexed-model-evaluate-profile.md` | done | 增加显式 `EVAS_PROFILE_MODEL_EVAL` per-model timing，用于后续判断 evaluate、timer、event 哪条热路径优先优化 |
 | 010 | `audits/010-post-update-empty-scan-fastpath.md` | done | 利用编译期 post-update event flag，跳过静态模型每步必然为空的 `post_update_events()` 调用 |
+| 011 | `audits/011-timer-breakpoint-scan-profile.md` | done | 汇总 source/model/bound_step scan 调用规模和模型级 timer cache counters，给后续 event/timer 优化提供证据 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -36,6 +37,7 @@
 | 2026-06-02 | Indexed non-event voltage read | 默认 backend 不变；`EVAS_INDEXED_ARRAYS=1` 时 non-event `_get_voltage()` 优先从 array mirror 返回，event-context reads 继续走 crossing-time interpolation | EVAS commit `63c1eb2` |
 | 2026-06-02 | Per-model evaluate profile | 默认关闭；新增 `EVAS_PROFILE_MODEL_EVAL=1`，按 model 聚合 prepare/evaluate/post_update 时间，辅助后续内核优化排序 | EVAS commit `c039159` |
 | 2026-06-02 | Post-update empty scan fastpath | 编译期证明无 post-update cross/above 的模型，在主循环跳过空 `post_update_events()`；事件模型保留原路径 | EVAS commit `4f4b58a` |
+| 2026-06-02 | Timer/breakpoint scan profile | 新增 simulator-level scan counters 和 timer cache 汇总，不改变 dt/event ordering，用于判断后续是否值得做 event queue | EVAS commit `608551b` |
 
 ## 后续每次改动必须回答的问题
 
@@ -64,6 +66,7 @@ audits/007-indexed-model-input-read-probe.md
 audits/008-indexed-non-event-voltage-read.md
 audits/009-indexed-model-evaluate-profile.md
 audits/010-post-update-empty-scan-fastpath.md
+audits/011-timer-breakpoint-scan-profile.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
