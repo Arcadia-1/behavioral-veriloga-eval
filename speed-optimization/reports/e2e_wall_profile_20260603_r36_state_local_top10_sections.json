@@ -1,0 +1,2579 @@
+{
+  "schema_version": "same-server-speed.v1",
+  "artifact_kind": "candidate_same_server_evas_spectre_timing",
+  "date": "2026-06-03",
+  "created_at": "2026-06-03T15:11:20",
+  "claim_allowed": false,
+  "no_claim_reason": "Same-server timing is measured directly on one host and the artifact emits checker/waveform Spectre-equivalence gates. Paper-facing speed claims should use only equivalence-gated rows and still need repeated cold/warm runs.",
+  "evas_only_no_claim_reason": "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing.",
+  "host": "BucketsrandeMacBook-Air.local",
+  "selected_rows": 10,
+  "jobs": 1,
+  "evas_modes": [
+    "profile_fast_skip_source_error_control",
+    "profile_fast_state_local"
+  ],
+  "evas_mode_specs": {
+    "profile_fast_skip_source_error_control": {
+      "phase": "P3",
+      "label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true
+    },
+    "profile_fast_state_local": {
+      "phase": "P4",
+      "label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true
+    }
+  },
+  "spectre_modes": [],
+  "output_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections",
+  "results": [
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_gain_estimator_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_gain_estimator_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.603619084,
+      "simulator_subprocess_wall_s": 0.562596375,
+      "timing_split": {
+        "fixture_materialize_s": 0.018675582999999996,
+        "run_case_tempdir_create_s": 0.002169290999999962,
+        "run_case_output_setup_s": 0.0037920000000000176,
+        "run_case_copy_inputs_s": 0.00456224999999999,
+        "run_case_preflight_s": 0.0023534170000000243,
+        "run_case_metric_cleanup_s": 4.875000000015284e-06,
+        "run_case_evas_subprocess_wall_s": 0.562596375,
+        "run_case_behavior_checker_s": 0.005846457999999943,
+        "run_case_side_output_validation_s": 4.707999999964407e-06,
+        "run_case_temp_cleanup_s": 0.0007009169999999676,
+        "run_case_run_case_wall_s": 0.5844377080000001,
+        "run_case_outer_wall_s": 0.584482583,
+        "evaluator_e2e_wall_s": 0.603619084
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.053899999999999997,
+        "total_elapsed_s": 0.1,
+        "accepted_tran_steps": 1231.0,
+        "bound_step_scan_s": 0.000402,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.000174,
+        "dict_future_snapshot_s": 0.000157,
+        "dict_prev_snapshot_s": 0.000498,
+        "err_ratio_node_scan_s": 0.000931,
+        "final_step_s": 2e-06,
+        "model_breakpoint_scan_s": 0.002863,
+        "model_evaluate_s": 0.026493,
+        "model_output_set_s": 0.002621,
+        "model_post_update_s": 0.00129,
+        "model_prepare_step_s": 0.001543,
+        "record_point_s": 0.002478,
+        "result_array_conversion_s": 0.000378,
+        "source_breakpoint_scan_s": 0.000402,
+        "source_update_s": 0.002516,
+        "evaluate_s": 0.026493,
+        "post_update_s": 0.00129,
+        "prepare_step_s": 0.001543,
+        "derive_bus_signals_s": 0.00018,
+        "csv_write_s": 0.006243
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:in_span=0.0600 out_span=0.3600 waveform_gain=6.00 gain_est=6.00 gain_err=0.00 valid_final=True"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "rations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 990\n        timer_breakpoint_hits = 1231\n        timer_breakpoint_scans = 241\n        timer_periodic_checks = 1232\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 241\n        timer_state_updates = 242\nSection timing counters:\n    bound_step_scan_s = 0.000402 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.000174 s\n    dict_future_snapshot_s = 0.000157 s\n    dict_prev_snapshot_s = 0.000498 s\n    err_ratio_node_scan_s = 0.000931 s\n    final_step_s = 0.000002 s\n    model_breakpoint_scan_s = 0.002863 s\n    model_evaluate_s = 0.026493 s\n    model_output_set_s = 0.002621 s\n    model_post_update_s = 0.001290 s\n    model_prepare_step_s = 0.001543 s\n    record_point_s = 0.002478 s\n    result_array_conversion_s = 0.000378 s\n    source_breakpoint_scan_s = 0.000402 s\n    source_update_s = 0.002516 s\nModel timing counters:\n    model[0] gain_estimator_Model:\n        evaluate_calls = 1231\n        evaluate_s = 0.026493 s\n        post_update_s = 0.001290 s\n        prepare_step_s = 0.001543 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 2466\n    voltage_read_event_contexts = 880\n    voltage_read_external_nodes = 6\n    voltage_read_local_nodes = 6\n    voltage_read_missing_nodes = 0\n    voltage_reads = 8006\n\nMaximum value achieved for any signal of each quantity:\n    V: V(valid) = 900 mV\n\nTran analysis time: CPU = 53.9 ms, elapsed = 53.9 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000180 s\n    csv_write_s = 0.006243 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, voutp, voutn, gain_out, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_gain_estimator_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_gain_estimator_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_gain_estimator_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.39932674999999995,
+      "simulator_subprocess_wall_s": 0.375094833,
+      "timing_split": {
+        "fixture_materialize_s": 0.01162470900000001,
+        "run_case_tempdir_create_s": 0.0003925409999999685,
+        "run_case_output_setup_s": 0.0012254999999999905,
+        "run_case_copy_inputs_s": 0.0025239999999999707,
+        "run_case_preflight_s": 0.00045279200000003517,
+        "run_case_metric_cleanup_s": 3.957999999970596e-06,
+        "run_case_evas_subprocess_wall_s": 0.375094833,
+        "run_case_behavior_checker_s": 0.005546832999999918,
+        "run_case_side_output_validation_s": 3.6669999998739655e-06,
+        "run_case_temp_cleanup_s": 0.0006985419999998577,
+        "run_case_run_case_wall_s": 0.38706183299999997,
+        "run_case_outer_wall_s": 0.387098167,
+        "evaluator_e2e_wall_s": 0.39932674999999995
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0496,
+        "total_elapsed_s": 0.1,
+        "accepted_tran_steps": 1231.0,
+        "bound_step_scan_s": 0.000297,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.00014,
+        "dict_future_snapshot_s": 0.000153,
+        "dict_prev_snapshot_s": 0.000459,
+        "err_ratio_node_scan_s": 0.000796,
+        "final_step_s": 3e-06,
+        "model_breakpoint_scan_s": 0.002277,
+        "model_evaluate_s": 0.02419,
+        "model_output_set_s": 0.001329,
+        "model_post_update_s": 0.000955,
+        "model_prepare_step_s": 0.001471,
+        "record_point_s": 0.00209,
+        "result_array_conversion_s": 0.000304,
+        "source_breakpoint_scan_s": 0.000554,
+        "source_update_s": 0.002266,
+        "evaluate_s": 0.02419,
+        "post_update_s": 0.000955,
+        "prepare_step_s": 0.001471,
+        "derive_bus_signals_s": 0.000138,
+        "csv_write_s": 0.005539
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:in_span=0.0600 out_span=0.3600 waveform_gain=6.00 gain_est=6.00 gain_err=0.00 valid_final=True"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_state_local",
+      "stdout_tail": "_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 990\n        timer_breakpoint_hits = 1231\n        timer_breakpoint_scans = 241\n        timer_periodic_checks = 1232\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 241\n        timer_state_updates = 242\nSection timing counters:\n    bound_step_scan_s = 0.000297 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.000140 s\n    dict_future_snapshot_s = 0.000153 s\n    dict_prev_snapshot_s = 0.000459 s\n    err_ratio_node_scan_s = 0.000796 s\n    final_step_s = 0.000003 s\n    model_breakpoint_scan_s = 0.002277 s\n    model_evaluate_s = 0.024190 s\n    model_output_set_s = 0.001329 s\n    model_post_update_s = 0.000955 s\n    model_prepare_step_s = 0.001471 s\n    record_point_s = 0.002090 s\n    result_array_conversion_s = 0.000304 s\n    source_breakpoint_scan_s = 0.000554 s\n    source_update_s = 0.002266 s\nModel timing counters:\n    model[0] gain_estimator_Model:\n        evaluate_calls = 1231\n        evaluate_s = 0.024190 s\n        post_update_s = 0.000955 s\n        prepare_step_s = 0.001471 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 2466\n    voltage_read_event_contexts = 880\n    voltage_read_external_nodes = 6\n    voltage_read_local_nodes = 6\n    voltage_read_missing_nodes = 0\n    voltage_reads = 8006\n\nMaximum value achieved for any signal of each quantity:\n    V: V(valid) = 900 mV\n\nTran analysis time: CPU = 49.6 ms, elapsed = 49.6 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000138 s\n    csv_write_s = 0.005539 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/tb/gold/vbr1_l1_gain_estimator_tb/profile_fast_state_local/tran.csv (signals: vinp, vinn, voutp, voutn, gain_out, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l1_gain_estimator_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.5639640419999998,
+      "simulator_subprocess_wall_s": 1.512545542,
+      "timing_split": {
+        "fixture_materialize_s": 0.011753374999999844,
+        "run_case_tempdir_create_s": 0.00029208400000002577,
+        "run_case_output_setup_s": 0.00125029100000007,
+        "run_case_copy_inputs_s": 0.0031915000000000138,
+        "run_case_preflight_s": 0.001027582999999943,
+        "run_case_metric_cleanup_s": 1.7920000001669933e-06,
+        "run_case_evas_subprocess_wall_s": 1.512545542,
+        "run_case_behavior_checker_s": 0.03166070799999998,
+        "run_case_side_output_validation_s": 4.999999999810711e-06,
+        "run_case_temp_cleanup_s": 0.0012369580000002323,
+        "run_case_run_case_wall_s": 1.552095583,
+        "run_case_outer_wall_s": 1.552129333,
+        "evaluator_e2e_wall_s": 1.5639640419999998
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.1965999999999999,
+        "total_elapsed_s": 1.2,
+        "accepted_tran_steps": 10686.0,
+        "bound_step_scan_s": 0.004165,
+        "cleanup_files_s": 5e-06,
+        "cross_above_scan_s": 0.001681,
+        "dict_future_snapshot_s": 0.014387,
+        "dict_prev_snapshot_s": 0.007373,
+        "err_ratio_node_scan_s": 0.057827,
+        "final_step_s": 4e-06,
+        "model_breakpoint_scan_s": 0.064449,
+        "model_evaluate_s": 0.611547,
+        "model_output_set_s": 0.020877,
+        "model_post_update_s": 0.028438,
+        "model_prepare_step_s": 0.048268,
+        "record_point_s": 0.014238,
+        "result_array_conversion_s": 0.001672,
+        "source_breakpoint_scan_s": 0.034866,
+        "source_update_s": 0.036577,
+        "evaluate_s": 0.097853,
+        "post_update_s": 0.005192,
+        "prepare_step_s": 0.0,
+        "derive_bus_signals_s": 0.000164,
+        "csv_write_s": 0.022527
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:diff_gain=11.14"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "ratio_node_scan_s = 0.057827 s\n    final_step_s = 0.000004 s\n    model_breakpoint_scan_s = 0.064449 s\n    model_evaluate_s = 0.611547 s\n    model_output_set_s = 0.020877 s\n    model_post_update_s = 0.028438 s\n    model_prepare_step_s = 0.048268 s\n    record_point_s = 0.014238 s\n    result_array_conversion_s = 0.001672 s\n    source_breakpoint_scan_s = 0.034866 s\n    source_update_s = 0.036577 s\nModel timing counters:\n    model[0] vin_src_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.151676 s\n        post_update_s = 0.009215 s\n        prepare_step_s = 0.024041 s\n    model[1] lfsr_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.237061 s\n        post_update_s = 0.008760 s\n        prepare_step_s = 0.024226 s\n    model[2] dither_adder_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.124956 s\n        post_update_s = 0.005271 s\n        prepare_step_s = 0.000000 s\n    model[3] gain_amp_fixed_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.097853 s\n        post_update_s = 0.005192 s\n        prepare_step_s = 0.000000 s\nModel IO counters:\n    output_write_nodes = 7\n    output_writes = 113666\n    voltage_read_event_contexts = 2998\n    voltage_read_external_nodes = 9\n    voltage_read_local_nodes = 10\n    voltage_read_missing_nodes = 0\n    voltage_reads = 132900\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 1196.6 ms, elapsed = 1196.6 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000164 s\n    csv_write_s = 0.022527 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.2 s, elapsed = 1.2 s.\n\n",
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.505014209,
+      "simulator_subprocess_wall_s": 1.4565415830000004,
+      "timing_split": {
+        "fixture_materialize_s": 0.007928708999999756,
+        "run_case_tempdir_create_s": 0.00025541699999998,
+        "run_case_output_setup_s": 0.0002805829999998899,
+        "run_case_copy_inputs_s": 0.002554250000000202,
+        "run_case_preflight_s": 0.0007334589999996588,
+        "run_case_metric_cleanup_s": 1.6249999998940723e-06,
+        "run_case_evas_subprocess_wall_s": 1.4565415830000004,
+        "run_case_behavior_checker_s": 0.034493459000000115,
+        "run_case_side_output_validation_s": 5.625000000009095e-06,
+        "run_case_temp_cleanup_s": 0.0013276669999999768,
+        "run_case_run_case_wall_s": 1.4969852500000003,
+        "run_case_outer_wall_s": 1.497015292,
+        "evaluator_e2e_wall_s": 1.505014209
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.2063,
+        "total_elapsed_s": 1.3,
+        "accepted_tran_steps": 10686.0,
+        "bound_step_scan_s": 0.004131,
+        "cleanup_files_s": 4e-06,
+        "cross_above_scan_s": 0.001694,
+        "dict_future_snapshot_s": 0.013939,
+        "dict_prev_snapshot_s": 0.007558,
+        "err_ratio_node_scan_s": 0.057909,
+        "final_step_s": 4e-06,
+        "model_breakpoint_scan_s": 0.06655,
+        "model_evaluate_s": 0.614643,
+        "model_output_set_s": 0.019864,
+        "model_post_update_s": 0.031546,
+        "model_prepare_step_s": 0.048592,
+        "record_point_s": 0.014617,
+        "result_array_conversion_s": 0.001664,
+        "source_breakpoint_scan_s": 0.034939,
+        "source_update_s": 0.036355,
+        "evaluate_s": 0.095382,
+        "post_update_s": 0.005979,
+        "prepare_step_s": 0.0,
+        "derive_bus_signals_s": 0.000126,
+        "csv_write_s": 0.026408
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:diff_gain=11.14"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_state_local",
+      "stdout_tail": "558 s\n    err_ratio_node_scan_s = 0.057909 s\n    final_step_s = 0.000004 s\n    model_breakpoint_scan_s = 0.066550 s\n    model_evaluate_s = 0.614643 s\n    model_output_set_s = 0.019864 s\n    model_post_update_s = 0.031546 s\n    model_prepare_step_s = 0.048592 s\n    record_point_s = 0.014617 s\n    result_array_conversion_s = 0.001664 s\n    source_breakpoint_scan_s = 0.034939 s\n    source_update_s = 0.036355 s\nModel timing counters:\n    model[0] vin_src_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.156071 s\n        post_update_s = 0.009842 s\n        prepare_step_s = 0.023943 s\n    model[1] lfsr_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.240386 s\n        post_update_s = 0.009137 s\n        prepare_step_s = 0.024649 s\n    model[2] dither_adder_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.122804 s\n        post_update_s = 0.006587 s\n        prepare_step_s = 0.000000 s\n    model[3] gain_amp_fixed_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.095382 s\n        post_update_s = 0.005979 s\n        prepare_step_s = 0.000000 s\nModel IO counters:\n    output_write_nodes = 7\n    output_writes = 113666\n    voltage_read_event_contexts = 2998\n    voltage_read_external_nodes = 9\n    voltage_read_local_nodes = 10\n    voltage_read_missing_nodes = 0\n    voltage_reads = 132900\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 1206.3 ms, elapsed = 1206.3 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000126 s\n    csv_write_s = 0.026408 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/tb/gold/vbr1_l2_gain_extraction_convergence_measurement_flow_tb/profile_fast_state_local/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.3 s, elapsed = 1.3 s.\n\n",
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_gain_estimator_e2e",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_gain_estimator_e2e",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.26432370900000013,
+      "simulator_subprocess_wall_s": 0.24784745899999994,
+      "timing_split": {
+        "fixture_materialize_s": 0.007608457999999985,
+        "run_case_tempdir_create_s": 0.0002624999999998323,
+        "run_case_output_setup_s": 0.0007340419999994907,
+        "run_case_copy_inputs_s": 0.001155250000000052,
+        "run_case_preflight_s": 0.0004171250000002402,
+        "run_case_metric_cleanup_s": 3.1250000001037392e-06,
+        "run_case_evas_subprocess_wall_s": 0.24784745899999994,
+        "run_case_behavior_checker_s": 0.004934375000000379,
+        "run_case_side_output_validation_s": 3.332999999550168e-06,
+        "run_case_temp_cleanup_s": 0.0005593329999999952,
+        "run_case_run_case_wall_s": 0.2566126250000007,
+        "run_case_outer_wall_s": 0.2566426670000004,
+        "evaluator_e2e_wall_s": 0.26432370900000013
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0395,
+        "total_elapsed_s": 0.1,
+        "accepted_tran_steps": 1231.0,
+        "bound_step_scan_s": 0.000268,
+        "cleanup_files_s": 2e-06,
+        "cross_above_scan_s": 0.00014,
+        "dict_future_snapshot_s": 0.00013,
+        "dict_prev_snapshot_s": 0.000402,
+        "err_ratio_node_scan_s": 0.000693,
+        "final_step_s": 1e-06,
+        "model_breakpoint_scan_s": 0.002181,
+        "model_evaluate_s": 0.020062,
+        "model_output_set_s": 0.000906,
+        "model_post_update_s": 0.000875,
+        "model_prepare_step_s": 0.001138,
+        "record_point_s": 0.001774,
+        "result_array_conversion_s": 0.000265,
+        "source_breakpoint_scan_s": 0.000329,
+        "source_update_s": 0.00199,
+        "evaluate_s": 0.020062,
+        "post_update_s": 0.000875,
+        "prepare_step_s": 0.001138,
+        "derive_bus_signals_s": 0.00011,
+        "csv_write_s": 0.004054
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:in_span=0.0600 out_span=0.3600 waveform_gain=6.00 gain_est=6.00 gain_err=0.00 valid_final=True"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_skip_source_error_control",
+      "stdout_tail": "tions = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 990\n        timer_breakpoint_hits = 1231\n        timer_breakpoint_scans = 241\n        timer_periodic_checks = 1232\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 241\n        timer_state_updates = 242\nSection timing counters:\n    bound_step_scan_s = 0.000268 s\n    cleanup_files_s = 0.000002 s\n    cross_above_scan_s = 0.000140 s\n    dict_future_snapshot_s = 0.000130 s\n    dict_prev_snapshot_s = 0.000402 s\n    err_ratio_node_scan_s = 0.000693 s\n    final_step_s = 0.000001 s\n    model_breakpoint_scan_s = 0.002181 s\n    model_evaluate_s = 0.020062 s\n    model_output_set_s = 0.000906 s\n    model_post_update_s = 0.000875 s\n    model_prepare_step_s = 0.001138 s\n    record_point_s = 0.001774 s\n    result_array_conversion_s = 0.000265 s\n    source_breakpoint_scan_s = 0.000329 s\n    source_update_s = 0.001990 s\nModel timing counters:\n    model[0] gain_estimator_Model:\n        evaluate_calls = 1231\n        evaluate_s = 0.020062 s\n        post_update_s = 0.000875 s\n        prepare_step_s = 0.001138 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 2466\n    voltage_read_event_contexts = 880\n    voltage_read_external_nodes = 6\n    voltage_read_local_nodes = 6\n    voltage_read_missing_nodes = 0\n    voltage_reads = 8006\n\nMaximum value achieved for any signal of each quantity:\n    V: V(valid) = 900 mV\n\nTran analysis time: CPU = 39.5 ms, elapsed = 39.5 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000110 s\n    csv_write_s = 0.004054 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, voutp, voutn, gain_out, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbr1_l1_gain_estimator_e2e",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_gain_estimator_e2e",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_gain_estimator_e2e",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.25969308300000016,
+      "simulator_subprocess_wall_s": 0.24654349999999958,
+      "timing_split": {
+        "fixture_materialize_s": 0.004627124999999843,
+        "run_case_tempdir_create_s": 0.00020858300000003993,
+        "run_case_output_setup_s": 0.00023700000000026478,
+        "run_case_copy_inputs_s": 0.0009700839999995381,
+        "run_case_preflight_s": 0.0003477920000003465,
+        "run_case_metric_cleanup_s": 1.5830000004157796e-06,
+        "run_case_evas_subprocess_wall_s": 0.24654349999999958,
+        "run_case_behavior_checker_s": 0.005075332999999738,
+        "run_case_side_output_validation_s": 4.582999999946935e-06,
+        "run_case_temp_cleanup_s": 0.0007352919999998875,
+        "run_case_run_case_wall_s": 0.2549227080000005,
+        "run_case_outer_wall_s": 0.25499649999999985,
+        "evaluator_e2e_wall_s": 0.25969308300000016
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.042,
+        "total_elapsed_s": 0.1,
+        "accepted_tran_steps": 1231.0,
+        "bound_step_scan_s": 0.000305,
+        "cleanup_files_s": 2e-06,
+        "cross_above_scan_s": 0.00013,
+        "dict_future_snapshot_s": 0.000131,
+        "dict_prev_snapshot_s": 0.000412,
+        "err_ratio_node_scan_s": 0.000696,
+        "final_step_s": 2e-06,
+        "model_breakpoint_scan_s": 0.002246,
+        "model_evaluate_s": 0.021576,
+        "model_output_set_s": 0.000975,
+        "model_post_update_s": 0.000926,
+        "model_prepare_step_s": 0.001242,
+        "record_point_s": 0.001862,
+        "result_array_conversion_s": 0.000339,
+        "source_breakpoint_scan_s": 0.000323,
+        "source_update_s": 0.002019,
+        "evaluate_s": 0.021576,
+        "post_update_s": 0.000926,
+        "prepare_step_s": 0.001242,
+        "derive_bus_signals_s": 0.000113,
+        "csv_write_s": 0.004297
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:in_span=0.0600 out_span=0.3600 waveform_gain=6.00 gain_est=6.00 gain_err=0.00 valid_final=True"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_state_local",
+      "stdout_tail": "bsolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 990\n        timer_breakpoint_hits = 1231\n        timer_breakpoint_scans = 241\n        timer_periodic_checks = 1232\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 241\n        timer_state_updates = 242\nSection timing counters:\n    bound_step_scan_s = 0.000305 s\n    cleanup_files_s = 0.000002 s\n    cross_above_scan_s = 0.000130 s\n    dict_future_snapshot_s = 0.000131 s\n    dict_prev_snapshot_s = 0.000412 s\n    err_ratio_node_scan_s = 0.000696 s\n    final_step_s = 0.000002 s\n    model_breakpoint_scan_s = 0.002246 s\n    model_evaluate_s = 0.021576 s\n    model_output_set_s = 0.000975 s\n    model_post_update_s = 0.000926 s\n    model_prepare_step_s = 0.001242 s\n    record_point_s = 0.001862 s\n    result_array_conversion_s = 0.000339 s\n    source_breakpoint_scan_s = 0.000323 s\n    source_update_s = 0.002019 s\nModel timing counters:\n    model[0] gain_estimator_Model:\n        evaluate_calls = 1231\n        evaluate_s = 0.021576 s\n        post_update_s = 0.000926 s\n        prepare_step_s = 0.001242 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 2466\n    voltage_read_event_contexts = 880\n    voltage_read_external_nodes = 6\n    voltage_read_local_nodes = 6\n    voltage_read_missing_nodes = 0\n    voltage_reads = 8006\n\nMaximum value achieved for any signal of each quantity:\n    V: V(valid) = 900 mV\n\nTran analysis time: CPU = 42.0 ms, elapsed = 42.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000113 s\n    csv_write_s = 0.004297 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_gain_estimator/e2e/gold/vbr1_l1_gain_estimator_e2e/profile_fast_state_local/tran.csv (signals: vinp, vinn, voutp, voutn, gain_out, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+      "entry_id": "vbr1_l1_gain_estimator",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "vbr1_l1_gain_estimator_e2e",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "gain_extraction_smoke",
+      "checker_policy": {
+        "checker_id": "gain_extraction_smoke",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.471808459,
+      "simulator_subprocess_wall_s": 1.424608708,
+      "timing_split": {
+        "fixture_materialize_s": 0.009952791999999988,
+        "run_case_tempdir_create_s": 0.0002458340000002224,
+        "run_case_output_setup_s": 0.0006581249999992878,
+        "run_case_copy_inputs_s": 0.002561541000000389,
+        "run_case_preflight_s": 0.0007421670000002933,
+        "run_case_metric_cleanup_s": 2.3750000002209504e-06,
+        "run_case_evas_subprocess_wall_s": 1.424608708,
+        "run_case_behavior_checker_s": 0.03076570799999967,
+        "run_case_side_output_validation_s": 5.625000000009095e-06,
+        "run_case_temp_cleanup_s": 0.0012140839999998931,
+        "run_case_run_case_wall_s": 1.461728709,
+        "run_case_outer_wall_s": 1.4617724159999996,
+        "evaluator_e2e_wall_s": 1.471808459
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.1838,
+        "total_elapsed_s": 1.2,
+        "accepted_tran_steps": 10686.0,
+        "bound_step_scan_s": 0.004315,
+        "cleanup_files_s": 5e-06,
+        "cross_above_scan_s": 0.001641,
+        "dict_future_snapshot_s": 0.013868,
+        "dict_prev_snapshot_s": 0.007309,
+        "err_ratio_node_scan_s": 0.05766,
+        "final_step_s": 1e-05,
+        "model_breakpoint_scan_s": 0.064169,
+        "model_evaluate_s": 0.607562,
+        "model_output_set_s": 0.019206,
+        "model_post_update_s": 0.027435,
+        "model_prepare_step_s": 0.047717,
+        "record_point_s": 0.014251,
+        "result_array_conversion_s": 0.001578,
+        "source_breakpoint_scan_s": 0.034744,
+        "source_update_s": 0.036244,
+        "evaluate_s": 0.095836,
+        "post_update_s": 0.00488,
+        "prepare_step_s": 0.0,
+        "derive_bus_signals_s": 0.00015,
+        "csv_write_s": 0.022754
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:diff_gain=11.14"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_skip_source_error_control",
+      "stdout_tail": "_snapshot_s = 0.007309 s\n    err_ratio_node_scan_s = 0.057660 s\n    final_step_s = 0.000010 s\n    model_breakpoint_scan_s = 0.064169 s\n    model_evaluate_s = 0.607562 s\n    model_output_set_s = 0.019206 s\n    model_post_update_s = 0.027435 s\n    model_prepare_step_s = 0.047717 s\n    record_point_s = 0.014251 s\n    result_array_conversion_s = 0.001578 s\n    source_breakpoint_scan_s = 0.034744 s\n    source_update_s = 0.036244 s\nModel timing counters:\n    model[0] vin_src_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.150865 s\n        post_update_s = 0.009066 s\n        prepare_step_s = 0.023883 s\n    model[1] lfsr_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.235494 s\n        post_update_s = 0.008477 s\n        prepare_step_s = 0.023834 s\n    model[2] dither_adder_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.125368 s\n        post_update_s = 0.005011 s\n        prepare_step_s = 0.000000 s\n    model[3] gain_amp_fixed_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.095836 s\n        post_update_s = 0.004880 s\n        prepare_step_s = 0.000000 s\nModel IO counters:\n    output_write_nodes = 7\n    output_writes = 113666\n    voltage_read_event_contexts = 2998\n    voltage_read_external_nodes = 9\n    voltage_read_local_nodes = 10\n    voltage_read_missing_nodes = 0\n    voltage_reads = 132900\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 1183.8 ms, elapsed = 1183.8 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000150 s\n    csv_write_s = 0.022754 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_skip_source_error_control/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.2 s, elapsed = 1.2 s.\n\n",
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "gain_extraction_smoke",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "gain_extraction_smoke",
+      "checker_policy": {
+        "checker_id": "gain_extraction_smoke",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 1.4719390410000006,
+      "simulator_subprocess_wall_s": 1.4255509159999997,
+      "timing_split": {
+        "fixture_materialize_s": 0.009959499999999899,
+        "run_case_tempdir_create_s": 0.00023783399999999233,
+        "run_case_output_setup_s": 0.0005350420000000966,
+        "run_case_copy_inputs_s": 0.0023597080000001824,
+        "run_case_preflight_s": 0.0006766669999995756,
+        "run_case_metric_cleanup_s": 1.7090000001829253e-06,
+        "run_case_evas_subprocess_wall_s": 1.4255509159999997,
+        "run_case_behavior_checker_s": 0.030488832999999715,
+        "run_case_side_output_validation_s": 4.70799999963134e-06,
+        "run_case_temp_cleanup_s": 0.0011535839999998743,
+        "run_case_run_case_wall_s": 1.4618590420000004,
+        "run_case_outer_wall_s": 1.4619069170000003,
+        "evaluator_e2e_wall_s": 1.4719390410000006
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.19,
+        "total_elapsed_s": 1.2,
+        "accepted_tran_steps": 10686.0,
+        "bound_step_scan_s": 0.004488,
+        "cleanup_files_s": 4e-06,
+        "cross_above_scan_s": 0.001665,
+        "dict_future_snapshot_s": 0.013503,
+        "dict_prev_snapshot_s": 0.007744,
+        "err_ratio_node_scan_s": 0.057654,
+        "final_step_s": 5e-06,
+        "model_breakpoint_scan_s": 0.063765,
+        "model_evaluate_s": 0.61268,
+        "model_output_set_s": 0.01909,
+        "model_post_update_s": 0.028757,
+        "model_prepare_step_s": 0.049989,
+        "record_point_s": 0.014099,
+        "result_array_conversion_s": 0.001556,
+        "source_breakpoint_scan_s": 0.033706,
+        "source_update_s": 0.035367,
+        "evaluate_s": 0.096764,
+        "post_update_s": 0.005719,
+        "prepare_step_s": 0.0,
+        "derive_bus_signals_s": 0.000194,
+        "csv_write_s": 0.022736
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:diff_gain=11.14"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_state_local",
+      "stdout_tail": "\n    dict_prev_snapshot_s = 0.007744 s\n    err_ratio_node_scan_s = 0.057654 s\n    final_step_s = 0.000005 s\n    model_breakpoint_scan_s = 0.063765 s\n    model_evaluate_s = 0.612680 s\n    model_output_set_s = 0.019090 s\n    model_post_update_s = 0.028757 s\n    model_prepare_step_s = 0.049989 s\n    record_point_s = 0.014099 s\n    result_array_conversion_s = 0.001556 s\n    source_breakpoint_scan_s = 0.033706 s\n    source_update_s = 0.035367 s\nModel timing counters:\n    model[0] vin_src_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.155251 s\n        post_update_s = 0.009218 s\n        prepare_step_s = 0.024795 s\n    model[1] lfsr_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.236461 s\n        post_update_s = 0.008466 s\n        prepare_step_s = 0.025194 s\n    model[2] dither_adder_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.124205 s\n        post_update_s = 0.005354 s\n        prepare_step_s = 0.000000 s\n    model[3] gain_amp_fixed_Model:\n        evaluate_calls = 16236\n        evaluate_s = 0.096764 s\n        post_update_s = 0.005719 s\n        prepare_step_s = 0.000000 s\nModel IO counters:\n    output_write_nodes = 7\n    output_writes = 113666\n    voltage_read_event_contexts = 2998\n    voltage_read_external_nodes = 9\n    voltage_read_local_nodes = 10\n    voltage_read_missing_nodes = 0\n    voltage_reads = 132900\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vamp_p) = 747 mV\n\nTran analysis time: CPU = 1190.0 ms, elapsed = 1190.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000194 s\n    csv_write_s = 0.022736 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/gold/gain_extraction_smoke/profile_fast_state_local/tran.csv (signals: vinp, vinn, vamp_p, vamp_n)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.2 s, elapsed = 1.2 s.\n\n",
+      "entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "gain_extraction_smoke",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_policy": {
+        "checker_id": "vbm1_pfd_reset_race_bugfix",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.22581662500000022,
+      "simulator_subprocess_wall_s": 0.2075865419999996,
+      "timing_split": {
+        "fixture_materialize_s": 0.011347959000000074,
+        "run_case_tempdir_create_s": 0.0002368749999996922,
+        "run_case_output_setup_s": 0.0007787920000001947,
+        "run_case_copy_inputs_s": 0.0022253329999992744,
+        "run_case_preflight_s": 0.0005786660000000055,
+        "run_case_metric_cleanup_s": 2.2079999997259847e-06,
+        "run_case_evas_subprocess_wall_s": 0.2075865419999996,
+        "run_case_behavior_checker_s": 0.00134674999999973,
+        "run_case_side_output_validation_s": 4.12499999846716e-06,
+        "run_case_temp_cleanup_s": 0.000894290999999825,
+        "run_case_run_case_wall_s": 0.21436233299999952,
+        "run_case_outer_wall_s": 0.21439920799999967,
+        "evaluator_e2e_wall_s": 0.22581662500000022
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.0128,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 135.0,
+        "bound_step_scan_s": 9.1e-05,
+        "cleanup_files_s": 1e-06,
+        "cross_above_scan_s": 4.1e-05,
+        "dict_future_snapshot_s": 0.00029,
+        "dict_prev_snapshot_s": 0.000111,
+        "err_ratio_node_scan_s": 0.00055,
+        "final_step_s": 1e-06,
+        "model_breakpoint_scan_s": 0.000943,
+        "model_evaluate_s": 0.004712,
+        "model_output_set_s": 0.00028,
+        "model_post_update_s": 0.000231,
+        "model_prepare_step_s": 0.000555,
+        "record_point_s": 0.000179,
+        "result_array_conversion_s": 3.7e-05,
+        "source_breakpoint_scan_s": 0.000683,
+        "source_update_s": 0.001383,
+        "evaluate_s": 0.004712,
+        "post_update_s": 0.000231,
+        "prepare_step_s": 0.000555,
+        "derive_bus_signals_s": 9.9e-05,
+        "csv_write_s": 0.001993
+      },
+      "fixture_notes": [
+        "materialized dut_fixed.va from benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:up_first=0.0096 dn_first=0.0000 up_second=0.0000 dn_second=0.0092 up_pulses_first=5 dn_pulses_second=5 overlap_frac=0.0000"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_skip_source_error_control",
+      "stdout_tail": "olute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 0\nSection timing counters:\n    bound_step_scan_s = 0.000091 s\n    cleanup_files_s = 0.000001 s\n    cross_above_scan_s = 0.000041 s\n    dict_future_snapshot_s = 0.000290 s\n    dict_prev_snapshot_s = 0.000111 s\n    err_ratio_node_scan_s = 0.000550 s\n    final_step_s = 0.000001 s\n    model_breakpoint_scan_s = 0.000943 s\n    model_evaluate_s = 0.004712 s\n    model_output_set_s = 0.000280 s\n    model_post_update_s = 0.000231 s\n    model_prepare_step_s = 0.000555 s\n    record_point_s = 0.000179 s\n    result_array_conversion_s = 0.000037 s\n    source_breakpoint_scan_s = 0.000683 s\n    source_update_s = 0.001383 s\nModel timing counters:\n    model[0] pfd_updn_Model:\n        evaluate_calls = 383\n        evaluate_s = 0.004712 s\n        post_update_s = 0.000231 s\n        prepare_step_s = 0.000555 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 770\n    voltage_read_event_contexts = 56\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 824\n\nMaximum value achieved for any signal of each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 12.8 ms, elapsed = 12.8 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000099 s\n    csv_write_s = 0.001993 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_skip_source_error_control/tran.csv (signals: ref, div, up, dn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "bugfix",
+      "variant": "fixed",
+      "task_id": "vbm1_pfd_reset_race_bugfix",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbm1_pfd_reset_race_bugfix",
+      "checker_policy": {
+        "checker_id": "vbm1_pfd_reset_race_bugfix",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.2225860829999995,
+      "simulator_subprocess_wall_s": 0.20675608300000015,
+      "timing_split": {
+        "fixture_materialize_s": 0.009578832999999065,
+        "run_case_tempdir_create_s": 0.00023820800000073916,
+        "run_case_output_setup_s": 0.00029466600000027654,
+        "run_case_copy_inputs_s": 0.0018489169999984512,
+        "run_case_preflight_s": 0.0006758339999990426,
+        "run_case_metric_cleanup_s": 3.249999998899966e-06,
+        "run_case_evas_subprocess_wall_s": 0.20675608300000015,
+        "run_case_behavior_checker_s": 0.001415582999999998,
+        "run_case_side_output_validation_s": 5.708000001547475e-06,
+        "run_case_temp_cleanup_s": 0.0009230000000002292,
+        "run_case_run_case_wall_s": 0.21289720800000111,
+        "run_case_outer_wall_s": 0.21293741600000082,
+        "evaluator_e2e_wall_s": 0.2225860829999995
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.013300000000000001,
+        "total_elapsed_s": 0.0,
+        "accepted_tran_steps": 135.0,
+        "bound_step_scan_s": 9.3e-05,
+        "cleanup_files_s": 1e-06,
+        "cross_above_scan_s": 4e-05,
+        "dict_future_snapshot_s": 0.000299,
+        "dict_prev_snapshot_s": 0.000108,
+        "err_ratio_node_scan_s": 0.000546,
+        "final_step_s": 1e-06,
+        "model_breakpoint_scan_s": 0.000893,
+        "model_evaluate_s": 0.00524,
+        "model_output_set_s": 0.000284,
+        "model_post_update_s": 0.000212,
+        "model_prepare_step_s": 0.00054,
+        "record_point_s": 0.000186,
+        "result_array_conversion_s": 3.6e-05,
+        "source_breakpoint_scan_s": 0.0007,
+        "source_update_s": 0.001472,
+        "evaluate_s": 0.00524,
+        "post_update_s": 0.000212,
+        "prepare_step_s": 0.00054,
+        "derive_bus_signals_s": 9.6e-05,
+        "csv_write_s": 0.001584
+      },
+      "fixture_notes": [
+        "materialized dut_fixed.va from benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_pfd_up_dn_logic/forms/bugfix/gold/dut_fixed.va"
+      ],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:up_first=0.0096 dn_first=0.0000 up_second=0.0000 dn_second=0.0092 up_pulses_first=5 dn_pulses_second=5 overlap_frac=0.0000"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_state_local",
+      "stdout_tail": "     timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 0\nSection timing counters:\n    bound_step_scan_s = 0.000093 s\n    cleanup_files_s = 0.000001 s\n    cross_above_scan_s = 0.000040 s\n    dict_future_snapshot_s = 0.000299 s\n    dict_prev_snapshot_s = 0.000108 s\n    err_ratio_node_scan_s = 0.000546 s\n    final_step_s = 0.000001 s\n    model_breakpoint_scan_s = 0.000893 s\n    model_evaluate_s = 0.005240 s\n    model_output_set_s = 0.000284 s\n    model_post_update_s = 0.000212 s\n    model_prepare_step_s = 0.000540 s\n    record_point_s = 0.000186 s\n    result_array_conversion_s = 0.000036 s\n    source_breakpoint_scan_s = 0.000700 s\n    source_update_s = 0.001472 s\nModel timing counters:\n    model[0] pfd_updn_Model:\n        evaluate_calls = 383\n        evaluate_s = 0.005240 s\n        post_update_s = 0.000212 s\n        prepare_step_s = 0.000540 s\nModel IO counters:\n    output_write_nodes = 2\n    output_writes = 770\n    voltage_read_event_contexts = 56\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 824\n\nMaximum value achieved for any signal of each quantity:\n    V: V(div) = 900 mV\n\nTran analysis time: CPU = 13.3 ms, elapsed = 13.3 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000096 s\n    csv_write_s = 0.001584 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_pfd_up_dn_logic/bugfix/fixed/vbm1_pfd_reset_race_bugfix/profile_fast_state_local/tran.csv (signals: ref, div, up, dn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "form": "bugfix",
+      "variant": "fixed",
+      "task_id": "vbm1_pfd_reset_race_bugfix",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+        "implementation": "row_based",
+        "streaming_registered": false,
+        "streaming_validated": false,
+        "streaming_used": false,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold/vbr1_l2_weighted_sar_adc_dac_loop_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 5.7912254999999995,
+      "simulator_subprocess_wall_s": 2.744537916999999,
+      "timing_split": {
+        "fixture_materialize_s": 0.009890833000000043,
+        "run_case_tempdir_create_s": 0.00026466600000141227,
+        "run_case_output_setup_s": 0.0009405830000002169,
+        "run_case_copy_inputs_s": 0.0021283340000000095,
+        "run_case_preflight_s": 0.0009214580000005412,
+        "run_case_metric_cleanup_s": 1.999999998503199e-06,
+        "run_case_evas_subprocess_wall_s": 2.744537916999999,
+        "run_case_behavior_checker_s": 3.0304016249999997,
+        "run_case_side_output_validation_s": 3.666999999651921e-06,
+        "run_case_temp_cleanup_s": 0.0011065420000004877,
+        "run_case_run_case_wall_s": 5.781246125000001,
+        "run_case_outer_wall_s": 5.781265041000001,
+        "evaluator_e2e_wall_s": 5.7912254999999995
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.4665,
+        "total_elapsed_s": 2.6,
+        "accepted_tran_steps": 10497.0,
+        "bound_step_scan_s": 0.004541,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.001772,
+        "dict_future_snapshot_s": 0.013574,
+        "dict_prev_snapshot_s": 0.010248,
+        "err_ratio_node_scan_s": 0.111849,
+        "final_step_s": 7e-06,
+        "model_breakpoint_scan_s": 0.199638,
+        "model_evaluate_s": 1.56853,
+        "model_output_set_s": 0.017874,
+        "model_post_update_s": 0.124501,
+        "model_prepare_step_s": 0.067738,
+        "record_point_s": 0.038728,
+        "result_array_conversion_s": 0.006133,
+        "source_breakpoint_scan_s": 0.037103,
+        "source_update_s": 0.04246,
+        "evaluate_s": 0.117807,
+        "post_update_s": 0.106587,
+        "prepare_step_s": 0.023983,
+        "derive_bus_signals_s": 0.000462,
+        "csv_write_s": 0.060087
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "samples=124 unique_codes=60 code_range=0-254 sample_span=0.900 vout_span=0.896 avg_quant_err=0.0018 max_quant_err=0.0035 avg_dac_err=0.0036 max_dac_err=0.0565 avg_roundtrip_err=0.0053 max_sample_hold_err=0.0452 trial_bits=[1, 2, 3, 4, 5, 6, 7, 8] cmp_frac=1.000 monotonic_reversals=0"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold/vbr1_l2_weighted_sar_adc_dac_loop_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "\n[sar_adc_weighted_8b] t=15580.250 ns | vin=0.33255V | final_code=94\n[sar_adc_weighted_8b] t=15740.250 ns | vin=0.28955V | final_code=82\n[sar_adc_weighted_8b] t=15900.250 ns | vin=0.24816V | final_code=70\n[sar_adc_weighted_8b] t=16060.250 ns | vin=0.20882V | final_code=59\n[sar_adc_weighted_8b] t=16220.250 ns | vin=0.17191V | final_code=48\n[sar_adc_weighted_8b] t=16380.250 ns | vin=0.13781V | final_code=39\n[sar_adc_weighted_8b] t=16540.250 ns | vin=0.10686V | final_code=30\n[sar_adc_weighted_8b] t=16700.250 ns | vin=0.07937V | final_code=22\n[sar_adc_weighted_8b] t=16860.250 ns | vin=0.055628V | final_code=15\n[sar_adc_weighted_8b] t=17020.250 ns | vin=0.035868V | final_code=10\n[sar_adc_weighted_8b] t=17180.250 ns | vin=0.02029V | final_code=5\n[sar_adc_weighted_8b] t=17340.250 ns | vin=0.0090511V | final_code=2\n[sar_adc_weighted_8b] t=17500.250 ns | vin=0.002265V | final_code=0\n[sar_adc_weighted_8b] t=17660.250 ns | vin=5.5537e-09V | final_code=0\n[sar_adc_weighted_8b] t=17820.250 ns | vin=0.0022791V | final_code=0\n[sar_adc_weighted_8b] t=17980.250 ns | vin=0.0090793V | final_code=2\n[sar_adc_weighted_8b] t=18140.250 ns | vin=0.020332V | final_code=5\n[sar_adc_weighted_8b] t=18300.250 ns | vin=0.035923V | final_code=10\n[sar_adc_weighted_8b] t=18460.250 ns | vin=0.055696V | final_code=15\n[sar_adc_weighted_8b] t=18620.250 ns | vin=0.07945V | final_code=22\n[sar_adc_weighted_8b] t=18780.250 ns | vin=0.10695V | final_code=30\n[sar_adc_weighted_8b] t=18940.250 ns | vin=0.13791V | final_code=39\n[sar_adc_weighted_8b] t=19100.250 ns | vin=0.17202V | final_code=48\n[sar_adc_weighted_8b] t=19260.250 ns | vin=0.20894V | final_code=59\n[sar_adc_weighted_8b] t=19420.250 ns | vin=0.24829V | final_code=70\n[sar_adc_weighted_8b] t=19580.250 ns | vin=0.28968V | final_code=82\n[sar_adc_weighted_8b] t=19740.250 ns | vin=0.33269V | final_code=94\n[sar_adc_weighted_8b] t=19900.250 ns | vin=0.37688V | final_code=106\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.6 s, elapsed = 2.6 s.\n\n",
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+        "implementation": "row_based",
+        "streaming_registered": false,
+        "streaming_validated": false,
+        "streaming_used": false,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold/vbr1_l2_weighted_sar_adc_dac_loop_tb/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 5.809423582999999,
+      "simulator_subprocess_wall_s": 3.0564519160000003,
+      "timing_split": {
+        "fixture_materialize_s": 0.006704292000000223,
+        "run_case_tempdir_create_s": 0.0002048329999997378,
+        "run_case_output_setup_s": 0.0002756660000002853,
+        "run_case_copy_inputs_s": 0.0019402919999986779,
+        "run_case_preflight_s": 0.0007777499999992443,
+        "run_case_metric_cleanup_s": 1.7080000009883634e-06,
+        "run_case_evas_subprocess_wall_s": 3.0564519160000003,
+        "run_case_behavior_checker_s": 2.740634666000002,
+        "run_case_side_output_validation_s": 8.459000000016204e-06,
+        "run_case_temp_cleanup_s": 0.0013725830000019812,
+        "run_case_run_case_wall_s": 5.802619792,
+        "run_case_outer_wall_s": 5.802657792,
+        "evaluator_e2e_wall_s": 5.809423582999999
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.7433,
+        "total_elapsed_s": 2.8,
+        "accepted_tran_steps": 10497.0,
+        "bound_step_scan_s": 0.004727,
+        "cleanup_files_s": 4e-06,
+        "cross_above_scan_s": 0.0019,
+        "dict_future_snapshot_s": 0.015614,
+        "dict_prev_snapshot_s": 0.010652,
+        "err_ratio_node_scan_s": 0.122075,
+        "final_step_s": 1.2e-05,
+        "model_breakpoint_scan_s": 0.224222,
+        "model_evaluate_s": 1.734897,
+        "model_output_set_s": 0.020903,
+        "model_post_update_s": 0.143172,
+        "model_prepare_step_s": 0.078124,
+        "record_point_s": 0.043742,
+        "result_array_conversion_s": 0.006461,
+        "source_breakpoint_scan_s": 0.042275,
+        "source_update_s": 0.049596,
+        "evaluate_s": 0.129427,
+        "post_update_s": 0.121322,
+        "prepare_step_s": 0.027861,
+        "derive_bus_signals_s": 0.000509,
+        "csv_write_s": 0.06165
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "samples=124 unique_codes=60 code_range=0-254 sample_span=0.900 vout_span=0.896 avg_quant_err=0.0018 max_quant_err=0.0035 avg_dac_err=0.0036 max_dac_err=0.0565 avg_roundtrip_err=0.0053 max_sample_hold_err=0.0452 trial_bits=[1, 2, 3, 4, 5, 6, 7, 8] cmp_frac=1.000 monotonic_reversals=0"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_weighted_sar_adc_dac_loop/tb/gold/vbr1_l2_weighted_sar_adc_dac_loop_tb/profile_fast_state_local",
+      "stdout_tail": "\n[sar_adc_weighted_8b] t=15580.250 ns | vin=0.33255V | final_code=94\n[sar_adc_weighted_8b] t=15740.250 ns | vin=0.28955V | final_code=82\n[sar_adc_weighted_8b] t=15900.250 ns | vin=0.24816V | final_code=70\n[sar_adc_weighted_8b] t=16060.250 ns | vin=0.20882V | final_code=59\n[sar_adc_weighted_8b] t=16220.250 ns | vin=0.17191V | final_code=48\n[sar_adc_weighted_8b] t=16380.250 ns | vin=0.13781V | final_code=39\n[sar_adc_weighted_8b] t=16540.250 ns | vin=0.10686V | final_code=30\n[sar_adc_weighted_8b] t=16700.250 ns | vin=0.07937V | final_code=22\n[sar_adc_weighted_8b] t=16860.250 ns | vin=0.055628V | final_code=15\n[sar_adc_weighted_8b] t=17020.250 ns | vin=0.035868V | final_code=10\n[sar_adc_weighted_8b] t=17180.250 ns | vin=0.02029V | final_code=5\n[sar_adc_weighted_8b] t=17340.250 ns | vin=0.0090511V | final_code=2\n[sar_adc_weighted_8b] t=17500.250 ns | vin=0.002265V | final_code=0\n[sar_adc_weighted_8b] t=17660.250 ns | vin=5.5537e-09V | final_code=0\n[sar_adc_weighted_8b] t=17820.250 ns | vin=0.0022791V | final_code=0\n[sar_adc_weighted_8b] t=17980.250 ns | vin=0.0090793V | final_code=2\n[sar_adc_weighted_8b] t=18140.250 ns | vin=0.020332V | final_code=5\n[sar_adc_weighted_8b] t=18300.250 ns | vin=0.035923V | final_code=10\n[sar_adc_weighted_8b] t=18460.250 ns | vin=0.055696V | final_code=15\n[sar_adc_weighted_8b] t=18620.250 ns | vin=0.07945V | final_code=22\n[sar_adc_weighted_8b] t=18780.250 ns | vin=0.10695V | final_code=30\n[sar_adc_weighted_8b] t=18940.250 ns | vin=0.13791V | final_code=39\n[sar_adc_weighted_8b] t=19100.250 ns | vin=0.17202V | final_code=48\n[sar_adc_weighted_8b] t=19260.250 ns | vin=0.20894V | final_code=59\n[sar_adc_weighted_8b] t=19420.250 ns | vin=0.24829V | final_code=70\n[sar_adc_weighted_8b] t=19580.250 ns | vin=0.28968V | final_code=82\n[sar_adc_weighted_8b] t=19740.250 ns | vin=0.33269V | final_code=94\n[sar_adc_weighted_8b] t=19900.250 ns | vin=0.37688V | final_code=106\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.8 s, elapsed = 2.8 s.\n\n",
+      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_propagation_delay_comparator_dut",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_propagation_delay_comparator_dut",
+        "implementation": "row_based",
+        "streaming_registered": false,
+        "streaming_validated": false,
+        "streaming_used": false,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_propagation_delay_comparator/dut/gold/vbr1_l1_propagation_delay_comparator_dut/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 2.066039042,
+      "simulator_subprocess_wall_s": 1.684860833000002,
+      "timing_split": {
+        "fixture_materialize_s": 0.01166495800000078,
+        "run_case_tempdir_create_s": 0.00021566599999900404,
+        "run_case_output_setup_s": 0.0007788330000018107,
+        "run_case_copy_inputs_s": 0.0014040420000007714,
+        "run_case_preflight_s": 0.0004624169999978278,
+        "run_case_metric_cleanup_s": 2.1249999981876044e-06,
+        "run_case_evas_subprocess_wall_s": 1.684860833000002,
+        "run_case_behavior_checker_s": 0.3645903329999989,
+        "run_case_side_output_validation_s": 5.874999999377906e-06,
+        "run_case_temp_cleanup_s": 0.001066458000000381,
+        "run_case_run_case_wall_s": 2.0542253340000016,
+        "run_case_outer_wall_s": 2.0543054580000017,
+        "evaluator_e2e_wall_s": 2.066039042
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.4703,
+        "total_elapsed_s": 1.5,
+        "accepted_tran_steps": 1812.0,
+        "bound_step_scan_s": 0.007521,
+        "cleanup_files_s": 5e-06,
+        "cross_above_scan_s": 0.003164,
+        "dict_future_snapshot_s": 0.022252,
+        "dict_prev_snapshot_s": 0.009805,
+        "err_ratio_node_scan_s": 0.056113,
+        "final_step_s": 1e-05,
+        "model_breakpoint_scan_s": 0.139516,
+        "model_evaluate_s": 0.651616,
+        "model_output_set_s": 0.025212,
+        "model_post_update_s": 0.030231,
+        "model_prepare_step_s": 0.084018,
+        "record_point_s": 0.003089,
+        "result_array_conversion_s": 0.000423,
+        "source_breakpoint_scan_s": 0.072718,
+        "source_update_s": 0.079603,
+        "evaluate_s": 0.250807,
+        "post_update_s": 0.014719,
+        "prepare_step_s": 0.04164,
+        "derive_bus_signals_s": 0.000255,
+        "csv_write_s": 0.006448
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "delays_ns=[0.083, 0.093, 0.103, 0.113] monotonic=True total_growth_ns=0.030"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_propagation_delay_comparator/dut/gold/vbr1_l1_propagation_delay_comparator_dut/profile_fast_skip_source_error_control",
+      "stdout_tail": " | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=1.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=2.125 ns | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=2.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=3.125 ns | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=3.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=4.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=4.190 ns | delay=65.022 ps | diff=9.993 ps\n[cmp_delay] t=5.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=5.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=6.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=6.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=7.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=7.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=8.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=8.200 ns | delay=75.016 ps | diff=9.993 ps\n[cmp_delay] t=9.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=9.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=10.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=10.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=11.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=11.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=12.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=12.210 ns | delay=85.009 ps | diff=9.993 ps\n[cmp_delay] t=13.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=13.210 ns | delay=85.009 ps | diff=0.000 ps\n[cmp_delay] t=14.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=14.210 ns | delay=85.009 ps | diff=0.000 ps\n[cmp_delay] t=15.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=15.210 ns | delay=85.009 ps | diff=-0.000 ps\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.5 s, elapsed = 1.5 s.\n\n",
+      "entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "vbr1_l1_propagation_delay_comparator_dut",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l1_propagation_delay_comparator_dut",
+      "checker_policy": {
+        "checker_id": "vbr1_l1_propagation_delay_comparator_dut",
+        "implementation": "row_based",
+        "streaming_registered": false,
+        "streaming_validated": false,
+        "streaming_used": false,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_propagation_delay_comparator/dut/gold/vbr1_l1_propagation_delay_comparator_dut/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 2.1196339580000014,
+      "simulator_subprocess_wall_s": 1.7456932499999986,
+      "timing_split": {
+        "fixture_materialize_s": 0.0065087500000018395,
+        "run_case_tempdir_create_s": 0.0003663749999986976,
+        "run_case_output_setup_s": 0.0003040839999997047,
+        "run_case_copy_inputs_s": 0.0016562909999997544,
+        "run_case_preflight_s": 0.000536000000000314,
+        "run_case_metric_cleanup_s": 2.375000001109129e-06,
+        "run_case_evas_subprocess_wall_s": 1.7456932499999986,
+        "run_case_behavior_checker_s": 0.36250829199999757,
+        "run_case_side_output_validation_s": 7.541999998750271e-06,
+        "run_case_temp_cleanup_s": 0.001033792000001199,
+        "run_case_run_case_wall_s": 2.113029333,
+        "run_case_outer_wall_s": 2.113064999999999,
+        "evaluator_e2e_wall_s": 2.1196339580000014
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 1.5427,
+        "total_elapsed_s": 1.6,
+        "accepted_tran_steps": 1812.0,
+        "bound_step_scan_s": 0.008804,
+        "cleanup_files_s": 7e-06,
+        "cross_above_scan_s": 0.003281,
+        "dict_future_snapshot_s": 0.023122,
+        "dict_prev_snapshot_s": 0.009948,
+        "err_ratio_node_scan_s": 0.05672,
+        "final_step_s": 1.4e-05,
+        "model_breakpoint_scan_s": 0.139351,
+        "model_evaluate_s": 0.713008,
+        "model_output_set_s": 0.025587,
+        "model_post_update_s": 0.033289,
+        "model_prepare_step_s": 0.080809,
+        "record_point_s": 0.003248,
+        "result_array_conversion_s": 0.000428,
+        "source_breakpoint_scan_s": 0.073359,
+        "source_update_s": 0.08185,
+        "evaluate_s": 0.280563,
+        "post_update_s": 0.016104,
+        "prepare_step_s": 0.041002,
+        "derive_bus_signals_s": 0.000216,
+        "csv_write_s": 0.008294
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "delays_ns=[0.083, 0.093, 0.103, 0.113] monotonic=True total_growth_ns=0.030"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_propagation_delay_comparator/dut/gold/vbr1_l1_propagation_delay_comparator_dut/profile_fast_state_local",
+      "stdout_tail": " | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=1.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=2.125 ns | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=2.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=3.125 ns | diff=10.00000mV | td=40.0 ps | dec=1\n[edge_interval_timer] t=3.180 ns | delay=55.029 ps | diff=0.000 ps\n[cmp_delay] t=4.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=4.190 ns | delay=65.022 ps | diff=9.993 ps\n[cmp_delay] t=5.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=5.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=6.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=6.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=7.125 ns | diff=1.00000mV | td=50.0 ps | dec=1\n[edge_interval_timer] t=7.190 ns | delay=65.022 ps | diff=0.000 ps\n[cmp_delay] t=8.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=8.200 ns | delay=75.016 ps | diff=9.993 ps\n[cmp_delay] t=9.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=9.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=10.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=10.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=11.125 ns | diff=0.10000mV | td=60.0 ps | dec=1\n[edge_interval_timer] t=11.200 ns | delay=75.016 ps | diff=0.000 ps\n[cmp_delay] t=12.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=12.210 ns | delay=85.009 ps | diff=9.993 ps\n[cmp_delay] t=13.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=13.210 ns | delay=85.009 ps | diff=0.000 ps\n[cmp_delay] t=14.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=14.210 ns | delay=85.009 ps | diff=0.000 ps\n[cmp_delay] t=15.125 ns | diff=0.01000mV | td=70.0 ps | dec=1\n[edge_interval_timer] t=15.210 ns | delay=85.009 ps | diff=-0.000 ps\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.6 s, elapsed = 1.6 s.\n\n",
+      "entry_id": "vbr1_l1_propagation_delay_comparator",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "vbr1_l1_propagation_delay_comparator_dut",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "cppll_freq_step_reacquire_smoke",
+      "checker_policy": {
+        "checker_id": "cppll_freq_step_reacquire_smoke",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 3.159059292000002,
+      "simulator_subprocess_wall_s": 2.980427917,
+      "timing_split": {
+        "fixture_materialize_s": 0.009898207999999187,
+        "run_case_tempdir_create_s": 0.0002675839999994878,
+        "run_case_output_setup_s": 0.0009093329999991795,
+        "run_case_copy_inputs_s": 0.0014636669999994467,
+        "run_case_preflight_s": 0.000550832999998363,
+        "run_case_metric_cleanup_s": 2.375000001109129e-06,
+        "run_case_evas_subprocess_wall_s": 2.980427917,
+        "run_case_behavior_checker_s": 0.16337754200000276,
+        "run_case_side_output_validation_s": 6.624999997484338e-06,
+        "run_case_temp_cleanup_s": 0.001079250000000087,
+        "run_case_run_case_wall_s": 3.149046082999998,
+        "run_case_outer_wall_s": 3.149095583000001,
+        "evaluator_e2e_wall_s": 3.159059292000002
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.672,
+        "total_elapsed_s": 2.8,
+        "accepted_tran_steps": 44371.0,
+        "bound_step_scan_s": 0.018284,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.005314,
+        "dict_future_snapshot_s": 0.037149,
+        "dict_prev_snapshot_s": 0.015306,
+        "err_ratio_node_scan_s": 0.055572,
+        "final_step_s": 1e-05,
+        "model_breakpoint_scan_s": 0.258555,
+        "model_evaluate_s": 1.281863,
+        "model_output_set_s": 0.043673,
+        "model_post_update_s": 0.24066,
+        "model_prepare_step_s": 0.11279,
+        "record_point_s": 0.067927,
+        "result_array_conversion_s": 0.008668,
+        "source_breakpoint_scan_s": 0.013696,
+        "source_update_s": 0.025069,
+        "evaluate_s": 0.929623,
+        "post_update_s": 0.200664,
+        "prepare_step_s": 0.067512,
+        "derive_bus_signals_s": 0.000203,
+        "csv_write_s": 0.095928
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:freq_ratio=0.9796 relock_time=2.966e-06 disturb_low_frac=0.896 vctrl_min=0.427 vctrl_max=0.483"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_skip_source_error_control",
+      "stdout_tail": "dic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 19247\nSection timing counters:\n    bound_step_scan_s = 0.018284 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.005314 s\n    dict_future_snapshot_s = 0.037149 s\n    dict_prev_snapshot_s = 0.015306 s\n    err_ratio_node_scan_s = 0.055572 s\n    final_step_s = 0.000010 s\n    model_breakpoint_scan_s = 0.258555 s\n    model_evaluate_s = 1.281863 s\n    model_output_set_s = 0.043673 s\n    model_post_update_s = 0.240660 s\n    model_prepare_step_s = 0.112790 s\n    record_point_s = 0.067927 s\n    result_array_conversion_s = 0.008668 s\n    source_breakpoint_scan_s = 0.013696 s\n    source_update_s = 0.025069 s\nModel timing counters:\n    model[0] ref_step_clk_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.352240 s\n        post_update_s = 0.039996 s\n        prepare_step_s = 0.045278 s\n    model[1] cppll_timer_ref_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.929623 s\n        post_update_s = 0.200664 s\n        prepare_step_s = 0.067512 s\nModel IO counters:\n    output_write_nodes = 5\n    output_writes = 227404\n    voltage_read_event_contexts = 0\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 272040\n\nMaximum value achieved for any signal of each quantity:\n    V: V(fb_clk) = 900 mV\n\nTran analysis time: CPU = 2672.0 ms, elapsed = 2672.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000203 s\n    csv_write_s = 0.095928 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_skip_source_error_control/tran.csv (signals: ref_clk, fb_clk, dco_clk, vctrl_mon, lock)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.8 s, elapsed = 2.8 s.\n\n",
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "cppll_freq_step_reacquire_smoke",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "cppll_freq_step_reacquire_smoke",
+      "checker_policy": {
+        "checker_id": "cppll_freq_step_reacquire_smoke",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 3.0499436660000008,
+      "simulator_subprocess_wall_s": 2.872482125000001,
+      "timing_split": {
+        "fixture_materialize_s": 0.00887916699999991,
+        "run_case_tempdir_create_s": 0.000270207999999883,
+        "run_case_output_setup_s": 0.0003092499999972631,
+        "run_case_copy_inputs_s": 0.0016752499999981296,
+        "run_case_preflight_s": 0.0005762080000017988,
+        "run_case_metric_cleanup_s": 2.1670000016627e-06,
+        "run_case_evas_subprocess_wall_s": 2.872482125000001,
+        "run_case_behavior_checker_s": 0.16373795900000232,
+        "run_case_side_output_validation_s": 6.582999997561956e-06,
+        "run_case_temp_cleanup_s": 0.0010064589999991824,
+        "run_case_run_case_wall_s": 3.0409417089999984,
+        "run_case_outer_wall_s": 3.0409927079999974,
+        "evaluator_e2e_wall_s": 3.0499436660000008
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.5707,
+        "total_elapsed_s": 2.7,
+        "accepted_tran_steps": 44371.0,
+        "bound_step_scan_s": 0.016238,
+        "cleanup_files_s": 6e-06,
+        "cross_above_scan_s": 0.005005,
+        "dict_future_snapshot_s": 0.033201,
+        "dict_prev_snapshot_s": 0.014875,
+        "err_ratio_node_scan_s": 0.051822,
+        "final_step_s": 5e-06,
+        "model_breakpoint_scan_s": 0.231837,
+        "model_evaluate_s": 1.286044,
+        "model_output_set_s": 0.039679,
+        "model_post_update_s": 0.234432,
+        "model_prepare_step_s": 0.104635,
+        "record_point_s": 0.061042,
+        "result_array_conversion_s": 0.008719,
+        "source_breakpoint_scan_s": 0.012256,
+        "source_update_s": 0.023339,
+        "evaluate_s": 0.943749,
+        "post_update_s": 0.197706,
+        "prepare_step_s": 0.061722,
+        "derive_bus_signals_s": 0.000203,
+        "csv_write_s": 0.093481
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:freq_ratio=0.9796 relock_time=2.966e-06 disturb_low_frac=0.896 vctrl_min=0.427 vctrl_max=0.483"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_state_local",
+      "stdout_tail": "   timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 19247\nSection timing counters:\n    bound_step_scan_s = 0.016238 s\n    cleanup_files_s = 0.000006 s\n    cross_above_scan_s = 0.005005 s\n    dict_future_snapshot_s = 0.033201 s\n    dict_prev_snapshot_s = 0.014875 s\n    err_ratio_node_scan_s = 0.051822 s\n    final_step_s = 0.000005 s\n    model_breakpoint_scan_s = 0.231837 s\n    model_evaluate_s = 1.286044 s\n    model_output_set_s = 0.039679 s\n    model_post_update_s = 0.234432 s\n    model_prepare_step_s = 0.104635 s\n    record_point_s = 0.061042 s\n    result_array_conversion_s = 0.008719 s\n    source_breakpoint_scan_s = 0.012256 s\n    source_update_s = 0.023339 s\nModel timing counters:\n    model[0] ref_step_clk_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.342295 s\n        post_update_s = 0.036725 s\n        prepare_step_s = 0.042913 s\n    model[1] cppll_timer_ref_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.943749 s\n        post_update_s = 0.197706 s\n        prepare_step_s = 0.061722 s\nModel IO counters:\n    output_write_nodes = 5\n    output_writes = 227404\n    voltage_read_event_contexts = 0\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 272040\n\nMaximum value achieved for any signal of each quantity:\n    V: V(fb_clk) = 900 mV\n\nTran analysis time: CPU = 2570.7 ms, elapsed = 2570.7 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000203 s\n    csv_write_s = 0.093481 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/gold/cppll_freq_step_reacquire_smoke/profile_fast_state_local/tran.csv (signals: ref_clk, fb_clk, dco_clk, vctrl_mon, lock)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.7 s, elapsed = 2.7 s.\n\n",
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "e2e",
+      "variant": "gold",
+      "task_id": "cppll_freq_step_reacquire_smoke",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 3.046026792000003,
+      "simulator_subprocess_wall_s": 2.737627125000003,
+      "timing_split": {
+        "fixture_materialize_s": 0.010275417000002562,
+        "run_case_tempdir_create_s": 0.00026649999999861507,
+        "run_case_output_setup_s": 0.0007650000000012369,
+        "run_case_copy_inputs_s": 0.00160466700000228,
+        "run_case_preflight_s": 0.0006088329999975883,
+        "run_case_metric_cleanup_s": 2.2919999977943917e-06,
+        "run_case_evas_subprocess_wall_s": 2.737627125000003,
+        "run_case_behavior_checker_s": 0.291262083999996,
+        "run_case_side_output_validation_s": 1.4917000001446468e-05,
+        "run_case_temp_cleanup_s": 0.001587708000002408,
+        "run_case_run_case_wall_s": 3.035609749999999,
+        "run_case_outer_wall_s": 3.035660124999996,
+        "evaluator_e2e_wall_s": 3.046026792000003
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.4286,
+        "total_elapsed_s": 2.5,
+        "accepted_tran_steps": 44371.0,
+        "bound_step_scan_s": 0.01865,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.004936,
+        "dict_future_snapshot_s": 0.03359,
+        "dict_prev_snapshot_s": 0.0147,
+        "err_ratio_node_scan_s": 0.05168,
+        "final_step_s": 2e-06,
+        "model_breakpoint_scan_s": 0.229187,
+        "model_evaluate_s": 1.160533,
+        "model_output_set_s": 0.038127,
+        "model_post_update_s": 0.217156,
+        "model_prepare_step_s": 0.107756,
+        "record_point_s": 0.060706,
+        "result_array_conversion_s": 0.008788,
+        "source_breakpoint_scan_s": 0.012339,
+        "source_update_s": 0.023204,
+        "evaluate_s": 0.840106,
+        "post_update_s": 0.181659,
+        "prepare_step_s": 0.06474,
+        "derive_bus_signals_s": 0.000137,
+        "csv_write_s": 0.095063
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:freq_ratio=0.9796 relock_time=2.966e-06 disturb_low_frac=0.896 vctrl_min=0.427 vctrl_max=0.483"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_skip_source_error_control",
+      "stdout_tail": "_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 19247\nSection timing counters:\n    bound_step_scan_s = 0.018650 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.004936 s\n    dict_future_snapshot_s = 0.033590 s\n    dict_prev_snapshot_s = 0.014700 s\n    err_ratio_node_scan_s = 0.051680 s\n    final_step_s = 0.000002 s\n    model_breakpoint_scan_s = 0.229187 s\n    model_evaluate_s = 1.160533 s\n    model_output_set_s = 0.038127 s\n    model_post_update_s = 0.217156 s\n    model_prepare_step_s = 0.107756 s\n    record_point_s = 0.060706 s\n    result_array_conversion_s = 0.008788 s\n    source_breakpoint_scan_s = 0.012339 s\n    source_update_s = 0.023204 s\nModel timing counters:\n    model[0] ref_step_clk_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.320427 s\n        post_update_s = 0.035497 s\n        prepare_step_s = 0.043017 s\n    model[1] cppll_timer_ref_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.840106 s\n        post_update_s = 0.181659 s\n        prepare_step_s = 0.064740 s\nModel IO counters:\n    output_write_nodes = 5\n    output_writes = 227404\n    voltage_read_event_contexts = 0\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 272040\n\nMaximum value achieved for any signal of each quantity:\n    V: V(fb_clk) = 900 mV\n\nTran analysis time: CPU = 2428.6 ms, elapsed = 2428.6 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000137 s\n    csv_write_s = 0.095063 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_skip_source_error_control/tran.csv (signals: ref_clk, fb_clk, dco_clk, vctrl_mon, lock)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.5 s, elapsed = 2.5 s.\n\n",
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "checker_policy": {
+        "checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 3.534107624999997,
+      "simulator_subprocess_wall_s": 3.2088311250000032,
+      "timing_split": {
+        "fixture_materialize_s": 0.06275870799999694,
+        "run_case_tempdir_create_s": 0.0004381250000022874,
+        "run_case_output_setup_s": 0.000670665999997766,
+        "run_case_copy_inputs_s": 0.009547791000002803,
+        "run_case_preflight_s": 0.0010489999999947486,
+        "run_case_metric_cleanup_s": 5.250000000955879e-06,
+        "run_case_evas_subprocess_wall_s": 3.2088311250000032,
+        "run_case_behavior_checker_s": 0.24769579100000527,
+        "run_case_side_output_validation_s": 6.957999993062458e-06,
+        "run_case_temp_cleanup_s": 0.0013749579999995376,
+        "run_case_run_case_wall_s": 3.4711717910000033,
+        "run_case_outer_wall_s": 3.471211624999995,
+        "evaluator_e2e_wall_s": 3.534107624999997
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 2.6820999999999997,
+        "total_elapsed_s": 2.9,
+        "accepted_tran_steps": 44371.0,
+        "bound_step_scan_s": 0.017352,
+        "cleanup_files_s": 6e-06,
+        "cross_above_scan_s": 0.004969,
+        "dict_future_snapshot_s": 0.036194,
+        "dict_prev_snapshot_s": 0.014713,
+        "err_ratio_node_scan_s": 0.054874,
+        "final_step_s": 1e-05,
+        "model_breakpoint_scan_s": 0.237476,
+        "model_evaluate_s": 1.307248,
+        "model_output_set_s": 0.041141,
+        "model_post_update_s": 0.239993,
+        "model_prepare_step_s": 0.112749,
+        "record_point_s": 0.063889,
+        "result_array_conversion_s": 0.050047,
+        "source_breakpoint_scan_s": 0.012731,
+        "source_update_s": 0.024763,
+        "evaluate_s": 0.951231,
+        "post_update_s": 0.200681,
+        "prepare_step_s": 0.065961,
+        "derive_bus_signals_s": 0.000263,
+        "csv_write_s": 0.166192
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:freq_ratio=0.9796 relock_time=2.966e-06 disturb_low_frac=0.896 vctrl_min=0.427 vctrl_max=0.483"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_state_local",
+      "stdout_tail": "\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 19247\nSection timing counters:\n    bound_step_scan_s = 0.017352 s\n    cleanup_files_s = 0.000006 s\n    cross_above_scan_s = 0.004969 s\n    dict_future_snapshot_s = 0.036194 s\n    dict_prev_snapshot_s = 0.014713 s\n    err_ratio_node_scan_s = 0.054874 s\n    final_step_s = 0.000010 s\n    model_breakpoint_scan_s = 0.237476 s\n    model_evaluate_s = 1.307248 s\n    model_output_set_s = 0.041141 s\n    model_post_update_s = 0.239993 s\n    model_prepare_step_s = 0.112749 s\n    record_point_s = 0.063889 s\n    result_array_conversion_s = 0.050047 s\n    source_breakpoint_scan_s = 0.012731 s\n    source_update_s = 0.024763 s\nModel timing counters:\n    model[0] ref_step_clk_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.356017 s\n        post_update_s = 0.039312 s\n        prepare_step_s = 0.046788 s\n    model[1] cppll_timer_ref_Model:\n        evaluate_calls = 45238\n        evaluate_s = 0.951231 s\n        post_update_s = 0.200681 s\n        prepare_step_s = 0.065961 s\nModel IO counters:\n    output_write_nodes = 5\n    output_writes = 227404\n    voltage_read_event_contexts = 0\n    voltage_read_external_nodes = 4\n    voltage_read_local_nodes = 4\n    voltage_read_missing_nodes = 0\n    voltage_reads = 272040\n\nMaximum value achieved for any signal of each quantity:\n    V: V(fb_clk) = 900 mV\n\nTran analysis time: CPU = 2682.1 ms, elapsed = 2682.1 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000263 s\n    csv_write_s = 0.166192 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/gold/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb/profile_fast_state_local/tran.csv (signals: ref_clk, fb_clk, dco_clk, vctrl_mon, lock)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.9 s, elapsed = 2.9 s.\n\n",
+      "entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "form": "tb",
+      "variant": "gold",
+      "task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_skip_source_error_control",
+      "phase": "P3",
+      "mode_label": "Fast profile plus default-off source-error-control ablation",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "prbs7",
+      "checker_policy": {
+        "checker_id": "prbs7",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_skip_source_error_control/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.6580378329999945,
+      "simulator_subprocess_wall_s": 0.6043533330000059,
+      "timing_split": {
+        "fixture_materialize_s": 0.013664792000000148,
+        "run_case_tempdir_create_s": 0.0006143750000049408,
+        "run_case_output_setup_s": 0.0012924999999981424,
+        "run_case_copy_inputs_s": 0.002524999999998556,
+        "run_case_preflight_s": 0.0010254160000044976,
+        "run_case_metric_cleanup_s": 3.874999997321993e-06,
+        "run_case_evas_subprocess_wall_s": 0.6043533330000059,
+        "run_case_behavior_checker_s": 0.03156295799999498,
+        "run_case_side_output_validation_s": 1.570800000649797e-05,
+        "run_case_temp_cleanup_s": 0.0013906670000025656,
+        "run_case_run_case_wall_s": 0.6441675419999982,
+        "run_case_outer_wall_s": 0.644254042,
+        "evaluator_e2e_wall_s": 0.6580378329999945
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.2462,
+        "total_elapsed_s": 0.3,
+        "accepted_tran_steps": 3382.0,
+        "bound_step_scan_s": 0.001512,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.000558,
+        "dict_future_snapshot_s": 0.004273,
+        "dict_prev_snapshot_s": 0.002566,
+        "err_ratio_node_scan_s": 0.00306,
+        "final_step_s": 2e-06,
+        "model_breakpoint_scan_s": 0.018098,
+        "model_evaluate_s": 0.127755,
+        "model_output_set_s": 0.004352,
+        "model_post_update_s": 0.003202,
+        "model_prepare_step_s": 0.008762,
+        "record_point_s": 0.011653,
+        "result_array_conversion_s": 0.001575,
+        "source_breakpoint_scan_s": 0.013524,
+        "source_update_s": 0.006238,
+        "evaluate_s": 0.127755,
+        "post_update_s": 0.003202,
+        "prepare_step_s": 0.008762,
+        "derive_bus_signals_s": 0.000338,
+        "csv_write_s": 0.02162
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:state_steps=119 checked_transitions=118 mismatches=0 serial_transitions=56"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_skip_source_error_control",
+      "stdout_tail": "solute_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 0\nSection timing counters:\n    bound_step_scan_s = 0.001512 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.000558 s\n    dict_future_snapshot_s = 0.004273 s\n    dict_prev_snapshot_s = 0.002566 s\n    err_ratio_node_scan_s = 0.003060 s\n    final_step_s = 0.000002 s\n    model_breakpoint_scan_s = 0.018098 s\n    model_evaluate_s = 0.127755 s\n    model_output_set_s = 0.004352 s\n    model_post_update_s = 0.003202 s\n    model_prepare_step_s = 0.008762 s\n    record_point_s = 0.011653 s\n    result_array_conversion_s = 0.001575 s\n    source_breakpoint_scan_s = 0.013524 s\n    source_update_s = 0.006238 s\nModel timing counters:\n    model[0] prbs7_ref_Model:\n        evaluate_calls = 3673\n        evaluate_s = 0.127755 s\n        post_update_s = 0.003202 s\n        prepare_step_s = 0.008762 s\nModel IO counters:\n    output_write_nodes = 8\n    output_writes = 29400\n    voltage_read_event_contexts = 238\n    voltage_read_external_nodes = 3\n    voltage_read_local_nodes = 3\n    voltage_read_missing_nodes = 0\n    voltage_reads = 3912\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 246.2 ms, elapsed = 246.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000338 s\n    csv_write_s = 0.021620 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_skip_source_error_control/tran.csv (signals: clk, rst_n, en, serial_out, state_0, state_1, state_2, state_3, state_4, state_5, state_6, state_code)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.3 s, elapsed = 0.3 s.\n\n",
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "prbs7",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    },
+    {
+      "backend": "evas",
+      "mode": "profile_fast_state_local",
+      "phase": "P4",
+      "mode_label": "Fast profile plus state-local generated evaluate fast path",
+      "simulator_options": [
+        "evas_profile=fast",
+        "evas_skip_source_error_control=yes",
+        "evas_state_local_fastpath=yes"
+      ],
+      "default_off_fast_path": true,
+      "status": "PASS",
+      "ok": true,
+      "simulation_ok": true,
+      "checker_id": "prbs7",
+      "checker_policy": {
+        "checker_id": "prbs7",
+        "implementation": "streaming_validated",
+        "streaming_registered": true,
+        "streaming_validated": true,
+        "streaming_used": true,
+        "streaming_forced": false,
+        "streaming_disabled": false
+      },
+      "csv_path": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_state_local/tran.csv",
+      "behavior_check_available": true,
+      "behavior_score": 1.0,
+      "behavior_ok": true,
+      "wall_time_s": 0.6605853340000039,
+      "simulator_subprocess_wall_s": 0.6064471669999989,
+      "timing_split": {
+        "fixture_materialize_s": 0.025412250000002246,
+        "run_case_tempdir_create_s": 0.00048145799999588235,
+        "run_case_output_setup_s": 0.0009236670000021263,
+        "run_case_copy_inputs_s": 0.004568749999997124,
+        "run_case_preflight_s": 0.0010206250000024397,
+        "run_case_metric_cleanup_s": 5.708000003323832e-06,
+        "run_case_evas_subprocess_wall_s": 0.6064471669999989,
+        "run_case_behavior_checker_s": 0.020041458000001455,
+        "run_case_side_output_validation_s": 4.083000000321135e-06,
+        "run_case_temp_cleanup_s": 0.0007612500000035993,
+        "run_case_run_case_wall_s": 0.6350254170000014,
+        "run_case_outer_wall_s": 0.6350695000000002,
+        "evaluator_e2e_wall_s": 0.6605853340000039
+      },
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "timing": {
+        "tran_elapsed_s": 0.1692,
+        "total_elapsed_s": 0.2,
+        "accepted_tran_steps": 3382.0,
+        "bound_step_scan_s": 0.000906,
+        "cleanup_files_s": 3e-06,
+        "cross_above_scan_s": 0.000396,
+        "dict_future_snapshot_s": 0.002568,
+        "dict_prev_snapshot_s": 0.001529,
+        "err_ratio_node_scan_s": 0.002146,
+        "final_step_s": 2e-06,
+        "model_breakpoint_scan_s": 0.011744,
+        "model_evaluate_s": 0.093036,
+        "model_output_set_s": 0.002564,
+        "model_post_update_s": 0.002073,
+        "model_prepare_step_s": 0.00539,
+        "record_point_s": 0.007684,
+        "result_array_conversion_s": 0.001169,
+        "source_breakpoint_scan_s": 0.008838,
+        "source_update_s": 0.003735,
+        "evaluate_s": 0.093036,
+        "post_update_s": 0.002073,
+        "prepare_step_s": 0.00539,
+        "derive_bus_signals_s": 0.00026,
+        "csv_write_s": 0.013001
+      },
+      "fixture_notes": [],
+      "notes": [
+        "returncode=0",
+        "streaming_checker:state_steps=119 checked_transitions=118 mismatches=0 serial_transitions=56"
+      ],
+      "result_root": "results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_state_local",
+      "stdout_tail": "      timer_absolute_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_updates = 0\nSection timing counters:\n    bound_step_scan_s = 0.000906 s\n    cleanup_files_s = 0.000003 s\n    cross_above_scan_s = 0.000396 s\n    dict_future_snapshot_s = 0.002568 s\n    dict_prev_snapshot_s = 0.001529 s\n    err_ratio_node_scan_s = 0.002146 s\n    final_step_s = 0.000002 s\n    model_breakpoint_scan_s = 0.011744 s\n    model_evaluate_s = 0.093036 s\n    model_output_set_s = 0.002564 s\n    model_post_update_s = 0.002073 s\n    model_prepare_step_s = 0.005390 s\n    record_point_s = 0.007684 s\n    result_array_conversion_s = 0.001169 s\n    source_breakpoint_scan_s = 0.008838 s\n    source_update_s = 0.003735 s\nModel timing counters:\n    model[0] prbs7_ref_Model:\n        evaluate_calls = 3673\n        evaluate_s = 0.093036 s\n        post_update_s = 0.002073 s\n        prepare_step_s = 0.005390 s\nModel IO counters:\n    output_write_nodes = 8\n    output_writes = 29400\n    voltage_read_event_contexts = 238\n    voltage_read_external_nodes = 3\n    voltage_read_local_nodes = 3\n    voltage_read_missing_nodes = 0\n    voltage_reads = 3912\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 169.2 ms, elapsed = 169.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000260 s\n    csv_write_s = 0.013001 s\n\nWriting CSV: /Users/bucketsran/Documents/TsingProject/vaEvas/behavioral-veriloga-eval/results/e2e-wall-profile-20260603-r36-state-local-top10-sections/evas/vbr1_l1_lfsr_prbs_generator/dut/gold/prbs7/profile_fast_state_local/tran.csv (signals: clk, rst_n, en, serial_out, state_0, state_1, state_2, state_3, state_4, state_5, state_6, state_code)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.2 s, elapsed = 0.2 s.\n\n",
+      "entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "form": "dut",
+      "variant": "gold",
+      "task_id": "prbs7",
+      "equivalence_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      },
+      "accuracy_gate": {
+        "status": "BLOCKED",
+        "reasons": [],
+        "blocked": [
+          "reference_parity:missing strict_current EVAS or Spectre strict reference"
+        ],
+        "reference": null,
+        "reference_kind": "spectre_strict_fallback",
+        "reference_parity": {
+          "status": "blocked",
+          "reason": "missing strict_current EVAS or Spectre strict reference"
+        },
+        "strict_evas_parity": null,
+        "spectre_parity": {}
+      }
+    }
+  ],
+  "summary": {
+    "mode_summary": [
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 10,
+        "simulation_ok_count": 10,
+        "pass_count": 10,
+        "nonpass_count": 0,
+        "total_wall_time_s": 18.849920378,
+        "mean_wall_time_s": 1.8849920378,
+        "geomean_wall_time_s": 1.2017619275048605,
+        "timing_split_totals_s": {
+          "evaluator_e2e_wall_s": 18.849920378,
+          "fixture_materialize_s": 0.1147323750000026,
+          "run_case_behavior_checker_s": 3.955748540999992,
+          "run_case_copy_inputs_s": 0.022821584000000783,
+          "run_case_evas_subprocess_wall_s": 14.70699175100001,
+          "run_case_metric_cleanup_s": 2.7041999993149268e-05,
+          "run_case_outer_wall_s": 18.734006456,
+          "run_case_output_setup_s": 0.011899498999999647,
+          "run_case_preflight_s": 0.008687914999999324,
+          "run_case_run_case_wall_s": 18.733531791999997,
+          "run_case_side_output_validation_s": 6.958300000226014e-05,
+          "run_case_temp_cleanup_s": 0.010836208000005843,
+          "run_case_tempdir_create_s": 0.004835375000003195
+        },
+        "timing_split_means_s": {
+          "evaluator_e2e_wall_s": 1.8849920378,
+          "fixture_materialize_s": 0.01147323750000026,
+          "run_case_behavior_checker_s": 0.3955748540999992,
+          "run_case_copy_inputs_s": 0.0022821584000000785,
+          "run_case_evas_subprocess_wall_s": 1.470699175100001,
+          "run_case_metric_cleanup_s": 2.704199999314927e-06,
+          "run_case_outer_wall_s": 1.8734006455999999,
+          "run_case_output_setup_s": 0.0011899498999999648,
+          "run_case_preflight_s": 0.0008687914999999325,
+          "run_case_run_case_wall_s": 1.8733531791999998,
+          "run_case_side_output_validation_s": 6.958300000226015e-06,
+          "run_case_temp_cleanup_s": 0.0010836208000005842,
+          "run_case_tempdir_create_s": 0.0004835375000003195
+        },
+        "checker_policy_counts": {
+          "row_based": 2,
+          "streaming_validated": 8
+        }
+      },
+      {
+        "backend": "evas",
+        "mode": "profile_fast_state_local",
+        "runs": 10,
+        "simulation_ok_count": 10,
+        "pass_count": 10,
+        "nonpass_count": 0,
+        "total_wall_time_s": 19.032253332000003,
+        "mean_wall_time_s": 1.9032253332000004,
+        "geomean_wall_time_s": 1.161879701747088,
+        "timing_split_totals_s": {
+          "evaluator_e2e_wall_s": 19.032253332000003,
+          "fixture_materialize_s": 0.15398204299999974,
+          "run_case_behavior_checker_s": 3.611638207000008,
+          "run_case_copy_inputs_s": 0.029645332999994833,
+          "run_case_evas_subprocess_wall_s": 15.200392498000003,
+          "run_case_metric_cleanup_s": 2.9333000007403243e-05,
+          "run_case_outer_wall_s": 18.87695091699999,
+          "run_case_output_setup_s": 0.005056123999997664,
+          "run_case_preflight_s": 0.006846126999997204,
+          "run_case_run_case_wall_s": 18.876514083000004,
+          "run_case_side_output_validation_s": 5.7915999990720834e-05,
+          "run_case_temp_cleanup_s": 0.010387127000005325,
+          "run_case_tempdir_create_s": 0.003093581999997208
+        },
+        "timing_split_means_s": {
+          "evaluator_e2e_wall_s": 1.9032253332000004,
+          "fixture_materialize_s": 0.015398204299999973,
+          "run_case_behavior_checker_s": 0.3611638207000008,
+          "run_case_copy_inputs_s": 0.0029645332999994833,
+          "run_case_evas_subprocess_wall_s": 1.5200392498000004,
+          "run_case_metric_cleanup_s": 2.933300000740324e-06,
+          "run_case_outer_wall_s": 1.887695091699999,
+          "run_case_output_setup_s": 0.0005056123999997664,
+          "run_case_preflight_s": 0.0006846126999997204,
+          "run_case_run_case_wall_s": 1.8876514083000004,
+          "run_case_side_output_validation_s": 5.791599999072084e-06,
+          "run_case_temp_cleanup_s": 0.0010387127000005326,
+          "run_case_tempdir_create_s": 0.0003093581999997208
+        },
+        "checker_policy_counts": {
+          "row_based": 2,
+          "streaming_validated": 8
+        }
+      }
+    ],
+    "checker_policy_summary": [
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "implementation": "row_based",
+        "count": 2
+      },
+      {
+        "backend": "evas",
+        "mode": "profile_fast_skip_source_error_control",
+        "implementation": "streaming_validated",
+        "count": 8
+      },
+      {
+        "backend": "evas",
+        "mode": "profile_fast_state_local",
+        "implementation": "row_based",
+        "count": 2
+      },
+      {
+        "backend": "evas",
+        "mode": "profile_fast_state_local",
+        "implementation": "streaming_validated",
+        "count": 8
+      }
+    ],
+    "equivalence_gate_summary": [
+      {
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 10,
+        "pass_count": 0,
+        "fail_count": 0,
+        "blocked_count": 10,
+        "missing_count": 0
+      },
+      {
+        "mode": "profile_fast_state_local",
+        "runs": 10,
+        "pass_count": 0,
+        "fail_count": 0,
+        "blocked_count": 10,
+        "missing_count": 0
+      }
+    ],
+    "accuracy_gate_summary": [
+      {
+        "mode": "profile_fast_skip_source_error_control",
+        "runs": 10,
+        "pass_count": 0,
+        "fail_count": 0,
+        "blocked_count": 10,
+        "missing_count": 0
+      },
+      {
+        "mode": "profile_fast_state_local",
+        "runs": 10,
+        "pass_count": 0,
+        "fail_count": 0,
+        "blocked_count": 10,
+        "missing_count": 0
+      }
+    ],
+    "speedups": [],
+    "equivalence_gated_speedups": [],
+    "accuracy_gated_speedups": [],
+    "geomean_spectre_over_evas_speedup": null,
+    "geomean_equivalence_gated_spectre_over_evas_speedup": null,
+    "geomean_accuracy_gated_spectre_over_evas_speedup": null,
+    "reference_comparisons": [],
+    "reference_comparison_summary": []
+  }
+}

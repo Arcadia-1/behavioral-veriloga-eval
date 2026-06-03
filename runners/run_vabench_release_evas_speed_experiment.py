@@ -74,6 +74,28 @@ MODES: dict[str, Mode] = {
         simulator_options=("evas_profile=fast", "evas_skip_source_error_control=yes"),
         default_off_fast_path=True,
     ),
+    "profile_fast_state_local": Mode(
+        mode_id="profile_fast_state_local",
+        phase="P4",
+        label="Fast profile plus state-local generated evaluate fast path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_state_local_fastpath=yes",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_static_branch": Mode(
+        mode_id="profile_fast_static_branch",
+        phase="P4",
+        label="Fast profile plus static branch read/write generated helpers",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_static_branch_fastpath=yes",
+        ),
+        default_off_fast_path=True,
+    ),
 }
 
 

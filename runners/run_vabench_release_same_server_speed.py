@@ -28,7 +28,12 @@ from run_vabench_release_evas_speed_experiment import (
     task_dir_for,
 )
 from run_gold_dual_suite import compare_waveforms
-from simulate_evas import evaluate_behavior_with_timeout, has_behavior_check, run_case
+from simulate_evas import (
+    behavior_checker_policy,
+    evaluate_behavior_with_timeout,
+    has_behavior_check,
+    run_case,
+)
 from vabench_release_paths import release_entry_dir
 
 
@@ -366,6 +371,7 @@ def evaluate_csv_behavior(
             "score": None,
             "ok": False,
             "notes": ["missing csv"],
+            "checker_policy": behavior_checker_policy(checker_id, ["missing csv"]),
         }
     score, notes = evaluate_behavior_with_timeout(checker_id, csv_path, timeout_s=timeout_s)
     ok = available and score >= 1.0
@@ -374,6 +380,7 @@ def evaluate_csv_behavior(
         "score": score,
         "ok": ok,
         "notes": notes,
+        "checker_policy": behavior_checker_policy(checker_id, notes),
     }
 
 
@@ -771,13 +778,17 @@ def run_evas_mode(
     output_root: Path,
     timeout_s: int,
 ) -> dict[str, object]:
+    t_e2e_start = time.perf_counter()
+    timing_split: dict[str, float] = {}
     mode = EVAS_MODES[mode_id]
     stage_root = selection_output_root(output_root, selection, "staged")
+    t0 = time.perf_counter()
     stage_task, primary_dut, tb_path, fixture_notes = stage_selected_mode_task(
         selection,
         mode_id,
         stage_root=stage_root,
     )
+    timing_split["fixture_materialize_s"] = time.perf_counter() - t0
     result_root = selection_output_root(output_root, selection, "evas") / mode_id
     t0 = time.perf_counter()
     raw = run_case(
@@ -789,12 +800,24 @@ def run_evas_mode(
         task_id_override=selection.task_id,
         checker_task_id_override=selection.checker_id,
     )
-    wall = time.perf_counter() - t0
+    run_case_outer_wall = time.perf_counter() - t0
+    raw_split = raw.get("timing_split", {})
+    if isinstance(raw_split, dict):
+        for key, value in raw_split.items():
+            parsed = float_or_none(value)
+            if parsed is not None:
+                timing_split[f"run_case_{key}"] = parsed
+    timing_split["run_case_outer_wall_s"] = run_case_outer_wall
+    wall = time.perf_counter() - t_e2e_start
+    timing_split["evaluator_e2e_wall_s"] = wall
     artifacts = raw.get("artifacts", [])
     csv_path = Path(str(artifacts[2])) if isinstance(artifacts, list) and len(artifacts) > 2 else None
     scores = raw.get("scores", {})
     if not isinstance(scores, dict):
         scores = {}
+    raw_notes = raw.get("notes", [])
+    if not isinstance(raw_notes, list):
+        raw_notes = [str(raw_notes)]
     behavior_score = float_or_none(scores.get("sim_correct"))
     behavior_available = has_behavior_check(selection.checker_id)
     behavior_ok = behavior_available and behavior_score == 1.0
@@ -810,19 +833,26 @@ def run_evas_mode(
         "backend": "evas",
         "mode": mode_id,
         "phase": mode.phase,
+        "mode_label": mode.label,
+        "simulator_options": list(mode.simulator_options),
+        "default_off_fast_path": mode.default_off_fast_path,
         "status": raw.get("status"),
         "ok": raw.get("status") == "PASS",
         "simulation_ok": simulation_ok,
         "checker_id": selection.checker_id,
+        "checker_policy": raw.get("checker_policy")
+        or behavior_checker_policy(selection.checker_id, [str(note) for note in raw_notes]),
         "csv_path": rel(csv_path) if csv_path is not None and csv_path.exists() else None,
         "behavior_check_available": behavior_available,
         "behavior_score": behavior_score,
         "behavior_ok": behavior_ok,
         "wall_time_s": wall,
+        "simulator_subprocess_wall_s": timing_split.get("run_case_evas_subprocess_wall_s"),
+        "timing_split": timing_split,
         "scores": scores,
         "timing": raw.get("timing", {}),
         "fixture_notes": fixture_notes,
-        "notes": raw.get("notes", []),
+        "notes": raw_notes,
         "result_root": rel(result_root),
         "stdout_tail": raw.get("stdout_tail", "")[-2000:],
     }
@@ -856,16 +886,20 @@ def run_spectre_direct(
     output_root: Path,
     timeout_s: int,
 ) -> dict[str, object]:
+    t_e2e_start = time.perf_counter()
+    timing_split: dict[str, float] = {}
     if spectre_mode not in SPECTRE_MODES:
         raise ValueError(f"unknown Spectre mode: {spectre_mode}")
     mode = SPECTRE_MODES[spectre_mode]
     run_dir = selection_output_root(output_root, selection, "spectre") / spectre_mode
+    t0 = time.perf_counter()
     tb_path, fixture_notes, settings_manifest = copy_gold_to_run_dir(
         selection,
         run_dir,
         spectre_mode=spectre_mode,
         mode=mode,
     )
+    timing_split["fixture_materialize_s"] = time.perf_counter() - t0
     raw_dir = run_dir / f"{tb_path.stem}.raw"
     log_path = run_dir / "spectre.out"
     cmd = [
@@ -899,18 +933,26 @@ def run_spectre_direct(
             timeout=timeout_s,
             check=False,
         )
-        wall = time.perf_counter() - t0
+        subprocess_wall = time.perf_counter() - t0
+        timing_split["spectre_subprocess_wall_s"] = subprocess_wall
     except subprocess.TimeoutExpired as exc:
-        wall = time.perf_counter() - t0
+        subprocess_wall = time.perf_counter() - t0
+        timing_split["spectre_subprocess_wall_s"] = subprocess_wall
+        wall = time.perf_counter() - t_e2e_start
+        timing_split["evaluator_e2e_wall_s"] = wall
         return {
             "backend": "spectre",
             "mode": spectre_mode,
             "status": "timeout",
             "ok": False,
             "simulation_ok": False,
+            "checker_id": selection.checker_id,
+            "checker_policy": behavior_checker_policy(selection.checker_id, ["missing csv"]),
             "wall_time_s": wall,
+            "simulator_subprocess_wall_s": subprocess_wall,
             "returncode": None,
             "timing": {},
+            "timing_split": timing_split,
             "command": " ".join(cmd),
             "spectre_settings": settings_manifest,
             "fixture_notes": fixture_notes,
@@ -918,24 +960,36 @@ def run_spectre_direct(
             "stdout_tail": ((exc.stdout or "") + "\n" + (exc.stderr or ""))[-2000:],
         }
 
+    t0 = time.perf_counter()
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
     if log_path.exists():
         combined = combined + "\n" + log_path.read_text(encoding="utf-8", errors="replace")
+    timing_split["spectre_log_read_s"] = time.perf_counter() - t0
+
+    t0 = time.perf_counter()
     timing = parse_spectre_timing(combined)
+    timing_split["spectre_log_parse_s"] = time.perf_counter() - t0
     ok = proc.returncode == 0 and raw_dir.exists()
     csv_path = run_dir / "tran_spectre.csv"
     parse_info: dict[str, object] | None = None
     parse_notes: list[str] = []
     if ok:
         try:
+            t0 = time.perf_counter()
             parse_info = write_spectre_psf_csv(raw_dir, csv_path)
+            timing_split["psf_parse_s"] = time.perf_counter() - t0
         except Exception as exc:  # noqa: BLE001 - record parser failures in the artifact.
+            timing_split["psf_parse_s"] = time.perf_counter() - t0
             parse_notes.append(f"{type(exc).__name__}: {exc}")
+    t0 = time.perf_counter()
     behavior = evaluate_csv_behavior(
         selection.checker_id,
         csv_path if csv_path.exists() else None,
         timeout_s=timeout_s,
     )
+    timing_split["behavior_checker_s"] = time.perf_counter() - t0
+    wall = time.perf_counter() - t_e2e_start
+    timing_split["evaluator_e2e_wall_s"] = wall
     simulation_ok = ok and csv_path.exists()
     return {
         "backend": "spectre",
@@ -944,14 +998,17 @@ def run_spectre_direct(
         "ok": simulation_ok and behavior.get("ok") is True,
         "simulation_ok": simulation_ok,
         "checker_id": selection.checker_id,
+        "checker_policy": behavior["checker_policy"],
         "csv_path": rel(csv_path) if csv_path.exists() else None,
         "psf_parse": parse_info,
         "behavior_check_available": behavior["check_available"],
         "behavior_score": behavior["score"],
         "behavior_ok": behavior["ok"],
         "wall_time_s": wall,
+        "simulator_subprocess_wall_s": subprocess_wall,
         "returncode": proc.returncode,
         "timing": timing,
+        "timing_split": timing_split,
         "command": " ".join(cmd),
         "spectre_settings": settings_manifest,
         "result_root": rel(run_dir),
@@ -1127,6 +1184,16 @@ def result_mode_label(result: dict[str, object]) -> str:
     return f"{result.get('backend')}/{result.get('mode')}"
 
 
+def choose_reference_spectre(
+    cells: dict[tuple[str, str], dict[str, object]],
+) -> tuple[str | None, dict[str, object] | None]:
+    for mode in REFERENCE_SPECTRE_MODE_PRIORITY:
+        candidate = cells.get(("spectre", mode))
+        if candidate is not None:
+            return mode, candidate
+    return None, None
+
+
 def apply_equivalence_gates(results: list[dict[str, object]], spectre_modes: list[str]) -> None:
     grouped: dict[tuple[str, str, str], dict[tuple[str, str], dict[str, object]]] = defaultdict(dict)
     for result in results:
@@ -1141,13 +1208,20 @@ def apply_equivalence_gates(results: list[dict[str, object]], spectre_modes: lis
     for (_entry_id, _form, _variant, task_id), cells in grouped.items():
         strict = cells.get(("evas", "strict_current"))
         strict_csv = resolve_artifact_path(strict.get("csv_path")) if strict else None
+        reference_spectre_mode, reference_spectre = choose_reference_spectre(cells)
+        reference_spectre_csv = (
+            resolve_artifact_path(reference_spectre.get("csv_path")) if reference_spectre else None
+        )
         for (backend, mode), result in cells.items():
             if backend != "evas":
                 continue
 
             reasons: list[str] = []
             blocked: list[str] = []
-            strict_parity: dict[str, object]
+            reference_parity: dict[str, object]
+            reference_label: str | None = None
+            reference_kind: str | None = None
+            strict_parity: dict[str, object] | None = None
             spectre_parity: dict[str, object] = {}
 
             if result.get("simulation_ok") is not True:
@@ -1160,19 +1234,40 @@ def apply_equivalence_gates(results: list[dict[str, object]], spectre_modes: lis
             candidate_csv = resolve_artifact_path(result.get("csv_path"))
             if mode == "strict_current":
                 strict_parity = {"status": "self"}
+                reference_parity = strict_parity
+                reference_label = result_mode_label(result)
+                reference_kind = "strict_evas_self"
             elif strict is None or strict.get("simulation_ok") is not True or strict_csv is None:
-                strict_parity = {
-                    "status": "blocked",
-                    "reason": "missing strict_current EVAS reference",
-                }
+                if reference_spectre is None or reference_spectre.get("simulation_ok") is not True:
+                    reference_parity = {
+                        "status": "blocked",
+                        "reason": "missing strict_current EVAS or Spectre strict reference",
+                    }
+                elif reference_spectre.get("behavior_check_available") is not True:
+                    reference_parity = {
+                        "status": "blocked",
+                        "reason": "reference_spectre_no_behavior_checker",
+                    }
+                elif reference_spectre.get("behavior_ok") is not True:
+                    reference_parity = {
+                        "status": "needs_review",
+                        "reason": "reference_spectre_behavior_check_failed",
+                    }
+                else:
+                    reference_parity = compare_csv_pair(task_id, candidate_csv, reference_spectre_csv)
+                reference_label = result_mode_label(reference_spectre) if reference_spectre else None
+                reference_kind = "spectre_strict_fallback"
             else:
                 strict_parity = compare_csv_pair(task_id, candidate_csv, strict_csv)
+                reference_parity = strict_parity
+                reference_label = result_mode_label(strict)
+                reference_kind = "strict_evas"
 
-            strict_class, strict_reason = classify_parity(strict_parity)
-            if strict_class == "blocked":
-                blocked.append(f"strict_evas_parity:{strict_reason}")
-            elif strict_class == "fail":
-                reasons.append(f"strict_evas_parity:{strict_reason}")
+            reference_class, reference_reason = classify_parity(reference_parity)
+            if reference_class == "blocked":
+                blocked.append(f"reference_parity:{reference_reason}")
+            elif reference_class == "fail":
+                reasons.append(f"reference_parity:{reference_reason}")
 
             for spectre_mode in spectre_modes:
                 spectre = cells.get(("spectre", spectre_mode))
@@ -1210,6 +1305,9 @@ def apply_equivalence_gates(results: list[dict[str, object]], spectre_modes: lis
                 "status": status,
                 "reasons": reasons,
                 "blocked": blocked,
+                "reference": reference_label,
+                "reference_kind": reference_kind,
+                "reference_parity": reference_parity,
                 "strict_evas_parity": strict_parity,
                 "spectre_parity": spectre_parity,
             }
@@ -1308,8 +1406,27 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
         by_backend_mode[(str(result["backend"]), str(result["mode"]))].append(result)
 
     mode_summary: list[dict[str, object]] = []
+    checker_policy_summary: list[dict[str, object]] = []
     for (backend, mode), rows in sorted(by_backend_mode.items()):
         walls = [float(row["wall_time_s"]) for row in rows if float_or_none(row.get("wall_time_s")) is not None]
+        split_totals: dict[str, float] = defaultdict(float)
+        split_counts: dict[str, int] = defaultdict(int)
+        checker_policy_counts: dict[str, int] = defaultdict(int)
+        for row in rows:
+            policy = row.get("checker_policy", {})
+            implementation = "missing"
+            if isinstance(policy, dict):
+                implementation = str(policy.get("implementation") or "missing")
+            checker_policy_counts[implementation] += 1
+            split = row.get("timing_split", {})
+            if not isinstance(split, dict):
+                continue
+            for key, value in split.items():
+                parsed = float_or_none(value)
+                if parsed is None:
+                    continue
+                split_totals[str(key)] += parsed
+                split_counts[str(key)] += 1
         mode_summary.append(
             {
                 "backend": backend,
@@ -1321,8 +1438,24 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
                 "total_wall_time_s": sum(walls),
                 "mean_wall_time_s": (sum(walls) / len(walls)) if walls else None,
                 "geomean_wall_time_s": geomean(walls),
+                "timing_split_totals_s": dict(sorted(split_totals.items())),
+                "timing_split_means_s": {
+                    key: split_totals[key] / split_counts[key]
+                    for key in sorted(split_totals)
+                    if split_counts[key] > 0
+                },
+                "checker_policy_counts": dict(sorted(checker_policy_counts.items())),
             }
         )
+        for implementation, count in sorted(checker_policy_counts.items()):
+            checker_policy_summary.append(
+                {
+                    "backend": backend,
+                    "mode": mode,
+                    "implementation": implementation,
+                    "count": count,
+                }
+            )
 
     speedups: list[dict[str, object]] = []
     equivalence_gated_speedups: list[dict[str, object]] = []
@@ -1394,6 +1527,7 @@ def summarize(results: list[dict[str, object]]) -> dict[str, object]:
     ref_comparison_rows, ref_comparison_summary = reference_comparisons(results)
     return {
         "mode_summary": mode_summary,
+        "checker_policy_summary": checker_policy_summary,
         "equivalence_gate_summary": gate_summary,
         "accuracy_gate_summary": gate_summary,
         "speedups": speedups,
@@ -1521,11 +1655,39 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
         f"- Spectre modes: `{', '.join(artifact['spectre_modes'])}`",
         f"- Output root: `{artifact['output_root']}`",
         "",
-        "## Mode Summary",
-        "",
-        "| Backend | Mode | Runs | Sim OK | Behavior PASS | Behavior non-PASS | Total wall s | Mean wall s |",
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
+    evas_mode_specs = artifact.get("evas_mode_specs", {})
+    if isinstance(evas_mode_specs, dict) and evas_mode_specs:
+        lines.extend(
+            [
+                "## EVAS Mode Specs",
+                "",
+                "| Mode | Phase | Default-off | Simulator options |",
+                "| --- | --- | --- | --- |",
+            ]
+        )
+        for mode_id in artifact["evas_modes"]:
+            spec = evas_mode_specs.get(mode_id, {})
+            if not isinstance(spec, dict):
+                spec = {}
+            options = " ".join(str(item) for item in spec.get("simulator_options", []))
+            lines.append(
+                "| `{mode}` | `{phase}` | `{default_off}` | {options} |".format(
+                    mode=mode_id,
+                    phase=spec.get("phase", "-"),
+                    default_off=spec.get("default_off_fast_path", "-"),
+                    options=markdown_table_cell(options, code=True),
+                )
+            )
+        lines.append("")
+    lines.extend(
+        [
+            "## Mode Summary",
+            "",
+            "| Backend | Mode | Runs | Sim OK | Behavior PASS | Behavior non-PASS | Total wall s | Mean wall s |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
     for row in summary["mode_summary"]:
         lines.append(
             "| {backend} | {mode} | {runs} | {simulation_ok_count} | {pass_count} | {nonpass_count} | {total:.3f} | {mean} |".format(
@@ -1539,6 +1701,30 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
                 mean="None" if row["mean_wall_time_s"] is None else f"{float(row['mean_wall_time_s']):.3f}",
             )
         )
+
+    if summary.get("checker_policy_summary"):
+        lines.extend(
+            [
+                "",
+                "## Checker Policy Summary",
+                "",
+                "Behavior checkers are shared by EVAS and Spectre through the same checker id. "
+                "`streaming_validated` means the checker uses a parity-validated streaming implementation; "
+                "`row_based` means the legacy row-list implementation was used.",
+                "",
+                "| Backend | Mode | Checker implementation | Rows |",
+                "| --- | --- | --- | ---: |",
+            ]
+        )
+        for row in summary["checker_policy_summary"]:
+            lines.append(
+                "| {backend} | {mode} | `{implementation}` | {count} |".format(
+                    backend=row["backend"],
+                    mode=row["mode"],
+                    implementation=row["implementation"],
+                    count=row["count"],
+                )
+            )
 
     if summary.get("reference_comparison_summary"):
         lines.extend(
@@ -1690,7 +1876,11 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     lines.extend(
         [
             "",
-            "## Simulation-Only Speedups",
+            "## E2E Wall-Time Speedups",
+            "",
+            "The primary `wall_time_s` now uses the same evaluator E2E boundary for both EVAS and Spectre: "
+            "fixture materialization/staging, simulator subprocess, conversion/parsing, checker, and validation. "
+            "Use `simulator_subprocess_wall_s` or `timing_split` for simulator-only analysis.",
             "",
             "| Entry | Form | Variant | Spectre mode | EVAS mode | Spectre wall s | EVAS wall s | Spectre/EVAS |",
             "| --- | --- | --- | --- | --- | ---: | ---: | ---: |",
@@ -1710,6 +1900,41 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
                 sp="None" if speedup is None else f"{float(speedup):.3f}",
             )
         )
+
+    split_rows = []
+    for mode_row in summary["mode_summary"]:
+        totals = mode_row.get("timing_split_totals_s", {})
+        if not isinstance(totals, dict) or not totals:
+            continue
+        split_rows.append((mode_row, totals))
+    if split_rows:
+        lines.extend(
+            [
+                "",
+                "## Timing Split Totals",
+                "",
+                "These totals explain what is inside the unified E2E wall time. "
+                "EVAS `run_case_*` fields come from `simulate_evas.run_case`; Spectre fields come from the direct Spectre runner.",
+                "",
+                "| Backend | Mode | Field | Total s | Mean s |",
+                "| --- | --- | --- | ---: | ---: |",
+            ]
+        )
+        for mode_row, totals in split_rows:
+            means = mode_row.get("timing_split_means_s", {})
+            if not isinstance(means, dict):
+                means = {}
+            for field, total in sorted(totals.items()):
+                mean = float_or_none(means.get(field))
+                lines.append(
+                    "| {backend} | {mode} | `{field}` | {total:.6f} | {mean} |".format(
+                        backend=mode_row["backend"],
+                        mode=mode_row["mode"],
+                        field=field,
+                        total=float(total),
+                        mean="-" if mean is None else f"{mean:.6f}",
+                    )
+                )
 
     lines.extend(
         [
@@ -1767,6 +1992,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--evas-mode", action="append", choices=tuple(EVAS_MODES), default=[])
     ap.add_argument("--spectre-mode", action="append", choices=tuple(SPECTRE_MODES), default=[])
     ap.add_argument("--skip-evas", action="store_true", help="Run Spectre modes only; useful for settings smoke tests.")
+    ap.add_argument("--skip-spectre", action="store_true", help="Run EVAS modes only; useful when Cadence license checkout is unavailable.")
     ap.add_argument("--timeout-s", type=int, default=300)
     ap.add_argument("--jobs", type=int, default=1, help="Parallel backend/mode jobs. Use 8 for matrix runs on thu-sui.")
     ap.add_argument(
@@ -1800,7 +2026,7 @@ def main() -> int:
     )
     selections = [prepare_selection(row) for row in selected_rows]
     evas_modes = [] if args.skip_evas else (args.evas_mode or ["strict_current", "profile_fast_skip_source_error_control"])
-    spectre_modes = args.spectre_mode or ["ax"]
+    spectre_modes = [] if args.skip_spectre else (args.spectre_mode or ["ax"])
 
     if args.audit_fixtures_only:
         artifact = audit_fixture_materialization(selections, output_root=output_root)
@@ -1838,6 +2064,15 @@ def main() -> int:
         "selected_rows": len(selections),
         "jobs": max(1, args.jobs),
         "evas_modes": evas_modes,
+        "evas_mode_specs": {
+            mode_id: {
+                "phase": EVAS_MODES[mode_id].phase,
+                "label": EVAS_MODES[mode_id].label,
+                "simulator_options": list(EVAS_MODES[mode_id].simulator_options),
+                "default_off_fast_path": EVAS_MODES[mode_id].default_off_fast_path,
+            }
+            for mode_id in evas_modes
+        },
         "spectre_modes": spectre_modes,
         "output_root": rel(output_root),
         "results": results,
