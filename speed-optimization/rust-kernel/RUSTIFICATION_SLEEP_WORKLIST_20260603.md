@@ -2,7 +2,7 @@
 
 Status: `active`
 
-Scope: EVAS kernel Rustification after `033 - Indexed State Runtime Storage`
+Scope: EVAS kernel Rustification after `034 - Static Lifecycle Fastpath`
 
 ## Current Position
 
@@ -20,6 +20,8 @@ Scope: EVAS kernel Rustification after `033 - Indexed State Runtime Storage`
 
 033 新增 opt-in indexed state runtime mirror，scalar/int/array state 写入可同步到 slot storage。stateful sample waveform parity 通过，但 mirror path median `0.010790875 s` 慢于 default `0.007966792 s`，说明它是 Rust state ABI 前置，不是当前 Python 加速。
 
+034 根据用户要求临时切换到大瓶颈优化，而不是继续低收益 ABI 预备件。它复用 compiler capability flags，把纯静态模型默认从每步空 `_prepare_step()` 和 absolute timer expire 里拿出来。80-model static chain same-code A/B 中，median wall 从 `1.314976 s` 降到 `0.885306 s`，约 `1.485x`；profile-section 显示 `model_prepare_step_s` 从 `0.412302 s` 降到 `0`。
+
 但这还不是最终速度优势：
 
 ```text
@@ -28,12 +30,13 @@ default Python median: 0.333597084 s
 Rust segment median:  0.395932084 s
 ```
 
-当前主要问题不在 Rust 乘加，而在 Python/Rust 边界、Python 侧状态维护和 coverage：
+当前主要问题不在 Rust 乘加，而在 Python/Rust 边界、Python 侧状态维护、coverage，以及 034 后真实 benchmark 上剩余的 section 分布：
 
 - Rust 输出每步仍要同步回 Python `node_voltages`，030 DC sample 中 `node_voltage_syncs = 64064`；
 - indexed dirty validation 仍每步检查 source/output tuple，030 DC sample 中 `dirty_nodes_checked = 65065`；
 - Rust/Python FFI 和 ctypes 边界仍存在；
 - Rust eligibility 只覆盖 literal static affine，真实 benchmark 覆盖率还低。
+- 对 static-heavy Python 模型，空 lifecycle 已经被收掉；后续需要重新 profile，不能沿用 033 前的瓶颈排序。
 
 ## Sleep-After Priority
 
@@ -45,7 +48,7 @@ Rust segment median:  0.395932084 s
 | 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | done: compiler + simulator + netlist override tests |
 | 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base/index runtime lowering | production/prototype | 把 `V(bus[i])` 简单场景从重复字符串格式化降为 resolver cache | 2D bus、state-index、event context | done: full pytest + cache hit counters |
 | 033 | `033-indexed-state-runtime-storage.md` | Indexed state runtime storage | prototype | 把 scalar/int/array state 映射到 opt-in indexed mirror | Python/Rust state divergence | done: full pytest + state parity counters |
-| 034 | `034-vabench-rust-coverage-smoke.md` | vaBench Rust eligibility coverage smoke | audit | 统计 release rows 中可 Rust 化模型比例 | coverage 被误解为 speed claim | coverage report only |
+| 034 | `034-static-lifecycle-fastpath.md` | Static lifecycle fastpath | production default | 跳过静态模型每步空 prepare/timer 生命周期维护 | eligibility guard 过宽 | done: full pytest + 1.485x local microbench |
 | 035 | `035-rust-expression-ir.md` | Rust expression IR | prototype | 把普通 arithmetic expression lowering 成 Rust op tree | Verilog-A coercion 语义 | expression parity fixture |
 | 036 | `036-rust-static-branch-evaluator.md` | Rust static branch evaluator | prototype | 支持更一般的无事件 continuous assignments | unsupported operator 漏判 | operator eligibility tests |
 | 037 | `037-rust-model-state-abi.md` | Rust model state ABI | prototype | Rust 读写 indexed scalar/int/array state | state lifecycle | state round-trip tests |
@@ -65,11 +68,12 @@ Rust segment median:  0.395932084 s
 
 ## Recommended Night Run
 
-先做低风险内核工作，不急着跑 Cadence full rerun：
+034 后建议先重跑 benchmark-level profile，再决定继续 Rust expression IR 还是优先处理新的最大 section。不急着跑 Cadence full rerun：
 
 ```bash
 cd /Users/bucketsran/Documents/TsingProject/vaEvas/EVAS
-cargo test --release
+cd evas/rust_core && cargo test --release
+cd ../..
 python3 -m pytest tests/test_rust_backend.py tests/test_indexed_backend.py tests/test_engine.py tests/test_netlist.py -q
 python3 -m pytest tests -q
 ```
@@ -88,6 +92,7 @@ python3 -m pytest tests -q
 
 - 可以说：027 证明 batching 能显著降低 Rust FFI overhead。
 - 可以说：027 后新的瓶颈转移到 Python output sync、indexed validation 和 lifecycle bookkeeping。
+- 可以说：034 证明纯静态模型每步空 lifecycle 是真实 Python 内核瓶颈，local static-chain sample 约 `1.49x`。
 - 不能说：EVAS Rust path 已经比默认 Python 更快。
 - 不能说：EVAS 已经 paper-facing 快于 Spectre AX。
 
