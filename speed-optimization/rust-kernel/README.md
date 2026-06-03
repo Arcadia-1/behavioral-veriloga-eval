@@ -39,7 +39,8 @@
 | 030 | `audits/030-segment-lifecycle-fastpath.md` | done | Rust static segment 成功时跳过 compiler-proven 空 lifecycle bookkeeping，fallback 仍走原 Python 生命周期 |
 | 031 | `audits/031-runtime-parameter-affine-lowering.md` | done | 支持 parameter-only coefficient expression，在 instance override 后求值再进入 Rust static segment |
 | 032 | `audits/032-dynamic-bus-base-offset-lowering.md` | done | dynamic bus read/write 经过 base/index resolver cache，减少重复节点字符串构造 |
-| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，下一步从 indexed state runtime storage 推进 |
+| 033 | `audits/033-indexed-state-runtime-storage.md` | done | 新增 opt-in indexed state runtime mirror，为后续 Rust state ABI 准备 scalar/int/array slots |
+| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，下一步从 vaBench Rust coverage smoke 推进 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -77,6 +78,7 @@
 | 2026-06-03 | Rust segment lifecycle fastpath | Rust static segment 成功时跳过 `_prepare_step()`、timer expire 和 post-update 空检查；DC fixed-step sample `lifecycle_skips=64064`，Rust median `0.3959s` 仍慢于 default Python `0.3336s`，说明剩余瓶颈在 FFI/sync/validation | EVAS commit `3589841` |
 | 2026-06-03 | Runtime parameter affine lowering | parameterized affine model 可进入 Rust static segment，并在 instance override 后求 `gain/bias`；64-model parameterized sample `runtime_param_ops=64`、Rust median `0.2322s`、default Python `0.1918s` | EVAS commit `1b5330a` |
 | 2026-06-03 | Dynamic bus base/index runtime lowering | dynamic bus read/write 从直接格式化节点名改成 `_resolve_dynamic_node()` cache；16-lane sample `hits=16032`、`misses=16`，median `0.0346s -> 0.0307s`，但还不是完整 node-id/Rust offset lowering | EVAS commit `a91570a` |
+| 2026-06-03 | Indexed state runtime storage | 新增 opt-in scalar/int/array state mirror；stateful sample waveform parity pass，但 median `0.0080s -> 0.0108s`，说明它是 Rust ABI 前置而非当前 Python 加速 | EVAS commit `09f9ef5` |
 
 ## 后续候选项目
 
@@ -137,6 +139,7 @@ audits/029-indexed-dirty-validation-fastpath.md
 audits/030-segment-lifecycle-fastpath.md
 audits/031-runtime-parameter-affine-lowering.md
 audits/032-dynamic-bus-base-offset-lowering.md
+audits/033-indexed-state-runtime-storage.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
