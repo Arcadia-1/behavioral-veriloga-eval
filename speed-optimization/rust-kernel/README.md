@@ -36,7 +36,8 @@
 | 027 | `audits/027-rust-consecutive-model-segment-batch.md` | done | 把连续 eligible static affine models 合成 per-step segment batch，Rust FFI calls 从 `64064` 降到 `1001` |
 | 028 | `audits/028-rust-output-node-sync-deferral.md` | done | 每步保留 `node_voltages` 同步，但把 `output_nodes` 写入延迟到 final 前，减少 Python object 写入 |
 | 029 | `audits/029-indexed-dirty-validation-fastpath.md` | done | 全 Rust static segment 下用预计算 dirty node tuple 替代冗余全量 indexed validation |
-| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，重点收掉 output sync、indexed validation 和 lifecycle bookkeeping |
+| 030 | `audits/030-segment-lifecycle-fastpath.md` | done | Rust static segment 成功时跳过 compiler-proven 空 lifecycle bookkeeping，fallback 仍走原 Python 生命周期 |
+| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，下一步从 parameter affine lowering 扩大 Rust 覆盖率 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -71,6 +72,7 @@
 | 2026-06-03 | Rust consecutive segment batch | 连续 eligible static affine models 合成一个 per-step Rust segment，FFI calls 从 `64064` 降到 `1001`；Rust median 从 `0.8521s` 改到 `0.3255s`，但默认 Python sample 仍更快 | EVAS commit `b9d5065` |
 | 2026-06-03 | Rust output-node sync deferral | Rust static affine 每步继续同步外部 `node_voltages`，但 `output_nodes` 只在 final 前补齐；64-model sample 中 `output_syncs` 降到 `64`，Rust median `0.3709s` | EVAS commit `8782c11` |
 | 2026-06-03 | Indexed dirty validation fastpath | 全 Rust static segment 预计算 source/output dirty tuple，跳过 snapshot 后冗余 full diff；64-model sample `values_checked=65390`、Rust median `0.3314s` | EVAS commit `16cbe9d` |
+| 2026-06-03 | Rust segment lifecycle fastpath | Rust static segment 成功时跳过 `_prepare_step()`、timer expire 和 post-update 空检查；DC fixed-step sample `lifecycle_skips=64064`，Rust median `0.3959s` 仍慢于 default Python `0.3336s`，说明剩余瓶颈在 FFI/sync/validation | EVAS commit `3589841` |
 
 ## 后续候选项目
 
@@ -78,7 +80,7 @@
 
 | 优先级 | 项目 | 核心目标 | 主要风险 |
 |---|---|---|---|
-| P1 | Segment lifecycle fastpath | 对 compiler-proven static segment 跳过空 prepare/timer/post-update bookkeeping | eligibility guard 过宽 |
+| P1 | Runtime parameter affine lowering | 扩大 Rust static affine 覆盖率，让 gain/bias 来自 parameter override 的模型也能进入 Rust segment | 参数 override、类型 coercion、默认值 |
 | P1 | Dynamic bus runtime lowering | 把 019/023 暴露的 bus metadata/helper 进一步落到稳定 base+offset runtime | dynamic index、2D bus 和 integer state coercion |
 | P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
 | P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
@@ -129,6 +131,7 @@ audits/026-opt-in-static-continuous-model-rust-eval.md
 audits/027-rust-consecutive-model-segment-batch.md
 audits/028-rust-output-node-sync-deferral.md
 audits/029-indexed-dirty-validation-fastpath.md
+audits/030-segment-lifecycle-fastpath.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。

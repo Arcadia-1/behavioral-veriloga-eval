@@ -2,24 +2,31 @@
 
 Status: `active`
 
-Scope: EVAS kernel Rustification after `027 - Rust Consecutive Model Segment Batch`
+Scope: EVAS kernel Rustification after `030 - Segment Lifecycle Fastpath`
 
 ## Current Position
 
-027 已经把 Rust static affine path 的 FFI 调用从 `64064` 次降到 `1001` 次，Rust opt-in path 在同一 microbenchmark 中从 median `0.8521 s` 改善到 `0.3255 s`。
+027 已经把 Rust static affine path 的 FFI 调用从 `64064` 次降到 `1001` 次，Rust opt-in path 在当时的 microbenchmark 中从 median `0.8521 s` 改善到 `0.3255 s`。
+
+028-030 继续收掉了三类 Python 外层成本：
+
+- 028 把 `output_nodes` 同步从每步延迟到 final 前；
+- 029 把全 Rust static segment 的 indexed validation 从全量 diff 改成预计算 dirty tuple；
+- 030 让 Rust static segment 成功时跳过每个 model 的 Python `_prepare_step()`、timer expire 和 post-update 空检查。
 
 但这还不是最终速度优势：
 
 ```text
-default Python median: 0.204989042 s
-Rust segment median:  0.555189333 s
+030 DC fixed-step sample:
+default Python median: 0.333597084 s
+Rust segment median:  0.395932084 s
 ```
 
-当前主要问题不在 Rust 乘加，而在 Python 侧状态维护和 coverage：
+当前主要问题不在 Rust 乘加，而在 Python/Rust 边界、Python 侧状态维护和 coverage：
 
-- Rust 输出每步仍同步回 Python dict/output_nodes，027 sample 中 `output_syncs = 64064`；
-- indexed array 每步仍做全量 sync/validate，027 sample 中 `indexed_syncs = 1001`；
-- segment 内每个 model 仍走 Python `_prepare_step()`、timer expire 和 post-update bookkeeping；
+- Rust 输出每步仍要同步回 Python `node_voltages`，030 DC sample 中 `node_voltage_syncs = 64064`；
+- indexed dirty validation 仍每步检查 source/output tuple，030 DC sample 中 `dirty_nodes_checked = 65065`；
+- Rust/Python FFI 和 ctypes 边界仍存在；
 - Rust eligibility 只覆盖 literal static affine，真实 benchmark 覆盖率还低。
 
 ## Sleep-After Priority
@@ -28,7 +35,7 @@ Rust segment median:  0.555189333 s
 |---:|---|---|---|---|---|---|
 | 028 | `028-rust-output-node-sync-deferral.md` | Rust output node sync deferral | production opt-in | 每步保留 `node_voltages`，延迟 `output_nodes` 写入 | stale `output_nodes` | done: full pytest + counters |
 | 029 | `029-indexed-dirty-validation-fastpath.md` | Dirty-node indexed validation | production opt-in | 用预计算 dirty node tuple 替代冗余全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | done: full pytest + checked values 下降 |
-| 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | production opt-in | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | eligibility guard 过宽 | eligibility guard + full pytest |
+| 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | production opt-in | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | eligibility guard 过宽 | done: full pytest + lifecycle skip counters |
 | 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | parser/compiler tests + netlist parameter smoke |
 | 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base+offset runtime lowering | production/prototype | 把 `V(bus[i])` 简单场景从字符串格式化降为 id offset | 2D bus、state-index、event context | bus lowering regression tests |
 | 033 | `033-indexed-state-runtime-storage.md` | Indexed state runtime storage | prototype | 把 scalar/int/array state 映射到 indexed storage | Python/Rust state divergence | state parity tests |
