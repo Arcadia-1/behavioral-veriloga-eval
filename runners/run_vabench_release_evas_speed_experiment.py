@@ -96,6 +96,17 @@ MODES: dict[str, Mode] = {
         ),
         default_off_fast_path=True,
     ),
+    "profile_fast_transition_unchanged_on": Mode(
+        mode_id="profile_fast_transition_unchanged_on",
+        phase="P5",
+        label="Fast profile plus opt-in unchanged transition-target fast path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_transition_unchanged_fastpath=true",
+        ),
+        default_off_fast_path=True,
+    ),
 }
 
 

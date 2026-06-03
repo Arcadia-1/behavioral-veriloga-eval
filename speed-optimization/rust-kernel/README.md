@@ -42,6 +42,7 @@
 | 033 | `audits/033-indexed-state-runtime-storage.md` | done | 新增 opt-in indexed state runtime mirror，为后续 Rust state ABI 准备 scalar/int/array slots |
 | 034 | `audits/034-static-lifecycle-fastpath.md` | done | profile-driven 大瓶颈优化：静态模型默认跳过空 `_prepare_step()` 和 timer expire 生命周期维护 |
 | 035 | `audits/035-state-local-and-static-branch-real-slice-verification.md` | done | 在真实 top-wall 10 上验证 state-local/static-branch/voltage guard，结论是 state-local 不应默认开启，static-branch 只有约 1% 混合收益 |
+| 036 | `audits/036-transition-unchanged-target-fastpath.md` | done | 把 transition target/参数不变时的 no-op reset 做成 opt-in fastpath；局部 `_transition` 调用减少，但 top-wall 10 没有稳定总收益，因此默认关闭 |
 | sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，034 后先按 benchmark profile 决定下一步 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
@@ -83,6 +84,7 @@
 | 2026-06-03 | Indexed state runtime storage | 新增 opt-in scalar/int/array state mirror；stateful sample waveform parity pass，但 median `0.0080s -> 0.0108s`，说明它是 Rust ABI 前置而非当前 Python 加速 | EVAS commit `09f9ef5` |
 | 2026-06-03 | Static lifecycle fastpath | 复用 compiler capability flags，让纯静态模型默认跳过每步空 `_prepare_step()` 和 absolute timer expire；80-model static chain median `1.3150s -> 0.8853s`，约 `1.49x` | EVAS commit `4f20ee1` |
 | 2026-06-03 | Real-slice state-local/static-branch verification | state-local generated evaluate 在 top-wall 10 section profile 中 `model_evaluate_s` 从 `6.0607s` 变成 `6.4126s`，不默认开启；static branch top-wall 10 E2E `14.2529s -> 14.1265s`，约 `1.009x`，只能算小幅混合收益 | EVAS commit `623b7f5` |
+| 2026-06-03 | Transition unchanged-target opt-in fastpath | `transition()` target/参数完全不变时可跳过 no-op `set_target()` 和第二次 `evaluate()`；SAR cProfile 中 `set_target` `261240 -> 6623`，但 top-wall 10 E2E candidate 总 wall `17.5862s -> 17.7964s`，默认关闭 | EVAS commit `c909463` |
 
 ## 后续候选项目
 
