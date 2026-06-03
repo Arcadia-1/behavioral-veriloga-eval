@@ -38,7 +38,8 @@
 | 029 | `audits/029-indexed-dirty-validation-fastpath.md` | done | 全 Rust static segment 下用预计算 dirty node tuple 替代冗余全量 indexed validation |
 | 030 | `audits/030-segment-lifecycle-fastpath.md` | done | Rust static segment 成功时跳过 compiler-proven 空 lifecycle bookkeeping，fallback 仍走原 Python 生命周期 |
 | 031 | `audits/031-runtime-parameter-affine-lowering.md` | done | 支持 parameter-only coefficient expression，在 instance override 后求值再进入 Rust static segment |
-| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，下一步从 dynamic bus base+offset lowering 推进 |
+| 032 | `audits/032-dynamic-bus-base-offset-lowering.md` | done | dynamic bus read/write 经过 base/index resolver cache，减少重复节点字符串构造 |
+| sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，下一步从 indexed state runtime storage 推进 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
 ## 项目发展历程
@@ -75,6 +76,7 @@
 | 2026-06-03 | Indexed dirty validation fastpath | 全 Rust static segment 预计算 source/output dirty tuple，跳过 snapshot 后冗余 full diff；64-model sample `values_checked=65390`、Rust median `0.3314s` | EVAS commit `16cbe9d` |
 | 2026-06-03 | Rust segment lifecycle fastpath | Rust static segment 成功时跳过 `_prepare_step()`、timer expire 和 post-update 空检查；DC fixed-step sample `lifecycle_skips=64064`，Rust median `0.3959s` 仍慢于 default Python `0.3336s`，说明剩余瓶颈在 FFI/sync/validation | EVAS commit `3589841` |
 | 2026-06-03 | Runtime parameter affine lowering | parameterized affine model 可进入 Rust static segment，并在 instance override 后求 `gain/bias`；64-model parameterized sample `runtime_param_ops=64`、Rust median `0.2322s`、default Python `0.1918s` | EVAS commit `1b5330a` |
+| 2026-06-03 | Dynamic bus base/index runtime lowering | dynamic bus read/write 从直接格式化节点名改成 `_resolve_dynamic_node()` cache；16-lane sample `hits=16032`、`misses=16`，median `0.0346s -> 0.0307s`，但还不是完整 node-id/Rust offset lowering | EVAS commit `a91570a` |
 
 ## 后续候选项目
 
@@ -134,6 +136,7 @@ audits/028-rust-output-node-sync-deferral.md
 audits/029-indexed-dirty-validation-fastpath.md
 audits/030-segment-lifecycle-fastpath.md
 audits/031-runtime-parameter-affine-lowering.md
+audits/032-dynamic-bus-base-offset-lowering.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
