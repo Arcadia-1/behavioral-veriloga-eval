@@ -2,7 +2,7 @@
 
 Status: `active`
 
-Scope: EVAS kernel Rustification after `030 - Segment Lifecycle Fastpath`
+Scope: EVAS kernel Rustification after `031 - Runtime Parameter Affine Lowering`
 
 ## Current Position
 
@@ -13,6 +13,8 @@ Scope: EVAS kernel Rustification after `030 - Segment Lifecycle Fastpath`
 - 028 把 `output_nodes` 同步从每步延迟到 final 前；
 - 029 把全 Rust static segment 的 indexed validation 从全量 diff 改成预计算 dirty tuple；
 - 030 让 Rust static segment 成功时跳过每个 model 的 Python `_prepare_step()`、timer expire 和 post-update 空检查。
+
+031 扩大了 Rust static affine coverage：`gain/bias` 可以来自 REAL/INTEGER parameter-only arithmetic，并在 instance parameter override 后求值。64-model parameterized affine sample 中 `runtime_param_ops = 64`，但 fixed-step Rust median `0.2322 s` 仍慢于 default Python `0.1918 s`。
 
 但这还不是最终速度优势：
 
@@ -36,7 +38,7 @@ Rust segment median:  0.395932084 s
 | 028 | `028-rust-output-node-sync-deferral.md` | Rust output node sync deferral | production opt-in | 每步保留 `node_voltages`，延迟 `output_nodes` 写入 | stale `output_nodes` | done: full pytest + counters |
 | 029 | `029-indexed-dirty-validation-fastpath.md` | Dirty-node indexed validation | production opt-in | 用预计算 dirty node tuple 替代冗余全量 `max_abs_diff_mapping()` | 漏掉 dict/array divergence | done: full pytest + checked values 下降 |
 | 030 | `030-segment-lifecycle-fastpath.md` | Segment lifecycle fastpath | production opt-in | 对 compiler-proven static segment 跳过 per-model 空 prepare/timer/post-update | eligibility guard 过宽 | done: full pytest + lifecycle skip counters |
-| 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | parser/compiler tests + netlist parameter smoke |
+| 031 | `031-runtime-parameter-affine-lowering.md` | Runtime parameter affine lowering | production opt-in | 支持 `gain/bias` 来自 parameters 的 affine model | 参数 override/type coercion | done: compiler + simulator + netlist override tests |
 | 032 | `032-dynamic-bus-base-offset-lowering.md` | Dynamic bus base+offset runtime lowering | production/prototype | 把 `V(bus[i])` 简单场景从字符串格式化降为 id offset | 2D bus、state-index、event context | bus lowering regression tests |
 | 033 | `033-indexed-state-runtime-storage.md` | Indexed state runtime storage | prototype | 把 scalar/int/array state 映射到 indexed storage | Python/Rust state divergence | state parity tests |
 | 034 | `034-vabench-rust-coverage-smoke.md` | vaBench Rust eligibility coverage smoke | audit | 统计 release rows 中可 Rust 化模型比例 | coverage 被误解为 speed claim | coverage report only |
