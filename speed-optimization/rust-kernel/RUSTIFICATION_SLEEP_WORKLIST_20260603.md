@@ -1,6 +1,10 @@
 # Rustification Sleep Worklist - 2026-06-03
 
-Status: `active`
+Status: `deprecated`
+
+Superseded by: `RUSTIFICATION_WORKLIST_20260605.md`
+
+理由：本文档规划停在 audit 050，但本地实际进度已到 audit 085（修改于 2026-06-05 04:02）。新 worklist 重新分类了 001–085 全部 audit，按"通用速度优先"目标重排了后续优先级，并明确暂停 per-circuit C-track。原文档保留作为 2026-06-03 时点快照。
 
 Scope: EVAS kernel Rustification after `034 - Static Lifecycle Fastpath`
 

@@ -1,6 +1,10 @@
 # EVAS Rust Kernel Optimization
 
+> **当前 active worklist**：`RUSTIFICATION_WORKLIST_20260605.md`（取代了 2026-06-03 版，2026-06-03 版规划停在 audit 050，实际本地已到 085）。新 worklist 重新分类 001–085 所有 audit，明确暂停 per-circuit C-track，聚焦通用 generic/boundary/trace 三条线。
+
 这个目录记录 EVAS 内核 Rust 化和 indexed 化的长期改造过程。它不是论文速度结论本身，而是解释“为什么这样改、改了什么、改前改后如何验证、下一步怎么走”的工程审计入口。
+
+机器可读的行为映射种子在 `behavior-coverage-map.v1.json`。它记录 B01-B18 当前对应的 Rust ABI / shadow / fallback / correctness gate 状态，供后续 per-model manifest 生成器复用。
 
 ## 读文档的顺序
 
@@ -43,6 +47,54 @@
 | 034 | `audits/034-static-lifecycle-fastpath.md` | done | profile-driven 大瓶颈优化：静态模型默认跳过空 `_prepare_step()` 和 timer expire 生命周期维护 |
 | 035 | `audits/035-state-local-and-static-branch-real-slice-verification.md` | done | 在真实 top-wall 10 上验证 state-local/static-branch/voltage guard，结论是 state-local 不应默认开启，static-branch 只有约 1% 混合收益 |
 | 036 | `audits/036-transition-unchanged-target-fastpath.md` | done | 把 transition target/参数不变时的 no-op reset 做成 opt-in fastpath；局部 `_transition` 调用减少，但 top-wall 10 没有稳定总收益，因此默认关闭 |
+| 037 | `audits/037-static-linear-evaluate-ir-b1-b4.md` | done | 把 Rust static affine 扩展成 static linear evaluate IR，覆盖多输入 expression/contribution 和简单 scalar state 读写 |
+| 038 | `audits/038-static-linear-fast-sync.md` | done | 全模型 Rust static segment 下跳过 per-step dict sync/validation；Rust-covered chain 到 `1.3x-1.5x`，但当前 top-wall 10 无 Rust coverage |
+| 039 | `audits/039-rust-coverage-expansion-for-real-models.md` | done | 扩展真实模型 evaluate IR 覆盖到 initial-step no-op 和 top-level 条件线性/state assignment，并记录 top-wall 10 仍被 event/state array/dynamic bus/transition 阻塞 |
+| 040 | `audits/040-rust-mixed-small-segment-gate.md` | done | 给 Rust fast-sync speed mode 增加 small mixed-segment gate，避免 partial Rust coverage 拖慢真实 top-wall 诊断 |
+| 041 | `audits/041-transition-real-topwall-profile-and-fastpath.md` | diagnostic | 针对真实 top-wall transition/event 模型增加 differential transition-output fastpath、active transition breakpoint set 和 transition counters，验证覆盖有效但 wall 收益仍不稳定 |
+| 042 | `audits/042-integer-state-transition-target-and-breakpoint-array-scan.md` | done | 把 integer scalar state 纳入 Rust static-linear IR，记录 transition target IR，并新增 Rust array transition-breakpoint scan hook |
+| 043 | `audits/043-transition-target-executor-and-timer-array-scan.md` | done | 把 transition target IR 推进到 Python/Rust array executor，并把 timer breakpoint scan 接到 Rust ABI 和 simulator hook |
+| 044 | `audits/044-ordered-transition-shadow-and-timer-array-sidecar.md` | done | 把 static-linear evaluate 和 transition target evaluate 放进同一个 Rust ordered shadow batch，并让 Rust timer scan 复用 typed array sidecar |
+| 045 | `audits/045-rust-required-rejection-and-if-lowering.md` | diagnostic | 增加 Rust static-evaluate no-candidate rejection counters，并验证 simple `if/else` lowering 正确但尚未解锁 top-wall Rust speedup |
+| 046 | `audits/046-fixed-index-state-array-ir.md` | done | 把固定下标 state array 元素扁平化进 Rust static-linear state slots，动态数组下标继续拒绝 |
+| 048 | `audits/048-python-to-rust-behavior-map.md` | done | 方向重置：停止零散 Rust 前置补丁，先建立 Python 仿真行为到 Rust primitive / fallback / parity gate 的总映射 |
+| 049 | `audits/049-behavior-coverage-manifest.md` | done | 把 B01-B18 映射落成可审计 manifest 口径，区分 production、shadow、partial、Python fallback 和 claim gate |
+| 050 | `audits/050-transition-state-rust-primitive.md` | done | 为 B08 `transition()` state evolution 增加 Rust typed-array primitive，并接入 `rust_transition_shadow` 做 state parity；engine production path 尚未接入 |
+| 051 | `audits/051-timer-step-rust-primitives.md` | done | 为 B11 periodic/absolute timer due/reschedule 增加 Rust typed-array primitives 和 Python-oracle parity tests；event body/lifecycle 尚未接入 |
+| 052 | `audits/052-cross-above-detector-rust-primitives.md` | done | 为 B09 `cross()` / `above()` detector state 增加 Rust typed-array primitives 和 Python-oracle parity tests；event body/order/interpolation 仍由 Python 拥有 |
+| 053 | `audits/053-record-node-id-array-path.md` | done | 为 B15 record path 增加 indexed node-id array 读取；CSV schema、SimResult 和 checker contract 不变，Rust record ABI 尚未实现 |
+| 054 | `audits/054-dynamic-bus-offset-rust-primitive.md` | done | 为 B17 bounded 1-D/2-D dynamic bus access 增加 Rust base+offset node-id primitive；compiler/runtime 生产路径仍未接入 |
+| 055 | `audits/055-event-lifecycle-production-gate.md` | diagnostic | 明确 B10 event body 和 B18 lifecycle 共享 phase-order correctness gate，不能并行硬切 production；下一步应做 event trace/order/write-set shadow |
+| 056 | `audits/056-event-due-shadow.md` | done | 增加 opt-in Rust event due shadow，在真实 `_check_cross/_check_above/_check_timer*` 入口旁验证 Rust/Python due-state parity；不改变生产 event body |
+| 057 | `audits/057-event-trace-write-set-audit.md` | done | 增加 opt-in event trace/write-set audit，记录 event firing/body entry 和 state/array/output/timer/transition 写入，为 event/evaluate Rust production batch 定边界 |
+| 058 | `audits/058-event-body-write-set-rust-batch.md` | done | 用 top-wall audit 选择最高频 gated LFSR shift/XOR event body，lowering 到 Rust batch；shadow 2000/2000 match，production opt-in 10/10 safe_vs_strict，但 top-wall 总收益仍约 `1.009x` |
+| 059 | `audits/059-timer-event-production-gate.md` | done | 验证 per-check timer Rust FFI 在 CPPLL length-1 timer 上会变慢，增加小集合 gate，并瘦身 Python timer hot path；下一步应做 compiler-level timer batch |
+| 060 | `audits/060-static-timer-event-segment-batch.md` | done | 把连续 static timer event 编译成一次 due-mask batch，event body 仍按源码顺序执行；top-wall 10 暂未触发该 batch，下一步转向 `timer(next_t)` state-owned absolute timer |
+| 061 | `audits/061-state-owned-absolute-timer-fastpath.md` | done | 对 CPPLL/ADPLL 这类 `timer(t_next_toggle)` owner chain 增加保守 fast path，top-wall 命中 180956 次检查、160486 次 skip；仍是 EVAS-only candidate evidence |
+| 062 | `audits/062-fused-timer-lfsr-output-batch.md` | done | 把 periodic timer due/reschedule、LFSR event body、output node write 和 output hold 降成一个 opt-in Rust batch；smoke parity PASS，fused calls 16、due/executed/writes 各 4，fallback 0；尚未做 top-wall speed claim |
+| 063 | `audits/063-prbs7-whole-model-rust-fastpath.md` | done | 对真实 PRBS7 top-wall 模型做 whole-model Rust trace batch；单行 kernel/tran wall `0.2156s -> 0.0085s` 约 `25.4x`，但 top-wall 10 总收益仅 `1.006x`，因为当前只覆盖这一行 |
+| 064 | `audits/064-compiler-driven-whole-segment-lowering.md` | done | 把手写 PRBS7 fastpath 泛化为 compiler-emitted whole-segment lowering，并覆盖 CPPLL/SAR/prop-delay/gain 四类热模型；4-row sequential runner 4/4 PASS，E2E `9.999s -> 6.819s`，tran `5.657s -> 0.451s` |
+| 065 | `audits/065-semantic-dataflow-whole-segment-matching.md` | done | 把 whole-segment candidate 从端口/状态 exact-name gate 改成语义和数据流匹配；修复 CPPLL supply direction 反向风险，top4 smoke 4/4 PASS |
+| 066 | `audits/066-release-wide-rustification-workplan.md` | active | 把后续 Rust 化整理成 release-wide workstreams：先做全量 coverage manifest，再做 whole-segment Rust ABI、evaluate IR、event/timer/transition production 和 release gate |
+| 067 | `audits/067-release-rust-coverage-manifest-generator.md` | done | 新增 release-wide Rust coverage manifest，357/357 gold `.va` compile pass；同时收紧 `weighted_dac_v1` 语义 matcher，候选从 13 降到 2，避免状态机误命中 |
+| 068 | `audits/068-whole-segment-rust-abi-contract.md` | done | 新增 whole-segment candidate ABI contract validator；release 报告显示当前 23 个候选 invalid count 为 0，后续 production Rust 有了字段/类型 gate |
+| 069 | `audits/069-topwall-gain-timer-production-rust.md` | done | 把 `gain_timer_reduction_v1` whole-segment trace loop 接到 production Rust ABI；`vbr1_l1_gain_estimator` tb/e2e 3-repeat PASS，EVAS tran 约 `3.3x` 快于 normal fast |
+| 070 | `audits/070-propagation-delay-production-rust.md` | done | 把 propagation-delay comparator whole-segment trace loop 接到 production Rust ABI；top-wall dut 3-repeat PASS，E2E wall 约 `3.57x`、EVAS tran 约 `146x` 快于 normal fast |
+| 071 | `audits/071-sar-loop-production-rust.md` | done | 把 weighted SAR ADC/DAC/sample-hold loop 接到 production Rust ABI；tb/e2e 3-repeat PASS，tb E2E wall 约 `1.27x`、EVAS tran 约 `28.9x` 快于 normal fast |
+| 072 | `audits/072-stage55-cppll-rust-trace-and-lean-production-mode.md` | done | 把 CPPLL reacquire trace fill 接到 Rust ABI，并新增 lean `profile_fast_rust_55`；top-wall 10 EVAS-only 10/10 PASS，总 wall `12.78s -> 5.17s`，stage weighted coverage `80.6%` |
+| 073 | `audits/073-rust-speed-claim-gate.md` | done | 新增 claim gate，把 stage55、full release Rustification、Spectre AX speed 三个 claim 分开判定；当前只允许 EVAS-only stage claim，full Rustification 和 AX speed claim 仍关闭 |
+| 074 | `audits/074-rust55-topwall-evas-smoke.md` | done | 按阶段节奏重跑 EVAS-only top-wall smoke；6 个 unique row 上 Rust55 总 wall `9.030s -> 3.750s` 相对 normal fast 为 `2.41x`，未命中的 gain/PFD 仍回到 Python fast |
+| 075 | `audits/075-gain-measurement-flow-production-rust.md` | done | 把 gain extraction measurement flow 的 `vin_src+lfsr+dither+gain_amp` 整段 trace 接到 production Rust；top-wall 6 EVAS-only 总 wall `9.677s -> 2.103s`，Rust55 相对 normal fast 为 `4.60x` |
+| 076 | `audits/076-current-rustification-status-after-gain-flow.md` | done | 重新跑当前 top-wall 10：Rust55 10/10 safe_vs_strict，总 wall `13.264s -> 3.250s` 相对 normal fast 为 `4.08x`；release-wide Rustification 仍是 `30.0%`，未完成全量 Rust 化 |
+| 077 | `audits/077-whole-segment-record-trace-copy-reduction.md` | done | 清理 whole-segment Rust trace 的一次中间 list/ndarray 往返；top-wall fast+Rust55 smoke 10/10 PASS，但收益不稳定，不作为速度 claim |
+| 078 | `audits/078-global-evas-timing-split-and-persistent-worker.md` | done | 全局拆分 EVAS runner/subprocess 固定开销，并新增 opt-in persistent worker；2-row same-runner smoke E2E `2.764s -> 1.440s`，10-row worker smoke 10/10 PASS |
+| 079 | `audits/079-required-signal-global-trace.md` | done | 将 checker required-signal contract 下发到 EVAS sparse trace；current-code trace on/off top-wall 10 均 10/10 PASS，E2E `2.527s -> 2.024s`，CSV write `0.519s -> 0.404s` |
+| 080 | `audits/080-evaluate-ir-piecewise-and-rust-timer-batch.md` | done | 扩展 evaluate IR 到 `abs/min/max` piecewise-linear lowering，并把连续 static timer segment 的 due-mask 接到 Rust batch production；targeted EVAS tests 全部通过 |
+| 081 | `audits/081-event-body-linear-rust-batch.md` | done | 把 `cross/above/timer` 触发后的简单 state assignment body lowering 到通用 Rust static-linear batch；due/order/interpolation 仍由 Python 拥有 |
+| 082 | `audits/082-timer-static-linear-whole-segment-rust.md` | done | 把 periodic timer due、static-linear event body、static-linear output evaluate 和显式 record trace/timer breakpoint 合成一个 Rust whole-segment executor |
+| 083 | `audits/083-record-node-id-rust-abi.md` | done | 把 indexed record path 的 node-id value gather 迁到 Rust ABI；SimResult/CSV/checker 外层仍由 Python/harness 拥有 |
+| 084 | `audits/084-multi-timer-static-linear-event-queue-rust.md` | done | 把多个 periodic timer 的 due/order/static-linear event body/evaluate/record 合成 Rust queue segment |
+| 085 | `audits/085-cross-above-transition-default-adaptive-trace.md` | done | `cross()/above()` event-time interpolation cache 接入 Rust ABI；`transition()` state typed-array opt-in production；timer static-linear Rust fastpath 支持默认 adaptive/internal trace |
 | sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，034 后先按 benchmark profile 决定下一步 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
@@ -85,18 +137,81 @@
 | 2026-06-03 | Static lifecycle fastpath | 复用 compiler capability flags，让纯静态模型默认跳过每步空 `_prepare_step()` 和 absolute timer expire；80-model static chain median `1.3150s -> 0.8853s`，约 `1.49x` | EVAS commit `4f20ee1` |
 | 2026-06-03 | Real-slice state-local/static-branch verification | state-local generated evaluate 在 top-wall 10 section profile 中 `model_evaluate_s` 从 `6.0607s` 变成 `6.4126s`，不默认开启；static branch top-wall 10 E2E `14.2529s -> 14.1265s`，约 `1.009x`，只能算小幅混合收益 | EVAS commit `623b7f5` |
 | 2026-06-03 | Transition unchanged-target opt-in fastpath | `transition()` target/参数完全不变时可跳过 no-op `set_target()` 和第二次 `evaluate()`；SAR cProfile 中 `set_target` `261240 -> 6623`，但 top-wall 10 E2E candidate 总 wall `17.5862s -> 17.7964s`，默认关闭 | EVAS commit `c909463` |
+| 2026-06-03 | Static linear evaluate IR and fast sync | Rust static linear segment 覆盖多输入/简单 state IR；fast sync 让 500-model covered chain `57.09s -> 38.62s`，但 top-wall 10 `candidate_models=0`，下一步必须扩 Rust coverage | EVAS commit `pending` |
+| 2026-06-03 | Real-model Rust coverage expansion | top-wall 10 中 `dither_adder`/`gain_amp_fixed` 进入 Rust IR，共 6 ops；其余主要被 event/timer/cross、transition、integer/state array 和 dynamic bus 阻塞。r50 EVAS-only diagnostic 10/10 PASS，但 mixed Rust/Python path 仍不是 speed claim | EVAS commit `pending`; `audits/039-rust-coverage-expansion-for-real-models.md` |
+| 2026-06-03 | Rust mixed small-segment gate | r51 top-wall 10 EVAS-only diagnostic 10/10 PASS，总 E2E `18.337s`，measurement-flow tb/e2e 回到 `1.474s`/`1.443s`；small mixed Rust candidates 记录后回退 Python runtime，避免 FFI/sync 开销反向拖慢 | EVAS commit `pending`; `audits/040-rust-mixed-small-segment-gate.md` |
+| 2026-06-03 | Transition real top-wall diagnostic | differential `V(out,VSS)<+...transition(...)` 已进入 fused output helper；active transition set 可记录 inactive breakpoint skips；相邻 r54 unchanged-target mode 总 wall 比 r53 约 `0.895x`，但本地 wall 噪声大，不能作为最终速度 claim | EVAS commit `pending`; `audits/041-transition-real-topwall-profile-and-fastpath.md` |
+| 2026-06-03 | Integer state, transition target IR, and breakpoint array scan | integer state write 在 Rust static-linear IR 中按 Verilog-A rounding 立即 coercion；`q ? 1.0 : 0.0` transition target 可记录成 `q != 0` 条件 IR；Rust C ABI 可扫描 transition breakpoint arrays，model hook 保留 Python fallback | EVAS commit `pending`; `audits/042-integer-state-transition-target-and-breakpoint-array-scan.md` |
+| 2026-06-03 | Transition target executor and timer array scan | transition target IR 已可通过 Python/Rust array executor 计算 target/delay/rise/fall buffers；timer breakpoint scan 接入 Rust C ABI 和 simulator hook，但当前仍需 Python dict packing，因此不是速度 claim | EVAS commit `pending`; `audits/043-transition-target-executor-and-timer-array-scan.md` |
+| 2026-06-03 | Ordered transition shadow and timer typed sidecar | `EVAS_RUST_TRANSITION_SHADOW=1` 可在同一个 Rust batch 里按顺序验证 state/static-linear update 后的 transition target；timer state sidecar 把 Rust scan 前的 dict packing 改成 typed arrays 复用。EVAS full regression `509 passed`，但仍是 shadow/parity 和局部开销优化，不是 top-wall 速度 claim | EVAS commit `pending`; `audits/044-ordered-transition-shadow-and-timer-array-sidecar.md` |
+| 2026-06-04 | Rust-required rejection audit and simple if lowering | top-wall 10 中 forced Rust 仍慢于 Python fast：rejection-only `18.253s -> 21.304s`，simple `if/else` lowering 后 `18.541s -> 21.362s`。覆盖没有增加，主要 blockers 仍是 arrays、`transition()`、event/cross 和 self-dependent state | EVAS commit `pending`; `audits/045-rust-required-rejection-and-if-lowering.md` |
+| 2026-06-04 | Fixed-index state array IR | `arr[0]` / `arr[N-1]` 这类固定数组元素可作为 Rust static-linear `state_values` slot 执行；动态数组下标仍拒绝。top-wall 10 诊断 10/10 PASS，但 Rust-required `21.233s` 仍慢于 Python fast `18.268s`，说明固定数组不是当前主瓶颈 | EVAS commit `pending`; `audits/046-fixed-index-state-array-ir.md` |
+| 2026-06-04 | Python-to-Rust behavior map | 明确后续 Rust 化单位不是零散语法，而是 B01-B18 仿真行为到 Rust primitive 的完整映射；下一步先做 behavior coverage manifest，再进入 transition/event/timer production path | EVAS commit `pending`; `audits/048-python-to-rust-behavior-map.md` |
+| 2026-06-04 | Behavior coverage manifest | 并行审计 compiler、scheduler、Rust ABI 和历史 counters 后，确认 B01 是 partial、B07 是 target/shadow、B10/B12/B16/B17 仍是 Python-owned；049 定义后续自动 manifest 的 JSON 字段、fallback reason 和 correctness gates | EVAS commit `pending`; `audits/049-behavior-coverage-manifest.md` |
+| 2026-06-04 | Transition state Rust primitive | B08 新增 `evas_rust_transition_state_step` typed-array ABI，覆盖 initialization、linear ramp、interrupted retarget 和 initial-condition reset，并接入 `rust_transition_shadow` 检查 pre-state -> post-state parity；当前仍未接入 engine production path，不能作为速度 claim | EVAS commit `pending`; `audits/050-transition-state-rust-primitive.md` |
+| 2026-06-04 | Timer step Rust primitives | B11 新增 `evas_rust_timer_periodic_step` / `evas_rust_timer_absolute_step` typed-array ABI，覆盖 periodic due/skip/reschedule 和 absolute due/expire/last-fired parity；当前仍未接入 engine production path，不能作为速度 claim | EVAS commit `pending`; `audits/051-timer-step-rust-primitives.md` |
+| 2026-06-04 | Cross/above detector Rust primitives | B09 新增 `evas_rust_cross_detector_step` / `evas_rust_above_detector_step` typed-array ABI，覆盖 detector state update、trigger direction、crossing time、debounce 和 above 初始触发 parity；event body/order/interpolation 仍未迁移，不能作为速度 claim | EVAS commit `pending`; `audits/052-cross-above-detector-rust-primitives.md` |
+| 2026-06-04 | Record node-id array path | B15 indexed record path 预计算 recorded node ids，并用 array id 读取替代每个 record point 的 signal-name lookup；CSV schema、`SimResult` 和 checker contract 保持不变，Rust record ABI 尚未实现 | EVAS commit `pending`; `audits/053-record-node-id-array-path.md` |
+| 2026-06-04 | Dynamic bus offset Rust primitive | B17 新增 `evas_rust_dynamic_bus_offsets`，用 `base + i * stride + j` 计算 bounded 1-D/2-D bus node id，并对负 index/越界做错误返回；当前 compiler/runtime 仍未接生产路径 | EVAS commit `pending`; `audits/054-dynamic-bus-offset-rust-primitive.md` |
+| 2026-06-04 | Event/lifecycle production gate | 050-054 后剩余 B10/B18 被确认是同一个 phase-order correctness gate，不能并行硬切 production；下一步按 event due trace、ordering trace、event write-set、lifecycle shadow 的顺序推进 | EVAS commit `pending`; `audits/055-event-lifecycle-production-gate.md` |
+| 2026-06-04 | Event due shadow | `EVAS_RUST_EVENT_DUE_SHADOW=1` 可在真实 engine 入口旁复算 cross/above/timer due state；`engine/netlist/rust_backend/cargo` targeted checks 全部通过。该路径默认关闭、开启后只做 parity 审计，不是速度 claim | EVAS commit `pending`; `audits/056-event-due-shadow.md` |
+| 2026-06-04 | Event trace and write-set audit | `EVAS_EVENT_TRACE_AUDIT=1` 记录 fired event、event body enter/exit，以及 state/array/output/timer/transition 写入域；targeted engine/netlist checks 通过。该路径默认关闭，用于决定下一步 production Rust batch 边界，不是速度 claim | EVAS commit `pending`; `audits/057-event-trace-write-set-audit.md` |
+| 2026-06-04 | Event-body write-set Rust batch | top-wall audit 显示 gain extraction 的 gated LFSR shift/XOR 是最高频 event-body array/state 写集合；新增 `evas_rust_event_lfsr_shift_xor_step`，shadow 2000/2000 match、production 10/10 safe_vs_strict。top-wall fast A/B 仅 `27.514s -> 27.267s`，说明它是正确性里程碑而非 release-wide speed claim | EVAS commit `pending`; `audits/058-event-body-write-set-rust-batch.md` |
+| 2026-06-04 | Timer/event production gate | CPPLL per-check Rust timer 尝试 2/2 PASS 但变慢：e2e `2.8293s -> 3.6122s`、tb `2.6403s -> 3.8000s`，原因是 `90478` 次 length-1 FFI。加入小集合 gate 后 top-wall 10 为 10/10 PASS，总 wall `20.2422s -> 20.2278s` 基本持平；后续方向改为 compiler-level timer batch 和 single-timer Python hot-path | EVAS commit `pending`; `audits/059-timer-event-production-gate.md` |
+| 2026-06-04 | Static timer/event segment batch | 连续 static timer event 现在会先批量计算 due mask，再按原顺序执行 event body；in-memory 16-timer sample `0.046606s -> 0.040328s`，但当前 top-wall 10 batch counters 为 0，说明真实瓶颈仍在动态 `timer(next_t)` 等 state-owned timer | EVAS commit `pending`; `audits/060-static-timer-event-segment-batch.md` |
+| 2026-06-04 | State-owned absolute timer fast path | `timer(t_next_toggle)` 这类 owner chain 在未到 armed target 前跳过 target state 读取和 helper 调用；top-wall 10 仍 10/10 PASS，CPPLL e2e/tb 各命中 `90478` checks、`80243` fast skips、`10235` target reads。总 wall 仍是 EVAS-only candidate evidence，不能作为论文速度 claim | EVAS commit `pending`; `audits/061-state-owned-absolute-timer-fastpath.md` |
+| 2026-06-04 | Fused timer/LFSR/output batch | 对安全 periodic timer LFSR 模式新增 `evas_rust_timer_lfsr_output_step`，一次 FFI 完成 timer step、event body state update、output node write；`V(out)<+state` hold path 避免重复 Python dict 写。smoke counters：batch 1、calls 16、due/executed/writes 4、fallback 0、indexed record reads 17 | EVAS commit `pending`; `audits/062-fused-timer-lfsr-output-batch.md` |
+| 2026-06-04 | PRBS7 whole-model Rust fastpath | 对真实 `vbr1_l1_lfsr_prbs_generator/dut/gold` 做整段 Rust trace batch，绕过 Python generated model loop、cross scan、event body、transition calls 和 prepare-step；单行 fast EVAS kernel/tran `0.2156s -> 0.0085s`、E2E `0.4069s -> 0.2961s`，但 top-wall 10 总 wall 只有 `1.006x`，说明下一步必须扩大 whole-segment coverage | EVAS commit `pending`; `audits/063-prbs7-whole-model-rust-fastpath.md` |
+| 2026-06-04 | Compiler-driven whole-segment lowering | `backend.py` 从 Verilog-A AST 生成 `_whole_segment_candidates`，engine 按 metadata dispatch whole-segment trace；除 PRBS/LFSR Rust ABI 外，新增 CPPLL/SAR/prop-delay/gain 四类热模型 opt-in trace executor。4-row sequential runner 4/4 PASS，E2E `9.999s -> 6.819s`，tran `5.657s -> 0.451s` | EVAS commit `pending`; `audits/064-compiler-driven-whole-segment-lowering.md` |
+| 2026-06-04 | Semantic/dataflow whole-segment matching | whole-segment collector 不再依赖固定端口/状态名，而是从 event、assignment、branch access、transition target 和 parameter reference 推断角色；修复 `vl + (vh-vl)*transition` supply direction 反向导致 CPPLL `vctrl_mon=0` 的 bug。top4 smoke 4/4 PASS，E2E `11.090s -> 7.064s` | EVAS commit `pending`; `audits/065-semantic-dataflow-whole-segment-matching.md` |
+| 2026-06-04 | Release-wide Rustification Workplan | 将 79 个 release entry、357 个 gold `.va` 的全量跑通目标拆成 W0-W10 workstreams；后续从 067 coverage manifest 和 068 whole-segment Rust ABI contract 开始 | EVAS commit `pending`; `audits/066-release-wide-rustification-workplan.md` |
+| 2026-06-04 | Release Rust coverage manifest | 全量扫描 release gold `.va`：357/357 compile pass，Rustification estimate `30.0%`；`weighted_dac_v1` 误命中从 13 个候选收紧到 2 个候选。该阶段直接速度收益 `0%`，价值是覆盖口径和 fastpath 安全性 | EVAS commit `pending`; `audits/067-release-rust-coverage-manifest-generator.md` |
+| 2026-06-04 | Whole-segment ABI contract | 为 9 类 whole-segment candidate 固化 schema/arity/type/cross-field validator；release-wide report 显示 23 个候选 invalid count 为 0。该阶段直接速度收益 `0%`，价值是后续 Rust production ABI 不再依赖隐式 tuple 下标 | EVAS commit `pending`; `audits/068-whole-segment-rust-abi-contract.md` |
+| 2026-06-04 | Gain timer production Rust trace | 新增 `evas_rust_gain_timer_reduction_trace`，真实 `vbr1_l1_gain_estimator` tb/e2e 3-repeat 全 PASS；EVAS tran median `0.0275s -> 0.0083s` / `0.0276s -> 0.0081s`，E2E wall 约 `1.09x`，说明小 row 已被外层开销主导 | EVAS commit `pending`; `audits/069-topwall-gain-timer-production-rust.md` |
+| 2026-06-04 | Propagation-delay production Rust trace | 新增 `evas_rust_cmp_delay_trace`，真实 `vbr1_l1_propagation_delay_comparator/dut` 3-repeat 全 PASS；EVAS tran median `1.3745s -> 0.0094s`，E2E wall median `2.0645s -> 0.5783s`，说明重 row 的整段 Rust batch 能直接转化为 E2E 收益 | EVAS commit `pending`; `audits/070-propagation-delay-production-rust.md` |
+| 2026-06-04 | SAR loop production Rust trace | 新增 `evas_rust_sar_loop_trace`，真实 `vbr1_l2_weighted_sar_adc_dac_loop` tb/e2e 3-repeat 全 PASS；tb EVAS tran median `3.0981s -> 0.1071s`、E2E wall median `6.7422s -> 5.3224s`，e2e tran `2.4973s -> 0.1390s` 但 wall 受外层开销和负载波动压制 | EVAS commit `pending`; `audits/071-sar-loop-production-rust.md` |
+| 2026-06-04 | Stage55 CPPLL Rust trace and lean mode | 新增 `evas_rust_cppll_reacquire_trace` 并把 speed runner 的 `profile_fast_rust_55` 收紧为只启用 production whole-segment Rust；top-wall 10 EVAS-only 总 wall `12.7811s -> 5.1682s`、10/10 PASS、stage weighted coverage `80.6%`。这不是全 release Rustification claim，后者仍约 `30%` | EVAS commit `pending`; `audits/072-stage55-cppll-rust-trace-and-lean-production-mode.md` |
+| 2026-06-04 | Rust speed claim gate | 新增 `report_vabench_release_rust_speed_claim_gate.py`，把“能 claim 什么/不能 claim 什么”机器化：stage55 engineering claim 当前打开，full release Rustification 因 `30.0%` 和非 production 行为 blocker 关闭，Spectre AX speed 因缺 rust55 同机 dual artifact 关闭 | EVAS commit `pending`; `audits/073-rust-speed-claim-gate.md` |
+| 2026-06-04 | Rust55 top-wall EVAS smoke | 按“先 EVAS-only，再小 AX smoke，最后 full AX”的节奏补实验：6 个 unique top-wall row 上 Rust55 6/6 safe_vs_strict，总 wall `3.750s`，相对 normal fast `2.41x`；收益集中在 SAR/prop-delay/CPPLL，gain measurement-flow 仍未接 production fastpath | EVAS commit `pending`; `audits/074-rust55-topwall-evas-smoke.md` |
+| 2026-06-04 | Gain measurement-flow production Rust | 新增 `evas_rust_gain_measurement_flow_trace`，把 gain extraction 的 clocked vin、LFSR dither、dither adder、fixed gain amp 合成一个 Rust trace；top-wall 6 EVAS-only Rust55 总 wall `2.103s`，相对 normal fast `4.60x`，6/6 safe_vs_strict | EVAS commit `pending`; `audits/075-gain-measurement-flow-production-rust.md` |
+| 2026-06-04 | Current Rustification status after gain flow | 当前 top-wall 10 EVAS-only Rust55 总 wall `3.250s`，相对 normal fast `4.08x`，但 release-wide B01-B18 completion estimate 仍为 `30.0%`；新增 whole-flow manifest 表，避免 075 被单模型 manifest 漏报 | EVAS commit `pending`; `audits/076-current-rustification-status-after-gain-flow.md` |
+| 2026-06-04 | Whole-segment record trace copy reduction | `_record_trace_result` 对 `np.ndarray[float64]` 不再无条件二次拷贝；SAR 保留旧路径；fast+Rust55 smoke 10/10 PASS，但该改动只作为低风险清理，不作为独立速度 claim | EVAS commit `pending`; `audits/077-whole-segment-record-trace-copy-reduction.md` |
+| 2026-06-04 | Global timing split and persistent worker | `simulate_evas.run_case` 把 EVAS tran/total、CSV/derive 和 unattributed subprocess time 结构化进 `timing_split`；`VAEVAS_EVAS_PERSISTENT_WORKER=1` 可复用 EVAS worker，2-row smoke E2E `2.764s -> 1.440s`，top-wall 10 worker 10/10 PASS | EVAS commit `pending`; `audits/078-global-evas-timing-split-and-persistent-worker.md` |
+| 2026-06-04 | Required-signal global trace | streaming checker required columns 变成 harness->EVAS trace contract；current-code trace on/off top-wall 10 均 10/10 PASS，E2E `2.527s -> 2.024s`，CSV write `0.519s -> 0.404s`，checker `0.750s -> 0.699s` | EVAS commit `pending`; `audits/079-required-signal-global-trace.md` |
+| 2026-06-05 | Evaluate IR piecewise and Rust timer batch | `abs/min/max` 可 lowering 为条件线性 IR；连续 static timer segment 的 due-mask 可走 Rust production batch。该阶段补全通用路径，不作为独立速度 claim | EVAS commit `pending`; `audits/080-evaluate-ir-piecewise-and-rust-timer-batch.md` |
+| 2026-06-05 | Event body linear Rust batch | `cross/above/timer` 触发后的简单 state assignment body 可走通用 Rust static-linear batch；cross body 读节点时仍 fallback，保护 crossing-time interpolation | EVAS commit `pending`; `audits/081-event-body-linear-rust-batch.md` |
+| 2026-06-05 | Timer static-linear whole segment Rust | 周期 timer due/reschedule、static-linear event body、non-event static-linear output evaluate 和显式 record trace/timer breakpoint 可在一个 Rust FFI 中完成；当前要求显式 `record_step`，且不覆盖 cross/transition/dynamic array | EVAS commit `pending`; `audits/082-timer-static-linear-whole-segment-rust.md` |
+| 2026-06-05 | Record node-id Rust ABI | indexed array loop 下 recorded-node value gather 可走 Rust ABI，B15 移除 `rust_record_abi_not_implemented` blocker；Python 仍拥有 time/list append、SimResult、CSV 和 checker contract | EVAS commit `pending`; `audits/083-record-node-id-rust-abi.md` |
+| 2026-06-05 | Multi-timer static-linear event queue Rust | 082 的 single periodic timer segment 扩展为 multi periodic timer queue；同一时刻按 compiler/source metadata 顺序执行，event body 仍要求 state-only static-linear，cross/above/transition/default adaptive trace 仍 fallback | EVAS commit `pending`; `audits/084-multi-timer-static-linear-event-queue-rust.md` |
+| 2026-06-05 | Cross/above interpolation, transition production, default adaptive trace | `cross()/above()` event body node reads 可 opt-in 走 Rust interpolation cache；`transition()` state evolution 可 opt-in 走 Rust typed-array production；timer static-linear whole-segment path 在 `record_step=None` 时可复现受限默认 adaptive/internal trace。event queue/order/body 和全局 adaptive solver 仍不是全量 Rust 化 | EVAS commit `pending`; `audits/085-cross-above-transition-default-adaptive-trace.md` |
 
 ## 后续候选项目
 
-这些项目按“先低风险数据结构，再高风险内核替换”的顺序排列，后续可以逐个写成 017 之后的审计文档。
+后续优先级以 `audits/066-release-wide-rustification-workplan.md` 为准。旧的“先低风险数据结构，再高风险内核替换”已经不够准确；现在的主线是先量化全 release 覆盖，再把 top-wall 热路径的一整段行为迁到 Rust production path。
 
 | 优先级 | 项目 | 核心目标 | 主要风险 |
 |---|---|---|---|
-| P1 | Dynamic bus runtime lowering | 把 019/023 暴露的 bus metadata/helper 进一步落到稳定 base+offset runtime | dynamic index、2D bus 和 integer state coercion |
-| P1 | vaBench post-034 profile audit | 在真实可仿 benchmark slice 上确认 034 后剩余最大 section | 不能把 microbenchmark 当 release-wide speed claim |
-| P1 | Event primitive and breakpoint queue plan | 针对 035 暴露的 generated evaluate、cross、transition、next_breakpoint 热路径做真正内核级方案 | event ordering、missed breakpoint、Spectre parity |
-| P2 | Timer/breakpoint event queue | 减少 timer/cross/bound_step 每步扫描 | missed event 或 breakpoint ordering |
-| P2 | Sparse/required-signal CSV | 只输出 checker 必需信号或 sparse/edge trace | checker schema 和报告兼容性 |
+| done | 067 release coverage manifest | 全量列出 B01-B18 覆盖、fallback blocker、candidate kind 和 top-wall 权重 | manifest 只能指导工程，不能替代速度 claim |
+| done | 068 whole-segment Rust ABI contract | 把 CPPLL/SAR/comparator/gain 的 semantic metadata 固化成通用 Rust ABI | ABI 过窄会退回名字匹配；过宽会误命中 |
+| done | 069 gain timer production Rust trace | 把 `gain_timer_reduction_v1` 的 fixed trace loop 迁到 Rust ABI，并建立 A/B 开关 | E2E wall 受外层开销限制，不能把小 row 核心收益外推到 release claim |
+| done | 070 propagation-delay whole-segment Rust trace | 把 propagation-delay comparator 的 fixed trace loop 迁到 Rust ABI，并建立 A/B 开关 | crossing/transition/delay measurement 必须保持 parity |
+| done | 071 SAR whole-segment Rust trace | 把 weighted SAR loop 当前仍在 Python 的 whole-segment executor 迁到 Rust opt-in production | state machine、sample-hold、DAC output 和 record contract 必须一起守住 |
+| done | 072 stage-55 CPPLL Rust trace and lean mode | 把 CPPLL reacquire trace fill 迁到 Rust，并建立只含 production whole-segment fastpath 的 55% 阶段速度模式 | stage coverage 不能误写成 release-wide Rustification |
+| done | 073 rust speed claim gate | 把 stage55、full Rustification、Spectre AX speed 三类 claim 的证据门禁拆开 | gate 只能防过 claim，不能替代实际 Rust coverage 或 Spectre rerun |
+| done | 074 rust55 top-wall EVAS smoke | 按阶段节奏重跑 top-wall EVAS-only，确认 Rust55 的有效覆盖和剩余瓶颈 | EVAS-only 不能替代 Spectre AX claim |
+| done | 075 gain extraction measurement-flow production Rust | 把剩余 top-wall wall 中最大的 gain tb/e2e 从 Python fast 降到 Rust production path | 当前只覆盖该 measurement-flow 形状；EVAS-only 不能替代 Spectre AX claim |
+| done | 076 current Rustification status after gain flow | 把 top-wall 热点加速口径和 release-wide 全语义 Rustification 口径拆开，并补 whole-flow manifest 盲点 | 不能把 `4.08x` top-wall EVAS-only 写成全量 Rust 化或 AX claim |
+| done | 077 whole-segment record trace copy reduction | 对已 Rust 化 trace 去掉部分中间 Python list/ndarray 往返 | 收益不稳定，不能作为独立速度 claim；SAR 不适合强行改成 numpy-column path |
+| done | 078 global timing split and persistent worker | 先做所有 benchmark 共用的 runner/subprocess 计时拆分和 opt-in worker 复用 | 这是 EVAS-only harness/runtime 证据，不能替代 Spectre AX claim |
+| done | 079 required-signal/sparse trace path | 只输出 checker 必需信号，减少无用列和 CSV/checker 开销 | 有动态 header 的 checker 暂不收窄；EVAS-only 不能替代 Spectre AX claim |
+| done | 080 evaluate IR piecewise + Rust timer batch | `abs/min/max` 进入条件线性 IR；连续 static timer segment 的 due-mask 进入 Rust production batch | 不是全量 evaluate/event Rust 化，cross/above 和 dynamic timer 仍需 event queue 级 lowering |
+| done | 081 event body linear Rust batch | `cross/above/timer` 触发后的简单 state assignment body 进入通用 Rust static-linear batch | due/order/interpolation 仍由 Python 拥有；cross body 读节点时保守 fallback |
+| done | 082 timer static-linear whole segment Rust | 单 periodic timer 的 due、event body、output evaluate 和显式 record trace/timer breakpoint 合成一个 Rust segment executor | 当前只覆盖显式 record_step 的保守子集，不能 claim 全量 Rust 化 |
+| done | 083 record node-id Rust ABI | indexed record value gather 进入 Rust ABI | 只迁 value gather，不等于 CSV/checker pipeline Rust 化 |
+| done | 084 multi-timer static-linear event queue Rust | 多个 periodic timer 的 due/order/event body/evaluate/record 进入一个 Rust queue segment | 只覆盖 state-only static-linear body，不覆盖 cross/above/transition |
+| done | 085 cross/above interpolation, transition production, default adaptive trace | 补齐 event-time interpolation cache、transition typed-array opt-in production，以及 timer static-linear 默认 trace gate | 仍不是 full event queue / full transition batch / global adaptive solver Rust 化 |
+| P1 | 086 event/timer/transition batch ownership | 统一 detector due、event body、transition state/output、record 的 Rust batch ownership | phase-order correctness 风险最高 |
+| P2 | 087 release-wide Rust auto smoke | 在 `rust_mode=auto` 下跑全量当前可仿 slice 并汇总 PASS/fallback/speed | 只作为 EVAS 工程 gate；paper speed 还需 same-slice Spectre/AX |
 
 ## 后续每次改动必须回答的问题
 
@@ -150,6 +265,49 @@ audits/032-dynamic-bus-base-offset-lowering.md
 audits/033-indexed-state-runtime-storage.md
 audits/034-static-lifecycle-fastpath.md
 audits/035-state-local-and-static-branch-real-slice-verification.md
+audits/036-transition-unchanged-target-fastpath.md
+audits/037-static-linear-evaluate-ir-b1-b4.md
+audits/038-static-linear-fast-sync.md
+audits/039-rust-coverage-expansion-for-real-models.md
+audits/040-rust-mixed-small-segment-gate.md
+audits/041-transition-real-topwall-profile-and-fastpath.md
+audits/042-integer-state-transition-target-and-breakpoint-array-scan.md
+audits/043-transition-target-executor-and-timer-array-scan.md
+audits/044-ordered-transition-shadow-and-timer-array-sidecar.md
+audits/045-rust-required-rejection-and-if-lowering.md
+audits/046-fixed-index-state-array-ir.md
+audits/048-python-to-rust-behavior-map.md
+audits/049-behavior-coverage-manifest.md
+audits/050-transition-state-rust-primitive.md
+audits/051-timer-step-rust-primitives.md
+audits/052-cross-above-detector-rust-primitives.md
+audits/053-record-node-id-array-path.md
+audits/054-dynamic-bus-offset-rust-primitive.md
+audits/055-event-lifecycle-production-gate.md
+audits/056-event-due-shadow.md
+audits/057-event-trace-write-set-audit.md
+audits/058-event-body-write-set-rust-batch.md
+audits/059-timer-event-production-gate.md
+audits/060-static-timer-event-segment-batch.md
+audits/061-state-owned-absolute-timer-fastpath.md
+audits/062-fused-timer-lfsr-output-batch.md
+audits/063-prbs7-whole-model-rust-fastpath.md
+audits/064-compiler-driven-whole-segment-lowering.md
+audits/065-semantic-dataflow-whole-segment-matching.md
+audits/066-release-wide-rustification-workplan.md
+audits/067-release-rust-coverage-manifest-generator.md
+audits/068-whole-segment-rust-abi-contract.md
+audits/069-topwall-gain-timer-production-rust.md
+audits/070-propagation-delay-production-rust.md
+audits/071-sar-loop-production-rust.md
+audits/072-stage55-cppll-rust-trace-and-lean-production-mode.md
+audits/073-rust-speed-claim-gate.md
+audits/074-rust55-topwall-evas-smoke.md
+audits/075-gain-measurement-flow-production-rust.md
+audits/076-current-rustification-status-after-gain-flow.md
+audits/077-whole-segment-record-trace-copy-reduction.md
+audits/078-global-evas-timing-split-and-persistent-worker.md
+audits/079-required-signal-global-trace.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。
