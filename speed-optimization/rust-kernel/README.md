@@ -1,6 +1,8 @@
 # EVAS Rust Kernel Optimization
 
-> **当前 active worklist**：`RUSTIFICATION_WORKLIST_20260605.md`（取代了 2026-06-03 版，2026-06-03 版规划停在 audit 050，实际本地已到 085）。新 worklist 重新分类 001–085 所有 audit，明确暂停 per-circuit C-track，聚焦通用 generic/boundary/trace 三条线。
+> **当前 active worklist**：`RUSTIFICATION_WORKLIST_20260606.md`（覆盖 001-095；2026-06-05 → 2026-06-06 会话完成 086-095 + Stage 6 commit hygiene + handoff to codex for 094 multi-week project）。
+>
+> **Codex 接 094 项目起点**：`HANDOFF_TO_CODEX_094_PROJECT.md`（self-contained 342 行 handoff doc，含 7 critical rules + 5-session execution plan + pitfalls list）。
 
 这个目录记录 EVAS 内核 Rust 化和 indexed 化的长期改造过程。它不是论文速度结论本身，而是解释“为什么这样改、改了什么、改前改后如何验证、下一步怎么走”的工程审计入口。
 

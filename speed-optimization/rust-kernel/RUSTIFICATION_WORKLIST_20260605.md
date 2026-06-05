@@ -1,6 +1,10 @@
 # EVAS Rustification Worklist - 2026-06-05
 
-Status: `active`
+Status: `deprecated`
+
+Superseded by: `RUSTIFICATION_WORKLIST_20260606.md`
+
+理由：本文档覆盖 audits 001-085；后续 2026-06-05 → 2026-06-06 会话完成 audits 086-095 + Stage 6 commit hygiene + handoff to codex for 094 multi-week project。新 worklist 更新了所有数据点（53-row sweep, opt-in matrix, 工程教训）。原文档保留作为 2026-06-05 时点快照。
 
 Replaces: `RUSTIFICATION_SLEEP_WORKLIST_20260603.md`（已 stale，规划停在 audit 050，实际本地已到 085）
 
