@@ -97,6 +97,26 @@
 | 083 | `audits/083-record-node-id-rust-abi.md` | done | 把 indexed record path 的 node-id value gather 迁到 Rust ABI；SimResult/CSV/checker 外层仍由 Python/harness 拥有 |
 | 084 | `audits/084-multi-timer-static-linear-event-queue-rust.md` | done | 把多个 periodic timer 的 due/order/static-linear event body/evaluate/record 合成 Rust queue segment |
 | 085 | `audits/085-cross-above-transition-default-adaptive-trace.md` | done | `cross()/above()` event-time interpolation cache 接入 Rust ABI；`transition()` state typed-array opt-in production；timer static-linear Rust fastpath 支持默认 adaptive/internal trace |
+| 094 | `audits/094-verilog-a-body-rust-kernel-design.md` | planned | 设计多 audit 项目：把 generated Verilog-A `model.evaluate()` body lower 到 Rust kernel，避免继续做 per-call 小 FFI |
+| 094a | `audits/094a-expression-ir.md` | done | 新增通用 expression IR foundation；234 个 generic candidate 的 8156 个 analog body expression roots 全部 lower + emit compile 通过 |
+| 094b | `audits/094b-statement-ir.md` | done | 新增 statement IR foundation；234 个 generic candidate 的 analog block 全部 lower + Python body emit compile 通过 |
+| 094c | `audits/094c-schedule-ir.md` | done | 新增 event schedule IR foundation；`cross/timer/initial/final/combined` 事件结构可被后续 Rust executor 消费 |
+| 094d | `audits/094d-state-binding-ir.md` | done | 新增 state/parameter/port binding IR；234 个 generic candidate 的 expression identifiers 全部可解析到稳定 slot |
+| 094e | `audits/094e-rust-abi.md` | done | 新增 synthetic Rust body IR ABI 和 Python ctypes wrapper；100 组随机 state-write IR 与 Python oracle 一致，生产 dispatch 未接入 |
+| 094f | `audits/094f-body-ir-encoder.md` | partial | 把 `ExprIR` / `BindingTableIR` 的标量表达式和 ordered state/output write-set 编码成 094e Rust body ops；event scheduler 和 production dispatch 未接入 |
+| 094g | `audits/094g-event-body-program.md` | partial | 把单个 `EventStatementIR` 绑定到 Rust-executable body write-set，并新增 standalone trigger expression eval ABI；due/order scheduler 和 production dispatch 未接入 |
+| 094h | `audits/094h-event-due-program.md` | partial | 把 `initial_step`、simple `cross/above`、static `timer` trigger 编成 Rust expression batch input；fired-index/order scheduler 和 production dispatch 未接入 |
+| 094i | `audits/094i-mixed-event-due-runtime.md` | partial | 新增 shadow-only mixed due runtime，把 trigger expression batch 接到 Rust cross/above/timer primitives 并返回源码顺序 fired indices；event body dispatch 未接入 |
+| 094j | `audits/094j-event-statement-shadow-dispatch.md` | partial | 新增 single event-statement shadow runtime：任一 trigger fired 时执行一次 Rust body batch；多 event statement / production engine 未接入 |
+| 094k | `audits/094k-analog-block-event-shadow-dispatch.md` | partial | 新增 analog-block event shadow runtime：多个 event statement 同步 fired 时按源码顺序执行 Rust body batch；continuous statement / production engine 未接入 |
+| 094l | `audits/094l-pipeline-stage-control-flow-body-batch.md` | partial | 在真实 `pipeline_stage` 控制流上验证 if/else body lowering；仍是 shadow/round-trip，不接 production |
+| 094m | `audits/094m-event-only-runtime-builder.md` | partial | 为真实 analog block 构建 event-only Rust runtime；continuous contribution、scheduler、CSV 仍由 Python 拥有 |
+| 094n | `audits/094n-transition-contribution-runtime.md` | partial | direct `transition()` voltage contribution 可走 Rust transition state primitive，并暴露 `next_breakpoint()` runtime API |
+| 094o | `audits/094o-combined-analog-block-shadow-runtime.md` | partial | event due/body + transition contribution 组合成受限 analog-block shadow runtime；仍不接默认 engine |
+| 094p | `audits/094p-real-row-shadow-replay-gate.md` | done | `pipeline_stage` reference time/source grid replay max abs diff `4.86e-8`；证明核心语义可行，但不是 E2E speed claim |
+| 094q | `audits/094q-opt-in-full-sim-wrapper.md` | blocked | prototype full-sim wrapper time-aligned close，但 wall `3.219s` vs Python `1.453s` 且 rowwise 不 close；不能 direct wire engine |
+| 094r | `audits/094r-engine-dispatch-contract-and-no-default.md` | done | 固化 engine dispatch contract 和 `NO_DEFAULT_ENGINE_DISPATCH` 决策 |
+| 094s | `audits/094s-persistent-typed-array-engine-slice.md` | done | bound indexed-array replay 相对 dict-pack `1.137x`，说明 node direct binding 有用但不是大瓶颈全部 |
 | sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，034 后先按 benchmark profile 决定下一步 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
@@ -186,6 +206,14 @@
 | 2026-06-05 | Record node-id Rust ABI | indexed array loop 下 recorded-node value gather 可走 Rust ABI，B15 移除 `rust_record_abi_not_implemented` blocker；Python 仍拥有 time/list append、SimResult、CSV 和 checker contract | EVAS commit `pending`; `audits/083-record-node-id-rust-abi.md` |
 | 2026-06-05 | Multi-timer static-linear event queue Rust | 082 的 single periodic timer segment 扩展为 multi periodic timer queue；同一时刻按 compiler/source metadata 顺序执行，event body 仍要求 state-only static-linear，cross/above/transition/default adaptive trace 仍 fallback | EVAS commit `pending`; `audits/084-multi-timer-static-linear-event-queue-rust.md` |
 | 2026-06-05 | Cross/above interpolation, transition production, default adaptive trace | `cross()/above()` event body node reads 可 opt-in 走 Rust interpolation cache；`transition()` state evolution 可 opt-in 走 Rust typed-array production；timer static-linear whole-segment path 在 `record_step=None` 时可复现受限默认 adaptive/internal trace。event queue/order/body 和全局 adaptive solver 仍不是全量 Rust 化 | EVAS commit `pending`; `audits/085-cross-above-transition-default-adaptive-trace.md` |
+| 2026-06-05 | 094e Rust body IR ABI | `evas_rust_evaluate_body_ir` 和 Python ctypes wrapper 可执行 synthetic expression/write op batch；100 组随机 state-write parity PASS，全量 EVAS pytest 620 PASS。该阶段未接生产 dispatch，速度收益为 0% | EVAS commit `pending`; `audits/094e-rust-abi.md` |
+| 2026-06-05 | 094f ExprIR/body write-set encoder | `ExprIR + BindingTableIR + node_slots` 可编码成 Rust body ops；ordered scalar state assignment + single-node contribution block 可经 Rust ABI 顺序执行；动态 indexed voltage read 和 event body 保守 fallback。该阶段仍未接 event scheduler/production dispatch，速度收益为 0% | EVAS commit `pending`; `audits/094f-body-ir-encoder.md` |
+| 2026-06-05 | 094g Event body program + trigger expr eval | 单个 `EventStatementIR` 可保留 trigger metadata，并绑定到 094f Rust body write-set program；standalone `evas_rust_evaluate_body_expr` 可计算 `cross(V(clk)-0.5,+1)` trigger value；due/order scheduler 仍未实现，速度收益为 0% | EVAS commit `pending`; `audits/094g-event-body-program.md` |
+| 2026-06-05 | 094h Event due program + trigger expression batch | `EventIR + BindingTableIR + node_slots` 可生成 trigger expression batch；`evas_rust_evaluate_body_expr_batch` 一次 FFI 计算多个 cross/above/timer expression value；fired-index/order scheduler 仍未实现，速度收益为 0% | EVAS commit `pending`; `audits/094h-event-due-program.md` |
+| 2026-06-05 | 094i Mixed event due runtime shadow | `RustEventDueRuntime` 将 094h trigger expression batch 接到 Rust cross/above/timer primitives，mixed `initial/cross/above/timer` fired indices 按源码顺序输出；event body dispatch 和 production engine 未接入，速度收益为 0% | EVAS commit `pending`; `audits/094i-mixed-event-due-runtime.md` |
+| 2026-06-05 | 094j Event statement shadow dispatch | `RustEventStatementRuntime` 将 fired trigger indices 接到 094g Rust body batch；同一 event statement 多 trigger 同时 fired 时 body 只执行一次。多 event statement/global phase-order 和 production engine 未接入，速度收益为 0% | EVAS commit `pending`; `audits/094j-event-statement-shadow-dispatch.md` |
+| 2026-06-05 | 094k Analog block event shadow dispatch | `RustAnalogBlockEventRuntime` 将多个 event statement runtime 按 analog block 源码顺序串联；两个独立 event statement 同步 fired 时 state/output write 顺序正确。continuous statement/完整 phase-order 和 production engine 未接入，速度收益为 0% | EVAS commit `pending`; `audits/094k-analog-block-event-shadow-dispatch.md` |
+| 2026-06-05 | 094l-s Pipeline-stage real-row gates | `pipeline_stage` 的 event/body/transition shadow runtime 在 same-grid replay 下 max abs diff `4.86e-8`；prototype full-sim wrapper 暴露 transition breakpoint ownership 和 Python/Rust pack-sync 负优化；bound indexed-array replay 相对 dict-pack 仅 `1.137x`。结论：继续 whole-step typed-array batch，不默认接 engine | EVAS commit `pending`; `audits/094l-*` 到 `audits/094s-*` |
 
 ## 后续候选项目
 

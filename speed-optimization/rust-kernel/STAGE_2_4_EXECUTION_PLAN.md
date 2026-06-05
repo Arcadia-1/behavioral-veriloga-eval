@@ -1,6 +1,6 @@
 # Stage 2-4 Execution Plan (094 Project) — Detailed Per-Session Checklist
 
-**Status**: planning — not started
+**Status**: active — 094a-e foundation done; 094f-k event/body shadow stack partial; 094l-s real-row `pipeline_stage` gates done through bound-array replay. Production engine dispatch remains blocked by scheduler ownership, Python/Rust pack-sync cost, record/CSV policy, and full-row parity gates.
 
 **Author**: Claude Opus (session 2026-06-06)
 
@@ -8,6 +8,61 @@ This document tracks the multi-week 094 project from the original
 multi-stage plan. Stages 1 and 6 are complete (see audit 095 and the
 EVAS commit `2c754c7`). This document is what a future Claude (or
 human) needs to pick up Stage 2-4.
+
+## Progress Update 2026-06-06
+
+Completed in the Codex 094 pickup session:
+
+| Session item | Status | Evidence |
+|---|---|---|
+| 094a Expression IR | done | `evas/simulator/expr_ir.py`; `tests/test_audit_094a_expr_ir.py`; 234 generic candidates / 8156 expression roots lower + emit compile |
+| 094b Statement IR | done | `evas/simulator/stmt_ir.py`; 234 generic candidates analog bodies lower + emit compile |
+| 094c Event Schedule IR | done | `evas/simulator/schedule_ir.py`; cross/timer/initial/final/combined event controls represented |
+| 094d State/Parameter Binding | done | `StateBindingIR` / `BindingTableIR`; generic candidate expression identifiers resolve to stable bindings |
+| 094e Rust ABI Foundation | done | `evas_rust_evaluate_body_ir`; `RustBackend.evaluate_body_ir()`; 100 random synthetic state-write IR cases match Python oracle |
+| 094f ExprIR/Stmt Body-Op Encoder | partial | `encode_body_expr_ops()` and `encode_body_stmt_ops()` map scalar expression/write-set subset to 094e Rust body ops; parsed expression/block Rust execution parity covered by `tests/test_audit_094f_body_ir_encoder.py` |
+| 094g Event Body Program | partial | `encode_event_body_program()` pairs one `EventIR` trigger with a Rust-executable body write-set; `evas_rust_evaluate_body_expr()` can evaluate trigger expressions; due/order scheduler remains pending |
+| 094h Event Due Program | partial | `encode_event_due_program()` lowers `initial_step`, simple `cross/above`, and static `timer` triggers to Rust expression batch input; `evas_rust_evaluate_body_expr_batch()` evaluates multiple trigger/timer expressions in one FFI call; detector state, fired-index ordering, and production dispatch remain pending |
+| 094i Mixed Event Due Runtime | partial | `RustEventDueRuntime` connects trigger expression batch to existing Rust cross/above/timer primitives and returns source-order fired trigger indices; event body dispatch, real-row waveform parity, and production integration remain pending |
+| 094j Event Statement Shadow Dispatch | partial | `RustEventStatementRuntime` executes one Rust body batch once when any trigger of that event statement fires; multiple event statements, continuous-statement phase ordering, real-row parity, and production integration remain pending |
+| 094k Analog Block Event Shadow Dispatch | partial | `RustAnalogBlockEventRuntime` executes multiple event statements in analog block source order when they fire in the same step; continuous statements, transition phase ordering, real-row parity, and production integration remain pending |
+| 094l Pipeline Stage Control Flow Body Batch | partial | `pipeline_stage` control-flow event body lowering validates real if/else state writes through Rust body batch; still shadow-only |
+| 094m Event-only Runtime Builder | partial | Builds a real analog-block event-only Rust runtime for `pipeline_stage`; continuous transition contributions and production scheduling still pending |
+| 094n Transition Contribution Runtime | partial | Direct `transition()` voltage contributions can use Rust transition-state primitive and expose `next_breakpoint()` |
+| 094o Combined Analog-block Runtime | partial | Combines event due/body and transition output runtime, with runtime-owned breakpoint API; still shadow-only |
+| 094p Real-row Shadow Replay Gate | done | Reference time/source grid replay on `pipeline_stage` passes same-grid output parity: max abs diff `4.86e-8` |
+| 094q Opt-in Full-sim Wrapper | blocked | Full-sim monkey-patch wrapper is time-aligned close only after transition-state visibility fix, but slower than Python adaptive and rowwise not close |
+| 094r Engine Dispatch Contract | done | Records `NO_DEFAULT_ENGINE_DISPATCH` and required ownership contract before production wiring |
+| 094s Persistent Typed-array Slice | done | Bound indexed-array replay preserves parity and is `1.137x` faster than dict-pack replay; this is not enough for E2E speed claim |
+
+Validation:
+
+```bash
+cargo test --manifest-path EVAS/evas/rust_core/Cargo.toml --release
+# 36 passed
+
+PYTHONPATH=EVAS python3 -m pytest \
+  EVAS/tests/test_rust_backend.py \
+  EVAS/tests/test_audit_094f_body_ir_encoder.py \
+  EVAS/tests/test_audit_094h_event_due_program.py -q
+# 51 passed
+```
+
+Important remaining gate before production work: full-sim rowwise or explicitly
+defined-grid parity on real rows is still pending. The current 094a-d emitters are
+compile-only round-trip checks, 094e is a synthetic ABI test, 094f partial
+encodes scalar expressions/write-sets, 094g partial binds event metadata to
+body writes plus trigger expression evaluation, and 094h partial batches trigger
+expression inputs. 094i partial owns a shadow fired-index runtime, but still
+does not own analog-block-level phase ordering. 094j partial connects one event
+statement's fired indices to one Rust body batch, but still does not handle
+continuous statements, real-row waveform parity, or production engine
+integration. 094k partial adds multiple-event-statement source-order shadow
+dispatch. 094l-s prove that one real `pipeline_stage` row can be executed in
+shadow replay with tight same-grid parity, but 094q also proves the naive
+full-sim wrapper is slower because Python still owns scheduler, state sync,
+record/CSV, and per-step FFI orchestration. Together they are not yet a
+replacement runtime.
 
 ## Session-by-Session Breakdown
 
