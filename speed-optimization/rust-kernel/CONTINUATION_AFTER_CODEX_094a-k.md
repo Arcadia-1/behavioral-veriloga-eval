@@ -415,3 +415,77 @@ ls behavioral-veriloga-eval/speed-optimization/rust-kernel/audits/094*-*.md
 ```
 
 Good luck.
+
+---
+
+## 10. Late Empirical Finding (Added After Initial Audit)
+
+After writing §1-9 I ran a direct probe on the 5 audit-092 testbench
+rows to measure how close codex's IR is to handling real circuits.
+
+### 10.1 Lowering coverage on real rows
+
+```python
+from evas.simulator.expr_ir import build_state_binding_ir
+from evas.simulator.stmt_ir import StatementLoweringContext, lower_stmt
+for row in [pipeline_stage, sar_logic_4b, debounce_latch,
+            window_comparator, pipeline_adc_chain]:
+    mod = parse(row.va)
+    binding = build_state_binding_ir(mod)
+    ctx = StatementLoweringContext()
+    for stmt in mod.analog_block.body.statements:
+        ir = lower_stmt(stmt, ctx)   # returns IR or None
+```
+
+**Result**: 37/37 top-level analog block statements lowered (100%) on
+all 5 rows. No exceptions, no None returns at the statement level.
+
+| Row | Statements lowered | Outcome |
+|---|---:|---|
+| pipeline_stage | 6/6 | ✅ |
+| sar_logic_4b | 7/7 | ✅ |
+| debounce_latch | 6/6 | ✅ |
+| window_comparator | 6/6 | ✅ |
+| pipeline_adc_chain | 12/12 | ✅ |
+
+This is **better than I had assumed in §2 Issue C**. The IR
+foundation actually handles all 5 real-row analog block shapes.
+
+### 10.2 What 100% lowering does NOT mean
+
+Crucially:
+- ✅ IR can REPRESENT every statement (lowering succeeds)
+- ❌ Not tested: does `emit_python(ir)` produce code that runs and
+  matches the original model.evaluate() waveform? (codex's own audits
+  say compile-only round-trip is checked, not runtime parity)
+- ❌ Not tested: does `encode_body_*_ops(ir)` accept these statements
+  without falling back to "encoder rejection" (which 094f lists as a
+  large category)?
+- ❌ engine.py still untouched — no dispatch path exposes this IR to
+  a real sim.run() call
+
+### 10.3 Revised time estimate
+
+Given 100% lowering coverage, the project is closer to default-on
+than §2 Issue C implied. Revised path:
+
+| Task | Original estimate | Revised estimate |
+|---|---:|---:|
+| Real-row waveform round-trip (§5 N+6) | 3-5h | **2-3h** (IR already handles all 5 rows; just need emit+run parity test) |
+| Continuous statement phase ordering (N+7) | 4-6h | **3-4h** (the codex schedule_ir already encodes the structure) |
+| engine.py dispatch + sweep + default-on (N+8) | 4-6h | **3-4h** (091d's `_try_*` is a clean insertion point) |
+
+**Total to actual user-visible effect: 8-11h** instead of the original 12-19h.
+
+### 10.4 Implication for the next session
+
+If you have one focused codex session, the highest-leverage move is:
+1. Skip writing a separate parity audit doc — just run emit→compile→sim
+   on pipeline_stage as a smoke test, see if it produces a CSV
+2. Compare CSV vs Python adaptive
+3. If close (≤1% diff): write the engine.py wire in the same session
+4. If far (>1% diff): investigate which constructs lose fidelity; that
+   becomes the parity gate audit
+
+The 100% lowering result is real evidence that codex's Phase 1+2 work
+is structurally sound. Don't rebuild what's already there.
