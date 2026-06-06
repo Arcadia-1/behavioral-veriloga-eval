@@ -1,8 +1,18 @@
 # EVAS Rust Kernel Optimization
 
-> **当前 active worklist**：`RUSTIFICATION_WORKLIST_20260606.md`（覆盖 001-095；2026-06-05 → 2026-06-06 会话完成 086-095 + Stage 6 commit hygiene + handoff to codex for 094 multi-week project）。
+> **当前 active worklist**：`RUSTIFICATION_WORKLIST_20260606.md`（覆盖 001-103；2026-06-05 → 2026-06-06 会话完成 086-103 + Stage 6 commit hygiene + handoff to codex for 094 multi-week project；097 编号在 096 文档中作为 slowdown root-cause 语义预留，当前未落文档）。
 >
 > **Codex 接 094 项目起点**：`HANDOFF_TO_CODEX_094_PROJECT.md`（self-contained 342 行 handoff doc，含 7 critical rules + 5-session execution plan + pitfalls list）。
+>
+> **当前最快已验证状态**：`profile_fast_rust_55`。证据是 075/076：top-wall 10 EVAS-only `profile_fast` `13.264s` -> `profile_fast_rust_55` `3.250s`，`10/10` safe vs strict EVAS，相对 normal fast 为 `4.08x`。后续 103/104/094q 等 event-transition/094 wrapper 尝试属于 correctness/diagnostic 或负优化，不能替代这个速度基线。
+>
+> **EVAS2 当前定位**：`profile_fast_evas2` 是 strict Rust whole-segment coverage gate。命中 whole-segment Rust 才算可跑；未命中必须显式 unsupported，不能把 Python fallback 混成 Rust 覆盖率。负优化和禁用路线见 `RUST_NEGATIVE_ATTEMPT_STOPLIST_20260605.md`。
+>
+> **EVAS2 覆盖扩展计划**：`EVAS2_WHOLE_SEGMENT_COVERAGE_PLAN_20260605.md` + `audits/108-rust-owned-simulation-loop-first.md`。108 后主线纠正为 Rust-owned simulation loop first：Python 负责 parse/lower/runner 兼容，Rust 拥有 transient scheduler、source、event、evaluate、transition、breakpoint、record 和 final state；不要继续把窄 fastpath 堆叠当成全量 Rust 化。
+>
+> **108-112 当前实装状态**：已完成 `RustSimProgram` schema、source+record no-model Rust-owned loop、continuous evaluate/state/output write 子集，并把支持边界内的 `initial_step`/`cross`/`above` event due、ordered event body、`transition()` output/breakpoint、`$bound_step` next-dt clamp、static bus/bitwise expression、fixed-loop state array、direct continuous contribution、以及 `bias + scale * transition(...)` 合入同一个 RustSimProgram production loop。112 selected-5 diagnostic 从 `3/5` 提升到 `5/5` PASS；这证明组合语义迁移有效，但样本仍很小，不能 claim 全量 Rust 化、release-wide speedup 或快于 Spectre AX。
+>
+> **P0/P1 当前收口入口**：`EVAS2_P0P1_CLOSEOUT_20260606.md` + `EVAS2_CURRENT_ARTIFACT_INDEX_20260606.md`。当前 release-row 可用性是 271/271 PASS；语言/架构层面仍不能 claim 100% Rust 化，也不能 claim paper-facing 快于 Spectre AX。
 
 这个目录记录 EVAS 内核 Rust 化和 indexed 化的长期改造过程。它不是论文速度结论本身，而是解释“为什么这样改、改了什么、改前改后如何验证、下一步怎么走”的工程审计入口。
 
@@ -117,6 +127,29 @@
 | 094q | `audits/094q-opt-in-full-sim-wrapper.md` | blocked | prototype full-sim wrapper time-aligned close，但 wall `3.219s` vs Python `1.453s` 且 rowwise 不 close；不能 direct wire engine |
 | 094r | `audits/094r-engine-dispatch-contract-and-no-default.md` | done | 固化 engine dispatch contract 和 `NO_DEFAULT_ENGINE_DISPATCH` 决策 |
 | 094s | `audits/094s-persistent-typed-array-engine-slice.md` | done | bound indexed-array replay 相对 dict-pack `1.137x`，说明 node direct binding 有用但不是大瓶颈全部 |
+| 095 | `audits/095-generic-executor-record-adaptive-substeps.md` | done | 修复 091d generic executor 漏记 adaptive substep 的 parity 问题；速度仍有约 `10.3x` geomean，但记录成本增加 |
+| 096 | `audits/096-transition-production-real-release-sweep.md` | done | 真实 release sweep 证明 `rust_transition_production` 在 75 行中 74 行变慢，建议降级为 experimental/off-by-default |
+| stoplist | `RUST_NEGATIVE_ATTEMPT_STOPLIST_20260605.md` | active | 标记 026/035/036/045/046/059/062/089/094q/096/103/104 等无效或负优化路线；当前速度回退口径固定为 `profile_fast_rust_55` |
+| evas2-plan | `EVAS2_WHOLE_SEGMENT_COVERAGE_PLAN_20260605.md` | active | 定义 EVAS2 runnable、coverage expansion workstreams 和 strict production gate；从 planner-core `231/348` 目标池扩 whole-segment runtime |
+| 098 | `audits/098-current-rust-coverage-and-body-ir-production.md` | done | 完成 P0 当前 Rust 覆盖审计和 P1 094 body-IR opt-in production hook；release 348 个 compile-ok `.va` 中当前 body-IR candidate 为 0，不能当速度 claim |
+| 099 | `audits/099-body-ir-rejection-taxonomy.md` | done | 把 P0 拒绝原因拆成多标签 taxonomy；release blockers 主要是 `transition_expr` 344、event statement 321、complex if/write-set 172，下一步应做 event-transition ordered segment planner |
+| 100 | `audits/100-event-transition-coverage-estimator.md` | done | 新增 event+transition ordered segment 静态 estimator；保守 core 预计 `255/348`，ordered V1 预计 `268/348`，带 side-effect boundary 上限 `338/348` |
+| 101 | `audits/101-event-transition-source-order-planner.md` | done | 新增 source-order planner；release 真实 planner 候选为 core `231/348`、ordered V1 `239/348`、side-effect boundary `288/348`，主要剩余缺口是 event-after-continuous 与 dynamic timer due |
+| 102 | `audits/102-compiler-visible-event-transition-plan.md` | done | 把 101 planner 写入 `CompiledModel._event_transition_plan_*` class metadata，并在 engine perf stats 聚合 profile 候选；默认 runtime 行为不变 |
+| 103 | `audits/103-event-transition-shadow-runtime.md` | done | 新增 `rust_event_transition_shadow`，真实仿真循环中执行 Rust event-transition shadow；micro smoke `3837/3837` matches、0 mismatch，但 shadow wall 约 `4.52x` slower，属于 correctness gate |
+| 104 | `audits/104-event-transition-production-gate.md` | diagnostic | 受限 event+transition production 可跳过 Python evaluate，但仍由 Python outer loop/per-step FFI/sync 拥有；micro smoke 语义正确但 `3.49x` slower，不能作为速度方向 |
+| 105 | `audits/105-evas2-strict-rust-engine.md` | done | 新增 `evas_engine=evas2` strict Rust whole-segment 入口；命中 Rust 才算 EVAS2 可跑，未命中显式 unsupported，不再把 Python fallback 混入 Rust 覆盖率 |
+| 106 | `audits/106-evas2-event-transition-core-strict-production.md` | done | 把受限 `event + transition()` core 接入 EVAS2 strict full-model dispatcher；命中时跳过 Python `model.evaluate()` hot path，测试验证 strict counters 和 scheduler-drift-bounded parity，但尚不做速度 claim |
+| 107 | `audits/107-evas2-native-scheduler-sparse-record.md` | done | 把 W1b `pulse -> cross -> scalar state -> transition(out)` trace 合成单次 Rust scheduler+record ABI；microbench median `0.389472s -> 0.007946s`，相对 106 约 `49.02x`，但仅限该受限形态 |
+| 108 | `audits/108-rust-owned-simulation-loop-first.md` | active | 方向纠偏：停止继续扩窄 fastpath，先定义 `RustSimProgram` 和 Rust-owned transient main loop；release 覆盖以 strict Rust EVAS2 能跑真实 row 为准，而不是以局部 primitive 数量为准 |
+| 109 | `audits/109-continuous-body-and-slot-remap.md` | done | 把 continuous static-linear body/state/output write 与 source/node/state slot remap 接入 RustSimProgram，作为 strict Rust-owned loop 的第一批真实模型覆盖 |
+| 110 | `audits/110-timer-array-rustsimprogram-speed-smoke.md` | done | 扩展 timer/state array 侧 RustSimProgram 覆盖，并生成 selected-12 speed smoke；暴露 output-dependent post-update event 仍阻塞 CDAC 等 row |
+| 111 | `audits/111-post-update-phase-and-selected12-speed.md` | done | 为 output-dependent `cross/above` 增加 pre/post event phase 和 post-event refresh；selected-12 safe coverage `6/12 -> 7/12`，safe-subset EVAS-only speedup `6.28x` |
+| 112 | `audits/112-composite-event-body-and-scaled-transition.md` | done | 把 ordered if/else、bit shift/bit-not、static bus/index、fixed for-loop state array、`$bound_step`、direct contribution、`bias+scale*transition` 迁入 RustSimProgram；selected-5 strict EVAS2 `3/5 -> 5/5` PASS |
+| 114 | `audits/114-full-release-rust-py-spectre-fourway.md` | done | 修复 RustSimProgram file side-effect 差异后，full release 271-row 四路审计：Rust EVAS2 271/271 PASS，Python EVAS fast 271/271 PASS，Spectre AX 271/271 PASS，Spectre strict 267/271 checker PASS；Rust EVAS2 相对 Python fast core wall `3.96x`，E2E wall `1.41x` |
+| 115 | `audits/115-auto-row-checker-sparse-trace-contract.md` | done | 将 row-based checker required columns 自动推断成 EVAS sparse trace contract；full release EVAS2 271/271 PASS、fallback 0，E2E wall `69.952s -> 59.418s`，checker wall `54.244s -> 46.245s` |
+| 116 | `audits/116-generic-checker-runtime-hot-rows.md` | done | 将 rectifier、stimulus sequencer、window comparator 迁到通用 `CsvCheckerRuntime`，并预留 sparse trace 额外调试列；10-row smoke checker wall `11.618s -> 0.221s`，E2E `16.388s -> 4.349s` |
+| P0/P1 | `EVAS2_P0P1_CLOSEOUT_20260606.md` | done | 中文收口报告：当前 clean smoke 271/271 PASS，E2E 225.978s、EVAS subprocess 162.884s、checker 54.434s；明确 release 可用性与全语言 Rust 化不是同一 claim |
 | sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，034 后先按 benchmark profile 决定下一步 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
 
@@ -214,6 +247,9 @@
 | 2026-06-05 | 094j Event statement shadow dispatch | `RustEventStatementRuntime` 将 fired trigger indices 接到 094g Rust body batch；同一 event statement 多 trigger 同时 fired 时 body 只执行一次。多 event statement/global phase-order 和 production engine 未接入，速度收益为 0% | EVAS commit `pending`; `audits/094j-event-statement-shadow-dispatch.md` |
 | 2026-06-05 | 094k Analog block event shadow dispatch | `RustAnalogBlockEventRuntime` 将多个 event statement runtime 按 analog block 源码顺序串联；两个独立 event statement 同步 fired 时 state/output write 顺序正确。continuous statement/完整 phase-order 和 production engine 未接入，速度收益为 0% | EVAS commit `pending`; `audits/094k-analog-block-event-shadow-dispatch.md` |
 | 2026-06-05 | 094l-s Pipeline-stage real-row gates | `pipeline_stage` 的 event/body/transition shadow runtime 在 same-grid replay 下 max abs diff `4.86e-8`；prototype full-sim wrapper 暴露 transition breakpoint ownership 和 Python/Rust pack-sync 负优化；bound indexed-array replay 相对 dict-pack 仅 `1.137x`。结论：继续 whole-step typed-array batch，不默认接 engine | EVAS commit `pending`; `audits/094l-*` 到 `audits/094s-*` |
+| 2026-06-06 | Auto row-checker sparse trace contract | row-based checker 的 literal set、f-string bit columns、`indexed_columns()` 和 prefix bit families 可自动下发 required trace；full release EVAS2 271/271 PASS、fallback 0，E2E `69.952s -> 59.418s`，checker `54.244s -> 46.245s` | EVAS commit `pending`; `audits/115-auto-row-checker-sparse-trace-contract.md` |
+| 2026-06-06 | Generic checker runtime hot rows | `CsvCheckerRuntime` 统一 header index、流式 rows、series、插值采样和 resample rows；rectifier/window/stimulus 10-row smoke 10/10 PASS，checker `11.618s -> 0.221s` | EVAS commit `pending`; `audits/116-generic-checker-runtime-hot-rows.md` |
+| 2026-06-06 | P0/P1 release closeout | 当前代码 clean EVAS2 runner smoke 271/271 PASS；P0/P1 文档把 release-row 可用性、core speedup、E2E 外层开销、Spectre AX claim gate 和剩余 Rust 化缺口分开 | EVAS commit `pending`; `EVAS2_P0P1_CLOSEOUT_20260606.md` |
 
 ## 后续候选项目
 
@@ -338,6 +374,64 @@ audits/076-current-rustification-status-after-gain-flow.md
 audits/077-whole-segment-record-trace-copy-reduction.md
 audits/078-global-evas-timing-split-and-persistent-worker.md
 audits/079-required-signal-global-trace.md
+audits/080-evaluate-ir-piecewise-and-rust-timer-batch.md
+audits/081-event-body-linear-rust-batch.md
+audits/082-timer-static-linear-whole-segment-rust.md
+audits/083-record-node-id-rust-abi.md
+audits/084-multi-timer-static-linear-event-queue-rust.md
+audits/085-cross-above-transition-default-adaptive-trace.md
+audits/086-transition-operator-persistent-buffer-reuse.md
+audits/087-transition-per-step-batch-design.md
+audits/088-transition-per-step-batch-implementation.md
+audits/089-cross-above-detector-production-gate.md
+audits/091-generic-event-state-transition-candidate-matcher.md
+audits/091c-generic-executor-dispatch-gate.md
+audits/091d-generic-executor-python-body.md
+audits/092-generic-executor-real-row-validation.md
+audits/093-generic-executor-sweep-and-default-on-decision.md
+audits/094-verilog-a-body-rust-kernel-design.md
+audits/094a-expression-ir.md
+audits/094b-statement-ir.md
+audits/094c-schedule-ir.md
+audits/094d-state-binding-ir.md
+audits/094e-rust-abi.md
+audits/094f-body-ir-encoder.md
+audits/094g-event-body-program.md
+audits/094h-event-due-program.md
+audits/094i-mixed-event-due-runtime.md
+audits/094j-event-statement-shadow-dispatch.md
+audits/094k-analog-block-event-shadow-dispatch.md
+audits/094l-pipeline-stage-control-flow-body-batch.md
+audits/094m-event-only-runtime-builder.md
+audits/094n-transition-contribution-runtime.md
+audits/094o-combined-analog-block-shadow-runtime.md
+audits/094p-real-row-shadow-replay-gate.md
+audits/094q-opt-in-full-sim-wrapper.md
+audits/094r-engine-dispatch-contract-and-no-default.md
+audits/094s-persistent-typed-array-engine-slice.md
+audits/095-generic-executor-record-adaptive-substeps.md
+audits/096-transition-production-real-release-sweep.md
+audits/098-current-rust-coverage-and-body-ir-production.md
+audits/099-body-ir-rejection-taxonomy.md
+audits/100-event-transition-coverage-estimator.md
+audits/101-event-transition-source-order-planner.md
+audits/102-compiler-visible-event-transition-plan.md
+audits/103-event-transition-shadow-runtime.md
+audits/104-event-transition-production-gate.md
+audits/105-evas2-strict-rust-engine.md
+audits/106-evas2-event-transition-core-strict-production.md
+audits/107-evas2-native-scheduler-sparse-record.md
+audits/108-rust-owned-simulation-loop-first.md
+audits/109-continuous-body-and-slot-remap.md
+audits/110-timer-array-rustsimprogram-speed-smoke.md
+audits/111-post-update-phase-and-selected12-speed.md
+audits/112-composite-event-body-and-scaled-transition.md
+audits/113-p0-python-compatibility-gap-closures.md
+audits/114-full-release-rust-py-spectre-fourway.md
+audits/115-auto-row-checker-sparse-trace-contract.md
+audits/116-generic-checker-runtime-hot-rows.md
+EVAS2_P0P1_CLOSEOUT_20260606.md
+EVAS2_CURRENT_ARTIFACT_INDEX_20260606.md
 ```
 
 编号表示工程顺序，不表示论文 claim 强度。后续如果一个改动失败，也保留审计文档，状态标成 `rejected` 或 `diagnostic`，避免后来重复踩同一个坑。

@@ -8,6 +8,7 @@ import json
 import math
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -27,7 +28,17 @@ from run_vabench_release_evas_speed_experiment import (
     select_rows,
     task_dir_for,
 )
-from run_gold_dual_suite import compare_waveforms
+from run_gold_dual_suite import (
+    compare_waveforms,
+    default_sui_cadence_cshrc,
+    default_sui_host,
+    default_sui_work_root,
+    run_ssh_bytes,
+    run_ssh_text,
+    safe_extract_tar_bytes,
+    spectre_license_queue_timeout,
+    tar_input_files,
+)
 from simulate_evas import (
     behavior_checker_policy,
     evaluate_behavior_with_timeout,
@@ -50,6 +61,12 @@ NO_CLAIM_REASON = (
     "Same-server timing is measured directly on one host and the artifact emits "
     "checker/waveform Spectre-equivalence gates. Paper-facing speed claims should use only "
     "equivalence-gated rows and still need repeated cold/warm runs."
+)
+REMOTE_SPECTRE_NO_CLAIM_REASON = (
+    "Diagnostic mixed-host timing: EVAS ran on the local host while Spectre ran through "
+    "the sui-direct SSH backend. Use this artifact to compare current behavior and "
+    "screen Rust speed benefits; paper-facing speed claims still require an explicitly "
+    "controlled same-host or otherwise normalized timing protocol."
 )
 
 
@@ -851,6 +868,7 @@ def run_evas_mode(
         "timing_split": timing_split,
         "scores": scores,
         "timing": raw.get("timing", {}),
+        "perf_counters": raw.get("performance_counters", {}),
         "fixture_notes": fixture_notes,
         "notes": raw_notes,
         "result_root": rel(result_root),
@@ -1018,21 +1036,266 @@ def run_spectre_direct(
     }
 
 
+def run_spectre_sui_direct(
+    selection: Selection,
+    spectre_mode: str,
+    *,
+    output_root: Path,
+    timeout_s: int,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
+) -> dict[str, object]:
+    t_e2e_start = time.perf_counter()
+    timing_split: dict[str, float] = {}
+    if spectre_mode not in SPECTRE_MODES:
+        raise ValueError(f"unknown Spectre mode: {spectre_mode}")
+    mode = SPECTRE_MODES[spectre_mode]
+    run_dir = selection_output_root(output_root, selection, "spectre") / spectre_mode
+    t0 = time.perf_counter()
+    tb_path, fixture_notes, settings_manifest = copy_gold_to_run_dir(
+        selection,
+        run_dir,
+        spectre_mode=spectre_mode,
+        mode=mode,
+    )
+    timing_split["fixture_materialize_s"] = time.perf_counter() - t0
+
+    safe_task_id = safe_path_component(selection.task_id)
+    spectre_tb_path = run_dir / f"{safe_task_id}__{tb_path.name}"
+    spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
+    include_paths = [run_dir / name for name in ahdl_includes(tb_path)]
+    input_files: list[Path] = [spectre_tb_path]
+    seen = {spectre_tb_path.resolve()}
+    for include_path in include_paths:
+        if not include_path.exists():
+            raise FileNotFoundError(f"missing Spectre include for remote run: {include_path}")
+        resolved = include_path.resolve()
+        if resolved not in seen:
+            input_files.append(include_path)
+            seen.add(resolved)
+
+    raw_name = f"{spectre_tb_path.stem}.raw"
+    raw_dir = run_dir / raw_name
+    log_path = run_dir / "spectre.out"
+    csv_path = run_dir / "tran_spectre.csv"
+    for stale in (raw_dir,):
+        if stale.exists():
+            shutil.rmtree(stale)
+    for stale in (log_path, csv_path):
+        if stale.exists():
+            stale.unlink()
+
+    host = sui_host or default_sui_host()
+    work_root = (sui_work_root or default_sui_work_root()).rstrip("/")
+    cshrc = cadence_cshrc or default_sui_cadence_cshrc()
+    remote_prefix = f"{safe_path_component(selection.task_id)}_{spectre_mode}_{os.getpid()}_{int(time.time() * 1000)}"
+    remote_template = f"{work_root}/{remote_prefix}.XXXXXX"
+    remote_dir = ""
+    combined = ""
+    errors: list[str] = []
+    warnings: list[str] = []
+    license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
+    cmd = [
+        "spectre",
+        "-64",
+        spectre_tb_path.name,
+        "+escchars",
+        "+log",
+        "spectre.out",
+        "-format",
+        "psfascii",
+        "-raw",
+        raw_name,
+        *mode.cli_args,
+        "+lqtimeout",
+        str(license_queue_timeout_s),
+        "-maxw",
+        "5",
+        "-maxn",
+        "5",
+        "+logstatus",
+    ]
+    settings_manifest["command"] = " ".join(cmd)
+    settings_manifest["spectre_backend"] = "sui-direct"
+    settings_manifest["sui_host"] = host
+    settings_manifest["sui_work_root"] = work_root
+    settings_manifest["cadence_cshrc"] = cshrc
+
+    subprocess_wall = 0.0
+    try:
+        create = run_ssh_text(
+            host,
+            f"mkdir -p {shlex.quote(work_root)} && mktemp -d {shlex.quote(remote_template)}",
+            timeout_s=30,
+        )
+        combined += (create.stdout or "") + "\n" + (create.stderr or "")
+        if create.returncode != 0:
+            errors.append(f"remote_workdir_create_failed rc={create.returncode}")
+            raise RuntimeError("remote_workdir_create_failed")
+        remote_dir = next(
+            (line.strip() for line in reversed(create.stdout.splitlines()) if line.strip().startswith("/")),
+            "",
+        )
+        if not remote_dir:
+            errors.append("remote_workdir_unresolved")
+            raise RuntimeError("remote_workdir_unresolved")
+
+        upload = run_ssh_bytes(
+            host,
+            f"tar -xzf - -C {shlex.quote(remote_dir)}",
+            input_data=tar_input_files(input_files, run_dir),
+            timeout_s=max(timeout_s, 60),
+        )
+        combined += "\n" + (upload.stdout or b"").decode("utf-8", errors="replace")
+        combined += "\n" + (upload.stderr or b"").decode("utf-8", errors="replace")
+        if upload.returncode != 0:
+            errors.append(f"remote_upload_failed rc={upload.returncode}")
+            raise RuntimeError("remote_upload_failed")
+
+        spectre_command = " ".join(shlex.quote(part) for part in cmd)
+        csh_parts = []
+        if cshrc:
+            csh_parts.append(f"source {shlex.quote(cshrc)}")
+        csh_parts.append(f"cd {shlex.quote(remote_dir)}")
+        csh_parts.append(spectre_command)
+        t0 = time.perf_counter()
+        run = run_ssh_text(
+            host,
+            f"tcsh -c {shlex.quote(' && '.join(csh_parts))}",
+            timeout_s=max(timeout_s, 600),
+        )
+        subprocess_wall = time.perf_counter() - t0
+        timing_split["spectre_subprocess_wall_s"] = subprocess_wall
+        combined += "\n" + (run.stdout or "") + "\n" + (run.stderr or "")
+        if run.returncode != 0:
+            errors.append(f"spectre_failed rc={run.returncode}")
+
+        download = run_ssh_bytes(
+            host,
+            f"tar -czf - -C {shlex.quote(remote_dir)} .",
+            timeout_s=max(timeout_s, 600),
+        )
+        combined += "\n" + (download.stderr or b"").decode("utf-8", errors="replace")
+        if download.returncode == 0:
+            safe_extract_tar_bytes(download.stdout or b"", run_dir)
+        else:
+            errors.append(f"remote_download_failed rc={download.returncode}")
+    except subprocess.TimeoutExpired as exc:
+        subprocess_wall = float(exc.timeout or 0)
+        timing_split["spectre_subprocess_wall_s"] = subprocess_wall
+        errors.append(f"sui_direct_timeout_after_s={exc.timeout}")
+        combined += "\n" + (
+            ((exc.stdout or "") if isinstance(exc.stdout, str) else "")
+            + "\n"
+            + ((exc.stderr or "") if isinstance(exc.stderr, str) else "")
+        )
+    except Exception as exc:  # noqa: BLE001 - record remote backend failures in the artifact.
+        if not errors:
+            errors.append(f"sui_direct_exception={type(exc).__name__}: {str(exc)[:300]}")
+    finally:
+        if remote_dir:
+            try:
+                cleanup = run_ssh_text(host, f"rm -rf {shlex.quote(remote_dir)}", timeout_s=30)
+                if cleanup.returncode != 0:
+                    warnings.append(f"remote_cleanup_failed rc={cleanup.returncode}")
+            except Exception as exc:  # pragma: no cover - best-effort cleanup only.
+                warnings.append(f"remote_cleanup_exception={type(exc).__name__}: {str(exc)[:200]}")
+
+    t0 = time.perf_counter()
+    if log_path.exists():
+        combined += "\n" + log_path.read_text(encoding="utf-8", errors="replace")
+    timing_split["spectre_log_read_s"] = time.perf_counter() - t0
+    t0 = time.perf_counter()
+    timing = parse_spectre_timing(combined)
+    timing_split["spectre_log_parse_s"] = time.perf_counter() - t0
+
+    parse_info: dict[str, object] | None = None
+    parse_notes: list[str] = []
+    if not errors and raw_dir.exists():
+        try:
+            t0 = time.perf_counter()
+            parse_info = write_spectre_psf_csv(raw_dir, csv_path)
+            timing_split["psf_parse_s"] = time.perf_counter() - t0
+        except Exception as exc:  # noqa: BLE001 - record parser failures in the artifact.
+            timing_split["psf_parse_s"] = time.perf_counter() - t0
+            parse_notes.append(f"{type(exc).__name__}: {exc}")
+    elif not errors:
+        errors.append(f"spectre_raw_missing={raw_name}")
+
+    t0 = time.perf_counter()
+    behavior = evaluate_csv_behavior(
+        selection.checker_id,
+        csv_path if csv_path.exists() else None,
+        timeout_s=timeout_s,
+    )
+    timing_split["behavior_checker_s"] = time.perf_counter() - t0
+    wall = time.perf_counter() - t_e2e_start
+    timing_split["evaluator_e2e_wall_s"] = wall
+    simulation_ok = not errors and csv_path.exists()
+    return {
+        "backend": "spectre",
+        "mode": spectre_mode,
+        "status": "PASS" if simulation_ok else "FAIL",
+        "ok": simulation_ok and behavior.get("ok") is True,
+        "simulation_ok": simulation_ok,
+        "spectre_backend": "sui-direct",
+        "sui_host": host,
+        "sui_work_root": work_root,
+        "remote_run_dir": remote_dir,
+        "checker_id": selection.checker_id,
+        "checker_policy": behavior["checker_policy"],
+        "csv_path": rel(csv_path) if csv_path.exists() else None,
+        "psf_parse": parse_info,
+        "behavior_check_available": behavior["check_available"],
+        "behavior_score": behavior["score"],
+        "behavior_ok": behavior["ok"],
+        "wall_time_s": wall,
+        "simulator_subprocess_wall_s": subprocess_wall,
+        "returncode": 0 if simulation_ok else 1,
+        "timing": timing,
+        "timing_split": timing_split,
+        "command": " ".join(cmd),
+        "spectre_settings": settings_manifest,
+        "fixture_notes": fixture_notes,
+        "notes": errors + warnings + parse_notes + list(behavior["notes"]),
+        "result_root": rel(run_dir),
+        "stdout_tail": combined[-2000:],
+    }
+
+
 def run_work_item(
     item: WorkItem,
     *,
     output_root: Path,
     timeout_s: int,
+    spectre_backend: str,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
 ) -> dict[str, object]:
     t0 = time.perf_counter()
     try:
         if item.backend == "spectre":
-            result = run_spectre_direct(
-                item.selection,
-                item.mode,
-                output_root=output_root,
-                timeout_s=timeout_s,
-            )
+            if spectre_backend == "sui-direct":
+                result = run_spectre_sui_direct(
+                    item.selection,
+                    item.mode,
+                    output_root=output_root,
+                    timeout_s=timeout_s,
+                    sui_host=sui_host,
+                    sui_work_root=sui_work_root,
+                    cadence_cshrc=cadence_cshrc,
+                )
+            elif spectre_backend == "local":
+                result = run_spectre_direct(
+                    item.selection,
+                    item.mode,
+                    output_root=output_root,
+                    timeout_s=timeout_s,
+                )
+            else:
+                raise ValueError(f"unknown Spectre backend: {spectre_backend}")
         elif item.backend == "evas":
             result = run_evas_mode(
                 item.selection,
@@ -1095,11 +1358,23 @@ def run_work_items(
     output_root: Path,
     timeout_s: int,
     jobs: int,
+    spectre_backend: str,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
 ) -> list[dict[str, object]]:
     ordered: list[dict[str, object] | None] = [None] * len(items)
     if jobs <= 1:
         for item in items:
-            result = run_work_item(item, output_root=output_root, timeout_s=timeout_s)
+            result = run_work_item(
+                item,
+                output_root=output_root,
+                timeout_s=timeout_s,
+                spectre_backend=spectre_backend,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
+                cadence_cshrc=cadence_cshrc,
+            )
             ordered[item.index] = result
             print_progress(item.index + 1, len(items), result)
     else:
@@ -1110,6 +1385,10 @@ def run_work_items(
                     item,
                     output_root=output_root,
                     timeout_s=timeout_s,
+                    spectre_backend=spectre_backend,
+                    sui_host=sui_host,
+                    sui_work_root=sui_work_root,
+                    cadence_cshrc=cadence_cshrc,
                 ): item
                 for item in items
             }
@@ -1640,7 +1919,7 @@ def markdown_table_cell(value: object, *, code: bool = False) -> str:
 def write_markdown(path: Path, artifact: dict[str, object]) -> None:
     summary = artifact["summary"]
     lines = [
-        "# Same-Server EVAS/Spectre Speed",
+        "# EVAS/Spectre Speed",
         "",
         f"Date: {artifact['date']}",
         f"Claim allowed: `{artifact['claim_allowed']}`",
@@ -1649,6 +1928,10 @@ def write_markdown(path: Path, artifact: dict[str, object]) -> None:
         "## Scope",
         "",
         f"- Host: `{artifact['host']}`",
+        f"- Spectre backend: `{artifact.get('spectre_backend', 'local')}`",
+        f"- SUI host: `{artifact.get('sui_host') or '-'}`",
+        f"- SUI work root: `{artifact.get('sui_work_root') or '-'}`",
+        f"- Cadence cshrc: `{artifact.get('cadence_cshrc') or '-'}`",
         f"- Selected rows: {artifact['selected_rows']}",
         f"- Jobs: {artifact['jobs']}",
         f"- EVAS modes: `{', '.join(artifact['evas_modes'])}`",
@@ -1991,6 +2274,18 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--limit", type=int, default=2)
     ap.add_argument("--evas-mode", action="append", choices=tuple(EVAS_MODES), default=[])
     ap.add_argument("--spectre-mode", action="append", choices=tuple(SPECTRE_MODES), default=[])
+    ap.add_argument(
+        "--spectre-backend",
+        choices=("local", "sui-direct"),
+        default=os.environ.get("VAEVAS_SPEED_SPECTRE_BACKEND", "local"),
+        help="Run Spectre locally or through the SUI direct SSH backend.",
+    )
+    ap.add_argument("--sui-host", default=os.environ.get("VAEVAS_SUI_HOST") or default_sui_host())
+    ap.add_argument("--sui-work-root", default=os.environ.get("VAEVAS_SUI_WORK_ROOT") or default_sui_work_root())
+    ap.add_argument(
+        "--cadence-cshrc",
+        default=os.environ.get("VAEVAS_SUI_CADENCE_CSHRC") or default_sui_cadence_cshrc(),
+    )
     ap.add_argument("--skip-evas", action="store_true", help="Run Spectre modes only; useful for settings smoke tests.")
     ap.add_argument("--skip-spectre", action="store_true", help="Run EVAS modes only; useful when Cadence license checkout is unavailable.")
     ap.add_argument("--timeout-s", type=int, default=300)
@@ -2049,6 +2344,10 @@ def main() -> int:
         output_root=output_root,
         timeout_s=args.timeout_s,
         jobs=max(1, args.jobs),
+        spectre_backend=args.spectre_backend,
+        sui_host=args.sui_host,
+        sui_work_root=args.sui_work_root,
+        cadence_cshrc=args.cadence_cshrc,
     )
     apply_equivalence_gates(results, spectre_modes)
 
@@ -2058,11 +2357,17 @@ def main() -> int:
         "date": date.today().isoformat(),
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "claim_allowed": False,
-        "no_claim_reason": NO_CLAIM_REASON,
+        "no_claim_reason": REMOTE_SPECTRE_NO_CLAIM_REASON
+        if args.spectre_backend == "sui-direct"
+        else NO_CLAIM_REASON,
         "evas_only_no_claim_reason": EVAS_ONLY_NO_CLAIM_REASON,
         "host": subprocess.run(["hostname"], capture_output=True, text=True, check=False).stdout.strip(),
         "selected_rows": len(selections),
         "jobs": max(1, args.jobs),
+        "spectre_backend": args.spectre_backend,
+        "sui_host": args.sui_host if args.spectre_backend == "sui-direct" else "",
+        "sui_work_root": args.sui_work_root if args.spectre_backend == "sui-direct" else "",
+        "cadence_cshrc": args.cadence_cshrc if args.spectre_backend == "sui-direct" else "",
         "evas_modes": evas_modes,
         "evas_mode_specs": {
             mode_id: {

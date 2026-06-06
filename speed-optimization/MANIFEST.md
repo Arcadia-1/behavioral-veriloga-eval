@@ -6,7 +6,8 @@ This manifest defines the compact speed-report surface after cleanup.
 
 Speed-specific reports and plans now live under `speed-optimization/`.
 
-Only two human-readable speed reports are retained:
+Only two human-readable reports are retained as current paper-facing speed
+entry points:
 
 - `reports/evas_speed_experiment_results_and_standard_20260522.md`
 - `reports/evas_speed_result_analysis_20260522.md`
@@ -42,6 +43,60 @@ Use this JSON to explain which acceleration mechanism matters:
 
 - `reports/same_server_speed_ablation_goal_summary_20260522.json`
 
+## Diagnostic Engineering Reports
+
+These reports explain implementation bottlenecks or local EVAS-only probes.
+They are useful for engineering review, but they are not paper-facing speed
+claims:
+
+- `rust-kernel/EVAS2_P0P1_CLOSEOUT_20260606.md`
+- `rust-kernel/EVAS2_CURRENT_ARTIFACT_INDEX_20260606.md`
+- `rust-kernel/audits/114-full-release-rust-py-spectre-fourway.md`
+- `rust-kernel/audits/115-auto-row-checker-sparse-trace-contract.md`
+- `rust-kernel/audits/116-generic-checker-runtime-hot-rows.md`
+- `reports/full_release_fourway_rust_py_spectre_summary_20260606.json`
+- `reports/full_release_rows_for_fourway_20260606.json`
+- `reports/full_release_evas_py_rust_after_fixes_20260606.md`
+- `reports/full_release_spectre_ax_strict_20260606.md`
+- `reports/full_release_evas2_auto_row_trace_20260606_r4.md`
+- `reports/full_release_evas2_auto_row_trace_20260606_r4_summary.json`
+- `reports/checker_runtime_116_rowbased_20260606.md`
+- `reports/checker_runtime_116_rowbased_20260606.json`
+- `reports/checker_runtime_116_streaming_20260606.md`
+- `reports/checker_runtime_116_streaming_20260606.json`
+- `reports/evas2_p0p1_clean_smoke_20260606.md`
+- `reports/evas2_p0p1_clean_smoke_summary_20260606.json`
+- `reports/checker_runtime_072_20260604.md`
+- `reports/checker_runtime_072_20260604.json`
+- `reports/checker_runtime_priority_073_20260604.md`
+- `reports/checker_runtime_priority_073_20260604.json`
+- `reports/checker_runtime_074_prop_delay_20260604.md`
+- `reports/checker_runtime_074_prop_delay_20260604.json`
+- `reports/rust_stage55_topwall10_072_20260604.md`
+- `reports/rust_stage55_topwall10_072_20260604.json`
+- `reports/rust_speed_claim_gate_073_20260604.md`
+- `reports/rust_speed_claim_gate_073_20260604.json`
+- `reports/rust_stage74_topwall_evas_smoke_20260604.md`
+- `reports/rust_stage74_topwall_evas_smoke_20260604.json`
+- `reports/rust_gain_measurement_flow_075_20260604.md`
+- `reports/rust_gain_measurement_flow_075_20260604.json`
+- `reports/rust_stage75_topwall_evas_smoke_20260604.md`
+- `reports/rust_stage75_topwall_evas_smoke_20260604.json`
+- `reports/rust_stage76_topwall10_current_20260604.md`
+- `reports/rust_stage76_topwall10_current_20260604.json`
+- `reports/rust_stage77_record_trace_copy_smoke_20260604.md`
+- `reports/rust_stage77_record_trace_copy_smoke_20260604.json`
+- `reports/rust_stage78_global_timing_split_smoke_20260604.md`
+- `reports/rust_stage78_global_timing_split_smoke_20260604.json`
+- `reports/rust_stage78_persistent_worker_smoke_20260604.md`
+- `reports/rust_stage78_persistent_worker_smoke_20260604.json`
+- `reports/rust_stage78_persistent_worker_topwall10_20260604.md`
+- `reports/rust_stage78_persistent_worker_topwall10_20260604.json`
+- `reports/rust_stage79_required_trace_topwall10_20260604.md`
+- `reports/rust_stage79_required_trace_topwall10_20260604.json`
+- `reports/rust_stage79_required_trace_disabled_topwall10_20260604.md`
+- `reports/rust_stage79_required_trace_disabled_topwall10_20260604.json`
+
 ## Rust Kernel Optimization Program
 
 Use this directory for the ongoing EVAS indexed/Rust backend engineering record:
@@ -51,6 +106,8 @@ Use this directory for the ongoing EVAS indexed/Rust backend engineering record:
 - `rust-kernel/audits/001-indexed-sidecar-and-rust-smoke.md`
 - `rust-kernel/audits/002-python-indexed-ir-parity.md`
 - `rust-kernel/audits/003-python-indexed-voltage-snapshot.md`
+- `rust-kernel/audits/078-global-evas-timing-split-and-persistent-worker.md`
+- `rust-kernel/audits/079-required-signal-global-trace.md`
 - `rust-kernel/templates/change-audit-template.md`
 
 These documents explain implementation principles, before/after evidence,

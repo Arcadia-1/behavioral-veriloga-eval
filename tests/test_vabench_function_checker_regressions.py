@@ -12,6 +12,31 @@ sys.path.insert(0, str(ROOT / "runners"))
 import simulate_evas as sim  # noqa: E402
 
 
+def _write_rows_csv(csv_path: Path, rows: list[dict[str, float]], fieldnames: list[str]) -> None:
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+
+def _evaluate_row_and_streaming(
+    task_id: str,
+    csv_path: Path,
+) -> tuple[tuple[float, list[str]], tuple[float, list[str]]]:
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_result = sim.evaluate_behavior(task_id, csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_result = sim.evaluate_behavior(task_id, csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+    return row_result, stream_result
+
+
 PROMOTED_DUTS = {
     "vbr1_l1_burst_clock_source",
     "vbr1_l1_clocked_adc_quantizer",
@@ -101,6 +126,34 @@ def test_cmp_delay_checker_accepts_sparse_spectre_like_samples() -> None:
     ]
 
     assert sim.check_cmp_delay(sparse_rows)[0]
+
+
+def test_cmp_delay_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = _cmp_delay_rows()
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = ["time", "clk", "vinp", "vinn", "out_p", "out_n", "delay_ps"]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            f.write(",".join(str(row[name]) for name in fieldnames) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("vbr1_l1_propagation_delay_comparator_dut", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("vbr1_l1_propagation_delay_comparator_dut", csv_path)
+        tb_score, tb_notes = sim.evaluate_behavior("vbr1_l1_propagation_delay_comparator_tb", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+    assert tb_score == row_score
+    assert tb_notes == [f"streaming_checker:{row_notes[0]}"]
 
 
 def _first_order_lowpass_rows(*, mode: str = "good") -> list[dict[str, float]]:
@@ -294,6 +347,25 @@ def test_true_window_comparator_checker_rejects_hysteresis_semantics() -> None:
     assert sim.check_true_window_comparator(_window_comparator_rows())[0]
     assert not sim.check_true_window_comparator(_window_comparator_rows(mode="old_hysteresis"))[0]
     assert not sim.check_true_window_comparator(_window_comparator_rows(mode="above_high_stuck"))[0]
+
+
+def test_window_comparator_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    task_ids = [
+        "window_comparator_smoke",
+        "vbr1_l1_window_comparator_detector",
+        "vbr1_l1_window_comparator_detector_dut",
+        "vbr1_l1_window_comparator_detector_tb",
+        "vbr1_l1_window_comparator_detector_bugfix",
+        "vbr1_l1_window_comparator_detector_e2e",
+    ]
+    rows = _window_comparator_rows()
+    csv_path = tmp_path / "window.csv"
+    _write_rows_csv(csv_path, rows, ["time", "vin", "out"])
+
+    for task_id in task_ids:
+        row_result, stream_result = _evaluate_row_and_streaming(task_id, csv_path)
+        assert stream_result[0] == row_result[0], task_id
+        assert stream_result[1] == [f"streaming_checker:{row_result[1][0]}"], task_id
 
 
 def _comparator_measurement_flow_rows(*, mode: str = "good") -> list[dict[str, float]]:
@@ -1598,6 +1670,7 @@ def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
         vin = _ct04_common_vin(time_ns)
         out = 0.45
         metric = 0.45
+        extra: dict[str, float] = {}
 
         if kind == "gain":
             target = 1.8 * (vin - 0.45) + 0.45
@@ -1635,20 +1708,30 @@ def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
         elif kind == "amp_filter":
             if 12.5 <= time_ns <= 15.0:
                 out, metric = 0.62, 0.90
+                extra.update({"preamp_mon": 0.90, "filt1_mon": 0.76, "filt2_mon": 0.70})
             elif 24.0 <= time_ns <= 28.0:
                 out, metric = 0.84, 0.90
+                extra.update({"preamp_mon": 0.90, "filt1_mon": 0.86, "filt2_mon": 0.84})
             elif 33.0 <= time_ns <= 36.0:
                 out, metric = 0.70, 0.45
+                extra.update({"preamp_mon": 0.45, "filt1_mon": 0.58, "filt2_mon": 0.70})
             elif 46.0 <= time_ns <= 53.5:
                 out, metric = 0.42, 0.0
+                extra.update({"preamp_mon": 0.0, "filt1_mon": 0.20, "filt2_mon": 0.38})
             elif 54.0 <= time_ns <= 58.0:
                 out, metric = 0.25, 0.0
+                extra.update({"preamp_mon": 0.0, "filt1_mon": 0.12, "filt2_mon": 0.25})
+            else:
+                extra.update({"preamp_mon": metric, "filt1_mon": out, "filt2_mon": out})
+            extra["settle_metric"] = 0.9 if 54.0 <= time_ns <= 58.0 else 0.0
             if mode == "direct_gain":
                 out = metric
         else:
             raise ValueError(kind)
 
-        rows.append({"time": time_ns * 1e-9, "clk": clk, "rst": rst, "vin": vin, "out": out, "metric": metric})
+        rows.append(
+            {"time": time_ns * 1e-9, "clk": clk, "rst": rst, "vin": vin, "out": out, "metric": metric, **extra}
+        )
     return rows
 
 
@@ -1711,11 +1794,43 @@ def test_precision_rectifier_envelope_checker_requires_full_wave_and_hold() -> N
     assert not sim.check_precision_rectifier_envelope_detector(_rectifier_envelope_rows(mode="no_envelope"))[0]
 
 
+def test_precision_rectifier_streaming_checker_matches_row_based_all_release_forms(tmp_path: Path) -> None:
+    task_ids = [
+        "vbr1_l1_precision_rectifier_envelope_detector",
+        "vbr1_l1_precision_rectifier_envelope_detector_dut",
+        "vbr1_l1_precision_rectifier_envelope_detector_tb",
+        "vbr1_l1_precision_rectifier_envelope_detector_bugfix",
+        "vbr1_l1_precision_rectifier_envelope_detector_e2e",
+    ]
+    rows = _rectifier_envelope_rows()
+    csv_path = tmp_path / "rectifier.csv"
+    _write_rows_csv(csv_path, rows, ["time", "clk", "rst", "vin", "rect", "env", "metric"])
+
+    for task_id in task_ids:
+        row_result, stream_result = _evaluate_row_and_streaming(task_id, csv_path)
+        assert stream_result[0] == row_result[0], task_id
+        assert stream_result[1] == [f"streaming_checker:{row_result[1][0]}"], task_id
+
+
 def _sar_adc_dac_rows(*, mode: str = "good") -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     vdd = 0.9
 
-    def append_row(time_s: float, clks: float, rst_n: float, vin: float, vin_sh: float, code: int, vout: float) -> None:
+    def append_row(
+        time_s: float,
+        clks: float,
+        rst_n: float,
+        vin: float,
+        vin_sh: float,
+        code: int,
+        vout: float,
+        *,
+        bit_index: float = 0.0,
+        trial_vdac: float = 0.0,
+        cmp_decision: float = 0.0,
+        conv_done: float = 0.0,
+        vin_sample: float | None = None,
+    ) -> None:
         row = {
             "time": time_s,
             "vin": vin,
@@ -1723,6 +1838,12 @@ def _sar_adc_dac_rows(*, mode: str = "good") -> list[dict[str, float]]:
             "clks": clks,
             "rst_n": rst_n,
             "vout": vout,
+            "bit_index": bit_index,
+            "trial_code_mon": trial_vdac,
+            "trial_vdac": trial_vdac,
+            "cmp_decision": cmp_decision,
+            "conv_done": conv_done,
+            "vin_sample": vin if vin_sample is None else vin_sample,
         }
         for bit in range(8):
             row[f"dout_{bit}"] = vdd if (code >> bit) & 1 else 0.0
@@ -1748,7 +1869,23 @@ def _sar_adc_dac_rows(*, mode: str = "good") -> list[dict[str, float]]:
 
         append_row(base + 0.2e-9, 0.0, rst_n, vin, vin, code, vout)
         append_row(base + 1.0e-9, vdd, rst_n, vin, vin, code, vout)
-        append_row(base + 2.5e-9, vdd, rst_n, vin, vin, code, vout)
+        append_row(base + 2.0e-9, vdd, rst_n, vin, vin, code, vout, conv_done=vdd)
+        for trial_bit in range(1, 9):
+            trial_vdac = trial_bit / 9.0 * vdd
+            append_row(
+                base + (2.5 + 0.5 * trial_bit) * 1.0e-9,
+                vdd,
+                rst_n,
+                vin,
+                vin,
+                code,
+                vout,
+                bit_index=trial_bit / 8.0 * 0.9,
+                trial_vdac=trial_vdac,
+                cmp_decision=vdd if vin >= trial_vdac else 0.0,
+                conv_done=0.0,
+                vin_sample=vin,
+            )
         append_row(base + 11.0e-9, 0.0, rst_n, vin, vin, code, vout)
 
     return rows
@@ -1760,6 +1897,62 @@ def test_sar_adc_dac_checker_requires_code_dac_sample_alignment() -> None:
         _sar_adc_dac_rows(mode="vout_tracks_input_but_code_fake")
     )[0]
     assert not sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_rows(mode="code_offset"))[0]
+
+
+def test_csv_checker_runtime_maps_common_signal_aliases(tmp_path: Path) -> None:
+    csv_path = tmp_path / "tran.csv"
+    csv_path.write_text("time,V(vin),dout[0]\n0.0,0.125,0.9\n", encoding="utf-8")
+
+    runtime = sim.CsvCheckerRuntime(csv_path)
+    assert runtime.missing({"time", "vin", "dout_0"}) == []
+    row = next(runtime.rows())
+    assert runtime.float(row, "vin") == 0.125
+    assert runtime.float(row, "dout_0") == 0.9
+
+
+def test_release_sar_streaming_checker_matches_row_based(tmp_path: Path) -> None:
+    rows = _sar_adc_dac_rows()
+    csv_path = tmp_path / "tran.csv"
+    fieldnames = [
+        "time",
+        "vin",
+        "vin_sh",
+        "clks",
+        "vout",
+        "rst_n",
+        "bit_index",
+        "trial_code_mon",
+        "trial_vdac",
+        "cmp_decision",
+        "conv_done",
+        "vin_sample",
+    ] + [f"dout[{idx}]" for idx in range(8)]
+    with csv_path.open("w", encoding="utf-8") as f:
+        f.write(",".join(fieldnames) + "\n")
+        for row in rows:
+            values = []
+            for name in fieldnames:
+                source = name.replace("[", "_").replace("]", "")
+                values.append(str(row[source]))
+            f.write(",".join(values) + "\n")
+
+    try:
+        os.environ["VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"] = "1"
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+        row_score, row_notes = sim.evaluate_behavior("vbr1_l2_weighted_sar_adc_dac_loop_tb", csv_path)
+
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ["VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS"] = "1"
+        stream_score, stream_notes = sim.evaluate_behavior("vbr1_l2_weighted_sar_adc_dac_loop_tb", csv_path)
+        e2e_score, e2e_notes = sim.evaluate_behavior("vbr1_l2_weighted_sar_adc_dac_loop_e2e", csv_path)
+    finally:
+        os.environ.pop("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", None)
+        os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
+
+    assert stream_score == row_score
+    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+    assert e2e_score == row_score
+    assert e2e_notes == [f"streaming_checker:{row_notes[0]}"]
 
 
 def _converter_static_linearity_rows(*, mode: str = "good") -> list[dict[str, float]]:
@@ -1909,6 +2102,24 @@ def test_programmable_stimulus_checker_requires_chirp_sweep_not_fixed_sine() -> 
     assert not sim.check_programmable_stimulus_sequencer(
         _programmable_stimulus_sequencer_rows(mode="fixed_sine")
     )[0]
+
+
+def test_programmable_stimulus_streaming_checker_matches_row_based_all_release_forms(tmp_path: Path) -> None:
+    task_ids = [
+        "vbr1_l2_programmable_stimulus_sequencer",
+        "vbr1_l2_programmable_stimulus_sequencer_dut",
+        "vbr1_l2_programmable_stimulus_sequencer_tb",
+        "vbr1_l2_programmable_stimulus_sequencer_bugfix",
+        "vbr1_l2_programmable_stimulus_sequencer_e2e",
+    ]
+    rows = _programmable_stimulus_sequencer_rows()
+    csv_path = tmp_path / "stimulus.csv"
+    _write_rows_csv(csv_path, rows, ["time", "clk", "rst", "mode", "gate", "out", "metric"])
+
+    for task_id in task_ids:
+        row_result, stream_result = _evaluate_row_and_streaming(task_id, csv_path)
+        assert stream_result[0] == row_result[0], task_id
+        assert stream_result[1] == [f"streaming_checker:{row_result[1][0]}"], task_id
 
 
 def _programmable_gain_amplifier_rows(*, mode: str = "good") -> list[dict[str, float]]:
