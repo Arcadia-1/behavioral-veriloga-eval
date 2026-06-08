@@ -6,6 +6,8 @@ import simulate_evas
 
 
 def test_run_case_removes_stale_tran_csv_before_evas(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("EVAS_ENGINE", raising=False)
+    monkeypatch.delenv("VAEVAS_DEFAULT_EVAS_ENGINE", raising=False)
     task_dir = tmp_path / "task"
     task_dir.mkdir()
     (task_dir / "meta.json").write_text(
@@ -43,6 +45,33 @@ def test_run_case_removes_stale_tran_csv_before_evas(monkeypatch, tmp_path: Path
 
     assert result["scores"]["tb_compile"] == 0.0
     assert result["status"] == "FAIL_TB_COMPILE"
+    assert result["evas_engine_used"] == "evas2"
+
+
+def test_run_evas_defaults_to_strict_rust_evas2(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("EVAS_ENGINE", raising=False)
+    monkeypatch.delenv("VAEVAS_DEFAULT_EVAS_ENGINE", raising=False)
+    run_dir = tmp_path / "run"
+    out_dir = tmp_path / "out"
+    run_dir.mkdir()
+    tb = run_dir / "tb.scs"
+    tb.write_text("tran tran stop=1n\n", encoding="utf-8")
+    captured: dict[str, object] = {}
+
+    monkeypatch.setattr(simulate_evas, "evas_command_and_env", lambda: (["evas"], {}))
+
+    def fake_subprocess_run(*args, **kwargs):
+        captured["cmd"] = args[0]
+        captured["env"] = kwargs["env"]
+        return subprocess.CompletedProcess(args[0], 0, stdout="", stderr="")
+
+    monkeypatch.setattr(simulate_evas.subprocess, "run", fake_subprocess_run)
+
+    proc = simulate_evas.run_evas(run_dir, tb, out_dir, timeout_s=1)
+
+    assert proc.returncode == 0
+    assert captured["cmd"] == ["evas", "simulate", "tb.scs", "-o", str(out_dir)]
+    assert captured["env"]["EVAS_ENGINE"] == "evas2"
 
 
 def test_behavior_checker_policy_marks_streaming_validated(monkeypatch) -> None:

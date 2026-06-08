@@ -149,6 +149,8 @@
 | 114 | `audits/114-full-release-rust-py-spectre-fourway.md` | done | 修复 RustSimProgram file side-effect 差异后，full release 271-row 四路审计：Rust EVAS2 271/271 PASS，Python EVAS fast 271/271 PASS，Spectre AX 271/271 PASS，Spectre strict 267/271 checker PASS；Rust EVAS2 相对 Python fast core wall `3.96x`，E2E wall `1.41x` |
 | 115 | `audits/115-auto-row-checker-sparse-trace-contract.md` | done | 将 row-based checker required columns 自动推断成 EVAS sparse trace contract；full release EVAS2 271/271 PASS、fallback 0，E2E wall `69.952s -> 59.418s`，checker wall `54.244s -> 46.245s` |
 | 116 | `audits/116-generic-checker-runtime-hot-rows.md` | done | 将 rectifier、stimulus sequencer、window comparator 迁到通用 `CsvCheckerRuntime`，并预留 sparse trace 额外调试列；10-row smoke checker wall `11.618s -> 0.221s`，E2E `16.388s -> 4.349s` |
+| 117 | `audits/117-rustsim-while-body-gate.md` | done | 新增 RustSimProgram body IR `while` opcode 和 strict gate blocker 聚合；release gold VA lowering 从 `355/357` 到 `357/357`，CPPLL e2e/tb strict EVAS2 实跑 2/2 PASS、rejections 0 |
+| 118 | `audits/118-rustsim-coverage-layering-and-pulse-breakpoint.md` | done | 将 Rust 覆盖率拆成 static lowering/runtime/speed 口径，修复 pulse source breakpoint 浮点边界卡死；top-wall 8 persistent-worker EVAS2 样本 8/8 PASS，相对旧 Python strict EVAS 样本总 wall 约 `133.4x` |
 | P0/P1 | `EVAS2_P0P1_CLOSEOUT_20260606.md` | done | 中文收口报告：当前 clean smoke 271/271 PASS，E2E 225.978s、EVAS subprocess 162.884s、checker 54.434s；明确 release 可用性与全语言 Rust 化不是同一 claim |
 | sleep | `RUSTIFICATION_SLEEP_WORKLIST_20260603.md` | active | 睡后继续 Rust 化的工作清单，034 后先按 benchmark profile 决定下一步 |
 | template | `templates/change-audit-template.md` | active | 后续每个改动都按这个模板写审计 |
@@ -249,6 +251,7 @@
 | 2026-06-05 | 094l-s Pipeline-stage real-row gates | `pipeline_stage` 的 event/body/transition shadow runtime 在 same-grid replay 下 max abs diff `4.86e-8`；prototype full-sim wrapper 暴露 transition breakpoint ownership 和 Python/Rust pack-sync 负优化；bound indexed-array replay 相对 dict-pack 仅 `1.137x`。结论：继续 whole-step typed-array batch，不默认接 engine | EVAS commit `pending`; `audits/094l-*` 到 `audits/094s-*` |
 | 2026-06-06 | Auto row-checker sparse trace contract | row-based checker 的 literal set、f-string bit columns、`indexed_columns()` 和 prefix bit families 可自动下发 required trace；full release EVAS2 271/271 PASS、fallback 0，E2E `69.952s -> 59.418s`，checker `54.244s -> 46.245s` | EVAS commit `pending`; `audits/115-auto-row-checker-sparse-trace-contract.md` |
 | 2026-06-06 | Generic checker runtime hot rows | `CsvCheckerRuntime` 统一 header index、流式 rows、series、插值采样和 resample rows；rectifier/window/stimulus 10-row smoke 10/10 PASS，checker `11.618s -> 0.221s` | EVAS commit `pending`; `audits/116-generic-checker-runtime-hot-rows.md` |
+| 2026-06-06 | Coverage layering and pulse breakpoint fix | 覆盖率报告分离 static lowering、runtime 命中和速度证据；修复 pulse source breakpoint `time ~= delay` 时重复返回当前断点导致 event-transition Rust loop 卡住的问题 | EVAS commit `pending`; `audits/118-rustsim-coverage-layering-and-pulse-breakpoint.md` |
 | 2026-06-06 | P0/P1 release closeout | 当前代码 clean EVAS2 runner smoke 271/271 PASS；P0/P1 文档把 release-row 可用性、core speedup、E2E 外层开销、Spectre AX claim gate 和剩余 Rust 化缺口分开 | EVAS commit `pending`; `EVAS2_P0P1_CLOSEOUT_20260606.md` |
 
 ## 后续候选项目

@@ -417,6 +417,18 @@ def stage_mode_task(task_dir: Path, mode: Mode, stage_root: Path) -> tuple[Path,
     includes = ahdl_includes(tb_path)
     if not includes:
         raise FileNotFoundError(f"no ahdl_include found in {tb_path}")
+    missing = [name for name in includes if not (stage_gold / name).exists()]
+    if missing:
+        # Some release forms intentionally reuse a reference DUT from a sibling
+        # form in the same entry.  Keep the resolver entry-local so staging does
+        # not accidentally pick up an unrelated benchmark model with the same
+        # filename.
+        entry_root = task_dir.parent.parent if task_dir.parent.name == "forms" else task_dir
+        for name in list(missing):
+            candidates = sorted(entry_root.glob(f"forms/*/gold/{name}"))
+            if not candidates:
+                continue
+            shutil.copy2(candidates[0], stage_gold / name)
     primary_dut = stage_gold / includes[0]
     missing = [name for name in includes if not (stage_gold / name).exists()]
     if missing:
@@ -446,7 +458,7 @@ def parse_perf_counters(stdout_tail: str) -> dict[str, float]:
             "output_step_clamps",
             "source_breakpoint_clamps",
             "steps_total",
-        } or key.startswith("event_trace_audit_") or key.startswith("rust_event_write_") or key.startswith("rust_timer_") or key.startswith("timer_"):
+        } or key.startswith("event_trace_audit_") or key.startswith("rust_event_write_") or key.startswith("rust_timer_") or key.startswith("rust_sim_program_") or key.startswith("timer_"):
             parsed = float_or_none(value)
             if parsed is not None:
                 counters[key] = parsed

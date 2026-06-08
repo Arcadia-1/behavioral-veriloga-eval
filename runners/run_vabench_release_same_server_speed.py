@@ -869,6 +869,7 @@ def run_evas_mode(
         "scores": scores,
         "timing": raw.get("timing", {}),
         "perf_counters": raw.get("performance_counters", {}),
+        "evas_engine_used": raw.get("evas_engine_used"),
         "fixture_notes": fixture_notes,
         "notes": raw_notes,
         "result_root": rel(result_root),

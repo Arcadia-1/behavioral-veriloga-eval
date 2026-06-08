@@ -68,6 +68,65 @@ def test_promoted_duts_have_release_behavior_aliases() -> None:
         assert sim.has_behavior_check(f"{entry_id}_dut"), entry_id
 
 
+def _sar_calibration_rows_with_dense_transition_samples() -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = [
+        {"time": 0.0, "clk": 0.0, "rst": 0.9, "vin": 0.45, "out": 0.45, "metric": 0.0},
+        {"time": 1.0e-9, "clk": 0.0, "rst": 0.9, "vin": 0.45, "out": 0.45, "metric": 0.0},
+        {"time": 2.5e-9, "clk": 0.0, "rst": 0.9, "vin": 0.45, "out": 0.45, "metric": 0.0},
+        {"time": 3.5e-9, "clk": 0.0, "rst": 0.0, "vin": 0.455, "out": 0.45, "metric": 0.0},
+    ]
+    previous = 0.45
+    for time_ns, target, vin in [
+        (4.0, 0.63, 0.460),
+        (6.0, 0.72, 0.465),
+        (8.0, 0.765, 0.470),
+        (10.0, 0.7875, 0.456),
+    ]:
+        edge_time = time_ns * 1e-9
+        rows.append(
+            {"time": edge_time - 10e-12, "clk": 0.0, "rst": 0.0, "vin": vin, "out": previous, "metric": 0.0}
+        )
+        rows.append({"time": edge_time, "clk": 0.9, "rst": 0.0, "vin": vin, "out": previous, "metric": 0.0})
+        for offset_s, frac in [(10e-12, 0.25), (20e-12, 0.50), (30e-12, 0.60), (80e-12, 1.0)]:
+            rows.append(
+                {
+                    "time": edge_time + offset_s,
+                    "clk": 0.9,
+                    "rst": 0.0,
+                    "vin": vin,
+                    "out": previous + (target - previous) * frac,
+                    "metric": 0.0,
+                }
+            )
+        rows.append({"time": edge_time + 120e-12, "clk": 0.0, "rst": 0.0, "vin": vin, "out": target, "metric": 0.0})
+        rows.append({"time": edge_time + 300e-12, "clk": 0.0, "rst": 0.0, "vin": vin, "out": target, "metric": 0.0})
+        previous = target
+    rows.extend(
+        {
+            "time": time_ns * 1e-9,
+            "clk": 0.0,
+            "rst": 0.0,
+            "vin": 0.456,
+            "out": previous,
+            "metric": 0.9,
+        }
+        for time_ns in (20.0, 22.0, 24.0, 26.0)
+    )
+    return sorted(rows, key=lambda row: row["time"])
+
+
+def test_sar_calibration_checker_uses_physical_settle_delay() -> None:
+    rows = _sar_calibration_rows_with_dense_transition_samples()
+
+    settled = [value for _edge, value in sim.edge_settled_values(rows, "out")]
+    early = [value for _edge, value in sim.edge_settled_values(rows, "out", settle_delay_s=0.03e-9)]
+    ok, note = sim.check_release_sar_calibration_fsm(rows)
+
+    assert settled == [0.63, 0.72, 0.765, 0.7875]
+    assert early != settled
+    assert ok, note
+
+
 def _cmp_delay_rows(*, mode: str = "good") -> list[dict[str, float]]:
     phases = [
         (0.0e-9, 4.0e-9, 10e-3),

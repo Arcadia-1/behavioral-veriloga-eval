@@ -43,6 +43,18 @@ Use this JSON to explain which acceleration mechanism matters:
 
 - `reports/same_server_speed_ablation_goal_summary_20260522.json`
 
+## Rust EVAS2 Engineering Freeze
+
+Use these reports as the current Rust EVAS2 four-way engineering reference.
+They supersede ad-hoc smoke results for discussion, but they are not by
+themselves final paper-facing same-host speed claims:
+
+- `reports/full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.md`
+- `reports/full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.json`
+- `reports/full_release_fourway_freeze_risk_audit_20260608.md`
+- `reports/cmp_delay_cross_time_fix_evas2_allforms_20260608_r2.md`
+- `reports/cmp_delay_cross_time_fix_evas2_allforms_20260608_r2.json`
+
 ## Diagnostic Engineering Reports
 
 These reports explain implementation bottlenecks or local EVAS-only probes.
@@ -54,6 +66,15 @@ claims:
 - `rust-kernel/audits/114-full-release-rust-py-spectre-fourway.md`
 - `rust-kernel/audits/115-auto-row-checker-sparse-trace-contract.md`
 - `rust-kernel/audits/116-generic-checker-runtime-hot-rows.md`
+- `rust-kernel/audits/117-rustsim-while-body-gate.md`
+- `reports/current_release_rust_coverage_manifest_rustsim_gate_20260606.json`
+- `reports/current_release_rust_coverage_manifest_rustsim_gate_20260606.md`
+- `reports/current_release_rust_coverage_manifest_rustsim_gate_after_while_20260606.md`
+- `reports/current_release_rust_coverage_manifest_rustsim_gate_after_while_20260606.json`
+- `reports/evas2_while_cppll_smoke_20260606.md`
+- `reports/evas2_while_cppll_smoke_20260606.json`
+- `reports/full_release_fourway_reference_20260606.md`
+- `reports/full_release_fourway_reference_20260606.json`
 - `reports/full_release_fourway_rust_py_spectre_summary_20260606.json`
 - `reports/full_release_rows_for_fourway_20260606.json`
 - `reports/full_release_evas_py_rust_after_fixes_20260606.md`

@@ -122,6 +122,35 @@ def _env_truthy(name: str) -> bool:
     return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on", "enabled"}
 
 
+DEFAULT_EVAS_ENGINE = "evas2"
+
+
+def default_evas_engine() -> str:
+    """Return the benchmark default EVAS engine.
+
+    `EVAS_ENGINE=evas2` is consumed by the EVAS netlist runner and selects the
+    strict Rust EVAS2 full-model path.  Keep an explicit environment override
+    so legacy Python-EVAS debugging is still possible without editing fixtures.
+    """
+
+    return os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", DEFAULT_EVAS_ENGINE).strip().lower()
+
+
+def effective_evas_engine(env: dict[str, str] | None = None) -> str:
+    source = env if env is not None else os.environ
+    explicit = source.get("EVAS_ENGINE", "").strip().lower()
+    return explicit or default_evas_engine()
+
+
+def _with_default_evas_engine(env: dict[str, str] | None) -> dict[str, str]:
+    effective_env = dict(env or os.environ.copy())
+    if not effective_env.get("EVAS_ENGINE", "").strip():
+        engine = default_evas_engine()
+        if engine:
+            effective_env["EVAS_ENGINE"] = engine
+    return effective_env
+
+
 def _encode_required_trace_signals(signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None) -> str:
     if not signals:
         return ""
@@ -142,7 +171,7 @@ class _PersistentEvasWorker:
         self.proc = subprocess.Popen(
             self.cmd,
             cwd=str(REPO_ROOT),
-            env=evas_source_env() or os.environ.copy(),
+            env=_with_default_evas_engine(evas_source_env()),
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -299,7 +328,7 @@ def run_evas(
     base_cmd, env = evas_command_and_env()
     cmd = [*base_cmd, "simulate", tb_file.name, "-o", str(output_dir)]
     required_trace_value = _encode_required_trace_signals(required_trace_signals)
-    env = dict(env or os.environ.copy())
+    env = _with_default_evas_engine(env)
     env["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = str(output_dir)
     if required_trace_value:
         env["EVAS_REQUIRED_TRACE_SIGNALS"] = required_trace_value
@@ -7398,6 +7427,21 @@ def time_weighted_mean_in_window(
     return mean_in_window(rows, key, start, stop)
 
 
+DEFAULT_EDGE_SETTLE_DELAY_S = 0.12e-9
+
+
+def settled_row_index_after_delay(
+    rows: list[dict[str, float]],
+    start_idx: int,
+    settle_delay_s: float = DEFAULT_EDGE_SETTLE_DELAY_S,
+) -> int:
+    settle_time = rows[start_idx]["time"] + settle_delay_s
+    settle = start_idx
+    while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
+        settle += 1
+    return settle
+
+
 def edge_settled_values(
     rows: list[dict[str, float]],
     key: str,
@@ -7409,13 +7453,11 @@ def edge_settled_values(
     values: list[tuple[dict[str, float], float]] = []
     for idx in range(1, len(rows)):
         if rows[idx - 1][clk_key] <= 0.45 < rows[idx][clk_key] and rows[idx].get(rst_key, 0.0) <= 0.45:
-            if settle_delay_s is None:
-                settle = min(idx + 3, len(rows) - 1)
-            else:
-                settle_time = rows[idx]["time"] + settle_delay_s
-                settle = idx
-                while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
-                    settle += 1
+            settle = settled_row_index_after_delay(
+                rows,
+                idx,
+                DEFAULT_EDGE_SETTLE_DELAY_S if settle_delay_s is None else settle_delay_s,
+            )
             values.append((rows[idx], rows[settle][key]))
     return values
 
@@ -7601,7 +7643,7 @@ def check_release_loop_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     edge_samples: list[tuple[dict[str, float], float, float]] = []
     for idx in range(1, len(rows)):
         if rows[idx - 1]["clk"] <= 0.45 < rows[idx]["clk"] and rows[idx]["rst"] <= 0.45:
-            settle = min(idx + 3, len(rows) - 1)
+            settle = settled_row_index_after_delay(rows, idx)
             edge_samples.append((rows[idx], rows[settle]["out"], rows[settle]["metric"]))
     if len(edge_samples) < 12:
         return False, f"loop_filter_too_few_edge_samples={len(edge_samples)}"
@@ -9902,6 +9944,7 @@ def run_case(
         or resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     )
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
+    evas_engine_used = effective_evas_engine()
 
     t0 = time.perf_counter()
     temp_ctx = tempfile.TemporaryDirectory(prefix=f"{task_id}_")
@@ -9932,6 +9975,7 @@ def run_case(
                 "checker_policy": behavior_checker_policy(checker_task_id, notes),
                 "status": "FAIL_DUT_COMPILE",
                 "backend_used": "evas",
+                "evas_engine_used": evas_engine_used,
                 "scores": {
                     "dut_compile": 0.0,
                     "tb_compile": 0.0,
@@ -9981,7 +10025,7 @@ def run_case(
         dut_compile = 1.0 if "Compiled Verilog-A module:" in combined else 0.0
         tb_compile = 1.0 if ("Transient Analysis" in combined or (out_dir / "tran.csv").exists()) else 0.0
 
-        notes = [f"returncode={proc.returncode}"]
+        notes = [f"returncode={proc.returncode}", f"evas_engine={evas_engine_used or 'default'}"]
         if required_trace_signals:
             notes.append(f"trace_contract={trace_contract_kind}")
         if extra_trace_signals:
@@ -10105,6 +10149,7 @@ def run_case(
             "checker_policy": checker_policy,
             "status": status,
             "backend_used": "evas",
+            "evas_engine_used": evas_engine_used,
             "scores": {
                 "dut_compile": dut_compile,
                 "tb_compile": tb_compile,

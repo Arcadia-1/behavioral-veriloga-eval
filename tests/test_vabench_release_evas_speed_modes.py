@@ -9,7 +9,11 @@ RUNNERS = ROOT / "runners"
 if str(RUNNERS) not in sys.path:
     sys.path.insert(0, str(RUNNERS))
 
-from run_vabench_release_evas_speed_experiment import MODES, inject_simulator_options  # noqa: E402
+from run_vabench_release_evas_speed_experiment import (  # noqa: E402
+    MODES,
+    inject_simulator_options,
+    stage_mode_task,
+)
 
 
 def test_profile_fast_rust_55_keeps_only_production_whole_segment_path() -> None:
@@ -52,3 +56,23 @@ def test_profile_fast_evas2_requests_strict_rust_engine() -> None:
         "evas_skip_source_error_control=yes",
         "evas_engine=evas2",
     }
+
+
+def test_stage_mode_task_resolves_entry_local_sibling_include(tmp_path: Path) -> None:
+    task_dir = (
+        ROOT
+        / "benchmark-vabench-release-v1/tasks"
+        / "CT05_pll_clock_and_timing_systems"
+        / "vbr1_l1_bang_bang_phase_detector"
+        / "forms/bugfix"
+    )
+
+    _stage_task, primary_dut, tb_path = stage_mode_task(
+        task_dir,
+        MODES["profile_fast_evas2"],
+        tmp_path,
+    )
+
+    assert tb_path.name == "tb_bbpd_ref.scs"
+    assert primary_dut.name == "bbpd_ref.va"
+    assert primary_dut.exists()
