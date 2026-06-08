@@ -1,0 +1,43 @@
+{
+  "artifacts": {
+    "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/checks.yaml",
+    "gold": [
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/gold/quadrature_iq_imbalance_corrector.va",
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/gold/tb_quadrature_iq_imbalance_corrector.scs"
+    ],
+    "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/meta.json",
+    "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/negatives/manifest.json",
+    "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/prompt.md"
+  },
+  "base_function": "Quadrature gain/phase imbalance corrector",
+  "category": "RF and AFE Behavioral Macromodels",
+  "certification": {
+    "evas": "pending",
+    "evidence": "",
+    "spectre": "pending",
+    "static": "pending"
+  },
+  "counts": {
+    "benchmark_score": false,
+    "l0_conformance": false,
+    "model_capability": false
+  },
+  "difficulty": "D3",
+  "domain": "voltage",
+  "family": "spec-to-va",
+  "id": "quadrature_iq_imbalance_corrector:dut",
+  "legacy_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+  "legacy_task_id": "vbr11_l2_quadrature_iq_imbalance_corrector:dut",
+  "notes": [
+    "Proposed v1.1 expansion task. Do not count as certified until EVAS/Spectre evidence is generated.",
+    "Includes five partial-pass near-miss negative candidates by construction."
+  ],
+  "score_surface": "model-capability",
+  "source": {
+    "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut",
+    "source_base_id": "quadrature_iq_imbalance_corrector",
+    "source_task_id": "quadrature_iq_imbalance_corrector_dut"
+  },
+  "topic_id": "quadrature_iq_imbalance_corrector",
+  "track": "core"
+}

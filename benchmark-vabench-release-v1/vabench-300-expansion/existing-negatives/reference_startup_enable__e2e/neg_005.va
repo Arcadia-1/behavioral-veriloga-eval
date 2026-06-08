@@ -1,0 +1,40 @@
+// vaBench partial-pass negative 5 for reference_startup_enable:e2e
+// Intended to preserve interface/smoke behavior while failing full checks.
+`include "constants.vams"
+`include "disciplines.vams"
+
+module reference_startup_enable_flow(clk, rst, vin, out, metric);
+input clk, rst, vin;
+output out, metric;
+electrical clk, rst, vin, out, metric;
+parameter real tr = 100p;
+parameter real vth = 0.45;
+real refv, metricv, supply_ok, enablev;
+integer settle_count;
+analog begin
+    @(initial_step) begin
+        refv = 0.0;
+        metricv = 0.0;
+        settle_count = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        supply_ok = (V(vin) > 0.32) ? 1.0 : 0.0;
+        enablev = (V(vin) > 0.55) ? 1.0 : 0.0;
+        if (V(rst) > vth || supply_ok < 0.5) begin
+            refv = 0.0;
+            metricv = 0.0;
+            settle_count = 0;
+        end else if ((supply_ok > 0.5 && enablev > 0.5)) begin
+            refv = refv + 0.32 * (0.55 - refv);
+            settle_count = settle_count + 1;
+            metricv = (settle_count >= 5 && refv > 0.48) ? 0.9 : 0.25;
+        end else begin
+            refv = 0.05;
+            metricv = 0.1;
+            settle_count = 0;
+        end
+    end
+    V(out) <+ transition(refv, 0, tr, tr);
+    V(metric) <+ transition(0.0 /* near-miss metric writeout */, 0, tr, tr);
+end
+endmodule

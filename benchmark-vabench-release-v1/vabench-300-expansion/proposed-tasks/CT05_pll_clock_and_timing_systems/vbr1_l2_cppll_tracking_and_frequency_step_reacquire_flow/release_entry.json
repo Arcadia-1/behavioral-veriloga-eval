@@ -1,0 +1,56 @@
+{
+  "base_function": "CPPLL tracking and frequency-step reacquire flow",
+  "category": "PLL Clock and Timing Systems",
+  "certification": {
+    "evas": "pending",
+    "evidence": "",
+    "spectre": "pending",
+    "static": "pending"
+  },
+  "counts": {
+    "benchmark_score": false,
+    "l0_conformance": false,
+    "model_capability": false
+  },
+  "difficulty": "D3",
+  "id": "cppll_tracking_frequency_step_reacquire",
+  "legacy_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+  "missing_forms": [],
+  "package_status": "v1.1_proposed",
+  "release_blockers": [
+    "pending_evas_spectre_certification"
+  ],
+  "release_tasks": [
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/checks.yaml",
+      "evas_status": "pending",
+      "form": "bugfix",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/gold/cppll_tracking_frequency_step_reacquire.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/gold/tb_cppll_tracking_frequency_step_reacquire.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    }
+  ],
+  "score_surface": "model-capability",
+  "source_base_id": "cppll_tracking_frequency_step_reacquire",
+  "source_tasks": [
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "bugfix",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/release_task.json"
+    }
+  ],
+  "topic_id": "cppll_tracking_frequency_step_reacquire",
+  "track": "core"
+}

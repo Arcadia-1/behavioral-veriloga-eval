@@ -1,0 +1,10 @@
+// vaBench partial-pass negative 4 for first_order_lowpass:tb
+// Intended to preserve interface/smoke behavior while failing full checks.
+`include "constants.vams"
+`include "disciplines.vams"
+module first_order_lowpass(vin,vout);
+    input vin; output vout; electrical vin,vout; parameter real alpha=0.025; parameter real tr=200p; real y;
+    analog begin @(initial_step) y=0.0;
+// near-miss: missing one initial state assignment
+ @(timer(0,500p)) y = y + alpha*(V(vin)-y); V(vout)<+transition(y,0,tr,tr); end
+endmodule

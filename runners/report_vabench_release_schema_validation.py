@@ -16,6 +16,7 @@ REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "schema_validation.json"
 REPORT_MD = REPORTS_ROOT / "schema_validation.md"
 PACKAGE_MANIFEST = PACKAGE_ROOT / "MANIFEST.json"
+EXPANSION_ROOT = PACKAGE_ROOT / "vabench-300-expansion"
 SCHEMAS = {
     "release_entry": ROOT / "schemas" / "vabench-release-entry.schema.json",
     "package_manifest": ROOT / "schemas" / "vabench-package-manifest.schema.json",
@@ -47,6 +48,8 @@ SCHEMAS = {
     "release_task": ROOT / "schemas" / "vabench-release-task.schema.json",
     "evidence": ROOT / "schemas" / "vabench-evidence.schema.json",
     "result": ROOT / "schemas" / "vabench-release-result.schema.json",
+    "vabench_300_expansion_manifest": ROOT / "schemas" / "vabench-300-expansion-manifest.schema.json",
+    "partial_pass_negatives": ROOT / "schemas" / "vabench-partial-pass-negatives.schema.json",
 }
 
 
@@ -128,6 +131,12 @@ def build_report() -> dict[str, object]:
         "release_task": sorted(TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json")),
         "evidence": sorted(EVIDENCE_ROOT.glob("*/*/*/evidence.json")),
         "result": sorted(EVIDENCE_ROOT.glob("*/*/*/*result.json")),
+        "vabench_300_expansion_manifest": (
+            [EXPANSION_ROOT / "VABENCH_300_MANIFEST.json"]
+            if (EXPANSION_ROOT / "VABENCH_300_MANIFEST.json").exists()
+            else []
+        ),
+        "partial_pass_negatives": sorted(EXPANSION_ROOT.glob("**/manifest.json")),
     }
     validations = [validate_files(schema_id, paths) for schema_id, paths in groups.items()]
     issue_count = sum(int(item["failure_count"]) for item in validations)
@@ -165,6 +174,8 @@ def build_report() -> dict[str, object]:
         "release_task": release_task_count,
         "evidence": release_task_count * 2,
         "result": release_task_count * 3,
+        "vabench_300_expansion_manifest": 1 if (EXPANSION_ROOT / "VABENCH_300_MANIFEST.json").exists() else 0,
+        "partial_pass_negatives": 300 if (EXPANSION_ROOT / "VABENCH_300_MANIFEST.json").exists() else 0,
     }
     count_issues = [
         {

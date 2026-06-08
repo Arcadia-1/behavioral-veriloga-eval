@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-08",
   "release": "vabench-release-v1",
   "status": "ready",
   "contract_version": "v1",
@@ -8,7 +8,8 @@
     "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
     "claim_gate": "benchmark-vabench-release-v1/reports/claim_gate.json",
     "finish_readiness": "benchmark-vabench-release-v1/reports/finish_readiness.json",
-    "l0_conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json"
+    "l0_conformance_manifest": "benchmark-vabench-release-v1/reports/conformance_manifest.json",
+    "vabench_300_expansion_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json"
   },
   "schemas": {
     "release_entry": "schemas/vabench-release-entry.schema.json",
@@ -40,7 +41,9 @@
     "certification_matrix": "schemas/vabench-certification-matrix.schema.json",
     "remaining_work": "schemas/vabench-remaining-work.schema.json",
     "evidence": "schemas/vabench-evidence.schema.json",
-    "result": "schemas/vabench-release-result.schema.json"
+    "result": "schemas/vabench-release-result.schema.json",
+    "vabench_300_expansion_manifest": "schemas/vabench-300-expansion-manifest.schema.json",
+    "partial_pass_negatives": "schemas/vabench-partial-pass-negatives.schema.json"
   },
   "task_selection": {
     "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
@@ -55,6 +58,11 @@
     "score_enabled": true,
     "l0_conformance_excluded": true,
     "unscored_rows_excluded": true,
+    "v11_expansion_task_count": 300,
+    "v11_expansion_existing_certified_forms": 271,
+    "v11_expansion_proposed_pending_forms": 29,
+    "partial_pass_negatives_per_expansion_task": 5,
+    "partial_pass_negative_count": 1500,
     "selection_rule": "Only rows marked counted_in_score=true by score_denominator_manifest.json may enter benchmark scores."
   },
   "backend_roles": {
@@ -153,7 +161,9 @@
     "primary_dual_rerun": "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
     "enable_score_denominator": "python3 runners/enable_vabench_release_score_denominator.py",
     "refresh_score_denominator": "python3 runners/report_vabench_release_score_denominator.py",
-    "refresh_baseline_gate": "python3 runners/report_vabench_release_baseline_artifact.py"
+    "refresh_baseline_gate": "python3 runners/report_vabench_release_baseline_artifact.py",
+    "build_300_expansion": "python3 runners/build_vabench_300_expansion.py",
+    "audit_300_negatives": "python3 runners/audit_vabench_300_expansion.py"
   },
   "claim_boundary": [
     "This contract defines evaluator IO and score gates; it is not simulator certification evidence.",
@@ -161,6 +171,7 @@
     "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
     "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
     "Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.",
+    "The v1.1 300-task expansion is an asset/negative-candidate surface; the 29 proposed tasks remain unscored and uncertified until static, EVAS, and Spectre evidence exists.",
     "claim_gate_status=in_progress"
   ]
 }

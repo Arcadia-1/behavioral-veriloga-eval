@@ -1,0 +1,34 @@
+// vaBench partial-pass negative 1 for quadrature_iq_imbalance_corrector:e2e
+// Intended to preserve interface/smoke behavior while failing full checks.
+`include "constants.vams"
+`include "disciplines.vams"
+
+module quadrature_iq_imbalance_corrector(in, clk, rst, out, metric);
+  input in, clk, rst;
+  output out, metric;
+  electrical in, clk, rst, out, metric;
+  parameter real vth = 0.5;
+  parameter real gain = 0.85;
+  parameter real bias = 0.0;
+  real state;
+  integer count;
+
+  analog begin
+    @(initial_step) begin
+      state = 0.0;
+      count = 0;
+    end
+    @(cross(V(rst) - vth, +1)) begin
+      state = 0.0;
+      count = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+      state = gain * state + V(in) + bias;
+      if (state > 0.95) state = 1.0;
+      if (state < -1.0) state = -1.0;
+      count = count + 1;
+    end
+    V(out) <+ transition(state, 0, 1n);
+    V(metric) <+ transition(count > 0 ? state / count : 0.0, 0, 1n);
+  end
+endmodule

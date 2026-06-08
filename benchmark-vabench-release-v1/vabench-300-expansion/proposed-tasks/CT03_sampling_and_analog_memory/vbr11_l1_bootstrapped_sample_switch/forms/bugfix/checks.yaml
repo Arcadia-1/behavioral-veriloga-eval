@@ -1,0 +1,18 @@
+syntax:
+  must_include:
+    - "module"
+    - "analog"
+  must_not_include:
+    - "laplace_nd"
+    - "white_noise"
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "phase_leakage_bug_nominal_path"
+    - "phase_leakage_bug_boundary_path"
+negative_policy:
+  required_partial_pass_negatives: 5
+  zero_score_negatives_allowed: false

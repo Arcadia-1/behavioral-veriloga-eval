@@ -1,0 +1,131 @@
+{
+  "base_function": "Bootstrapped sample switch abstraction",
+  "category": "Sampling and Analog Memory",
+  "certification": {
+    "evas": "pending",
+    "evidence": "",
+    "spectre": "pending",
+    "static": "pending"
+  },
+  "counts": {
+    "benchmark_score": false,
+    "l0_conformance": false,
+    "model_capability": false
+  },
+  "difficulty": "D2",
+  "id": "bootstrapped_sample_switch",
+  "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+  "missing_forms": [],
+  "package_status": "v1.1_proposed",
+  "release_blockers": [
+    "pending_evas_spectre_certification"
+  ],
+  "release_tasks": [
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/checks.yaml",
+      "evas_status": "pending",
+      "form": "bugfix",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/gold/bootstrapped_sample_switch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/gold/tb_bootstrapped_sample_switch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/checks.yaml",
+      "evas_status": "pending",
+      "form": "dut",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/gold/bootstrapped_sample_switch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/gold/tb_bootstrapped_sample_switch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/checks.yaml",
+      "evas_status": "pending",
+      "form": "e2e",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/gold/bootstrapped_sample_switch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/gold/tb_bootstrapped_sample_switch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/checks.yaml",
+      "evas_status": "pending",
+      "form": "tb",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/gold/bootstrapped_sample_switch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/gold/tb_bootstrapped_sample_switch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    }
+  ],
+  "score_surface": "model-capability",
+  "source_base_id": "bootstrapped_sample_switch",
+  "source_tasks": [
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "bugfix",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "dut",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "e2e",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "tb",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/release_task.json"
+    }
+  ],
+  "topic_id": "bootstrapped_sample_switch",
+  "track": "core"
+}

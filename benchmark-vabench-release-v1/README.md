@@ -23,6 +23,10 @@ as counted, and no pending or blocked simulator run is certification evidence.
 - `reports/`: coverage, parity, speed/debug, baseline, completion, artifact
   index, claim gate, and paper table summaries.
 - `rerun_staging/`: staged runnable bundles used for EVAS/Spectre dual reruns.
+- `vabench-300-expansion/`: v1.1 expansion assets for the 300 form-level task
+  plan. This includes the existing 271 certified v1 tasks, 29 proposed v1.1
+  tasks, and 5 partial-pass near-miss negatives per task. The proposed tasks
+  remain pending certification until static, EVAS, and Spectre evidence exists.
 
 Rows are planned in `../docs/VABENCH_RELEASE_TRACKER.csv`. A row is not part of
 the scored benchmark until its task assets and EVAS/Spectre evidence are

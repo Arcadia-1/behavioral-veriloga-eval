@@ -1,0 +1,131 @@
+{
+  "base_function": "Time-interleaved ADC mismatch observation flow",
+  "category": "Data Converter Models",
+  "certification": {
+    "evas": "pending",
+    "evidence": "",
+    "spectre": "pending",
+    "static": "pending"
+  },
+  "counts": {
+    "benchmark_score": false,
+    "l0_conformance": false,
+    "model_capability": false
+  },
+  "difficulty": "D3",
+  "id": "time_interleaved_adc_mismatch",
+  "legacy_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+  "missing_forms": [],
+  "package_status": "v1.1_proposed",
+  "release_blockers": [
+    "pending_evas_spectre_certification"
+  ],
+  "release_tasks": [
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/checks.yaml",
+      "evas_status": "pending",
+      "form": "bugfix",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/gold/time_interleaved_adc_mismatch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/gold/tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/checks.yaml",
+      "evas_status": "pending",
+      "form": "dut",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/gold/time_interleaved_adc_mismatch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/gold/tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/checks.yaml",
+      "evas_status": "pending",
+      "form": "e2e",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/gold/time_interleaved_adc_mismatch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/gold/tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/checks.yaml",
+      "evas_status": "pending",
+      "form": "tb",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/gold/time_interleaved_adc_mismatch.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/gold/tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb",
+      "spectre_status": "pending",
+      "static_status": "pending"
+    }
+  ],
+  "score_surface": "model-capability",
+  "source_base_id": "time_interleaved_adc_mismatch",
+  "source_tasks": [
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "bugfix",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "dut",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "e2e",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "tb",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/release_task.json"
+    }
+  ],
+  "topic_id": "time_interleaved_adc_mismatch",
+  "track": "core"
+}

@@ -1,0 +1,32 @@
+{
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+  "category": "Bias Reference and Power Management",
+  "difficulty": "hard",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "spec-to-va",
+  "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+  "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:dut",
+  "must_include": [
+    "module",
+    "analog"
+  ],
+  "must_not_include": [
+    "laplace_nd",
+    "white_noise",
+    "flicker_noise"
+  ],
+  "negative_policy": {
+    "required_partial_pass_negatives": 5,
+    "zero_score_negatives_allowed": false
+  },
+  "scoring": [
+    "syntax",
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "task_id": "bandgap_startup_trim:dut",
+  "topic_id": "bandgap_startup_trim"
+}
