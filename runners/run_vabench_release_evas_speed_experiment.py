@@ -31,6 +31,8 @@ DEFAULT_OUTPUT_ROOT = ROOT / "results" / f"evas-speed-p0-p3-{date.today().isofor
 SCHEMA_VERSION = "evas-speed-p0p3-artifact.v1"
 ARTIFACT_KIND = "candidate_evas_speed_experiment"
 NO_CLAIM_REASON = "EVAS-only speed experiments are candidate evidence; paper-facing speed claims require same-slice EVAS/Spectre timing."
+CURRENT_FASTEST_VALIDATED_MODE = "profile_fast_rust_55"
+STRICT_EVAS2_COVERAGE_MODE = "profile_fast_evas2"
 
 
 @dataclass(frozen=True)
@@ -72,6 +74,146 @@ MODES: dict[str, Mode] = {
         phase="P3",
         label="Fast profile plus default-off source-error-control ablation",
         simulator_options=("evas_profile=fast", "evas_skip_source_error_control=yes"),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_state_local": Mode(
+        mode_id="profile_fast_state_local",
+        phase="P4",
+        label="Fast profile plus state-local generated evaluate fast path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_state_local_fastpath=yes",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_static_branch": Mode(
+        mode_id="profile_fast_static_branch",
+        phase="P4",
+        label="Fast profile plus static branch read/write generated helpers",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_static_branch_fastpath=yes",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_transition_unchanged_on": Mode(
+        mode_id="profile_fast_transition_unchanged_on",
+        phase="P5",
+        label="Fast profile plus opt-in unchanged transition-target fast path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_transition_unchanged_fastpath=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_static": Mode(
+        mode_id="profile_fast_rust_static",
+        phase="P6",
+        label="Fast profile plus opt-in Rust static-linear batch and fast sync",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_static_fast_sync=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_event_trace_audit": Mode(
+        mode_id="profile_fast_event_trace_audit",
+        phase="P7",
+        label="Fast profile plus event-body write-set trace audit",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_event_trace_audit=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_event_write_shadow": Mode(
+        mode_id="profile_fast_rust_event_write_shadow",
+        phase="P8",
+        label="Fast profile plus Rust event-body write-set shadow parity",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_event_write_shadow=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_event_write_production": Mode(
+        mode_id="profile_fast_rust_event_write_production",
+        phase="P8",
+        label="Fast profile plus opt-in Rust event-body write-set production",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_event_write_production=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_timer_event": Mode(
+        mode_id="profile_fast_rust_timer_event",
+        phase="P9",
+        label="Fast profile plus opt-in Rust timer/event due and breakpoint path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_timer_event=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_timer_lfsr_output": Mode(
+        mode_id="profile_fast_rust_timer_lfsr_output",
+        phase="P9",
+        label="Fast profile plus fused Rust timer, LFSR event body, output write, and indexed record path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_timer_event=true",
+            "evas_rust_event_write_production=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_full_model": Mode(
+        mode_id="profile_fast_rust_full_model",
+        phase="P10",
+        label="Fast profile plus opt-in Rust compiler-driven whole-segment fast path",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_full_model_fastpath=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_rust_55": Mode(
+        mode_id="profile_fast_rust_55",
+        phase="P11",
+        label="Current fastest validated EVAS-only whole-segment Rust path; audit 076 top-wall 10 safe_vs_strict",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_rust_full_model_fastpath=true",
+            "evas_rust_required=true",
+        ),
+        default_off_fast_path=True,
+    ),
+    "profile_fast_evas2": Mode(
+        mode_id="profile_fast_evas2",
+        phase="EVAS2",
+        label="EVAS2.0 strict Rust coverage gate; unsupported designs fail instead of falling back to Python EVAS",
+        simulator_options=(
+            "evas_profile=fast",
+            "evas_skip_source_error_control=yes",
+            "evas_engine=evas2",
+        ),
         default_off_fast_path=True,
     ),
 }
@@ -132,8 +274,64 @@ def load_speed_rows(path: Path) -> list[dict[str, object]]:
     artifact = read_json(path)
     rows = artifact.get("rows", [])
     if not isinstance(rows, list):
+        rows = []
+    if rows:
+        return [row for row in rows if isinstance(row, dict)]
+
+    # Same-server four-way timing artifacts store simulator/mode results rather
+    # than a pre-flattened ``rows`` list.  Reconstruct the top-wall row surface
+    # from strict EVAS rows so speed follow-up experiments can reuse the current
+    # paper-facing timing artifact directly.
+    results = artifact.get("results", [])
+    if not isinstance(results, list):
         return []
-    return [row for row in rows if isinstance(row, dict)]
+    spectre_by_case: dict[tuple[str, str, str], dict[str, object]] = {}
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        if result.get("backend") != "spectre":
+            continue
+        if result.get("mode") != "reference_strict_primary":
+            continue
+        key = (
+            str(result.get("entry_id", "")),
+            str(result.get("form", "")),
+            str(result.get("variant", "gold")),
+        )
+        spectre_by_case[key] = result
+
+    converted: list[dict[str, object]] = []
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        if result.get("backend") != "evas" or result.get("mode") != "strict_current":
+            continue
+        key = (
+            str(result.get("entry_id", "")),
+            str(result.get("form", "")),
+            str(result.get("variant", "gold")),
+        )
+        if not key[0] or not key[1]:
+            continue
+        spectre = spectre_by_case.get(key, {})
+        evas_wall = float_or_none(result.get("wall_time_s"))
+        spectre_wall = float_or_none(spectre.get("wall_time_s"))
+        converted.append(
+            {
+                "entry_id": key[0],
+                "form": key[1],
+                "variant": key[2],
+                "evas_wall_time_s": evas_wall,
+                "spectre_wall_time_s": spectre_wall,
+                "wrapper_spectre_over_evas_speedup": (
+                    spectre_wall / evas_wall
+                    if evas_wall and spectre_wall and evas_wall > 0.0
+                    else None
+                ),
+                "summary_source": rel(path),
+            }
+        )
+    return converted
 
 
 def select_rows(
@@ -219,6 +417,18 @@ def stage_mode_task(task_dir: Path, mode: Mode, stage_root: Path) -> tuple[Path,
     includes = ahdl_includes(tb_path)
     if not includes:
         raise FileNotFoundError(f"no ahdl_include found in {tb_path}")
+    missing = [name for name in includes if not (stage_gold / name).exists()]
+    if missing:
+        # Some release forms intentionally reuse a reference DUT from a sibling
+        # form in the same entry.  Keep the resolver entry-local so staging does
+        # not accidentally pick up an unrelated benchmark model with the same
+        # filename.
+        entry_root = task_dir.parent.parent if task_dir.parent.name == "forms" else task_dir
+        for name in list(missing):
+            candidates = sorted(entry_root.glob(f"forms/*/gold/{name}"))
+            if not candidates:
+                continue
+            shutil.copy2(candidates[0], stage_gold / name)
     primary_dut = stage_gold / includes[0]
     missing = [name for name in includes if not (stage_gold / name).exists()]
     if missing:
@@ -248,11 +458,18 @@ def parse_perf_counters(stdout_tail: str) -> dict[str, float]:
             "output_step_clamps",
             "source_breakpoint_clamps",
             "steps_total",
-        }:
+        } or key.startswith("event_trace_audit_") or key.startswith("rust_event_write_") or key.startswith("rust_timer_") or key.startswith("rust_sim_program_") or key.startswith("timer_"):
             parsed = float_or_none(value)
             if parsed is not None:
                 counters[key] = parsed
     return counters
+
+
+def raw_perf_counters(raw: dict[str, object]) -> dict[str, object]:
+    counters = raw.get("performance_counters")
+    if isinstance(counters, dict):
+        return dict(counters)
+    return parse_perf_counters(str(raw.get("stdout_tail", "")))
 
 
 def result_csv(raw: dict[str, object]) -> Path | None:
@@ -325,7 +542,7 @@ def run_one(
         "evas_reported_total_elapsed_s": timing.get("total_elapsed_s"),
         "evas_reported_tran_elapsed_s": timing.get("tran_elapsed_s"),
         "evas_accepted_tran_steps": timing.get("accepted_tran_steps"),
-        "perf_counters": parse_perf_counters(str(raw.get("stdout_tail", ""))),
+        "perf_counters": raw_perf_counters(raw),
         "source_speed_row": {
             "evas_wall_time_s": row.get("evas_wall_time_s"),
             "spectre_wall_time_s": row.get("spectre_wall_time_s"),
@@ -570,7 +787,14 @@ def parse_args() -> argparse.Namespace:
         action="append",
         choices=tuple(MODES),
         default=[],
-        help="Mode to run. Defaults to strict_current, profile_fast, and profile_fast_skip_source_error_control.",
+        help=(
+            "Mode to run. Defaults to strict_current, profile_fast, and "
+            "profile_fast_skip_source_error_control. Use "
+            f"{CURRENT_FASTEST_VALIDATED_MODE} for the current fastest "
+            "validated EVAS-only whole-segment Rust route. Use "
+            f"{STRICT_EVAS2_COVERAGE_MODE} only to measure strict EVAS2 "
+            "coverage; unsupported rows fail instead of falling back to Python."
+        ),
     )
     ap.add_argument("--timeout-s", type=int, default=240)
     ap.add_argument("--jobs", type=int, default=1)

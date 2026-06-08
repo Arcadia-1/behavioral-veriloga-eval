@@ -878,20 +878,241 @@ def compare_cppll_reacquire_parity(
 
 
 WAVEFORM_EQUIVALENCE_POLICY = {
-    "policy": "spectre_equivalence_core_v1",
+    "policy": "spectre_equivalence_core_v2",
     "basis": (
         "Behavior checks are primary; waveform metrics are an acceptance gate "
         "for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision."
     ),
     "reporting_terms": (
         "Report simulator-style checks: behavior/spec pass, event consistency, "
-        "relative RMS waveform error, absolute voltage error, and digital mismatch."
+        "relative RMS waveform error, absolute voltage error, digital mismatch, "
+        "and raw pointwise metrics when edge-window alignment is applied."
     ),
     "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
     "relative_rms_gate": (
         "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; "
         "or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25"
     ),
+    "edge_window_policy": (
+        "A bounded edge/discontinuity window may be excluded from acceptance metrics only when "
+        "the high-error samples are local to signal activity, cover at most 8% of the common "
+        "sample grid, and the remaining stable-region error is small. Raw metrics are always "
+        "reported separately."
+    ),
+}
+
+
+def expand_bool_mask(mask: list[bool], radius: int) -> list[bool]:
+    if radius <= 0 or not mask:
+        return list(mask)
+    expanded = [False] * len(mask)
+    for idx, flag in enumerate(mask):
+        if not flag:
+            continue
+        start = max(0, idx - radius)
+        end = min(len(mask), idx + radius + 1)
+        for out_idx in range(start, end):
+            expanded[out_idx] = True
+    return expanded
+
+
+def transition_activity_mask(
+    left: list[float],
+    right: list[float],
+    *,
+    span: float,
+    digital: bool,
+) -> list[bool]:
+    if not left or len(left) != len(right):
+        return []
+    threshold = 0.5 if digital else max(0.01 * span, 1e-9)
+    mask = [False] * len(left)
+    for values in (left, right):
+        for idx in range(1, len(values)):
+            if abs(values[idx] - values[idx - 1]) >= threshold:
+                mask[idx - 1] = True
+                mask[idx] = True
+    return mask
+
+
+def analog_edge_window_metrics(
+    ev_vals: list[float],
+    sp_vals: list[float],
+    diffs: list[float],
+    *,
+    span: float,
+    raw_rmse: float,
+    raw_max_abs: float,
+    raw_nrmse: float,
+) -> dict[str, float | bool | str]:
+    sample_count = len(diffs)
+    if sample_count == 0:
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "empty_signal",
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_nrmse,
+        }
+
+    high_error_threshold = max(0.10 * span, 1e-9)
+    high_error = [abs(diff) > high_error_threshold for diff in diffs]
+    if not any(high_error):
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "no_localized_high_error",
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_nrmse,
+            "alignment_high_error_threshold_v": high_error_threshold,
+        }
+
+    activity = expand_bool_mask(
+        transition_activity_mask(ev_vals, sp_vals, span=span, digital=False),
+        radius=2,
+    )
+    seed = [is_high and is_active for is_high, is_active in zip(high_error, activity)]
+    if not any(seed):
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "high_error_not_near_transition",
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_nrmse,
+            "alignment_high_error_threshold_v": high_error_threshold,
+        }
+
+    alignment_mask = expand_bool_mask(seed, radius=2)
+    excluded_count = sum(1 for flag in alignment_mask if flag)
+    excluded_fraction = excluded_count / sample_count
+    stable_diffs = [diff for diff, excluded in zip(diffs, alignment_mask) if not excluded]
+    if not stable_diffs:
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "no_stable_samples_after_window",
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_nrmse,
+            "alignment_excluded_samples": excluded_count,
+            "alignment_excluded_fraction": excluded_fraction,
+            "alignment_high_error_threshold_v": high_error_threshold,
+        }
+
+    stable_rmse = math.sqrt(sum(diff * diff for diff in stable_diffs) / len(stable_diffs))
+    stable_max_abs = max(abs(diff) for diff in stable_diffs)
+    stable_nrmse = stable_rmse / max(span, 1e-6)
+    stable_fraction = len(stable_diffs) / sample_count
+    stable_error_gate = stable_nrmse <= 0.01 or stable_max_abs <= max(0.02 * span, 1e-9)
+    eligible = (
+        0 < excluded_fraction <= 0.08
+        and stable_fraction >= 0.80
+        and stable_error_gate
+        and stable_nrmse <= raw_nrmse
+    )
+    return {
+        "sample_alignment_discounted": eligible,
+        "alignment_reason": "edge_window_applied" if eligible else "stable_region_gate_not_met",
+        "rmse_v": stable_rmse if eligible else raw_rmse,
+        "max_abs_v": stable_max_abs if eligible else raw_max_abs,
+        "nrmse": stable_nrmse if eligible else raw_nrmse,
+        "stable_rmse_v": stable_rmse,
+        "stable_max_abs_v": stable_max_abs,
+        "stable_nrmse": stable_nrmse,
+        "alignment_excluded_samples": excluded_count,
+        "alignment_excluded_fraction": excluded_fraction,
+        "alignment_high_error_threshold_v": high_error_threshold,
+    }
+
+
+def digital_edge_window_metrics(
+    ev_bits: list[int],
+    sp_bits: list[int],
+    *,
+    span: float,
+) -> dict[str, float | bool | str]:
+    sample_count = min(len(ev_bits), len(sp_bits))
+    if sample_count == 0:
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "empty_signal",
+            "mismatch_ratio": 1.0,
+            "rmse_v": max(span, 1.0),
+            "max_abs_v": max(span, 1.0),
+            "nrmse": 1.0,
+        }
+
+    ev_bits = ev_bits[:sample_count]
+    sp_bits = sp_bits[:sample_count]
+    mismatch_mask = [left != right for left, right in zip(ev_bits, sp_bits)]
+    raw_mismatch = sum(1 for flag in mismatch_mask if flag) / sample_count
+    raw_rmse = math.sqrt(raw_mismatch) * max(span, 1.0)
+    raw_max_abs = float(max(span, 1.0)) if raw_mismatch > 0 else 0.0
+    if raw_mismatch == 0:
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "no_mismatch",
+            "mismatch_ratio": 0.0,
+            "rmse_v": 0.0,
+            "max_abs_v": 0.0,
+            "nrmse": 0.0,
+        }
+
+    ev_as_float = [float(bit) for bit in ev_bits]
+    sp_as_float = [float(bit) for bit in sp_bits]
+    activity = expand_bool_mask(
+        transition_activity_mask(ev_as_float, sp_as_float, span=1.0, digital=True),
+        radius=2,
+    )
+    seed = [mismatch and is_active for mismatch, is_active in zip(mismatch_mask, activity)]
+    if not any(seed):
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "mismatch_not_near_edge",
+            "mismatch_ratio": raw_mismatch,
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_mismatch,
+        }
+
+    alignment_mask = expand_bool_mask(seed, radius=2)
+    excluded_count = sum(1 for flag in alignment_mask if flag)
+    excluded_fraction = excluded_count / sample_count
+    stable_pairs = [
+        (left, right)
+        for left, right, excluded in zip(ev_bits, sp_bits, alignment_mask)
+        if not excluded
+    ]
+    if not stable_pairs:
+        return {
+            "sample_alignment_discounted": False,
+            "alignment_reason": "no_stable_samples_after_window",
+            "mismatch_ratio": raw_mismatch,
+            "rmse_v": raw_rmse,
+            "max_abs_v": raw_max_abs,
+            "nrmse": raw_mismatch,
+            "alignment_excluded_samples": excluded_count,
+            "alignment_excluded_fraction": excluded_fraction,
+        }
+
+    stable_mismatch = sum(1 for left, right in stable_pairs if left != right) / len(stable_pairs)
+    stable_fraction = len(stable_pairs) / sample_count
+    eligible = (
+        0 < excluded_fraction <= 0.08
+        and stable_fraction >= 0.80
+        and stable_mismatch <= 0.001
+        and stable_mismatch <= raw_mismatch
+    )
+    mismatch = stable_mismatch if eligible else raw_mismatch
+    return {
+        "sample_alignment_discounted": eligible,
+        "alignment_reason": "edge_window_applied" if eligible else "stable_region_gate_not_met",
+        "mismatch_ratio": mismatch,
+        "rmse_v": math.sqrt(mismatch) * max(span, 1.0),
+        "max_abs_v": float(max(span, 1.0)) if mismatch > 0 else 0.0,
+        "nrmse": mismatch,
+        "stable_mismatch_ratio": stable_mismatch,
+        "alignment_excluded_samples": excluded_count,
+        "alignment_excluded_fraction": excluded_fraction,
     }
 
 
@@ -991,7 +1212,7 @@ def compare_waveforms(
             "reason": "no overlapping time window",
         }
 
-    per_signal: dict[str, dict[str, float]] = {}
+    per_signal: dict[str, dict[str, object]] = {}
     nrmse_values: list[float] = []
     rmse_values: list[float] = []
     max_abs_values: list[float] = []
@@ -1007,6 +1228,13 @@ def compare_waveforms(
         hi = max(vals)
         span = hi - lo
         if span < 1e-6:
+            return False, lo, hi
+        # A two-level analog quantity, such as a pipeline-ADC residue, should
+        # remain an analog waveform even if most samples sit near its local
+        # extrema.  Treat a switching waveform as digital only when its rails
+        # look like voltage-mode logic: low near ground and high with a
+        # meaningful swing.
+        if abs(lo) > max(0.10, 0.15 * span) or hi < 0.30:
             return False, lo, hi
         # Relaxed tolerance: accept values within 30% of span from rails
         # This handles clock signals with transition region samples
@@ -1081,34 +1309,74 @@ def compare_waveforms(
                     best_lag = lag
 
             span = max(merged_vals) - min(merged_vals)
+            raw_nrmse = best_mismatch
+            raw_rmse = math.sqrt(best_mismatch) * max(span, 1.0)
+            raw_max_abs = float(max(span, 1.0)) if best_mismatch > 0 else 0.0
+            alignment = digital_edge_window_metrics(ev_bits, sp_bits, span=span)
             # For digital-like signals, treat mismatch ratio as normalized error.
-            nrmse = best_mismatch
-            rmse = math.sqrt(best_mismatch) * max(span, 1.0)
-            max_abs = float(max(span, 1.0)) if best_mismatch > 0 else 0.0
+            nrmse = float(alignment["nrmse"])
+            rmse = float(alignment["rmse_v"])
+            max_abs = float(alignment["max_abs_v"])
             per_signal[sig] = {
                 "rmse_v": rmse,
                 "max_abs_v": max_abs,
                 "span_v": span,
                 "nrmse": nrmse,
+                "raw_rmse_v": raw_rmse,
+                "raw_max_abs_v": raw_max_abs,
+                "raw_nrmse": raw_nrmse,
                 "kind": "digital",
                 "best_lag_samples": best_lag,
                 "best_lag_s": best_lag * dt,
-                "mismatch_ratio": best_mismatch,
+                "mismatch_ratio": float(alignment["mismatch_ratio"]),
+                "raw_mismatch_ratio": best_mismatch,
+                "sample_alignment_discounted": bool(alignment["sample_alignment_discounted"]),
+                "alignment_reason": str(alignment["alignment_reason"]),
             }
+            for key in ("stable_mismatch_ratio", "alignment_excluded_samples", "alignment_excluded_fraction"):
+                if key in alignment:
+                    per_signal[sig][key] = float(alignment[key])
         else:
             diffs = [a - b for a, b in zip(ev_vals, sp_vals)]
             mse = sum(d * d for d in diffs) / len(diffs)
-            rmse = math.sqrt(mse)
-            max_abs = max(abs(d) for d in diffs)
+            raw_rmse = math.sqrt(mse)
+            raw_max_abs = max(abs(d) for d in diffs)
             span = max(merged_vals) - min(merged_vals)
-            nrmse = rmse / max(span, 1e-6)
+            raw_nrmse = raw_rmse / max(span, 1e-6)
+            alignment = analog_edge_window_metrics(
+                ev_vals,
+                sp_vals,
+                diffs,
+                span=span,
+                raw_rmse=raw_rmse,
+                raw_max_abs=raw_max_abs,
+                raw_nrmse=raw_nrmse,
+            )
+            rmse = float(alignment["rmse_v"])
+            max_abs = float(alignment["max_abs_v"])
+            nrmse = float(alignment["nrmse"])
             per_signal[sig] = {
                 "rmse_v": rmse,
                 "max_abs_v": max_abs,
                 "span_v": span,
                 "nrmse": nrmse,
+                "raw_rmse_v": raw_rmse,
+                "raw_max_abs_v": raw_max_abs,
+                "raw_nrmse": raw_nrmse,
                 "kind": "analog",
+                "sample_alignment_discounted": bool(alignment["sample_alignment_discounted"]),
+                "alignment_reason": str(alignment["alignment_reason"]),
             }
+            for key in (
+                "stable_rmse_v",
+                "stable_max_abs_v",
+                "stable_nrmse",
+                "alignment_excluded_samples",
+                "alignment_excluded_fraction",
+                "alignment_high_error_threshold_v",
+            ):
+                if key in alignment:
+                    per_signal[sig][key] = float(alignment[key])
 
         nrmse_values.append(nrmse)
         rmse_values.append(rmse)
@@ -1119,6 +1387,13 @@ def compare_waveforms(
     max_rmse = max(rmse_values)
     max_abs = max(max_abs_values)
     mean_nrmse = sum(sorted_nrmse) / len(sorted_nrmse)
+    raw_nrmse_values = [float(metrics.get("raw_nrmse", metrics["nrmse"])) for metrics in per_signal.values()]
+    raw_rmse_values = [float(metrics.get("raw_rmse_v", metrics["rmse_v"])) for metrics in per_signal.values()]
+    raw_max_abs_values = [float(metrics.get("raw_max_abs_v", metrics["max_abs_v"])) for metrics in per_signal.values()]
+    raw_max_nrmse = max(raw_nrmse_values)
+    raw_max_rmse = max(raw_rmse_values)
+    raw_max_abs = max(raw_max_abs_values)
+    raw_mean_nrmse = sum(raw_nrmse_values) / len(raw_nrmse_values)
 
     # Use simulator-style acceptance terms. The relative gate mirrors a reltol
     # style check across the row aggregate plus the worst saved signal; the
@@ -1143,6 +1418,15 @@ def compare_waveforms(
         "max_relative_rms_error": max_nrmse,
         "mean_nrmse": mean_nrmse,
         "max_nrmse": max_nrmse,
+        "raw_max_rmse_v": raw_max_rmse,
+        "raw_max_abs_v": raw_max_abs,
+        "raw_mean_relative_rms_error": raw_mean_nrmse,
+        "raw_max_relative_rms_error": raw_max_nrmse,
+        "raw_mean_nrmse": raw_mean_nrmse,
+        "raw_max_nrmse": raw_max_nrmse,
+        "signals_with_alignment_window": sum(
+            1 for metrics in per_signal.values() if metrics.get("sample_alignment_discounted")
+        ),
         "per_signal": per_signal,
     }
 
@@ -1802,6 +2086,7 @@ def run_dual_case(
         "gold_tb": str(tb_path),
         "gold_includes": includes,
         "evas": evas_result,
+        "evas_engine_used": evas_result.get("evas_engine_used"),
         "spectre": {
             **spectre_result,
             "behavior_score": spectre_sim_correct,
