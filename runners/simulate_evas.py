@@ -2,18 +2,28 @@
 from __future__ import annotations
 
 import argparse
+import ast
+import atexit
+import contextlib
 import csv
+import inspect
+import io
 import json
 import math
 import multiprocessing as mp
 import os
+import queue
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+import threading
+import time
+import traceback
 import warnings
 from pathlib import Path
+from typing import Iterable
 
 from main120_stable_checks import (
     check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
@@ -89,21 +99,241 @@ def evas_module_python() -> str:
     return sys.executable
 
 
-def evas_command_and_env() -> tuple[list[str], dict[str, str] | None]:
-    evas_cli = shutil.which("evas")
-    if evas_cli:
-        return [evas_cli], None
+def evas_source_env() -> dict[str, str] | None:
     for source_root in (REPO_ROOT.parent / "EVAS", REPO_ROOT / "EVAS"):
         if (source_root / "evas" / "__main__.py").exists():
             env = os.environ.copy()
             env["PYTHONPATH"] = str(source_root) + os.pathsep + env.get("PYTHONPATH", "")
-            return [evas_module_python(), "-m", "evas"], env
+            return env
+    return None
+
+
+def evas_command_and_env() -> tuple[list[str], dict[str, str] | None]:
+    env = evas_source_env()
+    if env is not None:
+        return [evas_module_python(), "-m", "evas"], env
+    evas_cli = shutil.which("evas")
+    if evas_cli:
+        return [evas_cli], None
     return ["evas"], None
 
 
-def run_evas(run_dir: Path, tb_file: Path, output_dir: Path, timeout_s: int) -> subprocess.CompletedProcess[str]:
+def _env_truthy(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on", "enabled"}
+
+
+DEFAULT_EVAS_ENGINE = "evas2"
+
+
+def default_evas_engine() -> str:
+    """Return the benchmark default EVAS engine.
+
+    `EVAS_ENGINE=evas2` is consumed by the EVAS netlist runner and selects the
+    strict Rust EVAS2 full-model path.  Keep an explicit environment override
+    so legacy Python-EVAS debugging is still possible without editing fixtures.
+    """
+
+    return os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", DEFAULT_EVAS_ENGINE).strip().lower()
+
+
+def effective_evas_engine(env: dict[str, str] | None = None) -> str:
+    source = env if env is not None else os.environ
+    explicit = source.get("EVAS_ENGINE", "").strip().lower()
+    return explicit or default_evas_engine()
+
+
+def _with_default_evas_engine(env: dict[str, str] | None) -> dict[str, str]:
+    effective_env = dict(env or os.environ.copy())
+    if not effective_env.get("EVAS_ENGINE", "").strip():
+        engine = default_evas_engine()
+        if engine:
+            effective_env["EVAS_ENGINE"] = engine
+    return effective_env
+
+
+def _encode_required_trace_signals(signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None) -> str:
+    if not signals:
+        return ""
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for signal in signals:
+        name = str(signal).strip()
+        if not name or name.lower() == "time" or name in seen:
+            continue
+        seen.add(name)
+        ordered.append(name)
+    return ",".join(sorted(ordered))
+
+
+class _PersistentEvasWorker:
+    def __init__(self) -> None:
+        self.cmd = [evas_module_python(), str(Path(__file__).resolve()), "--evas-worker"]
+        self.proc = subprocess.Popen(
+            self.cmd,
+            cwd=str(REPO_ROOT),
+            env=_with_default_evas_engine(evas_source_env()),
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
+        )
+        self._responses: queue.Queue[dict[str, object]] = queue.Queue()
+        self._stderr_tail: list[str] = []
+        self._lock = threading.Lock()
+        threading.Thread(target=self._read_stdout, daemon=True).start()
+        threading.Thread(target=self._read_stderr, daemon=True).start()
+
+    def is_alive(self) -> bool:
+        return self.proc.poll() is None
+
+    def _read_stdout(self) -> None:
+        if self.proc.stdout is None:
+            return
+        for line in self.proc.stdout:
+            try:
+                payload = json.loads(line)
+            except json.JSONDecodeError as exc:
+                payload = {
+                    "returncode": 1,
+                    "stdout": "",
+                    "stderr": f"evas_worker_protocol_error={exc}: {line[-500:]}",
+                }
+            if isinstance(payload, dict):
+                self._responses.put(payload)
+
+    def _read_stderr(self) -> None:
+        if self.proc.stderr is None:
+            return
+        for line in self.proc.stderr:
+            self._stderr_tail.append(line)
+            if len(self._stderr_tail) > 200:
+                del self._stderr_tail[: len(self._stderr_tail) - 200]
+
+    def _stderr_text(self) -> str:
+        return "".join(self._stderr_tail)[-4000:]
+
+    def run(
+        self,
+        run_dir: Path,
+        tb_file: Path,
+        output_dir: Path,
+        timeout_s: int,
+        required_trace_signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
+    ) -> subprocess.CompletedProcess[str]:
+        if self.proc.stdin is None or not self.is_alive():
+            return subprocess.CompletedProcess(
+                self.cmd,
+                1,
+                stdout="",
+                stderr=f"evas_worker_not_running\n{self._stderr_text()}",
+            )
+        request = {
+            "run_dir": str(run_dir),
+            "tb_file": tb_file.name,
+            "output_dir": str(output_dir),
+            "required_trace_signals": _encode_required_trace_signals(required_trace_signals),
+        }
+        with self._lock:
+            try:
+                self.proc.stdin.write(json.dumps(request) + "\n")
+                self.proc.stdin.flush()
+                response = self._responses.get(timeout=timeout_s)
+            except queue.Empty:
+                self.close(kill=True)
+                return subprocess.CompletedProcess(
+                    self.cmd,
+                    -9,
+                    stdout="",
+                    stderr=f"evas_worker_timeout>{timeout_s}s\n{self._stderr_text()}",
+                )
+            except OSError as exc:
+                return subprocess.CompletedProcess(
+                    self.cmd,
+                    1,
+                    stdout="",
+                    stderr=f"evas_worker_write_error={exc}\n{self._stderr_text()}",
+                )
+        return subprocess.CompletedProcess(
+            self.cmd,
+            int(response.get("returncode", 1)),
+            stdout=str(response.get("stdout", "")),
+            stderr=str(response.get("stderr", "")),
+        )
+
+    def close(self, *, kill: bool = False) -> None:
+        if self.proc.poll() is not None:
+            return
+        if kill:
+            self.proc.kill()
+            try:
+                self.proc.wait(timeout=1)
+            except Exception:
+                pass
+            return
+        try:
+            if self.proc.stdin is not None:
+                self.proc.stdin.write(json.dumps({"cmd": "shutdown"}) + "\n")
+                self.proc.stdin.flush()
+            self.proc.wait(timeout=1)
+        except Exception:
+            try:
+                self.proc.terminate()
+                self.proc.wait(timeout=1)
+            except Exception:
+                self.proc.kill()
+
+
+_worker_state = threading.local()
+_worker_registry: list[_PersistentEvasWorker] = []
+_worker_registry_lock = threading.Lock()
+
+
+def _persistent_evas_worker() -> _PersistentEvasWorker:
+    worker = getattr(_worker_state, "worker", None)
+    if not isinstance(worker, _PersistentEvasWorker) or not worker.is_alive():
+        worker = _PersistentEvasWorker()
+        _worker_state.worker = worker
+        with _worker_registry_lock:
+            _worker_registry.append(worker)
+    return worker
+
+
+def _close_persistent_evas_worker() -> None:
+    with _worker_registry_lock:
+        workers = list(_worker_registry)
+        _worker_registry.clear()
+    for worker in workers:
+        worker.close()
+
+
+atexit.register(_close_persistent_evas_worker)
+
+
+def run_evas(
+    run_dir: Path,
+    tb_file: Path,
+    output_dir: Path,
+    timeout_s: int,
+    required_trace_signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    if _env_truthy("VAEVAS_EVAS_PERSISTENT_WORKER"):
+        return _persistent_evas_worker().run(
+            run_dir,
+            tb_file,
+            output_dir,
+            timeout_s,
+            required_trace_signals=required_trace_signals,
+        )
     base_cmd, env = evas_command_and_env()
     cmd = [*base_cmd, "simulate", tb_file.name, "-o", str(output_dir)]
+    required_trace_value = _encode_required_trace_signals(required_trace_signals)
+    env = _with_default_evas_engine(env)
+    env["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = str(output_dir)
+    if required_trace_value:
+        env["EVAS_REQUIRED_TRACE_SIGNALS"] = required_trace_value
+    else:
+        env.pop("EVAS_REQUIRED_TRACE_SIGNALS", None)
     return subprocess.run(
         cmd,
         cwd=run_dir,
@@ -227,8 +457,12 @@ def _validate_file_metric_output(task_id: str, run_dir: Path, csv_path: Path) ->
 
     if task_id not in FILE_METRIC_WRITER_TASKS:
         return None
-    metric_path = run_dir / "metric.out"
-    if not metric_path.exists():
+    candidate_paths = []
+    for path in (run_dir / "metric.out", csv_path.parent / "metric.out"):
+        if path not in candidate_paths:
+            candidate_paths.append(path)
+    metric_path = next((path for path in candidate_paths if path.exists()), None)
+    if metric_path is None:
         return False, "metric_file_missing"
     lines = [line.strip() for line in metric_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     if len(lines) != 1:
@@ -317,6 +551,28 @@ def _float_cell(row: dict[str, str], key: str, default: float = 0.0) -> float:
     try:
         return float(row.get(key, default))
     except (TypeError, ValueError):
+        return default
+
+
+def _csv_header_indices(csv_path: Path) -> tuple[list[str], dict[str, int]]:
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        header = next(reader, [])
+    return header, {name: idx for idx, name in enumerate(header)}
+
+
+def _csv_required_indices(csv_path: Path, required: set[str]) -> tuple[dict[str, int] | None, list[str]]:
+    header, index = _csv_header_indices(csv_path)
+    missing = sorted(required - set(header))
+    if missing:
+        return None, missing
+    return {name: index[name] for name in required}, []
+
+
+def _float_at(row: list[str], index: int, default: float = 0.0) -> float:
+    try:
+        return float(row[index])
+    except (IndexError, TypeError, ValueError):
         return default
 
 
@@ -471,6 +727,88 @@ def _stream_pfd_reset_race_csv(csv_path: Path) -> tuple[float, list[str]]:
     ]
 
 
+def _stream_cppll_freq_step_reacquire_csv(csv_path: Path) -> tuple[float, list[str]]:
+    fields = _csv_fields(csv_path)
+    required = {"time", "ref_clk", "fb_clk", "lock", "vctrl_mon"}
+    if not required.issubset(fields):
+        return 0.0, ["missing ref_clk/fb_clk/lock/vctrl_mon"]
+
+    vth = 0.45
+    ref_edges: list[float] = []
+    fb_edges: list[float] = []
+    lock_edges: list[float] = []
+    lock_window_total_dt = 0.0
+    lock_window_high_dt = 0.0
+    vctrl_min = float("inf")
+    vctrl_max = float("-inf")
+    vctrl_in_range = True
+    prev: dict[str, float] | None = None
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            cur = {
+                "time": _float_cell(row, "time"),
+                "ref_clk": _float_cell(row, "ref_clk"),
+                "fb_clk": _float_cell(row, "fb_clk"),
+                "lock": _float_cell(row, "lock"),
+                "vctrl_mon": _float_cell(row, "vctrl_mon"),
+            }
+            vctrl_min = min(vctrl_min, cur["vctrl_mon"])
+            vctrl_max = max(vctrl_max, cur["vctrl_mon"])
+            if not (-1e-6 <= cur["vctrl_mon"] <= 0.95):
+                vctrl_in_range = False
+            if prev is not None:
+                if prev["ref_clk"] < vth <= cur["ref_clk"]:
+                    ref_edges.append(cur["time"])
+                if prev["fb_clk"] < vth <= cur["fb_clk"]:
+                    fb_edges.append(cur["time"])
+                if prev["lock"] < vth <= cur["lock"]:
+                    lock_edges.append(cur["time"])
+                dt = cur["time"] - prev["time"]
+                if dt > 0.0 and 2.05e-6 <= prev["time"] and cur["time"] <= 2.8e-6:
+                    lock_window_total_dt += dt
+                    if 0.5 * (prev["lock"] + cur["lock"]) > vth:
+                        lock_window_high_dt += dt
+            prev = cur
+
+    if len(ref_edges) < 12 or len(fb_edges) < 12:
+        return 0.0, [f"not_enough_edges ref={len(ref_edges)} fb={len(fb_edges)}"]
+
+    ref_late = [t for t in ref_edges if 4.5e-6 <= t <= 5.9e-6]
+    fb_late = [t for t in fb_edges if 4.5e-6 <= t <= 5.9e-6]
+    if len(ref_late) < 4 or len(fb_late) < 4:
+        return 0.0, [
+            f"not_enough_late_edges ref_late={len(ref_late)} fb_late={len(fb_late)}"
+        ]
+
+    ref_periods = [b - a for a, b in zip(ref_late, ref_late[1:])]
+    fb_periods = [b - a for a, b in zip(fb_late, fb_late[1:])]
+    ref_period = sum(ref_periods) / len(ref_periods)
+    fb_period = sum(fb_periods) / len(fb_periods)
+    if ref_period <= 0.0 or fb_period <= 0.0:
+        return 0.0, ["non_positive_period"]
+    freq_ratio = ref_period / fb_period
+
+    pre_lock_edges = [t for t in lock_edges if t < 2.0e-6]
+    post_lock_edges = [t for t in lock_edges if 2.2e-6 <= t <= 5.9e-6]
+    relock_time = post_lock_edges[0] if post_lock_edges else float("nan")
+    lock_high_frac = lock_window_high_dt / max(lock_window_total_dt, 1e-18)
+    disturb_low_frac = 1.0 - lock_high_frac
+    ok = (
+        bool(pre_lock_edges)
+        and disturb_low_frac >= 0.25
+        and bool(post_lock_edges)
+        and 0.97 <= freq_ratio <= 1.03
+        and vctrl_in_range
+    )
+    return (1.0 if ok else 0.0), [
+        f"freq_ratio={freq_ratio:.4f} relock_time={relock_time:.3e} "
+        f"disturb_low_frac={disturb_low_frac:.3f} "
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f}"
+    ]
+
+
 def _stream_dac_binary_clk_4b_csv(csv_path: Path) -> tuple[float, list[str]]:
     fields = _csv_fields(csv_path)
     required = {"din3", "din2", "din1", "din0", "aout"}
@@ -527,6 +865,179 @@ def _stream_sar_adc_dac_weighted_8b_csv(csv_path: Path) -> tuple[float, list[str
     vout_span = max_vout - min_vout
     ok = unique_codes >= 48 and vout_span > 0.7 and avg_abs_err < 0.08
     return (1.0 if ok else 0.0), [f"unique_codes={unique_codes} avg_abs_err={avg_abs_err:.4f} vout_span={vout_span:.3f}"]
+
+
+def _stream_sar_adc_dac_weighted_8b_release_csv(csv_path: Path) -> tuple[float, list[str]]:
+    runtime = CsvCheckerRuntime(csv_path)
+    required = {
+        "time",
+        "vin",
+        "vin_sh",
+        "clks",
+        "vout",
+        "rst_n",
+        "bit_index",
+        "trial_code_mon",
+        "trial_vdac",
+        "cmp_decision",
+        "conv_done",
+        "vin_sample",
+    }
+    missing = runtime.missing(required)
+    if missing:
+        return 0.0, [f"missing_columns={','.join(missing)}"]
+
+    bit_names = [f"dout_{idx}" for idx in range(8)]
+    missing_bits = runtime.missing(set(bit_names))
+    if missing_bits:
+        return 0.0, ["missing dout_0..7"]
+
+    compact_rows: list[tuple[float, float, float, float, float, float, float, float, float, float, float, float, int]] = []
+    times: list[float] = []
+    clks: list[float] = []
+    for row in runtime.rows():
+        time_s = runtime.float(row, "time")
+        clk = runtime.float(row, "clks")
+        code = 0
+        for idx, bit_name in enumerate(bit_names):
+            if runtime.float(row, bit_name) >= 0.45:
+                code |= 1 << idx
+        compact_rows.append(
+            (
+                time_s,
+                runtime.float(row, "vin"),
+                runtime.float(row, "vin_sh"),
+                clk,
+                runtime.float(row, "vout"),
+                runtime.float(row, "rst_n"),
+                runtime.float(row, "bit_index"),
+                runtime.float(row, "trial_code_mon"),
+                runtime.float(row, "trial_vdac"),
+                runtime.float(row, "cmp_decision"),
+                runtime.float(row, "conv_done"),
+                runtime.float(row, "vin_sample"),
+                code,
+            )
+        )
+        times.append(time_s)
+        clks.append(clk)
+
+    if not compact_rows:
+        return 0.0, [f"missing_columns={','.join(sorted(required))}"]
+
+    time_i = 0
+    vin_sh_i = 2
+    clk_i = 3
+    vout_i = 4
+    rst_i = 5
+    bit_index_i = 6
+    trial_code_i = 7
+    trial_vdac_i = 8
+    cmp_decision_i = 9
+    conv_done_i = 10
+    vin_sample_i = 11
+    code_i = 12
+
+    edge_times = rising_edges(clks, times)
+    clock_rows: list[tuple[float, float, float, float, float, float, float, float, float, float, float, float, int]] = []
+    row_idx = 0
+    n_rows = len(compact_rows)
+    for edge_time in edge_times:
+        target_time = edge_time + 1.0e-9
+        while row_idx < n_rows and compact_rows[row_idx][time_i] < target_time:
+            row_idx += 1
+        if row_idx >= n_rows:
+            break
+        row = compact_rows[row_idx]
+        if row[rst_i] > 0.45:
+            clock_rows.append(row)
+
+    sample_rows = [row for row in clock_rows if row[conv_done_i] > 0.45]
+    if len(sample_rows) < 48:
+        return 0.0, [f"too_few_completed_conversions={len(sample_rows)}"]
+
+    active_rows = [
+        row
+        for row in compact_rows
+        if row[rst_i] > 0.45 and 0.05 < row[bit_index_i] < 0.95 and row[conv_done_i] <= 0.45
+    ]
+    if len(active_rows) < 64:
+        return 0.0, [f"too_few_visible_trial_rows={len(active_rows)}"]
+    bit_levels = sorted(
+        {
+            level
+            for row in active_rows
+            for level in [max(0, min(8, int(round(row[bit_index_i] / 0.9 * 8.0))))]
+            if level > 0
+        }
+    )
+    if bit_levels != list(range(1, 9)):
+        return 0.0, [f"sar_trial_bits_not_visible={bit_levels}"]
+
+    trial_dac_err = max(abs(row[trial_code_i] - row[trial_vdac_i]) for row in active_rows)
+    if trial_dac_err > 0.035:
+        return 0.0, [f"sar_trial_code_dac_mismatch={trial_dac_err:.4f}"]
+    cmp_eval_rows = [row for row in active_rows if abs(row[vin_sample_i] - row[trial_vdac_i]) > 0.015]
+    if len(cmp_eval_rows) < 32:
+        return 0.0, [f"sar_too_few_nonborderline_comparator_trials={len(cmp_eval_rows)}"]
+    cmp_agree = sum(
+        1
+        for row in cmp_eval_rows
+        if ((row[vin_sample_i] >= row[trial_vdac_i]) == (row[cmp_decision_i] > 0.45))
+    )
+    cmp_frac = cmp_agree / len(cmp_eval_rows)
+    if cmp_frac < 0.94:
+        return 0.0, [f"sar_comparator_trial_decision_mismatch={cmp_frac:.3f}"]
+
+    codes = [row[code_i] for row in sample_rows]
+    vinsh = [row[vin_sh_i] for row in sample_rows]
+    vinsamp = [row[vin_sample_i] for row in sample_rows]
+    vouts = [row[vout_i] for row in sample_rows]
+    vdd = 0.9
+    code_voltages = [code / 255.0 * vdd for code in codes]
+    unique_codes = len(set(codes))
+    code_min = min(codes)
+    code_max = max(codes)
+    sample_span = max(vinsamp) - min(vinsamp)
+    vout_span = max(vouts) - min(vouts)
+    avg_quant_err = sum(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages)) / len(sample_rows)
+    max_quant_err = max(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages))
+    avg_dac_err = sum(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages)) / len(sample_rows)
+    max_dac_err = max(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages))
+    avg_roundtrip_err = sum(abs(sample - vout) for sample, vout in zip(vinsamp, vouts)) / len(sample_rows)
+    max_sample_hold_err = max(abs(sample - held) for sample, held in zip(vinsamp, vinsh))
+
+    sorted_pairs = sorted(zip(vinsamp, codes), key=lambda item: item[0])
+    monotonic_reversals = sum(
+        1
+        for (_, prev_code), (_, curr_code) in zip(sorted_pairs, sorted_pairs[1:])
+        if curr_code + 2 < prev_code
+    )
+
+    ok = (
+        unique_codes >= 48
+        and code_min <= 8
+        and code_max >= 247
+        and sample_span > 0.75
+        and vout_span > 0.75
+        and avg_quant_err < 0.025
+        and max_quant_err < 0.060
+        and avg_dac_err < 0.020
+        and max_dac_err < 0.060
+        and avg_roundtrip_err < 0.030
+        and max_sample_hold_err < 0.090
+        and monotonic_reversals <= max(2, len(sorted_pairs) // 50)
+        and min(vouts) >= -0.02
+        and max(vouts) <= vdd + 0.02
+    )
+    return (1.0 if ok else 0.0), [
+        f"samples={len(sample_rows)} unique_codes={unique_codes} code_range={code_min}-{code_max} "
+        f"sample_span={sample_span:.3f} vout_span={vout_span:.3f} "
+        f"avg_quant_err={avg_quant_err:.4f} max_quant_err={max_quant_err:.4f} "
+        f"avg_dac_err={avg_dac_err:.4f} max_dac_err={max_dac_err:.4f} "
+        f"avg_roundtrip_err={avg_roundtrip_err:.4f} max_sample_hold_err={max_sample_hold_err:.4f} "
+        f"trial_bits={bit_levels} cmp_frac={cmp_frac:.3f} monotonic_reversals={monotonic_reversals}"
+    ]
 
 
 def _stream_dwa_ptr_gen_no_overlap_csv(csv_path: Path) -> tuple[float, list[str]]:
@@ -792,6 +1303,115 @@ def _stream_gain_extraction_csv(csv_path: Path) -> tuple[float, list[str]]:
     return (1.0 if ok else 0.0), [f"diff_gain={gain:.2f}"]
 
 
+def _stream_gain_estimator_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "vinp", "vinn", "voutp", "voutn", "gain_out", "valid"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        # The row-based checker has no aliases for these required outputs, so
+        # missing columns would fail after loading the full CSV.
+        return 0.0, [f"required_columns_missing={'/'.join(missing)}"]
+    assert indices is not None
+
+    last_time = 0.0
+    final_valid = 0.0
+    max_valid = 0.0
+    valid_count = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            last_time = _float_at(row, indices["time"])
+            valid = final_valid = _float_at(row, indices["valid"])
+            if valid > 0.45:
+                valid_count += 1
+            if valid > max_valid:
+                max_valid = valid
+
+    if valid_count < 20:
+        return 0.0, [f"insufficient_valid_samples={valid_count}"]
+
+    late_start = last_time * 0.65
+    late_valid_count = 0
+    vin_min = math.inf
+    vin_max = -math.inf
+    vout_min = math.inf
+    vout_max = -math.inf
+    gain_sum = 0.0
+    vdd_est = max(max_valid, 1e-6)
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_value = _float_at(row, indices["time"])
+            if time_value < late_start:
+                continue
+            valid = _float_at(row, indices["valid"])
+            if valid <= 0.45:
+                continue
+            vin_diff = _float_at(row, indices["vinp"]) - _float_at(row, indices["vinn"])
+            vout_diff = _float_at(row, indices["voutp"]) - _float_at(row, indices["voutn"])
+            vin_min = min(vin_min, vin_diff)
+            vin_max = max(vin_max, vin_diff)
+            vout_min = min(vout_min, vout_diff)
+            vout_max = max(vout_max, vout_diff)
+            gain_sum += _float_at(row, indices["gain_out"]) / vdd_est * 10.0
+            late_valid_count += 1
+
+    if late_valid_count < 10:
+        return 0.0, [f"late_valid_samples={late_valid_count}"]
+
+    in_span = vin_max - vin_min
+    out_span = vout_max - vout_min
+    waveform_gain = out_span / in_span if in_span > 1e-12 else 0.0
+    gain_est = gain_sum / late_valid_count
+    gain_err = abs(gain_est - waveform_gain)
+    valid_final = final_valid > 0.45
+    ok = (
+        valid_final
+        and 0.045 <= in_span <= 0.075
+        and 0.27 <= out_span <= 0.45
+        and 5.0 <= waveform_gain <= 7.2
+        and gain_err <= 0.35
+    )
+    return (1.0 if ok else 0.0), [
+        f"in_span={in_span:.4f} out_span={out_span:.4f} "
+        f"waveform_gain={waveform_gain:.2f} gain_est={gain_est:.2f} "
+        f"gain_err={gain_err:.2f} valid_final={valid_final}"
+    ]
+
+
+def _stream_cdac_cal_csv(csv_path: Path) -> tuple[float, list[str]]:
+    header, indices = _csv_header_indices(csv_path)
+    vdac_cols = [col for col in header if "vdac" in col.lower() or "vcap" in col.lower() or "vout" in col.lower()]
+    if not vdac_cols:
+        return 0.0, [f"missing vdac columns; keys={header[:10]}"]
+
+    cols = vdac_cols[:2]
+    mins = {col: math.inf for col in cols}
+    maxs = {col: -math.inf for col in cols}
+    count = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            count += 1
+            for col in cols:
+                value = _float_at(row, indices[col])
+                if value < mins[col]:
+                    mins[col] = value
+                if value > maxs[col]:
+                    maxs[col] = value
+
+    if count == 0:
+        return 0.0, ["empty"]
+    for col in cols:
+        value_range = maxs[col] - mins[col]
+        if value_range > 0.05:
+            return 1.0, [f"vdac_activity col={col} range={value_range:.3f}"]
+    return 0.0, [f"no vdac activity in {vdac_cols[:4]}"]
+
+
 def _stream_multimod_divider_ratio_switch_csv(csv_path: Path) -> tuple[float, list[str]]:
     fields = _csv_fields(csv_path)
     required = {"time", "clk_in", "div_out"}
@@ -838,20 +1458,1334 @@ def _stream_multimod_divider_ratio_switch_csv(csv_path: Path) -> tuple[float, li
     return 1.0, [";".join(details)]
 
 
+def _stream_lfsr_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"dpn", "rstb"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    count = 0
+    hi_count = 0
+    transitions = 0
+    prev_bit: int | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if _float_at(row, indices["rstb"]) <= 0.45:
+                continue
+            bit = 1 if _float_at(row, indices["dpn"]) > 0.45 else 0
+            count += 1
+            hi_count += bit
+            if prev_bit is not None and bit != prev_bit:
+                transitions += 1
+            prev_bit = bit
+
+    if count < 2:
+        return 0.0, ["not enough post-reset samples"]
+    hi_frac = hi_count / count
+    ok = 0.05 < hi_frac < 0.95 and transitions >= 10
+    return (1.0 if ok else 0.0), [f"transitions={transitions} hi_frac={hi_frac:.3f}"]
+
+
+def _stream_prbs7_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst_n", "en", "serial_out"} | {f"state_{idx}" for idx in range(7)}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing_columns={','.join(missing)}"]
+    assert indices is not None
+
+    def logic(row: list[str], name: str) -> int | None:
+        value = _float_at(row, indices[name])
+        if value >= 0.7:
+            return 1
+        if value <= 0.2:
+            return 0
+        return None
+
+    stable_codes: list[int] = []
+    serial_bits: list[int] = []
+
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            if (
+                _float_at(row, indices["time"]) <= 2e-9
+                or _float_at(row, indices["rst_n"]) <= 0.7
+                or _float_at(row, indices["en"]) <= 0.7
+            ):
+                continue
+            state = 0
+            stable = True
+            for idx in range(7):
+                bit = logic(row, f"state_{idx}")
+                if bit is None:
+                    stable = False
+                    break
+                state |= bit << idx
+            serial = logic(row, "serial_out")
+            if not stable or serial is None:
+                continue
+            if serial != ((state >> 6) & 1):
+                return 0.0, [f"serial_state_mismatch code={state}"]
+            if not stable_codes or stable_codes[-1] != state:
+                stable_codes.append(state)
+                serial_bits.append(serial)
+
+    if len(stable_codes) < 10:
+        return 0.0, [f"unique_state_steps={len(stable_codes)}"]
+    if 0 in stable_codes:
+        return 0.0, ["entered_zero_state"]
+
+    mismatches = 0
+    checked = 0
+    for current, observed_next in zip(stable_codes, stable_codes[1:]):
+        feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
+        expected_next = ((current & 0x3F) << 1) | feedback
+        checked += 1
+        if observed_next != expected_next:
+            mismatches += 1
+
+    serial_transitions = sum(1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1])
+    ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
+    return (1.0 if ok else 0.0), [
+        f"state_steps={len(stable_codes)} checked_transitions={checked} "
+        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+    ]
+
+
+def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "data", "clk", "retimed_data", "up", "down"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, ["missing time/data/clk/retimed_data/up/down"]
+    assert indices is not None
+
+    vth = 0.45
+    response_window_s = 0.2e-9
+    total_rows = 0
+    overlap = 0
+    data_edges = 0
+    up_edges = 0
+    down_edges = 0
+    directional_counts = {
+        "up_expected": 0,
+        "down_expected": 0,
+        "up_correct": 0,
+        "down_correct": 0,
+        "wrong": 0,
+        "missing": 0,
+    }
+    pending_windows: list[dict[str, object]] = []
+
+    def update_window(window: dict[str, object], up: float, down: float) -> None:
+        expected = str(window["expected"])
+        wrong = str(window["wrong"])
+        if (expected == "up" and up > vth) or (expected == "down" and down > vth):
+            window["expected_hit"] = True
+        if (wrong == "up" and up > vth) or (wrong == "down" and down > vth):
+            window["wrong_hit"] = True
+
+    def finalize_window(window: dict[str, object]) -> None:
+        expected = str(window["expected"])
+        if bool(window["expected_hit"]) and not bool(window["wrong_hit"]):
+            directional_counts[f"{expected}_correct"] += 1
+        elif bool(window["wrong_hit"]):
+            directional_counts["wrong"] += 1
+        else:
+            directional_counts["missing"] += 1
+
+    prev_data: float | None = None
+    prev_up: float | None = None
+    prev_down: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            total_rows += 1
+            time_s = _float_at(row, indices["time"])
+            data = _float_at(row, indices["data"])
+            clk = _float_at(row, indices["clk"])
+            retimed_data = _float_at(row, indices["retimed_data"])
+            up = _float_at(row, indices["up"])
+            down = _float_at(row, indices["down"])
+
+            if up > vth and down > vth:
+                overlap += 1
+
+            active_windows: list[dict[str, object]] = []
+            for window in pending_windows:
+                if time_s <= float(window["end_time"]):
+                    update_window(window, up, down)
+                    active_windows.append(window)
+                else:
+                    finalize_window(window)
+            pending_windows = active_windows
+
+            if prev_data is not None and prev_up is not None and prev_down is not None:
+                if prev_up < vth <= up:
+                    up_edges += 1
+                if prev_down < vth <= down:
+                    down_edges += 1
+                if (prev_data < vth <= data) or (prev_data > vth >= data):
+                    data_edges += 1
+                    clk_high = clk > vth
+                    retimed_high = retimed_data > vth
+                    if clk_high and not retimed_high:
+                        expected = "up"
+                    elif not clk_high and retimed_high:
+                        expected = "down"
+                    else:
+                        expected = None
+                    if expected is not None:
+                        directional_counts[f"{expected}_expected"] += 1
+                        wrong = "down" if expected == "up" else "up"
+                        window = {
+                            "end_time": time_s + response_window_s,
+                            "expected": expected,
+                            "wrong": wrong,
+                            "expected_hit": False,
+                            "wrong_hit": False,
+                        }
+                        update_window(window, up, down)
+                        pending_windows.append(window)
+
+            prev_data = data
+            prev_up = up
+            prev_down = down
+
+    for window in pending_windows:
+        finalize_window(window)
+
+    if data_edges < 6:
+        return 0.0, ["not enough data edges"]
+
+    overlap_frac = overlap / max(total_rows, 1)
+    edge_trigger_ok = up_edges + down_edges >= max(4, data_edges // 4)
+    pulse_presence_ok = up_edges >= 2 and down_edges >= 2
+    non_overlap_ok = overlap_frac < 0.02
+    directional_ok = (
+        directional_counts["up_expected"] >= 2
+        and directional_counts["down_expected"] >= 2
+        and directional_counts["up_correct"] >= max(2, int(0.75 * directional_counts["up_expected"]))
+        and directional_counts["down_correct"] >= max(2, int(0.75 * directional_counts["down_expected"]))
+        and directional_counts["wrong"] == 0
+    )
+    ok = edge_trigger_ok and pulse_presence_ok and non_overlap_ok and directional_ok
+    return (1.0 if ok else 0.0), [
+        f"data_edges={data_edges} up_edges={up_edges} down_edges={down_edges} "
+        f"overlap_frac={overlap_frac:.4f} "
+        f"direction_up={directional_counts['up_correct']}/{directional_counts['up_expected']} "
+        f"direction_down={directional_counts['down_correct']}/{directional_counts['down_expected']} "
+        f"wrong_direction={directional_counts['wrong']} missing_direction={directional_counts['missing']}"
+    ]
+
+
+def _stream_cross_hysteresis_window_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "vin", "out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    out_min = float("inf")
+    out_max = float("-inf")
+    windows = {
+        "low1": [0.0, 0],
+        "high": [0.0, 0],
+        "low2": [0.0, 0],
+    }
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            out = _float_at(row, indices["out"])
+            out_min = min(out_min, out)
+            out_max = max(out_max, out)
+            if time_s <= 20e-9:
+                windows["low1"][0] += out
+                windows["low1"][1] += 1
+            if 35e-9 <= time_s <= 55e-9:
+                windows["high"][0] += out
+                windows["high"][1] += 1
+            if time_s >= 75e-9:
+                windows["low2"][0] += out
+                windows["low2"][1] += 1
+
+    span = out_max - out_min
+    if span < 0.3:
+        return 0.0, [f"out_span_too_small={span:.3f}"]
+    if any(count == 0 for _, count in windows.values()):
+        return 0.0, ["insufficient_window_samples"]
+    low1 = windows["low1"][0] / windows["low1"][1]
+    high = windows["high"][0] / windows["high"][1]
+    low2 = windows["low2"][0] / windows["low2"][1]
+    ok = (high - low1) > 0.45 * span and (high - low2) > 0.45 * span
+    return (1.0 if ok else 0.0), [f"low1={low1:.3f} high={high:.3f} low2={low2:.3f} span={span:.3f}"]
+
+
+def _stream_cross_interval_163p333_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "delay_out", "seen_out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    seen_hi = 0.0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            seen_hi = max(seen_hi, _float_at(row, indices["seen_out"]))
+    if seen_hi < 0.3:
+        return 0.0, [f"seen_out_never_high={seen_hi:.3f}"]
+
+    seen_th = 0.5 * seen_hi
+    first_seen_time: float | None = None
+    seen_delay_values: list[float] = []
+    settled_delay_values: list[float] = []
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_value = _float_at(row, indices["time"])
+            seen = _float_at(row, indices["seen_out"])
+            if seen <= seen_th:
+                continue
+            if first_seen_time is None:
+                first_seen_time = time_value
+            delay = _float_at(row, indices["delay_out"])
+            seen_delay_values.append(delay)
+            if time_value >= first_seen_time + 0.2e-9:
+                settled_delay_values.append(delay)
+
+    if first_seen_time is None:
+        return 0.0, ["seen_out_no_logic_high_samples"]
+    if len(settled_delay_values) < 3:
+        settled_delay_values = seen_delay_values
+    tail_count = min(len(settled_delay_values), max(5, len(settled_delay_values) // 3))
+    tail = sorted(settled_delay_values[-tail_count:])
+    if not tail:
+        return 0.0, ["no_post_seen_delay_samples"]
+    delay_level = tail[len(tail) // 2]
+    delay_ps = delay_level / max(seen_hi, 1e-6) * 200.0
+    ok = 130.0 <= delay_ps <= 190.0
+    return (1.0 if ok else 0.0), [
+        f"delay_ps={delay_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_delay_values)}"
+    ]
+
+
+def _stream_phase_accumulator_timer_wrap_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "clk_out", "phase_out"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    phase_min = float("inf")
+    phase_max = float("-inf")
+    clk_min = float("inf")
+    clk_max = float("-inf")
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            phase = _float_at(row, indices["phase_out"])
+            clk = _float_at(row, indices["clk_out"])
+            phase_min = min(phase_min, phase)
+            phase_max = max(phase_max, phase)
+            clk_min = min(clk_min, clk)
+            clk_max = max(clk_max, clk)
+
+    phase_span = phase_max - phase_min
+    if phase_span < 0.4:
+        return 0.0, [f"phase_span_too_small={phase_span:.3f}"]
+    high_th = phase_min + 0.70 * phase_span
+    low_th = phase_min + 0.30 * phase_span
+    clk_th = 0.5 * (clk_max + clk_min)
+
+    wraps = 0
+    armed = False
+    clk_rises = 0
+    prev_clk: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            phase = _float_at(row, indices["phase_out"])
+            clk = _float_at(row, indices["clk_out"])
+            if phase >= high_th:
+                armed = True
+            elif armed and phase <= low_th:
+                wraps += 1
+                armed = False
+            if prev_clk is not None and prev_clk < clk_th <= clk:
+                clk_rises += 1
+            prev_clk = clk
+
+    ok = wraps >= 3 and clk_rises >= 3
+    return (1.0 if ok else 0.0), [f"wraps={wraps} clk_rises={clk_rises} phase_span={phase_span:.3f}"]
+
+
+def _stream_true_window_comparator_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "vin", "out"}
+    runtime = CsvCheckerRuntime(csv_path)
+    missing = runtime.missing(required)
+    if missing:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    eval_rows, errors = runtime.resampled_rows({"vin", "out"}, sample_count=361)
+    if errors:
+        return 0.0, errors
+    ok, note = _check_true_window_comparator_resampled(eval_rows)
+    return (1.0 if ok else 0.0), [note]
+
+
+def _stream_precision_rectifier_envelope_detector_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst", "vin", "rect", "env", "metric"}
+    runtime = CsvCheckerRuntime(csv_path)
+    missing = runtime.missing(required)
+    if missing:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+
+    mean_windows = {
+        "reset_rect": (0.5e-9, 2.0e-9, "rect", 0.0, 0),
+        "reset_env": (0.5e-9, 2.0e-9, "env", 0.0, 0),
+        "pos_rect": (7.0e-9, 10.0e-9, "rect", 0.0, 0),
+        "center_rect": (15.0e-9, 17.0e-9, "rect", 0.0, 0),
+        "neg_rect": (22.0e-9, 26.0e-9, "rect", 0.0, 0),
+        "peak_env": (43.0e-9, 48.0e-9, "env", 0.0, 0),
+        "hold_env": (56.0e-9, 64.0e-9, "env", 0.0, 0),
+        "hold_rect": (56.0e-9, 64.0e-9, "rect", 0.0, 0),
+        "hold_metric": (56.0e-9, 64.0e-9, "metric", 0.0, 0),
+    }
+    post_count = 0
+    below_rect = 0
+    errors: list[float] = []
+
+    for row in runtime.rows():
+        time_s = runtime.float(row, "time")
+        rst = runtime.float(row, "rst")
+        vin = runtime.float(row, "vin")
+        rect = runtime.float(row, "rect")
+        env = runtime.float(row, "env")
+        metric = runtime.float(row, "metric")
+        values = {"rect": rect, "env": env, "metric": metric}
+        for label, (start, stop, signal, total, count) in list(mean_windows.items()):
+            if start <= time_s <= stop:
+                mean_windows[label] = (start, stop, signal, total + values[signal], count + 1)
+        if rst <= 0.45 and time_s > 3e-9:
+            post_count += 1
+            if env + 0.06 < rect:
+                below_rect += 1
+            if 5e-9 <= time_s <= 30e-9 or 40e-9 <= time_s <= 68e-9:
+                errors.append(abs(rect - min(0.9, 0.45 + abs(vin - 0.45))))
+
+    means: dict[str, float] = {}
+    for label, (_, _, _, total, count) in mean_windows.items():
+        if count == 0:
+            return 0.0, ["rectifier_missing_sample_windows"]
+        means[label] = total / count
+
+    if abs(means["reset_rect"] - 0.45) > 0.10 or abs(means["reset_env"] - 0.45) > 0.10:
+        return 0.0, [f"rectifier_reset_common_mode rect={means['reset_rect']:.3f} env={means['reset_env']:.3f}"]
+    if means["pos_rect"] < 0.62:
+        return 0.0, [f"rectifier_positive_half_not_rectified={means['pos_rect']:.3f}"]
+    if means["neg_rect"] < 0.62:
+        return 0.0, [f"rectifier_negative_half_not_rectified={means['neg_rect']:.3f}"]
+    if abs(means["center_rect"] - 0.45) > 0.08:
+        return 0.0, [f"rectifier_center_not_common_mode={means['center_rect']:.3f}"]
+    if means["peak_env"] < 0.74:
+        return 0.0, [f"rectifier_envelope_peak_too_low={means['peak_env']:.3f}"]
+    if means["hold_env"] < means["hold_rect"] + 0.10 or means["hold_metric"] < 0.35:
+        return 0.0, [
+            "rectifier_envelope_hold_missing "
+            f"env={means['hold_env']:.3f} rect={means['hold_rect']:.3f} metric={means['hold_metric']:.3f}"
+        ]
+    if post_count == 0:
+        return 0.0, ["rectifier_no_post_reset_rows"]
+    if below_rect > max(2, post_count // 20):
+        return 0.0, [f"rectifier_envelope_below_rect_count={below_rect}"]
+    if errors:
+        p90 = sorted(errors)[int(0.90 * (len(errors) - 1))]
+        if p90 > 0.09:
+            return 0.0, [f"rectifier_rect_abs_tracking_p90={p90:.3f}"]
+
+    return 1.0, [
+        "precision_rectifier_envelope_detector "
+        f"pos/neg={means['pos_rect']:.3f}/{means['neg_rect']:.3f} "
+        f"env_peak={means['peak_env']:.3f} "
+        f"hold={means['hold_env']:.3f}/{means['hold_rect']:.3f}"
+    ]
+
+
+def _stream_programmable_stimulus_sequencer_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "rst", "mode", "gate", "out", "metric"}
+    runtime = CsvCheckerRuntime(csv_path)
+    missing = runtime.missing(required)
+    if missing:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+
+    ramp_count = 0
+    ramp_drops = 0
+    ramp_first: float | None = None
+    ramp_last: float | None = None
+    sine_count = 0
+    sine_min = float("inf")
+    sine_max = float("-inf")
+    sine_sum = 0.0
+    sine_prev_t: float | None = None
+    sine_prev_center: float | None = None
+    crossing_times: list[float] = []
+    burst_count = 0
+    burst_min = float("inf")
+    burst_max = float("-inf")
+    burst_transitions = 0
+    burst_prev_out: float | None = None
+    gate_low_sum = 0.0
+    gate_low_count = 0
+    metric_windows = {
+        "ramp": (8.0e-9, 22.0e-9, 0.0, 0),
+        "sine": (32.0e-9, 56.0e-9, 0.0, 0),
+        "burst": (67.0e-9, 75.0e-9, 0.0, 0),
+        "idle": (76.5e-9, 79.0e-9, 0.0, 0),
+    }
+
+    for row in runtime.rows():
+        time_s = runtime.float(row, "time")
+        rst = runtime.float(row, "rst")
+        gate = runtime.float(row, "gate")
+        out = runtime.float(row, "out")
+        metric = runtime.float(row, "metric")
+        if rst <= 0.45:
+            if 6.0e-9 <= time_s <= 24.0e-9:
+                ramp_count += 1
+                if ramp_first is None:
+                    ramp_first = out
+                if ramp_last is not None and out < ramp_last - 0.02:
+                    ramp_drops += 1
+                ramp_last = out
+            if 30.0e-9 <= time_s <= 58.0e-9:
+                sine_count += 1
+                sine_min = min(sine_min, out)
+                sine_max = max(sine_max, out)
+                sine_sum += out
+                cur_center = out - 0.45
+                if sine_prev_center is not None and sine_prev_t is not None:
+                    if sine_prev_center == 0.0:
+                        crossing_times.append(sine_prev_t)
+                    elif sine_prev_center * cur_center < 0.0:
+                        frac = abs(sine_prev_center) / (abs(sine_prev_center) + abs(cur_center))
+                        crossing_times.append(sine_prev_t + frac * (time_s - sine_prev_t))
+                sine_prev_t = time_s
+                sine_prev_center = cur_center
+            if 66.0e-9 <= time_s <= 88.0e-9 and gate > 0.45:
+                burst_count += 1
+                burst_min = min(burst_min, out)
+                burst_max = max(burst_max, out)
+                if burst_prev_out is not None and (
+                    (burst_prev_out <= 0.45 < out) or (burst_prev_out >= 0.45 > out)
+                ):
+                    burst_transitions += 1
+                burst_prev_out = out
+            if 76.0e-9 <= time_s <= 79.5e-9 and gate <= 0.45:
+                gate_low_sum += out
+                gate_low_count += 1
+        for label, (start, stop, total, count) in list(metric_windows.items()):
+            if start <= time_s <= stop:
+                metric_windows[label] = (start, stop, total + metric, count + 1)
+
+    if min(ramp_count, sine_count, burst_count) < 6 or gate_low_count < 3:
+        return 0.0, [
+            "sequencer_missing_windows "
+            f"ramp={ramp_count} sine={sine_count} burst={burst_count} gate_low={gate_low_count}"
+        ]
+    assert ramp_first is not None and ramp_last is not None
+    ramp_delta = ramp_last - ramp_first
+    if ramp_drops or ramp_delta < 0.16 or not (0.16 <= ramp_first <= 0.30):
+        return 0.0, [
+            "sequencer_ramp_not_monotonic "
+            f"drops={ramp_drops} delta={ramp_delta:.3f} start={ramp_first:.3f}"
+        ]
+    sine_mean = sine_sum / sine_count
+    center_crossings = len(crossing_times)
+    if sine_min > 0.34 or sine_max < 0.56 or abs(sine_mean - 0.45) > 0.05 or center_crossings < 4:
+        return 0.0, [
+            "sequencer_chirp_segment_wrong "
+            f"min={sine_min:.3f} max={sine_max:.3f} mean={sine_mean:.3f} crossings={center_crossings}"
+        ]
+    half_periods = [cur - prev for prev, cur in zip(crossing_times, crossing_times[1:])]
+    if len(half_periods) < 3:
+        return 0.0, [f"sequencer_chirp_missing_periods={len(half_periods)}"]
+    early_half_period = sum(half_periods[:2]) / min(2, len(half_periods[:2]))
+    late_half_period = sum(half_periods[-2:]) / min(2, len(half_periods[-2:]))
+    if late_half_period >= early_half_period * 0.90:
+        return 0.0, [
+            "sequencer_chirp_frequency_not_increasing "
+            f"early_half_period={early_half_period:.3e} late_half_period={late_half_period:.3e}"
+        ]
+
+    switch_times = [25.8e-9, 26.3e-9, 61.8e-9, 62.3e-9]
+    switch_samples = runtime.samples_at("out", switch_times)
+    if any(switch_samples[target] is None for target in switch_times):
+        return 0.0, ["sequencer_missing_switch_samples"]
+    switch_1_delta = abs(float(switch_samples[26.3e-9]) - float(switch_samples[25.8e-9]))
+    switch_2_delta = abs(float(switch_samples[62.3e-9]) - float(switch_samples[61.8e-9]))
+    if switch_1_delta > 0.12 or switch_2_delta > 0.12:
+        return 0.0, [f"sequencer_mode_switch_discontinuity={switch_1_delta:.3f}/{switch_2_delta:.3f}"]
+
+    gate_low_mean = gate_low_sum / gate_low_count
+    if burst_min > 0.36 or burst_max < 0.54 or burst_transitions < 2 or abs(gate_low_mean - 0.45) > 0.08:
+        return 0.0, [
+            "sequencer_burst_schedule_wrong "
+            f"low={burst_min:.3f} high={burst_max:.3f} transitions={burst_transitions} "
+            f"gate_low_mean={gate_low_mean:.3f}"
+        ]
+
+    metric_means: dict[str, float] = {}
+    for label, (_, _, total, count) in metric_windows.items():
+        if count == 0:
+            return 0.0, ["sequencer_missing_metric_windows"]
+        metric_means[label] = total / count
+    if not (0.12 <= metric_means["ramp"] <= 0.30 and 0.42 <= metric_means["sine"] <= 0.58 and metric_means["burst"] >= 0.70):
+        return 0.0, [
+            "sequencer_metric_does_not_mark_modes "
+            f"ramp={metric_means['ramp']:.3f} sine={metric_means['sine']:.3f} burst={metric_means['burst']:.3f}"
+        ]
+    if metric_means["idle"] < 0.55 or metric_means["idle"] > metric_means["burst"] - 0.05:
+        return 0.0, [f"sequencer_idle_metric_wrong idle={metric_means['idle']:.3f} burst={metric_means['burst']:.3f}"]
+
+    return 1.0, [
+        "programmable_stimulus_sequencer "
+        f"ramp_delta={ramp_delta:.3f} sine={sine_min:.3f}/{sine_max:.3f} "
+        f"chirp_half_period={early_half_period:.3e}->{late_half_period:.3e} "
+        f"switch={switch_1_delta:.3f}/{switch_2_delta:.3f} "
+        f"burst={burst_min:.3f}/{burst_max:.3f} transitions={burst_transitions}"
+    ]
+
+
+def _stream_edge_ratio(
+    csv_path: Path,
+    indices: dict[str, int],
+    num_signal: str,
+    den_signal: str,
+    t_start: float,
+    t_end: float,
+) -> tuple[float, str]:
+    prev_num: float | None = None
+    prev_den: float | None = None
+    num_edges: list[float] = []
+    den_edges: list[float] = []
+    rows_in_window = 0
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            if time_s < t_start or time_s > t_end:
+                continue
+            rows_in_window += 1
+            num = _float_at(row, indices[num_signal])
+            den = _float_at(row, indices[den_signal])
+            if prev_num is not None and prev_num < 0.45 <= num:
+                num_edges.append(time_s)
+            if prev_den is not None and prev_den < 0.45 <= den:
+                den_edges.append(time_s)
+            prev_num = num
+            prev_den = den
+    if rows_in_window < 4:
+        return float("nan"), "missing_window_or_signals"
+    if len(num_edges) < 3 or len(den_edges) < 3:
+        return float("nan"), f"not_enough_edges num={len(num_edges)} den={len(den_edges)}"
+    num_freq = (len(num_edges) - 1) / max(num_edges[-1] - num_edges[0], 1e-18)
+    den_freq = (len(den_edges) - 1) / max(den_edges[-1] - den_edges[0], 1e-18)
+    return num_freq / max(den_freq, 1e-18), "ok"
+
+
+def _stream_weighted_high_fraction_window(
+    csv_path: Path,
+    indices: dict[str, int],
+    signal: str,
+    threshold: float,
+    t_start: float,
+    t_end: float,
+) -> float:
+    first_t: float | None = None
+    last_t: float | None = None
+    high_dt = 0.0
+    prev_t: float | None = None
+    prev_v: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            if time_s < t_start or time_s > t_end:
+                continue
+            value = _float_at(row, indices[signal])
+            if first_t is None:
+                first_t = time_s
+            if prev_t is not None and prev_v is not None:
+                dt = time_s - prev_t
+                if dt > 0.0 and 0.5 * (prev_v + value) > threshold:
+                    high_dt += dt
+            prev_t = time_s
+            prev_v = value
+            last_t = time_s
+    if first_t is None or last_t is None or last_t <= first_t:
+        return 0.0
+    return high_dt / (last_t - first_t)
+
+
+def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "ref_clk", "ratio_ctrl", "fb_clk", "vout", "lock", "vctrl_mon"}
+    indices, missing = _csv_required_indices(csv_path, required)
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    hop_t = float("nan")
+    lock_max = float("-inf")
+    vctrl_in_range = True
+    prev_ratio: float | None = None
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            time_s = _float_at(row, indices["time"])
+            ratio_ctrl = _float_at(row, indices["ratio_ctrl"])
+            lock = _float_at(row, indices["lock"])
+            vctrl = _float_at(row, indices["vctrl_mon"])
+            lock_max = max(lock_max, lock)
+            if not (-1e-6 <= vctrl <= 1.2):
+                vctrl_in_range = False
+            if not math.isfinite(hop_t) and prev_ratio is not None and prev_ratio < 5.0 <= ratio_ctrl:
+                hop_t = time_s
+            prev_ratio = ratio_ctrl
+
+    if not math.isfinite(hop_t):
+        return 0.0, ["ratio_hop_not_detected"]
+
+    windows = {
+        "pre": (hop_t - 1.0e-6, hop_t - 2.0e-7),
+        "post": (hop_t + 1.2e-6, hop_t + 2.5e-6),
+    }
+    pre_ratio, pre_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["pre"])
+    post_ratio, post_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["post"])
+    pre_div_ratio, pre_div_note = _stream_edge_ratio(csv_path, indices, "vout", "fb_clk", *windows["pre"])
+    post_div_ratio, post_div_note = _stream_edge_ratio(csv_path, indices, "vout", "fb_clk", *windows["post"])
+    pre_fb_ref_ratio, pre_fb_ref_note = _stream_edge_ratio(csv_path, indices, "fb_clk", "ref_clk", *windows["pre"])
+    post_fb_ref_ratio, post_fb_ref_note = _stream_edge_ratio(csv_path, indices, "fb_clk", "ref_clk", *windows["post"])
+    if pre_note != "ok":
+        return 0.0, [f"pre_window_{pre_note}"]
+    if post_note != "ok":
+        return 0.0, [f"post_window_{post_note}"]
+    if pre_div_note != "ok":
+        return 0.0, [f"pre_divider_window_{pre_div_note}"]
+    if post_div_note != "ok":
+        return 0.0, [f"post_divider_window_{post_div_note}"]
+    if pre_fb_ref_note != "ok":
+        return 0.0, [f"pre_feedback_window_{pre_fb_ref_note}"]
+    if post_fb_ref_note != "ok":
+        return 0.0, [f"post_feedback_window_{post_fb_ref_note}"]
+
+    vth = lock_max * 0.5
+    pre_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
+    post_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t + 1.8e-6, hop_t + 2.8e-6)
+    ok = (
+        abs(pre_ratio - 4.0) <= 0.25
+        and abs(post_ratio - 6.0) <= 0.35
+        and abs(pre_div_ratio - 4.0) <= 0.25
+        and abs(post_div_ratio - 6.0) <= 0.35
+        and abs(pre_fb_ref_ratio - 1.0) <= 0.15
+        and abs(post_fb_ref_ratio - 1.0) <= 0.15
+        and pre_lock >= 0.8
+        and post_lock >= 0.8
+        and vctrl_in_range
+    )
+    return (1.0 if ok else 0.0), [
+        f"hop_t={hop_t:.3e} "
+        f"pre_vout_ref={pre_ratio:.3f} "
+        f"post_vout_ref={post_ratio:.3f} "
+        f"pre_vout_fb={pre_div_ratio:.3f} "
+        f"post_vout_fb={post_div_ratio:.3f} "
+        f"pre_fb_ref={pre_fb_ref_ratio:.3f} "
+        f"post_fb_ref={post_fb_ref_ratio:.3f} "
+        f"pre_lock={pre_lock:.3f} "
+        f"post_lock={post_lock:.3f} "
+        f"vctrl_range_ok={vctrl_in_range}"
+    ]
+
+
+def _stream_sample_hold_droop_csv(csv_path: Path) -> tuple[float, list[str]]:
+    indices, missing = _csv_required_indices(csv_path, {"time", "vin", "clk", "vout"})
+    if indices is None:
+        return 0.0, [f"missing {'/'.join(missing)}"]
+    assert indices is not None
+
+    times: list[float] = []
+    clk: list[float] = []
+    vin: list[float] = []
+    vout: list[float] = []
+    with csv_path.open(newline="", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        for row in reader:
+            times.append(_float_at(row, indices["time"]))
+            clk.append(_float_at(row, indices["clk"]))
+            vin.append(_float_at(row, indices["vin"]))
+            vout.append(_float_at(row, indices["vout"]))
+
+    edge_idx = [idx for idx in range(1, len(clk)) if clk[idx - 1] <= 0.45 < clk[idx]]
+    if len(edge_idx) < 6:
+        return 0.0, [f"too_few_clock_edges={len(edge_idx)}"]
+
+    sample_mismatch = 0
+    checked_samples = 0
+    for edge_pos in range(min(6, len(edge_idx) - 1)):
+        idx = edge_idx[edge_pos]
+        t_target = times[idx] + 1.2e-9
+        settle_idx = next((j for j in range(idx, len(times)) if times[j] >= t_target), len(times) - 1)
+        err = abs(vout[settle_idx] - vin[idx])
+        checked_samples += 1
+        if err > 0.04:
+            sample_mismatch += 1
+    if checked_samples == 0 or sample_mismatch > 1:
+        return 0.0, [f"sample_mismatch={sample_mismatch}/{max(checked_samples, 1)}"]
+
+    droop_windows = 0
+    droop_failures = 0
+    for edge_pos in range(min(6, len(edge_idx) - 1)):
+        start_i = edge_idx[edge_pos]
+        end_i = edge_idx[edge_pos + 1]
+        t_start = times[start_i] + 1.5e-9
+        t_end = times[end_i] - 1.5e-9
+        idxs = [idx for idx in range(start_i, end_i) if t_start <= times[idx] <= t_end]
+        if len(idxs) < 6:
+            continue
+        first = vout[idxs[0]]
+        if first < 0.55:
+            continue
+        last = vout[idxs[-1]]
+        droop = first - last
+        upward_steps = sum(1 for a, b in zip(idxs[:-1], idxs[1:]) if (vout[b] - vout[a]) > 0.004)
+        droop_windows += 1
+        if droop < 0.006 or droop > 0.30:
+            droop_failures += 1
+        if upward_steps > max(1, len(idxs) // 8):
+            droop_failures += 1
+
+    if droop_windows < 2:
+        return 0.0, [f"insufficient_high_hold_windows={droop_windows}"]
+    if droop_failures > 0:
+        return 0.0, [f"droop_failures={droop_failures} windows={droop_windows}"]
+    return 1.0, [f"edges={len(edge_idx)} sample_mismatch={sample_mismatch}/{checked_samples} droop_windows={droop_windows}"]
+
+
+def _stream_cmp_delay_csv(csv_path: Path) -> tuple[float, list[str]]:
+    required = {"time", "clk", "vinp", "vinn", "out_p", "out_n", "delay_ps"}
+    runtime = CsvCheckerRuntime(csv_path)
+    if runtime.missing(required):
+        return 0.0, ["missing time/clk/vinp/vinn/out_p/out_n/delay_ps"]
+
+    times: list[float] = []
+    out_p: list[float] = []
+    for row in runtime.rows():
+        times.append(runtime.float(row, "time"))
+        out_p.append(runtime.float(row, "out_p"))
+
+    ok, note = _check_cmp_delay_vectors(times, out_p)
+    return (1.0 if ok else 0.0), [note]
+
+
 STREAMING_BEHAVIOR_CHECKS = {
     "pfd_deadzone_smoke": _stream_pfd_deadzone_csv,
+    "pfd_small_phase_response_smoke": _stream_pfd_deadzone_csv,
+    "vbm1_pfd_small_phase_error_response_dut": _stream_pfd_deadzone_csv,
     "pfd_reset_race_smoke": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_dut": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_tb": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_bugfix": _stream_pfd_reset_race_csv,
+    "vbm1_pfd_reset_race_e2e": _stream_pfd_reset_race_csv,
+    "cppll_freq_step_reacquire_smoke": _stream_cppll_freq_step_reacquire_csv,
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb": _stream_cppll_freq_step_reacquire_csv,
     "dac_binary_clk_4b_smoke": _stream_dac_binary_clk_4b_csv,
     "sar_adc_dac_weighted_8b_smoke": _stream_sar_adc_dac_weighted_8b_csv,
+    "vbr1_l2_weighted_sar_adc_dac_loop": _stream_sar_adc_dac_weighted_8b_release_csv,
+    "vbr1_l2_weighted_sar_adc_dac_loop_tb": _stream_sar_adc_dac_weighted_8b_release_csv,
+    "vbr1_l2_weighted_sar_adc_dac_loop_e2e": _stream_sar_adc_dac_weighted_8b_release_csv,
     "dwa_ptr_gen_no_overlap_smoke": _stream_dwa_ptr_gen_no_overlap_csv,
     "digital_basics_smoke": _stream_not_gate_csv,
     "gray_counter_one_bit_change_smoke": _stream_gray_counter_one_bit_change_csv,
     "dwa_wraparound_smoke": _stream_dwa_wraparound_csv,
     "gain_extraction_smoke": _stream_gain_extraction_csv,
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_tb": _stream_gain_extraction_csv,
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e": _stream_gain_extraction_csv,
+    "vbr1_l1_gain_estimator_tb": _stream_gain_estimator_csv,
+    "vbr1_l1_gain_estimator_e2e": _stream_gain_estimator_csv,
+    "cdac_cal": _stream_cdac_cal_csv,
+    "lfsr_smoke": _stream_lfsr_csv,
+    "vbr1_l1_lfsr_prbs_generator_tb": _stream_lfsr_csv,
+    "vbr1_l1_lfsr_prbs_generator_e2e": _stream_lfsr_csv,
+    "prbs7": _stream_prbs7_csv,
+    "vbr1_l1_lfsr_prbs_generator_bugfix": _stream_prbs7_csv,
+    "bbpd": _stream_bbpd_csv,
+    "vbr1_l1_bang_bang_phase_detector_bugfix": _stream_bbpd_csv,
+    "cross_hysteresis_window_smoke": _stream_cross_hysteresis_window_csv,
+    "window_comparator_smoke": _stream_true_window_comparator_csv,
+    "vbr1_l1_window_comparator_detector": _stream_true_window_comparator_csv,
+    "vbr1_l1_window_comparator_detector_dut": _stream_true_window_comparator_csv,
+    "vbr1_l1_window_comparator_detector_tb": _stream_true_window_comparator_csv,
+    "vbr1_l1_window_comparator_detector_bugfix": _stream_true_window_comparator_csv,
+    "vbr1_l1_window_comparator_detector_e2e": _stream_true_window_comparator_csv,
+    "cross_interval_163p333_smoke": _stream_cross_interval_163p333_csv,
+    "vbr1_l1_edge_interval_timer_tb": _stream_cross_interval_163p333_csv,
+    "vbr1_l1_edge_interval_timer_e2e": _stream_cross_interval_163p333_csv,
+    "phase_accumulator_timer_wrap_smoke": _stream_phase_accumulator_timer_wrap_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector_dut": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector_tb": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector_bugfix": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l1_precision_rectifier_envelope_detector_e2e": _stream_precision_rectifier_envelope_detector_csv,
+    "vbr1_l2_programmable_stimulus_sequencer": _stream_programmable_stimulus_sequencer_csv,
+    "vbr1_l2_programmable_stimulus_sequencer_dut": _stream_programmable_stimulus_sequencer_csv,
+    "vbr1_l2_programmable_stimulus_sequencer_tb": _stream_programmable_stimulus_sequencer_csv,
+    "vbr1_l2_programmable_stimulus_sequencer_bugfix": _stream_programmable_stimulus_sequencer_csv,
+    "vbr1_l2_programmable_stimulus_sequencer_e2e": _stream_programmable_stimulus_sequencer_csv,
+    "adpll_ratio_hop_smoke": _stream_adpll_ratio_hop_csv,
+    "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb": _stream_adpll_ratio_hop_csv,
+    "sample_hold_droop_smoke": _stream_sample_hold_droop_csv,
     "multimod_divider_ratio_switch_smoke": _stream_multimod_divider_ratio_switch_csv,
+    "cmp_delay_smoke": _stream_cmp_delay_csv,
+    "vbr1_l1_propagation_delay_comparator": _stream_cmp_delay_csv,
+    "vbr1_l1_propagation_delay_comparator_dut": _stream_cmp_delay_csv,
+    "vbr1_l1_propagation_delay_comparator_tb": _stream_cmp_delay_csv,
+    "vbr1_l1_propagation_delay_comparator_bugfix": _stream_cmp_delay_csv,
+    "vbr1_l1_propagation_delay_comparator_e2e": _stream_cmp_delay_csv,
 }
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
+
+_SAR8_TRACE = frozenset({f"dout_{idx}" for idx in range(8)})
+_DWA16_TRACE = frozenset(
+    {f"ptr_{idx}" for idx in range(16)}
+    | {f"cell_en_{idx}" for idx in range(16)}
+)
+_DWA_CODE4_TRACE = frozenset({f"code_{idx}" for idx in range(4)})
+_PRBS7_TRACE = frozenset({f"state_{idx}" for idx in range(7)})
+_GRAY4_TRACE = frozenset({f"g{idx}" for idx in range(4)})
+
+_STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
+    _stream_pfd_deadzone_csv: frozenset({"time", "ref", "div", "up", "dn"}),
+    _stream_pfd_reset_race_csv: frozenset({"time", "ref", "div", "up", "dn"}),
+    _stream_cppll_freq_step_reacquire_csv: frozenset({"time", "ref_clk", "fb_clk", "lock", "vctrl_mon"}),
+    _stream_dac_binary_clk_4b_csv: frozenset({"din3", "din2", "din1", "din0", "aout"}),
+    _stream_sar_adc_dac_weighted_8b_csv: frozenset({"vin", "vin_sh", "vout", "rst_n"}) | _SAR8_TRACE,
+    _stream_sar_adc_dac_weighted_8b_release_csv: frozenset(
+        {
+            "time",
+            "vin",
+            "vin_sh",
+            "clks",
+            "vout",
+            "rst_n",
+            "bit_index",
+            "trial_code_mon",
+            "trial_vdac",
+            "cmp_decision",
+            "conv_done",
+            "vin_sample",
+        }
+    ) | _SAR8_TRACE,
+    _stream_dwa_ptr_gen_no_overlap_csv: frozenset({"time", "clk_i", "rst_ni"}) | _DWA16_TRACE,
+    _stream_not_gate_csv: frozenset({"time", "a", "y", "not_a", "not_y"}),
+    _stream_gray_counter_one_bit_change_csv: frozenset({"time", "clk", "rst", "rstb"}) | _GRAY4_TRACE,
+    _stream_dwa_wraparound_csv: frozenset({"time", "clk_i", "rst_ni"}) | _DWA16_TRACE | _DWA_CODE4_TRACE,
+    _stream_gain_extraction_csv: frozenset({"vinp", "vinn", "vamp_p", "vamp_n"}),
+    _stream_gain_estimator_csv: frozenset({"time", "vinp", "vinn", "voutp", "voutn", "gain_out", "valid"}),
+    # _stream_cdac_cal_csv discovers vdac/vcap/vout columns dynamically from the
+    # header, so it intentionally stays on the full trace until its checker
+    # contract is made explicit.
+    _stream_multimod_divider_ratio_switch_csv: frozenset({"time", "clk_in", "div_out"}),
+    _stream_lfsr_csv: frozenset({"dpn", "rstb"}),
+    _stream_prbs7_csv: frozenset({"time", "clk", "rst_n", "en", "serial_out"}) | _PRBS7_TRACE,
+    _stream_bbpd_csv: frozenset({"time", "data", "clk", "retimed_data", "up", "down"}),
+    _stream_cross_hysteresis_window_csv: frozenset({"time", "vin", "out"}),
+    _stream_true_window_comparator_csv: frozenset({"time", "vin", "out"}),
+    _stream_cross_interval_163p333_csv: frozenset({"time", "delay_out", "seen_out"}),
+    _stream_phase_accumulator_timer_wrap_csv: frozenset({"time", "clk_out", "phase_out"}),
+    _stream_precision_rectifier_envelope_detector_csv: frozenset({"time", "clk", "rst", "vin", "rect", "env", "metric"}),
+    _stream_programmable_stimulus_sequencer_csv: frozenset({"time", "clk", "rst", "mode", "gate", "out", "metric"}),
+    _stream_adpll_ratio_hop_csv: frozenset({"time", "ref_clk", "ratio_ctrl", "fb_clk", "vout", "lock", "vctrl_mon"}),
+    _stream_sample_hold_droop_csv: frozenset({"time", "vin", "clk", "vout"}),
+    _stream_cmp_delay_csv: frozenset({"time", "clk", "vinp", "vinn", "out_p", "out_n", "delay_ps"}),
+}
+
+_CHECKER_TRACE_CONTRACT_CACHE: dict[str, frozenset[str]] = {}
+
+
+def _trace_contracts_enabled() -> bool:
+    return not _env_truthy("VAEVAS_DISABLE_REQUIRED_TRACE")
+
+
+def _auto_row_checker_trace_contracts_enabled() -> bool:
+    return not _env_truthy("VAEVAS_DISABLE_ROW_CHECKER_TRACE_CONTRACTS")
+
+
+def _row_checker_trace_fallback_enabled() -> bool:
+    return not _env_truthy("VAEVAS_DISABLE_ROW_CHECKER_TRACE_FALLBACK")
+
+
+def _split_trace_signal_list(text: str | None) -> frozenset[str]:
+    if not text:
+        return frozenset()
+    signals: set[str] = set()
+    for token in re.split(r"[\s,]+", text):
+        name = token.strip()
+        if name:
+            signals.add(name)
+    return frozenset(signals)
+
+
+def _task_env_suffix(task_id: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]+", "_", task_id).strip("_").upper()
+
+
+def _extra_trace_signals_for_checker(task_id: str) -> frozenset[str]:
+    """Return user-requested debug columns to append to an existing sparse trace.
+
+    Supported forms:
+
+    - `VAEVAS_EXTRA_TRACE_SIGNALS=foo,bar` applies to every sparse trace.
+    - `VAEVAS_EXTRA_TRACE_SIGNALS_BY_TASK=task_id=foo,bar;entry_prefix=debug`
+      applies to an exact checker id or a release entry prefix before `_dut`,
+      `_tb`, `_bugfix`, `_e2e`.
+    - `VAEVAS_EXTRA_TRACE_SIGNALS_<TASK_ID>=foo,bar` is an exact-id escape hatch.
+    """
+    signals = set(_split_trace_signal_list(os.environ.get("VAEVAS_EXTRA_TRACE_SIGNALS")))
+
+    by_task = os.environ.get("VAEVAS_EXTRA_TRACE_SIGNALS_BY_TASK", "")
+    for entry in re.split(r"[;\n]+", by_task):
+        item = entry.strip()
+        if not item:
+            continue
+        if "=" in item:
+            key, value = item.split("=", 1)
+        elif ":" in item:
+            key, value = item.split(":", 1)
+        else:
+            continue
+        key = key.strip()
+        if not key:
+            continue
+        exact = key == task_id
+        release_prefix = task_id.startswith(f"{key}_")
+        wildcard_prefix = key.endswith("*") and task_id.startswith(key[:-1])
+        if exact or release_prefix or wildcard_prefix:
+            signals.update(_split_trace_signal_list(value))
+
+    task_specific = os.environ.get(f"VAEVAS_EXTRA_TRACE_SIGNALS_{_task_env_suffix(task_id)}")
+    signals.update(_split_trace_signal_list(task_specific))
+    return frozenset(signals)
+
+
+def _checker_string_sequence_global(checker, name: str) -> set[str]:
+    value = getattr(checker, "__globals__", {}).get(name)
+    if not isinstance(value, (frozenset, set, list, tuple)):
+        return set()
+    strings = {item.strip() for item in value if isinstance(item, str) and item.strip()}
+    return strings if len(strings) == len(value) else set()
+
+
+def _checker_fstring_range_values(node: ast.AST) -> set[str]:
+    """Expand simple checker-local patterns like `[f"seg{i}" for i in range(15)]`."""
+    if not isinstance(node, (ast.ListComp, ast.SetComp, ast.GeneratorExp)):
+        return set()
+    if len(node.generators) != 1:
+        return set()
+    generator = node.generators[0]
+    if not isinstance(generator.target, ast.Name):
+        return set()
+    loop_name = generator.target.id
+    if (
+        not isinstance(generator.iter, ast.Call)
+        or not isinstance(generator.iter.func, ast.Name)
+        or generator.iter.func.id != "range"
+        or len(generator.iter.args) != 1
+        or not isinstance(generator.iter.args[0], ast.Constant)
+        or not isinstance(generator.iter.args[0].value, int)
+    ):
+        return set()
+    stop = generator.iter.args[0].value
+    if stop < 0 or stop > 256:
+        return set()
+
+    elt = node.elt
+    if not isinstance(elt, ast.JoinedStr):
+        return set()
+    parts: list[str | None] = []
+    saw_loop_value = False
+    for value in elt.values:
+        if isinstance(value, ast.Constant) and isinstance(value.value, str):
+            parts.append(value.value)
+        elif (
+            isinstance(value, ast.FormattedValue)
+            and isinstance(value.value, ast.Name)
+            and value.value.id == loop_name
+        ):
+            parts.append(None)
+            saw_loop_value = True
+        else:
+            return set()
+    if not saw_loop_value:
+        return set()
+
+    names: set[str] = set()
+    for idx in range(stop):
+        text = "".join(str(idx) if part is None else part for part in parts).strip()
+        if text:
+            names.add(text)
+    return names
+
+
+def _checker_for_loop_fstring_values(tree: ast.AST) -> set[str]:
+    """Expand simple checker loops like `for idx in range(8): signal = f"div_code_{idx}"`."""
+    names: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.For) or not isinstance(node.target, ast.Name):
+            continue
+        loop_name = node.target.id
+        if (
+            not isinstance(node.iter, ast.Call)
+            or not isinstance(node.iter.func, ast.Name)
+            or node.iter.func.id != "range"
+            or len(node.iter.args) != 1
+            or not isinstance(node.iter.args[0], ast.Constant)
+            or not isinstance(node.iter.args[0].value, int)
+        ):
+            continue
+        stop = node.iter.args[0].value
+        if stop < 0 or stop > 256:
+            continue
+        for child in ast.walk(node):
+            if not isinstance(child, ast.JoinedStr):
+                continue
+            parts: list[str | None] = []
+            saw_loop_value = False
+            for value in child.values:
+                if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                    parts.append(value.value)
+                elif (
+                    isinstance(value, ast.FormattedValue)
+                    and isinstance(value.value, ast.Name)
+                    and value.value.id == loop_name
+                ):
+                    parts.append(None)
+                    saw_loop_value = True
+                else:
+                    parts = []
+                    break
+            if not saw_loop_value or not parts:
+                continue
+            for idx in range(stop):
+                text = "".join(str(idx) if part is None else part for part in parts).strip()
+                if text:
+                    names.add(text)
+    return names
+
+
+def _checker_indexed_columns_from_source(tree: ast.AST) -> set[str]:
+    """Infer columns from `cols = indexed_columns(keys, "prefix_")` plus `len(cols) != N`."""
+    prefix_by_var: dict[str, str] = {}
+    names: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Assign):
+            continue
+        if len(node.targets) != 1 or not isinstance(node.targets[0], ast.Name):
+            continue
+        value = node.value
+        if (
+            isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Name)
+            and value.func.id == "indexed_columns"
+            and len(value.args) >= 2
+            and isinstance(value.args[1], ast.Constant)
+            and isinstance(value.args[1].value, str)
+        ):
+            prefix_by_var[node.targets[0].id] = value.args[1].value
+
+    if not prefix_by_var:
+        return names
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Compare):
+            continue
+        left = node.left
+        if (
+            not isinstance(left, ast.Call)
+            or not isinstance(left.func, ast.Name)
+            or left.func.id != "len"
+            or len(left.args) != 1
+            or not isinstance(left.args[0], ast.Name)
+        ):
+            continue
+        prefix = prefix_by_var.get(left.args[0].id)
+        if prefix is None:
+            continue
+        for comparator in node.comparators:
+            if (
+                isinstance(comparator, ast.Constant)
+                and isinstance(comparator.value, int)
+                and 0 <= comparator.value <= 256
+            ):
+                names.update(f"{prefix}{idx}" for idx in range(comparator.value))
+    return names
+
+
+_CHECKER_PREFIX_TRACE_WIDTHS = {
+    "ptr_": 16,
+    "cell_en_": 16,
+}
+
+
+def _checker_startswith_prefix_columns(tree: ast.AST) -> set[str]:
+    names: set[str] = set()
+    for node in ast.walk(tree):
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "startswith"
+            and len(node.args) == 1
+            and isinstance(node.args[0], ast.Constant)
+            and isinstance(node.args[0].value, str)
+        ):
+            prefix = node.args[0].value
+            width = _CHECKER_PREFIX_TRACE_WIDTHS.get(prefix)
+            if width is not None:
+                names.update(f"{prefix}{idx}" for idx in range(width))
+    return names
+
+
+def _checker_inline_required_sets(tree: ast.AST) -> set[str]:
+    names: set[str] = set()
+    for node in ast.walk(tree):
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "issubset"
+            and isinstance(node.func.value, (ast.Set, ast.List, ast.Tuple))
+        ):
+            for element in node.func.value.elts:
+                if isinstance(element, ast.Constant) and isinstance(element.value, str):
+                    text = element.value.strip()
+                    if text:
+                        names.add(text)
+    return names
+
+
+def _checker_required_set_from_source(checker) -> frozenset[str]:
+    """Infer a row-based checker's explicit CSV column contract.
+
+    This intentionally only trusts literal assignments like
+    `required = {"time", "clk", ...}`.  Many checkers use helper calls and
+    diagnostic strings, but mining arbitrary string literals is too risky: a
+    false sparse contract can hide columns the original row checker needs.  The
+    fallback rerun in `run_case()` protects correctness, but keeping inference
+    conservative avoids unnecessary reruns.
+    """
+    try:
+        source = inspect.getsource(checker)
+    except (OSError, TypeError):
+        return frozenset()
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return frozenset()
+
+    names: set[str] = set()
+    local_sequences: dict[str, set[str]] = {}
+
+    def _literal_string_set(node: ast.AST) -> set[str]:
+        if not isinstance(node, (ast.Set, ast.List, ast.Tuple)):
+            return set()
+        values: set[str] = set()
+        for element in node.elts:
+            if isinstance(element, ast.Constant) and isinstance(element.value, str):
+                text = element.value.strip()
+                if text:
+                    values.add(text)
+            elif isinstance(element, ast.Starred) and isinstance(element.value, ast.Name):
+                values.update(local_sequences.get(element.value.id, set()))
+                values.update(_checker_string_sequence_global(checker, element.value.id))
+        return values
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    expanded = _checker_fstring_range_values(node.value)
+                    if expanded:
+                        local_sequences[target.id] = expanded
+        elif isinstance(node, ast.AnnAssign):
+            if isinstance(node.target, ast.Name) and node.value is not None:
+                expanded = _checker_fstring_range_values(node.value)
+                if expanded:
+                    local_sequences[node.target.id] = expanded
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            if any(isinstance(target, ast.Name) and target.id == "required" for target in node.targets):
+                names.update(_literal_string_set(node.value))
+        elif isinstance(node, ast.AnnAssign):
+            if isinstance(node.target, ast.Name) and node.target.id == "required" and node.value is not None:
+                names.update(_literal_string_set(node.value))
+
+    names.update(_checker_for_loop_fstring_values(tree))
+    names.update(_checker_indexed_columns_from_source(tree))
+    names.update(_checker_startswith_prefix_columns(tree))
+    names.update(_checker_inline_required_sets(tree))
+    return frozenset(name for name in names if name and name.lower() != "time") | (
+        frozenset({"time"}) if "time" in names else frozenset()
+    )
+
+
+def _auto_row_checker_trace_contract(task_id: str) -> frozenset[str]:
+    cached = _CHECKER_TRACE_CONTRACT_CACHE.get(task_id)
+    if cached is not None:
+        return cached
+    checker = CHECKS.get(task_id)
+    if checker is None:
+        inferred = frozenset()
+    else:
+        inferred = _checker_required_set_from_source(checker)
+    _CHECKER_TRACE_CONTRACT_CACHE[task_id] = inferred
+    return inferred
+
+
+def required_trace_contract_kind_for_checker(task_id: str) -> str:
+    if not _trace_contracts_enabled():
+        return "disabled"
+    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
+    if checker is not None and _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker):
+        return "streaming"
+    if _auto_row_checker_trace_contracts_enabled() and _auto_row_checker_trace_contract(task_id):
+        return "row_required_set"
+    return "none"
+
+
+def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
+    """Return the checker-observable signal contract used for sparse EVAS traces."""
+    if not _trace_contracts_enabled():
+        return frozenset()
+    signals: frozenset[str] = frozenset()
+    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
+    if checker is not None:
+        signals = _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker, frozenset())
+        if signals:
+            return signals | _extra_trace_signals_for_checker(task_id)
+    if _auto_row_checker_trace_contracts_enabled():
+        signals = _auto_row_checker_trace_contract(task_id)
+    if signals:
+        return signals | _extra_trace_signals_for_checker(task_id)
+    return signals
 
 
 def _env_enabled(name: str) -> bool:
@@ -882,6 +2816,43 @@ def evaluate_streaming_behavior(task_id: str, csv_path: Path) -> tuple[float, li
     if not force_streaming and _streaming_notes_require_row_fallback(notes):
         return None
     return score, [f"streaming_checker:{note}" for note in notes]
+
+
+def behavior_checker_policy(task_id: str, notes: list[str] | None = None) -> dict[str, object]:
+    """Describe the checker implementation used for artifact-level timing claims."""
+    notes = notes or []
+    streaming_registered = task_id in STREAMING_BEHAVIOR_CHECKS
+    streaming_validated = task_id in VALIDATED_FAST_CHECKER_TASKS
+    streaming_used = any(note.startswith("streaming_checker:") for note in notes)
+    trace_contract_kind = required_trace_contract_kind_for_checker(task_id)
+    trace_contract_signals = required_trace_signals_for_checker(task_id)
+    extra_trace_signals = _extra_trace_signals_for_checker(task_id) if trace_contract_signals else frozenset()
+    forced = _env_enabled("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS")
+    disabled = _env_enabled("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS")
+    if task_id not in CHECKS:
+        implementation = "no_checker"
+    elif streaming_used:
+        implementation = "streaming_validated" if streaming_validated else "streaming_experimental"
+    elif disabled and streaming_registered:
+        implementation = "row_based_streaming_disabled"
+    elif streaming_validated:
+        implementation = "row_based_fallback_from_streaming"
+    elif task_id in {"noise_gen", "noise_gen_smoke"}:
+        implementation = "custom_noise"
+    else:
+        implementation = "row_based"
+    return {
+        "checker_id": task_id,
+        "implementation": implementation,
+        "streaming_registered": streaming_registered,
+        "streaming_validated": streaming_validated,
+        "streaming_used": streaming_used,
+        "streaming_forced": forced,
+        "streaming_disabled": disabled,
+        "trace_contract_kind": trace_contract_kind,
+        "trace_contract_signal_count": len(trace_contract_signals - {"time"}),
+        "extra_trace_signal_count": len(extra_trace_signals - {"time"}),
+    }
 
 
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
@@ -949,6 +2920,289 @@ def _canonical_signal_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", name.lower())
 
 
+_INDEXED_ALIAS_TARGETS = tuple(
+    target
+    for idx in range(16)
+    for target in (
+        f"dout_{idx}",
+        f"dout{idx}",
+        f"din_{idx}",
+        f"din{idx}",
+        f"ptr_{idx}",
+        f"cell_en_{idx}",
+        f"g{idx}",
+        f"state_{idx}",
+        f"div_code_{idx}",
+    )
+)
+
+_SCALAR_ALIAS_TARGETS = (
+    "vin",
+    "vout",
+    "vin_sh",
+    "rst_n",
+    "clk",
+    "clk_in",
+    "clk_out",
+    "lock",
+    "ref_clk",
+    "fb_clk",
+    "vctrl_mon",
+    "vinp",
+    "vinn",
+    "out_p",
+    "out_n",
+    "outp",
+    "outn",
+    "a",
+    "b",
+    "y",
+    "d",
+    "q",
+    "qb",
+    "rst",
+    "ref",
+    "div",
+    "up",
+    "dn",
+    "serial_out",
+    "dpn",
+    "rstb",
+    "en",
+    "phase_out",
+    "guard_out",
+    "delay_out",
+    "seen_out",
+    "first_err_out",
+    "max_err_out",
+    "count_out",
+    "metric_out",
+    "mode",
+    "out",
+    "vin_i",
+    "vout_o",
+)
+
+
+def _signal_alias_candidates(raw_key: str) -> set[str]:
+    key = raw_key.strip()
+    if not key:
+        return set()
+
+    candidates = {key, key.lower()}
+    for sep in (":", "."):
+        if sep in key:
+            tail = key.split(sep)[-1]
+            candidates.add(tail)
+            candidates.add(tail.lower())
+
+    vm = re.match(r"(?i)^v\(\s*([^)]+)\s*\)$", key)
+    if vm:
+        inner = vm.group(1).strip()
+        candidates.add(inner)
+        candidates.add(inner.lower())
+
+    for cand in list(candidates):
+        cm = re.match(r"^([A-Za-z_][A-Za-z0-9_$]*)\[(\d+)\]$", cand)
+        if cm:
+            root = cm.group(1)
+            idx = cm.group(2)
+            candidates.update(
+                {
+                    f"{root}_{idx}",
+                    f"{root}{idx}",
+                    f"{root.lower()}_{idx}",
+                    f"{root.lower()}{idx}",
+                }
+            )
+            # Common generated DWA/vector port names use direction suffixes
+            # (`ptr_o[0]`, `cell_en_o[0]`, `code_i[0]`). The checkers use
+            # scalar observable names (`ptr_0`, `cell_en_0`, `code_0`).
+            stripped_root = root.lower()
+            for suffix in ("_msb_i", "_lsb_i", "_o", "_i"):
+                if stripped_root.endswith(suffix):
+                    stripped_root = stripped_root[: -len(suffix)]
+                    break
+            if stripped_root in {"ptr", "cell_en", "code"}:
+                candidates.update(
+                    {
+                        f"{stripped_root}_{idx}",
+                        f"{stripped_root}{idx}",
+                    }
+                )
+
+        dm = re.search(r"(dout|din|div_code|cell_en|ptr|state|code|bin_o|g|d)_?(\d+)$", cand.lower())
+        if dm:
+            root = dm.group(1)
+            idx = dm.group(2)
+            candidates.update(
+                {
+                    f"{root}_{idx}",
+                    f"{root}{idx}",
+                }
+            )
+            if root == "d":
+                candidates.update({f"dout_{idx}", f"dout{idx}"})
+
+    return candidates
+
+
+def _add_canonical_alias_targets(alias_to_index: dict[str, int]) -> None:
+    canonical_to_index: dict[str, int] = {}
+    for alias, index in alias_to_index.items():
+        canonical_to_index.setdefault(_canonical_signal_name(alias), index)
+    for target in _INDEXED_ALIAS_TARGETS + _SCALAR_ALIAS_TARGETS:
+        ckey = _canonical_signal_name(target)
+        if target not in alias_to_index and ckey in canonical_to_index:
+            alias_to_index[target] = canonical_to_index[ckey]
+
+
+class CsvCheckerRuntime:
+    """Header-indexed CSV access shared by validated streaming checkers."""
+
+    def __init__(self, csv_path: Path) -> None:
+        self.csv_path = csv_path
+        self.header, self.index = self._load_header_index(csv_path)
+
+    @staticmethod
+    def _load_header_index(csv_path: Path) -> tuple[list[str], dict[str, int]]:
+        with csv_path.open(newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            header = next(reader, [])
+        alias_to_index: dict[str, int] = {}
+        for idx, name in enumerate(header):
+            for alias in _signal_alias_candidates(name):
+                alias_to_index.setdefault(alias, idx)
+        _add_canonical_alias_targets(alias_to_index)
+        return header, alias_to_index
+
+    def missing(self, required: Iterable[str]) -> list[str]:
+        return sorted(name for name in required if name not in self.index)
+
+    def rows(self):
+        with self.csv_path.open(newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            yield from reader
+
+    def require(self, required: Iterable[str]) -> tuple[bool, list[str]]:
+        missing = self.missing(required)
+        return not missing, missing
+
+    def float(self, row: list[str], key: str, default: float = 0.0) -> float:
+        idx = self.index.get(key)
+        if idx is None:
+            return default
+        return _float_at(row, idx, default)
+
+    def value_tuple(self, row: list[str], keys: Iterable[str]) -> tuple[float, ...]:
+        return tuple(self.float(row, key) for key in keys)
+
+    def mean_windows(
+        self,
+        windows: dict[str, tuple[float, float, str]],
+    ) -> tuple[dict[str, float], list[str]]:
+        accum = {label: [0.0, 0] for label in windows}
+        required = {"time"} | {signal for _, _, signal in windows.values()}
+        missing = self.missing(required)
+        if missing:
+            return {}, missing
+        for row in self.rows():
+            time_s = self.float(row, "time")
+            for label, (start, stop, signal) in windows.items():
+                if start <= time_s <= stop:
+                    bucket = accum[label]
+                    bucket[0] += self.float(row, signal)
+                    bucket[1] += 1
+        means: dict[str, float] = {}
+        empty: list[str] = []
+        for label, (total, count) in accum.items():
+            if count:
+                means[label] = total / count
+            else:
+                empty.append(label)
+        return means, empty
+
+    def series(self, signals: Iterable[str]) -> tuple[dict[str, list[float]], list[str]]:
+        required = {"time"} | set(signals)
+        missing = self.missing(required)
+        if missing:
+            return {}, missing
+        data = {signal: [] for signal in required}
+        for row in self.rows():
+            for signal in required:
+                data[signal].append(self.float(row, signal))
+        return data, []
+
+    @staticmethod
+    def interpolate_series(times: list[float], values: list[float], target: float) -> float | None:
+        if not times or len(times) != len(values):
+            return None
+        if target < times[0] or target > times[-1]:
+            return None
+        if target == times[0]:
+            return values[0]
+        lo = 0
+        hi = len(times) - 1
+        while hi - lo > 1:
+            mid = (lo + hi) // 2
+            if times[mid] <= target:
+                lo = mid
+            else:
+                hi = mid
+        t0 = times[lo]
+        t1 = times[hi]
+        if t1 <= t0:
+            return values[hi]
+        alpha = (target - t0) / (t1 - t0)
+        return values[lo] + alpha * (values[hi] - values[lo])
+
+    def samples_at(
+        self,
+        signal: str,
+        target_times: Iterable[float],
+    ) -> dict[float, float | None]:
+        data, missing = self.series({signal})
+        targets = list(target_times)
+        if missing:
+            return {target: None for target in targets}
+        times = data["time"]
+        values = data[signal]
+        return {
+            target: self.interpolate_series(times, values, target)
+            for target in targets
+        }
+
+    def resampled_rows(
+        self,
+        signals: Iterable[str],
+        *,
+        sample_count: int,
+    ) -> tuple[list[dict[str, float]], list[str]]:
+        data, missing = self.series(signals)
+        if missing:
+            return [], missing
+        times = data["time"]
+        if len(times) < 2 or sample_count < 2:
+            return [], ["invalid_time_range"]
+        t0 = times[0]
+        t1 = times[-1]
+        if t1 <= t0:
+            return [], ["invalid_time_range"]
+        signal_list = list(signals)
+        rows: list[dict[str, float]] = []
+        for idx in range(sample_count):
+            target = t0 + (t1 - t0) * idx / (sample_count - 1)
+            out = {"time": target}
+            for signal in signal_list:
+                value = self.interpolate_series(times, data[signal], target)
+                if value is None:
+                    return [], [f"missing_resample_{signal}"]
+                out[signal] = value
+            rows.append(out)
+        return rows, []
+
+
 def _set_alias_if_missing(row: dict[str, float], alias: str, value: float) -> None:
     if alias and alias not in row:
         row[alias] = value
@@ -956,136 +3210,15 @@ def _set_alias_if_missing(row: dict[str, float], alias: str, value: float) -> No
 
 def _expanded_row_aliases(row: dict[str, float]) -> dict[str, float]:
     expanded = dict(row)
-    original = list(row.items())
-    for raw_key, value in original:
-        key = raw_key.strip()
-        if not key:
-            continue
-
-        candidates = {key, key.lower()}
-        for sep in (":", "."):
-            if sep in key:
-                tail = key.split(sep)[-1]
-                candidates.add(tail)
-                candidates.add(tail.lower())
-
-        vm = re.match(r"(?i)^v\(\s*([^)]+)\s*\)$", key)
-        if vm:
-            inner = vm.group(1).strip()
-            candidates.add(inner)
-            candidates.add(inner.lower())
-
-        for cand in list(candidates):
-            cm = re.match(r"^([A-Za-z_][A-Za-z0-9_$]*)\[(\d+)\]$", cand)
-            if cm:
-                root = cm.group(1)
-                idx = cm.group(2)
-                candidates.update(
-                    {
-                        f"{root}_{idx}",
-                        f"{root}{idx}",
-                        f"{root.lower()}_{idx}",
-                        f"{root.lower()}{idx}",
-                    }
-                )
-                # Common generated DWA/vector port names use direction suffixes
-                # (`ptr_o[0]`, `cell_en_o[0]`, `code_i[0]`). The checkers use
-                # scalar observable names (`ptr_0`, `cell_en_0`, `code_0`).
-                stripped_root = root.lower()
-                for suffix in ("_msb_i", "_lsb_i", "_o", "_i"):
-                    if stripped_root.endswith(suffix):
-                        stripped_root = stripped_root[: -len(suffix)]
-                        break
-                if stripped_root in {"ptr", "cell_en", "code"}:
-                    candidates.update(
-                        {
-                            f"{stripped_root}_{idx}",
-                            f"{stripped_root}{idx}",
-                        }
-                    )
-
-            dm = re.search(r"(dout|din|div_code|cell_en|ptr|state|code|bin_o|g|d)_?(\d+)$", cand.lower())
-            if dm:
-                root = dm.group(1)
-                idx = dm.group(2)
-                candidates.update(
-                    {
-                        f"{root}_{idx}",
-                        f"{root}{idx}",
-                    }
-                )
-                if root == "d":
-                    candidates.update({f"dout_{idx}", f"dout{idx}"})
-
-        for alias in candidates:
+    for raw_key, value in list(row.items()):
+        for alias in _signal_alias_candidates(raw_key):
             _set_alias_if_missing(expanded, alias, value)
 
     canonical_map: dict[str, str] = {}
     for key in expanded:
         canonical_map.setdefault(_canonical_signal_name(key), key)
 
-    for idx in range(16):
-        for target in (
-            f"dout_{idx}",
-            f"dout{idx}",
-            f"din_{idx}",
-            f"din{idx}",
-            f"ptr_{idx}",
-            f"cell_en_{idx}",
-            f"g{idx}",
-            f"state_{idx}",
-            f"div_code_{idx}",
-        ):
-            ckey = _canonical_signal_name(target)
-            if target not in expanded and ckey in canonical_map:
-                expanded[target] = expanded[canonical_map[ckey]]
-
-    for target in (
-        "vin",
-        "vout",
-        "vin_sh",
-        "rst_n",
-        "clk",
-        "clk_in",
-        "clk_out",
-        "lock",
-        "ref_clk",
-        "fb_clk",
-        "vctrl_mon",
-        "vinp",
-        "vinn",
-        "out_p",
-        "out_n",
-        "outp",
-        "outn",
-        "a",
-        "b",
-        "y",
-        "d",
-        "q",
-        "qb",
-        "rst",
-        "ref",
-        "div",
-        "up",
-        "dn",
-        "serial_out",
-        "dpn",
-        "rstb",
-        "en",
-        "phase_out",
-        "guard_out",
-        "delay_out",
-        "seen_out",
-        "first_err_out",
-        "max_err_out",
-        "count_out",
-        "metric_out",
-        "mode",
-        "out",
-        "vin_i",
-        "vout_o",
-    ):
+    for target in _INDEXED_ALIAS_TARGETS + _SCALAR_ALIAS_TARGETS:
         ckey = _canonical_signal_name(target)
         if target not in expanded and ckey in canonical_map:
             expanded[target] = expanded[canonical_map[ckey]]
@@ -1483,11 +3616,27 @@ def check_release_strongarm_latch_comparator(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_cmp_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "vinp", "vinn", "out_p", "out_n", "delay_ps"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/vinp/vinn/out_p/out_n/delay_ps"
+def _sample_vector_at(times: list[float], values: list[float], time_s: float) -> float | None:
+    if not times or not values or len(times) != len(values):
+        return None
+    first_time = times[0]
+    last_time = times[-1]
+    if time_s < first_time or time_s > last_time:
+        return None
+    if time_s == first_time:
+        return values[0]
+    for idx in range(1, len(times)):
+        t0 = times[idx - 1]
+        t1 = times[idx]
+        if t0 <= time_s <= t1:
+            if t1 == t0:
+                return values[idx]
+            alpha = (time_s - t0) / (t1 - t0)
+            return values[idx - 1] + alpha * (values[idx] - values[idx - 1])
+    return None
 
+
+def _check_cmp_delay_vectors(times: list[float], out_p: list[float]) -> tuple[bool, str]:
     phases = [
         (0.0e-9, 4.0e-9, 10e-3),
         (4.0e-9, 8.0e-9, 1e-3),
@@ -1496,19 +3645,17 @@ def check_cmp_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     ]
     threshold = 0.45
     clk_rise_offset = 0.1e-9
-    times = [r["time"] for r in rows]
-    out_p = [r["out_p"] for r in rows]
 
     delays_ns: list[float] = []
     missing_high: list[str] = []
     for start_t, end_t, diff_v in phases:
-        phase_samples = [r["out_p"] for r in rows if start_t <= r["time"] < end_t]
+        phase_samples = [value for t, value in zip(times, out_p) if start_t <= t < end_t]
         if not phase_samples or max(phase_samples) < threshold:
             missing_high.append(f"{diff_v * 1e3:.2g}mV")
             continue
 
         search_start = start_t + clk_rise_offset
-        pre_sample = sample_signal_at(rows, "out_p", search_start - 20e-12)
+        pre_sample = _sample_vector_at(times, out_p, search_start - 20e-12)
         if pre_sample is None or pre_sample > threshold:
             return False, f"out_p_not_low_before_clock diff={diff_v * 1e3:.2g}mV"
 
@@ -1536,6 +3683,16 @@ def check_cmp_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
         f"delays_ns={[round(v, 3) for v in delays_ns]} "
         f"monotonic={monotonic} total_growth_ns={total_growth_ns:.3f}"
     )
+
+
+def check_cmp_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "out_p", "out_n", "delay_ps"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vinp/vinn/out_p/out_n/delay_ps"
+
+    times = [r["time"] for r in rows]
+    out_p = [r["out_p"] for r in rows]
+    return _check_cmp_delay_vectors(times, out_p)
 
 
 def check_cmp_strongarm(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -1787,7 +3944,20 @@ def check_vbm1_thermometer_dac_15seg(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vin_sh", "clks", "vout", "rst_n"}
+    required = {
+        "time",
+        "vin",
+        "vin_sh",
+        "clks",
+        "vout",
+        "rst_n",
+        "bit_index",
+        "trial_code_mon",
+        "trial_vdac",
+        "cmp_decision",
+        "conv_done",
+        "vin_sample",
+    }
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, f"missing_columns={','.join(missing)}"
@@ -1800,34 +3970,66 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
 
     times = [r["time"] for r in rows]
     edge_times = rising_edges([r["clks"] for r in rows], times)
-    sample_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
-    if len(sample_rows) < 64:
-        return False, f"too_few_post_reset_samples={len(sample_rows)}"
+    clock_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
+    sample_rows = [r for r in clock_rows if r["conv_done"] > 0.45]
+    if len(sample_rows) < 48:
+        return False, f"too_few_completed_conversions={len(sample_rows)}"
+
+    active_rows = [
+        r for r in rows
+        if r["rst_n"] > 0.45 and 0.05 < r["bit_index"] < 0.95 and r["conv_done"] <= 0.45
+    ]
+    if len(active_rows) < 64:
+        return False, f"too_few_visible_trial_rows={len(active_rows)}"
+    bit_levels = sorted({
+        level
+        for r in active_rows
+        for level in [max(0, min(8, int(round(r["bit_index"] / 0.9 * 8.0))))]
+        if level > 0
+    })
+    if bit_levels != list(range(1, 9)):
+        return False, f"sar_trial_bits_not_visible={bit_levels}"
+
+    trial_dac_err = max(abs(r["trial_code_mon"] - r["trial_vdac"]) for r in active_rows)
+    if trial_dac_err > 0.035:
+        return False, f"sar_trial_code_dac_mismatch={trial_dac_err:.4f}"
+    cmp_eval_rows = [r for r in active_rows if abs(r["vin_sample"] - r["trial_vdac"]) > 0.015]
+    if len(cmp_eval_rows) < 32:
+        return False, f"sar_too_few_nonborderline_comparator_trials={len(cmp_eval_rows)}"
+    cmp_agree = sum(
+        1 for r in cmp_eval_rows
+        if ((r["vin_sample"] >= r["trial_vdac"]) == (r["cmp_decision"] > 0.45))
+    )
+    cmp_frac = cmp_agree / len(cmp_eval_rows)
+    if cmp_frac < 0.94:
+        return False, f"sar_comparator_trial_decision_mismatch={cmp_frac:.3f}"
 
     codes = decode_bus(sample_rows, bit_names)
     vinsh = [r["vin_sh"] for r in sample_rows]
+    vinsamp = [r["vin_sample"] for r in sample_rows]
     vouts = [r["vout"] for r in sample_rows]
     vdd = 0.9
     code_voltages = [code / 255.0 * vdd for code in codes]
     unique_codes = len(set(codes))
     code_min = min(codes)
     code_max = max(codes)
-    sample_span = max(vinsh) - min(vinsh)
+    sample_span = max(vinsamp) - min(vinsamp)
     vout_span = max(vouts) - min(vouts)
-    avg_quant_err = sum(abs(sample - code_v) for sample, code_v in zip(vinsh, code_voltages)) / len(sample_rows)
-    max_quant_err = max(abs(sample - code_v) for sample, code_v in zip(vinsh, code_voltages))
+    avg_quant_err = sum(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages)) / len(sample_rows)
+    max_quant_err = max(abs(sample - code_v) for sample, code_v in zip(vinsamp, code_voltages))
     avg_dac_err = sum(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages)) / len(sample_rows)
     max_dac_err = max(abs(vout - code_v) for vout, code_v in zip(vouts, code_voltages))
-    avg_roundtrip_err = sum(abs(sample - vout) for sample, vout in zip(vinsh, vouts)) / len(sample_rows)
+    avg_roundtrip_err = sum(abs(sample - vout) for sample, vout in zip(vinsamp, vouts)) / len(sample_rows)
+    max_sample_hold_err = max(abs(sample - held) for sample, held in zip(vinsamp, vinsh))
 
-    sorted_pairs = sorted(zip(vinsh, codes), key=lambda item: item[0])
+    sorted_pairs = sorted(zip(vinsamp, codes), key=lambda item: item[0])
     monotonic_reversals = sum(
         1 for (_, prev_code), (_, curr_code) in zip(sorted_pairs, sorted_pairs[1:])
         if curr_code + 2 < prev_code
     )
 
     ok = (
-        unique_codes >= 96
+        unique_codes >= 48
         and code_min <= 8
         and code_max >= 247
         and sample_span > 0.75
@@ -1837,6 +4039,7 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
         and avg_dac_err < 0.020
         and max_dac_err < 0.060
         and avg_roundtrip_err < 0.030
+        and max_sample_hold_err < 0.090
         and monotonic_reversals <= max(2, len(sorted_pairs) // 50)
         and min(vouts) >= -0.02
         and max(vouts) <= vdd + 0.02
@@ -1846,7 +4049,8 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
         f"sample_span={sample_span:.3f} vout_span={vout_span:.3f} "
         f"avg_quant_err={avg_quant_err:.4f} max_quant_err={max_quant_err:.4f} "
         f"avg_dac_err={avg_dac_err:.4f} max_dac_err={max_dac_err:.4f} "
-        f"avg_roundtrip_err={avg_roundtrip_err:.4f} monotonic_reversals={monotonic_reversals}"
+        f"avg_roundtrip_err={avg_roundtrip_err:.4f} max_sample_hold_err={max_sample_hold_err:.4f} "
+        f"trial_bits={bit_levels} cmp_frac={cmp_frac:.3f} monotonic_reversals={monotonic_reversals}"
     )
 
 
@@ -4711,11 +6915,8 @@ def check_cross_hysteresis_window(rows: list[dict[str, float]]) -> tuple[bool, s
     return ok, f"low1={m_low1:.3f} high={m_high:.3f} low2={m_low2:.3f} span={span:.3f}"
 
 
-def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/out"
-    out_vals = [r["out"] for r in rows]
+def _check_true_window_comparator_resampled(eval_rows: list[dict[str, float]]) -> tuple[bool, str]:
+    out_vals = [r["out"] for r in eval_rows]
     lo = min(out_vals)
     hi = max(out_vals)
     span = hi - lo
@@ -4723,17 +6924,19 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
         return False, f"out_span_too_small={span:.3f}"
 
     vth = lo + 0.5 * span
-    t_mid = 0.5 * (rows[0]["time"] + rows[-1]["time"])
+    t0 = eval_rows[0]["time"]
+    t1 = eval_rows[-1]["time"]
+    t_mid = 0.5 * (t0 + t1)
 
     def frac_high(selected: list[dict[str, float]]) -> float:
         if not selected:
             return 0.0
         return sum(1 for row in selected if row["out"] > vth) / len(selected)
 
-    below = [r for r in rows if r["vin"] <= 0.18]
-    above = [r for r in rows if r["vin"] >= 0.72]
-    inside_rise = [r for r in rows if r["time"] <= t_mid and 0.34 <= r["vin"] <= 0.56]
-    inside_fall = [r for r in rows if r["time"] > t_mid and 0.34 <= r["vin"] <= 0.56]
+    below = [r for r in eval_rows if r["vin"] <= 0.18]
+    above = [r for r in eval_rows if r["vin"] >= 0.72]
+    inside_rise = [r for r in eval_rows if r["time"] <= t_mid and 0.34 <= r["vin"] <= 0.56]
+    inside_fall = [r for r in eval_rows if r["time"] > t_mid and 0.34 <= r["vin"] <= 0.56]
 
     if min(len(below), len(above), len(inside_rise), len(inside_fall)) < 3:
         return (
@@ -4752,6 +6955,54 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
         f"below_hi={below_hi:.3f} above_hi={above_hi:.3f} "
         f"inside_rise_hi={rise_hi:.3f} inside_fall_hi={fall_hi:.3f} span={span:.3f}",
     )
+
+
+def _resample_rows_from_vectors(
+    times: list[float],
+    signals: dict[str, list[float]],
+    *,
+    sample_count: int,
+) -> tuple[list[dict[str, float]], str | None]:
+    if len(times) < 2 or sample_count < 2:
+        return [], "invalid_time_range"
+    t0 = times[0]
+    t1 = times[-1]
+    if t1 <= t0:
+        return [], "invalid_time_range"
+    rows: list[dict[str, float]] = []
+    for idx in range(sample_count):
+        target = t0 + (t1 - t0) * idx / (sample_count - 1)
+        row = {"time": target}
+        for signal, values in signals.items():
+            value = CsvCheckerRuntime.interpolate_series(times, values, target)
+            if value is None:
+                return [], f"missing_resample_{signal}"
+            row[signal] = value
+        rows.append(row)
+    return rows, None
+
+
+def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/out"
+
+    ordered = sorted(rows, key=lambda row: row["time"])
+    times = [row["time"] for row in ordered]
+    eval_rows, error = _resample_rows_from_vectors(
+        times,
+        {
+            "vin": [row["vin"] for row in ordered],
+            "out": [row["out"] for row in ordered],
+        },
+        sample_count=361,
+    )
+    if error is not None:
+        return False, error
+    # Spectre may save only adaptive breakpoints even when EVAS writes a dense
+    # tran.csv. Judge the window function on a common time grid instead of
+    # counting raw output samples.
+    return _check_true_window_comparator_resampled(eval_rows)
 
 
 def check_cross_interval_163p333(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -5176,6 +7427,21 @@ def time_weighted_mean_in_window(
     return mean_in_window(rows, key, start, stop)
 
 
+DEFAULT_EDGE_SETTLE_DELAY_S = 0.12e-9
+
+
+def settled_row_index_after_delay(
+    rows: list[dict[str, float]],
+    start_idx: int,
+    settle_delay_s: float = DEFAULT_EDGE_SETTLE_DELAY_S,
+) -> int:
+    settle_time = rows[start_idx]["time"] + settle_delay_s
+    settle = start_idx
+    while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
+        settle += 1
+    return settle
+
+
 def edge_settled_values(
     rows: list[dict[str, float]],
     key: str,
@@ -5187,13 +7453,11 @@ def edge_settled_values(
     values: list[tuple[dict[str, float], float]] = []
     for idx in range(1, len(rows)):
         if rows[idx - 1][clk_key] <= 0.45 < rows[idx][clk_key] and rows[idx].get(rst_key, 0.0) <= 0.45:
-            if settle_delay_s is None:
-                settle = min(idx + 3, len(rows) - 1)
-            else:
-                settle_time = rows[idx]["time"] + settle_delay_s
-                settle = idx
-                while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
-                    settle += 1
+            settle = settled_row_index_after_delay(
+                rows,
+                idx,
+                DEFAULT_EDGE_SETTLE_DELAY_S if settle_delay_s is None else settle_delay_s,
+            )
             values.append((rows[idx], rows[settle][key]))
     return values
 
@@ -5379,7 +7643,7 @@ def check_release_loop_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     edge_samples: list[tuple[dict[str, float], float, float]] = []
     for idx in range(1, len(rows)):
         if rows[idx - 1]["clk"] <= 0.45 < rows[idx]["clk"] and rows[idx]["rst"] <= 0.45:
-            settle = min(idx + 3, len(rows) - 1)
+            settle = settled_row_index_after_delay(rows, idx)
             edge_samples.append((rows[idx], rows[settle]["out"], rows[settle]["metric"]))
     if len(edge_samples) < 12:
         return False, f"loop_filter_too_few_edge_samples={len(edge_samples)}"
@@ -5970,26 +8234,61 @@ def check_release_two_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, s
 
 
 def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "vin",
+        "out",
+        "metric",
+        "preamp_mon",
+        "filt1_mon",
+        "filt2_mon",
+        "settle_metric",
+    }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     early_high_out = mean_in_window(rows, "out", 12.5e-9, 15.0e-9)
     late_high_out = mean_in_window(rows, "out", 24.0e-9, 28.0e-9)
     early_high_metric = mean_in_window(rows, "metric", 12.5e-9, 15.0e-9)
     late_high_metric = mean_in_window(rows, "metric", 24.0e-9, 28.0e-9)
+    early_preamp = mean_in_window(rows, "preamp_mon", 12.5e-9, 15.0e-9)
+    early_filt1 = mean_in_window(rows, "filt1_mon", 12.5e-9, 15.0e-9)
+    early_filt2 = mean_in_window(rows, "filt2_mon", 12.5e-9, 15.0e-9)
+    late_filt2 = mean_in_window(rows, "filt2_mon", 24.0e-9, 28.0e-9)
     mid_metric = mean_in_window(rows, "metric", 33.0e-9, 36.0e-9)
     low_metric = mean_in_window(rows, "metric", 46.0e-9, 55.0e-9)
     low_out = mean_in_window(rows, "out", 54.0e-9, 58.0e-9)
-    if None in (early_high_out, late_high_out, early_high_metric, late_high_metric, mid_metric, low_metric, low_out):
+    low_settle = mean_in_window(rows, "settle_metric", 54.0e-9, 58.0e-9)
+    if None in (
+        early_high_out,
+        late_high_out,
+        early_high_metric,
+        late_high_metric,
+        early_preamp,
+        early_filt1,
+        early_filt2,
+        late_filt2,
+        mid_metric,
+        low_metric,
+        low_out,
+        low_settle,
+    ):
         return False, "amp_filter_missing_sample_windows"
     assert early_high_out is not None
     assert late_high_out is not None
     assert early_high_metric is not None
     assert late_high_metric is not None
+    assert early_preamp is not None
+    assert early_filt1 is not None
+    assert early_filt2 is not None
+    assert late_filt2 is not None
     assert mid_metric is not None
     assert low_metric is not None
     assert low_out is not None
+    assert low_settle is not None
 
     post_rows = [r for r in rows if r["rst"] <= 0.45 and 3e-9 < r["time"] < 70e-9]
     if len(post_rows) < 10:
@@ -6005,6 +8304,15 @@ def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[
             "amp_filter_metric_not_preamp_target "
             f"early={early_high_metric:.3f} late={late_high_metric:.3f} low={low_metric:.3f}"
         )
+    if abs(early_preamp - early_high_metric) > 0.04:
+        return False, f"amp_filter_preamp_metric_mismatch={early_preamp:.3f}/{early_high_metric:.3f}"
+    if early_preamp - early_filt1 < 0.08 or early_filt1 - early_filt2 < 0.03:
+        return False, (
+            "amp_filter_missing_two_pole_internal_lag "
+            f"preamp/f1/f2={early_preamp:.3f}/{early_filt1:.3f}/{early_filt2:.3f}"
+        )
+    if abs(late_filt2 - late_high_out) > 0.04:
+        return False, f"amp_filter_filt2_not_output={late_filt2:.3f}/{late_high_out:.3f}"
     if abs(mid_metric - 0.45) > 0.08:
         return False, f"amp_filter_mid_metric_not_common_mode={mid_metric:.3f}"
     if late_high_out <= early_high_out + 0.09:
@@ -6013,9 +8321,12 @@ def check_release_amplifier_filter_chain(rows: list[dict[str, float]]) -> tuple[
         return False, f"amp_filter_output_not_lagging_metric gap={early_high_metric - early_high_out:.3f}"
     if low_out > 0.35:
         return False, f"amp_filter_output_not_falling low={low_out:.3f}"
+    if low_settle < 0.70:
+        return False, f"amp_filter_settle_metric_not_asserted={low_settle:.3f}"
     return True, (
         "release_amplifier_filter_chain "
         f"metric_high_low={early_high_metric:.3f}/{low_metric:.3f} "
+        f"preamp/f1/f2={early_preamp:.3f}/{early_filt1:.3f}/{early_filt2:.3f} "
         f"out_lag={early_high_out:.3f}->{late_high_out:.3f}"
     )
 
@@ -6342,9 +8653,22 @@ def check_ldo_regulator_macro_model(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon",
+    }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     supply_off = mean_in_window(rows, "out", 5.0e-9, 9.0e-9)
     pre_enable = mean_in_window(rows, "out", 15.0e-9, 22.0e-9)
@@ -6352,7 +8676,28 @@ def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[b
     startup_metric = mean_in_window(rows, "metric", 39.0e-9, 52.0e-9)
     dip_reset = mean_in_window(rows, "out", 57.0e-9, 61.0e-9)
     recovered_metric = mean_in_window(rows, "metric", 74.0e-9, 79.0e-9)
-    if None in (supply_off, pre_enable, startup_ref, startup_metric, dip_reset, recovered_metric):
+    pre_supply_ok = mean_in_window(rows, "supply_ok", 15.0e-9, 22.0e-9)
+    pre_enable_mon = mean_in_window(rows, "enable_mon", 15.0e-9, 22.0e-9)
+    startup_enable_mon = mean_in_window(rows, "enable_mon", 39.0e-9, 52.0e-9)
+    startup_state = mean_in_window(rows, "state_mon", 39.0e-9, 52.0e-9)
+    startup_progress = mean_in_window(rows, "startup_mon", 39.0e-9, 52.0e-9)
+    dip_supply_ok = mean_in_window(rows, "supply_ok", 57.0e-9, 61.0e-9)
+    recovery_state = mean_in_window(rows, "state_mon", 74.0e-9, 79.0e-9)
+    if None in (
+        supply_off,
+        pre_enable,
+        startup_ref,
+        startup_metric,
+        dip_reset,
+        recovered_metric,
+        pre_supply_ok,
+        pre_enable_mon,
+        startup_enable_mon,
+        startup_state,
+        startup_progress,
+        dip_supply_ok,
+        recovery_state,
+    ):
         return False, "ref_startup_missing_sample_windows"
     assert supply_off is not None
     assert pre_enable is not None
@@ -6360,22 +8705,44 @@ def check_reference_startup_enable_flow(rows: list[dict[str, float]]) -> tuple[b
     assert startup_metric is not None
     assert dip_reset is not None
     assert recovered_metric is not None
+    assert pre_supply_ok is not None
+    assert pre_enable_mon is not None
+    assert startup_enable_mon is not None
+    assert startup_state is not None
+    assert startup_progress is not None
+    assert dip_supply_ok is not None
+    assert recovery_state is not None
 
     if supply_off > 0.08:
         return False, f"ref_startup_supply_off_not_low={supply_off:.3f}"
     if pre_enable > 0.12:
         return False, f"ref_startup_ignores_enable={pre_enable:.3f}"
+    if pre_supply_ok < 0.70 or pre_enable_mon > 0.10:
+        return False, (
+            "ref_startup_supply_enable_monitors_wrong "
+            f"supply_ok={pre_supply_ok:.3f} enable={pre_enable_mon:.3f}"
+        )
     if startup_ref < 0.48 or startup_ref > 0.60:
         return False, f"ref_startup_wrong_reference={startup_ref:.3f}"
     if startup_metric < 0.65:
         return False, f"ref_startup_valid_metric_low={startup_metric:.3f}"
+    if startup_enable_mon < 0.70 or startup_state < 0.72 or startup_progress < 0.60:
+        return False, (
+            "ref_startup_internal_state_not_valid "
+            f"enable={startup_enable_mon:.3f} state={startup_state:.3f} progress={startup_progress:.3f}"
+        )
     if dip_reset > 0.10:
         return False, f"ref_startup_supply_dip_not_reset={dip_reset:.3f}"
+    if dip_supply_ok > 0.10:
+        return False, f"ref_startup_supply_ok_not_cleared_on_dip={dip_supply_ok:.3f}"
     if recovered_metric < 0.45:
         return False, f"ref_startup_no_recovery_metric={recovered_metric:.3f}"
+    if recovery_state < 0.45:
+        return False, f"ref_startup_state_not_recovering={recovery_state:.3f}"
     return True, (
         "reference_startup_enable_flow "
-        f"pre_enable={pre_enable:.3f} startup={startup_ref:.3f} dip={dip_reset:.3f}"
+        f"pre_enable={pre_enable:.3f} startup={startup_ref:.3f} "
+        f"state={startup_state:.3f} progress={startup_progress:.3f} dip={dip_reset:.3f}"
     )
 
 
@@ -6702,22 +9069,66 @@ def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    required = {"time", "clk", "rst", "vin", "out", "metric", "lo_i", "lo_q", "mix_i", "mix_q", "phase_mon"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, f"missing_columns={','.join(missing)}"
 
     i_hi = mean_in_window(rows, "out", 12.2e-9, 13.5e-9)
     q_hi = mean_in_window(rows, "metric", 14.2e-9, 15.5e-9)
     i_lo = mean_in_window(rows, "out", 16.2e-9, 17.5e-9)
     q_lo = mean_in_window(rows, "metric", 18.2e-9, 19.5e-9)
+    lo_i_hi = mean_in_window(rows, "lo_i", 12.2e-9, 13.5e-9)
+    lo_q_hi = mean_in_window(rows, "lo_q", 14.2e-9, 15.5e-9)
+    lo_i_lo = mean_in_window(rows, "lo_i", 16.2e-9, 17.5e-9)
+    lo_q_lo = mean_in_window(rows, "lo_q", 18.2e-9, 19.5e-9)
+    mix_i_hi = mean_in_window(rows, "mix_i", 12.2e-9, 13.5e-9)
+    mix_q_hi = mean_in_window(rows, "mix_q", 14.2e-9, 15.5e-9)
+    mix_i_lo = mean_in_window(rows, "mix_i", 16.2e-9, 17.5e-9)
+    mix_q_lo = mean_in_window(rows, "mix_q", 18.2e-9, 19.5e-9)
+    phase_i_hi = mean_in_window(rows, "phase_mon", 12.2e-9, 13.5e-9)
+    phase_q_hi = mean_in_window(rows, "phase_mon", 14.2e-9, 15.5e-9)
+    phase_i_lo = mean_in_window(rows, "phase_mon", 16.2e-9, 17.5e-9)
+    phase_q_lo = mean_in_window(rows, "phase_mon", 18.2e-9, 19.5e-9)
     i_cm = mean_in_window(rows, "out", 58.0e-9, 64.0e-9)
     q_cm = mean_in_window(rows, "metric", 58.0e-9, 64.0e-9)
-    if None in (i_hi, q_hi, i_lo, q_lo, i_cm, q_cm):
+    if None in (
+        i_hi,
+        q_hi,
+        i_lo,
+        q_lo,
+        lo_i_hi,
+        lo_q_hi,
+        lo_i_lo,
+        lo_q_lo,
+        mix_i_hi,
+        mix_q_hi,
+        mix_i_lo,
+        mix_q_lo,
+        phase_i_hi,
+        phase_q_hi,
+        phase_i_lo,
+        phase_q_lo,
+        i_cm,
+        q_cm,
+    ):
         return False, "iq_missing_sample_windows"
     assert i_hi is not None
     assert q_hi is not None
     assert i_lo is not None
     assert q_lo is not None
+    assert lo_i_hi is not None
+    assert lo_q_hi is not None
+    assert lo_i_lo is not None
+    assert lo_q_lo is not None
+    assert mix_i_hi is not None
+    assert mix_q_hi is not None
+    assert mix_i_lo is not None
+    assert mix_q_lo is not None
+    assert phase_i_hi is not None
+    assert phase_q_hi is not None
+    assert phase_i_lo is not None
+    assert phase_q_lo is not None
     assert i_cm is not None
     assert q_cm is not None
 
@@ -6725,9 +9136,35 @@ def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, s
         return False, f"iq_positive_quadrature_missing i={i_hi:.3f} q={q_hi:.3f}"
     if i_lo > 0.22 or q_lo > 0.22:
         return False, f"iq_negative_quadrature_missing i={i_lo:.3f} q={q_lo:.3f}"
+    if lo_i_hi < 0.78 or lo_q_hi < 0.78 or lo_i_lo > 0.12 or lo_q_lo > 0.12:
+        return False, (
+            "iq_lo_quadrature_sequence_wrong "
+            f"lo_i_hi={lo_i_hi:.3f} lo_q_hi={lo_q_hi:.3f} "
+            f"lo_i_lo={lo_i_lo:.3f} lo_q_lo={lo_q_lo:.3f}"
+        )
+    if abs(i_hi - mix_i_hi) > 0.08 or abs(q_hi - mix_q_hi) > 0.08 or abs(i_lo - mix_i_lo) > 0.08 or abs(q_lo - mix_q_lo) > 0.08:
+        return False, (
+            "iq_baseband_not_tracking_mixer "
+            f"i_hi={i_hi:.3f}/{mix_i_hi:.3f} q_hi={q_hi:.3f}/{mix_q_hi:.3f} "
+            f"i_lo={i_lo:.3f}/{mix_i_lo:.3f} q_lo={q_lo:.3f}/{mix_q_lo:.3f}"
+        )
+    if not (
+        phase_i_hi < 0.10
+        and 0.20 < phase_q_hi < 0.40
+        and 0.50 < phase_i_lo < 0.70
+        and phase_q_lo > 0.80
+    ):
+        return False, (
+            "iq_phase_monitor_sequence_wrong "
+            f"phase={phase_i_hi:.3f}/{phase_q_hi:.3f}/{phase_i_lo:.3f}/{phase_q_lo:.3f}"
+        )
     if abs(i_cm - 0.45) > 0.08 or abs(q_cm - 0.45) > 0.08:
         return False, f"iq_common_mode_hold_wrong i={i_cm:.3f} q={q_cm:.3f}"
-    return True, f"iq_downconversion_chain i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f}"
+    return True, (
+        "iq_downconversion_chain "
+        f"i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f} "
+        f"phase={phase_i_hi:.3f}/{phase_q_hi:.3f}/{phase_i_lo:.3f}/{phase_q_lo:.3f}"
+    )
 
 
 def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -7196,6 +9633,7 @@ RELEASE_CHECK_ALIASES = {
     "vbr1_l1_strongarm_style_latch_comparator": check_release_strongarm_latch_comparator,
     "vbr1_l1_threshold_comparator": check_release_threshold_comparator,
     "vbr1_l1_unit_element_thermometer_dac": check_vbm1_thermometer_dac_15seg,
+    "vbr1_l2_weighted_sar_adc_dac_loop": check_sar_adc_dac_weighted_8b,
     "vbr1_l1_vco_phase_integrator": check_vbm1_vco_phase_integrator,
     "vbr1_l1_window_comparator_detector": check_true_window_comparator,
     # Release-generic checks are intentionally conservative behavior guards for
@@ -7235,6 +9673,7 @@ RELEASE_CHECK_ALIASES = {
 
 
 for _entry_id, _checker in RELEASE_CHECK_ALIASES.items():
+    CHECKS.setdefault(_entry_id, _checker)
     for _form in ("dut", "tb", "bugfix", "e2e"):
         CHECKS.setdefault(f"{_entry_id}_{_form}", _checker)
 
@@ -7402,7 +9841,87 @@ def parse_evas_timing(text: str) -> dict[str, float]:
         timing["total_elapsed_s"] = _duration_to_seconds(total_match.group(1), total_match.group(2))
     if steps_match:
         timing["accepted_tran_steps"] = float(steps_match.group(1))
+    for section_match in re.finditer(
+        r"^\s+([A-Za-z0-9_]+_s)\s*=\s*([0-9.eE+-]+)\s*s\s*$",
+        text,
+        flags=re.MULTILINE,
+    ):
+        timing[section_match.group(1)] = float(section_match.group(2))
     return timing
+
+
+def add_evas_reported_timing_split(
+    timing_split: dict[str, float],
+    timing: dict[str, float],
+) -> None:
+    tran_elapsed = timing.get("tran_elapsed_s")
+    total_elapsed = timing.get("total_elapsed_s")
+    subprocess_wall = timing_split.get("evas_subprocess_wall_s")
+
+    if tran_elapsed is not None:
+        timing_split["evas_reported_tran_elapsed_s"] = tran_elapsed
+    if total_elapsed is not None:
+        timing_split["evas_reported_total_elapsed_s"] = total_elapsed
+
+    for key, value in timing.items():
+        if key in {"tran_elapsed_s", "total_elapsed_s", "accepted_tran_steps"}:
+            continue
+        if key.endswith("_s"):
+            timing_split[f"evas_runner_{key}"] = value
+
+    if subprocess_wall is not None and total_elapsed is not None:
+        unattributed = subprocess_wall - total_elapsed
+        if unattributed >= -1e-6:
+            timing_split["evas_subprocess_unattributed_s"] = max(0.0, unattributed)
+
+
+_EVAS_COUNTER_SECTIONS = {
+    "Performance counters:": "",
+    "Trace counters:": "trace.",
+    "Indexed array profile:": "indexed_array_profile.",
+    "Indexed model IO plan:": "indexed_model_io_plan.",
+    "Indexed voltage read probe:": "indexed_voltage_read_probe.",
+    "Indexed voltage array reads:": "indexed_voltage_array_reads.",
+}
+
+
+def _parse_counter_scalar(value: str) -> int | float | str:
+    text = value.strip()
+    try:
+        if re.fullmatch(r"[+-]?\d+", text):
+            return int(text)
+        if re.fullmatch(r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", text):
+            parsed = float(text)
+            if math.isfinite(parsed):
+                return parsed
+    except ValueError:
+        pass
+    return text
+
+
+def parse_evas_performance_counters(text: str) -> dict[str, int | float | str]:
+    counters: dict[str, int | float | str] = {}
+    section_prefix: str | None = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped in _EVAS_COUNTER_SECTIONS:
+            section_prefix = _EVAS_COUNTER_SECTIONS[stripped]
+            continue
+        if not stripped:
+            section_prefix = None
+            continue
+        if section_prefix is None:
+            continue
+        if not line[:1].isspace():
+            section_prefix = None
+            continue
+        if " = " not in stripped:
+            continue
+        key, value = stripped.split(" = ", 1)
+        if key.startswith("model["):
+            continue
+        counters[f"{section_prefix}{key}"] = _parse_counter_scalar(value)
+    return counters
 
 
 def run_case(
@@ -7416,6 +9935,8 @@ def run_case(
     task_id_override: str | None = None,
     checker_task_id_override: str | None = None,
 ) -> dict:
+    t_case_start = time.perf_counter()
+    timing_split: dict[str, float] = {}
     meta = read_meta(task_dir)
     task_id = task_id_override or meta.get("id") or meta.get("task_id") or task_dir.name
     checker_task_id = (
@@ -7423,9 +9944,13 @@ def run_case(
         or resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     )
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
+    evas_engine_used = effective_evas_engine()
 
+    t0 = time.perf_counter()
     temp_ctx = tempfile.TemporaryDirectory(prefix=f"{task_id}_")
+    timing_split["tempdir_create_s"] = time.perf_counter() - t0
     try:
+        t0 = time.perf_counter()
         run_dir = Path(temp_ctx.name)
         out_dir = output_root.resolve() if output_root else run_dir / "output"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -7433,15 +9958,24 @@ def run_case(
             stale_path = out_dir / stale_name
             if stale_path.exists():
                 stale_path.unlink()
+        timing_split["output_setup_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         dut_dst, tb_dst = copy_inputs(run_dir, dut_path, tb_path)
+        timing_split["copy_inputs_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
         preflight_failures = spectre_aligned_veriloga_preflight(run_dir)
+        timing_split["preflight_s"] = time.perf_counter() - t0
         if preflight_failures:
             notes = ["spectre_aligned_preflight_failed", *preflight_failures]
             return {
                 "task_id": task_id,
                 "checker_task_id": checker_task_id,
+                "checker_policy": behavior_checker_policy(checker_task_id, notes),
                 "status": "FAIL_DUT_COMPILE",
                 "backend_used": "evas",
+                "evas_engine_used": evas_engine_used,
                 "scores": {
                     "dut_compile": 0.0,
                     "tb_compile": 0.0,
@@ -7456,16 +9990,46 @@ def run_case(
                 ],
                 "notes": notes,
                 "timing": {},
+                "timing_split": timing_split,
                 "stdout_tail": "\n".join(notes),
             }
+        t0 = time.perf_counter()
         _remove_stale_metric_file(checker_task_id, run_dir)
-        proc = run_evas(run_dir, tb_dst, out_dir, timeout_s)
+        timing_split["metric_cleanup_s"] = time.perf_counter() - t0
+
+        trace_contract_kind = required_trace_contract_kind_for_checker(checker_task_id)
+        required_trace_signals = required_trace_signals_for_checker(checker_task_id)
+        extra_trace_signals = (
+            _extra_trace_signals_for_checker(checker_task_id)
+            if required_trace_signals
+            else frozenset()
+        )
+        extra_trace_signal_count = len(extra_trace_signals - {"time"})
+        if required_trace_signals:
+            timing_split["required_trace_signal_count"] = float(len(required_trace_signals - {"time"}))
+        if extra_trace_signals:
+            timing_split["extra_trace_signal_count"] = float(extra_trace_signal_count)
+        t0 = time.perf_counter()
+        proc = run_evas(
+            run_dir,
+            tb_dst,
+            out_dir,
+            timeout_s,
+            required_trace_signals=required_trace_signals,
+        )
+        timing_split["evas_subprocess_wall_s"] = time.perf_counter() - t0
         combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
+        evas_timing = parse_evas_timing(combined)
+        add_evas_reported_timing_split(timing_split, evas_timing)
 
         dut_compile = 1.0 if "Compiled Verilog-A module:" in combined else 0.0
         tb_compile = 1.0 if ("Transient Analysis" in combined or (out_dir / "tran.csv").exists()) else 0.0
 
-        notes = [f"returncode={proc.returncode}"]
+        notes = [f"returncode={proc.returncode}", f"evas_engine={evas_engine_used or 'default'}"]
+        if required_trace_signals:
+            notes.append(f"trace_contract={trace_contract_kind}")
+        if extra_trace_signals:
+            notes.append(f"extra_trace_signals={extra_trace_signal_count}")
         if dut_compile == 0.0:
             notes.append("dut_not_compiled")
         if tb_compile == 0.0:
@@ -7473,24 +10037,89 @@ def run_case(
 
         csv_path = out_dir / "tran.csv"
         if "sim_correct" in scoring and proc.returncode == 0 and csv_path.exists():
+            t0 = time.perf_counter()
             sim_correct, behavior_notes = evaluate_behavior_with_timeout(
                 checker_task_id,
                 csv_path,
                 timeout_s=timeout_s,
             )
+            timing_split["behavior_checker_s"] = time.perf_counter() - t0
             notes.extend(behavior_notes)
+            t0 = time.perf_counter()
             metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
+            timing_split["side_output_validation_s"] = time.perf_counter() - t0
             if metric_result is not None:
                 metric_ok, metric_note = metric_result
                 notes.append(metric_note)
                 if not metric_ok:
                     sim_correct = 0.0
+            if (
+                sim_correct < 1.0
+                and required_trace_signals
+                and trace_contract_kind == "row_required_set"
+                and _row_checker_trace_fallback_enabled()
+            ):
+                notes.append("auto_sparse_trace_fallback_full_trace")
+                timing_split["sparse_trace_evas_subprocess_wall_s"] = timing_split.get(
+                    "evas_subprocess_wall_s", 0.0
+                )
+                for stale_name in ("tran.csv", "strobe.txt", "tran.png"):
+                    stale_path = out_dir / stale_name
+                    if stale_path.exists():
+                        stale_path.unlink()
+                _remove_stale_metric_file(checker_task_id, run_dir)
+
+                t0 = time.perf_counter()
+                full_proc = run_evas(
+                    run_dir,
+                    tb_dst,
+                    out_dir,
+                    timeout_s,
+                    required_trace_signals=frozenset(),
+                )
+                fallback_wall = time.perf_counter() - t0
+                timing_split["fallback_full_trace_evas_subprocess_wall_s"] = fallback_wall
+                timing_split["evas_subprocess_wall_s"] = (
+                    timing_split.get("sparse_trace_evas_subprocess_wall_s", 0.0)
+                    + fallback_wall
+                )
+                full_combined = (full_proc.stdout or "") + "\n" + (full_proc.stderr or "")
+                notes.append(f"fallback_returncode={full_proc.returncode}")
+                if full_proc.returncode == 0 and csv_path.exists():
+                    t0 = time.perf_counter()
+                    fallback_score, fallback_notes = evaluate_behavior_with_timeout(
+                        checker_task_id,
+                        csv_path,
+                        timeout_s=timeout_s,
+                    )
+                    timing_split["fallback_full_trace_behavior_checker_s"] = (
+                        time.perf_counter() - t0
+                    )
+                    notes.extend(f"fallback:{note}" for note in fallback_notes)
+                    t0 = time.perf_counter()
+                    metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
+                    timing_split["fallback_full_trace_side_output_validation_s"] = (
+                        time.perf_counter() - t0
+                    )
+                    if metric_result is not None:
+                        metric_ok, metric_note = metric_result
+                        notes.append(f"fallback:{metric_note}")
+                        if not metric_ok:
+                            fallback_score = 0.0
+                    if fallback_score >= sim_correct:
+                        sim_correct = fallback_score
+                        proc = full_proc
+                        combined = full_combined
+                        evas_timing = parse_evas_timing(combined)
+                else:
+                    notes.append("fallback_tran.csv missing")
         elif "sim_correct" in scoring:
             sim_correct = 0.0
             notes.append("tran.csv missing")
         else:
             sim_correct = 1.0
             notes.append("sim_correct not required by scoring")
+        checker_policy = behavior_checker_policy(checker_task_id, notes)
 
         required_axes: list[tuple[str, float]] = []
         if "dut_compile" in scoring or "syntax" in scoring:
@@ -7517,8 +10146,10 @@ def run_case(
         return {
             "task_id": task_id,
             "checker_task_id": checker_task_id,
+            "checker_policy": checker_policy,
             "status": status,
             "backend_used": "evas",
+            "evas_engine_used": evas_engine_used,
             "scores": {
                 "dut_compile": dut_compile,
                 "tb_compile": tb_compile,
@@ -7532,12 +10163,108 @@ def run_case(
                 str(out_dir / "strobe.txt"),
             ],
             "notes": notes,
-            "timing": parse_evas_timing(combined),
+            "timing": evas_timing,
+            "performance_counters": parse_evas_performance_counters(combined),
+            "timing_split": timing_split,
             "stdout_tail": combined[-4000:],
         }
     finally:
         if not keep_run_dir:
+            t0 = time.perf_counter()
             temp_ctx.cleanup()
+            timing_split["temp_cleanup_s"] = time.perf_counter() - t0
+        timing_split["run_case_wall_s"] = time.perf_counter() - t_case_start
+
+
+def _evas_worker_main() -> int:
+    from evas.netlist.runner import evas_simulate
+
+    for line in sys.stdin:
+        try:
+            request = json.loads(line)
+        except json.JSONDecodeError as exc:
+            print(
+                json.dumps(
+                    {
+                        "returncode": 1,
+                        "stdout": "",
+                        "stderr": f"evas_worker_bad_request={exc}",
+                    }
+                ),
+                flush=True,
+            )
+            continue
+        if isinstance(request, dict) and request.get("cmd") == "shutdown":
+            return 0
+        if not isinstance(request, dict):
+            print(
+                json.dumps(
+                    {
+                        "returncode": 1,
+                        "stdout": "",
+                        "stderr": "evas_worker_bad_request_type",
+                    }
+                ),
+                flush=True,
+            )
+            continue
+
+        run_dir = Path(str(request.get("run_dir", ""))).resolve()
+        tb_file = run_dir / str(request.get("tb_file", ""))
+        output_dir = Path(str(request.get("output_dir", ""))).resolve()
+        output_dir.mkdir(parents=True, exist_ok=True)
+        log_path = output_dir / "evas.log"
+        required_trace_value = str(request.get("required_trace_signals", "")).strip()
+        stdout_buffer = io.StringIO()
+        stderr_buffer = io.StringIO()
+        old_cwd = Path.cwd()
+        old_trace_value = os.environ.get("EVAS_REQUIRED_TRACE_SIGNALS")
+        old_side_effect_output_dir = os.environ.get("EVAS_SIDE_EFFECT_OUTPUT_DIR")
+        ok = False
+        error_text = ""
+        try:
+            os.chdir(run_dir)
+            os.environ["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = str(output_dir)
+            if required_trace_value:
+                os.environ["EVAS_REQUIRED_TRACE_SIGNALS"] = required_trace_value
+            else:
+                os.environ.pop("EVAS_REQUIRED_TRACE_SIGNALS", None)
+            with contextlib.redirect_stdout(stdout_buffer), contextlib.redirect_stderr(stderr_buffer):
+                ok = evas_simulate(
+                    str(tb_file),
+                    log_path=str(log_path),
+                    output_dir=str(output_dir),
+                )
+        except Exception:  # noqa: BLE001 - worker must report simulator crashes.
+            error_text = traceback.format_exc()
+        finally:
+            if old_trace_value is None:
+                os.environ.pop("EVAS_REQUIRED_TRACE_SIGNALS", None)
+            else:
+                os.environ["EVAS_REQUIRED_TRACE_SIGNALS"] = old_trace_value
+            if old_side_effect_output_dir is None:
+                os.environ.pop("EVAS_SIDE_EFFECT_OUTPUT_DIR", None)
+            else:
+                os.environ["EVAS_SIDE_EFFECT_OUTPUT_DIR"] = old_side_effect_output_dir
+            os.chdir(old_cwd)
+
+        try:
+            log_text = log_path.read_text(encoding="utf-8")
+        except OSError:
+            log_text = ""
+        stdout_text = log_text + stdout_buffer.getvalue()
+        stderr_text = stderr_buffer.getvalue() + error_text
+        print(
+            json.dumps(
+                {
+                    "returncode": 0 if ok and not error_text else 1,
+                    "stdout": stdout_text,
+                    "stderr": stderr_text,
+                }
+            ),
+            flush=True,
+        )
+    return 0
 
 
 def main() -> None:
@@ -7570,4 +10297,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--evas-worker":
+        raise SystemExit(_evas_worker_main())
     main()
