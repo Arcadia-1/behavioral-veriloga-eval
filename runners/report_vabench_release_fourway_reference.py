@@ -49,15 +49,15 @@ DEFAULT_SOURCE_JSONS = (
     REPORTS_ROOT / "full_release_spectre_ax_strict_20260606.json",
 )
 DEFAULT_COVERAGE_JSON = REPORTS_ROOT / "current_release_rust_coverage_manifest_rustsim_gate_after_while_20260606.json"
-DEFAULT_REPORT_JSON = REPORTS_ROOT / "full_release_fourway_reference_20260606.json"
-DEFAULT_REPORT_MD = REPORTS_ROOT / "full_release_fourway_reference_20260606.md"
+DEFAULT_REPORT_JSON = REPORTS_ROOT / "full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.json"
+DEFAULT_REPORT_MD = REPORTS_ROOT / "full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.md"
 DEFAULT_BEHAVIOR_REFRESH_TIMEOUT_S = 30
 
 SCHEMA_VERSION = "fourway-reference.v1"
 ARTIFACT_KIND = "vabench_release_fourway_reference_experiment"
 FROZEN_EXPERIMENT_ID = "vabench-release-fourway-rust-evas2-spectreax-strict-20260606"
 FROZEN_ON = "2026-06-08"
-FROZEN_REPORT_PATH = "speed-optimization/reports/full_release_fourway_reference_20260606.json"
+FROZEN_REPORT_PATH = "speed-optimization/reports/full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.json"
 
 MODE_ORDER = ("py_strict", "rust_evas2", "spectre_ax", "spectre_strict")
 MODE_SPECS: dict[str, dict[str, str]] = {
@@ -220,6 +220,15 @@ def load_sources(
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     sources: list[dict[str, Any]] = []
     selected: dict[tuple[tuple[str, str, str, str], tuple[str, str]], dict[str, Any]] = {}
+    missing = [path for path in paths if not path.exists()]
+    if missing:
+        missing_text = ", ".join(rel(path) for path in missing)
+        raise FileNotFoundError(
+            "missing four-way source JSON artifact(s): "
+            f"{missing_text}. The split PR keeps only compact frozen reports; "
+            "copy the archived raw source JSONs into these paths or pass explicit "
+            "--source-json values to regenerate the report."
+        )
     for source_path in paths:
         artifact = json.loads(source_path.read_text(encoding="utf-8"))
         results = artifact.get("results", [])
@@ -919,12 +928,13 @@ def write_markdown(path: Path, report: dict[str, Any]) -> None:
         f"Artifact: `{report['artifact_kind']}`",
         "",
         "## Scope",
-        "",
-        f"- Common rows across all four modes: `{report['scope']['common_row_count']}`",
-        f"- Behavior checker fields refreshed from existing CSVs: `{report['scope'].get('behavior_refresh_from_csv')}`",
-        f"- Behavior refresh policy: {report['scope'].get('behavior_refresh_policy')}",
-        f"- Claim boundary: {report['scope']['claim_boundary']}",
-        "- Reuse rule: cite this derived JSON/Markdown together with its source raw JSONs; rerun only when EVAS code, benchmark rows, checker policy, host class, or Spectre settings change.",
+            "",
+            f"- Common rows across all four modes: `{report['scope']['common_row_count']}`",
+            f"- Behavior checker fields refreshed from existing CSVs: `{report['scope'].get('behavior_refresh_from_csv')}`",
+            f"- Behavior refresh policy: {report['scope'].get('behavior_refresh_policy')}",
+            f"- Claim boundary: {report['scope']['claim_boundary']}",
+            "- Source raw JSONs listed below are hash-locked intermediate artifacts and are not committed in this split PR because they are large; use `--source-json` with archived raw artifacts to regenerate.",
+            "- Reuse rule: cite this derived JSON/Markdown together with its source raw JSONs; rerun only when EVAS code, benchmark rows, checker policy, host class, or Spectre settings change.",
         "- `Reported tran` is simulator-reported diagnostic time and is not added into E2E percentages; for Spectre it can exceed subprocess wall because of tool reporting semantics.",
         "",
         "## Frozen Claim Contract",
