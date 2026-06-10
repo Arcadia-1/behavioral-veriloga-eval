@@ -122,6 +122,16 @@ def _env_truthy(name: str) -> bool:
     return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on", "enabled"}
 
 
+def _persistent_worker_enabled() -> bool:
+    # Default-on per RUSTIFICATION_WORKLIST_20260605 decision (P0 087): the
+    # accepted trade is speed over per-row isolation; cross-row state leakage
+    # is fixed reactively. Set VAEVAS_EVAS_PERSISTENT_WORKER=0 to opt out.
+    raw = os.environ.get("VAEVAS_EVAS_PERSISTENT_WORKER", "").strip().lower()
+    if raw in {"0", "false", "no", "off", "disabled"}:
+        return False
+    return True
+
+
 DEFAULT_EVAS_ENGINE = "evas2"
 
 
@@ -317,7 +327,7 @@ def run_evas(
     timeout_s: int,
     required_trace_signals: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
 ) -> subprocess.CompletedProcess[str]:
-    if _env_truthy("VAEVAS_EVAS_PERSISTENT_WORKER"):
+    if _persistent_worker_enabled():
         return _persistent_evas_worker().run(
             run_dir,
             tb_file,
