@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
 import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "runners"))
+
+import run_vabench_300_dual_rerun as run300  # noqa: E402
+
 EXPANSION = ROOT / "benchmark-vabench-release-v1" / "vabench-300-expansion"
 MANIFEST = EXPANSION / "VABENCH_300_MANIFEST.json"
 NEGATIVE_AUDIT = EXPANSION / "negative_audit.json"
@@ -111,6 +116,46 @@ def test_proposed_v11_tasks_have_gold_but_remain_pending_certification() -> None
         assert len(release_task["artifacts"]["gold"]) >= 2
         assert release_task["artifacts"]["negatives"] == row["negative_manifest"]
         assert all((ROOT / path).exists() for path in release_task["artifacts"]["gold"])
+
+
+def test_vabench_300_runner_explicit_status_filter_selects_pending_without_include_flag() -> None:
+    manifest = read_json(MANIFEST)
+
+    certified_only = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses=None,
+        include_pending=False,
+        limit=None,
+    )
+    pending_only = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses={"proposed_v1.1_pending_certification"},
+        include_pending=False,
+        limit=None,
+    )
+    all_rows = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses=None,
+        include_pending=True,
+        limit=None,
+    )
+
+    assert len(certified_only) == 271
+    assert len(pending_only) == 29
+    assert {bundle["expansion_status"] for bundle in pending_only} == {"proposed_v1.1_pending_certification"}
+    assert len(all_rows) == 300
 
 
 def test_negative_audit_proves_static_shallow_near_miss_shape() -> None:

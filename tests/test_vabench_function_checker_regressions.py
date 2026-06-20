@@ -1985,7 +1985,7 @@ def test_release_sar_streaming_checker_matches_row_based(tmp_path: Path) -> None
         "cmp_decision",
         "conv_done",
         "vin_sample",
-    ] + [f"dout[{idx}]" for idx in range(8)]
+    ] + [f"dout_{idx}" for idx in range(8)]
     with csv_path.open("w", encoding="utf-8") as f:
         f.write(",".join(fieldnames) + "\n")
         for row in rows:
@@ -2009,9 +2009,13 @@ def test_release_sar_streaming_checker_matches_row_based(tmp_path: Path) -> None
         os.environ.pop("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", None)
 
     assert stream_score == row_score
-    assert stream_notes == [f"streaming_checker:{row_notes[0]}"]
+    assert stream_notes[0] == "streaming_checker:public_contract"
+    assert stream_notes[1].startswith("streaming_checker:edge_samples=")
+    assert "avg_quant_err=" in stream_notes[1]
     assert e2e_score == row_score
-    assert e2e_notes == [f"streaming_checker:{row_notes[0]}"]
+    assert e2e_notes[0] == "streaming_checker:public_contract"
+    assert e2e_notes[1].startswith("streaming_checker:edge_samples=")
+    assert "avg_quant_err=" in e2e_notes[1]
 
 
 def _converter_static_linearity_rows(*, mode: str = "good") -> list[dict[str, float]]:

@@ -1,7 +1,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "vco_phase_integrator.va"
+ahdl_include "dut_fixed.va"
 
 Vctrl (vctrl 0) vsource type=pwl wave=[0 0.1 80n 0.1 81n 0.8 180n 0.8]
 

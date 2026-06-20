@@ -274,18 +274,21 @@ def _fixture_cases(output_dir: Path, tasks: set[str]) -> list[tuple[str, Path, s
         [{**row, "aout": 0.0} for row in dac_rows],
     )
 
-    sar_fields = ["time", "vin", "vin_sh", "vout", "rst_n"] + [f"dout_{idx}" for idx in range(8)]
-    sar_rows = [
-        {
-            "time": idx * 1e-9,
-            "vin": (idx % 64) / 63.0 * 0.8,
-            "vin_sh": (idx % 64) / 63.0 * 0.8,
-            "vout": (idx % 64) / 63.0 * 0.8,
-            "rst_n": 1.0 if idx > 2 else 0.0,
-            **_bits("dout", 8, idx % 64),
-        }
-        for idx in range(80)
-    ]
+    sar_fields = ["time", "vin", "vin_sh", "clks", "vout", "rst_n"] + [f"dout_{idx}" for idx in range(8)]
+    sar_rows = []
+    for cycle in range(502):
+        base = cycle * 20.0e-9
+        rst_n = 1.0 if cycle >= 4 else 0.0
+        sample_time = base + 1.0e-9
+        vin = 0.45 + 0.45 * math.sin(2.0 * math.pi * 100.0e3 * sample_time)
+        vin = max(0.0, min(0.9, vin))
+        code = max(0, min(255, int(math.floor(vin / 0.9 * 255.0))))
+        vout = code / 255.0 * 0.9
+        common = {"vin": vin, "vin_sh": vin, "vout": vout, "rst_n": rst_n, **_bits("dout", 8, code)}
+        sar_rows.append({"time": base + 0.2e-9, "clks": 0.0, **common})
+        sar_rows.append({"time": base + 1.0e-9, "clks": 1.0, **common})
+        sar_rows.append({"time": base + 2.0e-9, "clks": 1.0, **common})
+        sar_rows.append({"time": base + 11.0e-9, "clks": 0.0, **common})
     add("sar_adc_dac_weighted_8b_smoke", "pass", sar_fields, sar_rows)
     add(
         "sar_adc_dac_weighted_8b_smoke",
