@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Benchmark</title>
+    <meta name="description" content="Browse vaBench 300 tasks, categories, and scored model roster.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="benchmark">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" aria-current="page" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="benchmarkEyebrow">Benchmark</p>
+          <h1 data-i18n="benchmarkPageTitle">vaBench 300 task set</h1>
+          <p class="hero-text" data-i18n="benchmarkPageText">
+            Browse the benchmark by function family, task form, level, difficulty, and score surface.
+            The public management denominator is 300 rows; the current model-scored roster is 265 rows.
+          </p>
+          <div class="metric-grid compact" id="benchmark-metrics"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="coverageEyebrow">Coverage</p>
+              <h2 data-i18n="coverageTitle">Function categories</h2>
+            </div>
+            <p data-i18n="coverageDescription">Entry and row coverage across analog and mixed-signal behavioral function families.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thCategory">Category</th>
+                  <th scope="col" data-i18n="thEntries">Entries</th>
+                  <th scope="col" data-i18n="thRows">Rows</th>
+                  <th scope="col">L1</th>
+                  <th scope="col">L2</th>
+                  <th scope="col" data-i18n="thScoredRows">Scored Rows</th>
+                </tr>
+              </thead>
+              <tbody id="category-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="taskGalleryEyebrow">Task gallery</p>
+              <h2 data-i18n="taskGalleryTitle">Released rows</h2>
+            </div>
+            <p data-i18n="taskGalleryDescription">Search and filter the 300 rows. Provenance labels are audit labels, not separate benchmark denominators.</p>
+          </div>
+          <div class="toolbar" aria-label="Task filters">
+            <label>
+              <span data-i18n="filterSearch">Search</span>
+              <input id="task-search" type="search" data-i18n-placeholder="taskSearchPlaceholder" placeholder="task id, category, function">
+            </label>
+            <label>
+              <span data-i18n="filterCategory">Category</span>
+              <select id="filter-category"></select>
+            </label>
+            <label>
+              <span data-i18n="filterForm">Form</span>
+              <select id="filter-form"></select>
+            </label>
+            <label>
+              <span data-i18n="filterLevel">Level</span>
+              <select id="filter-level"></select>
+            </label>
+            <label>
+              <span data-i18n="filterProvenance">Provenance</span>
+              <select id="filter-provenance"></select>
+            </label>
+            <button id="reset-filters" type="button" data-i18n="resetFilters">Reset</button>
+          </div>
+          <p class="result-count" id="task-count" data-i18n="loadingTaskRows">Loading task rows...</p>
+          <div class="table-wrap tall">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thTask">Task</th>
+                  <th scope="col" data-i18n="thCategory">Category</th>
+                  <th scope="col" data-i18n="thForm">Form</th>
+                  <th scope="col" data-i18n="thLevel">Level</th>
+                  <th scope="col" data-i18n="thScore">Score</th>
+                  <th scope="col" data-i18n="thBackends">Backends</th>
+                  <th scope="col" data-i18n="thParity">Parity</th>
+                </tr>
+              </thead>
+              <tbody id="task-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

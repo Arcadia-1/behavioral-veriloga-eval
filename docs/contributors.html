@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Contributors</title>
+    <meta name="description" content="Contributor and citation information for vaBench.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="contributors">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" aria-current="page" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="contributorsEyebrow">Contributors</p>
+          <h1 data-i18n="contributorsPageTitle">People and attribution</h1>
+          <p class="hero-text" data-i18n="contributorsPageText">A lightweight place for benchmark maintainers, task authors, evaluator contributors, and citation instructions.</p>
+        </div>
+      </section>
+      <section class="section muted">
+        <div class="section-inner feature-grid">
+          <article class="feature-card static-card">
+            <span data-i18n="maintainersEyebrow">Maintainers</span>
+            <strong data-i18n="maintainersTitle">vaBench release maintainers</strong>
+            <p data-i18n="maintainersBody">Own the public denominator, task metadata, score roster, and report exports.</p>
+          </article>
+          <article class="feature-card static-card">
+            <span data-i18n="taskAuthorsEyebrow">Task authors</span>
+            <strong data-i18n="taskAuthorsTitle">Benchmark task contributors</strong>
+            <p data-i18n="taskAuthorsBody">Contribute prompts, gold Verilog-A, checkers, and Spectre/EVAS validation evidence.</p>
+          </article>
+          <article class="feature-card static-card">
+            <span data-i18n="evaluatorContributorsEyebrow">Evaluator</span>
+            <strong data-i18n="evaluatorContributorsTitle">EVAS and Spectre harness contributors</strong>
+            <p data-i18n="evaluatorContributorsBody">Maintain the fast evaluator, dual-judge runner, bridge scripts, and parity regressions.</p>
+          </article>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-inner">
+          <div class="command-panel">
+            <h2 data-i18n="citationTitle">Citation</h2>
+            <p class="table-note" data-i18n="citationBody">Replace this block with the paper citation once the benchmark release is frozen.</p>
+            <pre><code>@misc{vabench2026,
+  title = {vaBench: Behavioral Verilog-A Evaluation with EVAS and Spectre},
+  year = {2026}
+}</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

@@ -1,0 +1,173 @@
+{
+  "aggregate_parity_metrics": {
+    "gain_metric_form_count": 4,
+    "max_abs_v": 1.0,
+    "max_digital_mismatch_ratio": 0.02,
+    "max_mean_relative_rms_error": 0.01715503725150526,
+    "max_relative_gain_delta": 0.020770001729222384,
+    "max_rmse_v": 0.1414213562373095,
+    "max_worst_signal_relative_rms_error": 0.14793578426771162,
+    "parity_form_count": 300,
+    "parity_passed_form_count": 300,
+    "pll_task_aware_form_count": 4,
+    "policy_counts": {
+      "gain_extraction_metric_parity_v1": 4,
+      "pll_task_aware": 4,
+      "spectre_equivalence_core_v1": 211,
+      "spectre_equivalence_core_v2": 52
+    },
+    "waveform_metric_form_count": 263
+  },
+  "claim_boundary": [
+    "This overview is a derived navigation/reporting table; VABENCH_300_MANIFEST.json is the benchmark management manifest.",
+    "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
+    "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
+    "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
+    "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current."
+  ],
+  "equivalence_contract": {
+    "acceptance_basis": "behavior/spec pass plus EVAS/Spectre waveform or task-metric parity",
+    "bit_exact_claim": "not_asserted",
+    "edge_window_policy": "core_v2 rows may exclude a bounded edge/discontinuity window only when local to signal activity, at most 8% of the common sample grid, and stable-region error remains small; raw metrics remain reported.",
+    "gain_metric_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25",
+    "pll_task_aware": "PLL rows use task-level lock/frequency/control metrics; status=passed is the certification gate for those special rows.",
+    "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
+    "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
+  },
+  "generated_at": "2026-06-22",
+  "headline_cards": [
+    {
+      "detail": "single vaBench 300 management denominator",
+      "label": "Benchmark Rows",
+      "value": 300
+    },
+    {
+      "detail": "function-level entries behind the 300 rows",
+      "label": "Release Entries",
+      "value": 86
+    },
+    {
+      "detail": "4 / 4 certified",
+      "label": "Four-Backend Status",
+      "value": "pass"
+    },
+    {
+      "detail": "audited release mismatch count",
+      "label": "EVAS PASS / Spectre FAIL",
+      "value": 0
+    },
+    {
+      "detail": "rows counted in current score surface",
+      "label": "Scored Rows",
+      "value": 265
+    },
+    {
+      "detail": "of 300 parity-certified rows",
+      "label": "Parity Rows",
+      "value": 300
+    }
+  ],
+  "provenance": {
+    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+    "inherited_v1_rows": 271,
+    "promoted_v1_1_rows": 29,
+    "public_denominator": 300
+  },
+  "release": "vabench-release-v1",
+  "source_reports": {
+    "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
+    "dual_rerun_staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
+    "evas_python_full300_summary": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/summary.json",
+    "evas_python_rust_subset_report": "speed-optimization/reports/current_rust_python_evas_topwall10_20260603.json",
+    "evas_rust_full300_summary": "results/vabench-300-evas-rust-full-checker29-metaraw-20260622/summary.json",
+    "package_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json",
+    "release_v1_manifest": "benchmark-vabench-release-v1/MANIFEST.json",
+    "score_denominator_manifest": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
+    "spectre_ax_full300_summary": "results/vabench-300-dual-ax-rust-checker29-full-20260622/summary.json",
+    "spectre_ax_subset_report": "speed-optimization/reports/e2e_wall_unified_full_20260602_r14_core_fastpath_exactrows.json",
+    "spectre_reference_full300_summary": "results/vabench-300-dual-reference-rust-checker29-full-20260622/summary.json",
+    "speed_remaining_staging_manifest": "benchmark-vabench-release-v1/reports/speed_remaining_staging_manifest.json",
+    "vabench300_closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+  },
+  "status": "ready",
+  "summary": {
+    "certified_entry_count": 79,
+    "certified_form_count": 300,
+    "content_denominator_entry_count": 66,
+    "content_denominator_form_count": 236,
+    "content_excluded_entry_count": 13,
+    "content_excluded_form_count": 35,
+    "core_entry_count": 66,
+    "core_form_count": 236,
+    "core_scored_entry_count": 66,
+    "core_scored_form_count": 236,
+    "difficulty_entry_counts": {
+      "D1": 10,
+      "D2": 49,
+      "D3": 20
+    },
+    "difficulty_form_counts": {
+      "D1": 39,
+      "D2": 186,
+      "D3": 46
+    },
+    "dual_certification_status": "pass",
+    "dual_certified_release_task_count": 271,
+    "dual_failed_release_task_count": 0,
+    "dual_pending_release_task_count": 0,
+    "entry_count": 86,
+    "entry_status_counts": {
+      "certified": 79
+    },
+    "evas_pass_spectre_fail_count": 0,
+    "existing_certified_v1_task_count": 271,
+    "form_count": 300,
+    "form_status_counts": {
+      "certified": 271
+    },
+    "four_backend_certified_backend_count": 4,
+    "four_backend_completed_backend_count": 4,
+    "four_backend_required_backend_count": 4,
+    "four_backend_status": "pass",
+    "l0_conformance_case_count": 4,
+    "l0_conformance_counted_in_denominator": 0,
+    "pending_entry_count": 0,
+    "pending_form_count": 0,
+    "planned_entry_count": 79,
+    "promoted_v11_task_count": 29,
+    "score_denominator_status": "score_enabled",
+    "score_enabled_entry_count": 66,
+    "score_enabled_form_count": 236,
+    "scored_entry_count": 66,
+    "scored_form_count": 265,
+    "support_entry_count": 13,
+    "support_form_count": 35,
+    "support_scored_entry_count": 0,
+    "support_scored_form_count": 0,
+    "track_entry_counts": {
+      "core": 66,
+      "support": 13
+    },
+    "track_form_counts": {
+      "core": 236,
+      "support": 35
+    }
+  },
+  "vabench300_expansion": {
+    "certified_task_count": 300,
+    "closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "counted_in_score_task_count": 265,
+    "existing_certified_v1_task_count": 271,
+    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+    "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json",
+    "negative_full_checker_fail_verified_count": 0,
+    "negative_simulator_shallow_verified_count": 0,
+    "negative_static_shallow_shape_verified_count": 1500,
+    "partial_pass_negative_count": 1500,
+    "pending_certification_task_count": 0,
+    "promoted_v11_task_count": 29,
+    "proposed_v11_task_count": 29,
+    "status": "present",
+    "task_count": 300
+  }
+}

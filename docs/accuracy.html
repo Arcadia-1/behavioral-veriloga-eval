@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Accuracy</title>
+    <meta name="description" content="EVAS, Spectre AX, and Spectre strict precision evidence for vaBench.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="accuracy">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" aria-current="page" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="accuracyEyebrow">Accuracy</p>
+          <h1 data-i18n="accuracyPageTitle">EVAS and Spectre precision</h1>
+          <p class="hero-text" data-i18n="accuracyPageText">
+            The benchmark does not claim bit-exact equality. It reports whether each surface is behavior-equivalent to the Spectre reference under explicit gates.
+          </p>
+          <div class="metric-grid compact" id="accuracy-metrics"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner protocol-grid">
+          <div>
+            <p class="eyebrow" data-i18n="accuracyIdenticalEyebrow">Equivalence answer</p>
+            <h2 data-i18n="accuracyIdenticalTitle">Are the outputs exactly identical?</h2>
+            <div class="explanation-stack" id="accuracy-answer"></div>
+          </div>
+          <div>
+            <p class="eyebrow" data-i18n="accuracyTermsEyebrow">Reading tolerance</p>
+            <h2 data-i18n="accuracyTermsTitle">What the gate means</h2>
+            <dl class="protocol-terms" id="accuracy-gates"></dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="precisionStrictEyebrow">Four-way reference</p>
+              <h2 data-i18n="precisionStrictTitle">Precision vs Spectre strict</h2>
+            </div>
+            <p data-i18n="precisionStrictDescription">EVAS Python, EVAS Rust, and Spectre AX are compared against the same Spectre strict reference on the current full-300 common-row set.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thSurface">Surface</th>
+                  <th scope="col" data-i18n="thEquivalentRows">Equivalent Rows</th>
+                  <th scope="col" data-i18n="thTaskMetricRows">Task-Metric Rows</th>
+                  <th scope="col" data-i18n="thEffectiveMeanRms">Effective Mean RMS</th>
+                  <th scope="col" data-i18n="thEffectiveWorstSignalRms">Effective Worst Signal RMS</th>
+                  <th scope="col" data-i18n="thRawMeanRms">Raw Mean RMS</th>
+                  <th scope="col" data-i18n="thRawWorstSignalRms">Raw Worst Signal RMS</th>
+                </tr>
+              </thead>
+              <tbody id="precision-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="taskMetricEyebrow">Task-metric rows</p>
+              <h2 data-i18n="taskMetricTitle">Rows not judged by raw pointwise equality</h2>
+            </div>
+            <p data-i18n="taskMetricDescription">Measurement-flow rows can use extracted circuit metrics as the acceptance gate. Diagnostic waveform-only RMS is shown to avoid misreading the row as a functional mismatch.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thSurface">Surface</th>
+                  <th scope="col" data-i18n="thTask">Task</th>
+                  <th scope="col" data-i18n="thAcceptancePolicy">Acceptance Policy</th>
+                  <th scope="col" data-i18n="thTaskMetricDelta">Metric Delta</th>
+                  <th scope="col" data-i18n="thDiagnosticWaveform">Diagnostic Waveform</th>
+                  <th scope="col" data-i18n="thDiagnosticMeanRms">Diagnostic Mean RMS</th>
+                  <th scope="col" data-i18n="thDiagnosticWorstSignalRms">Diagnostic Worst Signal RMS</th>
+                </tr>
+              </thead>
+              <tbody id="task-metric-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="pointwiseEyebrow">Pointwise caveats</p>
+              <h2 data-i18n="pointwiseTitle">Why raw RMS can look larger</h2>
+            </div>
+            <p data-i18n="pointwiseDescription">These categories explain why a waveform-only pointwise comparison can differ even when the row passes behavior or task-metric acceptance.</p>
+          </div>
+          <div class="feature-grid" id="pointwise-taxonomy"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner split-layout">
+          <div>
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow" data-i18n="spectreAnchorEyebrow">Tolerance anchor</p>
+                <h2 data-i18n="spectreAnchorTitle">Spectre AX vs classic</h2>
+              </div>
+            </div>
+            <p class="hero-text compact-text" data-i18n="spectreAnchorDescription">
+              Official Spectre modes are not bit-identical either. This self-consistency report is the reference anchor for deciding what waveform drift is acceptable before calling EVAS mismatched.
+            </p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thMetric">Metric</th>
+                  <th scope="col" data-i18n="thValue">Value</th>
+                </tr>
+              </thead>
+              <tbody id="spectre-anchor-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

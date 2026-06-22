@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Protocol</title>
+    <meta name="description" content="EVAS, Spectre, tolerance, and certification protocol for vaBench 300.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="protocol">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" aria-current="page" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="protocolEyebrow">Protocol</p>
+          <h1 data-i18n="protocolPageTitle">Evaluation and certification gates</h1>
+          <p class="hero-text" data-i18n="protocolPageText">
+            Spectre is the final judge. EVAS is a fast evaluator that must remain aligned with Spectre on the supported voltage-domain/event-driven subset.
+          </p>
+          <div class="metric-grid compact" id="protocol-metrics"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="backendCertificationEyebrow">Backend certification</p>
+              <h2 data-i18n="backendCertificationTitle">Four execution surfaces</h2>
+            </div>
+            <p data-i18n="backendCertificationDescription">These rows certify the benchmark and evaluator surfaces, not model leaderboard rankings.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thBackend">Backend</th>
+                  <th scope="col" data-i18n="thStatus">Status</th>
+                  <th scope="col" data-i18n="thRows">Rows</th>
+                  <th scope="col" data-i18n="thBehavior">Behavior</th>
+                  <th scope="col" data-i18n="thEvidence">Evidence</th>
+                </tr>
+              </thead>
+              <tbody id="backend-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner protocol-grid">
+          <div>
+            <p class="eyebrow" data-i18n="claimBoundaryEyebrow">Claim boundary</p>
+            <h2 data-i18n="claimBoundaryTitle">What can be claimed</h2>
+            <ul class="protocol-list" id="protocol-list"></ul>
+          </div>
+          <div>
+            <p class="eyebrow" data-i18n="parityGatesEyebrow">Parity gates</p>
+            <dl class="protocol-terms" id="parity-terms"></dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="alignmentEyebrow">Spectre alignment</p>
+              <h2 data-i18n="alignmentTitle">Golden reference equivalence table</h2>
+            </div>
+            <p data-i18n="alignmentDescription">Each row states what was compared, the measured EVAS/Spectre difference, and the tolerance gate. Bit-exact equality is not asserted.</p>
+          </div>
+          <div class="toolbar compact" aria-label="Alignment filters">
+            <label>
+              <span data-i18n="filterSearch">Search</span>
+              <input id="alignment-search" type="search" data-i18n-placeholder="alignmentSearchPlaceholder" placeholder="task id, category, policy">
+            </label>
+            <label>
+              <span data-i18n="filterStatus">Status</span>
+              <select id="filter-alignment-status"></select>
+            </label>
+            <label>
+              <span data-i18n="filterPolicy">Policy</span>
+              <select id="filter-alignment-policy"></select>
+            </label>
+            <button id="reset-alignment-filters" type="button" data-i18n="resetFilters">Reset</button>
+          </div>
+          <p class="result-count" id="alignment-count" data-i18n="loadingAlignmentRows">Loading alignment rows...</p>
+          <div class="table-wrap tall">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thTask">Task</th>
+                  <th scope="col" data-i18n="thClaim">Claim</th>
+                  <th scope="col" data-i18n="thBackends">Backends</th>
+                  <th scope="col" data-i18n="thActualDifference">Actual Difference</th>
+                  <th scope="col" data-i18n="thToleranceGate">Tolerance Gate</th>
+                </tr>
+              </thead>
+              <tbody id="alignment-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>
