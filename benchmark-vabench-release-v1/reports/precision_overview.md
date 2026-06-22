@@ -54,12 +54,76 @@ Precision source: `full300_current_summaries`
 
 ## Pointwise Difference Taxonomy
 
-- **Solver sampling grid**: Use aligned-grid RMS as a diagnostic metric; do not read it as bit-exact equality.
-- **Event time and cross() localization**: Check behavior, event consistency, and edge-window metrics before calling this a mismatch.
-- **Edge and discontinuity window**: Effective metrics may discount a bounded localized window; raw metrics stay visible for audit.
-- **Interpolation on the common grid**: Treat interpolation error as part of the precision diagnostic, not as the task's functional score.
-- **transition() smoothing**: Inspect stable-region behavior and checker metrics when transition edges inflate raw RMS.
-- **Task-metric gate**: Report the task metric and include pointwise waveform diagnostics only as explanatory context.
+### Solver sampling grid
+
+- Why expected: Adaptive solvers choose output points differently even when the circuit-level trajectory is equivalent.
+- What changes: EVAS and Spectre may save different accepted transient steps, so the report compares common signals on a resampled grid.
+- Current shortcoming: Our comparison does not prove that EVAS reproduced Spectre's internal step acceptance history; it only compares saved observable signals after alignment.
+- Current handling: The released report uses a fixed common sample grid and keeps both effective and raw RMS metrics visible.
+- Bug signal: Treat it as a bug if the stable regions disagree, if the checker result changes, or if a row only passes after hiding a broad time interval.
+- Useful feedback: Send the row id, both CSV traces, and the first time range where the aligned stable-region values diverge.
+- Reporting rule: Use aligned-grid RMS as a diagnostic metric; do not read it as bit-exact equality.
+
+### Event time and cross() localization
+
+- Why expected: The two engines use different event scheduling and breakpoint-localization mechanics.
+- What changes: cross() events and timer events can fire at slightly different localized times.
+- Current shortcoming: EVAS does not yet claim full Spectre-equivalent ordering for every cross(), timer(), transition(), and simultaneous-event corner case.
+- Current handling: Rows with event-heavy behavior are checked by behavior checkers first, then by waveform/event diagnostics on the supported subset.
+- Bug signal: Treat it as a bug if an edge is missed, duplicated, ordered differently in a way that changes state, or if EVAS PASS / Spectre FAIL appears.
+- Useful feedback: A minimal Verilog-A snippet with the triggering cross()/timer() statements is the most useful report.
+- Reporting rule: Check behavior, event consistency, and edge-window metrics before calling this a mismatch.
+
+### Edge and discontinuity window
+
+- Why expected: One-sample edge placement differences can produce large instantaneous voltage deltas while stable regions match.
+- What changes: A few samples around fast edges, discontinuities, or digital thresholds can dominate raw pointwise error.
+- Current shortcoming: The edge-window rule is a pragmatic acceptance gate. If used carelessly, it could mask a real timing or threshold bug.
+- Current handling: Effective metrics may discount only a bounded localized window, and raw metrics remain visible next to the effective metrics.
+- Bug signal: Treat it as a bug if the excluded window grows, repeats across many edges, changes a sampled decision, or affects a task metric.
+- Useful feedback: Report the signal name, edge time, raw max error, and whether the post-edge state or checker output changed.
+- Reporting rule: Effective metrics may discount a bounded localized window; raw metrics stay visible for audit.
+
+### Interpolation on the common grid
+
+- Why expected: Different native output times require interpolation to compare like with like.
+- What changes: Saved waveforms are interpolated before RMS comparison.
+- Current shortcoming: The current diagnostic uses simple common-grid interpolation; it can overstate or understate error for sparse outputs and very sharp transitions.
+- Current handling: We report row-level and worst-signal RMS instead of hiding interpolation-sensitive rows behind a single pass/fail scalar.
+- Bug signal: Treat it as a bug if a denser save grid or direct event-time comparison changes the conclusion for a row.
+- Useful feedback: A suggested comparison method or a row where interpolation choice flips the result would be directly actionable.
+- Reporting rule: Treat interpolation error as part of the precision diagnostic, not as the task's functional score.
+
+### transition() smoothing
+
+- Why expected: EVAS and Spectre do not promise identical internal smoothing schedules.
+- What changes: transition() ramps can differ slightly in breakpoint placement and sampled slope.
+- Current shortcoming: EVAS transition handling is aligned for the benchmark-supported cases, but it is not a complete public clone of Spectre's internal smoothing implementation.
+- Current handling: Stable-region behavior, checker results, and raw/effective waveform metrics are shown together so transition artifacts are not silently ignored.
+- Bug signal: Treat it as a bug if transition delay, rise/fall time, or target update semantics change a downstream decision or metric.
+- Useful feedback: A small transition() example with expected timing, target updates, and saved waveforms is the best repair input.
+- Reporting rule: Inspect stable-region behavior and checker metrics when transition edges inflate raw RMS.
+
+### Noise-like or dithered stimulus
+
+- Why expected: For these rows the design objective is usually an aggregate metric such as gain, lock, count, or convergence, not identical sample-by-sample noise phase.
+- What changes: Rows with dither, pseudo-random control, or measurement stimulus can show poor pointwise phase agreement while preserving the extracted circuit metric.
+- Current shortcoming: If the checker metric is too broad, it may miss waveform-level differences that a circuit designer would care about.
+- Current handling: The page lists task-metric rows separately and keeps diagnostic waveform-only RMS visible for the same rows.
+- Bug signal: Treat it as a bug if a different seed, window, or stimulus phase changes pass/fail, or if the aggregate metric hides visible functional drift.
+- Useful feedback: Suggestions for stronger metric windows, deterministic seeds, or additional observables are especially useful here.
+- Reporting rule: Use deterministic task metrics as the acceptance gate, with pointwise RMS reported as supporting evidence.
+
+### Task-metric gate
+
+- Why expected: Measurement-flow tasks can use dither/noise-like stimulus where pointwise phase is not the design objective.
+- What changes: Some rows are accepted by extracted circuit metrics, such as gain or lock/frequency values, not by raw pointwise waveform equality.
+- Current shortcoming: A task-metric gate is only as good as the checker behind it. Weak checkers can over-accept; overly tight checkers can reject valid simulator differences.
+- Current handling: The report names the task-metric policy, metric delta, diagnostic waveform status, and raw/effective RMS side by side.
+- Bug signal: Treat it as a bug if the metric tolerance is undocumented, if the metric is not circuit-meaningful, or if a row passes despite an obviously wrong waveform.
+- Useful feedback: Concrete checker improvements are welcome: extra observables, better windows, stricter metric bounds, or task-specific edge cases.
+- Reporting rule: Report the task metric and include pointwise waveform diagnostics only as explanatory context.
+
 
 ## Interpretation
 

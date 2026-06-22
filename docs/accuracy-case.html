@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Accuracy Case</title>
+    <meta name="description" content="Inspect one vaBench precision case and why raw RMS can be diagnostic rather than the acceptance score.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="accuracy-case">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" aria-current="page" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="accuracyCaseEyebrow">Accuracy case</p>
+          <h1 id="accuracy-case-title" data-i18n="accuracyCaseTitle">Precision case detail</h1>
+          <p class="hero-text" id="accuracy-case-intro" data-i18n="accuracyCaseText">
+            Inspect one task-metric precision case and the concrete reason why raw pointwise RMS is diagnostic rather than the acceptance score.
+          </p>
+          <div class="button-row">
+            <a class="button-link" href="accuracy.html" data-i18n="accuracyCaseBack">Back to accuracy</a>
+          </div>
+          <div class="metric-grid compact" id="accuracy-case-metrics"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner detail-grid">
+          <article class="detail-panel">
+            <h2 data-i18n="accuracyCaseMetricsTitle">Case metrics</h2>
+            <dl class="field-grid" id="accuracy-case-detail"></dl>
+          </article>
+          <article class="detail-panel">
+            <h2 data-i18n="accuracyCaseTaskTitle">Related benchmark row</h2>
+            <dl class="field-grid" id="accuracy-case-task"></dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="pointwiseEyebrow">Pointwise caveats</p>
+              <h2 data-i18n="accuracyCaseWhyTitle">Why raw RMS can be large here</h2>
+            </div>
+            <p data-i18n="accuracyCaseWhyText">These notes are case-specific reading aids.</p>
+          </div>
+          <div class="taxonomy-grid" id="accuracy-case-taxonomy"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

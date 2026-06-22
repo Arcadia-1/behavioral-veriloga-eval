@@ -336,6 +336,60 @@ dd {
   transform: none;
 }
 
+.taxonomy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.taxonomy-card {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.taxonomy-card:nth-child(2n) {
+  border-top: 3px solid var(--blue);
+}
+
+.taxonomy-card:nth-child(2n + 1) {
+  border-top: 3px solid var(--teal);
+}
+
+.taxonomy-card span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.taxonomy-card strong {
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.taxonomy-detail {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+.taxonomy-detail dt {
+  color: var(--ink);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.taxonomy-detail dd {
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
 .metric-card span {
   display: block;
   color: var(--muted);
@@ -396,6 +450,28 @@ dd {
   grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
   gap: 24px;
   align-items: start;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.detail-panel {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.detail-panel h2 {
+  margin: 0 0 16px;
+  font-size: 1.45rem;
+  line-height: 1.2;
 }
 
 .table-wrap.tall {
@@ -850,10 +926,34 @@ pre code {
   font-weight: 740;
 }
 
+.table-link {
+  margin-top: 0;
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .text-link:hover,
 .text-link:focus-visible {
   color: var(--ink);
   outline: none;
+}
+
+.source-link {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.source-link .text-link {
+  margin-top: 0;
+}
+
+.source-link code {
+  width: fit-content;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .news-list {
@@ -940,7 +1040,9 @@ pre code {
   .doc-hero-layout,
   .doc-layout,
   .split-layout,
-  .feature-grid {
+  .detail-grid,
+  .feature-grid,
+  .taxonomy-grid {
     grid-template-columns: 1fr;
   }
 

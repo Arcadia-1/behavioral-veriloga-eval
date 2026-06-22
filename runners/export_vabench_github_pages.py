@@ -9,6 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_ROOT = ROOT / "benchmark-vabench-release-v1" / "reports"
+MANIFEST_JSON = ROOT / "benchmark-vabench-release-v1" / "MANIFEST.json"
 OVERVIEW_JSON = REPORTS_ROOT / "benchmark_overview.json"
 DOCS_ROOT = ROOT / "docs"
 DOCS_DATA_ROOT = DOCS_ROOT / "data"
@@ -71,9 +72,19 @@ def boolish(value: Any) -> bool:
     return bool(value)
 
 
-def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
+def manifest_rows_by_key(manifest: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
+    rows: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in manifest.get("forms", []):
+        if not isinstance(row, dict):
+            continue
+        rows[(str(row.get("release_entry_id") or ""), str(row.get("form") or ""))] = row
+    return rows
+
+
+def normalize_task_row(row: dict[str, Any], manifest_row: dict[str, Any] | None = None) -> dict[str, Any]:
     expansion_status = str(row.get("expansion_status") or "")
     provenance = "promoted_v1.1" if "v1.1" in expansion_status else "inherited_v1"
+    manifest_row = manifest_row or {}
     search_parts = [
         row.get("task_id"),
         row.get("legacy_task_id"),
@@ -85,6 +96,8 @@ def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
         row.get("difficulty"),
         row.get("track"),
         provenance,
+        manifest_row.get("prompt"),
+        manifest_row.get("checks"),
     ]
     return {
         "task_id": row.get("task_id"),
@@ -117,6 +130,15 @@ def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
         "gold_status": row.get("gold_status"),
         "evidence": row.get("evidence"),
         "provenance": provenance,
+        "family": manifest_row.get("family"),
+        "prompt": manifest_row.get("prompt"),
+        "checks": manifest_row.get("checks"),
+        "meta": manifest_row.get("meta"),
+        "release_task_manifest": manifest_row.get("release_task_manifest"),
+        "gold_count": manifest_row.get("gold_count"),
+        "certification": manifest_row.get("certification"),
+        "exclusion_reasons": manifest_row.get("exclusion_reasons", []),
+        "content_exclusion_reasons": manifest_row.get("content_exclusion_reasons", []),
         "search_text": " ".join(str(part) for part in search_parts if part).lower(),
     }
 
@@ -195,8 +217,13 @@ def build_backend_coverage(overview: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_task_gallery(overview: dict[str, Any]) -> dict[str, Any]:
-    rows = [normalize_task_row(row) for row in overview.get("form_rows", []) if isinstance(row, dict)]
+def build_task_gallery(overview: dict[str, Any], manifest: dict[str, Any] | None = None) -> dict[str, Any]:
+    manifest_by_key = manifest_rows_by_key(manifest or {})
+    rows = [
+        normalize_task_row(row, manifest_by_key.get((str(row.get("release_entry_id") or ""), str(row.get("form") or ""))))
+        for row in overview.get("form_rows", [])
+        if isinstance(row, dict)
+    ]
     return {
         "generated_at": date.today().isoformat(),
         "summary": {
@@ -227,10 +254,11 @@ def build_category_coverage(overview: dict[str, Any]) -> dict[str, Any]:
 
 def export_site(output_dir: Path = DOCS_DATA_ROOT) -> dict[str, Path]:
     overview = read_json(OVERVIEW_JSON)
+    manifest = read_json(MANIFEST_JSON)
     payloads = {
         "site_summary.json": build_site_summary(overview),
         "backend_coverage.json": build_backend_coverage(overview),
-        "task_gallery.json": build_task_gallery(overview),
+        "task_gallery.json": build_task_gallery(overview, manifest),
         "category_coverage.json": build_category_coverage(overview),
     }
     written: dict[str, Path] = {}

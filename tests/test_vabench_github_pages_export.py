@@ -49,6 +49,12 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
     assert tasks["summary"]["certified_rows"] == 300
     assert len(tasks["rows"]) == 300
     assert "Data Converter Models" in tasks["filters"]["category"]
+    assert sum(1 for row in tasks["rows"] if row.get("prompt")) == 271
+    assert sum(1 for row in tasks["rows"] if row.get("prompt") is None) == 29
+    prompt_row = next(row for row in tasks["rows"] if row.get("prompt"))
+    assert prompt_row["checks"].endswith("checks.yaml")
+    assert prompt_row["release_task_manifest"].endswith("release_task.json")
+    assert isinstance(prompt_row["gold_count"], int)
 
     assert len(categories["rows"]) == 10
 
@@ -57,6 +63,8 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
     guide = (ROOT / "docs" / "run-model-eval.html").read_text(encoding="utf-8")
     accuracy = (ROOT / "docs" / "accuracy.html").read_text(encoding="utf-8")
+    task_detail = (ROOT / "docs" / "task.html").read_text(encoding="utf-8")
+    accuracy_case = (ROOT / "docs" / "accuracy-case.html").read_text(encoding="utf-8")
     site_script = (ROOT / "docs" / "assets" / "site.js").read_text(encoding="utf-8")
     script = (ROOT / "docs" / "assets" / "run-model-eval.js").read_text(encoding="utf-8")
     roster = read_json(ROOT / "docs" / "data" / "model_eval_roster.json")
@@ -87,6 +95,15 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert "VERIFIED_LEADERBOARD_ROWS" in site_script
     assert "pointwise-taxonomy" in accuracy
     assert "task-metric-table" in accuracy
+    assert 'data-page="task-detail"' in task_detail
+    assert "task-detail-identity" in task_detail
+    assert "task-detail-accuracy-table" in task_detail
+    assert 'data-page="accuracy-case"' in accuracy_case
+    assert "accuracy-case-taxonomy" in accuracy_case
+    assert "task.html?" in site_script
+    assert "accuracy-case.html?" in site_script
+    assert "renderTaskDetail" in site_script
+    assert "renderAccuracyCase" in site_script
     assert "renderPointwiseTaxonomy" in site_script
     assert "renderTaskMetricRows" in site_script
     assert roster["summary"]["scored_model_row_count"] == 265
