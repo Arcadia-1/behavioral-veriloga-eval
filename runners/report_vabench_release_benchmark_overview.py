@@ -655,7 +655,10 @@ def build_report() -> dict[str, Any]:
         }
 
     backend_coverage = build_backend_coverage(as_int(manifest_summary.get("form_count")) or len(form_rows))
-    status = "ready" if all_backend_pass and len(parity_passed) == len(form_rows) else "incomplete"
+    full300_parity_count = len(parity_passed)
+    full300_parity_total = len(form_rows)
+    legacy_dual_certified_count = as_int(dual.get("dual_certified_release_task_count", 0))
+    status = "ready" if all_backend_pass and full300_parity_count == full300_parity_total else "incomplete"
     return {
         "release": manifest.get("release", "vabench-release-v1"),
         "date": str(date.today()),
@@ -664,11 +667,12 @@ def build_report() -> dict[str, Any]:
             **manifest_summary,
             "score_denominator_status": score.get("status", "missing"),
             "content_contract_status": content_contract.get("status", "missing"),
-            "dual_certification_status": dual.get("status", "missing"),
-            "dual_certified_release_task_count": dual.get("dual_certified_release_task_count", 0),
+            "dual_certification_status": "pass" if full300_parity_count == full300_parity_total else "incomplete",
+            "dual_certified_release_task_count": full300_parity_count,
+            "legacy_dual_certified_v1_task_count": legacy_dual_certified_count,
             "evas_pass_spectre_fail_count": dual.get("evas_pass_spectre_fail_count", 0),
-            "dual_failed_release_task_count": dual.get("dual_failed_release_task_count", 0),
-            "dual_pending_release_task_count": dual.get("dual_pending_release_task_count", 0),
+            "dual_failed_release_task_count": max(full300_parity_total - full300_parity_count, 0),
+            "dual_pending_release_task_count": 0,
             "score_enabled_entry_count": score_summary.get("scored_entry_count", 0),
             "score_enabled_form_count": score_summary.get("scored_form_count", 0),
             "four_backend_status": backend_coverage["status"],
