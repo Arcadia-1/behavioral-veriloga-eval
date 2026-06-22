@@ -1,0 +1,3016 @@
+{
+  "behavior_checker_missing_count": 0,
+  "behavior_checker_nonpass_count": 0,
+  "behavior_checker_pass_count": 300,
+  "compile_sim_fail_count": 0,
+  "compile_sim_pass_count": 300,
+  "engine": "python",
+  "engine_label": "python",
+  "promoted_v11_behavior_checker_missing_count": 0,
+  "promoted_v11_compile_sim_pass_count": 29,
+  "promoted_v11_task_count": 29,
+  "results": [
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_binary_weighted_voltage_dac_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/binary_weighted_voltage_dac__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_binary_weighted_voltage_dac_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/binary_weighted_voltage_dac__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_binary_weighted_voltage_dac_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/binary_weighted_voltage_dac__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_binary_weighted_voltage_dac_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_binary_weighted_voltage_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/binary_weighted_voltage_dac__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "cdac_cal",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/capacitive_weighted_sar_feedback_dac__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/capacitive_weighted_sar_feedback_dac__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/capacitive_weighted_sar_feedback_dac__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_capacitive_weighted_sar_feedback_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/capacitive_weighted_sar_feedback_dac__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_adc_quantizer_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_adc_quantizer__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_adc_quantizer_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_adc_quantizer__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_adc_quantizer_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_adc_quantizer__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_adc_quantizer_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_clocked_adc_quantizer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_adc_quantizer__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dac_mismatch_unit_weighting_model__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dac_mismatch_unit_weighting_model__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dac_mismatch_unit_weighting_model__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dac_mismatch_unit_weighting_model_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_dac_mismatch_unit_weighting_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dac_mismatch_unit_weighting_model__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "pipeline_stage",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_stage__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "pipeline_stage",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_stage__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "pipeline_stage",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_stage__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "pipeline_stage",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_pipeline_adc_stage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_stage__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_sar_logic_4b_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_sar_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sar_logic__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_sar_logic_4b_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_sar_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sar_logic__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_sar_logic_4b_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_sar_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sar_logic__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_sar_logic_4b_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_sar_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sar_logic__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_segmented_dac_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_segmented_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/segmented_dac__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_segmented_dac_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_segmented_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/segmented_dac__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_segmented_dac_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_segmented_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/segmented_dac__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_segmented_dac_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_segmented_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/segmented_dac__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_thermometer_decoder_guarded_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/thermometer_code_decoder__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_thermometer_decoder_guarded_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/thermometer_code_decoder__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_thermometer_decoder_guarded_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/thermometer_code_decoder__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_thermometer_decoder_guarded_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_thermometer_code_decoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/thermometer_code_decoder__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_unit_element_thermometer_dac_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/unit_element_thermometer_dac__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_unit_element_thermometer_dac_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/unit_element_thermometer_dac__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_unit_element_thermometer_dac_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/unit_element_thermometer_dac__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_unit_element_thermometer_dac_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_unit_element_thermometer_dac",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/unit_element_thermometer_dac__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_converter_static_linearity_measurement_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/converter_static_linearity_measurement__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_converter_static_linearity_measurement_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/converter_static_linearity_measurement__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_flash_adc_mini_array_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/flash_adc_mini_array__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_flash_adc_mini_array_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_flash_adc_mini_array",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/flash_adc_mini_array__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_pipeline_adc_chain_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_pipeline_adc_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_chain__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_pipeline_adc_chain_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_pipeline_adc_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pipeline_adc_chain__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/weighted_sar_adc_dac_loop__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/weighted_sar_adc_dac_loop__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_debounce_latch_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_debounce_latch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/debounce_latch__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_debounce_latch_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_debounce_latch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/debounce_latch__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_debounce_latch_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_debounce_latch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/debounce_latch__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_debounce_latch_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_debounce_latch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/debounce_latch__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_hysteresis_comparator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_hysteresis_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/hysteresis_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_hysteresis_comparator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_hysteresis_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/hysteresis_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_hysteresis_comparator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_hysteresis_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/hysteresis_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_hysteresis_comparator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_hysteresis_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/hysteresis_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_offset_comparator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_offset_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/offset_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_offset_comparator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_offset_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/offset_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_offset_comparator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_offset_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/offset_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_offset_comparator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_offset_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/offset_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_propagation_delay_comparator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/propagation_delay_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_propagation_delay_comparator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/propagation_delay_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_propagation_delay_comparator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/propagation_delay_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_propagation_delay_comparator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_propagation_delay_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/propagation_delay_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_strongarm_style_latch_comparator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/strongarm_style_latch_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_strongarm_style_latch_comparator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/strongarm_style_latch_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_strongarm_style_latch_comparator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/strongarm_style_latch_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_strongarm_style_latch_comparator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_strongarm_style_latch_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/strongarm_style_latch_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_threshold_comparator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_threshold_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/threshold_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_threshold_comparator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_threshold_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/threshold_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_threshold_comparator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_threshold_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/threshold_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_threshold_comparator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_threshold_comparator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/threshold_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_window_comparator_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_window_comparator_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/window_comparator_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_window_comparator_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_window_comparator_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/window_comparator_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_window_comparator_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_window_comparator_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/window_comparator_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_window_comparator_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_window_comparator_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/window_comparator_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_comparator_measurement_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/comparator_measurement__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_comparator_measurement_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_comparator_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/comparator_measurement__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/acquisition_limited_sample_hold__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/acquisition_limited_sample_hold__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/acquisition_limited_sample_hold__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_acquisition_limited_sample_and_hold_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_acquisition_limited_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/acquisition_limited_sample_hold__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_aperture_delay_track_and_hold_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/aperture_delay_track_hold__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_aperture_delay_track_and_hold_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/aperture_delay_track_hold__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_aperture_delay_track_and_hold_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/aperture_delay_track_hold__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_aperture_delay_track_and_hold_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/aperture_delay_track_hold__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_sample_and_hold_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_sample_hold__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_sample_and_hold_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_sample_hold__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_sample_and_hold_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_sample_hold__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clocked_sample_and_hold_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_clocked_sample_and_hold",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clocked_sample_hold__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sample_hold_with_droop_leakage__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sample_hold_with_droop_leakage__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sample_hold_with_droop_leakage__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sample_and_hold_with_droop_leakage_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_sample_and_hold_with_droop_leakage",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sample_hold_with_droop_leakage__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_converter_front_end_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_converter_front_end",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/converter_front_end__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_converter_front_end_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_converter_front_end",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/converter_front_end__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_first_order_lowpass_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_first_order_lowpass",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/first_order_lowpass__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_first_order_lowpass_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_first_order_lowpass",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/first_order_lowpass__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_first_order_lowpass_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_first_order_lowpass",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/first_order_lowpass__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_first_order_lowpass_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_first_order_lowpass",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/first_order_lowpass__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_higher_order_filter_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_higher_order_filter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/higher_order_filter__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_higher_order_filter_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_higher_order_filter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/higher_order_filter__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_higher_order_filter_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_higher_order_filter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/higher_order_filter__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_higher_order_filter_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_higher_order_filter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/higher_order_filter__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_precision_rectifier_envelope_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/precision_rectifier_envelope_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_precision_rectifier_envelope_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/precision_rectifier_envelope_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_precision_rectifier_envelope_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/precision_rectifier_envelope_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_precision_rectifier_envelope_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_precision_rectifier_envelope_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/precision_rectifier_envelope_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_programmable_gain_amplifier_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_gain_amplifier__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_programmable_gain_amplifier_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_gain_amplifier__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_programmable_gain_amplifier_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_gain_amplifier__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_programmable_gain_amplifier_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_programmable_gain_amplifier",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_gain_amplifier__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_resettable_integrator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_resettable_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/resettable_integrator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_resettable_integrator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_resettable_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/resettable_integrator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_resettable_integrator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_resettable_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/resettable_integrator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_resettable_integrator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_resettable_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/resettable_integrator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_slew_rate_limiter_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_slew_rate_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/slew_rate_limiter__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_slew_rate_limiter_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_slew_rate_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/slew_rate_limiter__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_slew_rate_limiter_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_slew_rate_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/slew_rate_limiter__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_slew_rate_limiter_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_slew_rate_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/slew_rate_limiter__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/soft_hysteretic_limiter__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/soft_hysteretic_limiter__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/soft_hysteretic_limiter__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_soft_hysteretic_limiter_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_soft_hysteretic_limiter",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/soft_hysteretic_limiter__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/amplifier_filter_chain__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_amplifier_filter_chain_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_amplifier_filter_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/amplifier_filter_chain__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bbpd",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bang_bang_phase_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bang_bang_phase_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bang_bang_phase_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bang_bang_phase_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bang_bang_phase_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bbpd_data_edge_alignment_smoke",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_bang_bang_phase_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bang_bang_phase_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/charge_pump_abstraction__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/charge_pump_abstraction__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/charge_pump_abstraction__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_charge_pump_abstraction_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_charge_pump_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/charge_pump_abstraction__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_resettable_counter_divider_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_clock_divider",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clock_divider__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_resettable_counter_divider_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_clock_divider",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clock_divider__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_clock_divider_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_clock_divider",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clock_divider__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_resettable_counter_divider_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_clock_divider",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/clock_divider__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/digital_phase_accumulator_with_modulo_wrap__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/digital_phase_accumulator_with_modulo_wrap__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/digital_phase_accumulator_with_modulo_wrap__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_digital_phase_accumulator_with_modulo_wrap",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/digital_phase_accumulator_with_modulo_wrap__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_lock_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_lock_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lock_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_lock_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_lock_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lock_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_lock_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_lock_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lock_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_lock_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_lock_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lock_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/loop_filter_abstraction__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/loop_filter_abstraction__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/loop_filter_abstraction__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_loop_filter_abstraction_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_loop_filter_abstraction",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/loop_filter_abstraction__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_pfd_reset_race_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pfd_up_dn_logic__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_pfd_reset_race_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pfd_up_dn_logic__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_pfd_reset_race_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pfd_up_dn_logic__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_pfd_reset_race_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_pfd_up_dn_logic",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pfd_up_dn_logic__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_vco_phase_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/vco_phase_integrator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_vco_phase_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/vco_phase_integrator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_vco_phase_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/vco_phase_integrator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_vco_phase_integrator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_vco_phase_integrator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/vco_phase_integrator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/adpll_lock_ratio_hop_timer__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "adpll_ratio_hop_smoke",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/adpll_lock_ratio_hop_timer__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/cppll_tracking_frequency_step_reacquire__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "cppll_freq_step_reacquire_smoke",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/cppll_tracking_frequency_step_reacquire__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_calibration_deadband_controller_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/calibration_deadband_controller__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_calibration_deadband_controller_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/calibration_deadband_controller__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_calibration_deadband_controller_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/calibration_deadband_controller__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_calibration_deadband_controller_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_calibration_deadband_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/calibration_deadband_controller__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dwa_dem_encoder_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dwa_dem_encoder__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dwa_dem_encoder_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dwa_dem_encoder__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dwa_dem_encoder_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dwa_dem_encoder__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dwa_dem_encoder_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_dwa_dem_encoder",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dwa_dem_encoder__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_element_shuffler_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_element_shuffler",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/element_shuffler__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_element_shuffler_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_element_shuffler",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/element_shuffler__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_element_shuffler_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_element_shuffler",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/element_shuffler__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_element_shuffler_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_element_shuffler",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/element_shuffler__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_gain_trim_controller_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_gain_trim_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_trim_controller__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_gain_trim_controller_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_gain_trim_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_trim_controller__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_gain_trim_controller_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_gain_trim_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_trim_controller__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_gain_trim_controller_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_gain_trim_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_trim_controller__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/successive_approximation_calibration_search_fsm__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/successive_approximation_calibration_search_fsm__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/successive_approximation_calibration_search_fsm__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/successive_approximation_calibration_search_fsm__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_cdac_calibration_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_trim_calibration_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/trim_calibration_controller__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_cdac_calibration_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_trim_calibration_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/trim_calibration_controller__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_cdac_calibration_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_trim_calibration_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/trim_calibration_controller__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_cdac_calibration_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_trim_calibration_controller",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/trim_calibration_controller__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_complete_calibration_loop_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_complete_calibration_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/complete_calibration_loop__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_complete_calibration_loop_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_complete_calibration_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/complete_calibration_loop__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bandgap_reference_macro_model_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_reference_macro_model__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bandgap_reference_macro_model_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_reference_macro_model__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bandgap_reference_macro_model_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_reference_macro_model__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bandgap_reference_macro_model_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_bandgap_reference_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_reference_macro_model__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bias_voltage_generator_with_enable_trim_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bias_voltage_generator_with_enable_trim__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bias_voltage_generator_with_enable_trim_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bias_voltage_generator_with_enable_trim__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bias_voltage_generator_with_enable_trim_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bias_voltage_generator_with_enable_trim__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_bias_voltage_generator_with_enable_trim_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bias_voltage_generator_with_enable_trim__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ldo_regulator_macro_model_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_regulator_macro_model__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ldo_regulator_macro_model_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_regulator_macro_model__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ldo_regulator_macro_model_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_regulator_macro_model__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ldo_regulator_macro_model_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_ldo_regulator_macro_model",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_regulator_macro_model__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_power_on_reset_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_power_on_reset_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/power_on_reset_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_power_on_reset_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_power_on_reset_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/power_on_reset_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_power_on_reset_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_power_on_reset_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/power_on_reset_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_power_on_reset_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_power_on_reset_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/power_on_reset_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ptat_ctat_reference_generator_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ptat_ctat_reference_generator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ptat_ctat_reference_generator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ptat_ctat_reference_generator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ptat_ctat_reference_generator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ptat_ctat_reference_generator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ptat_ctat_reference_generator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ptat_ctat_reference_generator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_uvlo_brownout_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/uvlo_brownout_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_uvlo_brownout_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/uvlo_brownout_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_uvlo_brownout_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/uvlo_brownout_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_uvlo_brownout_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_uvlo_brownout_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/uvlo_brownout_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_ldo_load_step_recovery_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_load_step_recovery__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_ldo_load_step_recovery_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ldo_load_step_recovery__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_reference_startup_enable_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/reference_startup_enable__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_reference_startup_enable_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_reference_startup_enable_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/reference_startup_enable__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_limiting_amplifier_frontend_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/limiting_amplifier_frontend__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_limiting_amplifier_frontend_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/limiting_amplifier_frontend__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_limiting_amplifier_frontend_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/limiting_amplifier_frontend__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_limiting_amplifier_frontend_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_limiting_amplifier_frontend",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/limiting_amplifier_frontend__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lna_gain_compression_macro_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lna_gain_compression_macro__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lna_gain_compression_macro_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lna_gain_compression_macro__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lna_gain_compression_macro_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lna_gain_compression_macro__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lna_gain_compression_macro_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_lna_gain_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lna_gain_compression_macro__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_log_rssi_power_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/log_rssi_power_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_log_rssi_power_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/log_rssi_power_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_log_rssi_power_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/log_rssi_power_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_log_rssi_power_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_log_rssi_power_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/log_rssi_power_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_pa_compression_macro_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_pa_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pa_compression_macro__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_pa_compression_macro_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_pa_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pa_compression_macro__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_pa_compression_macro_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_pa_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pa_compression_macro__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_pa_compression_macro_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_pa_compression_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/pa_compression_macro__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_rf_mixer_downconverter_macro_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/rf_mixer_downconverter_macro__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_rf_mixer_downconverter_macro_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/rf_mixer_downconverter_macro__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_rf_mixer_downconverter_macro_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/rf_mixer_downconverter_macro__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_rf_mixer_downconverter_macro_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/rf_mixer_downconverter_macro__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_agc_receiver_leveling_loop_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/agc_receiver_leveling_loop__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_agc_receiver_leveling_loop_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/agc_receiver_leveling_loop__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_iq_downconversion_chain_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/iq_downconversion_chain__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_iq_downconversion_chain_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_iq_downconversion_chain",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/iq_downconversion_chain__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_file_metric_writer_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_crossing_metric_writer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/crossing_metric_writer__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_file_metric_writer_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_crossing_metric_writer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/crossing_metric_writer__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_file_metric_writer_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_crossing_metric_writer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/crossing_metric_writer__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_edge_interval_timer_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_edge_interval_timer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/edge_interval_timer__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_edge_interval_timer_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_edge_interval_timer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/edge_interval_timer__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_gain_estimator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_gain_estimator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_estimator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_gain_estimator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_gain_estimator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_estimator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_peak_detector_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_peak_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/peak_detector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_peak_detector_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_peak_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/peak_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_peak_detector_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_peak_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/peak_detector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_peak_detector_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_peak_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/peak_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_settling_time_measurement_tb_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_settling_time_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/settling_time_detector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbm1_settling_time_measurement_tb_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_settling_time_detector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/settling_time_detector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_extraction_convergence_measurement__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/gain_extraction_convergence_measurement__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_measurement_flow_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/measurement__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_measurement_flow_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_measurement_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/measurement__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_burst_clock_source_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_burst_clock_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/burst_clock_source__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_burst_clock_source_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_burst_clock_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/burst_clock_source__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_burst_clock_source_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_burst_clock_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/burst_clock_source__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dither_or_noise_like_deterministic_source__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dither_or_noise_like_deterministic_source__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_dither_or_noise_like_deterministic_source_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_dither_or_noise_like_deterministic_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/dither_or_noise_like_deterministic_source__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "prbs7",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lfsr_prbs_generator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lfsr_prbs_generator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lfsr_prbs_generator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_lfsr_prbs_generator_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_lfsr_prbs_generator",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/lfsr_prbs_generator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_ramp_or_step_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ramp_or_step_source__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_ramp_or_step_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ramp_or_step_source__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_ramp_or_step_source_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_ramp_or_step_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/ramp_or_step_source__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sine_periodic_voltage_source__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sine_periodic_voltage_source__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l1_sine_periodic_voltage_source_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l1_sine_periodic_voltage_source",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sine_periodic_voltage_source__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_programmable_stimulus_sequencer_e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_stimulus_sequencer__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "vbr1_l2_programmable_stimulus_sequencer_tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr1_l2_programmable_stimulus_sequencer",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/programmable_stimulus_sequencer__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "sigma_delta_modulator_loop:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sigma_delta_modulator_loop__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "sigma_delta_modulator_loop:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sigma_delta_modulator_loop__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "sigma_delta_modulator_loop:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sigma_delta_modulator_loop__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "sigma_delta_modulator_loop:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/sigma_delta_modulator_loop__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "time_interleaved_adc_mismatch:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/time_interleaved_adc_mismatch__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "time_interleaved_adc_mismatch:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/time_interleaved_adc_mismatch__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "time_interleaved_adc_mismatch:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/time_interleaved_adc_mismatch__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "time_interleaved_adc_mismatch:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/time_interleaved_adc_mismatch__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "metastability_window_comparator:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/metastability_window_comparator__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "metastability_window_comparator:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/metastability_window_comparator__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "metastability_window_comparator:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/metastability_window_comparator__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "metastability_window_comparator:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/metastability_window_comparator__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bootstrapped_sample_switch:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bootstrapped_sample_switch__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bootstrapped_sample_switch:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bootstrapped_sample_switch__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bootstrapped_sample_switch:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bootstrapped_sample_switch__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bootstrapped_sample_switch:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bootstrapped_sample_switch__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "fractional_n_pll_divider:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/fractional_n_pll_divider__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "fractional_n_pll_divider:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/fractional_n_pll_divider__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "fractional_n_pll_divider:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/fractional_n_pll_divider__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "fractional_n_pll_divider:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/fractional_n_pll_divider__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bandgap_startup_trim:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_startup_trim__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bandgap_startup_trim:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_startup_trim__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bandgap_startup_trim:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_startup_trim__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "bandgap_startup_trim:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/bandgap_startup_trim__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "quadrature_iq_imbalance_corrector:dut",
+      "compile_sim_pass": true,
+      "form": "dut",
+      "legacy_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/quadrature_iq_imbalance_corrector__dut"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "quadrature_iq_imbalance_corrector:tb",
+      "compile_sim_pass": true,
+      "form": "tb",
+      "legacy_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/quadrature_iq_imbalance_corrector__tb"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "quadrature_iq_imbalance_corrector:e2e",
+      "compile_sim_pass": true,
+      "form": "e2e",
+      "legacy_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/quadrature_iq_imbalance_corrector__e2e"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "quadrature_iq_imbalance_corrector:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/quadrature_iq_imbalance_corrector__bugfix"
+    },
+    {
+      "behavior_checker_missing": false,
+      "behavior_checker_pass": true,
+      "checker_task_id": "cppll_tracking_frequency_step_reacquire:bugfix",
+      "compile_sim_pass": true,
+      "form": "bugfix",
+      "legacy_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "raw_status": "PASS",
+      "result_root": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/cppll_tracking_frequency_step_reacquire__bugfix"
+    }
+  ],
+  "status": "pass",
+  "task_count": 300
+}

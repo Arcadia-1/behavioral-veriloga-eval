@@ -31,7 +31,8 @@ def _target_artifacts(form: str, names: list[str], explicit: list[str] | None = 
 
 
 def _release_form_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
+    manifest = _read_json(MANIFEST)
+    return sorted(ROOT / row["release_task_manifest"] for row in manifest["forms"])
 
 
 def test_release_prompts_have_public_contract_scaffold() -> None:
@@ -39,8 +40,9 @@ def test_release_prompts_have_public_contract_scaffold() -> None:
     manifest = _read_json(MANIFEST)
     assert len(form_dirs) == manifest["summary"]["form_count"]
 
-    for form_dir in form_dirs:
-        release_task = _read_json(form_dir / "release_task.json")
+    for release_task_path in form_dirs:
+        form_dir = release_task_path.parent
+        release_task = _read_json(release_task_path)
         prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
         form = form_dir.name
 
@@ -52,8 +54,9 @@ def test_release_prompts_have_public_contract_scaffold() -> None:
 
 
 def test_release_prompt_targets_match_gold_artifact_contract() -> None:
-    for form_dir in _release_form_dirs():
-        release_task = _read_json(form_dir / "release_task.json")
+    for release_task_path in _release_form_dirs():
+        form_dir = release_task_path.parent
+        release_task = _read_json(release_task_path)
         prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
         artifacts = release_task["artifacts"]
         gold_names = [Path(path).name for path in artifacts["gold"]]
@@ -77,7 +80,8 @@ def test_release_prompts_do_not_embed_runner_or_overdirect_repair_text() -> None
         "Reference artifact name(s):",
         "Reference testbench artifact names:",
     ]
-    for form_dir in _release_form_dirs():
+    for release_task_path in _release_form_dirs():
+        form_dir = release_task_path.parent
         prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
         for needle in forbidden:
             assert needle not in prompt, (form_dir, needle)

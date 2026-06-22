@@ -1,0 +1,129 @@
+{
+  "base_function": "Fractional-N divider and accumulator flow",
+  "category": "PLL Clock and Timing Systems",
+  "certification": {
+    "evas": "pass",
+    "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "spectre": "pass",
+    "static": "pass"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "l0_conformance": false,
+    "model_capability": true
+  },
+  "difficulty": "D3",
+  "id": "fractional_n_pll_divider",
+  "legacy_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+  "missing_forms": [],
+  "package_status": "v1.1_promoted",
+  "release_blockers": [],
+  "release_tasks": [
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/checks.yaml",
+      "evas_status": "pass",
+      "form": "bugfix",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/gold/fractional_n_pll_divider.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/gold/tb_fractional_n_pll_divider.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix",
+      "spectre_status": "pass",
+      "static_status": "pass"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/checks.yaml",
+      "evas_status": "pass",
+      "form": "dut",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/gold/fractional_n_pll_divider.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/gold/tb_fractional_n_pll_divider.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut",
+      "spectre_status": "pass",
+      "static_status": "pass"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/checks.yaml",
+      "evas_status": "pass",
+      "form": "e2e",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/gold/fractional_n_pll_divider.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/gold/tb_fractional_n_pll_divider.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e",
+      "spectre_status": "pass",
+      "static_status": "pass"
+    },
+    {
+      "asset_materialized": true,
+      "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/checks.yaml",
+      "evas_status": "pass",
+      "form": "tb",
+      "gold": [
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/gold/fractional_n_pll_divider.va",
+        "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/gold/tb_fractional_n_pll_divider.scs"
+      ],
+      "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/meta.json",
+      "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/negatives/manifest.json",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/prompt.md",
+      "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb",
+      "spectre_status": "pass",
+      "static_status": "pass"
+    }
+  ],
+  "score_surface": "model-capability",
+  "source_base_id": "fractional_n_pll_divider",
+  "source_tasks": [
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "bugfix",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "dut",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "e2e",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/release_task.json"
+    },
+    {
+      "asset_complete": true,
+      "checks": true,
+      "form": "tb",
+      "gold": true,
+      "meta": true,
+      "prompt": true,
+      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/release_task.json"
+    }
+  ],
+  "topic_id": "fractional_n_pll_divider",
+  "track": "core"
+}

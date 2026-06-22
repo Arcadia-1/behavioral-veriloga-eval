@@ -118,10 +118,10 @@ def test_benchmark_overview_uses_300_as_single_management_surface() -> None:
     assert expansion["pending_certification_task_count"] == 0
     assert expansion["promoted_v11_task_count"] == 29
     assert staging["current_dual_staging_bundles"] == 65
-    assert staging["speed_remaining_staging_bundles"] == 225
-    assert staging["total_staging_bundles"] == 290
-    assert staging["total_primary_queue_rows"] == 238
-    assert staging["buggy_companion_bundles"] == 52
+    assert staging["speed_remaining_staging_bundles"] == 0
+    assert staging["total_staging_bundles"] == 65
+    assert staging["total_primary_queue_rows"] == 54
+    assert staging["buggy_companion_bundles"] == 11
     assert sum(1 for row in forms if row["expansion_status"] == "certified_v1.1_promoted") == 29
     assert "Use 300 as the benchmark task count" in md
     assert "single management denominator" in md

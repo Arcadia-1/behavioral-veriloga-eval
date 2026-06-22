@@ -13,8 +13,7 @@
     "policy_counts": {
       "gain_extraction_metric_parity_v1": 4,
       "pll_task_aware": 4,
-      "spectre_equivalence_core_v1": 211,
-      "spectre_equivalence_core_v2": 52
+      "spectre_equivalence_core_v1": 263
     },
     "waveform_metric_form_count": 263
   },
@@ -23,6 +22,7 @@
     "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
     "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
     "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
+    "Content contract status is review_required; review_required currently flags promoted v1.1 L2 gold-kernel diversity debt, not a simulator certification failure.",
     "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current."
   ],
   "equivalence_contract": {
@@ -75,6 +75,7 @@
   },
   "release": "vabench-release-v1",
   "source_reports": {
+    "content_contract_audit": "benchmark-vabench-release-v1/reports/content_contract_audit.json",
     "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
     "dual_rerun_staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
     "evas_python_full300_summary": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/summary.json",
@@ -91,25 +92,26 @@
   },
   "status": "ready",
   "summary": {
-    "certified_entry_count": 79,
+    "certified_entry_count": 86,
     "certified_form_count": 300,
-    "content_denominator_entry_count": 66,
-    "content_denominator_form_count": 236,
+    "content_contract_status": "review_required",
+    "content_denominator_entry_count": 73,
+    "content_denominator_form_count": 265,
     "content_excluded_entry_count": 13,
     "content_excluded_form_count": 35,
-    "core_entry_count": 66,
-    "core_form_count": 236,
-    "core_scored_entry_count": 66,
-    "core_scored_form_count": 236,
+    "core_entry_count": 73,
+    "core_form_count": 265,
+    "core_scored_entry_count": 73,
+    "core_scored_form_count": 265,
     "difficulty_entry_counts": {
       "D1": 10,
-      "D2": 49,
-      "D3": 20
+      "D2": 50,
+      "D3": 26
     },
     "difficulty_form_counts": {
       "D1": 39,
-      "D2": 186,
-      "D3": 46
+      "D2": 190,
+      "D3": 71
     },
     "dual_certification_status": "pass",
     "dual_certified_release_task_count": 271,
@@ -117,13 +119,13 @@
     "dual_pending_release_task_count": 0,
     "entry_count": 86,
     "entry_status_counts": {
-      "certified": 79
+      "certified": 86
     },
     "evas_pass_spectre_fail_count": 0,
     "existing_certified_v1_task_count": 271,
     "form_count": 300,
     "form_status_counts": {
-      "certified": 271
+      "certified": 300
     },
     "four_backend_certified_backend_count": 4,
     "four_backend_completed_backend_count": 4,
@@ -133,23 +135,23 @@
     "l0_conformance_counted_in_denominator": 0,
     "pending_entry_count": 0,
     "pending_form_count": 0,
-    "planned_entry_count": 79,
+    "planned_entry_count": 86,
     "promoted_v11_task_count": 29,
     "score_denominator_status": "score_enabled",
-    "score_enabled_entry_count": 66,
-    "score_enabled_form_count": 236,
-    "scored_entry_count": 66,
+    "score_enabled_entry_count": 73,
+    "score_enabled_form_count": 265,
+    "scored_entry_count": 73,
     "scored_form_count": 265,
     "support_entry_count": 13,
     "support_form_count": 35,
     "support_scored_entry_count": 0,
     "support_scored_form_count": 0,
     "track_entry_counts": {
-      "core": 66,
+      "core": 73,
       "support": 13
     },
     "track_form_counts": {
-      "core": 236,
+      "core": 265,
       "support": 35
     }
   },

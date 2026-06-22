@@ -63,7 +63,7 @@ Use 300 as the benchmark task count. The 271 inherited v1 rows and 29 promoted v
 | certified tasks | 300 | static/EVAS/Spectre pass by inherited v1 evidence or full-300 closure |
 | promoted v1.1 tasks | 29 | now managed as part of vaBench 300 |
 | negative candidates | 1500 | static-shape audited partial-pass candidates |
-| runnable staging bundles | 290 | execution inputs only; not a benchmark count |
+| runnable staging bundles | 65 | execution inputs only; not a benchmark count |
 
 Promotion note: This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.
 
@@ -115,30 +115,30 @@ Promotion note: This is the primary vaBench 300 management surface: 271 inherite
 | `vbr1_l1_edge_interval_timer` | L1 | support | D2 | Measurement Instrumentation Flows | Edge interval timer | 2 | not counted | pass/pass | wave 2/2, mean<=0, worst<=0, abs<=0V |
 | `vbr1_l1_element_shuffler` | L1 | core | D2 | Calibration, DEM, and Control | Element shuffler | 4 | counted | pass/pass | wave 4/4, mean<=0, worst<=0, abs<=0V |
 | `vbr1_l1_first_order_lowpass` | L1 | core | D1 | Baseband Signal Conditioning | First-order lowpass | 4 | counted | pass/pass | wave 4/4, mean<=1.597e-08, worst<=3.194e-08, abs<=4.994e-08V |
-| `vbr1_l1_gain_estimator` | L1 | support | D2 | Measurement Instrumentation Flows | Gain estimator | 2 | not counted | pass/pass | gain delta<=2.026e-07 |
+| `vbr1_l1_gain_estimator` | L1 | support | D2 | Measurement Instrumentation Flows | Gain estimator | 2 | not counted | pass/pass | gain delta<=2.000e-07 |
 | `vbr1_l1_gain_trim_controller` | L1 | core | D2 | Calibration, DEM, and Control | Gain trim controller | 4 | counted | pass/pass | wave 4/4, mean<=1.842e-07, worst<=9.209e-07, abs<=5.040e-06V |
 | `vbr1_l1_higher_order_filter` | L1 | core | D2 | Baseband Signal Conditioning | Higher-order filter | 4 | counted | pass/pass | wave 4/4, mean<=3.151e-06, worst<=1.034e-05, abs<=8.511e-05V |
 | `vbr1_l1_hysteresis_comparator` | L1 | core | D2 | Comparator and Decision Circuits | Hysteresis comparator | 4 | counted | pass/pass | wave 4/4, mean<=4.167e-04, worst<=8.333e-04, abs<=1V |
-| `vbr1_l1_ldo_regulator_macro_model` | L1 | core | D2 | Bias Reference and Power Management | LDO regulator macro model | 4 | counted | pass/pass | wave 4/4, mean<=1.969e-06, worst<=6.857e-06, abs<=1.194e-05V |
+| `vbr1_l1_ldo_regulator_macro_model` | L1 | core | D2 | Bias Reference and Power Management | LDO regulator macro model | 4 | counted | pass/pass | wave 4/4, mean<=6.567e-16, worst<=3.283e-15, abs<=5.301e-14V |
 | `vbr1_l1_lfsr_prbs_generator` | L1 | support | D2 | Stimulus and Source Generators | PRBS stimulus/dither generator | 4 | not counted | pass/pass | wave 4/4, mean<=1.555e-04, worst<=4.664e-04, abs<=0.00714V |
-| `vbr1_l1_limiting_amplifier_frontend` | L1 | core | D1 | RF and AFE Behavioral Macromodels | Limiting amplifier front-end | 4 | counted | pass/pass | wave 4/4, mean<=1.385e-06, worst<=6.925e-06, abs<=9.365e-05V |
+| `vbr1_l1_limiting_amplifier_frontend` | L1 | core | D1 | RF and AFE Behavioral Macromodels | Limiting amplifier front-end | 4 | counted | pass/pass | wave 4/4, mean<=1.385e-06, worst<=6.924e-06, abs<=9.363e-05V |
 | `vbr1_l1_lna_gain_compression_macro` | L1 | core | D2 | RF and AFE Behavioral Macromodels | LNA gain/compression macro | 4 | counted | pass/pass | wave 4/4, mean<=1.386e-06, worst<=6.929e-06, abs<=9.378e-05V |
 | `vbr1_l1_lock_detector` | L1 | core | D2 | PLL Clock and Timing Systems | Lock detector | 4 | counted | pass/pass | wave 4/4, mean<=0, worst<=0, abs<=0V |
 | `vbr1_l1_log_rssi_power_detector` | L1 | core | D3 | RF and AFE Behavioral Macromodels | Log/RSSI power detector | 4 | counted | pass/pass | wave 4/4, mean<=1.524e-06, worst<=4.802e-06, abs<=5.250e-05V |
 | `vbr1_l1_loop_filter_abstraction` | L1 | core | D2 | PLL Clock and Timing Systems | Sampled loop-filter abstraction | 4 | counted | pass/pass | wave 4/4, mean<=8.683e-06, worst<=4.339e-05, abs<=4.335e-04V |
 | `vbr1_l1_offset_comparator` | L1 | core | D1 | Comparator and Decision Circuits | Offset comparator | 4 | counted | pass/pass | wave 4/4, mean<=0, worst<=0, abs<=0V |
-| `vbr1_l1_pa_compression_macro` | L1 | core | D3 | RF and AFE Behavioral Macromodels | PA compression macro | 4 | counted | pass/pass | wave 4/4, mean<=1.395e-06, worst<=6.977e-06, abs<=1.028e-04V |
+| `vbr1_l1_pa_compression_macro` | L1 | core | D3 | RF and AFE Behavioral Macromodels | PA compression macro | 4 | counted | pass/pass | wave 4/4, mean<=1.396e-06, worst<=6.978e-06, abs<=1.028e-04V |
 | `vbr1_l1_peak_detector` | L1 | support | D2 | Measurement Instrumentation Flows | Peak detector | 4 | not counted | pass/pass | wave 4/4, mean<=0.0132, worst<=0.0396, abs<=0.549V |
 | `vbr1_l1_pfd_up_dn_logic` | L1 | core | D2 | PLL Clock and Timing Systems | PFD UP/DN logic | 4 | counted | pass/pass | wave 4/4, mean<=1.779e-09, worst<=5.467e-09, abs<=4.569e-08V |
 | `vbr1_l1_pipeline_adc_stage` | L1 | core | D3 | Data Converter Models | Pipeline ADC MDAC stage | 4 | counted | pass/pass | wave 4/4, mean<=8.324e-07, worst<=4.995e-06, abs<=2.249e-05V |
-| `vbr1_l1_power_on_reset_detector` | L1 | core | D2 | Bias Reference and Power Management | Power-on-reset detector | 4 | counted | pass/pass | wave 4/4, mean<=1.437e-06, worst<=7.184e-06, abs<=1.125e-04V |
+| `vbr1_l1_power_on_reset_detector` | L1 | core | D2 | Bias Reference and Power Management | Power-on-reset detector | 4 | counted | pass/pass | wave 4/4, mean<=1.437e-06, worst<=7.183e-06, abs<=1.125e-04V |
 | `vbr1_l1_precision_rectifier_envelope_detector` | L1 | core | D2 | Baseband Signal Conditioning | Precision rectifier/envelope detector | 4 | counted | pass/pass | wave 4/4, mean<=0.00388, worst<=0.0125, abs<=1V |
 | `vbr1_l1_programmable_gain_amplifier` | L1 | core | D2 | Baseband Signal Conditioning | Programmable gain amplifier | 4 | counted | pass/pass | wave 4/4, mean<=0.00746, worst<=0.0248, abs<=1V |
 | `vbr1_l1_propagation_delay_comparator` | L1 | core | D2 | Comparator and Decision Circuits | Propagation-delay comparator | 4 | counted | pass/pass | wave 4/4, mean<=1.611e-05, worst<=9.468e-05, abs<=0.104V |
-| `vbr1_l1_ptat_ctat_reference_generator` | L1 | core | D2 | Bias Reference and Power Management | PTAT/CTAT reference generator | 4 | counted | pass/pass | wave 4/4, mean<=2.768e-06, worst<=6.970e-06, abs<=7.354e-05V |
+| `vbr1_l1_ptat_ctat_reference_generator` | L1 | core | D2 | Bias Reference and Power Management | PTAT/CTAT reference generator | 4 | counted | pass/pass | wave 4/4, mean<=2.047e-06, worst<=6.970e-06, abs<=7.354e-05V |
 | `vbr1_l1_ramp_or_step_source` | L1 | support | D2 | Stimulus and Source Generators | Periodic phase-ramp guard source | 3 | not counted | pass/pass | wave 3/3, mean<=0.0147, worst<=0.0158, abs<=1V |
 | `vbr1_l1_resettable_integrator` | L1 | core | D2 | Baseband Signal Conditioning | Resettable integrator | 4 | counted | pass/pass | wave 4/4, mean<=0.0172, worst<=0.0515, abs<=0.388V |
-| `vbr1_l1_rf_mixer_downconverter_macro` | L1 | core | D2 | RF and AFE Behavioral Macromodels | RF mixer/downconverter macro | 4 | counted | pass/pass | wave 4/4, mean<=4.042e-04, worst<=0.00202, abs<=0.0302V |
+| `vbr1_l1_rf_mixer_downconverter_macro` | L1 | core | D2 | RF and AFE Behavioral Macromodels | RF mixer/downconverter macro | 4 | counted | pass/pass | wave 4/4, mean<=0.0097, worst<=0.0485, abs<=0.164V |
 | `vbr1_l1_sample_and_hold_with_droop_leakage` | L1 | core | D2 | Sampling and Analog Memory | Sample-and-hold with droop/leakage | 4 | counted | pass/pass | wave 4/4, mean<=0.00178, worst<=0.0071, abs<=0.085V |
 | `vbr1_l1_sar_logic` | L1 | core | D2 | Data Converter Models | SAR logic | 4 | counted | pass/pass | wave 4/4, mean<=0, worst<=0, abs<=0V |
 | `vbr1_l1_segmented_dac` | L1 | core | D2 | Data Converter Models | Segmented DAC | 4 | counted | pass/pass | wave 4/4, mean<=0.00217, worst<=0.013, abs<=0.141V |
@@ -156,7 +156,7 @@ Promotion note: This is the primary vaBench 300 management surface: 271 inherite
 | `vbr1_l1_vco_phase_integrator` | L1 | core | D2 | PLL Clock and Timing Systems | VCO phase integrator | 4 | counted | pass/pass | wave 4/4, mean<=2.275e-10, worst<=6.824e-10, abs<=2.345e-08V |
 | `vbr1_l1_window_comparator_detector` | L1 | core | D2 | Comparator and Decision Circuits | Window comparator/detector | 4 | counted | pass/pass | wave 4/4, mean<=4.167e-04, worst<=8.333e-04, abs<=1V |
 | `vbr1_l2_adpll_lock_ratio_hop_timer_flow` | L2 | core | D3 | PLL Clock and Timing Systems | ADPLL lock/ratio-hop/timer flow | 2 | counted | pass/pass | task metrics 2 forms |
-| `vbr1_l2_agc_receiver_leveling_loop` | L2 | core | D3 | RF and AFE Behavioral Macromodels | AGC receiver leveling loop | 2 | counted | pass/pass | wave 2/2, mean<=1.939e-06, worst<=5.529e-06, abs<=1.065e-04V |
+| `vbr1_l2_agc_receiver_leveling_loop` | L2 | core | D3 | RF and AFE Behavioral Macromodels | AGC receiver leveling loop | 2 | counted | pass/pass | wave 2/2, mean<=1.743e-06, worst<=5.529e-06, abs<=1.065e-04V |
 | `vbr1_l2_amplifier_filter_chain` | L2 | core | D3 | Baseband Signal Conditioning | Amplifier/filter chain | 2 | counted | pass/pass | wave 2/2, mean<=7.331e-06, worst<=2.111e-05, abs<=2.828e-04V |
 | `vbr1_l2_comparator_measurement_flow` | L2 | core | D3 | Comparator and Decision Circuits | Single-ramp comparator offset measurement flow | 2 | counted | pass/pass | wave 2/2, mean<=0, worst<=0, abs<=0V |
 | `vbr1_l2_complete_calibration_loop` | L2 | core | D3 | Calibration, DEM, and Control | Complete calibration loop | 2 | counted | pass/pass | wave 2/2, mean<=1.124e-05, worst<=3.713e-05, abs<=4.805e-05V |
@@ -166,7 +166,7 @@ Promotion note: This is the primary vaBench 300 management surface: 271 inherite
 | `vbr1_l2_flash_adc_mini_array` | L2 | core | D3 | Data Converter Models | Flash ADC mini-array | 2 | counted | pass/pass | wave 2/2, mean<=2.450e-17, worst<=2.940e-16, abs<=2.887e-15V |
 | `vbr1_l2_gain_extraction_convergence_measurement_flow` | L2 | support | D3 | Measurement Instrumentation Flows | Dithered differential gain extraction flow | 2 | not counted | pass/pass | gain delta<=0.0208 |
 | `vbr1_l2_iq_downconversion_chain` | L2 | core | D3 | RF and AFE Behavioral Macromodels | I/Q downconversion chain | 2 | counted | pass/pass | wave 2/2, mean<=1.020e-05, worst<=1.792e-05, abs<=1.406e-04V |
-| `vbr1_l2_ldo_load_step_recovery_flow` | L2 | core | D3 | Bias Reference and Power Management | LDO load-step recovery flow | 2 | counted | pass/pass | wave 2/2, mean<=3.370e-06, worst<=1.197e-05, abs<=8.126e-05V |
+| `vbr1_l2_ldo_load_step_recovery_flow` | L2 | core | D3 | Bias Reference and Power Management | LDO load-step recovery flow | 2 | counted | pass/pass | wave 2/2, mean<=1.135e-06, worst<=5.674e-06, abs<=1.204e-05V |
 | `vbr1_l2_measurement_flow` | L2 | support | D3 | Measurement Instrumentation Flows | Measurement flow | 2 | not counted | pass/pass | wave 2/2, mean<=7.172e-07, worst<=1.434e-06, abs<=1.409e-05V |
 | `vbr1_l2_pipeline_adc_chain` | L2 | core | D3 | Data Converter Models | Pipeline ADC residue chain | 2 | counted | pass/pass | wave 2/2, mean<=1.273e-06, worst<=1.484e-05, abs<=1.969e-04V |
 | `vbr1_l2_programmable_stimulus_sequencer` | L2 | support | D3 | Stimulus and Source Generators | Programmable stimulus sequencer | 2 | not counted | pass/pass | wave 2/2, mean<=0.0062, worst<=0.0333, abs<=0.304V |
@@ -185,4 +185,5 @@ Promotion note: This is the primary vaBench 300 management surface: 271 inherite
 - Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.
 - Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.
 - Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.
+- Content contract status is review_required; review_required currently flags promoted v1.1 L2 gold-kernel diversity debt, not a simulator certification failure.
 - Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current.

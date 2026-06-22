@@ -18,6 +18,7 @@ ENTRY_CSV = REPORTS_ROOT / "benchmark_overview_entries.csv"
 FORM_CSV = REPORTS_ROOT / "benchmark_overview_forms.csv"
 CATEGORY_CSV = REPORTS_ROOT / "benchmark_overview_categories.csv"
 VABENCH300_MANIFEST = PACKAGE_ROOT / "vabench-300-expansion" / "VABENCH_300_MANIFEST.json"
+CONTENT_CONTRACT_REPORT = REPORTS_ROOT / "content_contract_audit.json"
 VABENCH300_CLOSURE_REPORT = ROOT / "speed-optimization" / "reports" / "vabench300_p0_p2_closure_20260620.md"
 SPECTRE_AX_SUBSET_REPORT = (
     ROOT / "speed-optimization" / "reports" / "e2e_wall_unified_full_20260602_r14_core_fastpath_exactrows.json"
@@ -569,6 +570,7 @@ def build_report() -> dict[str, Any]:
     manifest = read_json(PACKAGE_ROOT / "MANIFEST.json")
     dual = read_json(REPORTS_ROOT / "dual_certification.json")
     score = read_json(REPORTS_ROOT / "score_denominator_manifest.json")
+    content_contract = read_json(CONTENT_CONTRACT_REPORT)
     dual_staging = read_json(REPORTS_ROOT / "dual_rerun_staging_manifest.json")
     speed_staging = read_json(REPORTS_ROOT / "speed_remaining_staging_manifest.json")
 
@@ -661,6 +663,7 @@ def build_report() -> dict[str, Any]:
         "summary": {
             **manifest_summary,
             "score_denominator_status": score.get("status", "missing"),
+            "content_contract_status": content_contract.get("status", "missing"),
             "dual_certification_status": dual.get("status", "missing"),
             "dual_certified_release_task_count": dual.get("dual_certified_release_task_count", 0),
             "evas_pass_spectre_fail_count": dual.get("evas_pass_spectre_fail_count", 0),
@@ -684,6 +687,7 @@ def build_report() -> dict[str, Any]:
             "vabench300_closure_report": rel(VABENCH300_CLOSURE_REPORT),
             "dual_certification": rel(REPORTS_ROOT / "dual_certification.json"),
             "score_denominator_manifest": rel(REPORTS_ROOT / "score_denominator_manifest.json"),
+            "content_contract_audit": rel(CONTENT_CONTRACT_REPORT),
             "dual_rerun_staging_manifest": rel(REPORTS_ROOT / "dual_rerun_staging_manifest.json"),
             "speed_remaining_staging_manifest": rel(REPORTS_ROOT / "speed_remaining_staging_manifest.json"),
             "spectre_ax_subset_report": rel(SPECTRE_AX_SUBSET_REPORT),
@@ -704,6 +708,7 @@ def build_report() -> dict[str, Any]:
             "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
             "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
             "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
+            f"Content contract status is {content_contract.get('status', 'missing')}; review_required currently flags promoted v1.1 L2 gold-kernel diversity debt, not a simulator certification failure.",
             "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current.",
         ],
         "category_rows": category_rows,

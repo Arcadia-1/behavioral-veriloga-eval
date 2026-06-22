@@ -49,8 +49,11 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
     assert tasks["summary"]["certified_rows"] == 300
     assert len(tasks["rows"]) == 300
     assert "Data Converter Models" in tasks["filters"]["category"]
-    assert sum(1 for row in tasks["rows"] if row.get("prompt")) == 271
-    assert sum(1 for row in tasks["rows"] if row.get("prompt") is None) == 29
+    assert sum(1 for row in tasks["rows"] if row.get("prompt")) == 300
+    assert sum(1 for row in tasks["rows"] if row.get("prompt") is None) == 0
+    assert sum(1 for row in tasks["rows"] if row.get("checks")) == 300
+    assert sum(1 for row in tasks["rows"] if row.get("release_task_manifest")) == 300
+    assert sum(1 for row in tasks["rows"] if row["provenance"] == "promoted_v1.1" and row.get("prompt")) == 29
     prompt_row = next(row for row in tasks["rows"] if row.get("prompt"))
     assert prompt_row["checks"].endswith("checks.yaml")
     assert prompt_row["release_task_manifest"].endswith("release_task.json")

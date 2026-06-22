@@ -1,20 +1,20 @@
 {
-  "date": "2026-05-30",
+  "date": "2026-06-22",
   "release": "vabench-release-v1",
   "status": "pass",
   "prompt_version_id": "public-contract-v3",
   "previous_prompt_version": "public-contract-v2",
   "runner_wrapper_version": "release-runner-wrapper-v6",
-  "prompt_count": 271,
-  "expected_prompt_count": 271,
+  "prompt_count": 300,
+  "expected_prompt_count": 300,
   "status_counts": {
-    "pass": 271
+    "pass": 300
   },
   "form_counts": {
-    "bugfix": 54,
-    "dut": 59,
-    "e2e": 79,
-    "tb": 79
+    "bugfix": 62,
+    "dut": 66,
+    "e2e": 86,
+    "tb": 86
   },
   "sync_script": "runners/sync_vabench_release_prompt_contracts.py",
   "change_summary": [
@@ -1196,7 +1196,7 @@
         "sh_ideal.va",
         "tb_sar_adc_dac_weighted_8b_ref.scs"
       ],
-      "prompt_sha256": "40186c125ea3bcaf1f0d1cf91c7573a6a107920d57ce61115f324193d23df812",
+      "prompt_sha256": "2b6e4aef3eb558c8c090c82ac69be6d433d43a32dac1472ce6a6fc63d4e7f63f",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -1223,7 +1223,7 @@
       "target_artifacts": [
         "tb_sar_adc_dac_weighted_8b_ref.scs"
       ],
-      "prompt_sha256": "31beafca1c0198d1d763722d1b620dbf59bb8e51011eaaeabb85fa66609fd6df",
+      "prompt_sha256": "edbc1bf6c3535f8bb3b4e0c1f1284621bec095d5af3d25b048c405b655bbeeb0",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3325,7 +3325,7 @@
         "amplifier_filter_chain.va",
         "tb_amplifier_filter_chain.scs"
       ],
-      "prompt_sha256": "48b8417af9726d49a849567b06831f0de01edec35c0b652b6d312193d555e69a",
+      "prompt_sha256": "b72571ceb4d81eb6ea3d17d4af2dc586abd3c3c2440fe2a5315e2859a09b99d5",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -3352,7 +3352,7 @@
       "target_artifacts": [
         "tb_amplifier_filter_chain.scs"
       ],
-      "prompt_sha256": "beade061fbcf2ba782f20dcbbc8dfb28a86dc45b6dda07e4e7a8277cdd377d81",
+      "prompt_sha256": "3a62dd28e2a5b2353af85d0a1cfe967e63aa73e88a6aed08c019e137644b53a5",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -4253,7 +4253,7 @@
         "adpll_ratio_hop_ref.va",
         "tb_adpll_ratio_hop_ref.scs"
       ],
-      "prompt_sha256": "e5ad5174968f589317cf1702af69c8c8fe7e83f00b4da7275712d850651aa506",
+      "prompt_sha256": "5b5652bcf9efadd3cb4b77a079849e2307d1d5a0bedfe556690f811ccffd6a1c",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -4280,7 +4280,7 @@
       "target_artifacts": [
         "tb_adpll_ratio_hop_ref.scs"
       ],
-      "prompt_sha256": "25353e30793c8983573f134ee335d2baef3100bcdbdb0807b2e20e24fcde9c15",
+      "prompt_sha256": "73f6fffa0a6f9cc01f7317be9ba463d8d4aa7e21b01531abf4c8a7d089bda84a",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5020,7 +5020,7 @@
         "complete_calibration_loop.va",
         "tb_complete_calibration_loop.scs"
       ],
-      "prompt_sha256": "2fbdc935bf6c5222bf3631d78c15e31d5490463806429288e64ba6186af4d1e7",
+      "prompt_sha256": "f10f0d52de7927828828c8bfc4c8aa4a05b3c511c158e6daa374d5ecabdd735d",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5047,7 +5047,7 @@
       "target_artifacts": [
         "tb_complete_calibration_loop.scs"
       ],
-      "prompt_sha256": "6e8af51a0936cdbf5f6c4eea2f655f70aabdcb629b4eb5fb89ffa369143f5570",
+      "prompt_sha256": "1ee60c0e1debdb101e732627cc40bf24b570b75540aebf5f341afa5f986e8b82",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5729,7 +5729,7 @@
         "ldo_load_step_recovery_flow.va",
         "tb_ldo_load_step_recovery_flow.scs"
       ],
-      "prompt_sha256": "2edec50ca8d49fdde93e9e57920dd9dd7d09192b91329db1c4fb0cb90650e6dd",
+      "prompt_sha256": "223af621df49618e65bd91bfd3878d3010e65c739a11575acf74bc9c564f75aa",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5756,7 +5756,7 @@
       "target_artifacts": [
         "tb_ldo_load_step_recovery_flow.scs"
       ],
-      "prompt_sha256": "f8573b78b2ec72a49d7c163f6c3454385cea3a2f04af7a52a969c1c16037ef36",
+      "prompt_sha256": "c3d1e3a38053ca26922bc9af860296e659bc10f398d5ec80657136a9f47ae4a7",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5784,7 +5784,7 @@
         "reference_startup_enable_flow.va",
         "tb_reference_startup_enable_flow.scs"
       ],
-      "prompt_sha256": "cda00f62a6731355e2617ebc81d4c6bc440d2f193068a860387f706f81b79020",
+      "prompt_sha256": "7ed00a22f4e8e298766462d2d53c5f1e0758f6464c6a79c8be5516ef7d6d3468",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -5811,7 +5811,7 @@
       "target_artifacts": [
         "tb_reference_startup_enable_flow.scs"
       ],
-      "prompt_sha256": "0ba734a80bd00e3f930914f640615b72e0a1d0b4dafc71435b27e079805b3e6d",
+      "prompt_sha256": "8c3a136b80d10695cae276e48b331b17a47d293bf2ec131a784d5b8a08c545b5",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6384,7 +6384,7 @@
         "agc_receiver_leveling_loop.va",
         "tb_agc_receiver_leveling_loop.scs"
       ],
-      "prompt_sha256": "a740bea44deac04cdf074675529cc84a48232fdc29cebb38cc83cdc3c3efe177",
+      "prompt_sha256": "a850e02f5ccee6e9546a9b317350ea73463948d4ae0f731015f7af6a42d765b1",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6411,7 +6411,7 @@
       "target_artifacts": [
         "tb_agc_receiver_leveling_loop.scs"
       ],
-      "prompt_sha256": "9689cf8e05b6a787c7a4dd29ac8faea8c36c24b63f0b8f83a1fb3f589d5c5137",
+      "prompt_sha256": "3933e50795d06248c313c53fa57320e675cb82c699129416cf43bf7879cc727b",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6439,7 +6439,7 @@
         "iq_downconversion_chain.va",
         "tb_iq_downconversion_chain.scs"
       ],
-      "prompt_sha256": "8c08f76e7807bfc25ada66cf0b3daac567c2131e9401681364db55a8e541e8f4",
+      "prompt_sha256": "a0db901141bd24ebd563dcdd81bbd8af195e3c59e8b6ccc28a94c47781c8bb77",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -6466,7 +6466,7 @@
       "target_artifacts": [
         "tb_iq_downconversion_chain.scs"
       ],
-      "prompt_sha256": "237170ee4355754a7415add0aa74507a103786c5fb5bc35532dcb50ede1400ce",
+      "prompt_sha256": "bfe95b6250808eaac150b526f0cd349792a1433ab08260ad315197662773a229",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",
@@ -7431,6 +7431,796 @@
         "tb_programmable_stimulus_sequencer.scs"
       ],
       "prompt_sha256": "da459d73aea1bbbdc731db692e9796594698734f40230de934029e208f77688e",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "First-order sigma-delta modulator loop",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "sigma_delta_modulator_loop.va"
+      ],
+      "prompt_sha256": "5274137c8dc6d7659a0f68201a5e5894adec1b618aab5d7391ee6d457a909905",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:dut",
+      "form": "dut",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "First-order sigma-delta modulator loop",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/release_task.json",
+      "target_artifacts": [
+        "sigma_delta_modulator_loop.va"
+      ],
+      "prompt_sha256": "46a36c44e342fa2f988961c001e1085fd852617874d3c716e2dfe4ac970f44e6",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "First-order sigma-delta modulator loop",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "sigma_delta_modulator_loop.va",
+        "tb_sigma_delta_modulator_loop.scs"
+      ],
+      "prompt_sha256": "6cab45743e2f5b8beae3da1db4ecdf9af2fc92c6833bd157390b2aff9ace7d80",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:tb",
+      "form": "tb",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "First-order sigma-delta modulator loop",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_sigma_delta_modulator_loop.scs"
+      ],
+      "prompt_sha256": "54c7787eae4cd6e20853d8bf8c7af2f005c4eae6eb9a095bac40375fdd5d0257",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "time_interleaved_adc_mismatch.va"
+      ],
+      "prompt_sha256": "4e97b7349c038dce2b93f4a378438d3a177a79726f87d7990678d1bf172ad1dd",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:dut",
+      "form": "dut",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/release_task.json",
+      "target_artifacts": [
+        "time_interleaved_adc_mismatch.va"
+      ],
+      "prompt_sha256": "9b5efd8097586b397809bdbaf5fb05d817bcb3e2de62683bda50f113db64e118",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "time_interleaved_adc_mismatch.va",
+        "tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "prompt_sha256": "a8e547cc8209083f4f85f44345b3a2a35e376c41a1a60c19c69c3d1c267f33b9",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:tb",
+      "form": "tb",
+      "level": "",
+      "category": "Data Converter Models",
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_time_interleaved_adc_mismatch.scs"
+      ],
+      "prompt_sha256": "872413910bc47b8706e5cd3138d094969b4b0296c0ae2e1be4a03ad0c0dc9a1c",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Comparator metastability window model",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "metastability_window_comparator.va"
+      ],
+      "prompt_sha256": "0a8ec34965c0e45064c481c99234b0498980babeb5bfd44d9c69fdf20db178af",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:dut",
+      "form": "dut",
+      "level": "",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Comparator metastability window model",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/dut/release_task.json",
+      "target_artifacts": [
+        "metastability_window_comparator.va"
+      ],
+      "prompt_sha256": "aec5fb7afb8274b88ac7730d91883250e2e8a32db0a2f021f561cbb43dbda336",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Comparator metastability window model",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "metastability_window_comparator.va",
+        "tb_metastability_window_comparator.scs"
+      ],
+      "prompt_sha256": "f96f1f87ae666b3831183c7eacf2cf3e8acf8aea22d32046e459fcf04b618e94",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:tb",
+      "form": "tb",
+      "level": "",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Comparator metastability window model",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_metastability_window_comparator.scs"
+      ],
+      "prompt_sha256": "9cfae24674d015a3f23dbbb968916a9c45cb8b894630a280450cc7eb8250543b",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Bootstrapped sample switch abstraction",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "bootstrapped_sample_switch.va"
+      ],
+      "prompt_sha256": "b2f467e4709097225c037628e3b68277a69cc6e791c6161cc23c23a28b88ee80",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:dut",
+      "form": "dut",
+      "level": "",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Bootstrapped sample switch abstraction",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/release_task.json",
+      "target_artifacts": [
+        "bootstrapped_sample_switch.va"
+      ],
+      "prompt_sha256": "6ebc992bb308e71bedbac27489b600aa48a0a94c7b754a95e2d21a2a0a3d07be",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Bootstrapped sample switch abstraction",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "bootstrapped_sample_switch.va",
+        "tb_bootstrapped_sample_switch.scs"
+      ],
+      "prompt_sha256": "adf4c0d70ca043a5987236f30784d3b81bcee2bb3e0144e49227e4ba22069e70",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:tb",
+      "form": "tb",
+      "level": "",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Bootstrapped sample switch abstraction",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_bootstrapped_sample_switch.scs"
+      ],
+      "prompt_sha256": "bfc2784c6e752df2df225dbcf0cb36de4d2fb35bcb51333c684eaffd6633ef97",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "Fractional-N divider and accumulator flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "fractional_n_pll_divider.va"
+      ],
+      "prompt_sha256": "acbf51a592f0575b9123011af088e60878e51ed97ebe0b3a6dc246a52da1ef7f",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:dut",
+      "form": "dut",
+      "level": "",
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "Fractional-N divider and accumulator flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/release_task.json",
+      "target_artifacts": [
+        "fractional_n_pll_divider.va"
+      ],
+      "prompt_sha256": "f72d59c1a96095fdfe5045ca34d5b7312cee6c2d931ae1ef6b11e3647d8a9b52",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "Fractional-N divider and accumulator flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "fractional_n_pll_divider.va",
+        "tb_fractional_n_pll_divider.scs"
+      ],
+      "prompt_sha256": "126e9e5225f1f79a6d4e8de84a111dbf52ba44100a78b3e9ecaf3b7d8407810d",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:tb",
+      "form": "tb",
+      "level": "",
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "Fractional-N divider and accumulator flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_fractional_n_pll_divider.scs"
+      ],
+      "prompt_sha256": "0ee475c3c196420a97442d80d5fb39935101e90c7eb8c0e38c40c0630f7641c6",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "task_id": "cppll_tracking_frequency_step_reacquire:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "PLL Clock and Timing Systems",
+      "base_function": "CPPLL tracking and frequency-step reacquire flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "cppll_tracking_frequency_step_reacquire.va"
+      ],
+      "prompt_sha256": "004e4543461bee118cd41f077a0282b39ca47d4e0e1190f3896dac2b0b9b0b44",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "Bias Reference and Power Management",
+      "base_function": "Bandgap startup and trim convergence flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "bandgap_startup_trim.va"
+      ],
+      "prompt_sha256": "2e902de5d0217a4e176f35698762f6cfc1d1caaae6d0f1874b7120af0e813c8a",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:dut",
+      "form": "dut",
+      "level": "",
+      "category": "Bias Reference and Power Management",
+      "base_function": "Bandgap startup and trim convergence flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/release_task.json",
+      "target_artifacts": [
+        "bandgap_startup_trim.va"
+      ],
+      "prompt_sha256": "05c79581f54518daf72e03dde13aec7eeb632e1871a4701067a61e2f9ce060f7",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "Bias Reference and Power Management",
+      "base_function": "Bandgap startup and trim convergence flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "bandgap_startup_trim.va",
+        "tb_bandgap_startup_trim.scs"
+      ],
+      "prompt_sha256": "1b8e01c3321899ca29b57a7b98a7cae10c37ca0098e99e495d06b3dc3f2a6a7b",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:tb",
+      "form": "tb",
+      "level": "",
+      "category": "Bias Reference and Power Management",
+      "base_function": "Bandgap startup and trim convergence flow",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_bandgap_startup_trim.scs"
+      ],
+      "prompt_sha256": "70004ed12c8353d4f36b3eb1d31ee8cd308cbf2a2be0e1f6deea122433a2a24e",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:bugfix",
+      "form": "bugfix",
+      "level": "",
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/bugfix/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/bugfix/release_task.json",
+      "target_artifacts": [
+        "quadrature_iq_imbalance_corrector.va"
+      ],
+      "prompt_sha256": "2280bfc2e22a784ef30b779e24329523135c96413cecf6410819f2011ecf8011",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:dut",
+      "form": "dut",
+      "level": "",
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/release_task.json",
+      "target_artifacts": [
+        "quadrature_iq_imbalance_corrector.va"
+      ],
+      "prompt_sha256": "361efe0c2bd41f06688c0e796b92732e9749a67cbd822d12ce5b0af87725dc6c",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:e2e",
+      "form": "e2e",
+      "level": "",
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/e2e/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/e2e/release_task.json",
+      "target_artifacts": [
+        "quadrature_iq_imbalance_corrector.va",
+        "tb_quadrature_iq_imbalance_corrector.scs"
+      ],
+      "prompt_sha256": "45e767286417df39e8de104527364650f103ff477d94d60efd657efeb49c8242",
+      "required_sections_present": [
+        "## Release Task Contract",
+        "## Form-Specific Requirements",
+        "## Output Contract",
+        "## Task-Specific Public Description"
+      ],
+      "missing_sections": [],
+      "forbidden_text_present": [],
+      "missing_target_artifacts": [],
+      "baseline_compatibility": "requires_rerun",
+      "change_type": "public_contract_scaffold_normalization"
+    },
+    {
+      "status": "pass",
+      "prompt_version_id": "public-contract-v3",
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:tb",
+      "form": "tb",
+      "level": "",
+      "category": "RF and AFE Behavioral Macromodels",
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/tb/prompt.md",
+      "release_task_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/tb/release_task.json",
+      "target_artifacts": [
+        "tb_quadrature_iq_imbalance_corrector.scs"
+      ],
+      "prompt_sha256": "5ccac91eaa8fbeaf4ab1c823095ba32d86e3fcd43ce4188ad0b913450247883b",
       "required_sections_present": [
         "## Release Task Contract",
         "## Form-Specific Requirements",

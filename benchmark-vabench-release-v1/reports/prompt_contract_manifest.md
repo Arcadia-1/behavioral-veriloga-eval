@@ -1,22 +1,22 @@
 # vaBench Release Prompt Contract Manifest
 
-Date: 2026-05-30
+Date: 2026-06-22
 
 | Metric | Value |
 | --- | ---: |
 | status | `pass` |
 | prompt version | `public-contract-v3` |
 | runner wrapper | `release-runner-wrapper-v6` |
-| prompts | 271 |
+| prompts | 300 |
 
 ## Form Counts
 
 | Form | Prompts |
 | --- | ---: |
-| `bugfix` | 54 |
-| `dut` | 59 |
-| `e2e` | 79 |
-| `tb` | 79 |
+| `bugfix` | 62 |
+| `dut` | 66 |
+| `e2e` | 86 |
+| `tb` | 86 |
 
 ## Change Summary
 
