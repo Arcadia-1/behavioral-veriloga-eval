@@ -53,6 +53,10 @@ SPECTRE_BACKEND_ALIASES = {
     "sui-direct": "sui-direct",
     "direct-sui": "sui-direct",
 }
+SPECTRE_MODE_ARGS = {
+    "ax": ("+preset=ax", "+mt"),
+    "reference": (),
+}
 
 
 def normalize_spectre_backend(value: str | None) -> str:
@@ -60,6 +64,20 @@ def normalize_spectre_backend(value: str | None) -> str:
     if key not in SPECTRE_BACKEND_ALIASES:
         raise ValueError(f"unknown Spectre backend: {value}")
     return SPECTRE_BACKEND_ALIASES[key]
+
+
+def normalize_spectre_mode(value: str | None) -> str:
+    key = (value or os.environ.get("VAEVAS_SPECTRE_MODE") or "ax").strip().lower().replace("-", "_")
+    aliases = {
+        "spectre_ax": "ax",
+        "spectre_reference": "reference",
+        "classic": "reference",
+        "strict": "reference",
+    }
+    key = aliases.get(key, key)
+    if key not in SPECTRE_MODE_ARGS:
+        raise ValueError(f"unknown Spectre mode: {value}")
+    return key
 
 
 def default_sui_host() -> str:
@@ -1571,6 +1589,7 @@ def run_spectre_case_sui_direct(
     side_output_files: tuple[str, ...] = (),
     sui_host: str | None = None,
     sui_work_root: str | None = None,
+    spectre_mode: str = "ax",
 ) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     result_json = output_dir / "spectre_result.json"
@@ -1606,6 +1625,7 @@ def run_spectre_case_sui_direct(
     warnings: list[str] = []
     psf_parse: dict[str, object] | None = None
     license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
+    mode = normalize_spectre_mode(spectre_mode)
     command = [
         "spectre",
         "-64",
@@ -1617,8 +1637,7 @@ def run_spectre_case_sui_direct(
         "psfascii",
         "-raw",
         raw_name,
-        "+preset=ax",
-        "+mt",
+        *SPECTRE_MODE_ARGS[mode],
         "+lqtimeout",
         str(license_queue_timeout_s),
         "-maxw",
@@ -1738,6 +1757,7 @@ def run_spectre_case_sui_direct(
         "csv_path": str(csv_path),
         "side_outputs": side_outputs,
         "spectre_backend": "sui-direct",
+        "spectre_mode": mode,
         "sui_host": host,
         "sui_nested_host": default_sui_nested_host(),
         "sui_work_root": work_root,
@@ -1764,8 +1784,10 @@ def run_spectre_case(
     spectre_backend: str = "bridge",
     sui_host: str | None = None,
     sui_work_root: str | None = None,
+    spectre_mode: str = "ax",
 ) -> dict:
     backend = normalize_spectre_backend(spectre_backend)
+    mode = normalize_spectre_mode(spectre_mode)
     if backend == "sui-direct":
         return run_spectre_case_sui_direct(
             task_id=task_id,
@@ -1777,6 +1799,7 @@ def run_spectre_case(
             side_output_files=side_output_files,
             sui_host=sui_host,
             sui_work_root=sui_work_root,
+            spectre_mode=mode,
         )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1799,6 +1822,7 @@ def run_spectre_case(
         "cadence_cshrc": cadence_cshrc or "",
         "bridge_profile": os.environ.get("VAEVAS_BRIDGE_PROFILE") or os.environ.get("BRIDGE_PROFILE") or "",
         "side_output_files": list(side_output_files),
+        "spectre_mode": mode,
     }
 
     inline = (
@@ -1816,7 +1840,9 @@ def run_spectre_case(
         "out = Path(payload['output_dir'])\n"
         "out.mkdir(parents=True, exist_ok=True)\n"
         "side_output_files = list(payload.get('side_output_files') or [])\n"
-        "sim = SpectreSimulator.from_env(spectre_args=spectre_mode_args('ax'), work_dir=out, output_format='psfascii', keep_remote_files=bool(side_output_files), profile=profile)\n"
+        "spectre_mode = payload.get('spectre_mode') or 'ax'\n"
+        "spectre_args = spectre_mode_args('ax') if spectre_mode == 'ax' else ()\n"
+        "sim = SpectreSimulator.from_env(spectre_args=spectre_args, work_dir=out, output_format='psfascii', keep_remote_files=bool(side_output_files), profile=profile)\n"
         "runner = None\n"
         "remote_pwd = ''\n"
         "if side_output_files:\n"
@@ -1893,6 +1919,7 @@ def run_spectre_case(
         "    'side_outputs': side_outputs,\n"
         "    'remote_run_dir': remote_run_dir,\n"
         "    'remote_pwd': remote_pwd,\n"
+        "    'spectre_mode': spectre_mode,\n"
         "}\n"
         "Path(payload['result_json']).write_text(json.dumps(summary, indent=2), encoding='utf-8')\n"
         "print(json.dumps(summary, indent=2))\n"
@@ -1952,6 +1979,7 @@ def run_dual_case(
     spectre_backend: str = "bridge",
     sui_host: str | None = None,
     sui_work_root: str | None = None,
+    spectre_mode: str = "ax",
 ) -> dict:
     gold_dir = task_dir / "gold"
     meta = read_meta(task_dir)
@@ -2015,6 +2043,7 @@ def run_dual_case(
         spectre_backend=spectre_backend,
         sui_host=sui_host,
         sui_work_root=sui_work_root,
+        spectre_mode=spectre_mode,
     )
     spectre_wall_time_s = time.perf_counter() - spectre_t0
     if should_retry_spectre_upload(spectre_result):
@@ -2032,6 +2061,7 @@ def run_dual_case(
             spectre_backend=spectre_backend,
             sui_host=sui_host,
             sui_work_root=sui_work_root,
+            spectre_mode=spectre_mode,
         )
         spectre_wall_time_s += time.perf_counter() - retry_t0
 

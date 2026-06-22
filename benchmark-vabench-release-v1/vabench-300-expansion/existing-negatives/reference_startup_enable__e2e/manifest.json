@@ -1,0 +1,172 @@
+{
+  "negative_count": 5,
+  "negatives": [
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "boundary_near_miss"
+      ],
+      "id": "neg_001",
+      "kind": "boundary_near_miss",
+      "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "09cb233b67b67cff09b675acf338b3253e397528fe864f43cd720f34164ecc73",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/neg_001.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "timing_window_near_miss"
+      ],
+      "id": "neg_002",
+      "kind": "timing_window_near_miss",
+      "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "a10b77221713a80ba58c694c4e46bad7af4137d7c5424952bf59ede15c2a9176",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/neg_002.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "polarity_direction_near_miss"
+      ],
+      "id": "neg_003",
+      "kind": "polarity_direction_near_miss",
+      "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "61af5a693d4b6c2573579166d77cf66847e73d603947b38eb49c395779cff25c",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/neg_003.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "state_reset_near_miss"
+      ],
+      "id": "neg_004",
+      "kind": "state_reset_near_miss",
+      "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "4b497418608bcfadfac5309b1ab7a3ef2c891eadcede00c236f77f61a03a2e76",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/neg_004.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT07_bias_reference_power_management/vbr1_l2_reference_startup_enable_flow/forms/e2e/gold/reference_startup_enable_flow.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "metric_writeout_near_miss"
+      ],
+      "id": "neg_005",
+      "kind": "metric_writeout_near_miss",
+      "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "83f17a226139a9fa7629ae82fc733003feb725d5a982e042099338b8ecddcf48",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/neg_005.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    }
+  ],
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "task_id": "reference_startup_enable:e2e"
+}

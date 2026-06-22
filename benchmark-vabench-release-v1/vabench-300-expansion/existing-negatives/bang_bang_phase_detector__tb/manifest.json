@@ -1,0 +1,172 @@
+{
+  "negative_count": 5,
+  "negatives": [
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "boundary_near_miss"
+      ],
+      "id": "neg_001",
+      "kind": "boundary_near_miss",
+      "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "3c05ea0e02c180f50358dc2602c4b79abc179db47fd4c85f3de4f25e72406dcc",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/neg_001.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "timing_window_near_miss"
+      ],
+      "id": "neg_002",
+      "kind": "timing_window_near_miss",
+      "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "cf35b652ed070a86250865bc47bef183906d3630e23fb5e16b31ff52f9cd98c7",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/neg_002.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "polarity_direction_near_miss"
+      ],
+      "id": "neg_003",
+      "kind": "polarity_direction_near_miss",
+      "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "91f8f5fc680a0c2ce082c66ea2df09cd0e6839f9150bb9bc4f560299637a4b75",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/neg_003.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "state_reset_near_miss"
+      ],
+      "id": "neg_004",
+      "kind": "state_reset_near_miss",
+      "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "7c12c98b529702b823965a9598eec411c3cecbbc1b3176c670d2aebd6d9a9297",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/neg_004.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT05_pll_clock_and_timing_systems/vbr1_l1_bang_bang_phase_detector/forms/tb/gold/bbpd_data_edge_alignment_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "metric_writeout_near_miss"
+      ],
+      "id": "neg_005",
+      "kind": "metric_writeout_near_miss",
+      "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "5026671deb717d0fccbfd46a7422a994b8287250081e5d1d4adf077e9eb5b347",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/neg_005.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    }
+  ],
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "task_id": "bang_bang_phase_detector:tb"
+}

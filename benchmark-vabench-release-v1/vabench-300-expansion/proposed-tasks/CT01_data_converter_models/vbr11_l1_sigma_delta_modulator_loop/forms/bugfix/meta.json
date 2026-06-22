@@ -1,0 +1,32 @@
+{
+  "asset_type": "vabench_task",
+  "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+  "category": "Data Converter Models",
+  "difficulty": "hard",
+  "domain": "voltage",
+  "expected_backend": "evas",
+  "family": "bugfix",
+  "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+  "legacy_task_id": "vbr11_l1_sigma_delta_modulator_loop:bugfix",
+  "must_include": [
+    "module",
+    "analog"
+  ],
+  "must_not_include": [
+    "laplace_nd",
+    "white_noise",
+    "flicker_noise"
+  ],
+  "negative_policy": {
+    "required_partial_pass_negatives": 5,
+    "zero_score_negatives_allowed": false
+  },
+  "scoring": [
+    "syntax",
+    "dut_compile",
+    "tb_compile",
+    "sim_correct"
+  ],
+  "task_id": "sigma_delta_modulator_loop:bugfix",
+  "topic_id": "sigma_delta_modulator_loop"
+}

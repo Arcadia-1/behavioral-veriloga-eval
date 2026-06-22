@@ -34,13 +34,30 @@ The cleanup goal was to avoid committing old or generated files while preserving
 ## Modification-Time Findings
 
 - Most old files were generated rerun staging material from `2026-05-24` through `2026-05-31`.
-- Large untracked generated groups were not committed:
+- Large untracked generated groups were not committed during initial cleanup:
   - `benchmark-vabench-release-v1/rerun_staging*/`
-  - `benchmark-vabench-release-v1/vabench-300-expansion/`
   - `speed-optimization/reports/`
   - ad hoc diagnostic reports under `benchmark-vabench-release-v1/reports/`
+- `benchmark-vabench-release-v1/vabench-300-expansion/` was initially archived as untracked material, then selectively restored after verifying that it is the intended 300-task benchmark surface rather than disposable staging output.
 - A nested `behavioral-veriloga-eval/results/...` directory was also removed from the repository root and archived because it was raw result output in an invalid top-level location.
 - Recent source/test edits from `2026-06-21` and `2026-06-22` were also preserved in `tracked_dirty.patch` or `untracked/`, but not committed because they were not yet proven coherent with tests and reports.
+
+## Selected Restoration
+
+After cleanup, the following archived paths were restored because they form the intended vaBench-300 surface and its validation harness:
+
+- `benchmark-vabench-release-v1/vabench-300-expansion/`
+- `runners/audit_vabench_300_expansion.py`
+- `runners/build_vabench_300_expansion.py`
+- `runners/report_vabench_300_dual_summary.py`
+- `runners/run_vabench_300_dual_rerun.py`
+- `runners/run_vabench_300_evas_gold.py`
+- `schemas/vabench-300-expansion-manifest.schema.json`
+- `schemas/vabench-partial-pass-negatives.schema.json`
+- `tests/test_vabench_300_expansion.py`
+- `speed-optimization/reports/vabench300_p0_p2_closure_20260620.md`
+
+The minimal tracked runner dependency for `run_vabench_300_dual_rerun.py` was also restored from `tracked_dirty.patch`: Spectre invocation mode support in `runners/run_gold_dual_suite.py` and `runners/run_vabench_release_dual_rerun.py`.
 
 ## Recovery
 

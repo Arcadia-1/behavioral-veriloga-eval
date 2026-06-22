@@ -1,0 +1,2115 @@
+{
+  "claim_boundary": [
+    "This audit verifies asset presence, metadata integrity, and static shallow shape.",
+    "It does not prove that each negative passes shallow simulation or fails full EVAS/Spectre checks."
+  ],
+  "issue_count": 0,
+  "issues": [],
+  "negative_count": 1500,
+  "shallow_static_failed_count": 0,
+  "shallow_static_pass_count": 1500,
+  "status": "pass",
+  "task_count": 300,
+  "task_reports": [
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/binary_weighted_voltage_dac__dut/manifest.json",
+      "status": "pass",
+      "task_id": "binary_weighted_voltage_dac:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/binary_weighted_voltage_dac__tb/manifest.json",
+      "status": "pass",
+      "task_id": "binary_weighted_voltage_dac:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/binary_weighted_voltage_dac__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "binary_weighted_voltage_dac:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/binary_weighted_voltage_dac__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "binary_weighted_voltage_dac:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/capacitive_weighted_sar_feedback_dac__dut/manifest.json",
+      "status": "pass",
+      "task_id": "capacitive_weighted_sar_feedback_dac:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/capacitive_weighted_sar_feedback_dac__tb/manifest.json",
+      "status": "pass",
+      "task_id": "capacitive_weighted_sar_feedback_dac:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/capacitive_weighted_sar_feedback_dac__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "capacitive_weighted_sar_feedback_dac:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/capacitive_weighted_sar_feedback_dac__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "capacitive_weighted_sar_feedback_dac:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_adc_quantizer__dut/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_adc_quantizer:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_adc_quantizer__tb/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_adc_quantizer:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_adc_quantizer__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_adc_quantizer:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_adc_quantizer__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_adc_quantizer:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dac_mismatch_unit_weighting_model__dut/manifest.json",
+      "status": "pass",
+      "task_id": "dac_mismatch_unit_weighting_model:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dac_mismatch_unit_weighting_model__tb/manifest.json",
+      "status": "pass",
+      "task_id": "dac_mismatch_unit_weighting_model:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dac_mismatch_unit_weighting_model__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "dac_mismatch_unit_weighting_model:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dac_mismatch_unit_weighting_model__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "dac_mismatch_unit_weighting_model:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_stage__dut/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_stage:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_stage__tb/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_stage:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_stage__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_stage:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_stage__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_stage:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sar_logic__dut/manifest.json",
+      "status": "pass",
+      "task_id": "sar_logic:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sar_logic__tb/manifest.json",
+      "status": "pass",
+      "task_id": "sar_logic:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sar_logic__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "sar_logic:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sar_logic__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "sar_logic:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/segmented_dac__dut/manifest.json",
+      "status": "pass",
+      "task_id": "segmented_dac:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/segmented_dac__tb/manifest.json",
+      "status": "pass",
+      "task_id": "segmented_dac:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/segmented_dac__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "segmented_dac:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/segmented_dac__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "segmented_dac:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/thermometer_code_decoder__dut/manifest.json",
+      "status": "pass",
+      "task_id": "thermometer_code_decoder:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/thermometer_code_decoder__tb/manifest.json",
+      "status": "pass",
+      "task_id": "thermometer_code_decoder:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/thermometer_code_decoder__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "thermometer_code_decoder:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/thermometer_code_decoder__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "thermometer_code_decoder:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/unit_element_thermometer_dac__dut/manifest.json",
+      "status": "pass",
+      "task_id": "unit_element_thermometer_dac:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/unit_element_thermometer_dac__tb/manifest.json",
+      "status": "pass",
+      "task_id": "unit_element_thermometer_dac:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/unit_element_thermometer_dac__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "unit_element_thermometer_dac:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/unit_element_thermometer_dac__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "unit_element_thermometer_dac:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/converter_static_linearity_measurement__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "converter_static_linearity_measurement:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/converter_static_linearity_measurement__tb/manifest.json",
+      "status": "pass",
+      "task_id": "converter_static_linearity_measurement:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/flash_adc_mini_array__tb/manifest.json",
+      "status": "pass",
+      "task_id": "flash_adc_mini_array:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/flash_adc_mini_array__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "flash_adc_mini_array:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_chain__tb/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_chain:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pipeline_adc_chain__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "pipeline_adc_chain:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/weighted_sar_adc_dac_loop__tb/manifest.json",
+      "status": "pass",
+      "task_id": "weighted_sar_adc_dac_loop:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/weighted_sar_adc_dac_loop__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "weighted_sar_adc_dac_loop:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/debounce_latch__dut/manifest.json",
+      "status": "pass",
+      "task_id": "debounce_latch:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/debounce_latch__tb/manifest.json",
+      "status": "pass",
+      "task_id": "debounce_latch:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/debounce_latch__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "debounce_latch:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/debounce_latch__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "debounce_latch:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/hysteresis_comparator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "hysteresis_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/hysteresis_comparator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "hysteresis_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/hysteresis_comparator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "hysteresis_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/hysteresis_comparator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "hysteresis_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/offset_comparator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "offset_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/offset_comparator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "offset_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/offset_comparator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "offset_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/offset_comparator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "offset_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/propagation_delay_comparator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "propagation_delay_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/propagation_delay_comparator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "propagation_delay_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/propagation_delay_comparator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "propagation_delay_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/propagation_delay_comparator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "propagation_delay_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/strongarm_style_latch_comparator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "strongarm_style_latch_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/strongarm_style_latch_comparator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "strongarm_style_latch_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/strongarm_style_latch_comparator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "strongarm_style_latch_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/strongarm_style_latch_comparator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "strongarm_style_latch_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/threshold_comparator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "threshold_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/threshold_comparator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "threshold_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/threshold_comparator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "threshold_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/threshold_comparator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "threshold_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/window_comparator_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "window_comparator_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/window_comparator_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "window_comparator_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/window_comparator_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "window_comparator_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/window_comparator_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "window_comparator_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__tb/manifest.json",
+      "status": "pass",
+      "task_id": "comparator_measurement:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "comparator_measurement:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/acquisition_limited_sample_hold__dut/manifest.json",
+      "status": "pass",
+      "task_id": "acquisition_limited_sample_hold:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/acquisition_limited_sample_hold__tb/manifest.json",
+      "status": "pass",
+      "task_id": "acquisition_limited_sample_hold:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/acquisition_limited_sample_hold__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "acquisition_limited_sample_hold:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/acquisition_limited_sample_hold__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "acquisition_limited_sample_hold:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/aperture_delay_track_hold__dut/manifest.json",
+      "status": "pass",
+      "task_id": "aperture_delay_track_hold:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/aperture_delay_track_hold__tb/manifest.json",
+      "status": "pass",
+      "task_id": "aperture_delay_track_hold:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/aperture_delay_track_hold__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "aperture_delay_track_hold:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/aperture_delay_track_hold__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "aperture_delay_track_hold:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_sample_hold__dut/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_sample_hold:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_sample_hold__tb/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_sample_hold:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_sample_hold__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_sample_hold:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clocked_sample_hold__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "clocked_sample_hold:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sample_hold_with_droop_leakage__dut/manifest.json",
+      "status": "pass",
+      "task_id": "sample_hold_with_droop_leakage:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sample_hold_with_droop_leakage__tb/manifest.json",
+      "status": "pass",
+      "task_id": "sample_hold_with_droop_leakage:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sample_hold_with_droop_leakage__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "sample_hold_with_droop_leakage:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sample_hold_with_droop_leakage__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "sample_hold_with_droop_leakage:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/converter_front_end__tb/manifest.json",
+      "status": "pass",
+      "task_id": "converter_front_end:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/converter_front_end__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "converter_front_end:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/first_order_lowpass__dut/manifest.json",
+      "status": "pass",
+      "task_id": "first_order_lowpass:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/first_order_lowpass__tb/manifest.json",
+      "status": "pass",
+      "task_id": "first_order_lowpass:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/first_order_lowpass__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "first_order_lowpass:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/first_order_lowpass__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "first_order_lowpass:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/higher_order_filter__dut/manifest.json",
+      "status": "pass",
+      "task_id": "higher_order_filter:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/higher_order_filter__tb/manifest.json",
+      "status": "pass",
+      "task_id": "higher_order_filter:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/higher_order_filter__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "higher_order_filter:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/higher_order_filter__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "higher_order_filter:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/precision_rectifier_envelope_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "precision_rectifier_envelope_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/precision_rectifier_envelope_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "precision_rectifier_envelope_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/precision_rectifier_envelope_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "precision_rectifier_envelope_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/precision_rectifier_envelope_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "precision_rectifier_envelope_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_gain_amplifier__dut/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_gain_amplifier:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_gain_amplifier__tb/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_gain_amplifier:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_gain_amplifier__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_gain_amplifier:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_gain_amplifier__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_gain_amplifier:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/resettable_integrator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "resettable_integrator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/resettable_integrator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "resettable_integrator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/resettable_integrator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "resettable_integrator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/resettable_integrator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "resettable_integrator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/slew_rate_limiter__dut/manifest.json",
+      "status": "pass",
+      "task_id": "slew_rate_limiter:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/slew_rate_limiter__tb/manifest.json",
+      "status": "pass",
+      "task_id": "slew_rate_limiter:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/slew_rate_limiter__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "slew_rate_limiter:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/slew_rate_limiter__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "slew_rate_limiter:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/soft_hysteretic_limiter__dut/manifest.json",
+      "status": "pass",
+      "task_id": "soft_hysteretic_limiter:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/soft_hysteretic_limiter__tb/manifest.json",
+      "status": "pass",
+      "task_id": "soft_hysteretic_limiter:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/soft_hysteretic_limiter__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "soft_hysteretic_limiter:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/soft_hysteretic_limiter__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "soft_hysteretic_limiter:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/amplifier_filter_chain__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "amplifier_filter_chain:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/amplifier_filter_chain__tb/manifest.json",
+      "status": "pass",
+      "task_id": "amplifier_filter_chain:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "bang_bang_phase_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "bang_bang_phase_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "bang_bang_phase_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bang_bang_phase_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "bang_bang_phase_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/charge_pump_abstraction__dut/manifest.json",
+      "status": "pass",
+      "task_id": "charge_pump_abstraction:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/charge_pump_abstraction__tb/manifest.json",
+      "status": "pass",
+      "task_id": "charge_pump_abstraction:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/charge_pump_abstraction__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "charge_pump_abstraction:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/charge_pump_abstraction__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "charge_pump_abstraction:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clock_divider__dut/manifest.json",
+      "status": "pass",
+      "task_id": "clock_divider:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clock_divider__tb/manifest.json",
+      "status": "pass",
+      "task_id": "clock_divider:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clock_divider__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "clock_divider:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/clock_divider__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "clock_divider:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/digital_phase_accumulator_with_modulo_wrap__dut/manifest.json",
+      "status": "pass",
+      "task_id": "digital_phase_accumulator_with_modulo_wrap:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/digital_phase_accumulator_with_modulo_wrap__tb/manifest.json",
+      "status": "pass",
+      "task_id": "digital_phase_accumulator_with_modulo_wrap:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/digital_phase_accumulator_with_modulo_wrap__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "digital_phase_accumulator_with_modulo_wrap:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/digital_phase_accumulator_with_modulo_wrap__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "digital_phase_accumulator_with_modulo_wrap:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lock_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "lock_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lock_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "lock_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lock_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "lock_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lock_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "lock_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/loop_filter_abstraction__dut/manifest.json",
+      "status": "pass",
+      "task_id": "loop_filter_abstraction:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/loop_filter_abstraction__tb/manifest.json",
+      "status": "pass",
+      "task_id": "loop_filter_abstraction:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/loop_filter_abstraction__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "loop_filter_abstraction:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/loop_filter_abstraction__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "loop_filter_abstraction:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pfd_up_dn_logic__dut/manifest.json",
+      "status": "pass",
+      "task_id": "pfd_up_dn_logic:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pfd_up_dn_logic__tb/manifest.json",
+      "status": "pass",
+      "task_id": "pfd_up_dn_logic:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pfd_up_dn_logic__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "pfd_up_dn_logic:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pfd_up_dn_logic__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "pfd_up_dn_logic:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/vco_phase_integrator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "vco_phase_integrator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/vco_phase_integrator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "vco_phase_integrator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/vco_phase_integrator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "vco_phase_integrator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/vco_phase_integrator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "vco_phase_integrator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/adpll_lock_ratio_hop_timer__tb/manifest.json",
+      "status": "pass",
+      "task_id": "adpll_lock_ratio_hop_timer:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/adpll_lock_ratio_hop_timer__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "adpll_lock_ratio_hop_timer:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/cppll_tracking_frequency_step_reacquire__tb/manifest.json",
+      "status": "pass",
+      "task_id": "cppll_tracking_frequency_step_reacquire:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/cppll_tracking_frequency_step_reacquire__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "cppll_tracking_frequency_step_reacquire:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/calibration_deadband_controller__dut/manifest.json",
+      "status": "pass",
+      "task_id": "calibration_deadband_controller:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/calibration_deadband_controller__tb/manifest.json",
+      "status": "pass",
+      "task_id": "calibration_deadband_controller:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/calibration_deadband_controller__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "calibration_deadband_controller:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/calibration_deadband_controller__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "calibration_deadband_controller:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dwa_dem_encoder__dut/manifest.json",
+      "status": "pass",
+      "task_id": "dwa_dem_encoder:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dwa_dem_encoder__tb/manifest.json",
+      "status": "pass",
+      "task_id": "dwa_dem_encoder:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dwa_dem_encoder__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "dwa_dem_encoder:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dwa_dem_encoder__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "dwa_dem_encoder:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/element_shuffler__dut/manifest.json",
+      "status": "pass",
+      "task_id": "element_shuffler:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/element_shuffler__tb/manifest.json",
+      "status": "pass",
+      "task_id": "element_shuffler:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/element_shuffler__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "element_shuffler:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/element_shuffler__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "element_shuffler:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_trim_controller__dut/manifest.json",
+      "status": "pass",
+      "task_id": "gain_trim_controller:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_trim_controller__tb/manifest.json",
+      "status": "pass",
+      "task_id": "gain_trim_controller:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_trim_controller__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "gain_trim_controller:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_trim_controller__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "gain_trim_controller:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/successive_approximation_calibration_search_fsm__dut/manifest.json",
+      "status": "pass",
+      "task_id": "successive_approximation_calibration_search_fsm:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/successive_approximation_calibration_search_fsm__tb/manifest.json",
+      "status": "pass",
+      "task_id": "successive_approximation_calibration_search_fsm:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/successive_approximation_calibration_search_fsm__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "successive_approximation_calibration_search_fsm:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/successive_approximation_calibration_search_fsm__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "successive_approximation_calibration_search_fsm:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/trim_calibration_controller__dut/manifest.json",
+      "status": "pass",
+      "task_id": "trim_calibration_controller:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/trim_calibration_controller__tb/manifest.json",
+      "status": "pass",
+      "task_id": "trim_calibration_controller:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/trim_calibration_controller__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "trim_calibration_controller:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/trim_calibration_controller__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "trim_calibration_controller:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/complete_calibration_loop__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "complete_calibration_loop:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/complete_calibration_loop__tb/manifest.json",
+      "status": "pass",
+      "task_id": "complete_calibration_loop:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bandgap_reference_macro_model__dut/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_reference_macro_model:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bandgap_reference_macro_model__tb/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_reference_macro_model:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bandgap_reference_macro_model__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_reference_macro_model:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bandgap_reference_macro_model__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_reference_macro_model:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bias_voltage_generator_with_enable_trim__dut/manifest.json",
+      "status": "pass",
+      "task_id": "bias_voltage_generator_with_enable_trim:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bias_voltage_generator_with_enable_trim__tb/manifest.json",
+      "status": "pass",
+      "task_id": "bias_voltage_generator_with_enable_trim:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bias_voltage_generator_with_enable_trim__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "bias_voltage_generator_with_enable_trim:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/bias_voltage_generator_with_enable_trim__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "bias_voltage_generator_with_enable_trim:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_regulator_macro_model__dut/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_regulator_macro_model:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_regulator_macro_model__tb/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_regulator_macro_model:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_regulator_macro_model__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_regulator_macro_model:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_regulator_macro_model__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_regulator_macro_model:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/power_on_reset_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "power_on_reset_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/power_on_reset_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "power_on_reset_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/power_on_reset_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "power_on_reset_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/power_on_reset_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "power_on_reset_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ptat_ctat_reference_generator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "ptat_ctat_reference_generator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ptat_ctat_reference_generator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "ptat_ctat_reference_generator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ptat_ctat_reference_generator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "ptat_ctat_reference_generator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ptat_ctat_reference_generator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "ptat_ctat_reference_generator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/uvlo_brownout_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "uvlo_brownout_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/uvlo_brownout_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "uvlo_brownout_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/uvlo_brownout_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "uvlo_brownout_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/uvlo_brownout_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "uvlo_brownout_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_load_step_recovery__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_load_step_recovery:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ldo_load_step_recovery__tb/manifest.json",
+      "status": "pass",
+      "task_id": "ldo_load_step_recovery:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "reference_startup_enable:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/reference_startup_enable__tb/manifest.json",
+      "status": "pass",
+      "task_id": "reference_startup_enable:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/limiting_amplifier_frontend__dut/manifest.json",
+      "status": "pass",
+      "task_id": "limiting_amplifier_frontend:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/limiting_amplifier_frontend__tb/manifest.json",
+      "status": "pass",
+      "task_id": "limiting_amplifier_frontend:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/limiting_amplifier_frontend__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "limiting_amplifier_frontend:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/limiting_amplifier_frontend__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "limiting_amplifier_frontend:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lna_gain_compression_macro__dut/manifest.json",
+      "status": "pass",
+      "task_id": "lna_gain_compression_macro:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lna_gain_compression_macro__tb/manifest.json",
+      "status": "pass",
+      "task_id": "lna_gain_compression_macro:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lna_gain_compression_macro__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "lna_gain_compression_macro:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lna_gain_compression_macro__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "lna_gain_compression_macro:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/log_rssi_power_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "log_rssi_power_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/log_rssi_power_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "log_rssi_power_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/log_rssi_power_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "log_rssi_power_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/log_rssi_power_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "log_rssi_power_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pa_compression_macro__dut/manifest.json",
+      "status": "pass",
+      "task_id": "pa_compression_macro:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pa_compression_macro__tb/manifest.json",
+      "status": "pass",
+      "task_id": "pa_compression_macro:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pa_compression_macro__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "pa_compression_macro:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/pa_compression_macro__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "pa_compression_macro:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/rf_mixer_downconverter_macro__dut/manifest.json",
+      "status": "pass",
+      "task_id": "rf_mixer_downconverter_macro:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/rf_mixer_downconverter_macro__tb/manifest.json",
+      "status": "pass",
+      "task_id": "rf_mixer_downconverter_macro:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/rf_mixer_downconverter_macro__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "rf_mixer_downconverter_macro:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/rf_mixer_downconverter_macro__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "rf_mixer_downconverter_macro:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/agc_receiver_leveling_loop__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "agc_receiver_leveling_loop:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/agc_receiver_leveling_loop__tb/manifest.json",
+      "status": "pass",
+      "task_id": "agc_receiver_leveling_loop:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/iq_downconversion_chain__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "iq_downconversion_chain:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/iq_downconversion_chain__tb/manifest.json",
+      "status": "pass",
+      "task_id": "iq_downconversion_chain:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/crossing_metric_writer__tb/manifest.json",
+      "status": "pass",
+      "task_id": "crossing_metric_writer:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/crossing_metric_writer__dut/manifest.json",
+      "status": "pass",
+      "task_id": "crossing_metric_writer:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/crossing_metric_writer__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "crossing_metric_writer:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/edge_interval_timer__tb/manifest.json",
+      "status": "pass",
+      "task_id": "edge_interval_timer:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/edge_interval_timer__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "edge_interval_timer:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_estimator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "gain_estimator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_estimator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "gain_estimator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/peak_detector__dut/manifest.json",
+      "status": "pass",
+      "task_id": "peak_detector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/peak_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "peak_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/peak_detector__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "peak_detector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/peak_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "peak_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/settling_time_detector__tb/manifest.json",
+      "status": "pass",
+      "task_id": "settling_time_detector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/settling_time_detector__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "settling_time_detector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/manifest.json",
+      "status": "pass",
+      "task_id": "gain_extraction_convergence_measurement:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "gain_extraction_convergence_measurement:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/measurement__tb/manifest.json",
+      "status": "pass",
+      "task_id": "measurement:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/measurement__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "measurement:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/burst_clock_source__dut/manifest.json",
+      "status": "pass",
+      "task_id": "burst_clock_source:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/burst_clock_source__tb/manifest.json",
+      "status": "pass",
+      "task_id": "burst_clock_source:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/burst_clock_source__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "burst_clock_source:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dither_or_noise_like_deterministic_source__dut/manifest.json",
+      "status": "pass",
+      "task_id": "dither_or_noise_like_deterministic_source:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dither_or_noise_like_deterministic_source__tb/manifest.json",
+      "status": "pass",
+      "task_id": "dither_or_noise_like_deterministic_source:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/dither_or_noise_like_deterministic_source__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "dither_or_noise_like_deterministic_source:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lfsr_prbs_generator__dut/manifest.json",
+      "status": "pass",
+      "task_id": "lfsr_prbs_generator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lfsr_prbs_generator__tb/manifest.json",
+      "status": "pass",
+      "task_id": "lfsr_prbs_generator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lfsr_prbs_generator__bugfix/manifest.json",
+      "status": "pass",
+      "task_id": "lfsr_prbs_generator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/lfsr_prbs_generator__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "lfsr_prbs_generator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ramp_or_step_source__dut/manifest.json",
+      "status": "pass",
+      "task_id": "ramp_or_step_source:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ramp_or_step_source__tb/manifest.json",
+      "status": "pass",
+      "task_id": "ramp_or_step_source:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/ramp_or_step_source__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "ramp_or_step_source:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sine_periodic_voltage_source__dut/manifest.json",
+      "status": "pass",
+      "task_id": "sine_periodic_voltage_source:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sine_periodic_voltage_source__tb/manifest.json",
+      "status": "pass",
+      "task_id": "sine_periodic_voltage_source:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/sine_periodic_voltage_source__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "sine_periodic_voltage_source:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_stimulus_sequencer__e2e/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_stimulus_sequencer:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/programmable_stimulus_sequencer__tb/manifest.json",
+      "status": "pass",
+      "task_id": "programmable_stimulus_sequencer:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "sigma_delta_modulator_loop:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "sigma_delta_modulator_loop:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "sigma_delta_modulator_loop:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "sigma_delta_modulator_loop:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "time_interleaved_adc_mismatch:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "time_interleaved_adc_mismatch:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "time_interleaved_adc_mismatch:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "time_interleaved_adc_mismatch:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "metastability_window_comparator:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "metastability_window_comparator:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "metastability_window_comparator:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "metastability_window_comparator:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bootstrapped_sample_switch:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bootstrapped_sample_switch:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bootstrapped_sample_switch:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bootstrapped_sample_switch:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "fractional_n_pll_divider:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "fractional_n_pll_divider:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "fractional_n_pll_divider:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "fractional_n_pll_divider:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_startup_trim:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_startup_trim:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_startup_trim:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "bandgap_startup_trim:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "quadrature_iq_imbalance_corrector:dut"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/tb/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "quadrature_iq_imbalance_corrector:tb"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/e2e/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "quadrature_iq_imbalance_corrector:e2e"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "quadrature_iq_imbalance_corrector:bugfix"
+    },
+    {
+      "failures": [],
+      "negative_count": 5,
+      "negative_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/negatives/manifest.json",
+      "status": "pass",
+      "task_id": "cppll_tracking_frequency_step_reacquire:bugfix"
+    }
+  ]
+}

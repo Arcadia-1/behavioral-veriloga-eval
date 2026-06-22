@@ -1,0 +1,43 @@
+{
+  "artifacts": {
+    "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/checks.yaml",
+    "gold": [
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/gold/bandgap_startup_trim.va",
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/gold/tb_bandgap_startup_trim.scs"
+    ],
+    "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/meta.json",
+    "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/negatives/manifest.json",
+    "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/prompt.md"
+  },
+  "base_function": "Bandgap startup and trim convergence flow",
+  "category": "Bias Reference and Power Management",
+  "certification": {
+    "evas": "pass",
+    "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "spectre": "pass",
+    "static": "pass"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "l0_conformance": false,
+    "model_capability": true
+  },
+  "difficulty": "D3",
+  "domain": "voltage",
+  "family": "spec-to-va",
+  "id": "bandgap_startup_trim:dut",
+  "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+  "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:dut",
+  "notes": [
+    "Promoted into the vaBench 300 benchmark management surface by the full-300 EVAS/Spectre closure report.",
+    "Includes five partial-pass near-miss negative candidates by construction."
+  ],
+  "score_surface": "model-capability",
+  "source": {
+    "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut",
+    "source_base_id": "bandgap_startup_trim",
+    "source_task_id": "bandgap_startup_trim_dut"
+  },
+  "topic_id": "bandgap_startup_trim",
+  "track": "core"
+}

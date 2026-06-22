@@ -1,0 +1,172 @@
+{
+  "negative_count": 5,
+  "negatives": [
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "boundary_near_miss"
+      ],
+      "id": "neg_001",
+      "kind": "boundary_near_miss",
+      "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "d0395a05de959ea54a168d18f0400a5190ac02ba3c8bfd80c6982f9dda96cd67",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/neg_001.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "timing_window_near_miss"
+      ],
+      "id": "neg_002",
+      "kind": "timing_window_near_miss",
+      "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "b9854a74fc4d8b16098583b844fe757659e8795551d8a7681ee4eba471c332bc",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/neg_002.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "polarity_direction_near_miss"
+      ],
+      "id": "neg_003",
+      "kind": "polarity_direction_near_miss",
+      "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "9aaa59439d72a51e8c3b9006ae4f1e3ee8257f58e68daaf37f86b82d3fa25af8",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/neg_003.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "state_reset_near_miss"
+      ],
+      "id": "neg_004",
+      "kind": "state_reset_near_miss",
+      "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "76e5eee286dcba314789cc1e10f6f4d2024538df93785aeccd033fb8973d2140",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/neg_004.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/tb/gold/dither_adder.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "metric_writeout_near_miss"
+      ],
+      "id": "neg_005",
+      "kind": "metric_writeout_near_miss",
+      "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "74402d14903975dfca5d3be07f28581204800ddbb5a6ee0e0726f8608ccf0b4a",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/gain_extraction_convergence_measurement__tb/neg_005.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    }
+  ],
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "task_id": "gain_extraction_convergence_measurement:tb"
+}

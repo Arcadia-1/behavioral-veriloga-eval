@@ -1,0 +1,15 @@
+// vaBench partial-pass negative 4 for peak_detector:dut
+// Intended to preserve interface/smoke behavior while failing full checks.
+`include "constants.vams"
+`include "disciplines.vams"
+module peak_detector(vin, rst, vout);
+    input vin,rst; output vout; electrical vin,rst,vout;
+    parameter real vth=0.45; parameter real tr=500p; real peak;
+    analog begin
+        @(initial_step) peak=0.0;
+// near-miss: missing one initial state assignment
+
+        @(timer(0,500p)) begin if (V(rst)>vth) peak=0.0; else if (V(vin)>peak) peak=V(vin); end
+        V(vout) <+ transition(peak,0,tr,tr);
+    end
+endmodule

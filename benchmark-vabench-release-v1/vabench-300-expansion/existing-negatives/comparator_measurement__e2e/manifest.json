@@ -1,0 +1,172 @@
+{
+  "negative_count": 5,
+  "negatives": [
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "boundary_near_miss"
+      ],
+      "id": "neg_001",
+      "kind": "boundary_near_miss",
+      "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "6b944442f635e586111166e410450822440d5e222884e4bdfdadb7d44571c3a8",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/neg_001.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "timing_window_near_miss"
+      ],
+      "id": "neg_002",
+      "kind": "timing_window_near_miss",
+      "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "f9e6c70e9c867633bc5e2215ae16165c5f9990005aace4c245431ccfa7675ef6",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/neg_002.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "polarity_direction_near_miss"
+      ],
+      "id": "neg_003",
+      "kind": "polarity_direction_near_miss",
+      "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "14b76a41ad6be4d0d9221ccd739c307015e7fcaa7a5c98db78b23b6b9cb7d60f",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/neg_003.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "state_reset_near_miss"
+      ],
+      "id": "neg_004",
+      "kind": "state_reset_near_miss",
+      "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "21a839ad99d0524f27dc2cdda710b6c8c4237a6f4d9b40feb800cb21fc560914",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/neg_004.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    },
+    {
+      "derived_from": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l2_comparator_measurement_flow/forms/e2e/gold/comparator_offset_search_ref.va",
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "metric_writeout_near_miss"
+      ],
+      "id": "neg_005",
+      "kind": "metric_writeout_near_miss",
+      "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "406fccdc82b82a5b6a921b184ede9f489a8ee6627ad27f01d0fabe97737f5214",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "benchmark-vabench-release-v1/vabench-300-expansion/existing-negatives/comparator_measurement__e2e/neg_005.va",
+      "source_kind": "existing_gold",
+      "validation_evidence": {
+        "full_checker_lane": "pending_external_evas_spectre",
+        "publication_status": "asset_ready_not_simulator_certified",
+        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "static_shallow_shape": "pass"
+      }
+    }
+  ],
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "task_id": "comparator_measurement:e2e"
+}

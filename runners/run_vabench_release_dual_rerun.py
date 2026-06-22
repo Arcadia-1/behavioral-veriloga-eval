@@ -18,6 +18,7 @@ from run_gold_dual_suite import (
     default_sui_host,
     default_sui_work_root,
     normalize_spectre_backend,
+    normalize_spectre_mode,
     run_dual_case,
 )
 from run_gold_suite import benchmark_root, checker_task_id as resolve_checker_task_id
@@ -137,6 +138,7 @@ def run_one_bundle(
     timeout_s: int,
     dry_run: bool,
     spectre_backend: str = "bridge",
+    spectre_mode: str = "ax",
     sui_host: str | None = None,
     sui_work_root: str | None = None,
 ) -> tuple[int, dict[str, object]]:
@@ -156,6 +158,7 @@ def run_one_bundle(
                 cadence_cshrc=cadence_cshrc,
                 timeout_s=timeout_s,
                 spectre_backend=spectre_backend,
+                spectre_mode=spectre_mode,
                 sui_host=sui_host,
                 sui_work_root=sui_work_root,
             )
@@ -206,6 +209,7 @@ def run_bundles(
     dry_run: bool,
     workers: int = 1,
     spectre_backend: str = "bridge",
+    spectre_mode: str = "ax",
     sui_host: str | None = None,
     sui_work_root: str | None = None,
 ) -> dict[str, object]:
@@ -229,6 +233,7 @@ def run_bundles(
             "pass_expected_met_count": sum(1 for item in results if item["expected_result_met"] is True),
             "expected_miss_count": sum(1 for item in results if item["expected_result_met"] is False),
             "spectre_backend": spectre_backend,
+            "spectre_mode": spectre_mode,
             "sui_host": sui_host or "",
             "sui_work_root": sui_work_root or "",
             "results": results,
@@ -247,6 +252,7 @@ def run_bundles(
                 timeout_s=timeout_s,
                 dry_run=dry_run,
                 spectre_backend=spectre_backend,
+                spectre_mode=spectre_mode,
                 sui_host=sui_host,
                 sui_work_root=sui_work_root,
             )
@@ -265,6 +271,7 @@ def run_bundles(
                     timeout_s=timeout_s,
                     dry_run=dry_run,
                     spectre_backend=spectre_backend,
+                    spectre_mode=spectre_mode,
                     sui_host=sui_host,
                     sui_work_root=sui_work_root,
                 )
@@ -289,6 +296,7 @@ def run_bundles(
         "expected_miss_count": sum(1 for item in results if item["expected_result_met"] is False),
         "dry_run": dry_run,
         "spectre_backend": spectre_backend,
+        "spectre_mode": spectre_mode,
         "sui_host": sui_host or "",
         "sui_work_root": sui_work_root or "",
         "results": results,
@@ -312,6 +320,11 @@ def parse_args() -> argparse.Namespace:
         "--spectre-backend",
         default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"),
         help="Spectre execution backend: bridge (default) or sui-direct.",
+    )
+    ap.add_argument(
+        "--spectre-mode",
+        default=os.environ.get("VAEVAS_SPECTRE_MODE", "ax"),
+        help="Spectre invocation mode: ax (default, +preset=ax +mt) or reference (plain spectre).",
     )
     ap.add_argument(
         "--sui-host",
@@ -353,6 +366,7 @@ def main() -> int:
     if args.spectre_license_wait_s is not None:
         os.environ["VAEVAS_SPECTRE_LQTIMEOUT_S"] = str(args.spectre_license_wait_s)
     spectre_backend = normalize_spectre_backend(args.spectre_backend)
+    spectre_mode = normalize_spectre_mode(args.spectre_mode)
     manifest_path = Path(args.manifest)
     if not manifest_path.is_absolute():
         manifest_path = ROOT / manifest_path
@@ -377,6 +391,7 @@ def main() -> int:
             dry_run=True,
             workers=args.workers,
             spectre_backend=spectre_backend,
+            spectre_mode=spectre_mode,
             sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
             sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
         )
@@ -392,6 +407,7 @@ def main() -> int:
             "tasks_total": len(bundles),
             "bridge_profile": os.environ.get("VAEVAS_BRIDGE_PROFILE", "") or os.environ.get("BRIDGE_PROFILE", ""),
             "direct_invocation_blocked": True,
+            "spectre_mode": spectre_mode,
             "remediation": [
                 "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py",
                 "or add --allow-direct-run if this is an intentional local smoke run",
@@ -419,6 +435,7 @@ def main() -> int:
             "status": "skipped",
             "reason": "direct SUI backend selected; bridge preflight is not required",
             "spectre_backend": spectre_backend,
+            "spectre_mode": spectre_mode,
             "sui_host": args.sui_host,
             "sui_work_root": args.sui_work_root,
             "cadence_cshrc": effective_cshrc,
@@ -455,10 +472,12 @@ def main() -> int:
         dry_run=False,
         workers=args.workers,
         spectre_backend=spectre_backend,
+        spectre_mode=spectre_mode,
         sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
         sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
     )
     summary["spectre_backend"] = spectre_backend
+    summary["spectre_mode"] = spectre_mode
     summary["bridge_repo"] = str(bridge_repo)
     summary["bridge_profile"] = bridge_profile
     summary["sui_host"] = args.sui_host if spectre_backend == "sui-direct" else ""

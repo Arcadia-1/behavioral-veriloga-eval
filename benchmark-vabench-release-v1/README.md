@@ -8,6 +8,13 @@ suite is certified and reported separately but excluded from the core score.
 Certification, score denominators, speed/debug measurements, and model baselines
 are reported as separate surfaces so paper claims cannot mix their evidence.
 
+The current 300-task benchmark management surface is
+`vabench-300-expansion/`. It uses form-level tasks as benchmark tasks: 271
+inherited certified v1 forms plus 29 promoted v1.1 forms. Use
+`vabench-300-expansion/VABENCH_300_MANIFEST.json` for 300-task statistics and
+the 79-entry release manifest for entry-level coverage and score-boundary
+claims.
+
 This package is the current vaBench release target. It can be cited only through
 the current reports in `reports/`. A row
 is not part of the scored benchmark until its score-denominator report marks it
@@ -22,6 +29,8 @@ as counted, and no pending or blocked simulator run is certification evidence.
 - `evidence/`: certification bundles and simulator logs referenced by tasks.
 - `reports/`: coverage, parity, speed/debug, baseline, completion, artifact
   index, claim gate, and paper table summaries.
+- `vabench-300-expansion/`: 300 form-level task management surface with
+  partial-pass negative manifests and 29 promoted v1.1 task assets.
 - `rerun_staging/`: staged runnable bundles used for EVAS/Spectre dual reruns.
 
 Rows are planned in `../docs/VABENCH_RELEASE_TRACKER.csv`. A row is not part of

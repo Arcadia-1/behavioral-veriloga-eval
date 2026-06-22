@@ -1,0 +1,43 @@
+{
+  "artifacts": {
+    "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/checks.yaml",
+    "gold": [
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/gold/bootstrapped_sample_switch.va",
+      "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/gold/tb_bootstrapped_sample_switch.scs"
+    ],
+    "meta": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/meta.json",
+    "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/negatives/manifest.json",
+    "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/prompt.md"
+  },
+  "base_function": "Bootstrapped sample switch abstraction",
+  "category": "Sampling and Analog Memory",
+  "certification": {
+    "evas": "pass",
+    "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "spectre": "pass",
+    "static": "pass"
+  },
+  "counts": {
+    "benchmark_score": true,
+    "l0_conformance": false,
+    "model_capability": true
+  },
+  "difficulty": "D2",
+  "domain": "voltage",
+  "family": "spec-to-va",
+  "id": "bootstrapped_sample_switch:dut",
+  "legacy_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+  "legacy_task_id": "vbr11_l1_bootstrapped_sample_switch:dut",
+  "notes": [
+    "Promoted into the vaBench 300 benchmark management surface by the full-300 EVAS/Spectre closure report.",
+    "Includes five partial-pass near-miss negative candidates by construction."
+  ],
+  "score_surface": "model-capability",
+  "source": {
+    "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut",
+    "source_base_id": "bootstrapped_sample_switch",
+    "source_task_id": "bootstrapped_sample_switch_dut"
+  },
+  "topic_id": "bootstrapped_sample_switch",
+  "track": "core"
+}
