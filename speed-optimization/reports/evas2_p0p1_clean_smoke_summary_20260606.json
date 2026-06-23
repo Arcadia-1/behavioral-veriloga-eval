@@ -1,0 +1,58 @@
+{
+  "artifact_kind": "compact_evas2_speed_summary",
+  "checker_policy": {
+    "implementation_counts": {
+      "custom_noise": 1,
+      "row_based": 232,
+      "streaming_validated": 38
+    },
+    "trace_contract_kind_counts": {
+      "none": 24,
+      "row_required_set": 210,
+      "streaming": 37
+    }
+  },
+  "claim_boundary": "EVAS-only clean/engineering artifact. Do not use as paper-facing Spectre AX speed claim without same-host equivalence-gated rerun.",
+  "fallback_note_count": 0,
+  "fallback_note_examples": [],
+  "label": "p0p1_clean_smoke",
+  "pass_rows": 271,
+  "row_count": 271,
+  "selected_rows": 271,
+  "source_artifact": "speed-optimization/reports/evas2_p0p1_clean_smoke_20260606.json",
+  "status_counts": {
+    "PASS": 271
+  },
+  "timing": {
+    "checker_wall": {
+      "max_s": 1.51347,
+      "median_s": 0.127504,
+      "sum_s": 54.433744
+    },
+    "csv_write": {
+      "max_s": 0.095257,
+      "median_s": 0.004455,
+      "sum_s": 1.976157
+    },
+    "e2e_wall": {
+      "max_s": 2.739088,
+      "median_s": 0.733168,
+      "sum_s": 225.978234
+    },
+    "evas_reported_tran": {
+      "max_s": 0.2131,
+      "median_s": 0.0111,
+      "sum_s": 4.1873
+    },
+    "evas_subprocess_wall": {
+      "max_s": 1.92939,
+      "median_s": 0.442893,
+      "sum_s": 162.883681
+    },
+    "run_case_wall": {
+      "max_s": 2.67625,
+      "median_s": 0.721053,
+      "sum_s": 221.51821
+    }
+  }
+}

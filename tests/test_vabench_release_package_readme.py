@@ -10,7 +10,7 @@ README = ROOT / "benchmark-vabench-release-v1" / "README.md"
 def test_package_readme_documents_claim_boundaries_and_entry_reports() -> None:
     text = README.read_text(encoding="utf-8")
 
-    assert "79-entry L1/L2" in text
+    assert "86-entry L1/L2" in text
     assert "vaBench release target" in text
     assert "not part of the scored benchmark" in text
     assert "reports/claim_gate.json" in text

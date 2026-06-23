@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Leaderboard</title>
+    <meta name="description" content="Model leaderboard and submission status for vaBench 300.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="leaderboard">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" aria-current="page" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="leaderboardEyebrow">Leaderboard</p>
+          <h1 data-i18n="leaderboardPageTitle">vaBench model leaderboard</h1>
+          <p class="hero-text" data-i18n="leaderboardPageText">
+            Verified rows require Spectre final judging. EVAS-only runs and API smoke tests are shown as integration evidence, not ranked benchmark scores.
+          </p>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="verifiedRunsEyebrow">Verified runs</p>
+              <h2 data-i18n="verifiedRunsTitle">Spectre-scored submissions</h2>
+            </div>
+            <p data-i18n="verifiedRunsDescription">This table stays empty until a model has run the scored roster with Spectre final judge enabled.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thRank">Rank</th>
+                  <th scope="col" data-i18n="thModel">Model</th>
+                  <th scope="col" data-i18n="thProvider">Provider</th>
+                  <th scope="col" data-i18n="thDate">Date</th>
+                  <th scope="col" data-i18n="thScore">Score</th>
+                  <th scope="col" data-i18n="thJudge">Judge</th>
+                  <th scope="col" data-i18n="thArtifact">Artifact</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner split-layout">
+          <div>
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow" data-i18n="integrationEyebrow">Integration status</p>
+                <h2 data-i18n="integrationTitle">Smoke-tested model access</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col" data-i18n="thModel">Model</th>
+                    <th scope="col" data-i18n="thStatus">Status</th>
+                    <th scope="col" data-i18n="thEVAS">EVAS</th>
+                    <th scope="col" data-i18n="thSpectre">Spectre</th>
+                  </tr>
+                </thead>
+                <tbody id="smoke-table"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="command-panel">
+            <h3 data-i18n="submitRunTitle">Submit or reproduce a run</h3>
+            <p class="table-note" data-i18n="submitRunText">Use the unified runner first. Publish the top-level summary when a result is ready to rank.</p>
+            <dl id="leaderboard-commands"></dl>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

@@ -8,10 +8,6 @@ Code commit: `pending`
 
 Related reports:
 
-Raw JSON files are archived intermediate artifacts; this compact split PR keeps
-the Markdown summaries needed for review instead of committing the large raw
-JSONs.
-
 - `speed-optimization/reports/current_release_rust_coverage_manifest_rustsim_gate_20260606.json`
 - `speed-optimization/reports/current_release_rust_coverage_manifest_rustsim_gate_after_while_20260606.json`
 - `speed-optimization/reports/current_release_rust_coverage_manifest_rustsim_gate_after_while_20260606.md`

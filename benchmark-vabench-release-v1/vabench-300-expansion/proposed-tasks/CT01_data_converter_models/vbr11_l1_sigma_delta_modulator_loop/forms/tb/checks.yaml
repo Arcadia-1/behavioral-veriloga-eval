@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "stimulus_density_measurement_nominal_path"
-    - "stimulus_density_measurement_boundary_path"
+    - "sigma_delta_modulator_loop_full_behavior"
+    - "stimulus_density_measurement_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

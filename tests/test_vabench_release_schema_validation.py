@@ -45,8 +45,8 @@ def test_release_schema_validation_covers_all_release_json_surfaces() -> None:
     assert groups["dual_certification"]["file_count"] == 1
     assert groups["certification_matrix"]["file_count"] == 1
     assert groups["remaining_work"]["file_count"] == 1
-    assert groups["release_entry"]["file_count"] == 79
-    assert groups["release_task"]["file_count"] == 271
+    assert groups["release_entry"]["file_count"] == 86
+    assert groups["release_task"]["file_count"] == 300
     assert groups["evidence"]["file_count"] == 542
     assert groups["result"]["file_count"] == 813
     assert groups["vabench_300_expansion_manifest"]["file_count"] == 1

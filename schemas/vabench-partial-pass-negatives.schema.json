@@ -61,7 +61,8 @@
           "source_kind": {
             "enum": [
               "existing_gold",
-              "proposed_gold"
+              "proposed_gold",
+              "proposed_task_specific_gold"
             ]
           },
           "expected": {
@@ -103,19 +104,24 @@
               "simulator_shallow_lane": {
                 "enum": [
                   "pending_external_evas_spectre",
+                  "pending_local_evas",
                   "pass"
                 ]
               },
               "full_checker_lane": {
                 "enum": [
                   "pending_external_evas_spectre",
-                  "fail_as_expected"
+                  "pending_local_evas",
+                  "fail_as_expected",
+                  "pass"
                 ]
               },
               "publication_status": {
                 "enum": [
                   "asset_ready_not_simulator_certified",
-                  "simulator_validated_partial_pass"
+                  "simulator_validated_partial_pass",
+                  "pending_fresh_evas_and_spectre",
+                  "evas_full_checker_verified_spectre_pending"
                 ]
               }
             },

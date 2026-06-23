@@ -9,7 +9,6 @@ Artifact: `vabench_release_fourway_reference_experiment`
 - Behavior checker fields refreshed from existing CSVs: `True`
 - Behavior refresh policy: refresh stale non-pass source rows from existing CSV checkers only
 - Claim boundary: Cross-host Spectre/EVAS wall ratios are diagnostic unless the raw source artifact records a controlled same-host protocol. Use subprocess/E2E labels literally; subprocess wall is not pure simulator kernel time.
-- Source raw JSONs listed below are hash-locked intermediate artifacts and are not committed in this split PR because they are large; use `--source-json` with archived raw artifacts to regenerate.
 - Reuse rule: cite this derived JSON/Markdown together with its source raw JSONs; rerun only when EVAS code, benchmark rows, checker policy, host class, or Spectre settings change.
 - `Reported tran` is simulator-reported diagnostic time and is not added into E2E percentages; for Spectre it can exceed subprocess wall because of tool reporting semantics.
 
@@ -17,7 +16,7 @@ Artifact: `vabench_release_fourway_reference_experiment`
 
 - Experiment ID: `vabench-release-fourway-rust-evas2-spectreax-strict-20260606`
 - Frozen on: `2026-06-08`
-- Frozen report: `speed-optimization/reports/full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.json`
+- Frozen report: `speed-optimization/reports/full_release_fourway_reference_20260606.json`
 - Row-set size: `271`
 - Row-set SHA256: `5b2863c95ff4444869abb5bf1eef0b499285b4915a3a729eedce60594813ab08`
 - Reuse rule: Use this report as the stable four-way reference until one of the rerun triggers fires; do not replace the conclusion with ad-hoc smoke numbers.

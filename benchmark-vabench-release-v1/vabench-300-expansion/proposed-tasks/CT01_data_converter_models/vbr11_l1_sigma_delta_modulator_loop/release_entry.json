@@ -1,31 +1,38 @@
 {
   "base_function": "First-order sigma-delta modulator loop",
+  "benchmark": "vabench-release-v1",
   "category": "Data Converter Models",
   "certification": {
-    "evas": "pending",
-    "evidence": "",
-    "spectre": "pending",
-    "static": "pending"
+    "evas": "pass",
+    "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "historical_closure_evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "paper_score_status": "admitted_to_score_denominator",
+    "score_admission_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_score_admission.json",
+    "spectre": "pass",
+    "static": "pass",
+    "task_specific_quality_evidence": "benchmark-vabench-release-v1/vabench-300-expansion/v11_task_specific_quality_evidence.json"
   },
   "counts": {
-    "benchmark_score": false,
+    "benchmark_score": true,
     "l0_conformance": false,
     "model_capability": false
   },
   "difficulty": "D3",
   "id": "sigma_delta_modulator_loop",
   "legacy_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+  "level": "L1",
   "missing_forms": [],
-  "package_status": "v1.1_proposed",
-  "release_blockers": [
-    "pending_evas_spectre_certification"
-  ],
+  "package_status": "v1.1_fresh_spectre_certified_score_admitted",
+  "release_blockers": [],
+  "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
   "release_tasks": [
     {
       "asset_materialized": true,
       "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/checks.yaml",
-      "evas_status": "pending",
+      "evas_status": "pass",
       "form": "bugfix",
+      "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "gold": [
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/gold/sigma_delta_modulator_loop.va",
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/gold/tb_sigma_delta_modulator_loop.scs"
@@ -34,14 +41,15 @@
       "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/negatives/manifest.json",
       "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/prompt.md",
       "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix",
-      "spectre_status": "pending",
-      "static_status": "pending"
+      "spectre_status": "pass",
+      "static_status": "pass"
     },
     {
       "asset_materialized": true,
       "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/checks.yaml",
-      "evas_status": "pending",
+      "evas_status": "pass",
       "form": "dut",
+      "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "gold": [
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/gold/sigma_delta_modulator_loop.va",
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/gold/tb_sigma_delta_modulator_loop.scs"
@@ -50,14 +58,15 @@
       "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/negatives/manifest.json",
       "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/prompt.md",
       "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut",
-      "spectre_status": "pending",
-      "static_status": "pending"
+      "spectre_status": "pass",
+      "static_status": "pass"
     },
     {
       "asset_materialized": true,
       "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/checks.yaml",
-      "evas_status": "pending",
+      "evas_status": "pass",
       "form": "e2e",
+      "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "gold": [
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/gold/sigma_delta_modulator_loop.va",
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/gold/tb_sigma_delta_modulator_loop.scs"
@@ -66,14 +75,15 @@
       "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/negatives/manifest.json",
       "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/prompt.md",
       "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e",
-      "spectre_status": "pending",
-      "static_status": "pending"
+      "spectre_status": "pass",
+      "static_status": "pass"
     },
     {
       "asset_materialized": true,
       "checks": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/checks.yaml",
-      "evas_status": "pending",
+      "evas_status": "pass",
       "form": "tb",
+      "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "gold": [
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/gold/sigma_delta_modulator_loop.va",
         "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/gold/tb_sigma_delta_modulator_loop.scs"
@@ -82,8 +92,8 @@
       "negatives": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/negatives/manifest.json",
       "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/prompt.md",
       "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb",
-      "spectre_status": "pending",
-      "static_status": "pending"
+      "spectre_status": "pass",
+      "static_status": "pass"
     }
   ],
   "score_surface": "model-capability",
@@ -96,7 +106,7 @@
       "gold": true,
       "meta": true,
       "prompt": true,
-      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/release_task.json"
+      "source_path": "vabench300_task_specific:vbr11_l1_sigma_delta_modulator_loop"
     },
     {
       "asset_complete": true,
@@ -105,7 +115,7 @@
       "gold": true,
       "meta": true,
       "prompt": true,
-      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/release_task.json"
+      "source_path": "vabench300_task_specific:vbr11_l1_sigma_delta_modulator_loop"
     },
     {
       "asset_complete": true,
@@ -114,7 +124,7 @@
       "gold": true,
       "meta": true,
       "prompt": true,
-      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/release_task.json"
+      "source_path": "vabench300_task_specific:vbr11_l1_sigma_delta_modulator_loop"
     },
     {
       "asset_complete": true,
@@ -123,7 +133,7 @@
       "gold": true,
       "meta": true,
       "prompt": true,
-      "source_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/release_task.json"
+      "source_path": "vabench300_task_specific:vbr11_l1_sigma_delta_modulator_loop"
     }
   ],
   "topic_id": "sigma_delta_modulator_loop",

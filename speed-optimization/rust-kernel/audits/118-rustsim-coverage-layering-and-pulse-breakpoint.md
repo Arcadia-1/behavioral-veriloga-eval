@@ -8,10 +8,6 @@ Code commit: `pending`
 
 Related reports:
 
-These are raw diagnostic artifacts from the original run.  They are not
-committed in this compact docs split; the table below preserves the reviewable
-summary and claim boundary.
-
 - `speed-optimization/reports/evas2_p1_bbpd_fixed_smoke_20260606.json`
 - `speed-optimization/reports/evas2_p1_counter_smoke_20260606.json`
 - `speed-optimization/reports/evas2_p1_current_topwall8_20260606.json`

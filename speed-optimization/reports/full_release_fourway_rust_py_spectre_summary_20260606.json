@@ -1,0 +1,165 @@
+{
+  "caveats": [
+    "EVAS rows ran locally on the Mac workspace; Spectre AX/strict ran through thu-sui jump to thu-wei. Cross-simulator Spectre/EVAS wall ratios are diagnostic, not paper-facing same-host speed claims.",
+    "Behavior pass is checker acceptance under the current benchmark checkers/tolerances, not a proof that one simulator is numerically more accurate than another.",
+    "Spectre strict completed all simulations but has four checker non-pass rows in the SAR calibration FSM task."
+  ],
+  "created_at": "2026-06-06",
+  "modes": {
+    "py_fast": {
+      "backend": "evas",
+      "behavior_nonpass": 0,
+      "behavior_pass": 271,
+      "checker_wall_median_s": 0.09951691700007359,
+      "checker_wall_sum_s": 54.07287245500101,
+      "e2e_wall_mean_s": 0.3647203012250898,
+      "e2e_wall_median_s": 0.1773933329999977,
+      "e2e_wall_p25_s": 0.1153965624999671,
+      "e2e_wall_p75_s": 0.32472674999999285,
+      "e2e_wall_sum_s": 98.83920163199934,
+      "mode": "profile_fast_skip_source_error_control",
+      "nonpass_rows": [],
+      "rows": 271,
+      "simulation_ok": 271,
+      "source_report": "speed-optimization/reports/full_release_evas_py_rust_after_fixes_20260606.json",
+      "subprocess_wall_mean_s": 0.15241754566789786,
+      "subprocess_wall_median_s": 0.03821866600003432,
+      "subprocess_wall_sum_s": 41.30515487600032
+    },
+    "py_strict": {
+      "backend": "evas",
+      "behavior_nonpass": 0,
+      "behavior_pass": 271,
+      "checker_wall_median_s": 0.09741833299999314,
+      "checker_wall_sum_s": 51.80435191700017,
+      "e2e_wall_mean_s": 2.2045887358671603,
+      "e2e_wall_median_s": 0.5286373749999598,
+      "e2e_wall_p25_s": 0.22751906199999894,
+      "e2e_wall_p75_s": 1.5969522920000045,
+      "e2e_wall_sum_s": 597.4435474200004,
+      "mode": "strict_current",
+      "nonpass_rows": [],
+      "rows": 271,
+      "simulation_ok": 271,
+      "source_report": "speed-optimization/reports/full_release_evas_py_rust_after_fixes_20260606.json",
+      "subprocess_wall_mean_s": 1.9974643271845034,
+      "subprocess_wall_median_s": 0.2822754160000045,
+      "subprocess_wall_sum_s": 541.3128326670004
+    },
+    "rust_evas2": {
+      "backend": "evas",
+      "behavior_nonpass": 0,
+      "behavior_pass": 271,
+      "checker_wall_median_s": 0.12323683399999652,
+      "checker_wall_sum_s": 54.24381329499993,
+      "e2e_wall_mean_s": 0.25812582470110707,
+      "e2e_wall_median_s": 0.17790229099999522,
+      "e2e_wall_p25_s": 0.11694018749999913,
+      "e2e_wall_p75_s": 0.2805298959999991,
+      "e2e_wall_sum_s": 69.95209849400001,
+      "mode": "profile_fast_evas2",
+      "nonpass_rows": [],
+      "rows": 271,
+      "simulation_ok": 271,
+      "source_report": "speed-optimization/reports/full_release_evas2_sidefx_persist_20260606.json",
+      "subprocess_wall_mean_s": 0.03845178688191879,
+      "subprocess_wall_median_s": 0.025126249999999573,
+      "subprocess_wall_sum_s": 10.420434244999992
+    },
+    "spectre_ax": {
+      "backend": "spectre",
+      "behavior_nonpass": 0,
+      "behavior_pass": 271,
+      "checker_wall_median_s": 0.07517137500008175,
+      "checker_wall_sum_s": 21.152937300999966,
+      "e2e_wall_mean_s": 8.266830133291515,
+      "e2e_wall_median_s": 8.417982334000044,
+      "e2e_wall_p25_s": 7.589165812499914,
+      "e2e_wall_p75_s": 8.779871750000048,
+      "e2e_wall_sum_s": 2240.310966122001,
+      "mode": "ax_speed",
+      "nonpass_rows": [],
+      "rows": 271,
+      "simulation_ok": 271,
+      "source_report": "speed-optimization/reports/full_release_spectre_ax_strict_20260606.json",
+      "subprocess_wall_mean_s": 3.3727190757010916,
+      "subprocess_wall_median_s": 3.6568505000000187,
+      "subprocess_wall_sum_s": 914.0068695149959
+    },
+    "spectre_strict": {
+      "backend": "spectre",
+      "behavior_nonpass": 4,
+      "behavior_pass": 267,
+      "checker_wall_median_s": 0.14980183299985583,
+      "checker_wall_sum_s": 57.94609933999606,
+      "e2e_wall_mean_s": 9.765708187151269,
+      "e2e_wall_median_s": 9.578980707999563,
+      "e2e_wall_p25_s": 9.287457833499957,
+      "e2e_wall_p75_s": 9.950324666500137,
+      "e2e_wall_sum_s": 2646.506918717994,
+      "mode": "reference_strict_primary",
+      "nonpass_rows": [
+        {
+          "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+          "form": "bugfix",
+          "notes": [
+            "sar_cal_too_few_active_steps=3"
+          ],
+          "status": "PASS",
+          "task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_bugfix"
+        },
+        {
+          "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+          "form": "dut",
+          "notes": [
+            "sar_cal_too_few_active_steps=3"
+          ],
+          "status": "PASS",
+          "task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_dut"
+        },
+        {
+          "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+          "form": "e2e",
+          "notes": [
+            "sar_cal_too_few_active_steps=3"
+          ],
+          "status": "PASS",
+          "task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_e2e"
+        },
+        {
+          "entry_id": "vbr1_l1_successive_approximation_calibration_search_fsm",
+          "form": "tb",
+          "notes": [
+            "sar_cal_too_few_active_steps=3"
+          ],
+          "status": "PASS",
+          "task_id": "vbr1_l1_successive_approximation_calibration_search_fsm_tb"
+        }
+      ],
+      "rows": 271,
+      "simulation_ok": 271,
+      "source_report": "speed-optimization/reports/full_release_spectre_ax_strict_20260606.json",
+      "subprocess_wall_mean_s": 4.728215261542443,
+      "subprocess_wall_median_s": 4.642050374999599,
+      "subprocess_wall_sum_s": 1281.3463358780023
+    }
+  },
+  "ratios": {
+    "e2e_wall_sum_s": {
+      "py_fast_over_rust_evas2": 1.412955490398577,
+      "py_strict_over_rust_evas2": 8.540752318834935,
+      "spectre_ax_over_rust_evas2": 32.026358241621,
+      "spectre_strict_over_rust_evas2": 37.83313118111806,
+      "spectre_strict_over_spectre_ax": 1.1813123083083068
+    },
+    "subprocess_wall_sum_s": {
+      "py_fast_over_rust_evas2": 3.9638611889729702,
+      "py_strict_over_rust_evas2": 51.947243266444204,
+      "spectre_ax_over_rust_evas2": 87.71293479958008,
+      "spectre_strict_over_rust_evas2": 122.96477342034254,
+      "spectre_strict_over_spectre_ax": 1.4019001154312216
+    }
+  },
+  "row_count": 271,
+  "scope": "vaBench release full selected rows from full_release_rows_for_fourway_20260606.json"
+}

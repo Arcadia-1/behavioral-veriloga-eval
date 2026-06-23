@@ -22,4 +22,4 @@ XDUT (VDD VSS CLK D9 D8 D7 D6 D5 D4 D3 D2 D1 D0 CAL0 CAL1 VDAC_P VDAC_N) cdac_ca
 tran tran stop=68n maxstep=20p
 save CLK CAL0 CAL1 VDAC_P VDAC_N
 
-ahdl_include "cdac_cal.va"
+ahdl_include "dut_fixed.va"

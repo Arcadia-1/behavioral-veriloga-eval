@@ -25,6 +25,7 @@ DUAL_REFRESH_BLOCKERS = {
     "fresh_dual_validation",
     "fresh_evas_spectre_dual_refresh_pending",
 }
+DUAL_REFRESH_BLOCKER_PREFIXES = ("fresh_dual_rerun_required_after_",)
 
 
 def rel(path: Path) -> str:
@@ -460,6 +461,11 @@ def entry_backend_certification(task_reports: list[dict[str, object]], backend: 
     return "pending"
 
 
+def is_dual_refresh_blocker(blocker: object) -> bool:
+    text = str(blocker)
+    return text in DUAL_REFRESH_BLOCKERS or any(text.startswith(prefix) for prefix in DUAL_REFRESH_BLOCKER_PREFIXES)
+
+
 def entry_release_blockers(
     *,
     blockers: object,
@@ -473,7 +479,7 @@ def entry_release_blockers(
         blocker
         for blocker in blockers
         if blocker not in {"evas_certification", "spectre_certification"}
-        and not (blocker in DUAL_REFRESH_BLOCKERS and evas_cert == "pass" and spectre_cert == "pass")
+        and not (is_dual_refresh_blocker(blocker) and evas_cert == "pass" and spectre_cert == "pass")
     ]
     if evas_cert != "pass" and "evas_certification" not in retained:
         retained.append("evas_certification")
@@ -618,7 +624,7 @@ def update_entry_certifications(updates: dict[tuple[str, str], dict[str, object]
         blockers = entry.get("release_blockers", [])
         if isinstance(blockers, list):
             if dual_pass:
-                entry["release_blockers"] = [blocker for blocker in blockers if blocker not in DUAL_REFRESH_BLOCKERS]
+                entry["release_blockers"] = [blocker for blocker in blockers if not is_dual_refresh_blocker(blocker)]
             else:
                 entry["release_blockers"] = entry_release_blockers(
                     blockers=blockers,
@@ -641,7 +647,7 @@ def build_import_report(summary_path: Path, *, write: bool) -> dict[str, object]
         and int(current.get("evas_pass_spectre_fail_count", 0) or 0) == 0
         and current.get("simulator_rerun") is True
     )
-    if queue_count == 0 and current_dual_complete and not explicit_primary_rows:
+    if queue_count == 0 and current_dual_complete:
         merged = recompute_dual_report(current, {})
         if write:
             write_json(DUAL_REPORT_JSON, merged)

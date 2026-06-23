@@ -67,6 +67,21 @@ def sha256_text(text: str) -> str:
 
 
 def release_form_dirs() -> list[Path]:
+    if PACKAGE_MANIFEST.exists():
+        manifest = read_json(PACKAGE_MANIFEST)
+        rows = manifest.get("forms", [])
+        form_dirs: list[Path] = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            value = row.get("release_task_manifest")
+            if not isinstance(value, str) or not value:
+                continue
+            path = ROOT / value
+            if path.exists():
+                form_dirs.append(path.parent)
+        if form_dirs:
+            return sorted(form_dirs)
     return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
 
 
@@ -102,7 +117,7 @@ def build_row(form_dir: Path) -> dict[str, Any]:
     return {
         "status": status,
         "prompt_version_id": PROMPT_VERSION_ID,
-        "release_entry_id": release_task.get("release_entry_id", ""),
+        "release_entry_id": release_task.get("release_entry_id") or release_task.get("legacy_entry_id", ""),
         "task_id": release_task.get("id", ""),
         "form": form,
         "level": release_task.get("level", ""),

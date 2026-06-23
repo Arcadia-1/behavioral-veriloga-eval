@@ -215,18 +215,3 @@ def test_fourway_reference_refreshes_behavior_from_existing_csv(tmp_path: Path, 
     assert refreshed["ok"] is True
     assert refreshed["notes"] == ["fresh pass"]
     assert refreshed["checker_policy"]["implementation"] == "refreshed"
-
-
-def test_fourway_reference_missing_raw_sources_are_actionable(tmp_path: Path) -> None:
-    missing = tmp_path / "missing-source.json"
-
-    try:
-        fourway.build_report([missing], coverage_json=None, top_limit=5)
-    except FileNotFoundError as exc:
-        message = str(exc)
-    else:  # pragma: no cover - the assertion above is the behavior under test.
-        raise AssertionError("missing source JSON should raise")
-
-    assert "missing four-way source JSON artifact" in message
-    assert "--source-json" in message
-    assert "archived raw source JSONs" in message

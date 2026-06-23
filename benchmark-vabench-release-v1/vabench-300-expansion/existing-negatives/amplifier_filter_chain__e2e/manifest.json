@@ -11,7 +11,7 @@
       "kind": "boundary_near_miss",
       "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
       "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "03bb8db86941ede5f6f1d76a7dbc789541ae4cda3b6c2479a51684073e76d533",
+      "sha256": "ae7c12040a981625e87c1cd9065aad4d778ff77f95cb808249bcb88d56cf5f60",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
@@ -44,7 +44,7 @@
       "kind": "timing_window_near_miss",
       "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
       "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "fd03e987a65434d19196fd99ea63ce3b8d3102f08c7a5160b0b1725bc75b40c3",
+      "sha256": "11a0c12aae05d9bc558270aedcc732df10fe568ffcb12037537fdae4c6dd8fab",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
@@ -77,7 +77,7 @@
       "kind": "polarity_direction_near_miss",
       "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
       "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "0481925a51db2508bdcea7ac361976f78d58cd06a3f721e48f2c471a5eae58cf",
+      "sha256": "1d9a60846abf85c379acb7523c8dd3edcb1815331e4674674e9ec66d50c2de5d",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
@@ -110,7 +110,7 @@
       "kind": "state_reset_near_miss",
       "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
       "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "2d4272d4494e0f14b96ff17e9cadd01341bfc796c8fa29dedd32aaa80374cd76",
+      "sha256": "f21ed98df11ec1ebb7c22f996c2d51f51ee711ffb38d117541a779011517a983",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
@@ -143,7 +143,7 @@
       "kind": "metric_writeout_near_miss",
       "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
       "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "60daf4e15be7407ace35824f16a00d248cdcfb67674893f5a05e16aa3ad5ce09",
+      "sha256": "5434cb837af969c470a45e04bced68f7ca66b64bd9cf1b1c80f5ab343aa1004c",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",

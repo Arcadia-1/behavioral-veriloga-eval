@@ -1,7 +1,7 @@
 {
   "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
   "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
-  "source_task_id": "sar_adc_dac_weighted_8b_smoke",
+  "source_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
   "task_form": "e2e",
   "taxonomy": {
     "level": "L2",
@@ -13,8 +13,8 @@
   "spectre": "pass",
   "verdict": "certified",
   "artifacts": [
-    "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold",
-    "results/vabench-release-v1-dual-rest-20260526_ci/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold",
+    "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e",
+    "results/l2_observability_targeted_dual_20260601_r2/vbr1_l2_weighted_sar_adc_dac_loop/e2e/vbr1_l2_weighted_sar_adc_dac_loop_e2e",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/e2e/evas_result.json",
     "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/e2e/spectre_result.json",
     "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/gold/dac_weighted_8b.va",
@@ -30,9 +30,9 @@
     "simulator_rerun": true
   },
   "release_rerun": {
-    "summary": "results/vabench-release-v1-dual-rest-20260526_ci/summary.json",
-    "staged_task_dir": "benchmark-vabench-release-v1/rerun_staging/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold",
-    "result_root": "results/vabench-release-v1-dual-rest-20260526_ci/vbr1_l2_weighted_sar_adc_dac_loop/e2e/gold",
+    "summary": "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json",
+    "staged_task_dir": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e",
+    "result_root": "results/l2_observability_targeted_dual_20260601_r2/vbr1_l2_weighted_sar_adc_dac_loop/e2e/vbr1_l2_weighted_sar_adc_dac_loop_e2e",
     "raw_status": "PASS",
     "expected_result_met": true,
     "parity": {
@@ -46,18 +46,45 @@
       },
       "common_window_s": [
         0.0,
-        1e-05
+        2e-05
       ],
-      "signals_compared": 13,
+      "signals_compared": 19,
       "samples": 1200,
-      "max_rmse_v": 9.648059767965755e-07,
-      "max_abs_v": 2.316561953552565e-05,
-      "mean_relative_rms_error": 1.0033848671349727e-07,
-      "max_relative_rms_error": 1.072006640885084e-06,
-      "mean_nrmse": 1.0033848671349727e-07,
-      "max_nrmse": 1.072006640885084e-06,
+      "max_rmse_v": 0.132620081283946,
+      "max_abs_v": 0.8964706,
+      "mean_relative_rms_error": 0.007787722103417214,
+      "max_relative_rms_error": 0.14793578426771162,
+      "mean_nrmse": 0.007787722103417214,
+      "max_nrmse": 0.14793578426771162,
       "per_signal": {
+        "bit_index": {
+          "rmse_v": 1.9136681187218643e-05,
+          "max_abs_v": 0.00046875104381693955,
+          "span_v": 0.9,
+          "nrmse": 2.1262979096909604e-05,
+          "kind": "analog"
+        },
         "clks": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "cmp_decision": {
+          "rmse_v": 0.0,
+          "max_abs_v": 0.0,
+          "span_v": 0.9000000000000001,
+          "nrmse": 0.0,
+          "kind": "digital",
+          "best_lag_samples": 0,
+          "best_lag_s": 0.0,
+          "mismatch_ratio": 0.0
+        },
+        "conv_done": {
           "rmse_v": 0.0,
           "max_abs_v": 0.0,
           "span_v": 0.9,
@@ -157,25 +184,46 @@
           "best_lag_s": 0.0,
           "mismatch_ratio": 0.0
         },
+        "trial_code_mon": {
+          "rmse_v": 3.7974222914089e-06,
+          "max_abs_v": 0.00011765324352219775,
+          "span_v": 0.9,
+          "nrmse": 4.219358101565445e-06,
+          "kind": "analog"
+        },
+        "trial_vdac": {
+          "rmse_v": 3.7974222914089e-06,
+          "max_abs_v": 0.00011765324352219775,
+          "span_v": 0.9,
+          "nrmse": 4.219358101565445e-06,
+          "kind": "analog"
+        },
         "vin": {
-          "rmse_v": 1.8372031183193564e-07,
-          "max_abs_v": 5.30959112565732e-07,
-          "span_v": 0.8999989809329453,
-          "nrmse": 2.0413391095342117e-07,
+          "rmse_v": 1.6580209504875174e-07,
+          "max_abs_v": 5.6175080431764e-07,
+          "span_v": 0.8999989761643971,
+          "nrmse": 1.842247596273551e-07,
+          "kind": "analog"
+        },
+        "vin_sample": {
+          "rmse_v": 3.472003807978384e-08,
+          "max_abs_v": 8.258678274586373e-08,
+          "span_v": 0.8998597,
+          "nrmse": 3.85838348797972e-08,
           "kind": "analog"
         },
         "vin_sh": {
-          "rmse_v": 9.648059767965755e-07,
+          "rmse_v": 9.100739888137152e-07,
           "max_abs_v": 2.316561953552565e-05,
           "span_v": 0.9,
-          "nrmse": 1.072006640885084e-06,
+          "nrmse": 1.011193320904128e-06,
           "kind": "analog"
         },
         "vout": {
-          "rmse_v": 2.5334057841836372e-08,
-          "max_abs_v": 4.705882361566438e-08,
+          "rmse_v": 0.132620081283946,
+          "max_abs_v": 0.8964706,
           "span_v": 0.8964706,
-          "nrmse": 2.825977543695953e-08,
+          "nrmse": 0.14793578426771162,
           "kind": "analog"
         }
       }

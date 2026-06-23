@@ -29,7 +29,7 @@ Paper-facing claims for this row are limited to the public behavior checks below
 
 ## Public DUT Interface To Instantiate
 
-- `amplifier_filter_chain.va` declares module `amplifier_filter_chain` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- `amplifier_filter_chain.va` declares module `amplifier_filter_chain` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`, `preamp_mon`, `filt1_mon`, `filt2_mon`, `settle_metric`.
 
 ## Public Testbench And Observable Contract
 
@@ -46,6 +46,10 @@ The release harness expects these exact public scalar observables:
 - `vin`
 - `out`
 - `metric`
+- `preamp_mon`
+- `filt1_mon`
+- `filt2_mon`
+- `settle_metric`
 
 When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
@@ -76,10 +80,10 @@ simulator lang=spectre
 global 0
 ahdl_include "amplifier_filter_chain.va"
 
-XDUT (clk rst vin out metric) amplifier_filter_chain
+XDUT (clk rst vin out metric preamp_mon filt1_mon filt2_mon settle_metric) amplifier_filter_chain
 
 tran tran stop=80n maxstep=0.5n
-save clk rst vin out metric
+save clk rst vin out metric preamp_mon filt1_mon filt2_mon settle_metric
 ```
 
 Critical syntax rules:
@@ -92,26 +96,31 @@ Critical syntax rules:
 ## Public Behavior Checks
 
 - `amplified_input`
+- `preamp_monitor_matches_metric`
+- `two_pole_internal_lag_visible`
 - `filtered_output_lags_input`
 - `metric_tracks_settling`
+- `settle_status_asserts_after_output_recovery`
 
 ## Public L2 Behavior Contract
 
-This row is an amplifier plus filter chain. The testbench must expose both the
-pre-filter amplified target and the lagged filtered output:
+This row is an amplifier plus two-pole filter chain. The testbench must expose
+the pre-filter amplified target, both internal filter states, and the lagged
+filtered output:
 
 1. Drive reset high initially, then release reset before the useful stimulus
    windows.
 2. Drive `vin` through high, midscale, and low plateaus.
-3. Save `metric` as the pre-filter amplified target and `out` as the lagged
-   low-pass response.
-4. Hold each input plateau long enough that `metric` moves first and `out`
-   visibly follows with settling lag.
+3. Save `metric`/`preamp_mon` as the pre-filter amplified target, `filt1_mon`
+   and `filt2_mon` as the internal filter states, `out` as the second-pole
+   output, and `settle_metric` as the settled-status observable.
+4. Hold each input plateau long enough that the target moves first, the first
+   pole follows, and the second pole/output visibly follows with settling lag.
 
-The expected public relation is: `metric` should jump quickly to the bounded
-gain-stage target, while `out` moves gradually toward `metric`. Do not generate
-checker logic; the evaluator checks amplification, lag, and settling from saved
-waveforms.
+The expected public relation is: `metric`/`preamp_mon` should jump quickly to
+the bounded gain-stage target, `filt1_mon` should lag that target, and
+`filt2_mon`/`out` should lag `filt1_mon`. Do not generate checker logic; the
+evaluator checks amplification, internal lag, and settling from saved waveforms.
 
 ## Output Contract
 
@@ -136,20 +145,20 @@ or KCL/KVL solving assumptions.
 Public port contract:
 
 ```verilog
-module amplifier_filter_chain(clk, rst, vin, out, metric);
+module amplifier_filter_chain(clk, rst, vin, out, metric, preamp_mon, filt1_mon, filt2_mon, settle_metric);
 input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
+output out, metric, preamp_mon, filt1_mon, filt2_mon, settle_metric;
+electrical clk, rst, vin, out, metric, preamp_mon, filt1_mon, filt2_mon, settle_metric;
 ```
 
 Signal contract:
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded filtered voltage. metric exposes the bounded pre-filter amplified target used to verify that out lags and settles toward the amplified input.
+clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. metric and preamp_mon expose the bounded pre-filter amplified target. filt1_mon and filt2_mon expose the two internal low-pass states. out is the bounded filtered voltage derived from the second pole. settle_metric is a voltage-coded settled-status observable.
 
 Saved waveform columns:
 
 ```text
-clk rst vin out metric
+clk rst vin out metric preamp_mon filt1_mon filt2_mon settle_metric
 ```
 
 Public transient contract:

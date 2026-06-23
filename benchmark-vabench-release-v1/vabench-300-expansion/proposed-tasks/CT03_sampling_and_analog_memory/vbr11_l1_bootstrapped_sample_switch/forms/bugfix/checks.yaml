@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "phase_leakage_bug_nominal_path"
-    - "phase_leakage_bug_boundary_path"
+    - "bootstrapped_sample_switch_full_behavior"
+    - "phase_leakage_bug_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

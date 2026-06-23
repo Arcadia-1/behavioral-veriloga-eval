@@ -81,6 +81,7 @@ def load_api_key(api_key_file: str | None, api_format: str = "openai") -> str:
 
 def scored_form_rows(
     *,
+    denominator_path: Path | str | None = None,
     limit: int | None,
     entry: set[str] | None,
     form: set[str] | None,
@@ -88,7 +89,7 @@ def scored_form_rows(
     category: set[str] | None,
     task_id: set[str] | None = None,
 ) -> list[dict[str, Any]]:
-    denominator = read_json(SCORE_DENOMINATOR)
+    denominator = read_json(Path(denominator_path) if denominator_path is not None else SCORE_DENOMINATOR)
     rows = [
         row
         for row in denominator.get("form_rows", [])
@@ -892,6 +893,7 @@ def write_summary(
     temperature: float,
     top_p: float,
     dry_run: bool,
+    score_roster: Path,
 ) -> dict[str, Any]:
     gen_status_counts: dict[str, int] = {}
     for item in generation:
@@ -910,7 +912,8 @@ def write_summary(
         "status": "completed" if not any(item.get("status") == "api_error" for item in generation) else "api_errors_present",
         "claim_allowed": False,
         "claim_boundary": "EVAS filter baseline only; Spectre final judge is pending.",
-        "score_denominator": rel(SCORE_DENOMINATOR),
+        "score_denominator": rel(score_roster),
+        "score_roster": rel(score_roster),
         "selected_scored_forms": len(rows),
         "generation_status_counts": gen_status_counts,
         "scored_forms": len(scores),
@@ -979,7 +982,9 @@ def main() -> int:
     ap.add_argument("--api-key-file", default="")
     ap.add_argument("--stage", choices=["generate", "score", "all"], default="all")
     ap.add_argument("--output-root", default="")
+    ap.add_argument("--score-roster", default=str(SCORE_DENOMINATOR))
     ap.add_argument("--tag", default="")
+    ap.add_argument("--score-roster", default=str(SCORE_DENOMINATOR))
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--entry", action="append", default=[])
     ap.add_argument("--form", action="append", default=[])
@@ -1032,7 +1037,11 @@ def main() -> int:
             if line.strip() and not line.lstrip().startswith("#")
         )
 
+    score_roster_path = Path(args.score_roster)
+    if not score_roster_path.is_absolute():
+        score_roster_path = ROOT / score_roster_path
     rows = scored_form_rows(
+        denominator_path=args.score_roster,
         limit=args.limit,
         entry=set(args.entry) or None,
         form=set(args.form) or None,
@@ -1114,6 +1123,7 @@ def main() -> int:
         temperature=args.temperature,
         top_p=args.top_p,
         dry_run=args.dry_run,
+        score_roster=Path(args.score_roster),
     )
     print(
         "[minimax-baseline] done "

@@ -9,13 +9,15 @@
       ],
       "id": "neg_001",
       "kind": "boundary_near_miss",
+      "module": "bandgap_startup_trim",
       "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "96a59eab2e6be35eff02aed91748c53d3c99da763c3e26a94af5a78b23f0b6f4",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "a05b4f65c38961e33de31c2a121ef2aa351718d1e7cda1838d2cc4788bd0db9b",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -26,12 +28,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/neg_001.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_bandgap early_out=0.192 late_out=1.109 late_metric=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -42,13 +54,15 @@
       ],
       "id": "neg_002",
       "kind": "timing_window_near_miss",
+      "module": "bandgap_startup_trim",
       "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "724473f9bb35028e98478ac9d77415619e90fe399ba47a21763cfd02bb94b1cd",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "37177b59683ca1e58bb1204896cf544b259baf59c7741d720d0466b2a3b40754",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -59,12 +73,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/neg_002.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_bandgap early_out=0.151 late_out=0.997 late_metric=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -75,13 +99,15 @@
       ],
       "id": "neg_003",
       "kind": "polarity_direction_near_miss",
+      "module": "bandgap_startup_trim",
       "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "ac998253f5beb138c6eacee53555d4b293110e94cbd91eda6c6e025b25ccef05",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "0574fb37311a338f0f704048895eccf6ea21d573898a0bd00dbd88ce57aa1d2e",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -92,12 +118,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/neg_003.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_bandgap early_out=0.415 late_out=1.167 late_metric=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -108,13 +144,15 @@
       ],
       "id": "neg_004",
       "kind": "state_reset_near_miss",
+      "module": "bandgap_startup_trim",
       "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "d9172ed9bd8d291cf57e934d13a55fb2674c86a16ba3d39f3043b733230a6830",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "2acd12b38fe5afc2182c911e062e90ea23637cc4353daf28ded46532cf9bf94e",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -125,12 +163,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/neg_004.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_bandgap early_out=0.266 late_out=1.148 late_metric=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -141,13 +189,15 @@
       ],
       "id": "neg_005",
       "kind": "metric_writeout_near_miss",
+      "module": "bandgap_startup_trim",
       "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "b83e36f4cfa3605a04175b126935bafbdd3c19d326a56965dee54beb8141ed55",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "34fed4a4adb50e765932841ee99de41417560432d8a73e75d82be43ed0de8f97",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -158,12 +208,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/negatives/neg_005.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_bandgap early_out=0.415 late_out=1.167 late_metric=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     }
   ],

@@ -11,7 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "artifact_index.json"
 REPORT_MD = REPORTS_ROOT / "artifact_index.md"
-PLANNED_ENTRY_TARGET = 79
+PLANNED_ENTRY_TARGET = 86
 
 
 def rel(path: Path) -> str:
@@ -74,6 +74,10 @@ def build_report() -> dict[str, object]:
     claim_gate = read_json(REPORTS_ROOT / "claim_gate.json")
     paper_tables = read_json(REPORTS_ROOT / "paper_tables.json")
     evaluator_contract = read_json(PACKAGE_ROOT / "EVALUATOR.json")
+    package_manifest = read_json(PACKAGE_ROOT / "MANIFEST.json")
+    package_summary = package_manifest.get("summary", {})
+    if not isinstance(package_summary, dict):
+        package_summary = {}
     completion = read_json(REPORTS_ROOT / "completion_audit.json")
     checksum = read_json(REPORTS_ROOT / "checksum_manifest.json")
     conformance = read_json(REPORTS_ROOT / "conformance_manifest.json")
@@ -85,9 +89,14 @@ def build_report() -> dict[str, object]:
             artifact_id="release_tracker",
             path=ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv",
             kind="tracker",
-            purpose=f"{PLANNED_ENTRY_TARGET}-entry L1/L2 release coverage target.",
+            purpose=(
+                f"{PLANNED_ENTRY_TARGET}-entry L1/L2 release coverage target; "
+                "MANIFEST.json is the current package source of truth."
+            ),
             claim_role="coverage_plan",
-            status="ready" if release_status.get("planned_entries") == PLANNED_ENTRY_TARGET else "incomplete",
+            status="ready"
+            if package_summary.get("planned_entry_count") == PLANNED_ENTRY_TARGET
+            else "incomplete",
             certification_evidence=False,
         ),
         artifact(
@@ -96,7 +105,9 @@ def build_report() -> dict[str, object]:
             kind="package",
             purpose="Clean release package root with tasks, conformance, evidence, and reports.",
             claim_role="release_structure",
-            status="ready" if release_status.get("source_linked_entry_count") == PLANNED_ENTRY_TARGET else "incomplete",
+            status="ready"
+            if package_summary.get("entry_count") == PLANNED_ENTRY_TARGET
+            else "incomplete",
             certification_evidence=False,
         ),
         artifact(

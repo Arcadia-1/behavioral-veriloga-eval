@@ -1,5 +1,5 @@
 {
-  "date": "2026-06-08",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "ready",
   "contract_version": "v1",
@@ -47,14 +47,14 @@
   },
   "task_selection": {
     "source_of_truth": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-    "package_entry_count": 79,
-    "package_form_count": 271,
-    "certified_entries": 79,
-    "certified_forms": 271,
+    "package_entry_count": 86,
+    "package_form_count": 300,
+    "certified_entries": 86,
+    "certified_forms": 300,
     "pending_entries": 0,
     "pending_forms": 0,
-    "scored_entries": 66,
-    "scored_forms": 236,
+    "scored_entries": 73,
+    "scored_forms": 265,
     "score_enabled": true,
     "l0_conformance_excluded": true,
     "unscored_rows_excluded": true,
@@ -113,8 +113,8 @@
   "score_gate": {
     "status": "score_enabled",
     "score_claim_allowed": true,
-    "scored_entries": 66,
-    "scored_forms": 236,
+    "scored_entries": 73,
+    "scored_forms": 265,
     "blocking_reason": "",
     "finish_readiness_status": "ready_to_finish",
     "ready_to_finish_release": true
@@ -123,6 +123,8 @@
     "status": "ready_for_baseline_runs",
     "ready_for_baseline_runs": true,
     "claim_allowed": false,
+    "claim_status": "baseline_runs_present_claim_pending",
+    "final_judge_baseline_count": 0,
     "minimal_lanes": [
       "prompt_only_generation",
       "evas_feedback_debug_generation",
@@ -153,7 +155,7 @@
       "raw_result.timing.spectre_wall_time_s",
       "raw_result.timing.combined_wall_time_s"
     ],
-    "timed_rows": 54
+    "timed_rows": 8
   },
   "commands": {
     "refresh_package": "python3 runners/run_vabench_release_longrun.py",
@@ -170,8 +172,7 @@
     "Spectre is the final judge for release scoring.",
     "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
     "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
-    "Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.",
-    "The v1.1 300-task expansion is an asset/negative-candidate surface; the 29 proposed tasks remain unscored and uncertified until static, EVAS, and Spectre evidence exists.",
+    "Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.",
     "claim_gate_status=in_progress"
   ]
 }

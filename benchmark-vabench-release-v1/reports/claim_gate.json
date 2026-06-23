@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "claim_count": 9,
@@ -13,11 +13,11 @@
       "status": "allowed",
       "allowed": true,
       "completion_required": true,
-      "claim_text": "The release target defines a 79-entry L1/L2 vaBench coverage plan.",
-      "safe_wording": "The current release package defines 79 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
+      "claim_text": "The release target defines a 86-entry L1/L2 vaBench coverage plan.",
+      "safe_wording": "The current release package defines 86 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
       "unsafe_wording": [
-        "vaBench is fully certified because it has 79 rows.",
-        "The 79-entry table alone proves benchmark correctness."
+        "vaBench is fully certified because it has 86 rows.",
+        "The 86-entry table alone proves benchmark correctness."
       ],
       "evidence": [
         "benchmark-vabench-release-v1/reports/release_status.json",
@@ -25,7 +25,7 @@
       ],
       "required_before_allowed": [],
       "numbers": {
-        "planned_entries": 79
+        "planned_entries": 86
       },
       "notes": []
     },
@@ -35,21 +35,23 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "All release entries have materialized source-task assets and pass static checks.",
-      "safe_wording": "The release has 79 materialized entries for the 79-entry plan and 271 static-certified forms with zero asset issues.",
+      "safe_wording": "The release has 86 materialized entries for the 86-entry plan and 300 static-certified forms with zero asset issues.",
       "unsafe_wording": [
         "Static certification proves EVAS/Spectre behavioral parity.",
         "Asset materialization means the task is scored."
       ],
       "evidence": [
+        "benchmark-vabench-release-v1/MANIFEST.json",
         "benchmark-vabench-release-v1/reports/asset_integrity.json",
         "benchmark-vabench-release-v1/reports/static_certification.json",
         "benchmark-vabench-release-v1/reports/release_status.json"
       ],
       "required_before_allowed": [],
       "numbers": {
-        "source_linked_entries": 79,
-        "materialized_entries": 79,
-        "static_certified_forms": 271
+        "source_linked_entries": 86,
+        "materialized_entries": 86,
+        "static_certified_forms": 300,
+        "package_forms": 300
       },
       "notes": []
     },
@@ -115,10 +117,10 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "The release benchmark has an enabled score denominator.",
-      "safe_wording": "The release benchmark score denominator is enabled for 66 certified content-denominator entries and 236 forms.",
+      "safe_wording": "The release benchmark score denominator is enabled for 73 certified content-denominator entries and 265 forms.",
       "unsafe_wording": [
         "Current baseline percentages are release benchmark scores.",
-        "The 79 planned entries are already the scored denominator."
+        "The 86 planned entries are already the scored denominator."
       ],
       "evidence": [
         "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
@@ -127,8 +129,8 @@
       "required_before_allowed": [],
       "numbers": {
         "score_denominator_status": "score_enabled",
-        "scored_entries": 66,
-        "scored_forms": 236
+        "scored_entries": 73,
+        "scored_forms": 265
       },
       "notes": []
     },
@@ -157,9 +159,9 @@
       "numbers": {
         "speed_status": "measured_subset",
         "claim_allowed": false,
-        "timed_rows": 54,
-        "timed_scored_forms": 52,
-        "scored_forms": 236
+        "timed_rows": 8,
+        "timed_scored_forms": 8,
+        "scored_forms": 265
       },
       "notes": []
     },
@@ -184,7 +186,7 @@
       "numbers": {
         "baseline_status": "ready_for_baseline_runs",
         "baseline_claim_allowed": false,
-        "baseline_summary_count": 7
+        "baseline_summary_count": 113
       },
       "notes": []
     },
@@ -196,7 +198,7 @@
       "claim_text": "L0 EVAS/Spectre conformance cases are kept outside the L1/L2 benchmark denominator.",
       "safe_wording": "L0 conformance has 4 cases and contributes 0 entries to benchmark coverage.",
       "unsafe_wording": [
-        "L0 conformance cases increase the 79-entry benchmark size.",
+        "L0 conformance cases increase the 86-entry benchmark size.",
         "Conformance regressions are scored release tasks."
       ],
       "evidence": [
@@ -232,7 +234,7 @@
         "missing_required_form_entries": 0,
         "current_dual_pending_forms": 0,
         "imported_dual_pending_forms": 0,
-        "scored_entries": 66
+        "scored_entries": 73
       },
       "notes": []
     }

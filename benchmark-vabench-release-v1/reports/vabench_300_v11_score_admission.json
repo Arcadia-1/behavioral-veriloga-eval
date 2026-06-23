@@ -1,0 +1,672 @@
+{
+  "claim_boundary": [
+    "This report only admits fresh-certified v1.1 rows to the score denominator; support-suite exclusions still apply globally.",
+    "Spectre remains the final paper-facing judge; EVAS evidence is a fast evaluator and checker-strength signal.",
+    "Warnings flag wording hygiene or non-blocking prompt text; blockers prevent admission."
+  ],
+  "date": "2026-06-23",
+  "evidence_sources": {
+    "fresh_spectre_rerun": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "negative_audit": "benchmark-vabench-release-v1/vabench-300-expansion/negative_audit.json",
+    "task_specific_quality": "benchmark-vabench-release-v1/vabench-300-expansion/v11_task_specific_quality_evidence.json",
+    "vabench_300_manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json"
+  },
+  "global_blockers": [],
+  "rows": [
+    {
+      "admission_ready": true,
+      "base_function": "Bootstrapped sample switch abstraction",
+      "blockers": [],
+      "category": "Sampling and Analog Memory",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00013961913746702044,
+        "mean_relative_rms_error": 2.9957774837137368e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bootstrapped sample switch abstraction",
+      "blockers": [],
+      "category": "Sampling and Analog Memory",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00013961913746702044,
+        "mean_relative_rms_error": 2.9957774837137368e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bootstrapped sample switch abstraction",
+      "blockers": [],
+      "category": "Sampling and Analog Memory",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00013961913746702044,
+        "mean_relative_rms_error": 2.9957774837137368e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bootstrapped sample switch abstraction",
+      "blockers": [],
+      "category": "Sampling and Analog Memory",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00013961913746702044,
+        "mean_relative_rms_error": 2.9957774837137368e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT03_sampling_and_analog_memory/vbr11_l1_bootstrapped_sample_switch/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "task_id": "bootstrapped_sample_switch:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "First-order sigma-delta modulator loop",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00017126879386171064,
+        "mean_relative_rms_error": 3.721522810322104e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "First-order sigma-delta modulator loop",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00017126879386171064,
+        "mean_relative_rms_error": 3.721522810322104e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "First-order sigma-delta modulator loop",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00017126879386171064,
+        "mean_relative_rms_error": 3.721522810322104e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "First-order sigma-delta modulator loop",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00017126879386171064,
+        "mean_relative_rms_error": 3.721522810322104e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l1_sigma_delta_modulator_loop/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "task_id": "sigma_delta_modulator_loop:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bandgap startup and trim convergence flow",
+      "blockers": [],
+      "category": "Bias Reference and Power Management",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 1.9613211743729528e-05,
+        "mean_relative_rms_error": 5.77737579491203e-06,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bandgap startup and trim convergence flow",
+      "blockers": [],
+      "category": "Bias Reference and Power Management",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 1.9613211743729528e-05,
+        "mean_relative_rms_error": 5.77737579491203e-06,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bandgap startup and trim convergence flow",
+      "blockers": [],
+      "category": "Bias Reference and Power Management",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 1.9613211743729528e-05,
+        "mean_relative_rms_error": 5.77737579491203e-06,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Bandgap startup and trim convergence flow",
+      "blockers": [],
+      "category": "Bias Reference and Power Management",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 1.9613211743729528e-05,
+        "mean_relative_rms_error": 5.77737579491203e-06,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "task_id": "bandgap_startup_trim:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Fractional-N divider and accumulator flow",
+      "blockers": [],
+      "category": "PLL Clock and Timing Systems",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.043626851321171e-05,
+        "mean_relative_rms_error": 1.8718018093978558e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Fractional-N divider and accumulator flow",
+      "blockers": [],
+      "category": "PLL Clock and Timing Systems",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.043626851321171e-05,
+        "mean_relative_rms_error": 1.8718018093978558e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Fractional-N divider and accumulator flow",
+      "blockers": [],
+      "category": "PLL Clock and Timing Systems",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.043626851321171e-05,
+        "mean_relative_rms_error": 1.8718018093978558e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Fractional-N divider and accumulator flow",
+      "blockers": [],
+      "category": "PLL Clock and Timing Systems",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.043626851321171e-05,
+        "mean_relative_rms_error": 1.8718018093978558e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "task_id": "fractional_n_pll_divider:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Comparator metastability window model",
+      "blockers": [],
+      "category": "Comparator and Decision Circuits",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.6420790949892156e-05,
+        "mean_relative_rms_error": 1.7767223689852355e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Comparator metastability window model",
+      "blockers": [],
+      "category": "Comparator and Decision Circuits",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.6420790949892156e-05,
+        "mean_relative_rms_error": 1.7767223689852355e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Comparator metastability window model",
+      "blockers": [],
+      "category": "Comparator and Decision Circuits",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.6420790949892156e-05,
+        "mean_relative_rms_error": 1.7767223689852355e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Comparator metastability window model",
+      "blockers": [],
+      "category": "Comparator and Decision Circuits",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 5.6420790949892156e-05,
+        "mean_relative_rms_error": 1.7767223689852355e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT02_comparator_and_decision_circuits/vbr11_l2_metastability_window_comparator_flow/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "task_id": "metastability_window_comparator:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "blockers": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.0002280463902187272,
+        "mean_relative_rms_error": 4.85554787219105e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "blockers": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.0002280463902187272,
+        "mean_relative_rms_error": 4.85554787219105e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "blockers": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.0002280463902187272,
+        "mean_relative_rms_error": 4.85554787219105e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Quadrature gain/phase imbalance corrector",
+      "blockers": [],
+      "category": "RF and AFE Behavioral Macromodels",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.0002280463902187272,
+        "mean_relative_rms_error": 4.85554787219105e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT08_rf_afe_behavioral_macromodels/vbr11_l2_quadrature_iq_imbalance_corrector/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "task_id": "quadrature_iq_imbalance_corrector:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00034554258396398763,
+        "mean_relative_rms_error": 8.081609858470096e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "dut",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00034554258396398763,
+        "mean_relative_rms_error": 8.081609858470096e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/dut/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:dut",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "e2e",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00034554258396398763,
+        "mean_relative_rms_error": 8.081609858470096e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/e2e/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:e2e",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "Time-interleaved ADC mismatch observation flow",
+      "blockers": [],
+      "category": "Data Converter Models",
+      "form": "tb",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 0.00034554258396398763,
+        "mean_relative_rms_error": 8.081609858470096e-05,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT01_data_converter_models/vbr11_l2_time_interleaved_adc_mismatch_flow/forms/tb/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "task_id": "time_interleaved_adc_mismatch:tb",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    },
+    {
+      "admission_ready": true,
+      "base_function": "CPPLL tracking and frequency-step reacquire flow",
+      "blockers": [],
+      "category": "PLL Clock and Timing Systems",
+      "form": "bugfix",
+      "fresh_spectre": {
+        "behavior_score": 1.0,
+        "max_relative_rms_error": 2.5412507057047673e-05,
+        "mean_relative_rms_error": 8.259689955117792e-06,
+        "parity_status": "passed",
+        "raw_status": "PASS",
+        "spectre_ok": true
+      },
+      "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/forms/bugfix/release_task.json",
+      "negative_count": 5,
+      "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "task_id": "cppll_tracking_frequency_step_reacquire:bugfix",
+      "warnings": [
+        "prompt_uses_candidate_wording"
+      ]
+    }
+  ],
+  "status": "pass",
+  "summary": {
+    "admission_ready_rows": 29,
+    "audited_v11_rows": 29,
+    "blocked_rows": 0,
+    "evas_pass_spectre_fail_count": 0,
+    "expected_v11_rows": 29,
+    "fresh_spectre_parity_pass_count": 29,
+    "fresh_spectre_pass_count": 29,
+    "negative_audit_issue_count": 0,
+    "quality_negative_full_checker_fail_count": 145,
+    "row_blocker_counts": {},
+    "row_warning_counts": {
+      "prompt_uses_candidate_wording": 29
+    }
+  },
+  "verdict": "admit_all"
+}

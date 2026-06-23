@@ -13,6 +13,7 @@ TRACKER_CSV = ROOT / "docs" / "VABENCH_RELEASE_TRACKER.csv"
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 TASKS_ROOT = PACKAGE_ROOT / "tasks"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
+PACKAGE_MANIFEST_JSON = PACKAGE_ROOT / "MANIFEST.json"
 STATUS_REPORT_JSON = REPORTS_ROOT / "release_status.json"
 DUAL_REPORT_JSON = REPORTS_ROOT / "dual_certification.json"
 STATIC_REPORT_JSON = REPORTS_ROOT / "static_certification.json"
@@ -47,6 +48,10 @@ def read_json(path: Path) -> dict[str, object]:
 
 
 def read_release_entries() -> list[dict[str, object]]:
+    package_manifest = read_json(PACKAGE_MANIFEST_JSON)
+    entries = package_manifest.get("entries", [])
+    if isinstance(entries, list) and entries:
+        return [entry for entry in entries if isinstance(entry, dict)]
     rows: list[dict[str, object]] = []
     for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
         payload = read_json(path)
@@ -113,17 +118,26 @@ def build_report() -> dict[str, object]:
     denominator_summary = score_denominator.get("summary", {})
     if not isinstance(denominator_summary, dict):
         denominator_summary = {}
+    package_manifest = read_json(PACKAGE_MANIFEST_JSON)
+    package_summary = package_manifest.get("summary", {})
+    if not isinstance(package_summary, dict):
+        package_summary = {}
     release_entries = read_release_entries()
+    package_forms = package_manifest.get("forms", [])
+    if not isinstance(package_forms, list):
+        package_forms = []
     track_counts = dict(sorted(Counter(str(entry.get("track", "core")) for entry in release_entries).items()))
     track_form_counts = dict(
         sorted(
             Counter(
-                str(entry.get("track", "core"))
-                for entry in release_entries
-                for _ in range(entry_form_count(entry))
+                str(form.get("track", "core"))
+                for form in package_forms
+                if isinstance(form, dict)
             ).items()
         )
     )
+    level_counts = dict(sorted(Counter(str(entry.get("level", "")) for entry in release_entries).items()))
+    category_counts = dict(sorted(Counter(str(entry.get("category", "")) for entry in release_entries).items()))
     difficulty_counts = dict(sorted(Counter(str(entry.get("difficulty", "D2")) for entry in release_entries).items()))
     scored = int(denominator_summary.get("scored_entry_count", 0) or 0)
     scored_forms = int(denominator_summary.get("scored_form_count", 0) or 0)
@@ -157,9 +171,9 @@ def build_report() -> dict[str, object]:
     rerun_pending = int(remaining.get("selected_rerun_pending_form_count", 0) or 0)
     missing_required = int(remaining.get("missing_required_form_entry_count", 0) or 0)
     current_seed_missing = int(remaining.get("current_seed_missing_form_entry_count", 0) or 0)
-    planned_entries = int(status.get("planned_entries", 0) or 0)
-    source_linked_entries = int(status.get("source_linked_entry_count", 0) or 0)
-    materialized_entries = int(status.get("asset_materialized_entry_count", 0) or 0)
+    planned_entries = int(package_summary.get("entry_count", status.get("planned_entries", 0)) or 0)
+    source_linked_entries = int(package_summary.get("entry_count", status.get("source_linked_entry_count", 0)) or 0)
+    materialized_entries = int(package_summary.get("entry_count", status.get("asset_materialized_entry_count", 0)) or 0)
     materialization_complete = (
         source_pending == 0
         and missing_required == 0
@@ -189,9 +203,9 @@ def build_report() -> dict[str, object]:
     bridge_required_for_certification = not full_dual_certified
 
     coverage_summary = {
-        "planned_entries": status.get("planned_entries", len(tracker)),
-        "level_counts": status.get("level_counts", count(tracker, "level")),
-        "category_counts": count(tracker, "category"),
+        "planned_entries": planned_entries,
+        "level_counts": level_counts or status.get("level_counts", count(tracker, "level")),
+        "category_counts": category_counts or count(tracker, "category"),
         "track_counts": track_counts,
         "track_form_counts": track_form_counts,
         "difficulty_counts": difficulty_counts,
@@ -199,12 +213,17 @@ def build_report() -> dict[str, object]:
         "support_entry_count": track_counts.get("support", 0),
         "core_form_count": track_form_counts.get("core", 0),
         "support_form_count": track_form_counts.get("support", 0),
-        "package_status_counts": status.get("package_status_counts", count(tracker, "package_status")),
-        "source_linked_entry_count": status.get("source_linked_entry_count", 0),
-        "asset_materialized_entry_count": status.get("asset_materialized_entry_count", 0),
-        "static_certified_release_task_count": static.get("static_certified_release_task_count", 0),
+        "package_status_counts": dict(sorted(Counter(str(entry.get("package_status", "")) for entry in release_entries).items()))
+        or status.get("package_status_counts", count(tracker, "package_status")),
+        "source_linked_entry_count": source_linked_entries,
+        "asset_materialized_entry_count": materialized_entries,
+        "static_certified_release_task_count": certification_matrix_summary.get(
+            "certified_form_count", static.get("static_certified_release_task_count", 0)
+        ),
         "dual_certified_release_task_count": dual_certified_forms,
-        "fully_certified_entry_count": dual.get("fully_certified_entry_count", 0),
+        "fully_certified_entry_count": certification_matrix_summary.get(
+            "fully_certified_entry_count", dual.get("fully_certified_entry_count", 0)
+        ),
         "certification_matrix_status": certification_matrix.get("status", "missing"),
         "scored_release_entries": scored,
         "scored_release_forms": scored_forms,

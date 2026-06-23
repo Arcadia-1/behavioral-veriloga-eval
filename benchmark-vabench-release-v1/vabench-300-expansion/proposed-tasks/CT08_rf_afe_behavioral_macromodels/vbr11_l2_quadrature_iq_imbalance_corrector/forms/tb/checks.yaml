@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "image_rejection_metric_nominal_path"
-    - "image_rejection_metric_boundary_path"
+    - "quadrature_iq_imbalance_corrector_full_behavior"
+    - "image_rejection_metric_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

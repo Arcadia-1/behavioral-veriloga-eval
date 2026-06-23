@@ -1,7 +1,8 @@
 {
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+  "benchmark_split": "vabench-300-expansion-v1.1-task-specific-candidate",
   "category": "Data Converter Models",
+  "checker_task_id": "time_interleaved_adc_mismatch:dut",
   "difficulty": "hard",
   "domain": "voltage",
   "expected_backend": "evas",
@@ -21,6 +22,7 @@
     "required_partial_pass_negatives": 5,
     "zero_score_negatives_allowed": false
   },
+  "paper_score": "disabled_until_fresh_spectre_certification",
   "scoring": [
     "syntax",
     "dut_compile",
@@ -28,5 +30,10 @@
     "sim_correct"
   ],
   "task_id": "time_interleaved_adc_mismatch:dut",
+  "task_specific_contract": {
+    "behavior": "four-lane time-interleaved ADC observation model with lane-dependent offset/gain mismatch",
+    "checker": "lane metric spans all four phases and the output preserves the driven input span",
+    "observable": "out is the lane-adjusted sampled value; metric encodes lane rotation plus mismatch magnitude"
+  },
   "topic_id": "time_interleaved_adc_mismatch"
 }

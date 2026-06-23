@@ -1,6 +1,6 @@
 # vaBench Release Baseline Artifact
 
-Date: 2026-05-27
+Date: 2026-06-23
 
 This artifact gates model-baseline claims for the clean vaBench release.
 It intentionally keeps baseline workflows simple and secondary to the
@@ -12,13 +12,13 @@ benchmark/evaluator contribution.
 | --- | ---: |
 | status | `ready_for_baseline_runs` |
 | claim allowed | `False` |
-| scored release entries | 66 |
-| scored release forms | 236 |
+| scored release entries | 73 |
+| scored release forms | 265 |
 | score denominator status | `score_enabled` |
 | fully certified entries | 79 |
 | dual pending forms | 0 |
 | dual failed forms | 0 |
-| baseline summaries | 7 |
+| baseline summaries | 113 |
 | execution plan | `ready_for_baseline_runs` |
 
 ## Minimal Baseline Lanes

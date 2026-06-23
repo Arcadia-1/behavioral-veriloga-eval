@@ -32,7 +32,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 STREAMING_TASKS = {
     "pfd_deadzone_smoke",
+    "pfd_small_phase_response_smoke",
+    "vbm1_pfd_small_phase_error_response_dut",
     "pfd_reset_race_smoke",
+    "vbm1_pfd_reset_race_dut",
+    "vbm1_pfd_reset_race_tb",
+    "vbm1_pfd_reset_race_bugfix",
+    "vbm1_pfd_reset_race_e2e",
+    "cppll_freq_step_reacquire_smoke",
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
     "dac_binary_clk_4b_smoke",
     "sar_adc_dac_weighted_8b_smoke",
     "dwa_ptr_gen_no_overlap_smoke",
@@ -40,6 +48,28 @@ STREAMING_TASKS = {
     "gray_counter_one_bit_change_smoke",
     "dwa_wraparound_smoke",
     "gain_extraction_smoke",
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+    "vbr1_l1_gain_estimator_tb",
+    "vbr1_l1_gain_estimator_e2e",
+    "cdac_cal",
+    "lfsr_smoke",
+    "vbr1_l1_lfsr_prbs_generator_tb",
+    "vbr1_l1_lfsr_prbs_generator_e2e",
+    "prbs7",
+    "vbr1_l1_lfsr_prbs_generator_bugfix",
+    "bbpd",
+    "vbr1_l1_bang_bang_phase_detector_bugfix",
+    "cross_hysteresis_window_smoke",
+    "cross_interval_163p333_smoke",
+    "vbr1_l1_edge_interval_timer_tb",
+    "vbr1_l1_edge_interval_timer_e2e",
+    "phase_accumulator_timer_wrap_smoke",
+    "vbr1_l1_precision_rectifier_envelope_detector_e2e",
+    "vbr1_l2_programmable_stimulus_sequencer_e2e",
+    "adpll_ratio_hop_smoke",
+    "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+    "sample_hold_droop_smoke",
     "multimod_divider_ratio_switch_smoke",
 }
 
@@ -274,18 +304,21 @@ def _fixture_cases(output_dir: Path, tasks: set[str]) -> list[tuple[str, Path, s
         [{**row, "aout": 0.0} for row in dac_rows],
     )
 
-    sar_fields = ["time", "vin", "vin_sh", "vout", "rst_n"] + [f"dout_{idx}" for idx in range(8)]
-    sar_rows = [
-        {
-            "time": idx * 1e-9,
-            "vin": (idx % 64) / 63.0 * 0.8,
-            "vin_sh": (idx % 64) / 63.0 * 0.8,
-            "vout": (idx % 64) / 63.0 * 0.8,
-            "rst_n": 1.0 if idx > 2 else 0.0,
-            **_bits("dout", 8, idx % 64),
-        }
-        for idx in range(80)
-    ]
+    sar_fields = ["time", "vin", "vin_sh", "clks", "vout", "rst_n"] + [f"dout_{idx}" for idx in range(8)]
+    sar_rows = []
+    for cycle in range(502):
+        base = cycle * 20.0e-9
+        rst_n = 1.0 if cycle >= 4 else 0.0
+        sample_time = base + 1.0e-9
+        vin = 0.45 + 0.45 * math.sin(2.0 * math.pi * 100.0e3 * sample_time)
+        vin = max(0.0, min(0.9, vin))
+        code = max(0, min(255, int(math.floor(vin / 0.9 * 255.0))))
+        vout = code / 255.0 * 0.9
+        common = {"vin": vin, "vin_sh": vin, "vout": vout, "rst_n": rst_n, **_bits("dout", 8, code)}
+        sar_rows.append({"time": base + 0.2e-9, "clks": 0.0, **common})
+        sar_rows.append({"time": base + 1.0e-9, "clks": 1.0, **common})
+        sar_rows.append({"time": base + 2.0e-9, "clks": 1.0, **common})
+        sar_rows.append({"time": base + 11.0e-9, "clks": 0.0, **common})
     add("sar_adc_dac_weighted_8b_smoke", "pass", sar_fields, sar_rows)
     add(
         "sar_adc_dac_weighted_8b_smoke",

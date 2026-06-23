@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from vabench_release_surface import read_release_entries
 from vabench_policy import content_denominator_exclusion_reasons, is_content_denominator_entry
 
 
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 TASKS_ROOT = PACKAGE_ROOT / "tasks"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
+VABENCH300_MANIFEST = PACKAGE_ROOT / "vabench-300-expansion" / "VABENCH_300_MANIFEST.json"
 CONFORMANCE_JSON = REPORTS_ROOT / "conformance_manifest.json"
 ENABLEMENT_JSON = REPORTS_ROOT / "score_denominator_enablement.json"
 ENABLEMENT_MD = REPORTS_ROOT / "score_denominator_enablement.md"
@@ -29,16 +31,6 @@ def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def read_release_entries() -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
-        payload = read_json(path)
-        if payload:
-            payload["_manifest_path"] = rel(path)
-            entries.append(payload)
-    return entries
 
 
 def task_manifest_path(entry: dict[str, Any], task: dict[str, Any]) -> Path:
@@ -196,10 +188,148 @@ def reason_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
     return dict(sorted(counts.items()))
 
 
+def vabench300_form_exclusion_reasons(
+    task: dict[str, Any],
+    content_denominator_included: bool,
+    benchmark_score_enabled: bool,
+    static: str,
+    evas: str,
+    spectre: str,
+) -> list[str]:
+    source_reasons = task.get("exclusion_reasons", [])
+    if isinstance(source_reasons, list) and source_reasons:
+        return [str(item) for item in source_reasons]
+    reasons: list[str] = []
+    content_reasons = task.get("content_exclusion_reasons", [])
+    if isinstance(content_reasons, list):
+        reasons.extend(f"content_denominator_excluded:{reason}" for reason in content_reasons)
+    elif not content_denominator_included:
+        reasons.append("content_denominator_excluded:support_suite_not_core_circuit_score")
+    if not benchmark_score_enabled:
+        reasons.append("benchmark_score_disabled")
+    if static != "pass":
+        reasons.append(f"task_static:{static}")
+    if evas != "pass":
+        reasons.append(f"task_evas:{evas}")
+    if spectre != "pass":
+        reasons.append(f"task_spectre:{spectre}")
+    return reasons
+
+
+def build_vabench300_form_rows(tasks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for task in sorted(
+        tasks,
+        key=lambda item: (
+            str(item.get("legacy_entry_id") or item.get("release_entry_id") or ""),
+            str(item.get("form") or ""),
+        ),
+    ):
+        release_entry_id = str(task.get("legacy_entry_id") or task.get("release_entry_id") or "")
+        form = str(task.get("form") or "")
+        key = (release_entry_id, form)
+        if not release_entry_id or not form or key in seen:
+            continue
+        seen.add(key)
+        level = level_from_entry_id(release_entry_id)
+        track = str(task.get("track") or "core")
+        static = str(task.get("static") or "pending")
+        evas = str(task.get("evas") or "pending")
+        spectre = str(task.get("spectre") or "pending")
+        certified = str(task.get("certification") or "") == "certified" or (
+            static == "pass" and evas == "pass" and spectre == "pass"
+        )
+        content_denominator_included = boolish(task.get("content_denominator_included"), default=track == "core")
+        counted = boolish(
+            task.get("counted_in_score"),
+            default=content_denominator_included and certified and track == "core",
+        )
+        benchmark_score_enabled = counted
+        reasons = vabench300_form_exclusion_reasons(
+            task,
+            content_denominator_included,
+            benchmark_score_enabled,
+            static,
+            evas,
+            spectre,
+        )
+        rows.append(
+            {
+                "release_entry_id": release_entry_id,
+                "task_id": str(task.get("legacy_task_id") or f"{release_entry_id}:{form}"),
+                "form": form,
+                "level": level,
+                "track": track,
+                "difficulty": str(task.get("difficulty") or "D2"),
+                "category": str(task.get("category") or ""),
+                "base_function": str(task.get("base_function") or ""),
+                "score_surface": score_surface_for(level, track),
+                "manifest": str(task.get("release_task_manifest") or ""),
+                "static": static,
+                "evas": evas,
+                "spectre": spectre,
+                "certified": certified,
+                "benchmark_score_enabled": benchmark_score_enabled,
+                "content_denominator_included": content_denominator_included,
+                "counted_in_score": counted,
+                "exclusion_reasons": [] if counted else reasons,
+            }
+        )
+    return rows
+
+
+def build_vabench300_entry_rows(form_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_entry: dict[str, list[dict[str, Any]]] = {}
+    for row in form_rows:
+        by_entry.setdefault(str(row["release_entry_id"]), []).append(row)
+    rows: list[dict[str, Any]] = []
+    for release_entry_id, forms in sorted(by_entry.items()):
+        first = forms[0]
+        certified = all(bool(row["certified"]) for row in forms)
+        content_denominator_included = all(bool(row["content_denominator_included"]) for row in forms)
+        benchmark_score_enabled = any(bool(row["benchmark_score_enabled"]) for row in forms)
+        counted = content_denominator_included and benchmark_score_enabled and certified
+        exclusion_reasons = sorted(
+            {
+                str(reason)
+                for row in forms
+                for reason in row.get("exclusion_reasons", [])
+                if not counted
+            }
+        )
+        rows.append(
+            {
+                "release_entry_id": release_entry_id,
+                "level": first.get("level", ""),
+                "track": first.get("track", "core"),
+                "difficulty": first.get("difficulty", "D2"),
+                "category": first.get("category", ""),
+                "base_function": first.get("base_function", ""),
+                "score_surface": first.get("score_surface", ""),
+                "required_forms": sorted(str(row["form"]) for row in forms),
+                "missing_forms": [],
+                "release_blockers": [],
+                "manifest": "",
+                "certified": certified,
+                "benchmark_score_enabled": benchmark_score_enabled,
+                "content_denominator_included": content_denominator_included,
+                "counted_in_score": counted,
+                "exclusion_reasons": [] if counted else exclusion_reasons,
+            }
+        )
+    return rows
+
+
 def build_report() -> dict[str, Any]:
-    entries = read_release_entries()
-    form_rows = build_form_rows(entries)
-    entry_rows = build_entry_rows(entries, form_rows)
+    vabench300_tasks = read_vabench300_tasks()
+    if vabench300_tasks:
+        form_rows = build_vabench300_form_rows(vabench300_tasks)
+        entry_rows = build_vabench300_entry_rows(form_rows)
+    else:
+        entries = read_release_entries()
+        form_rows = build_form_rows(entries)
+        entry_rows = build_entry_rows(entries, form_rows)
     conformance = read_json(CONFORMANCE_JSON)
     scored_entries = sum(1 for row in entry_rows if row["counted_in_score"])
     scored_forms = sum(1 for row in form_rows if row["counted_in_score"])
@@ -274,6 +404,7 @@ def build_report() -> dict[str, Any]:
         "form_rows": form_rows,
         "evidence_sources": {
             "release_tasks_root": rel(TASKS_ROOT),
+            "release_surface_reader": "runners/vabench_release_surface.py",
             "conformance_manifest": rel(CONFORMANCE_JSON),
             "score_denominator_enablement": rel(ENABLEMENT_JSON),
         },

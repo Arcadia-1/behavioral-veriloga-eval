@@ -1,6 +1,6 @@
 # vaBench Release Artifact Index
 
-Date: 2026-05-27
+Date: 2026-06-23
 
 This index maps the release package artifacts to their role in the
 paper-facing claim surface. It is a navigation layer, not new
@@ -31,8 +31,8 @@ certification evidence.
 | `dual_certification` | `pass` | `parity` | `True` | `benchmark-vabench-release-v1/reports/dual_certification.json` |
 | `certification_matrix` | `complete` | `parity_audit` | `False` | `benchmark-vabench-release-v1/reports/certification_matrix.json` |
 | `l0_conformance_manifest` | `ready` | `evaluator_health` | `False` | `benchmark-vabench-release-v1/reports/conformance_manifest.json` |
-| `dual_rerun_queue` | `ready` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_queue.json` |
-| `dual_rerun_staging` | `ready` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json` |
+| `dual_rerun_queue` | `complete` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_queue.json` |
+| `dual_rerun_staging` | `complete` | `rerun_plan` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json` |
 | `dual_rerun_import` | `imported` | `certification_import_gate` | `False` | `benchmark-vabench-release-v1/reports/dual_rerun_import.json` |
 | `bridge_profile_diagnostics` | `ready` | `external_blocker` | `False` | `benchmark-vabench-release-v1/reports/bridge_profile_diagnostics.json` |
 | `external_blockers` | `pending` | `external_blocker` | `False` | `benchmark-vabench-release-v1/reports/external_blockers.json` |

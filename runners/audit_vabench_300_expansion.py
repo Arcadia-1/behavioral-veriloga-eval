@@ -140,13 +140,24 @@ def audit() -> dict[str, Any]:
                 task_failures.append(f"{negative.get('id')}: missing validation_evidence")
                 validation = {}
                 negative["validation_evidence"] = validation
-            if validation.get("simulator_shallow_lane") not in {"pending_external_evas_spectre", "pass"}:
+            if validation.get("simulator_shallow_lane") not in {
+                "pending_external_evas_spectre",
+                "pending_local_evas",
+                "pass",
+            }:
                 task_failures.append(f"{negative.get('id')}: invalid simulator_shallow_lane")
-            if validation.get("full_checker_lane") not in {"pending_external_evas_spectre", "fail_as_expected"}:
+            if validation.get("full_checker_lane") not in {
+                "pending_external_evas_spectre",
+                "pending_local_evas",
+                "fail_as_expected",
+                "pass",
+            }:
                 task_failures.append(f"{negative.get('id')}: invalid full_checker_lane")
             if validation.get("publication_status") not in {
                 "asset_ready_not_simulator_certified",
                 "simulator_validated_partial_pass",
+                "pending_fresh_evas_and_spectre",
+                "evas_full_checker_verified_spectre_pending",
             }:
                 task_failures.append(f"{negative.get('id')}: invalid publication_status")
             shallow_passes, shallow_failures = shallow_static_checks(derived_from, source)
@@ -186,11 +197,14 @@ def audit() -> dict[str, Any]:
 
 def write_report(report: dict[str, Any]) -> None:
     manifest = read_json(MANIFEST)
+    previous_summary = dict(manifest.get("summary", {}))
+    simulator_verified = previous_summary.get("negative_simulator_shallow_verified_count", 0)
+    full_checker_verified = previous_summary.get("negative_full_checker_fail_verified_count", 0)
     manifest.setdefault("summary", {})["negative_static_shallow_shape_verified_count"] = report[
         "shallow_static_pass_count"
     ]
-    manifest.setdefault("summary", {})["negative_simulator_shallow_verified_count"] = 0
-    manifest.setdefault("summary", {})["negative_full_checker_fail_verified_count"] = 0
+    manifest.setdefault("summary", {})["negative_simulator_shallow_verified_count"] = simulator_verified
+    manifest.setdefault("summary", {})["negative_full_checker_fail_verified_count"] = full_checker_verified
     write_json(MANIFEST, manifest)
     write_json(REPORT_JSON, report)
     lines = [
@@ -201,8 +215,8 @@ def write_report(report: dict[str, Any]) -> None:
         f"- negatives: {report['negative_count']}",
         f"- shallow static pass: {report['shallow_static_pass_count']}",
         f"- shallow static failed: {report['shallow_static_failed_count']}",
-        "- simulator shallow verified: 0",
-        "- full checker fail verified: 0",
+        f"- simulator shallow verified: {simulator_verified}",
+        f"- full checker fail verified: {full_checker_verified}",
         f"- issues: {report['issue_count']}",
         "",
         "This audit checks file existence, hashes, counts, required negative categories, metadata, and static shallow shape. It is not simulator certification.",

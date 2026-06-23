@@ -267,7 +267,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         f"Date: {date.today().isoformat()}",
         "",
         "This is the human-review queue for task 2 and task 3 after locking the",
-        "current 79-entry release package. Every entry requires manual semantic",
+        "current release package. Every entry requires manual semantic",
         "sign-off; risk level only decides review order.",
         "",
         "## Review Contract",

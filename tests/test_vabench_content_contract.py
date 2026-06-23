@@ -14,15 +14,22 @@ MANIFEST = ROOT / "benchmark-vabench-release-v1" / "MANIFEST.json"
 def test_content_contract_locks_clean_function_denominator() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
 
-    assert report["status"] == "pass"
-    assert report["entry_count"] == 79
-    assert report["form_count"] == 271
-    assert report["track_entry_counts"] == {"core": 66, "support": 13}
-    assert report["content_denominator_entry_count"] == 66
-    assert report["content_denominator_form_count"] == 236
+    assert report["status"] == "review_required"
+    assert report["entry_count"] == 86
+    assert report["form_count"] == 300
+    assert report["track_entry_counts"] == {"core": 73, "support": 13}
+    assert report["content_denominator_entry_count"] == 73
+    assert report["content_denominator_form_count"] == 265
     assert report["content_excluded_entry_count"] == 13
     assert report["severity_counts"].get("BLOCKER", 0) == 0
-    assert report["duplicate_groups"] == []
+    assert report["severity_counts"].get("REVIEW_REQUIRED", 0) == 1
+    assert report["duplicate_groups"]
+    assert report["duplicate_groups"][0]["remove_or_rewrite_candidates"] == [
+        "vbr11_l2_fractional_n_pll_divider_flow",
+        "vbr11_l2_metastability_window_comparator_flow",
+        "vbr11_l2_quadrature_iq_imbalance_corrector",
+        "vbr11_l2_time_interleaved_adc_mismatch_flow",
+    ]
 
 
 def test_content_contract_deletes_known_duplicate_l2_entries() -> None:

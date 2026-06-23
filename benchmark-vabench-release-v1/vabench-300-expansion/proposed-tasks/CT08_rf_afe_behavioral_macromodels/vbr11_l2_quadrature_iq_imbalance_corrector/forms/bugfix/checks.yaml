@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "coefficient_direction_bug_nominal_path"
-    - "coefficient_direction_bug_boundary_path"
+    - "quadrature_iq_imbalance_corrector_full_behavior"
+    - "coefficient_direction_bug_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

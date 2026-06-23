@@ -1,7 +1,8 @@
 {
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+  "benchmark_split": "vabench-300-expansion-v1.1-task-specific-candidate",
   "category": "RF and AFE Behavioral Macromodels",
+  "checker_task_id": "quadrature_iq_imbalance_corrector:bugfix",
   "difficulty": "hard",
   "domain": "voltage",
   "expected_backend": "evas",
@@ -21,6 +22,7 @@
     "required_partial_pass_negatives": 5,
     "zero_score_negatives_allowed": false
   },
+  "paper_score": "disabled_until_fresh_spectre_certification",
   "scoring": [
     "syntax",
     "dut_compile",
@@ -28,5 +30,10 @@
     "sim_correct"
   ],
   "task_id": "quadrature_iq_imbalance_corrector:bugfix",
+  "task_specific_contract": {
+    "behavior": "quadrature gain/phase imbalance correction macro with positive input correlation and error metric",
+    "checker": "output remains positively correlated with input and final correction metric is high",
+    "observable": "out is the corrected channel monitor; metric is the post-correction quality estimate"
+  },
   "topic_id": "quadrature_iq_imbalance_corrector"
 }

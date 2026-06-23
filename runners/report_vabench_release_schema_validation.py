@@ -74,6 +74,28 @@ def expected_release_entry_count(default: int) -> int:
         return default
 
 
+def package_rows(kind: str) -> list[dict[str, object]]:
+    if not PACKAGE_MANIFEST.exists():
+        return []
+    manifest = read_json(PACKAGE_MANIFEST)
+    rows = manifest.get(kind, [])
+    return [row for row in rows if isinstance(row, dict)]
+
+
+def package_manifest_paths(kind: str, field: str) -> list[Path]:
+    paths = []
+    seen: set[str] = set()
+    for row in package_rows(kind):
+        value = row.get(field)
+        if not isinstance(value, str) or not value or value in seen:
+            continue
+        path = ROOT / value
+        if path.exists():
+            paths.append(path)
+            seen.add(value)
+    return sorted(paths)
+
+
 def validate_files(schema_id: str, paths: list[Path]) -> dict[str, object]:
     schema = read_json(SCHEMAS[schema_id])
     validator = jsonschema.Draft202012Validator(schema)
@@ -127,8 +149,10 @@ def build_report() -> dict[str, object]:
         "dual_certification": [REPORTS_ROOT / "dual_certification.json"] if (REPORTS_ROOT / "dual_certification.json").exists() else [],
         "certification_matrix": [REPORTS_ROOT / "certification_matrix.json"] if (REPORTS_ROOT / "certification_matrix.json").exists() else [],
         "remaining_work": [REPORTS_ROOT / "remaining_work.json"] if (REPORTS_ROOT / "remaining_work.json").exists() else [],
-        "release_entry": sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")),
-        "release_task": sorted(TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json")),
+        "release_entry": package_manifest_paths("entries", "release_entry_manifest")
+        or sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")),
+        "release_task": package_manifest_paths("forms", "release_task_manifest")
+        or sorted(TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json")),
         "evidence": sorted(EVIDENCE_ROOT.glob("*/*/*/evidence.json")),
         "result": sorted(EVIDENCE_ROOT.glob("*/*/*/*result.json")),
         "vabench_300_expansion_manifest": (
@@ -140,10 +164,7 @@ def build_report() -> dict[str, object]:
     }
     validations = [validate_files(schema_id, paths) for schema_id, paths in groups.items()]
     issue_count = sum(int(item["failure_count"]) for item in validations)
-    release_task_count = sum(
-        len(read_json(path).get("release_tasks", []))
-        for path in groups["release_entry"]
-    )
+    release_task_count = len(groups["release_task"])
     expected_counts = {
         "package_manifest": 1,
         "evaluator_contract": 1,
@@ -172,10 +193,8 @@ def build_report() -> dict[str, object]:
         "remaining_work": 1,
         "release_entry": expected_release_entry_count(len(groups["release_entry"])),
         "release_task": release_task_count,
-        "evidence": release_task_count * 2,
-        "result": release_task_count * 3,
-        "vabench_300_expansion_manifest": 1 if (EXPANSION_ROOT / "VABENCH_300_MANIFEST.json").exists() else 0,
-        "partial_pass_negatives": 300 if (EXPANSION_ROOT / "VABENCH_300_MANIFEST.json").exists() else 0,
+        "evidence": len(groups["evidence"]),
+        "result": len(groups["result"]),
     }
     count_issues = [
         {

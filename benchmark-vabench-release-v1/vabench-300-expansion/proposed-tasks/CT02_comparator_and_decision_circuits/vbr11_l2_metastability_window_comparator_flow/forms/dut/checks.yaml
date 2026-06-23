@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "threshold_latency_window_nominal_path"
-    - "threshold_latency_window_boundary_path"
+    - "metastability_window_comparator_full_behavior"
+    - "threshold_latency_window_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

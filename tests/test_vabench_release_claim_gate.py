@@ -50,10 +50,7 @@ def test_claim_gate_prevents_subset_evidence_from_being_overclaimed() -> None:
     assert full["numbers"]["bridge_status"] == "ready"
     assert full["numbers"]["bridge_required_for_current_claim"] is False
     assert full["required_before_allowed"] == []
-    assert report["blocked_completion_required_claim_ids"] == [
-        "C6_speed_debug_claim",
-        "C7_model_baseline_claim",
-    ]
+    assert report["blocked_completion_required_claim_ids"] == ["C6_speed_debug_claim", "C7_model_baseline_claim"]
     assert complete["allowed"] is True
 
 

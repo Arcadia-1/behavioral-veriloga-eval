@@ -13,13 +13,13 @@ def test_finish_readiness_marks_release_finish_ready_after_full_dual_import() ->
     checks = {item["id"]: item for item in report["checks"]}
 
     assert report["status"] == "ready_to_finish"
-    assert report["ready_to_run_fresh_dual"] is True
+    assert report["ready_to_run_fresh_dual"] is False
     assert report["ready_to_import_fresh_dual"] is True
     assert report["ready_to_finish_release"] is True
-    assert report["run_scope"]["primary_queue_rows"] == 54
-    assert report["run_scope"]["ready_primary_queue_rows"] == 54
-    assert report["run_scope"]["staged_bundle_count"] == 65
-    assert report["run_scope"]["expected_primary_summary_tasks_total"] == 54
+    assert report["run_scope"]["primary_queue_rows"] == 0
+    assert report["run_scope"]["ready_primary_queue_rows"] == 0
+    assert report["run_scope"]["staged_bundle_count"] == 0
+    assert report["run_scope"]["expected_primary_summary_tasks_total"] == 0
 
     assert checks["P1_local_release_package_ready"]["status"] == "pass"
     assert checks["P2_primary_rerun_queue_ready"]["status"] == "pass"

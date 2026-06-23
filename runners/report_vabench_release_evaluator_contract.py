@@ -179,6 +179,8 @@ def build_report() -> dict[str, Any]:
             "status": baseline.get("status", "missing"),
             "ready_for_baseline_runs": ready_for_baseline,
             "claim_allowed": baseline.get("claim_allowed", False),
+            "claim_status": baseline.get("claim_status", "missing"),
+            "final_judge_baseline_count": as_int(baseline.get("final_judge_baseline_count")),
             "minimal_lanes": baseline.get("baseline_protocol", {}).get("minimal_lanes", [])
             if isinstance(baseline.get("baseline_protocol"), dict)
             else [],
@@ -215,8 +217,7 @@ def build_report() -> dict[str, Any]:
             "Spectre is the final judge for release scoring.",
             "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
             "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
-            "Baseline and speed/debug claims remain blocked until their dedicated artifacts allow them.",
-            "The v1.1 300-task expansion is an asset/negative-candidate surface; the 29 proposed tasks remain unscored and uncertified until static, EVAS, and Spectre evidence exists.",
+            "Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.",
             f"claim_gate_status={claim_gate.get('status', 'missing')}",
         ],
     }

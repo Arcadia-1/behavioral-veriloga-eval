@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Run vaBench Model Eval</title>
+    <meta
+      name="description"
+      content="Run a commercial or custom model on vaBench with the unified EVAS and optional Spectre evaluation runner."
+    >
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" aria-current="page" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button
+          class="language-toggle"
+          id="language-toggle"
+          type="button"
+          aria-pressed="false"
+          data-i18n-aria-label="languageToggleAria"
+        >
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="doc-main">
+      <section class="section doc-hero">
+        <div class="section-inner doc-hero-layout">
+          <div>
+            <p class="eyebrow" data-i18n="heroEyebrow">Model evaluation guide</p>
+            <h1 data-i18n="heroTitle">Run vaBench with a new model</h1>
+            <p class="hero-text" data-i18n="heroText">
+              Use one public runner to list the model roster, run a one-task smoke test,
+              score generated Verilog-A with EVAS, and optionally send the same candidates
+              through Spectre as the final judge.
+            </p>
+            <div class="button-row">
+              <a class="button-link primary" href="#smoke-test" data-i18n="primaryAction">Start with a smoke test</a>
+              <a class="button-link" href="#result-contract" data-i18n="secondaryAction">Read the result contract</a>
+            </div>
+          </div>
+          <div class="metric-grid compact" id="roster-cards" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner doc-layout">
+          <aside class="doc-toc" aria-label="On this page">
+            <p class="eyebrow" data-i18n="tocTitle">On this page</p>
+            <a href="#compatibility" data-i18n="tocCompatibility">Compatibility</a>
+            <a href="#prerequisites" data-i18n="tocPrerequisites">Prerequisites</a>
+            <a href="#smoke-test" data-i18n="tocSmoke">Smoke test</a>
+            <a href="#run-model" data-i18n="tocRun">Run with a model</a>
+            <a href="#spectre-final" data-i18n="tocSpectre">Spectre final judge</a>
+            <a href="#custom-adapters" data-i18n="tocCustom">Custom models</a>
+            <a href="#result-contract" data-i18n="tocResults">Results</a>
+          </aside>
+
+          <div class="doc-content">
+            <section class="doc-section" id="compatibility">
+              <h2 data-i18n="compatibilityTitle">What models can run?</h2>
+              <p data-i18n="compatibilityBody">
+                Any model is testable once it can be called through the runner's API contract.
+                Today that means OpenAI-compatible chat completions, Anthropic messages-compatible
+                endpoints, or a local/provider proxy that exposes one of those shapes.
+              </p>
+              <dl class="checklist">
+                <div>
+                  <dt data-i18n="directOpenAITitle">Direct path</dt>
+                  <dd data-i18n="directOpenAIBody">
+                    Providers such as DeepSeek work when their base URL and model name expose
+                    an OpenAI-compatible chat completions endpoint.
+                  </dd>
+                </div>
+                <div>
+                  <dt data-i18n="adapterTitle">Adapter path</dt>
+                  <dd data-i18n="adapterBody">
+                    If a provider uses another request format, put an OpenAI-compatible proxy in
+                    front of it or add a small adapter before claiming benchmark support.
+                  </dd>
+                </div>
+                <div>
+                  <dt data-i18n="judgeTitle">Judge boundary</dt>
+                  <dd data-i18n="judgeBody">
+                    EVAS is the fast development gate. Spectre is still the final paper-facing
+                    judge for reported model scores.
+                  </dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="doc-section" id="prerequisites">
+              <h2 data-i18n="prerequisitesTitle">Prerequisites</h2>
+              <ul class="doc-list">
+                <li data-i18n="prereqPython">Python 3 in the repository environment.</li>
+                <li data-i18n-html="prereqRelease">The vaBench release package and current model roster under <code>benchmark-vabench-release-v1/reports/</code>.</li>
+                <li data-i18n-html="prereqKey">A provider key passed through an environment variable or <code>--api-key-file</code>. Do not put keys directly in shell history.</li>
+                <li data-i18n-html="prereqSpectre">Cadence/Spectre access only when running <code>--final-judge spectre</code>.</li>
+              </ul>
+              <div class="command-card">
+                <div class="command-heading">
+                  <h3 data-i18n="listRosterTitle">List the current roster</h3>
+                  <span id="roster-status" class="status">loading</span>
+                </div>
+                <pre><code id="command-list-roster">python3 runners/run_vabench_model_eval.py --list</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="smoke-test">
+              <h2 data-i18n="smokeTitle">Smoke test</h2>
+              <p data-i18n="smokeBody">
+                Start with one row. This proves that task selection, prompting, provider access,
+                candidate extraction, and EVAS scoring are wired correctly before spending a full run.
+              </p>
+              <div class="command-card">
+                <div class="command-heading">
+                  <h3 data-i18n="deepseekSmokeTitle">DeepSeek V4 Flash smoke</h3>
+                  <span class="status pass" data-i18n="verifiedSmoke">smoke verified</span>
+                </div>
+                <pre><code id="command-deepseek-smoke">Loading command...</code></pre>
+              </div>
+              <div class="note-block">
+                <strong data-i18n="smokeInterpretTitle">How to read the smoke result</strong>
+                <p data-i18n="smokeInterpretBody">
+                  API success means the run generated a candidate and wrote an EVAS result.
+                  The candidate may still fail behavior correctness; that is a model-quality result,
+                  not an integration failure.
+                </p>
+              </div>
+            </section>
+
+            <section class="doc-section" id="run-model">
+              <h2 data-i18n="runTitle">Run with a model</h2>
+              <p data-i18n="runBody">
+                For a development baseline, run EVAS first. The output root contains generated
+                candidates, raw responses, EVAS scores, and the unified summary files.
+              </p>
+              <div class="command-card">
+                <div class="command-heading">
+                  <h3 data-i18n="evasOnlyTitle">EVAS-only baseline</h3>
+                  <span class="status" data-i18n="fastGate">fast gate</span>
+                </div>
+                <pre><code id="command-evas-only">Loading command...</code></pre>
+              </div>
+              <div class="field-grid">
+                <div>
+                  <dt><code>--api-format</code></dt>
+                  <dd data-i18n-html="apiFormatHelp">Use <code>openai</code> or <code>anthropic</code>.</dd>
+                </div>
+                <div>
+                  <dt><code>--proxy-url</code></dt>
+                  <dd data-i18n="proxyHelp">Optional. Use it only when the provider needs a local or network proxy.</dd>
+                </div>
+                <div>
+                  <dt><code>--limit</code>, <code>--task-id</code></dt>
+                  <dd data-i18n="filterHelp">Use these for cheap targeted runs before full-roster execution.</dd>
+                </div>
+                <div>
+                  <dt><code>--resume</code></dt>
+                  <dd data-i18n="resumeHelp">Resume a partially completed run without regenerating completed samples.</dd>
+                </div>
+              </div>
+            </section>
+
+            <section class="doc-section" id="spectre-final">
+              <h2 data-i18n="spectreTitle">Run the Spectre final judge</h2>
+              <p data-i18n="spectreBody">
+                Use Spectre for leaderboard or paper-facing claims. The runner first performs
+                generation plus EVAS scoring, then sends the selected candidates to the Spectre
+                dual-judge runner.
+              </p>
+              <div class="command-card">
+                <div class="command-heading">
+                  <h3 data-i18n="spectreCommandTitle">Full eval with Spectre</h3>
+                  <span class="status warn" data-i18n="requiresSpectre">requires Spectre</span>
+                </div>
+                <pre><code id="command-full-spectre">Loading command...</code></pre>
+              </div>
+              <p class="table-note" data-i18n-html="claimAllowedNote">
+                The summary marks <code>claim_allowed</code> false unless Spectre ran to completion
+                and no backend produced an inconclusive result.
+              </p>
+            </section>
+
+            <section class="doc-section" id="custom-adapters">
+              <h2 data-i18n="customTitle">Custom models and agents</h2>
+              <p data-i18n="customBody">
+                If a model cannot speak the existing API formats, keep the benchmark protocol
+                fixed and adapt only the model-call layer. The evaluator expects candidate
+                Verilog-A files and deterministic run metadata; it does not require the model
+                provider to be built into the benchmark.
+              </p>
+              <ol class="step-list">
+                <li data-i18n="customStep1">Expose the provider through an OpenAI-compatible proxy, or add a narrow adapter in the generation runner.</li>
+                <li data-i18n-html="customStep2">Run <code>--print-commands</code> to inspect the planned EVAS and Spectre stages without spending API calls.</li>
+                <li data-i18n-html="customStep3">Run one task with <code>--limit 1</code>, then scale to the full roster after the output schema looks correct.</li>
+              </ol>
+              <div class="command-card">
+                <div class="command-heading">
+                  <h3 data-i18n="previewTitle">Command preview</h3>
+                  <span class="status" data-i18n="noApiSpend">no API spend</span>
+                </div>
+                <pre><code id="command-preview">python3 runners/run_vabench_model_eval.py --model &lt;model&gt; --base-url &lt;url&gt; --api-format openai --api-key-file &lt;key-file&gt; --limit 1 --final-judge spectre --print-commands</code></pre>
+              </div>
+            </section>
+
+            <section class="doc-section" id="result-contract">
+              <h2 data-i18n="resultsTitle">Results</h2>
+              <p data-i18n="resultsBody">
+                Every run writes a single top-level summary. Use it for dashboards, comparisons,
+                and future leaderboard submissions.
+              </p>
+              <dl class="result-contract">
+                <div>
+                  <dt><code>summary.json</code></dt>
+                  <dd data-i18n-html="summaryJsonHelp">Machine-readable status, selected roster size, EVAS counts, optional Spectre counts, and claim gate.</dd>
+                </div>
+                <div>
+                  <dt><code>summary.md</code></dt>
+                  <dd data-i18n="summaryMdHelp">Human-readable run report for quick review.</dd>
+                </div>
+                <div>
+                  <dt><code>generation_evas/</code></dt>
+                  <dd data-i18n="generationHelp">Generated candidates, raw model responses, generation metadata, and EVAS score artifacts.</dd>
+                </div>
+                <div>
+                  <dt><code>spectre_final/</code></dt>
+                  <dd data-i18n-html="spectreHelp">Optional Spectre dual-judge artifacts when <code>--final-judge spectre</code> is used.</dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/run-model-eval.js"></script>
+  </body>
+</html>

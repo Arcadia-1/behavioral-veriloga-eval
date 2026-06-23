@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "table_count": 5,
@@ -9,7 +9,7 @@
       "title": "vaBench release coverage and materialization status",
       "csv": "benchmark-vabench-release-v1/reports/paper_tables/coverage.csv",
       "row_count": 9,
-      "caption": "Coverage/materialization status for the 79-entry L1/L2 release target, split into core circuit coverage and measurement/stimulus support; score denominator claims are governed by the score denominator manifest."
+      "caption": "Coverage/materialization status for the current L1/L2 release target, split into core circuit coverage and measurement/stimulus support; score denominator claims are governed by the score denominator manifest."
     },
     {
       "id": "parity",
@@ -54,7 +54,7 @@
       {
         "table_id": "coverage",
         "metric": "planned_l1_l2_entries",
-        "value": 79,
+        "value": 86,
         "scope": "coverage target",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/release_status.json",
@@ -63,7 +63,7 @@
       {
         "table_id": "coverage",
         "metric": "core_circuit_entries",
-        "value": 66,
+        "value": 73,
         "scope": "core coverage target",
         "claim_status": "allowed",
         "evidence": "docs/VABENCH_LEVEL_COVERAGE_TABLE.md",
@@ -81,7 +81,7 @@
       {
         "table_id": "coverage",
         "metric": "l1_entries",
-        "value": 62,
+        "value": 64,
         "scope": "coverage target",
         "claim_status": "allowed",
         "evidence": "docs/VABENCH_RELEASE_TRACKER.csv",
@@ -90,7 +90,7 @@
       {
         "table_id": "coverage",
         "metric": "l2_entries",
-        "value": 17,
+        "value": 22,
         "scope": "coverage target",
         "claim_status": "allowed",
         "evidence": "docs/VABENCH_RELEASE_TRACKER.csv",
@@ -99,7 +99,7 @@
       {
         "table_id": "coverage",
         "metric": "source_linked_entries",
-        "value": 79,
+        "value": 86,
         "scope": "source package",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/release_status.json",
@@ -108,7 +108,7 @@
       {
         "table_id": "coverage",
         "metric": "asset_materialized_entries",
-        "value": 79,
+        "value": 86,
         "scope": "source package",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/asset_integrity.json",
@@ -117,7 +117,7 @@
       {
         "table_id": "coverage",
         "metric": "static_certified_forms",
-        "value": 271,
+        "value": 300,
         "scope": "static checks",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/static_certification.json",
@@ -126,7 +126,7 @@
       {
         "table_id": "coverage",
         "metric": "scored_entries",
-        "value": 66,
+        "value": 73,
         "scope": "score denominator",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
@@ -137,7 +137,7 @@
       {
         "table_id": "parity",
         "metric": "dual_certified_release_forms",
-        "value": 271,
+        "value": 300,
         "scope": "full certified release",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json",
@@ -146,7 +146,7 @@
       {
         "table_id": "parity",
         "metric": "fully_certified_entries",
-        "value": 79,
+        "value": 86,
         "scope": "full certified release",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json",
@@ -173,7 +173,7 @@
       {
         "table_id": "parity",
         "metric": "fresh_rerun_queue_rows",
-        "value": 54,
+        "value": 0,
         "scope": "fresh full-release rerun",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/dual_rerun_queue.json",
@@ -182,7 +182,7 @@
       {
         "table_id": "parity",
         "metric": "ready_rerun_bundles",
-        "value": 65,
+        "value": 0,
         "scope": "fresh full-release rerun",
         "claim_status": "allowed",
         "evidence": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
@@ -221,7 +221,7 @@
         "claim_id": "C1_coverage_target_defined",
         "status": "allowed",
         "completion_required": true,
-        "safe_wording": "The current release package defines 79 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
+        "safe_wording": "The current release package defines 86 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
         "blocked_until": "",
         "evidence": "benchmark-vabench-release-v1/reports/release_status.json; docs/VABENCH_RELEASE_TRACKER.csv"
       },
@@ -229,9 +229,9 @@
         "claim_id": "C2_source_assets_static_clean",
         "status": "allowed",
         "completion_required": true,
-        "safe_wording": "The release has 79 materialized entries for the 79-entry plan and 271 static-certified forms with zero asset issues.",
+        "safe_wording": "The release has 86 materialized entries for the 86-entry plan and 300 static-certified forms with zero asset issues.",
         "blocked_until": "",
-        "evidence": "benchmark-vabench-release-v1/reports/asset_integrity.json; benchmark-vabench-release-v1/reports/static_certification.json; benchmark-vabench-release-v1/reports/release_status.json"
+        "evidence": "benchmark-vabench-release-v1/MANIFEST.json; benchmark-vabench-release-v1/reports/asset_integrity.json; benchmark-vabench-release-v1/reports/static_certification.json; benchmark-vabench-release-v1/reports/release_status.json"
       },
       {
         "claim_id": "C3_imported_dual_subset_clean",
@@ -253,7 +253,7 @@
         "claim_id": "C5_score_denominator_enabled",
         "status": "allowed",
         "completion_required": true,
-        "safe_wording": "The release benchmark score denominator is enabled for 66 certified content-denominator entries and 236 forms.",
+        "safe_wording": "The release benchmark score denominator is enabled for 73 certified content-denominator entries and 265 forms.",
         "blocked_until": "",
         "evidence": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json; benchmark-vabench-release-v1/reports/release_status.json"
       },
@@ -307,7 +307,7 @@
         "status": "measured_subset",
         "claim_allowed": false,
         "claim_status": "blocked",
-        "current_value": "Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.",
+        "current_value": "Timing exists for a subset only: 8 timed rows cover 8/265 scored forms. Wrapper aggregate Spectre/EVAS speedup is 0.655; do not claim release-wide EVAS speedup yet.",
         "required_before_claim": "Run same-slice EVAS/Spectre timing for every scored release form, or state a narrower subset-only claim.; Stratify or fix EVAS slow outliers before claiming aggregate speedup on the release package.; Keep per-row EVAS and Spectre wall-clock timings from run_gold_dual_suite timing fields.; Keep Spectre-reported runtime from spectre.out alongside wrapper wall-clock timings.; Report machine/bridge/Cadence configuration with the timing artifact.; Do not compute speedup from historical main120 summaries because they lack same-slice runtime metadata.",
         "evidence": "benchmark-vabench-release-v1/reports/speed_debug_artifact.json"
       },
@@ -316,7 +316,7 @@
         "status": "ready_for_baseline_runs",
         "claim_allowed": false,
         "claim_status": "blocked",
-        "current_value": "summaries=7; scored_entries=66",
+        "current_value": "summaries=113; scored_entries=73",
         "required_before_claim": "Use the enabled score_denominator_manifest.json as the denominator source of truth.; Run baseline model outputs through the release evaluator on scored rows.; Publish pass@1 / axis rates / failure taxonomy with Spectre as the final judge.; Keep baseline methods simple and describe them as stress tests, not as the paper's core method.",
         "evidence": "benchmark-vabench-release-v1/reports/baseline_artifact.json"
       },
@@ -325,7 +325,7 @@
         "status": "score_enabled",
         "claim_allowed": true,
         "claim_status": "allowed",
-        "current_value": "scored_forms=236",
+        "current_value": "scored_forms=265",
         "required_before_claim": "benchmark_score must be explicitly enabled for counted entries/forms",
         "evidence": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
       }
@@ -337,9 +337,9 @@
     "Rows with blocked claim_status must not be used as paper conclusions."
   ],
   "matrix_summary_snapshot": {
-    "entry_count": 79,
-    "form_count": 271,
-    "fully_certified_entry_count": 79,
+    "entry_count": 86,
+    "form_count": 300,
+    "fully_certified_entry_count": 86,
     "pending_form_count": 0
   }
 }

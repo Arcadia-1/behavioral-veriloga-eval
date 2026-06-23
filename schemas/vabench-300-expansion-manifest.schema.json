@@ -46,6 +46,24 @@
         "proposed_v11_task_count": {
           "const": 29
         },
+        "promoted_v11_task_count": {
+          "const": 29
+        },
+        "provisional_v11_task_count": {
+          "const": 0
+        },
+        "paper_score_ready_task_count": {
+          "const": 300
+        },
+        "paper_score_disabled_v11_task_count": {
+          "const": 0
+        },
+        "score_denominator_pending_v11_task_count": {
+          "const": 0
+        },
+        "score_denominator_admitted_v11_task_count": {
+          "const": 29
+        },
         "required_negative_per_task": {
           "const": 5
         },
@@ -164,13 +182,18 @@
           "gold_status": {
             "enum": [
               "existing_certified",
-              "proposed_unverified"
+              "proposed_unverified",
+              "promoted_certified",
+              "provisional_generic",
+              "task_specific_candidate"
             ]
           },
           "expansion_status": {
             "enum": [
               "existing_certified_v1",
-              "proposed_v1.1_pending_certification"
+              "proposed_v1.1_pending_certification",
+              "certified_v1.1_promoted",
+              "provisional_v1.1_management"
             ]
           }
         },

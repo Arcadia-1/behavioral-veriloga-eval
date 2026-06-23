@@ -17,12 +17,12 @@ def test_prompt_contract_manifest_records_public_contract_v2() -> None:
     assert report["prompt_version_id"] == "public-contract-v3"
     assert report["previous_prompt_version"] == "public-contract-v2"
     assert report["runner_wrapper_version"] == RELEASE_RUNNER_WRAPPER_VERSION
-    assert report["prompt_count"] == 271
+    assert report["prompt_count"] == 300
     assert report["form_counts"] == {
-        "bugfix": 54,
-        "dut": 59,
-        "e2e": 79,
-        "tb": 79,
+        "bugfix": 62,
+        "dut": 66,
+        "e2e": 86,
+        "tb": 86,
     }
     assert report["sync_script"] == "runners/sync_vabench_release_prompt_contracts.py"
     assert "runner wrapper versions" in report["claim_policy"]["baseline_comparison"]

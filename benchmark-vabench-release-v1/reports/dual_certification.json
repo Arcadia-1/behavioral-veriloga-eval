@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-27",
+  "date": "2026-06-22",
   "release": "vabench-release-v1",
   "status": "pass",
   "source": "historical main120 import plus fresh release dual rerun",
@@ -751,7 +751,7 @@
     {
       "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
       "form": "e2e",
-      "source_task_id": "sar_adc_dac_weighted_8b_smoke",
+      "source_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
       "status": "pass",
       "backend_status": {
         "evas": "pass",

@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "settle_trim_measurement_nominal_path"
-    - "settle_trim_measurement_boundary_path"
+    - "bandgap_startup_trim_full_behavior"
+    - "settle_trim_measurement_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

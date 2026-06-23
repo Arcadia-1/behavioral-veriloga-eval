@@ -24,7 +24,7 @@ def _l2_entries() -> list[dict]:
 def test_l2_prompts_declare_background_and_claim_boundary() -> None:
     forms = _l2_forms()
 
-    assert len(forms) == 34
+    assert len(forms) == 55
     for row in forms:
         prompt = ROOT / row["prompt"]
         text = prompt.read_text(encoding="utf-8")

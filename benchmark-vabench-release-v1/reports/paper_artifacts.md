@@ -1,6 +1,6 @@
 # vaBench Paper-Facing Artifact Summary
 
-Date: 2026-05-29
+Date: 2026-06-23
 
 This is a claim-gated summary for paper writing. It records what can be
 cited from the current release package and what must remain pending.
@@ -9,20 +9,20 @@ cited from the current release package and what must remain pending.
 
 | Metric | Value |
 | --- | ---: |
-| planned L1/L2 entries | 79 |
-| core circuit entries | 66 |
+| planned L1/L2 entries | 86 |
+| core circuit entries | 73 |
 | support entries | 13 |
-| D1/D2/D3 difficulty counts | `{'D1': 10, 'D2': 49, 'D3': 20}` |
-| source-linked entries | 79 |
-| entries with copied assets | 79 |
-| static-certified release forms | 271 |
-| dual-certified release forms | 271 |
-| fully certified entries | 79 |
+| D1/D2/D3 difficulty counts | `{'D1': 10, 'D2': 50, 'D3': 26}` |
+| source-linked entries | 86 |
+| entries with copied assets | 86 |
+| static-certified release forms | 300 |
+| dual-certified release forms | 300 |
+| fully certified entries | 86 |
 | certification matrix | `complete` |
-| scored release entries | 66 |
-| scored release forms | 236 |
-| core scored release entries | 66 |
-| core scored release forms | 236 |
+| scored release entries | 73 |
+| scored release forms | 265 |
+| core scored release entries | 73 |
+| core scored release forms | 265 |
 | support scored release entries | 0 |
 | support scored release forms | 0 |
 | score denominator status | `score_enabled` |
@@ -32,14 +32,14 @@ cited from the current release package and what must remain pending.
 | Metric | Value |
 | --- | ---: |
 | release dual status | `complete` |
-| dual-certified release forms | 271 |
+| dual-certified release forms | 300 |
 | dual-pending release forms | 0 |
 | dual-failed release forms | 0 |
 | EVAS PASS / Spectre FAIL count | 0 |
 | source-equivalence blocked forms | 0 |
-| dual rerun staging status | `ready` |
-| rerun rows with ready primary bundle | 54 |
-| ready rerun bundles | 65 |
+| dual rerun staging status | `complete` |
+| rerun rows with ready primary bundle | 0 |
+| ready rerun bundles | 0 |
 | latest dual rerun attempt | `complete` |
 | bridge diagnostics | `ready` |
 | bridge ready profiles | `default, ci, jin` |
@@ -55,8 +55,8 @@ cited from the current release package and what must remain pending.
 | assets materialized | `True` |
 | static certification complete | `True` |
 | fresh dual rerun queue ready | `True` |
-| fresh dual rerun queue rows | 54 |
-| ready rerun bundles | 65 |
+| fresh dual rerun queue rows | 0 |
+| ready rerun bundles | 0 |
 | dual-pending release forms | 0 |
 | bridge ready | `True` |
 | external blockers | `pending` |
@@ -69,7 +69,7 @@ cited from the current release package and what must remain pending.
 
 - Status: `measured_subset`
 - Claim allowed: `False`
-- Reason: Timing exists for a subset only: 54 timed rows cover 52/236 scored forms. Wrapper aggregate Spectre/EVAS speedup is 6.604; do not claim release-wide EVAS speedup yet.
+- Reason: Timing exists for a subset only: 8 timed rows cover 8/265 scored forms. Wrapper aggregate Spectre/EVAS speedup is 0.655; do not claim release-wide EVAS speedup yet.
 
 ## Baselines
 

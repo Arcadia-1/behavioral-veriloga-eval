@@ -1,7 +1,8 @@
 {
   "asset_type": "vabench_task",
-  "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+  "benchmark_split": "vabench-300-expansion-v1.1-task-specific-candidate",
   "category": "PLL Clock and Timing Systems",
+  "checker_task_id": "fractional_n_pll_divider:e2e",
   "difficulty": "hard",
   "domain": "voltage",
   "expected_backend": "evas",
@@ -21,6 +22,7 @@
     "required_partial_pass_negatives": 5,
     "zero_score_negatives_allowed": false
   },
+  "paper_score": "disabled_until_fresh_spectre_certification",
   "scoring": [
     "syntax",
     "dut_compile",
@@ -28,5 +30,10 @@
     "sim_correct"
   ],
   "task_id": "fractional_n_pll_divider:e2e",
+  "task_specific_contract": {
+    "behavior": "fractional-N divider accumulator that emits carry pulses at the requested average divide ratio",
+    "checker": "pulse density and residue swing match a fractional accumulator rather than an integer divider",
+    "observable": "out is the carry/pulse stream; metric is the normalized accumulator residue"
+  },
   "topic_id": "fractional_n_pll_divider"
 }

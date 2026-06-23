@@ -34,6 +34,7 @@ ALLOWED_DIRS = {
 ALLOWED_FILES = {
     ".DS_Store",
     ".env.table2",
+    ".git",
     ".gitignore",
     "AGENTS.md",
     "README.md",
