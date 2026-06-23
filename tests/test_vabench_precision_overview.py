@@ -46,8 +46,8 @@ def test_precision_overview_exports_fourway_and_spectre_anchor() -> None:
     assert report["summary"]["all_fourway_candidates_equivalent"] is True
     assert report["summary"]["needs_review_or_blocked_rows"] == 0
     assert report["summary"]["task_metric_comparisons"] == 12
-    assert report["summary"]["spectre_self_consistency_pairs"] == 1036
-    assert report["summary"]["spectre_self_consistency_pass_pairs"] == 1036
+    assert report["summary"]["spectre_self_consistency_pairs"] is None
+    assert report["summary"]["spectre_self_consistency_pass_pairs"] is None
 
     rows = report["simulator_precision_rows"]
     assert {row["candidate"] for row in rows} == {"evas_python", "evas_rust", "spectre_ax"}
@@ -68,13 +68,15 @@ def test_precision_overview_exports_fourway_and_spectre_anchor() -> None:
     assert rust["max_task_metric_relative_delta"] == 0.017107409990336296
 
     anchor = report["spectre_self_consistency"]
-    assert anchor["mode_a"] == "ax"
-    assert anchor["mode_b"] == "classic"
-    assert anchor["compared_pairs"] == 1036
-    assert anchor["passed_pairs"] == 1036
-    assert anchor["needs_review_pairs"] == 0
-    assert anchor["row_mean_relative_rms_max"] == 0.08136556776886794
-    assert anchor["worst_signal_relative_rms_max"] == 0.12439780220440254
+    assert anchor["artifact_status"] == "missing"
+    assert anchor["artifact"].endswith("spectre_ax_classic_self_consistency_clean_repeats_20260522.json")
+    assert anchor["mode_a"] is None
+    assert anchor["mode_b"] is None
+    assert anchor["compared_pairs"] is None
+    assert anchor["passed_pairs"] is None
+    assert anchor["needs_review_pairs"] is None
+    assert anchor["row_mean_relative_rms_max"] is None
+    assert anchor["worst_signal_relative_rms_max"] is None
 
     assert "Do not treat the historical 271-row four-way artifact as the current benchmark denominator." in report["claim_boundary"]["forbidden"]
     assert "Do not claim bit-exact waveform equality." in report["claim_boundary"]["forbidden"]

@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "sample_hold_phase_nominal_path"
-    - "sample_hold_phase_boundary_path"
+    - "bootstrapped_sample_switch_full_behavior"
+    - "sample_hold_phase_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

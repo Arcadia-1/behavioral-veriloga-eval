@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "modulo_accumulator_nominal_path"
-    - "modulo_accumulator_boundary_path"
+    - "fractional_n_pll_divider_full_behavior"
+    - "modulo_accumulator_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

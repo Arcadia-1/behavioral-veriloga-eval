@@ -57,7 +57,7 @@
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/result.json",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/evidence.json",
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/tb/spectre_result.json",
@@ -81,7 +81,7 @@
       "static_evidence": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/evidence.json",
       "static_result": "benchmark-vabench-release-v1/evidence/static/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/result.json",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/evidence.json",
       "evas_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/evas_result.json",
       "spectre_result": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_adpll_lock_ratio_hop_timer_flow/e2e/spectre_result.json",
@@ -93,7 +93,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pending",
+    "spectre": "pass",
     "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
   },
   "counts": {
@@ -101,7 +101,5 @@
     "model_capability": false,
     "l0_conformance": false
   },
-  "release_blockers": [
-    "fresh_dual_rerun_required_after_adpll_feedback_loop_update"
-  ]
+  "release_blockers": []
 }

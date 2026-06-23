@@ -51,6 +51,7 @@ def test_run_case_removes_stale_tran_csv_before_evas(monkeypatch, tmp_path: Path
 def test_run_evas_defaults_to_strict_rust_evas2(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.delenv("EVAS_ENGINE", raising=False)
     monkeypatch.delenv("VAEVAS_DEFAULT_EVAS_ENGINE", raising=False)
+    monkeypatch.setenv("VAEVAS_EVAS_PERSISTENT_WORKER", "0")
     run_dir = tmp_path / "run"
     out_dir = tmp_path / "out"
     run_dir.mkdir()

@@ -1,20 +1,20 @@
 {
-  "date": "2026-05-29",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "ready_to_finish",
-  "ready_to_run_fresh_dual": true,
+  "ready_to_run_fresh_dual": false,
   "ready_to_import_fresh_dual": true,
   "ready_to_finish_release": true,
   "pass_count": 7,
   "blocked_count": 0,
   "blocked_check_ids": [],
   "run_scope": {
-    "primary_queue_rows": 54,
-    "ready_primary_queue_rows": 54,
-    "staged_bundle_count": 65,
-    "ready_staged_bundle_count": 65,
+    "primary_queue_rows": 0,
+    "ready_primary_queue_rows": 0,
+    "staged_bundle_count": 0,
+    "ready_staged_bundle_count": 0,
     "default_include_buggy": false,
-    "expected_primary_summary_tasks_total": 54,
+    "expected_primary_summary_tasks_total": 0,
     "source_equivalence_blocked_forms": 0
   },
   "checks": [
@@ -37,7 +37,7 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_queue.json"
       ],
-      "finding": "queue_status=ready, queue_count=54, ready=54, blocked=0",
+      "finding": "queue_status=complete, queue_count=0, ready=0, blocked=0",
       "recovery": []
     },
     {
@@ -47,7 +47,7 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json"
       ],
-      "finding": "queue_rows=54, ready_primary_rows=54, bundles=65, ready_bundles=65, blocked_bundles=0",
+      "finding": "queue_rows=0, ready_primary_rows=0, bundles=0, ready_bundles=0, blocked_bundles=0",
       "recovery": []
     },
     {
@@ -66,9 +66,9 @@
       "status": "pass",
       "requirement": "Fresh rerun summary must be complete, non-dry-run, current to the queue, and have zero expected misses.",
       "evidence": [
-        "results/vabench-release-v1-dual-rerun/summary.json"
+        "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json"
       ],
-      "finding": "summary_status=complete, tasks_total=54, queue_count=54, dry_run=False, expected_miss_count=0",
+      "finding": "summary_status=complete, tasks_total=8, queue_count=0, dry_run=None, expected_miss_count=None",
       "recovery": []
     },
     {
@@ -78,7 +78,7 @@
       "evidence": [
         "benchmark-vabench-release-v1/reports/dual_rerun_import.json"
       ],
-      "finding": "import_status=imported, stale_summary=False, imported=54",
+      "finding": "import_status=imported, stale_summary=False, imported=0",
       "recovery": []
     },
     {

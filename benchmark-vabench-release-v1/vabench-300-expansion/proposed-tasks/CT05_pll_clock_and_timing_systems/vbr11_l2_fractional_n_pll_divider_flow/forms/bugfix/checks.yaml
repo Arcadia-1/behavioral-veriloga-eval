@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "wrap_pulse_width_bug_nominal_path"
-    - "wrap_pulse_width_bug_boundary_path"
+    - "fractional_n_pll_divider_full_behavior"
+    - "wrap_pulse_width_bug_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

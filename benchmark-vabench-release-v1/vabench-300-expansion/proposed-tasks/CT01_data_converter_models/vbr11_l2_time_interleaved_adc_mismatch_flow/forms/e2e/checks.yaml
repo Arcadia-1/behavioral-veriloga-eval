@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "mismatch_metric_flow_nominal_path"
-    - "mismatch_metric_flow_boundary_path"
+    - "time_interleaved_adc_mismatch_full_behavior"
+    - "mismatch_metric_flow_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

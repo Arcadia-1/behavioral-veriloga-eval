@@ -2,7 +2,7 @@ simulator lang=spectre
 global 0
 ahdl_include "cppll_tracking_frequency_step_reacquire.va"
 Vclk (clk 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=5n period=10n
-Vrst (rst 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=10n period=200n
-Vin (in 0) vsource type=sine sinedc=0 ampl=0.6 freq=10Meg
+Vrst (rst 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=10n period=1u
+Vin (in 0) vsource type=sine sinedc=0 ampl=0.62 freq=3Meg
 Xdut (in clk rst out metric) cppll_tracking_frequency_step_reacquire
-tran tran stop=100n maxstep=500p
+tran tran stop=420n maxstep=500p

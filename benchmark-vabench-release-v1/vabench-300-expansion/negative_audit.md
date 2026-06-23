@@ -5,8 +5,8 @@
 - negatives: 1500
 - shallow static pass: 1500
 - shallow static failed: 0
-- simulator shallow verified: 0
-- full checker fail verified: 0
+- simulator shallow verified: 145
+- full checker fail verified: 145
 - issues: 0
 
 This audit checks file existence, hashes, counts, required negative categories, metadata, and static shallow shape. It is not simulator certification.

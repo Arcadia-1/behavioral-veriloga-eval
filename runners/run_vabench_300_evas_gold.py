@@ -21,7 +21,7 @@ MANIFEST = EXPANSION / "VABENCH_300_MANIFEST.json"
 DEFAULT_OUTPUT_ROOT = ROOT / "results" / "vabench-300-evas-gold"
 SUMMARY_JSON = EXPANSION / "evas_gold_summary.json"
 SUMMARY_MD = EXPANSION / "evas_gold_summary.md"
-PROMOTED_STATUS = "certified_v1.1_promoted"
+PROVISIONAL_STATUS = "provisional_v1.1_management"
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -168,7 +168,7 @@ def summarize(rows: list[dict[str, Any]], *, started_at: str, output_root: Path,
     compile_pass_count = sum(1 for row in rows if row["compile_sim_pass"])
     checker_pass_count = sum(1 for row in rows if row["behavior_checker_pass"])
     checker_missing_count = sum(1 for row in rows if row["behavior_checker_missing"])
-    promoted = [row for row in rows if row["expansion_status"] == PROMOTED_STATUS]
+    provisional = [row for row in rows if row["expansion_status"] == PROVISIONAL_STATUS]
     return {
         "status": "pass" if compile_pass_count == len(rows) else "fail",
         "started_at": started_at,
@@ -182,16 +182,20 @@ def summarize(rows: list[dict[str, Any]], *, started_at: str, output_root: Path,
         "behavior_checker_pass_count": checker_pass_count,
         "behavior_checker_nonpass_count": len(rows) - checker_pass_count,
         "behavior_checker_missing_count": checker_missing_count,
-        "promoted_v11_task_count": len(promoted),
-        "promoted_v11_compile_sim_pass_count": sum(1 for row in promoted if row["compile_sim_pass"]),
-        "promoted_v11_behavior_checker_missing_count": sum(
-            1 for row in promoted if row["behavior_checker_missing"]
+        "promoted_v11_task_count": 0,
+        "provisional_v11_task_count": len(provisional),
+        "provisional_v11_compile_sim_pass_count": sum(
+            1 for row in provisional if row["compile_sim_pass"]
+        ),
+        "provisional_v11_behavior_checker_missing_count": sum(
+            1 for row in provisional if row["behavior_checker_missing"]
         ),
         "claim_boundary": [
             "This report is an EVAS gold run over the vaBench 300 expansion assets.",
+            "It is not a paper-score report and does not promote provisional v1.1 rows.",
             "compile_sim_pass means EVAS compiled the DUT, executed the testbench, returned 0, and produced simulation output.",
             "behavior_checker_pass additionally requires an implemented repository checker to pass.",
-        "Rows with behavior_checker_missing are not behavior-certified by this EVAS-only run.",
+            "Rows with behavior_checker_missing are not behavior-certified by this EVAS-only run.",
         ],
         "results": rows,
     }
@@ -205,13 +209,15 @@ def write_markdown(summary: dict[str, Any]) -> None:
         f"- engine: `{summary.get('engine_label', summary['engine'])}`",
         f"- raw engine selector: `{summary['engine']}`",
         f"- tasks: {summary['task_count']}",
+        f"- provisional v1.1 rows: {summary['provisional_v11_task_count']}",
         f"- compile/sim pass: {summary['compile_sim_pass_count']}",
         f"- compile/sim fail: {summary['compile_sim_fail_count']}",
         f"- behavior checker pass: {summary['behavior_checker_pass_count']}",
         f"- behavior checker missing: {summary['behavior_checker_missing_count']}",
         f"- output root: `{summary['output_root']}`",
         "",
-        "This is EVAS-only evidence. The 300-task certification source of truth is the full EVAS/Spectre closure report.",
+        "This is EVAS-only evidence. It is not a paper-score report and does not promote provisional v1.1 rows.",
+        "The certification source of truth is the EVAS/Spectre closure report plus the score denominator manifest.",
         "",
     ]
     SUMMARY_MD.write_text("\n".join(lines), encoding="utf-8")

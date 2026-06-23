@@ -1,18 +1,21 @@
 {
-  "date": "2026-06-01",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
-  "status": "claim_ready",
-  "claim_allowed": true,
-  "claim_status": "same_protocol_current_evas_final_judge_claim_ready",
-  "claim_blockers": [],
-  "scored_release_entries": 66,
-  "scored_release_forms": 236,
+  "status": "ready_for_baseline_runs",
+  "claim_allowed": false,
+  "claim_status": "baseline_runs_present_claim_pending",
+  "claim_blockers": [
+    "baseline runs exist but paper-facing model-baseline claims still require a dedicated final-judge summary",
+    "EVAS-filter claims require zero unresolved EVAS PASS / Spectre FAIL model-output cases"
+  ],
+  "scored_release_entries": 73,
+  "scored_release_forms": 265,
   "score_denominator_status": "score_enabled",
   "score_denominator": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
   "fully_certified_entry_count": 79,
   "dual_pending_release_task_count": 0,
   "dual_failed_release_task_count": 0,
-  "baseline_summary_count": 112,
+  "baseline_summary_count": 113,
   "baseline_summaries": [
     "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-dual/summary.json",
     "results/vabench-release-v1-baseline-deepseek-v4-pro-20260527-full/summary.json",
@@ -88,6 +91,7 @@
     "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260601-l2-observability-affected-highout32k-dual/summary.json",
     "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260601-mismatch8-currentevas-v3-dual/summary.json",
     "results/vabench-release-v1-baseline-dual-mimo-v2.5-pro-20260601-pipeline-bugfix-currentevas-v4-dual/summary.json",
+    "results/vabench-release-v1-baseline-minimax-MiniMax-M2.7-20260527-overnight/summary.json",
     "results/vabench-release-v1-baseline-minimax-deepseek-v4-pro-20260527-public-contract-v3-smoke/summary.json",
     "results/vabench-release-v1-baseline-minimax-deepseek-v4-pro-20260527-public-contract-v7-l1-l2-prompt-sufficiency-slice/summary.json",
     "results/vabench-release-v1-baseline-minimax-deepseek-v4-pro-20260527-public-contract-v7-l1-l2-prompt-sufficiency-slice-r2/summary.json",
@@ -127,213 +131,16 @@
     "results/vabench-release-v1-baseline-minimax-mimo-v2.5-pro-support-artifact-bugfix52-dryrun-r2/summary.json",
     "results/vabench-release-v1-baseline-minimax-mimo-v2.5-pro-support-artifact-dryrun/summary.json"
   ],
-  "final_judge_baseline_count": 2,
-  "final_judge_baselines": [
-    {
-      "model": "mimo-v2.5",
-      "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_highout32k_sameprotocol_currentevas_v5_20260601.json",
-      "exists": true,
-      "protocol": "same_protocol_current_evas_v5_highout32k",
-      "judge": "Spectre final judge with EVAS/Spectre parity gate",
-      "total_rows": 236,
-      "expected_scored_forms": 236,
-      "denominator_matches_score_manifest": true,
-      "strict_dual_pass_rows": 92,
-      "strict_dual_pass_rate_pct": 38.98,
-      "valid_candidate_rows": 234,
-      "behavior_ready_rows": 150,
-      "incomplete_generation_rows": 2,
-      "runner_inconclusive_rows": 0,
-      "evas_pass_spectre_fail_rows": 0,
-      "spectre_pass_evas_fail_rows": 0,
-      "parity_gate_rows": 0,
-      "mismatch_count": 0,
-      "category_macro_pass_rate_pct": 38.33,
-      "category_pass_rates_pct": {
-        "Baseband Signal Conditioning": 46.67,
-        "Bias Reference and Power Management": 53.57,
-        "Calibration, DEM, and Control": 30.77,
-        "Comparator and Decision Circuits": 46.67,
-        "Data Converter Models": 38.64,
-        "PLL Clock and Timing Systems": 30.56,
-        "RF and AFE Behavioral Macromodels": 37.5,
-        "Sampling and Analog Memory": 22.22
-      },
-      "form_pass_rates_pct": {
-        "bugfix": 82.69,
-        "dut": 19.23,
-        "e2e": 12.12,
-        "tb": 46.97
-      },
-      "difficulty_pass_rates_pct": {
-        "D1": 69.44,
-        "D2": 33.12,
-        "D3": 35.0
-      },
-      "score_slices": [
-        {
-          "slice": "full_strict",
-          "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
-          "total_rows": 236,
-          "strict_dual_pass_rows": 92,
-          "strict_dual_pass_rate_pct": 38.98,
-          "non_pass_rows": 144
-        },
-        {
-          "slice": "valid_candidate",
-          "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
-          "total_rows": 234,
-          "strict_dual_pass_rows": 92,
-          "strict_dual_pass_rate_pct": 39.32,
-          "non_pass_rows": 142
-        },
-        {
-          "slice": "behavior_ready",
-          "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
-          "total_rows": 150,
-          "strict_dual_pass_rows": 92,
-          "strict_dual_pass_rate_pct": 61.33,
-          "non_pass_rows": 58
-        }
-      ],
-      "axis_counts": {
-        "generation": 2,
-        "model_behavior": 58,
-        "model_dut_compile": 63,
-        "model_spectre_ahdl_compile": 14,
-        "model_spectre_elab_or_topology": 2,
-        "model_spectre_tb_source": 1,
-        "model_tb_compile": 4,
-        "pass": 92
-      }
-    },
-    {
-      "model": "mimo-v2.5-pro",
-      "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v5_20260601.json",
-      "exists": true,
-      "protocol": "same_protocol_current_evas_v5_highout32k",
-      "judge": "Spectre final judge with EVAS/Spectre parity gate",
-      "total_rows": 236,
-      "expected_scored_forms": 236,
-      "denominator_matches_score_manifest": true,
-      "strict_dual_pass_rows": 112,
-      "strict_dual_pass_rate_pct": 47.46,
-      "valid_candidate_rows": 224,
-      "behavior_ready_rows": 190,
-      "incomplete_generation_rows": 8,
-      "runner_inconclusive_rows": 4,
-      "evas_pass_spectre_fail_rows": 0,
-      "spectre_pass_evas_fail_rows": 0,
-      "parity_gate_rows": 0,
-      "mismatch_count": 0,
-      "category_macro_pass_rate_pct": 47.03,
-      "category_pass_rates_pct": {
-        "Baseband Signal Conditioning": 56.67,
-        "Bias Reference and Power Management": 50.0,
-        "Calibration, DEM, and Control": 26.92,
-        "Comparator and Decision Circuits": 66.67,
-        "Data Converter Models": 45.45,
-        "PLL Clock and Timing Systems": 41.67,
-        "RF and AFE Behavioral Macromodels": 50.0,
-        "Sampling and Analog Memory": 38.89
-      },
-      "form_pass_rates_pct": {
-        "bugfix": 80.77,
-        "dut": 36.54,
-        "e2e": 24.24,
-        "tb": 53.03
-      },
-      "difficulty_pass_rates_pct": {
-        "D1": 88.89,
-        "D2": 40.62,
-        "D3": 37.5
-      },
-      "score_slices": [
-        {
-          "slice": "full_strict",
-          "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
-          "total_rows": 236,
-          "strict_dual_pass_rows": 112,
-          "strict_dual_pass_rate_pct": 47.46,
-          "non_pass_rows": 124
-        },
-        {
-          "slice": "valid_candidate",
-          "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
-          "total_rows": 224,
-          "strict_dual_pass_rows": 112,
-          "strict_dual_pass_rate_pct": 50.0,
-          "non_pass_rows": 112
-        },
-        {
-          "slice": "behavior_ready",
-          "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
-          "total_rows": 190,
-          "strict_dual_pass_rows": 112,
-          "strict_dual_pass_rate_pct": 58.95,
-          "non_pass_rows": 78
-        }
-      ],
-      "axis_counts": {
-        "generation": 8,
-        "model_behavior": 78,
-        "model_dut_compile": 27,
-        "model_spectre_ahdl_compile": 2,
-        "model_spectre_elab_or_topology": 1,
-        "model_spectre_tb_source": 2,
-        "model_tb_compile": 2,
-        "pass": 112,
-        "runner": 4
-      }
-    }
-  ],
-  "baseline_quality_audit": "benchmark-vabench-release-v1/reports/vabench_model_baseline_quality_audit_mimo25_vs_mimo25pro_sameprotocol_highout32k_currentevas_v5_20260601.json",
-  "evaluation_hygiene": {
-    "primary_metric": "full_strict pass@1 on the 236 scored core forms",
-    "secondary_metrics": [
-      "valid_candidate pass@1",
-      "behavior_ready pass rate",
-      "category macro-average pass rate",
-      "form-level pass rates",
-      "failure-axis counts"
-    ],
-    "denominator_policy": {
-      "source": "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-      "scored_entries": 66,
-      "scored_forms": 236,
-      "support_rows_excluded": true,
-      "fixed_budget_incomplete_generations_count_as_failures": true
-    },
-    "stratification_required": [
-      "model",
-      "form",
-      "category",
-      "difficulty",
-      "failure_axis"
-    ],
-    "claim_boundaries": [
-      "Use full_strict as the headline fixed-budget baseline metric.",
-      "Report valid_candidate and behavior_ready as diagnostic slices, not replacement denominators.",
-      "Do not claim calibrated D1/D2/D3 difficulty tiers until difficulty monotonicity is manually resolved.",
-      "Separate syntax/protocol failures from circuit-behavior failures in model-capability discussion.",
-      "Do not use support measurement/stimulus rows in core benchmark scores."
-    ],
-    "current_warnings": [
-      "MiMo-2.5 shows D3_not_harder_than_D2 in the current quality audit.",
-      "All core categories remain protocol-noise-sensitive; report failure axes explicitly.",
-      "e2e is much harder than bugfix and must be reported as a separate form."
-    ]
-  },
   "execution_plan": {
-    "status": "claim_ready",
+    "status": "ready_for_baseline_runs",
     "blocked_by": [],
     "denominator_preview": {
-      "planned_entries": 79,
-      "release_forms": 271,
-      "certified_entries": 79,
-      "certified_forms": 271,
-      "scored_entries": 66,
-      "scored_forms": 236
+      "planned_entries": 86,
+      "release_forms": 300,
+      "certified_entries": 86,
+      "certified_forms": 300,
+      "scored_entries": 73,
+      "scored_forms": 265
     },
     "run_order": [
       "Use score_denominator_manifest.json as the frozen scored-row source.",
@@ -348,9 +155,6 @@
     ],
     "aggregation_metrics": [
       "pass@1",
-      "category_macro_pass_rate",
-      "form_level_pass_rate",
-      "difficulty_level_pass_rate",
       "compile_pass_rate",
       "sim_correct_rate",
       "EVAS_PASS_Spectre_FAIL_count",
@@ -388,7 +192,7 @@
   "required_to_claim": [
     "Use the enabled score_denominator_manifest.json as the denominator source of truth.",
     "Run baseline model outputs through the release evaluator on scored rows.",
-    "Publish full_strict pass@1, category macro averages, form slices, axis rates, and failure taxonomy with Spectre as the final judge.",
-    "Keep baseline methods simple and describe them as benchmark stress tests, not as the paper's core method."
+    "Publish pass@1 / axis rates / failure taxonomy with Spectre as the final judge.",
+    "Keep baseline methods simple and describe them as stress tests, not as the paper's core method."
   ]
 }

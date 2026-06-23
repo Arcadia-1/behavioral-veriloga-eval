@@ -94,6 +94,19 @@ def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_json_optional(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "artifact_status": "missing",
+            "artifact": rel(path),
+            "summary": {},
+        }
+    payload = read_json(path)
+    payload.setdefault("artifact_status", "available")
+    payload.setdefault("artifact", rel(path))
+    return payload
+
+
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -238,9 +251,9 @@ def task_metric_detail(
         "task_id": meta.get("task_id"),
         "legacy_task_id": meta.get("legacy_task_id"),
         "category": meta.get("category"),
-        "provenance": "promoted_v1.1"
-        if meta.get("expansion_status") == "certified_v1.1_promoted"
-        else "inherited_v1",
+        "provenance": "v1.1_provisional"
+        if meta.get("expansion_status") == "provisional_v1.1_management"
+        else ("promoted_v1.1" if meta.get("expansion_status") == "certified_v1.1_promoted" else "inherited_v1"),
         "acceptance_policy": policy_name(result),
         "status": result.get("status"),
         "relative_gain_delta": as_float(result.get("relative_gain_delta")),
@@ -350,7 +363,7 @@ def compare_surface(
 
 def build_precision_overview() -> dict[str, Any]:
     overview = read_json(OVERVIEW_JSON)
-    spectre_self = read_json(SPECTRE_SELF_CONSISTENCY_JSON)
+    spectre_self = read_json_optional(SPECTRE_SELF_CONSISTENCY_JSON)
     historical_fourway = read_json(HISTORICAL_FOURWAY_REFERENCE_JSON)
     metadata = metadata_by_key(overview)
 
@@ -451,6 +464,8 @@ def build_precision_overview() -> dict[str, Any]:
         "task_metric_rows": task_metric_rows,
         "pointwise_difference_taxonomy": POINTWISE_DIFFERENCE_TAXONOMY,
         "spectre_self_consistency": {
+            "artifact_status": spectre_self.get("artifact_status"),
+            "artifact": spectre_self.get("artifact"),
             "mode_a": spectre_self.get("mode_a"),
             "mode_b": spectre_self.get("mode_b"),
             "sample_n": spectre_self.get("sample_n"),
@@ -524,6 +539,12 @@ def build_precision_overview() -> dict[str, Any]:
 
 def write_md(report: dict[str, Any]) -> None:
     summary = report["summary"]
+    spectre_self_status = report.get("spectre_self_consistency", {}).get("artifact_status", "available")
+    spectre_self_line = (
+        "missing"
+        if spectre_self_status == "missing"
+        else f"{summary['spectre_self_consistency_pass_pairs']} / {summary['spectre_self_consistency_pairs']} pairs passed"
+    )
     lines = [
         "# vaBench Precision Overview",
         "",
@@ -541,7 +562,7 @@ def write_md(report: dict[str, Any]) -> None:
         f"- Needs-review or blocked comparisons: {summary['needs_review_or_blocked_rows']}.",
         f"- Task-metric comparisons: {summary['task_metric_comparisons']}.",
         f"- Historical four-way reference rows: {summary['historical_fourway_common_rows']}.",
-        f"- Spectre AX/classic self-consistency: {summary['spectre_self_consistency_pass_pairs']} / {summary['spectre_self_consistency_pairs']} pairs passed.",
+        f"- Spectre AX/classic self-consistency: {spectre_self_line}.",
         "",
         "## Precision vs Spectre Strict",
         "",

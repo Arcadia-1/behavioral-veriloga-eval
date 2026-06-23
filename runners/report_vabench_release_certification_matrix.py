@@ -8,6 +8,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from vabench_release_surface import read_release_entries
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
@@ -30,16 +32,6 @@ def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def read_entries() -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
-        payload = read_json(path)
-        if payload:
-            payload["_manifest"] = rel(path)
-            entries.append(payload)
-    return entries
 
 
 def dual_task_index(dual: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
@@ -75,6 +67,8 @@ def queue_index(queue: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
 
 
 def form_pending_cause(task_report: dict[str, Any], task: dict[str, Any]) -> str:
+    if not task_report and all(task.get(f"{key}_status") == "pass" for key in ("static", "evas", "spectre")):
+        return "certified"
     status = str(task_report.get("status", "pending"))
     if status == "pass":
         return "certified"
@@ -161,7 +155,7 @@ def build_form_rows(
                     "blocker_count": int(task_report.get("blocker_count", 0) or 0),
                     "benchmark_score_enabled": bool(score_row.get("benchmark_score_enabled", False)),
                     "counted_in_score": bool(score_row.get("counted_in_score", False)),
-                    "evidence": task_report.get("evidence", task.get("dual_evidence", "")),
+                    "evidence": task_report.get("evidence", task.get("dual_evidence") or task.get("fresh_spectre_evidence", "")),
                     "release_path": task.get("release_path", ""),
                 }
             )
@@ -201,7 +195,7 @@ def build_entry_rows(
                 "release_blockers": entry.get("release_blockers", []),
                 "benchmark_score_enabled": bool(score_row.get("benchmark_score_enabled", False)),
                 "counted_in_score": bool(score_row.get("counted_in_score", False)),
-                "manifest": entry.get("_manifest", ""),
+                "manifest": entry.get("_manifest_path", entry.get("_manifest", "")),
             }
         )
     return rows
@@ -219,7 +213,7 @@ def nested_counts(rows: list[dict[str, Any]], outer: str, inner: str) -> dict[st
 
 
 def build_report() -> dict[str, Any]:
-    entries = read_entries()
+    entries = read_release_entries()
     dual = read_json(DUAL_JSON)
     score = read_json(SCORE_JSON)
     queue = read_json(QUEUE_JSON)

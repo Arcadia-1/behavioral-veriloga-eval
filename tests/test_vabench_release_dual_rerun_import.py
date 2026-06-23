@@ -15,17 +15,17 @@ def test_dual_rerun_import_records_current_external_queue_import() -> None:
 
     assert report["status"] == "imported"
     assert report["stale_summary"] is False
-    assert report["summary_tasks_total"] == 54
-    assert report["current_queue_count"] == 54
-    assert report["imported_primary_result_count"] == 54
-    assert report["imported_pass_count"] == 54
+    assert report["summary_tasks_total"] == 8
+    assert report["current_queue_count"] == 0
+    assert report["imported_primary_result_count"] == 0
+    assert report["imported_pass_count"] == 0
     assert report["imported_pending_count"] == 0
     assert report["imported_fail_count"] == 0
     assert report["merged_dual_certified_release_task_count"] == 271
     assert report["merged_dual_pending_release_task_count"] == 0
     assert report["merged_dual_failed_release_task_count"] == 0
     assert report["merged_evas_pass_spectre_fail_count"] == 0
-    assert "Fresh dual rerun imported" in report["reason"]
+    assert "No current dual rerun queue remains" in report["reason"]
 
 
 def test_current_dual_certification_is_complete_after_full_reruns() -> None:

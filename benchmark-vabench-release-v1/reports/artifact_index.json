@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-27",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "artifact_count": 29,
@@ -25,7 +25,7 @@
       "path": "docs/VABENCH_RELEASE_TRACKER.csv",
       "exists": true,
       "kind": "tracker",
-      "purpose": "79-entry L1/L2 release coverage target.",
+      "purpose": "86-entry L1/L2 release coverage target; MANIFEST.json is the current package source of truth.",
       "claim_role": "coverage_plan",
       "status": "ready",
       "certification_evidence": false,
@@ -216,7 +216,7 @@
       "kind": "execution_queue",
       "purpose": "Pending primary release rows that still need fresh EVAS/Spectre rerun.",
       "claim_role": "rerun_plan",
-      "status": "ready",
+      "status": "complete",
       "certification_evidence": false,
       "notes": []
     },
@@ -227,7 +227,7 @@
       "kind": "execution_queue",
       "purpose": "Runnable staged bundles for release dual rerun.",
       "claim_role": "rerun_plan",
-      "status": "ready",
+      "status": "complete",
       "certification_evidence": false,
       "notes": [
         "Staging readiness is not simulator pass evidence."
@@ -464,7 +464,7 @@
     {
       "id": "primary_dual_rerun",
       "command": "./scripts/run_with_bridge.sh python3 runners/run_vabench_release_dual_rerun.py --output-root results/vabench-release-v1-dual-rerun --timeout-s 180",
-      "purpose": "Run the 54-row primary EVAS/Spectre release rerun through the bridge wrapper."
+      "purpose": "Run the 0-row primary EVAS/Spectre release rerun through the bridge wrapper."
     }
   ],
   "notes": [

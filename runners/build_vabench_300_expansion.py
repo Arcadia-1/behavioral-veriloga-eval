@@ -16,8 +16,12 @@ PACKAGE = ROOT / "benchmark-vabench-release-v1"
 EXPANSION = PACKAGE / "vabench-300-expansion"
 EXISTING_TASKS = PACKAGE / "tasks"
 MANIFEST = PACKAGE / "MANIFEST.json"
-PROMOTED_STATUS = "certified_v1.1_promoted"
+PROVISIONAL_STATUS = "provisional_v1.1_management"
 PROMOTION_EVIDENCE = "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+TASK_SPECIFIC_EVIDENCE = (
+    "benchmark-vabench-release-v1/vabench-300-expansion/"
+    "v11_task_specific_quality_evidence.json"
+)
 
 
 FORMS_TO_FAMILY = {
@@ -81,6 +85,50 @@ NEGATIVE_KINDS = (
     ("state_reset_near_miss", "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion."),
     ("metric_writeout_near_miss", "Produces plausible behavior but fails a metric writer, latency, count, or measurement output."),
 )
+
+
+TASK_CONTRACTS: dict[str, dict[str, str]] = {
+    "sigma_delta_modulator_loop": {
+        "behavior": "first-order sigma-delta loop with clocked integrator, one-bit feedback DAC, and bit-density metric",
+        "observable": "out is a one-bit decision stream; metric is the running one-density over the stimulus window",
+        "checker": "bit stream toggles, density remains bounded, and metric tracks the one-density",
+    },
+    "time_interleaved_adc_mismatch": {
+        "behavior": "four-lane time-interleaved ADC observation model with lane-dependent offset/gain mismatch",
+        "observable": "out is the lane-adjusted sampled value; metric encodes lane rotation plus mismatch magnitude",
+        "checker": "lane metric spans all four phases and the output preserves the driven input span",
+    },
+    "metastability_window_comparator": {
+        "behavior": "clocked comparator whose decision confidence degrades near the differential threshold window",
+        "observable": "out is the resolved comparator decision; metric is high inside the metastability window",
+        "checker": "near-threshold samples produce larger metric values than far-from-threshold samples",
+    },
+    "bootstrapped_sample_switch": {
+        "behavior": "sample/hold switch abstraction with clocked acquisition and bounded hold leakage",
+        "observable": "out holds the sampled input between acquisition events; metric reports hold quality",
+        "checker": "output has sample response and late-window hold-quality metric remains high",
+    },
+    "fractional_n_pll_divider": {
+        "behavior": "fractional-N divider accumulator that emits carry pulses at the requested average divide ratio",
+        "observable": "out is the carry/pulse stream; metric is the normalized accumulator residue",
+        "checker": "pulse density and residue swing match a fractional accumulator rather than an integer divider",
+    },
+    "bandgap_startup_trim": {
+        "behavior": "bandgap startup and trim loop that ramps a reference toward a bounded settled target",
+        "observable": "out is the reference voltage monitor; metric is the startup/settle completion monitor",
+        "checker": "reference rises from reset to the target window and metric asserts only after settling",
+    },
+    "quadrature_iq_imbalance_corrector": {
+        "behavior": "quadrature gain/phase imbalance correction macro with positive input correlation and error metric",
+        "observable": "out is the corrected channel monitor; metric is the post-correction quality estimate",
+        "checker": "output remains positively correlated with input and final correction metric is high",
+    },
+    "cppll_tracking_frequency_step_reacquire": {
+        "behavior": "charge-pump PLL reacquire monitor that loses then regains lock after a frequency-step window",
+        "observable": "out is the control-voltage monitor; metric is the lock/reacquire state",
+        "checker": "metric is low early and high after the reacquire window while control voltage stays bounded",
+    },
+}
 
 
 def rel(path: Path) -> str:
@@ -178,20 +226,214 @@ def mutate_source(source: str, kind_index: int, task_id: str) -> str:
     return text
 
 
-def render_generic_va(task: ProposedTask, variant: str = "gold") -> str:
+def variant_settings(variant: str) -> dict[str, str]:
+    return {
+        "gold": {
+            "bias": "0.0",
+            "polarity": "1.0",
+            "delay": "1n",
+            "reset_state": "state = 0.0;",
+            "reset_aux": "aux = 0.0;",
+            "metric_scale": "1.0",
+            "metric_override": "",
+            "acc_step": "3",
+            "settle_step": "0.18",
+            "quality": "0.92",
+        },
+        "boundary_near_miss": {
+            "bias": "0.28",
+            "polarity": "1.0",
+            "delay": "1n",
+            "reset_state": "state = 0.0;",
+            "reset_aux": "aux = 0.0;",
+            "metric_scale": "0.0",
+            "metric_override": "",
+            "acc_step": "1",
+            "settle_step": "0.06",
+            "quality": "0.42",
+        },
+        "timing_window_near_miss": {
+            "bias": "0.0",
+            "polarity": "1.0",
+            "delay": "18n",
+            "reset_state": "state = 0.0;",
+            "reset_aux": "aux = 0.0;",
+            "metric_scale": "0.0",
+            "metric_override": "",
+            "acc_step": "2",
+            "settle_step": "0.08",
+            "quality": "0.55",
+        },
+        "polarity_direction_near_miss": {
+            "bias": "0.0",
+            "polarity": "-1.0",
+            "delay": "1n",
+            "reset_state": "state = 0.0;",
+            "reset_aux": "aux = 0.0;",
+            "metric_scale": "0.0",
+            "metric_override": "",
+            "acc_step": "5",
+            "settle_step": "0.18",
+            "quality": "0.40",
+        },
+        "state_reset_near_miss": {
+            "bias": "0.08",
+            "polarity": "1.0",
+            "delay": "1n",
+            "reset_state": "// near-miss: state intentionally retained across reset",
+            "reset_aux": "// near-miss: auxiliary state intentionally retained across reset",
+            "metric_scale": "0.0",
+            "metric_override": "",
+            "acc_step": "3",
+            "settle_step": "0.10",
+            "quality": "0.50",
+        },
+        "metric_writeout_near_miss": {
+            "bias": "0.0",
+            "polarity": "1.0",
+            "delay": "1n",
+            "reset_state": "state = 0.0;",
+            "reset_aux": "aux = 0.0;",
+            "metric_scale": "0.0",
+            "metric_override": "metric_value = 0.0;",
+            "acc_step": "3",
+            "settle_step": "0.18",
+            "quality": "0.0",
+        },
+    }[variant]
+
+
+def render_task_specific_va(task: ProposedTask, variant: str = "gold") -> str:
     module = canonical_topic_id(task.entry_id)
     module = re.sub(r"[^A-Za-z0-9_]", "_", module)
-    bias = {
-        "gold": "0.0",
-        "boundary_near_miss": "0.02",
-        "timing_window_near_miss": "0.0",
-        "polarity_direction_near_miss": "-0.05",
-        "state_reset_near_miss": "0.01",
-        "metric_writeout_near_miss": "0.03",
-    }.get(variant, "0.0")
-    gain = "-0.85" if variant == "polarity_direction_near_miss" else "0.85"
-    transition_delay = "2n" if variant == "timing_window_near_miss" else "1n"
-    reset_line = "// near-miss: state intentionally not reset" if variant == "state_reset_near_miss" else "state = 0.0;"
+    settings = variant_settings(variant)
+    topic = canonical_topic_id(task.entry_id)
+    metric_override = settings["metric_override"] or "// metric follows task-specific behavior"
+    variant_note = "gold task-specific behavior" if variant == "gold" else f"negative variant: {variant}"
+
+    if topic == "sigma_delta_modulator_loop":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      feedback = bitval > 0.5 ? 0.42 : -0.42;
+      integ = integ + V(in) - ({settings['polarity']}) * feedback + {settings['bias']};
+      if (integ > 1.2) integ = 1.2;
+      if (integ < -1.2) integ = -1.2;
+      if (integ >= 0.0) bitval = 1.0; else bitval = 0.0;
+      if (bitval > 0.5) ones = ones + 1;
+      count = count + 1;
+      state = bitval;
+      aux = count > 0 ? (1.0 * ones) / count : 0.0;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "time_interleaved_adc_mismatch":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      phase = phase + 1;
+      if (phase > 3) phase = 0;
+      if (phase == 0) begin
+        state = ({settings['polarity']}) * (0.92 * V(in) - 0.055 + {settings['bias']});
+        aux = 0.06;
+      end else if (phase == 1) begin
+        state = ({settings['polarity']}) * (1.04 * V(in) + 0.025 + {settings['bias']});
+        aux = 0.35;
+      end else if (phase == 2) begin
+        state = ({settings['polarity']}) * (0.97 * V(in) + 0.065 + {settings['bias']});
+        aux = 0.68;
+      end else begin
+        state = ({settings['polarity']}) * (1.08 * V(in) - 0.020 + {settings['bias']});
+        aux = 0.94;
+      end
+      count = count + 1;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "metastability_window_comparator":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      sample = ({settings['polarity']}) * V(in) + {settings['bias']};
+      if (sample > 0.0) state = 1.0; else state = 0.0;
+      if (sample < 0.075 && sample > -0.075) aux = 0.92; else aux = 0.18;
+      count = count + 1;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "bootstrapped_sample_switch":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      sample = ({settings['polarity']}) * V(in) + {settings['bias']};
+      state = 0.86 * state + 0.14 * sample;
+      aux = {settings['quality']};
+      count = count + 1;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "fractional_n_pll_divider":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      acc = acc + {settings['acc_step']};
+      state = 0.0;
+      if (acc >= 8) begin
+        acc = acc - 8;
+        state = 1.0;
+        ones = ones + 1;
+      end
+      count = count + 1;
+      aux = acc / 8.0;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "bandgap_startup_trim":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      target = 1.18 + {settings['bias']};
+      state = state + {settings['settle_step']} * (target - state);
+      if (state > 1.08 && state < 1.28) aux = aux + 0.08; else aux = aux * 0.8;
+      if (aux > 1.0) aux = 1.0;
+      count = count + 1;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "quadrature_iq_imbalance_corrector":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      sample = V(in);
+      state = ({settings['polarity']}) * (0.94 * sample - 0.045 * aux) + {settings['bias']};
+      aux = 0.55 * aux + 0.45 * sample;
+      count = count + 1;
+      metric_value = {settings['quality']} * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    elif topic == "cppll_tracking_frequency_step_reacquire":
+        body = f"""
+    @(cross(V(clk) - vth, +1)) begin
+      count = count + 1;
+      if (count < 9) begin
+        state = state + 0.030;
+        aux = 0.05;
+      end else if (count < 18) begin
+        state = state + ({settings['polarity']}) * 0.010 + {settings['bias']};
+        aux = 0.25 * {settings['metric_scale']};
+      end else begin
+        state = 0.72 + 0.10 * V(in);
+        aux = {settings['quality']};
+      end
+      if (state > 1.0) state = 1.0;
+      if (state < 0.0) state = 0.0;
+      metric_value = aux * {settings['metric_scale']};
+      {metric_override}
+    end
+"""
+    else:
+        raise ValueError(f"No task-specific v1.1 template for {topic}")
+
     return f"""`include \"constants.vams\"
 `include \"disciplines.vams\"
 
@@ -199,46 +441,152 @@ module {module}(in, clk, rst, out, metric);
   input in, clk, rst;
   output out, metric;
   electrical in, clk, rst, out, metric;
+  // vaBench v1.1 task-specific template: {variant_note}
+  // Target behavior: {TASK_CONTRACTS[topic]['behavior']}
   parameter real vth = 0.5;
-  parameter real gain = {gain};
-  parameter real bias = {bias};
   real state;
+  real aux;
+  real sample;
+  real integ;
+  real feedback;
+  real bitval;
+  real metric_value;
+  real target;
+  integer phase;
+  integer acc;
   integer count;
+  integer ones;
 
   analog begin
     @(initial_step) begin
       state = 0.0;
+      aux = 0.0;
+      sample = 0.0;
+      integ = 0.0;
+      feedback = 0.0;
+      bitval = 0.0;
+      metric_value = 0.0;
+      target = 0.0;
+      phase = -1;
+      acc = 0;
       count = 0;
+      ones = 0;
     end
     @(cross(V(rst) - vth, +1)) begin
-      {reset_line}
+      {settings['reset_state']}
+      {settings['reset_aux']}
+      sample = 0.0;
+      integ = 0.0;
+      feedback = 0.0;
+      bitval = 0.0;
+      metric_value = 0.0;
+      target = 0.0;
+      phase = -1;
+      acc = 0;
       count = 0;
+      ones = 0;
     end
-    @(cross(V(clk) - vth, +1)) begin
-      state = gain * state + V(in) + bias;
-      if (state > 1.0) state = 1.0;
-      if (state < -1.0) state = -1.0;
-      count = count + 1;
-    end
-    V(out) <+ transition(state, 0, {transition_delay});
-    V(metric) <+ transition(count > 0 ? state / count : 0.0, 0, 1n);
+{body}
+    V(out) <+ transition(state, 0, {settings['delay']});
+    V(metric) <+ transition(metric_value, 0, 1n);
   end
 endmodule
 """
 
 
-def render_generic_scs(task: ProposedTask, dut_name: str, variant: str = "gold") -> str:
-    stop = "90n" if variant == "timing_window_near_miss" else "100n"
-    amp = "0.45" if variant == "boundary_near_miss" else "0.6"
+def render_task_specific_scs(task: ProposedTask, dut_name: str, variant: str = "gold") -> str:
+    topic = canonical_topic_id(task.entry_id)
+    stop = "420n" if topic == "cppll_tracking_frequency_step_reacquire" else "260n"
+    amp = "0.62"
+    freq = {
+        "sigma_delta_modulator_loop": "8Meg",
+        "time_interleaved_adc_mismatch": "11Meg",
+        "metastability_window_comparator": "5Meg",
+        "bootstrapped_sample_switch": "7Meg",
+        "fractional_n_pll_divider": "4Meg",
+        "bandgap_startup_trim": "2Meg",
+        "quadrature_iq_imbalance_corrector": "9Meg",
+        "cppll_tracking_frequency_step_reacquire": "3Meg",
+    }[topic]
     return f"""simulator lang=spectre
 global 0
 ahdl_include \"{dut_name}.va\"
 Vclk (clk 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=5n period=10n
-Vrst (rst 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=10n period=200n
-Vin (in 0) vsource type=sine sinedc=0 ampl={amp} freq=10Meg
+Vrst (rst 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=10n period=1u
+Vin (in 0) vsource type=sine sinedc=0 ampl={amp} freq={freq}
 Xdut (in clk rst out metric) {dut_name}
 tran tran stop={stop} maxstep=500p
 """
+
+
+def render_task_specific_prompt(task: ProposedTask, task_id: str, topic_id: str, dut_name: str) -> str:
+    family = FORMS_TO_FAMILY[task.form]
+    contract = TASK_CONTRACTS[topic_id]
+    return "\n".join(
+        [
+            f"# Task: {task_id}",
+            "",
+            "## vaBench-300 v1.1 Task-Specific Contract",
+            "",
+            f"- Status: `provisional_v1.1_management`",
+            "- Paper score: `disabled_until_fresh_spectre_certification`",
+            f"- Form: `{task.form}`",
+            f"- Family: `{family}`",
+            f"- Level: `{task.level}`",
+            f"- Track: `{task.track}`",
+            f"- Difficulty: `{task.difficulty}`",
+            f"- Category: {task.category}",
+            f"- Base function target: {task.base_function}",
+            "- Domain: voltage-domain behavioral Verilog-A",
+            "",
+            "This row has been rebuilt from the original v1.1 management scaffold into",
+            "a task-specific benchmark candidate. It remains outside the paper score",
+            "denominator until fresh EVAS/Spectre certification is recorded for this",
+            "rebuilt source asset.",
+            "",
+            "## Current Public Interface",
+            "",
+            f"- Verilog-A artifact: `{dut_name}.va`",
+            f"- Spectre testbench artifact: `tb_{dut_name}.scs`",
+            f"- Module name: `{dut_name}`",
+            "- Positional ports: `in`, `clk`, `rst`, `out`, `metric`",
+            "- Port roles:",
+            "  - `in`: voltage-coded stimulus input.",
+            "  - `clk`: voltage-coded event clock, low=0 V and high=1 V.",
+            "  - `rst`: voltage-coded reset pulse.",
+            "  - `out`: bounded state/output monitor.",
+            "  - `metric`: derived state metric monitor.",
+            "",
+            "## Task-Specific Observable Contract",
+            "",
+            f"- Behavior: {contract['behavior']}.",
+            f"- Observable: {contract['observable']}.",
+            f"- Checker: {contract['checker']}.",
+            "- Rising `rst` clears state before the measurement window.",
+            "- Rising `clk` events drive the discrete-time behavior.",
+            "- The Spectre scaffold instantiates the DUT with instance-first AHDL syntax",
+            "  and records `time`, `in`, `clk`, `rst`, `out`, and `metric`.",
+            "",
+            "## Task Goal",
+            "",
+            task.description,
+            "",
+            "Do not satisfy this task with a generic state scaffold. The implementation",
+            "must preserve the named circuit-function behavior and expose both the",
+            "`out` waveform and the task-specific `metric` monitor.",
+            "",
+            "## Output Contract",
+            "",
+            "Return exactly these source artifacts:",
+            "",
+            f"- `{dut_name}.va`",
+            f"- `tb_{dut_name}.scs`",
+            "",
+            "Do not use unsupported analog operators such as `laplace_nd`, noise sources,",
+            "or transistor-level topology. Stay inside the voltage-domain/event-driven",
+            "behavioral subset.",
+        ]
+    ) + "\n"
 
 
 def negative_manifest(task_id: str, source_path: Path, target_dir: Path, source_kind: str) -> dict[str, Any]:
@@ -269,6 +617,49 @@ def negative_manifest(task_id: str, source_path: Path, target_dir: Path, source_
                     "simulator_shallow_lane": "pending_external_evas_spectre",
                     "full_checker_lane": "pending_external_evas_spectre",
                     "publication_status": "asset_ready_not_simulator_certified",
+                },
+                "note": note,
+                "sha256": stable_hash(neg_text),
+            }
+        )
+    return {
+        "task_id": task_id,
+        "negative_count": len(rows),
+        "policy": "five_partial_pass_near_miss_negatives_per_task",
+        "negatives": rows,
+    }
+
+
+def proposed_negative_manifest(task: ProposedTask, source_path: Path, target_dir: Path) -> dict[str, Any]:
+    task_id = canonical_task_id(task.entry_id, task.form)
+    module = canonical_topic_id(task.entry_id)
+    rows = []
+    for index, (kind, note) in enumerate(NEGATIVE_KINDS, start=1):
+        neg_path = target_dir / f"neg_{index:03d}.va"
+        neg_text = render_task_specific_va(task, kind)
+        neg_path.write_text(neg_text, encoding="utf-8")
+        rows.append(
+            {
+                "id": f"neg_{index:03d}",
+                "kind": kind,
+                "source": rel(neg_path),
+                "derived_from": rel(source_path),
+                "source_kind": "proposed_task_specific_gold",
+                "module": module,
+                "expected": "FAIL_FULL_CHECKER",
+                "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+                "shallow_passes": [
+                    "artifact_exists",
+                    "interface_or_testbench_shape_preserved",
+                    "module_name_preserved",
+                    "nominal_simulation_intended_to_run",
+                ],
+                "full_failures": [kind],
+                "validation_evidence": {
+                    "static_shallow_shape": "pending_audit",
+                    "simulator_shallow_lane": "pending_local_evas",
+                    "full_checker_lane": "pending_local_evas",
+                    "publication_status": "pending_fresh_evas_and_spectre",
                 },
                 "note": note,
                 "sha256": stable_hash(neg_text),
@@ -327,30 +718,17 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
     dut_name = topic_id
     va_path = gold_dir / f"{dut_name}.va"
     tb_path = gold_dir / f"tb_{dut_name}.scs"
-    va_path.write_text(render_generic_va(task), encoding="utf-8")
-    tb_path.write_text(render_generic_scs(task, dut_name), encoding="utf-8")
+    va_path.write_text(render_task_specific_va(task), encoding="utf-8")
+    tb_path.write_text(render_task_specific_scs(task, dut_name), encoding="utf-8")
     (form_dir / "prompt.md").write_text(
-        "\n".join(
-            [
-                f"# Task: {task_id}",
-                "",
-                f"Implement the `{task.form}` form for **{task.base_function}**.",
-                "",
-                f"- Track: `{task.track}`",
-                f"- Difficulty: `{task.difficulty}`",
-                f"- Category: {task.category}",
-                "- Domain: voltage-domain behavioral Verilog-A",
-                "",
-                "The solution should preserve public interface behavior, event timing, and measurement outputs. It must not rely on transistor-level device models or hidden checker-specific constants.",
-            ]
-        )
-        + "\n",
+        render_task_specific_prompt(task, task_id, topic_id, dut_name),
         encoding="utf-8",
     )
     meta = {
         "asset_type": "vabench_task",
-        "benchmark_split": "vabench-300-expansion-v1.1-proposed",
+        "benchmark_split": "vabench-300-expansion-v1.1-task-specific-candidate",
         "task_id": task_id,
+        "checker_task_id": task_id,
         "topic_id": topic_id,
         "legacy_task_id": legacy_task_id,
         "legacy_entry_id": task.entry_id,
@@ -362,10 +740,12 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
         "must_include": ["module", "analog"],
         "must_not_include": ["laplace_nd", "white_noise", "flicker_noise"],
         "scoring": ["syntax", "dut_compile", "tb_compile", "sim_correct"],
+        "paper_score": "disabled_until_fresh_spectre_certification",
         "negative_policy": {
             "required_partial_pass_negatives": 5,
             "zero_score_negatives_allowed": False,
         },
+        "task_specific_contract": TASK_CONTRACTS[topic_id],
     }
     write_json(form_dir / "meta.json", meta)
     (form_dir / "checks.yaml").write_text(
@@ -384,8 +764,8 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
                 '  backend: "evas"',
                 "sim_correct:",
                 "  checks:",
-                f'    - "{task.negative_axis}_nominal_path"',
-                f'    - "{task.negative_axis}_boundary_path"',
+                f'    - "{topic_id}_full_behavior"',
+                f'    - "{task.negative_axis}_near_miss_rejection"',
                 "negative_policy:",
                 "  required_partial_pass_negatives: 5",
                 "  zero_score_negatives_allowed: false",
@@ -394,7 +774,7 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
         + "\n",
         encoding="utf-8",
     )
-    manifest = negative_manifest(task_id, va_path, neg_dir, "proposed_gold")
+    manifest = proposed_negative_manifest(task, va_path, neg_dir)
     write_json(neg_dir / "manifest.json", manifest)
     release_task = {
         "id": task_id,
@@ -417,12 +797,14 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
         },
         "certification": {
             "static": "pass",
-            "evas": "pass",
-            "spectre": "pass",
-            "evidence": PROMOTION_EVIDENCE,
+            "evas": "pending_task_specific_evas_quality_run",
+            "spectre": "pending_fresh_spectre_after_task_specific_rebuild",
+            "evidence": TASK_SPECIFIC_EVIDENCE,
+            "historical_closure_evidence": PROMOTION_EVIDENCE,
+            "paper_score_status": "disabled_until_fresh_spectre_certification",
         },
         "counts": {
-            "benchmark_score": True,
+            "benchmark_score": False,
             "model_capability": True,
             "l0_conformance": False,
         },
@@ -432,8 +814,9 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
             "release_path": rel(form_dir),
         },
         "notes": [
-            "Promoted into the vaBench 300 benchmark management surface by the full-300 EVAS/Spectre closure report.",
-            "Includes five partial-pass near-miss negative candidates by construction.",
+            "Rebuilt as a task-specific vaBench 300 candidate; not paper scored until fresh Spectre certification.",
+            "Prompt, gold, checker identity, and near-miss negative variants are task-specific.",
+            "Historical full-300 closure is retained as provenance only and does not certify this rebuilt source.",
         ],
     }
     write_json(form_dir / "release_task.json", release_task)
@@ -454,14 +837,14 @@ def write_proposed_task(task: ProposedTask) -> dict[str, Any]:
         "checks": rel(form_dir / "checks.yaml"),
         "gold_count": 2,
         "static": "pass",
-        "evas": "pass",
-        "spectre": "pass",
-        "certification": "certified",
-        "counted_in_score": True,
-        "expansion_status": PROMOTED_STATUS,
+        "evas": "pending_task_specific_evas_quality_run",
+        "spectre": "pending_fresh_spectre_after_task_specific_rebuild",
+        "certification": "provisional_task_specific",
+        "counted_in_score": False,
+        "expansion_status": PROVISIONAL_STATUS,
         "negative_manifest": rel(neg_dir / "manifest.json"),
         "negative_count": 5,
-        "gold_status": "promoted_certified",
+        "gold_status": "task_specific_candidate",
     }
 
 
@@ -521,16 +904,21 @@ def group_proposed_entries(rows: list[dict[str, Any]]) -> None:
             "missing_forms": [],
             "certification": {
                 "static": "pass",
-                "evas": "pass",
-                "spectre": "pass",
-                "evidence": PROMOTION_EVIDENCE,
+                "evas": "pending_task_specific_evas_quality_run",
+                "spectre": "pending_fresh_spectre_after_task_specific_rebuild",
+                "evidence": TASK_SPECIFIC_EVIDENCE,
+                "historical_closure_evidence": PROMOTION_EVIDENCE,
+                "paper_score_status": "disabled_until_fresh_spectre_certification",
             },
             "counts": {
-                "benchmark_score": True,
+                "benchmark_score": False,
                 "model_capability": True,
                 "l0_conformance": False,
             },
-            "release_blockers": [],
+            "release_blockers": [
+                "fresh_spectre_certification_required_after_task_specific_rebuild",
+                "score_denominator_admission_pending_after_certification",
+            ],
         }
         write_json(entry_dir / "release_entry.json", entry)
 
@@ -551,18 +939,23 @@ def main() -> None:
     report = {
         "date": date.today().isoformat(),
         "release": "vabench-300-expansion-v1.1",
-        "status": "promoted_300_benchmark",
+        "status": "management_surface_with_provisional_v11_rows",
         "package_root": rel(EXPANSION),
         "summary": {
             "task_count": len(all_rows),
             "existing_certified_v1_task_count": len(existing_rows),
             "proposed_v11_task_count": len(proposed_rows),
+            "task_specific_v11_task_count": len(proposed_rows),
+            "provisional_generic_v11_task_count": 0,
             "required_negative_per_task": 5,
             "partial_pass_negative_count": 1500,
             "gold_reference_task_count": len(all_rows),
-            "certified_task_count": len(all_rows),
-            "pending_certification_task_count": 0,
-            "promoted_v11_task_count": len(proposed_rows),
+            "certified_task_count": len(existing_rows),
+            "pending_certification_task_count": len(proposed_rows),
+            "paper_score_ready_task_count": len(existing_rows),
+            "paper_score_disabled_v11_task_count": len(proposed_rows),
+            "promoted_v11_task_count": 0,
+            "provisional_v11_task_count": len(proposed_rows),
             "negative_static_shallow_shape_verified_count": 0,
             "negative_simulator_shallow_verified_count": 0,
             "negative_full_checker_fail_verified_count": 0,
@@ -570,9 +963,11 @@ def main() -> None:
         "tasks": all_rows,
         "claim_boundary": [
             "This expansion manifest materializes the 300-task and 1500-negative asset plan.",
-            "The 29 v1.1 tasks are promoted into the 300-task benchmark management surface by the full-300 EVAS/Spectre closure report.",
-            f"Promotion evidence: {PROMOTION_EVIDENCE}.",
-            "Negative candidates are intended partial-pass near-misses and must be validated against shallow/full checker lanes before publication.",
+            "The 271 inherited v1 rows are the only paper-score-ready rows in this 300-task management surface.",
+            "The 29 v1.1 rows have been rebuilt as task-specific candidates, but remain provisional until fresh EVAS/Spectre certification is attached to the rebuilt assets.",
+            f"Historical closure provenance: {PROMOTION_EVIDENCE}.",
+            f"Task-specific local evidence target: {TASK_SPECIFIC_EVIDENCE}.",
+            "Negative candidates are task-specific near-misses and must fail the registered full checker before publication.",
         ],
     }
     write_json(EXPANSION / "VABENCH_300_MANIFEST.json", report)
@@ -581,29 +976,30 @@ def main() -> None:
         "",
         f"- tasks: {len(all_rows)}",
         f"- existing certified v1 tasks: {len(existing_rows)}",
-        f"- promoted v1.1 tasks: {len(proposed_rows)}",
-        f"- certified benchmark tasks: {len(all_rows)}",
-        "- pending certification tasks: 0",
+        f"- task-specific v1.1 candidate tasks: {len(proposed_rows)}",
+        f"- paper-score-ready tasks: {len(existing_rows)}",
+        f"- certified benchmark tasks: {len(existing_rows)}",
+        f"- pending fresh Spectre certification tasks: {len(proposed_rows)}",
         "- negatives per task: 5",
         "- total partial-pass negatives: 1500",
         "- static shallow-shape verified negatives after audit: 1500",
-        "- simulator shallow-lane verified negatives: 0",
-        "- full-checker fail verified negatives: 0",
+        "- simulator shallow-lane verified negatives: updated by `v11_task_specific_quality_evidence.json`",
+        "- full-checker fail verified negatives: updated by `v11_task_specific_quality_evidence.json`",
         "",
-        f"Certification boundary: the 29 v1.1 tasks are promoted by `{PROMOTION_EVIDENCE}`. Negative candidates remain static-shape audited, not full-checker-certified.",
+        f"Certification boundary: only the 271 inherited v1 rows are paper-score-ready in this surface. The 29 v1.1 rows now have task-specific prompts, gold implementations, checker IDs, and near-miss negatives, but remain provisional until fresh EVAS/Spectre certification is attached to the rebuilt assets. Historical closure evidence in `{PROMOTION_EVIDENCE}` is provenance only after this rebuild.",
         "",
         "## Purpose",
         "",
-        "This directory is the primary vaBench 300 management surface. It treats each form-level task as a benchmark task: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+        "This directory is the primary vaBench 300 management surface. It indexes 271 inherited certified v1 form-level rows plus 29 task-specific v1.1 candidate rows. Do not use the 29 candidate rows in paper scores until fresh Spectre certification and score-denominator admission are complete.",
         "",
-        "Every task has a partial-pass negative manifest with five near-miss candidates. These candidates are intended to preserve enough surface structure to pass shallow checks while failing the full checker. The current audit verifies file presence, hashes, counts, metadata, required negative categories, and static shallow shape (non-empty, different from reference, interface/testbench structure preserved); it is not simulator proof that every candidate has the intended full-check failure.",
+        "Every task has a partial-pass negative manifest with five near-miss candidates. For v1.1 candidates, the negatives are generated from task-specific variants intended to compile and run while failing the registered full checker. `v11_task_specific_quality_evidence.json` records local EVAS gold and negative full-checker evidence; Spectre remains the final certification gate.",
         "",
         "## Files",
         "",
         "- `VABENCH_300_MANIFEST.json`: the 300-task index.",
         "- `negative_audit.json`: asset/hash/count audit for all negative manifests.",
         "- `existing-negatives/`: five negative candidates for each existing certified v1 task.",
-        "- `proposed-tasks/`: the 29 promoted v1.1 task assets, including prompt, checks, gold, release task manifests, and negatives.",
+        "- `proposed-tasks/`: the 29 provisional v1.1 task assets, including prompt, checks, gold, release task manifests, and negatives.",
         "",
         "## Schemas",
         "",

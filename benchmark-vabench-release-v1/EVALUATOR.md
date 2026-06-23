@@ -1,6 +1,6 @@
 # vaBench Release Evaluator Contract
 
-Date: 2026-06-01
+Date: 2026-06-23
 
 This contract describes how the release package is consumed by evaluators
 and paper-facing baselines. It does not create certification evidence.
@@ -9,12 +9,12 @@ and paper-facing baselines. It does not create certification evidence.
 
 | Metric | Value |
 | --- | ---: |
-| package entries | 79 |
-| package forms | 271 |
-| certified entries | 79 |
-| certified forms | 271 |
-| scored entries | 66 |
-| scored forms | 236 |
+| package entries | 86 |
+| package forms | 300 |
+| certified entries | 86 |
+| certified forms | 300 |
+| scored entries | 73 |
+| scored forms | 265 |
 | L0 conformance excluded | `True` |
 
 ## Backend Roles
@@ -27,10 +27,10 @@ and paper-facing baselines. It does not create certification evidence.
 
 ## Gates
 
-- Score gate: `score_enabled`; scored entries/forms = 66/236
-- Finish readiness: `ready_to_run`
-- Baseline gate: `claim_ready`; claim allowed = `True`
-- Speed/debug gate: `pending_measurement`; claim allowed = `False`
+- Score gate: `score_enabled`; scored entries/forms = 73/265
+- Finish readiness: `ready_to_finish`
+- Baseline gate: `ready_for_baseline_runs`; claim allowed = `False`
+- Speed/debug gate: `measured_subset`; claim allowed = `False`
 
 ## Commands
 
@@ -49,6 +49,5 @@ and paper-facing baselines. It does not create certification evidence.
 - Spectre is the final judge for release scoring.
 - EVAS is a fast filter/debug evaluator and cannot certify a task by itself.
 - L0 conformance cases are evaluator health checks and never scored benchmark rows.
-- Baseline and speed/debug claims are independent dedicated gates; one may be allowed while the other remains blocked.
-- Model baselines must use the fixed scored denominator and report hygiene slices when claimable.
+- Baseline and speed/debug claims are independent dedicated-artifact gates.
 - claim_gate_status=in_progress

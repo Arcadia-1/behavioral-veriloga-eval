@@ -30,6 +30,12 @@ def test_benchmark_overview_exports_complete_lists() -> None:
     assert report["summary"]["scored_form_count"] == 265
     assert report["summary"]["existing_certified_v1_task_count"] == 271
     assert report["summary"]["promoted_v11_task_count"] == 29
+    assert report["summary"]["provisional_v11_task_count"] == 0
+    assert report["summary"]["paper_score_ready_task_count"] == 300
+    assert report["summary"]["fresh_spectre_v11_pass_count"] == 29
+    assert report["summary"]["fresh_spectre_v11_parity_pass_count"] == 29
+    assert report["summary"]["score_denominator_pending_v11_task_count"] == 0
+    assert report["summary"]["score_denominator_admitted_v11_task_count"] == 29
 
     assert len(read_csv(ENTRY_CSV)) == 86
     assert len(read_csv(FORM_CSV)) == 300
@@ -48,14 +54,14 @@ def test_benchmark_overview_answers_dual_certification_questions() -> None:
 
     assert metrics["parity_passed_form_count"] == 300
     assert metrics["parity_form_count"] == 300
-    assert metrics["waveform_metric_form_count"] == 263
+    assert metrics["waveform_metric_form_count"] == 292
     assert metrics["gain_metric_form_count"] == 4
     assert metrics["pll_task_aware_form_count"] == 4
     assert metrics["max_worst_signal_relative_rms_error"] <= 0.22
     assert metrics["max_relative_gain_delta"] <= 0.25
 
 
-def test_benchmark_overview_reports_four_backend_pass() -> None:
+def test_benchmark_overview_blocks_score_claims_for_score_pending_v11_rows() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     coverage = report["backend_coverage"]
     by_backend = {row["backend"]: row for row in coverage["rows"]}
@@ -88,8 +94,8 @@ def test_benchmark_overview_reports_four_backend_pass() -> None:
 
     assert "Four-backend certification status: `pass`" in md
     assert "Full-300 runs completed for 4 / 4" in md
-    assert "behavior-certified PASS evidence exists for 4 / 4" in md
-    assert "Claim 300/300 four-backend behavior certification only when" in " ".join(report["claim_boundary"])
+    assert "currently claimable full-300 behavior certification exists for 4 / 4" in md
+    assert "All 29 fresh-certified v1.1 rows are score-denominator admitted" in " ".join(report["claim_boundary"])
 
 
 def test_benchmark_overview_keeps_exactness_claim_precise() -> None:
@@ -117,14 +123,25 @@ def test_benchmark_overview_uses_300_as_single_management_surface() -> None:
     assert expansion["certified_task_count"] == 300
     assert expansion["pending_certification_task_count"] == 0
     assert expansion["promoted_v11_task_count"] == 29
-    assert staging["current_dual_staging_bundles"] == 65
-    assert staging["speed_remaining_staging_bundles"] == 225
-    assert staging["total_staging_bundles"] == 290
-    assert staging["total_primary_queue_rows"] == 238
-    assert staging["buggy_companion_bundles"] == 52
+    assert expansion["provisional_v11_task_count"] == 0
+    assert expansion["task_specific_v11_task_count"] == 29
+    assert expansion["provisional_generic_v11_task_count"] == 0
+    assert expansion["task_specific_v11_gold_pass_count"] == 29
+    assert expansion["task_specific_v11_negative_full_checker_fail_count"] == 145
+    assert expansion["fresh_spectre_v11_pass_count"] == 29
+    assert expansion["fresh_spectre_v11_parity_pass_count"] == 29
+    assert expansion["score_denominator_pending_v11_task_count"] == 0
+    assert expansion["score_denominator_admitted_v11_task_count"] == 29
+    assert staging["current_dual_staging_bundles"] == 0
+    assert staging["speed_remaining_staging_bundles"] == 0
+    assert staging["total_staging_bundles"] == 0
+    assert staging["total_primary_queue_rows"] == 0
+    assert staging["buggy_companion_bundles"] == 0
     assert sum(1 for row in forms if row["expansion_status"] == "certified_v1.1_promoted") == 29
-    assert "Use 300 as the benchmark task count" in md
-    assert "single management denominator" in md
+    assert "Use 300 as the asset-management and certified-task row count" in md
+    assert "fresh-certified score-admitted v1.1 rows" in md
+    assert "task-specific v1.1 EVAS gold pass | 29" in md
+    assert "task-specific v1.1 fresh Spectre pass | 29" in md
     assert "execution inputs only; not a benchmark count" in md
 
 

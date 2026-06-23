@@ -5,32 +5,67 @@ module fractional_n_pll_divider(in, clk, rst, out, metric);
   input in, clk, rst;
   output out, metric;
   electrical in, clk, rst, out, metric;
+  // vaBench v1.1 task-specific template: negative variant: polarity_direction_near_miss
+  // Target behavior: fractional-N divider accumulator that emits carry pulses at the requested average divide ratio
   parameter real vth = 0.5;
-  parameter real gain = 0.85;
-  parameter real bias = 0.0;
   real state;
+  real aux;
+  real sample;
+  real integ;
+  real feedback;
+  real bitval;
+  real metric_value;
+  real target;
+  integer phase;
+  integer acc;
   integer count;
+  integer ones;
 
   analog begin
     @(initial_step) begin
       state = 0.0;
+      aux = 0.0;
+      sample = 0.0;
+      integ = 0.0;
+      feedback = 0.0;
+      bitval = 0.0;
+      metric_value = 0.0;
+      target = 0.0;
+      phase = -1;
+      acc = 0;
       count = 0;
+      ones = 0;
     end
     @(cross(V(rst) - vth, +1)) begin
       state = 0.0;
+      aux = 0.0;
+      sample = 0.0;
+      integ = 0.0;
+      feedback = 0.0;
+      bitval = 0.0;
+      metric_value = 0.0;
+      target = 0.0;
+      phase = -1;
+      acc = 0;
       count = 0;
+      ones = 0;
     end
+
     @(cross(V(clk) - vth, +1)) begin
-      state = gain * state + V(in) + bias;
-      if (state > 1.0) state = 1.0;
-      if (state < -1.0) state = -1.0;
+      acc = acc + 5;
+      state = 0.0;
+      if (acc >= 8) begin
+        acc = acc - 8;
+        state = 1.0;
+        ones = ones + 1;
+      end
       count = count + 1;
+      aux = acc / 8.0;
+      metric_value = aux * 0.0;
+      // metric follows task-specific behavior
     end
+
     V(out) <+ transition(state, 0, 1n);
-    V(metric) <+ transition(count > 0 ? state / count : 0.0, 0, 1n);
+    V(metric) <+ transition(metric_value, 0, 1n);
   end
 endmodule
-
-// vaBench partial-pass negative 3 for fractional_n_pll_divider:bugfix
-// Intended to preserve interface/smoke behavior while failing full checks.
-// Mutation note: polarity_direction_near_miss.

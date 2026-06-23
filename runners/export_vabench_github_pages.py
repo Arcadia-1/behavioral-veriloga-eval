@@ -73,7 +73,12 @@ def boolish(value: Any) -> bool:
 
 def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
     expansion_status = str(row.get("expansion_status") or "")
-    provenance = "promoted_v1.1" if "v1.1" in expansion_status else "inherited_v1"
+    if expansion_status == "provisional_v1.1_management":
+        provenance = "provisional_v1.1"
+    elif expansion_status == "certified_v1.1_promoted":
+        provenance = "promoted_v1.1"
+    else:
+        provenance = "inherited_v1"
     search_parts = [
         row.get("task_id"),
         row.get("legacy_task_id"),
@@ -142,15 +147,22 @@ def build_site_summary(overview: dict[str, Any]) -> dict[str, Any]:
         "source_reports": overview.get("source_reports", {}),
         "provenance": {
             "public_denominator": summary.get("form_count"),
+            "paper_score_ready_rows": summary.get("paper_score_ready_task_count"),
             "inherited_v1_rows": summary.get("existing_certified_v1_task_count"),
             "promoted_v1_1_rows": summary.get("promoted_v11_task_count"),
+            "provisional_v1_1_rows": summary.get("provisional_v11_task_count"),
             "explanation": expansion.get("explanation"),
         },
         "headline_cards": [
             {
-                "label": "Benchmark Rows",
+                "label": "Management Rows",
                 "value": summary.get("form_count"),
-                "detail": "single vaBench 300 management denominator",
+                "detail": "vaBench 300 asset-management surface",
+            },
+            {
+                "label": "Paper-Ready Rows",
+                "value": summary.get("paper_score_ready_task_count"),
+                "detail": "current paper-facing certified surface",
             },
             {
                 "label": "Release Entries",
@@ -160,7 +172,7 @@ def build_site_summary(overview: dict[str, Any]) -> dict[str, Any]:
             {
                 "label": "Four-Backend Status",
                 "value": summary.get("four_backend_status"),
-                "detail": f"{backend.get('certified_backend_count', 0)} / {backend.get('required_backend_count', 0)} certified",
+                "detail": f"{backend.get('certified_backend_count', 0)} / {backend.get('required_backend_count', 0)} full-300 certification rows claimable",
             },
             {
                 "label": "EVAS PASS / Spectre FAIL",
@@ -175,7 +187,7 @@ def build_site_summary(overview: dict[str, Any]) -> dict[str, Any]:
             {
                 "label": "Parity Rows",
                 "value": metrics.get("parity_passed_form_count"),
-                "detail": f"of {metrics.get('parity_form_count')} parity-certified rows",
+                "detail": f"of {metrics.get('parity_form_count')} management rows",
             },
         ],
     }
@@ -202,6 +214,7 @@ def build_task_gallery(overview: dict[str, Any]) -> dict[str, Any]:
         "summary": {
             "row_count": len(rows),
             "promoted_v1_1_rows": sum(1 for row in rows if row["provenance"] == "promoted_v1.1"),
+            "provisional_v1_1_rows": sum(1 for row in rows if row["provenance"] == "provisional_v1.1"),
             "inherited_v1_rows": sum(1 for row in rows if row["provenance"] == "inherited_v1"),
             "certified_rows": sum(1 for row in rows if row.get("verdict") == "pass"),
             "scored_rows": sum(1 for row in rows if row.get("counted_in_score")),

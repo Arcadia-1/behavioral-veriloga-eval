@@ -13,14 +13,13 @@
     "policy_counts": {
       "gain_extraction_metric_parity_v1": 4,
       "pll_task_aware": 4,
-      "spectre_equivalence_core_v1": 211,
-      "spectre_equivalence_core_v2": 52
+      "spectre_equivalence_core_v1": 263
     },
-    "waveform_metric_form_count": 263
+    "waveform_metric_form_count": 292
   },
   "backend_coverage": {
     "certified_backend_count": 4,
-    "claim_boundary": "Four-backend execution coverage and four-backend certification are separate. Certification requires 300/300 behavior-certified PASS evidence in every listed full-300 summary.",
+    "claim_boundary": "Four-backend execution coverage, simulator certification, and score-denominator admission are separate. All 29 fresh v1.1 rows are admitted to the current score denominator; support-suite exclusions still apply.",
     "completed_backend_count": 4,
     "required_backend_count": 4,
     "rows": [
@@ -62,7 +61,7 @@
         "full_300_status": "pass",
         "label": "EVAS Rust only",
         "notes": "compile/sim PASS 300/300; behavior checker PASS 300/300; missing/nonpass 0/300.",
-        "promoted_v11_behavior_checker_missing_rows": 0,
+        "provisional_v11_behavior_checker_missing_rows": 0,
         "rows": 300,
         "run_completed": true,
         "total": 300
@@ -77,7 +76,7 @@
         "full_300_status": "pass",
         "label": "EVAS Python only",
         "notes": "compile/sim PASS 300/300; behavior checker PASS 300/300; missing/nonpass 0/300.",
-        "promoted_v11_behavior_checker_missing_rows": 0,
+        "provisional_v11_behavior_checker_missing_rows": 0,
         "rows": 300,
         "run_completed": true,
         "total": 300
@@ -212,9 +211,9 @@
     "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
     "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
     "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
-    "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current."
+    "All 29 fresh-certified v1.1 rows are score-denominator admitted; support-suite exclusions still apply to paper-facing scores."
   ],
-  "date": "2026-06-22",
+  "date": "2026-06-23",
   "entry_rows": [
     {
       "base_function": "Bootstrapped sample switch abstraction",
@@ -226,7 +225,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -240,18 +239,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.0005914202747334674,
+      "worst_max_rmse_v": 0.00017312438786749485,
+      "worst_mean_relative_rms_error": 2.9957774837137368e-05,
+      "worst_signal_relative_rms_error": 0.00013961913746702044
     },
     {
       "base_function": "First-order sigma-delta modulator loop",
@@ -263,7 +262,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -277,18 +276,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.0007684988154467165,
+      "worst_max_rmse_v": 0.00021235652004672275,
+      "worst_mean_relative_rms_error": 3.721522810322104e-05,
+      "worst_signal_relative_rms_error": 0.00017126879386171064
     },
     {
       "base_function": "Bandgap startup and trim convergence flow",
@@ -300,7 +299,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -314,18 +313,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 5.310010620002137e-05,
+      "worst_max_rmse_v": 1.3684221474657381e-05,
+      "worst_mean_relative_rms_error": 5.77737579491203e-06,
+      "worst_signal_relative_rms_error": 1.9613211743729528e-05
     },
     {
       "base_function": "Fractional-N divider and accumulator flow",
@@ -337,7 +336,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -351,18 +350,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.00024606882984268275,
+      "worst_max_rmse_v": 6.254037520877988e-05,
+      "worst_mean_relative_rms_error": 1.8718018093978558e-05,
+      "worst_signal_relative_rms_error": 5.043626851321171e-05
     },
     {
       "base_function": "Comparator metastability window model",
@@ -374,7 +373,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -388,18 +387,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.00023075193105326353,
+      "worst_max_rmse_v": 6.996106081281078e-05,
+      "worst_mean_relative_rms_error": 1.7767223689852355e-05,
+      "worst_signal_relative_rms_error": 5.6420790949892156e-05
     },
     {
       "base_function": "Quadrature gain/phase imbalance corrector",
@@ -411,7 +410,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -425,18 +424,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.000985167651710972,
+      "worst_max_rmse_v": 0.00028277231891682696,
+      "worst_mean_relative_rms_error": 4.85554787219105e-05,
+      "worst_signal_relative_rms_error": 0.0002280463902187272
     },
     {
       "base_function": "Time-interleaved ADC mismatch observation flow",
@@ -448,7 +447,7 @@
       "evas": "pass",
       "evidence_count": 1,
       "evidence_paths": [
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 4,
       "forms": [
@@ -462,18 +461,18 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure"
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
       "special_metric_form_count": 0,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 4,
+      "worst_max_abs_v": 0.0017602753706568164,
+      "worst_max_rmse_v": 0.00042846142389080894,
+      "worst_mean_relative_rms_error": 8.081609858470096e-05,
+      "worst_signal_relative_rms_error": 0.00034554258396398763
     },
     {
       "base_function": "Acquisition-limited sample-and-hold",
@@ -582,7 +581,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
       "special_metric_form_count": 0,
@@ -592,7 +591,7 @@
       "waveform_form_count": 4,
       "worst_max_abs_v": 0.0001125002499993144,
       "worst_max_rmse_v": 5.340015437182489e-06,
-      "worst_mean_relative_rms_error": 2.306181747897162e-06,
+      "worst_mean_relative_rms_error": 2.3061814428449135e-06,
       "worst_signal_relative_rms_error": 5.93335048575832e-06
     },
     {
@@ -662,7 +661,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
       "special_metric_form_count": 0,
@@ -671,9 +670,9 @@
       "track": "core",
       "waveform_form_count": 4,
       "worst_max_abs_v": 8.784130249761546e-05,
-      "worst_max_rmse_v": 4.035381111323673e-06,
-      "worst_mean_relative_rms_error": 1.1486927025392372e-06,
-      "worst_signal_relative_rms_error": 5.7434635085096685e-06
+      "worst_max_rmse_v": 4.035385673901293e-06,
+      "worst_mean_relative_rms_error": 1.14869400130123e-06,
+      "worst_signal_relative_rms_error": 5.7434700023196325e-06
     },
     {
       "base_function": "Simple 4-bit binary-coded DAC",
@@ -1366,7 +1365,7 @@
       "gain_metric_form_count": 2,
       "level": "L1",
       "max_digital_mismatch_ratio": null,
-      "max_relative_gain_delta": 2.0262784813003992e-07,
+      "max_relative_gain_delta": 1.9999773999875475e-07,
       "parity_policies": [
         "gain_extraction_metric_parity_v1"
       ],
@@ -1528,7 +1527,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
       "special_metric_form_count": 0,
@@ -1536,10 +1535,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 1.1938658318166873e-05,
-      "worst_max_rmse_v": 6.736922696442103e-07,
-      "worst_mean_relative_rms_error": 1.969225113383135e-06,
-      "worst_signal_relative_rms_error": 6.856786175577367e-06
+      "worst_max_abs_v": 5.3013149425851225e-14,
+      "worst_max_rmse_v": 2.2983214399331906e-15,
+      "worst_mean_relative_rms_error": 6.566632685523401e-16,
+      "worst_signal_relative_rms_error": 3.2833163427617004e-15
     },
     {
       "base_function": "PRBS stimulus/dither generator",
@@ -1608,7 +1607,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
       "special_metric_form_count": 0,
@@ -1616,10 +1615,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 9.364734769257144e-05,
-      "worst_max_rmse_v": 5.1866246775892775e-06,
-      "worst_mean_relative_rms_error": 1.3849465096325023e-06,
-      "worst_signal_relative_rms_error": 6.924732546848167e-06
+      "worst_max_abs_v": 9.362520809080843e-05,
+      "worst_max_rmse_v": 5.185981161878084e-06,
+      "worst_mean_relative_rms_error": 1.3847746763317831e-06,
+      "worst_signal_relative_rms_error": 6.923873380344572e-06
     },
     {
       "base_function": "LNA gain/compression macro",
@@ -1648,7 +1647,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
       "special_metric_form_count": 0,
@@ -1656,10 +1655,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 9.378020848804791e-05,
-      "worst_max_rmse_v": 5.198038837888175e-06,
-      "worst_mean_relative_rms_error": 1.3857002667627202e-06,
-      "worst_signal_relative_rms_error": 6.928501330091937e-06
+      "worst_max_abs_v": 9.3780726143744e-05,
+      "worst_max_rmse_v": 5.198206809646031e-06,
+      "worst_mean_relative_rms_error": 1.3857450449024772e-06,
+      "worst_signal_relative_rms_error": 6.928725220790722e-06
     },
     {
       "base_function": "Lock detector",
@@ -1728,7 +1727,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_log_rssi_power_detector",
       "special_metric_form_count": 0,
@@ -1737,9 +1736,9 @@
       "track": "core",
       "waveform_form_count": 4,
       "worst_max_abs_v": 5.250011668656018e-05,
-      "worst_max_rmse_v": 3.601388931760477e-06,
-      "worst_mean_relative_rms_error": 1.5239502894956893e-06,
-      "worst_signal_relative_rms_error": 4.801851909013969e-06
+      "worst_max_rmse_v": 3.601439752509947e-06,
+      "worst_mean_relative_rms_error": 1.5238965672834495e-06,
+      "worst_signal_relative_rms_error": 4.801919670013263e-06
     },
     {
       "base_function": "Sampled loop-filter abstraction",
@@ -1848,7 +1847,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_pa_compression_macro",
       "special_metric_form_count": 0,
@@ -1856,10 +1855,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 0.00010276576447842967,
-      "worst_max_rmse_v": 5.735405575808997e-06,
-      "worst_mean_relative_rms_error": 1.3954758099515683e-06,
-      "worst_signal_relative_rms_error": 6.977379045996347e-06
+      "worst_max_abs_v": 0.00010277316195439479,
+      "worst_max_rmse_v": 5.735516034041263e-06,
+      "worst_mean_relative_rms_error": 1.3955026854338716e-06,
+      "worst_signal_relative_rms_error": 6.977513423407863e-06
     },
     {
       "base_function": "Peak detector",
@@ -2008,7 +2007,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_power_on_reset_detector",
       "special_metric_form_count": 0,
@@ -2016,10 +2015,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 0.00011252279620754813,
-      "worst_max_rmse_v": 6.465402171862658e-06,
-      "worst_mean_relative_rms_error": 1.4367560383819707e-06,
-      "worst_signal_relative_rms_error": 7.1837801909585085e-06
+      "worst_max_abs_v": 0.00011250025004239106,
+      "worst_max_rmse_v": 6.46490093982771e-06,
+      "worst_mean_relative_rms_error": 1.4366446534853156e-06,
+      "worst_signal_relative_rms_error": 7.183223266475233e-06
     },
     {
       "base_function": "Precision rectifier/envelope detector",
@@ -2168,7 +2167,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
       "special_metric_form_count": 0,
@@ -2177,9 +2176,9 @@
       "track": "core",
       "waveform_form_count": 4,
       "worst_max_abs_v": 7.354267029091588e-05,
-      "worst_max_rmse_v": 3.150252362488931e-06,
-      "worst_mean_relative_rms_error": 2.768028983624908e-06,
-      "worst_signal_relative_rms_error": 6.969584872763122e-06
+      "worst_max_rmse_v": 3.150299874191612e-06,
+      "worst_mean_relative_rms_error": 2.047166928035827e-06,
+      "worst_signal_relative_rms_error": 6.969689987149583e-06
     },
     {
       "base_function": "Periodic phase-ramp guard source",
@@ -2286,7 +2285,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
       "special_metric_form_count": 0,
@@ -2294,10 +2293,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 4,
-      "worst_max_abs_v": 0.030226475725184443,
-      "worst_max_rmse_v": 0.0010608827689780704,
-      "worst_mean_relative_rms_error": 0.0004041872310803268,
-      "worst_signal_relative_rms_error": 0.002020729083767753
+      "worst_max_abs_v": 0.16406250000000863,
+      "worst_max_rmse_v": 0.025439007549876606,
+      "worst_mean_relative_rms_error": 0.00969622878742213,
+      "worst_signal_relative_rms_error": 0.04845525247595544
     },
     {
       "base_function": "Sample-and-hold with droop/leakage",
@@ -2840,7 +2839,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
       "special_metric_form_count": 0,
@@ -2992,7 +2991,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
       "special_metric_form_count": 0,
@@ -3001,9 +3000,9 @@
       "track": "core",
       "waveform_form_count": 2,
       "worst_max_abs_v": 0.00010650023669189768,
-      "worst_max_rmse_v": 4.710323446866961e-06,
-      "worst_mean_relative_rms_error": 1.9386525994218185e-06,
-      "worst_signal_relative_rms_error": 5.528548646557464e-06
+      "worst_max_rmse_v": 4.7102949181661565e-06,
+      "worst_mean_relative_rms_error": 1.7427246626878659e-06,
+      "worst_signal_relative_rms_error": 5.528515162166848e-06
     },
     {
       "base_function": "Amplifier/filter chain",
@@ -3197,7 +3196,7 @@
       "evidence_paths": [
         "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/e2e/evidence.json",
         "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow/tb/evidence.json",
-        "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
+        "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json"
       ],
       "form_count": 3,
       "forms": [
@@ -3210,19 +3209,19 @@
       "max_digital_mismatch_ratio": null,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "full_300_closure",
-        "pll_task_aware"
+        "pll_task_aware",
+        "spectre_equivalence_core_v2"
       ],
       "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
       "special_metric_form_count": 2,
       "spectre": "pass",
       "static": "pass",
       "track": "core",
-      "waveform_form_count": 0,
-      "worst_max_abs_v": null,
-      "worst_max_rmse_v": null,
-      "worst_mean_relative_rms_error": null,
-      "worst_signal_relative_rms_error": null
+      "waveform_form_count": 1,
+      "worst_max_abs_v": 0.0001675003350048998,
+      "worst_max_rmse_v": 3.15112716196203e-05,
+      "worst_mean_relative_rms_error": 8.259689955117792e-06,
+      "worst_signal_relative_rms_error": 2.5412507057047673e-05
     },
     {
       "base_function": "Flash ADC mini-array",
@@ -3319,7 +3318,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l2_iq_downconversion_chain",
       "special_metric_form_count": 0,
@@ -3355,7 +3354,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
       "special_metric_form_count": 0,
@@ -3363,10 +3362,10 @@
       "static": "pass",
       "track": "core",
       "waveform_form_count": 2,
-      "worst_max_abs_v": 8.125871499209403e-05,
-      "worst_max_rmse_v": 7.778774289047023e-06,
-      "worst_mean_relative_rms_error": 3.3695833134333863e-06,
-      "worst_signal_relative_rms_error": 1.1967345060072344e-05
+      "worst_max_abs_v": 1.2038274045500508e-05,
+      "worst_max_rmse_v": 6.673198758722326e-07,
+      "worst_mean_relative_rms_error": 1.1348282688002648e-06,
+      "worst_signal_relative_rms_error": 5.674141344001324e-06
     },
     {
       "base_function": "Measurement flow",
@@ -3499,7 +3498,7 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_gain_delta": null,
       "parity_policies": [
-        "spectre_equivalence_core_v2"
+        "spectre_equivalence_core_v1"
       ],
       "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
       "special_metric_form_count": 0,
@@ -3509,7 +3508,7 @@
       "waveform_form_count": 2,
       "worst_max_abs_v": 0.00011250025000429653,
       "worst_max_rmse_v": 6.2963682545180596e-06,
-      "worst_mean_relative_rms_error": 2.501168523773681e-06,
+      "worst_mean_relative_rms_error": 2.5011685234408617e-06,
       "worst_signal_relative_rms_error": 6.995964727242288e-06
     },
     {
@@ -3569,11 +3568,15 @@
       "base_function": "Bootstrapped sample switch abstraction",
       "category": "Sampling and Analog Memory",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D2",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -3583,9 +3586,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_bootstrapped_sample_switch:bugfix",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0005914202747334674,
+      "max_relative_rms_error": 0.00013961913746702044,
+      "max_rmse_v": 0.00017312438786749485,
+      "mean_relative_rms_error": 2.9957774837137368e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3597,11 +3606,15 @@
       "base_function": "Bootstrapped sample switch abstraction",
       "category": "Sampling and Analog Memory",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D2",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -3611,9 +3624,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_bootstrapped_sample_switch:dut",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0005914202747334674,
+      "max_relative_rms_error": 0.00013961913746702044,
+      "max_rmse_v": 0.00017312438786749485,
+      "mean_relative_rms_error": 2.9957774837137368e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3625,11 +3644,15 @@
       "base_function": "Bootstrapped sample switch abstraction",
       "category": "Sampling and Analog Memory",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D2",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -3639,9 +3662,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_bootstrapped_sample_switch:e2e",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0005914202747334674,
+      "max_relative_rms_error": 0.00013961913746702044,
+      "max_rmse_v": 0.00017312438786749485,
+      "mean_relative_rms_error": 2.9957774837137368e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3653,11 +3682,15 @@
       "base_function": "Bootstrapped sample switch abstraction",
       "category": "Sampling and Analog Memory",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D2",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -3667,9 +3700,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_bootstrapped_sample_switch:tb",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0005914202747334674,
+      "max_relative_rms_error": 0.00013961913746702044,
+      "max_rmse_v": 0.00017312438786749485,
+      "mean_relative_rms_error": 2.9957774837137368e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_bootstrapped_sample_switch",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3681,11 +3720,15 @@
       "base_function": "First-order sigma-delta modulator loop",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -3695,9 +3738,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_sigma_delta_modulator_loop:bugfix",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0007684988154467165,
+      "max_relative_rms_error": 0.00017126879386171064,
+      "max_rmse_v": 0.00021235652004672275,
+      "mean_relative_rms_error": 3.721522810322104e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3709,11 +3758,15 @@
       "base_function": "First-order sigma-delta modulator loop",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -3723,9 +3776,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_sigma_delta_modulator_loop:dut",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0007684988154467165,
+      "max_relative_rms_error": 0.00017126879386171064,
+      "max_rmse_v": 0.00021235652004672275,
+      "mean_relative_rms_error": 3.721522810322104e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3737,11 +3796,15 @@
       "base_function": "First-order sigma-delta modulator loop",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -3751,9 +3814,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_sigma_delta_modulator_loop:e2e",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0007684988154467165,
+      "max_relative_rms_error": 0.00017126879386171064,
+      "max_rmse_v": 0.00021235652004672275,
+      "mean_relative_rms_error": 3.721522810322104e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3765,11 +3834,15 @@
       "base_function": "First-order sigma-delta modulator loop",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -3779,9 +3852,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l1_sigma_delta_modulator_loop:tb",
       "level": "L1",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0007684988154467165,
+      "max_relative_rms_error": 0.00017126879386171064,
+      "max_rmse_v": 0.00021235652004672275,
+      "mean_relative_rms_error": 3.721522810322104e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l1_sigma_delta_modulator_loop",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3793,11 +3872,15 @@
       "base_function": "Bandgap startup and trim convergence flow",
       "category": "Bias Reference and Power Management",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -3807,9 +3890,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 5.310010620002137e-05,
+      "max_relative_rms_error": 1.9613211743729528e-05,
+      "max_rmse_v": 1.3684221474657381e-05,
+      "mean_relative_rms_error": 5.77737579491203e-06,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3821,11 +3910,15 @@
       "base_function": "Bandgap startup and trim convergence flow",
       "category": "Bias Reference and Power Management",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -3835,9 +3928,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:dut",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 5.310010620002137e-05,
+      "max_relative_rms_error": 1.9613211743729528e-05,
+      "max_rmse_v": 1.3684221474657381e-05,
+      "mean_relative_rms_error": 5.77737579491203e-06,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3849,11 +3948,15 @@
       "base_function": "Bandgap startup and trim convergence flow",
       "category": "Bias Reference and Power Management",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -3863,9 +3966,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:e2e",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 5.310010620002137e-05,
+      "max_relative_rms_error": 1.9613211743729528e-05,
+      "max_rmse_v": 1.3684221474657381e-05,
+      "mean_relative_rms_error": 5.77737579491203e-06,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3877,11 +3986,15 @@
       "base_function": "Bandgap startup and trim convergence flow",
       "category": "Bias Reference and Power Management",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -3891,9 +4004,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:tb",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 5.310010620002137e-05,
+      "max_relative_rms_error": 1.9613211743729528e-05,
+      "max_rmse_v": 1.3684221474657381e-05,
+      "mean_relative_rms_error": 5.77737579491203e-06,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3905,11 +4024,15 @@
       "base_function": "Fractional-N divider and accumulator flow",
       "category": "PLL Clock and Timing Systems",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -3919,9 +4042,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_fractional_n_pll_divider_flow:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00024606882984268275,
+      "max_relative_rms_error": 5.043626851321171e-05,
+      "max_rmse_v": 6.254037520877988e-05,
+      "mean_relative_rms_error": 1.8718018093978558e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3933,11 +4062,15 @@
       "base_function": "Fractional-N divider and accumulator flow",
       "category": "PLL Clock and Timing Systems",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -3947,9 +4080,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_fractional_n_pll_divider_flow:dut",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00024606882984268275,
+      "max_relative_rms_error": 5.043626851321171e-05,
+      "max_rmse_v": 6.254037520877988e-05,
+      "mean_relative_rms_error": 1.8718018093978558e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3961,11 +4100,15 @@
       "base_function": "Fractional-N divider and accumulator flow",
       "category": "PLL Clock and Timing Systems",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -3975,9 +4118,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_fractional_n_pll_divider_flow:e2e",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00024606882984268275,
+      "max_relative_rms_error": 5.043626851321171e-05,
+      "max_rmse_v": 6.254037520877988e-05,
+      "mean_relative_rms_error": 1.8718018093978558e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -3989,11 +4138,15 @@
       "base_function": "Fractional-N divider and accumulator flow",
       "category": "PLL Clock and Timing Systems",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -4003,9 +4156,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_fractional_n_pll_divider_flow:tb",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00024606882984268275,
+      "max_relative_rms_error": 5.043626851321171e-05,
+      "max_rmse_v": 6.254037520877988e-05,
+      "mean_relative_rms_error": 1.8718018093978558e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_fractional_n_pll_divider_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4017,11 +4176,15 @@
       "base_function": "Comparator metastability window model",
       "category": "Comparator and Decision Circuits",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -4031,9 +4194,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_metastability_window_comparator_flow:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00023075193105326353,
+      "max_relative_rms_error": 5.6420790949892156e-05,
+      "max_rmse_v": 6.996106081281078e-05,
+      "mean_relative_rms_error": 1.7767223689852355e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4045,11 +4214,15 @@
       "base_function": "Comparator metastability window model",
       "category": "Comparator and Decision Circuits",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -4059,9 +4232,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_metastability_window_comparator_flow:dut",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00023075193105326353,
+      "max_relative_rms_error": 5.6420790949892156e-05,
+      "max_rmse_v": 6.996106081281078e-05,
+      "mean_relative_rms_error": 1.7767223689852355e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4073,11 +4252,15 @@
       "base_function": "Comparator metastability window model",
       "category": "Comparator and Decision Circuits",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -4087,9 +4270,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_metastability_window_comparator_flow:e2e",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00023075193105326353,
+      "max_relative_rms_error": 5.6420790949892156e-05,
+      "max_rmse_v": 6.996106081281078e-05,
+      "mean_relative_rms_error": 1.7767223689852355e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4101,11 +4290,15 @@
       "base_function": "Comparator metastability window model",
       "category": "Comparator and Decision Circuits",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -4115,9 +4308,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_metastability_window_comparator_flow:tb",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.00023075193105326353,
+      "max_relative_rms_error": 5.6420790949892156e-05,
+      "max_rmse_v": 6.996106081281078e-05,
+      "mean_relative_rms_error": 1.7767223689852355e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_metastability_window_comparator_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4129,11 +4328,15 @@
       "base_function": "Quadrature gain/phase imbalance corrector",
       "category": "RF and AFE Behavioral Macromodels",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -4143,9 +4346,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_quadrature_iq_imbalance_corrector:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.000985167651710972,
+      "max_relative_rms_error": 0.0002280463902187272,
+      "max_rmse_v": 0.00028277231891682696,
+      "mean_relative_rms_error": 4.85554787219105e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4157,11 +4366,15 @@
       "base_function": "Quadrature gain/phase imbalance corrector",
       "category": "RF and AFE Behavioral Macromodels",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -4171,9 +4384,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_quadrature_iq_imbalance_corrector:dut",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.000985167651710972,
+      "max_relative_rms_error": 0.0002280463902187272,
+      "max_rmse_v": 0.00028277231891682696,
+      "mean_relative_rms_error": 4.85554787219105e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4185,11 +4404,15 @@
       "base_function": "Quadrature gain/phase imbalance corrector",
       "category": "RF and AFE Behavioral Macromodels",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -4199,9 +4422,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_quadrature_iq_imbalance_corrector:e2e",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.000985167651710972,
+      "max_relative_rms_error": 0.0002280463902187272,
+      "max_rmse_v": 0.00028277231891682696,
+      "mean_relative_rms_error": 4.85554787219105e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4213,11 +4442,15 @@
       "base_function": "Quadrature gain/phase imbalance corrector",
       "category": "RF and AFE Behavioral Macromodels",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -4227,9 +4460,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_quadrature_iq_imbalance_corrector:tb",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.000985167651710972,
+      "max_relative_rms_error": 0.0002280463902187272,
+      "max_rmse_v": 0.00028277231891682696,
+      "mean_relative_rms_error": 4.85554787219105e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_quadrature_iq_imbalance_corrector",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4241,11 +4480,15 @@
       "base_function": "Time-interleaved ADC mismatch observation flow",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -4255,9 +4498,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_time_interleaved_adc_mismatch_flow:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0017602753706568164,
+      "max_relative_rms_error": 0.00034554258396398763,
+      "max_rmse_v": 0.00042846142389080894,
+      "mean_relative_rms_error": 8.081609858470096e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4269,11 +4518,15 @@
       "base_function": "Time-interleaved ADC mismatch observation flow",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "dut",
       "gold_assets": [
@@ -4283,9 +4536,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_time_interleaved_adc_mismatch_flow:dut",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0017602753706568164,
+      "max_relative_rms_error": 0.00034554258396398763,
+      "max_rmse_v": 0.00042846142389080894,
+      "mean_relative_rms_error": 8.081609858470096e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4297,11 +4556,15 @@
       "base_function": "Time-interleaved ADC mismatch observation flow",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "e2e",
       "gold_assets": [
@@ -4311,9 +4574,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_time_interleaved_adc_mismatch_flow:e2e",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0017602753706568164,
+      "max_relative_rms_error": 0.00034554258396398763,
+      "max_rmse_v": 0.00042846142389080894,
+      "mean_relative_rms_error": 8.081609858470096e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4325,11 +4594,15 @@
       "base_function": "Time-interleaved ADC mismatch observation flow",
       "category": "Data Converter Models",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        2.6e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "tb",
       "gold_assets": [
@@ -4339,9 +4612,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr11_l2_time_interleaved_adc_mismatch_flow:tb",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0017602753706568164,
+      "max_relative_rms_error": 0.00034554258396398763,
+      "max_rmse_v": 0.00042846142389080894,
+      "mean_relative_rms_error": 8.081609858470096e-05,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr11_l2_time_interleaved_adc_mismatch_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -4804,8 +5083,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 5.93335048575832e-06,
       "max_rmse_v": 5.340015437182489e-06,
-      "mean_relative_rms_error": 2.306181747897162e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.3061814428449135e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
@@ -4818,10 +5097,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -4858,8 +5136,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 5.93335048575832e-06,
       "max_rmse_v": 5.340015437182489e-06,
-      "mean_relative_rms_error": 2.306181747897162e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.3061814428449135e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
@@ -4872,10 +5150,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -4912,8 +5189,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 5.93335048575832e-06,
       "max_rmse_v": 5.340015437182489e-06,
-      "mean_relative_rms_error": 2.306181747897162e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.3061814428449135e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
@@ -4926,10 +5203,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -4966,8 +5242,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 5.93335048575832e-06,
       "max_rmse_v": 5.340015437182489e-06,
-      "mean_relative_rms_error": 2.306181747897162e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.3061814428449135e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bandgap_reference_macro_model",
@@ -4980,10 +5256,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -5232,10 +5507,10 @@
       "level": "L1",
       "max_abs_v": 8.784130249761546e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.7434635085096685e-06,
-      "max_rmse_v": 4.035381111323673e-06,
-      "mean_relative_rms_error": 1.1486927025392372e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.7434700023196325e-06,
+      "max_rmse_v": 4.035385673901293e-06,
+      "mean_relative_rms_error": 1.14869400130123e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
@@ -5248,10 +5523,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -5286,10 +5560,10 @@
       "level": "L1",
       "max_abs_v": 8.784130249761546e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.7434635085096685e-06,
-      "max_rmse_v": 4.035381111323673e-06,
-      "mean_relative_rms_error": 1.1486927025392372e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.7434700023196325e-06,
+      "max_rmse_v": 4.035385673901293e-06,
+      "mean_relative_rms_error": 1.14869400130123e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
@@ -5302,10 +5576,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -5340,10 +5613,10 @@
       "level": "L1",
       "max_abs_v": 8.784130249761546e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.7434635085096685e-06,
-      "max_rmse_v": 4.035381111323673e-06,
-      "mean_relative_rms_error": 1.1486927025392372e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.7434700023196325e-06,
+      "max_rmse_v": 4.035385673901293e-06,
+      "mean_relative_rms_error": 1.14869400130123e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
@@ -5356,10 +5629,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -5394,10 +5666,10 @@
       "level": "L1",
       "max_abs_v": 8.784130249761546e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.7434635085096685e-06,
-      "max_rmse_v": 4.035381111323673e-06,
-      "mean_relative_rms_error": 1.1486927025392372e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.7434700023196325e-06,
+      "max_rmse_v": 4.035385673901293e-06,
+      "mean_relative_rms_error": 1.14869400130123e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_bias_voltage_generator_with_enable_trim",
@@ -5410,10 +5682,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -8820,14 +9091,14 @@
       "mean_relative_rms_error": null,
       "parity_policy": "gain_extraction_metric_parity_v1",
       "parity_status": "passed",
-      "relative_gain_delta": 2.0262784813003992e-07,
+      "relative_gain_delta": 1.9999773999875475e-07,
       "release_entry_id": "vbr1_l1_gain_estimator",
       "samples": null,
       "signals_compared": null,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {
-          "relative_gain_delta": 2.0262784813003992e-07
+          "relative_gain_delta": 1.9999773999875475e-07
         },
         "gain_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25",
         "mode": null,
@@ -8866,14 +9137,14 @@
       "mean_relative_rms_error": null,
       "parity_policy": "gain_extraction_metric_parity_v1",
       "parity_status": "passed",
-      "relative_gain_delta": 2.0262784813003992e-07,
+      "relative_gain_delta": 1.9999773999875475e-07,
       "release_entry_id": "vbr1_l1_gain_estimator",
       "samples": null,
       "signals_compared": null,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {
-          "relative_gain_delta": 2.0262784813003992e-07
+          "relative_gain_delta": 1.9999773999875475e-07
         },
         "gain_gate": "evas_gain>4 and spectre_gain>4 and relative_gain_delta<=0.25",
         "mode": null,
@@ -9549,12 +9820,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_ldo_regulator_macro_model:bugfix",
       "level": "L1",
-      "max_abs_v": 1.1938658318166873e-05,
+      "max_abs_v": 5.3013149425851225e-14,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.856786175577367e-06,
-      "max_rmse_v": 6.736922696442103e-07,
-      "mean_relative_rms_error": 1.969225113383135e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 3.2833163427617004e-15,
+      "max_rmse_v": 2.2983214399331906e-15,
+      "mean_relative_rms_error": 6.566632685523401e-16,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
@@ -9567,10 +9838,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -9603,12 +9873,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_ldo_regulator_macro_model:dut",
       "level": "L1",
-      "max_abs_v": 1.1938658318166873e-05,
+      "max_abs_v": 5.3013149425851225e-14,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.856786175577367e-06,
-      "max_rmse_v": 6.736922696442103e-07,
-      "mean_relative_rms_error": 1.969225113383135e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 3.2833163427617004e-15,
+      "max_rmse_v": 2.2983214399331906e-15,
+      "mean_relative_rms_error": 6.566632685523401e-16,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
@@ -9621,10 +9891,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -9657,12 +9926,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_ldo_regulator_macro_model:e2e",
       "level": "L1",
-      "max_abs_v": 1.1938658318166873e-05,
+      "max_abs_v": 5.3013149425851225e-14,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.856786175577367e-06,
-      "max_rmse_v": 6.736922696442103e-07,
-      "mean_relative_rms_error": 1.969225113383135e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 3.2833163427617004e-15,
+      "max_rmse_v": 2.2983214399331906e-15,
+      "mean_relative_rms_error": 6.566632685523401e-16,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
@@ -9675,10 +9944,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -9711,12 +9979,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_ldo_regulator_macro_model:tb",
       "level": "L1",
-      "max_abs_v": 1.1938658318166873e-05,
+      "max_abs_v": 5.3013149425851225e-14,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.856786175577367e-06,
-      "max_rmse_v": 6.736922696442103e-07,
-      "mean_relative_rms_error": 1.969225113383135e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 3.2833163427617004e-15,
+      "max_rmse_v": 2.2983214399331906e-15,
+      "mean_relative_rms_error": 6.566632685523401e-16,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ldo_regulator_macro_model",
@@ -9729,10 +9997,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -9980,12 +10247,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_limiting_amplifier_frontend:bugfix",
       "level": "L1",
-      "max_abs_v": 9.364734769257144e-05,
+      "max_abs_v": 9.362520809080843e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.924732546848167e-06,
-      "max_rmse_v": 5.1866246775892775e-06,
-      "mean_relative_rms_error": 1.3849465096325023e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.923873380344572e-06,
+      "max_rmse_v": 5.185981161878084e-06,
+      "mean_relative_rms_error": 1.3847746763317831e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
@@ -9998,10 +10265,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10034,12 +10300,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_limiting_amplifier_frontend:dut",
       "level": "L1",
-      "max_abs_v": 9.364734769257144e-05,
+      "max_abs_v": 9.362520809080843e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.924732546848167e-06,
-      "max_rmse_v": 5.1866246775892775e-06,
-      "mean_relative_rms_error": 1.3849465096325023e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.923873380344572e-06,
+      "max_rmse_v": 5.185981161878084e-06,
+      "mean_relative_rms_error": 1.3847746763317831e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
@@ -10052,10 +10318,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10088,12 +10353,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_limiting_amplifier_frontend:e2e",
       "level": "L1",
-      "max_abs_v": 9.364734769257144e-05,
+      "max_abs_v": 9.362520809080843e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.924732546848167e-06,
-      "max_rmse_v": 5.1866246775892775e-06,
-      "mean_relative_rms_error": 1.3849465096325023e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.923873380344572e-06,
+      "max_rmse_v": 5.185981161878084e-06,
+      "mean_relative_rms_error": 1.3847746763317831e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
@@ -10106,10 +10371,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10142,12 +10406,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_limiting_amplifier_frontend:tb",
       "level": "L1",
-      "max_abs_v": 9.364734769257144e-05,
+      "max_abs_v": 9.362520809080843e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.924732546848167e-06,
-      "max_rmse_v": 5.1866246775892775e-06,
-      "mean_relative_rms_error": 1.3849465096325023e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.923873380344572e-06,
+      "max_rmse_v": 5.185981161878084e-06,
+      "mean_relative_rms_error": 1.3847746763317831e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_limiting_amplifier_frontend",
@@ -10160,10 +10424,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10197,12 +10460,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_lna_gain_compression_macro:bugfix",
       "level": "L1",
-      "max_abs_v": 9.378020848804791e-05,
+      "max_abs_v": 9.3780726143744e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.928501330091937e-06,
-      "max_rmse_v": 5.198038837888175e-06,
-      "mean_relative_rms_error": 1.3857002667627202e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.928725220790722e-06,
+      "max_rmse_v": 5.198206809646031e-06,
+      "mean_relative_rms_error": 1.3857450449024772e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
@@ -10215,10 +10478,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10251,12 +10513,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_lna_gain_compression_macro:dut",
       "level": "L1",
-      "max_abs_v": 9.378020848804791e-05,
+      "max_abs_v": 9.3780726143744e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.928501330091937e-06,
-      "max_rmse_v": 5.198038837888175e-06,
-      "mean_relative_rms_error": 1.3857002667627202e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.928725220790722e-06,
+      "max_rmse_v": 5.198206809646031e-06,
+      "mean_relative_rms_error": 1.3857450449024772e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
@@ -10269,10 +10531,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10305,12 +10566,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_lna_gain_compression_macro:e2e",
       "level": "L1",
-      "max_abs_v": 9.378020848804791e-05,
+      "max_abs_v": 9.3780726143744e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.928501330091937e-06,
-      "max_rmse_v": 5.198038837888175e-06,
-      "mean_relative_rms_error": 1.3857002667627202e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.928725220790722e-06,
+      "max_rmse_v": 5.198206809646031e-06,
+      "mean_relative_rms_error": 1.3857450449024772e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
@@ -10323,10 +10584,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10359,12 +10619,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_lna_gain_compression_macro:tb",
       "level": "L1",
-      "max_abs_v": 9.378020848804791e-05,
+      "max_abs_v": 9.3780726143744e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.928501330091937e-06,
-      "max_rmse_v": 5.198038837888175e-06,
-      "mean_relative_rms_error": 1.3857002667627202e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.928725220790722e-06,
+      "max_rmse_v": 5.198206809646031e-06,
+      "mean_relative_rms_error": 1.3857450449024772e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_lna_gain_compression_macro",
@@ -10377,10 +10637,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10630,10 +10889,10 @@
       "level": "L1",
       "max_abs_v": 5.250011668656018e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 4.801851909013969e-06,
-      "max_rmse_v": 3.601388931760477e-06,
-      "mean_relative_rms_error": 1.5239502894956893e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 4.801919670013263e-06,
+      "max_rmse_v": 3.601439752509947e-06,
+      "mean_relative_rms_error": 1.5238965672834495e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_log_rssi_power_detector",
@@ -10646,10 +10905,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10684,10 +10942,10 @@
       "level": "L1",
       "max_abs_v": 5.250011668656018e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 4.801851909013969e-06,
-      "max_rmse_v": 3.601388931760477e-06,
-      "mean_relative_rms_error": 1.5239502894956893e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 4.801919670013263e-06,
+      "max_rmse_v": 3.601439752509947e-06,
+      "mean_relative_rms_error": 1.5238965672834495e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_log_rssi_power_detector",
@@ -10700,10 +10958,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10738,10 +10995,10 @@
       "level": "L1",
       "max_abs_v": 5.250011668656018e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 4.801851909013969e-06,
-      "max_rmse_v": 3.601388931760477e-06,
-      "mean_relative_rms_error": 1.5239502894956893e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 4.801919670013263e-06,
+      "max_rmse_v": 3.601439752509947e-06,
+      "mean_relative_rms_error": 1.5238965672834495e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_log_rssi_power_detector",
@@ -10754,10 +11011,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -10792,10 +11048,10 @@
       "level": "L1",
       "max_abs_v": 5.250011668656018e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 4.801851909013969e-06,
-      "max_rmse_v": 3.601388931760477e-06,
-      "mean_relative_rms_error": 1.5239502894956893e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 4.801919670013263e-06,
+      "max_rmse_v": 3.601439752509947e-06,
+      "mean_relative_rms_error": 1.5238965672834495e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_log_rssi_power_detector",
@@ -10808,10 +11064,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -11272,12 +11527,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_pa_compression_macro:bugfix",
       "level": "L1",
-      "max_abs_v": 0.00010276576447842967,
+      "max_abs_v": 0.00010277316195439479,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.977379045996347e-06,
-      "max_rmse_v": 5.735405575808997e-06,
-      "mean_relative_rms_error": 1.3954758099515683e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.977513423407863e-06,
+      "max_rmse_v": 5.735516034041263e-06,
+      "mean_relative_rms_error": 1.3955026854338716e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_pa_compression_macro",
@@ -11290,10 +11545,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -11326,12 +11580,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_pa_compression_macro:dut",
       "level": "L1",
-      "max_abs_v": 0.00010276576447842967,
+      "max_abs_v": 0.00010277316195439479,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.977379045996347e-06,
-      "max_rmse_v": 5.735405575808997e-06,
-      "mean_relative_rms_error": 1.3954758099515683e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.977513423407863e-06,
+      "max_rmse_v": 5.735516034041263e-06,
+      "mean_relative_rms_error": 1.3955026854338716e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_pa_compression_macro",
@@ -11344,10 +11598,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -11380,12 +11633,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_pa_compression_macro:e2e",
       "level": "L1",
-      "max_abs_v": 0.00010276576447842967,
+      "max_abs_v": 0.00010277316195439479,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.977379045996347e-06,
-      "max_rmse_v": 5.735405575808997e-06,
-      "mean_relative_rms_error": 1.3954758099515683e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.977513423407863e-06,
+      "max_rmse_v": 5.735516034041263e-06,
+      "mean_relative_rms_error": 1.3955026854338716e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_pa_compression_macro",
@@ -11398,10 +11651,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -11434,12 +11686,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_pa_compression_macro:tb",
       "level": "L1",
-      "max_abs_v": 0.00010276576447842967,
+      "max_abs_v": 0.00010277316195439479,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.977379045996347e-06,
-      "max_rmse_v": 5.735405575808997e-06,
-      "mean_relative_rms_error": 1.3954758099515683e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.977513423407863e-06,
+      "max_rmse_v": 5.735516034041263e-06,
+      "mean_relative_rms_error": 1.3955026854338716e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_pa_compression_macro",
@@ -11452,10 +11704,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -12131,12 +12382,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_power_on_reset_detector:bugfix",
       "level": "L1",
-      "max_abs_v": 0.00011252279620754813,
+      "max_abs_v": 0.00011250025004239106,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 7.1837801909585085e-06,
-      "max_rmse_v": 6.465402171862658e-06,
-      "mean_relative_rms_error": 1.4367560383819707e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 7.183223266475233e-06,
+      "max_rmse_v": 6.46490093982771e-06,
+      "mean_relative_rms_error": 1.4366446534853156e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_power_on_reset_detector",
@@ -12149,10 +12400,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -12185,12 +12435,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_power_on_reset_detector:dut",
       "level": "L1",
-      "max_abs_v": 0.00011252279620754813,
+      "max_abs_v": 0.00011250025004239106,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 7.1837801909585085e-06,
-      "max_rmse_v": 6.465402171862658e-06,
-      "mean_relative_rms_error": 1.4367560383819707e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 7.183223266475233e-06,
+      "max_rmse_v": 6.46490093982771e-06,
+      "mean_relative_rms_error": 1.4366446534853156e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_power_on_reset_detector",
@@ -12203,10 +12453,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -12239,12 +12488,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_power_on_reset_detector:e2e",
       "level": "L1",
-      "max_abs_v": 0.00011252279620754813,
+      "max_abs_v": 0.00011250025004239106,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 7.1837801909585085e-06,
-      "max_rmse_v": 6.465402171862658e-06,
-      "mean_relative_rms_error": 1.4367560383819707e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 7.183223266475233e-06,
+      "max_rmse_v": 6.46490093982771e-06,
+      "mean_relative_rms_error": 1.4366446534853156e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_power_on_reset_detector",
@@ -12257,10 +12506,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -12293,12 +12541,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_power_on_reset_detector:tb",
       "level": "L1",
-      "max_abs_v": 0.00011252279620754813,
+      "max_abs_v": 0.00011250025004239106,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 7.1837801909585085e-06,
-      "max_rmse_v": 6.465402171862658e-06,
-      "mean_relative_rms_error": 1.4367560383819707e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 7.183223266475233e-06,
+      "max_rmse_v": 6.46490093982771e-06,
+      "mean_relative_rms_error": 1.4366446534853156e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_power_on_reset_detector",
@@ -12311,10 +12559,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -12994,10 +13241,10 @@
       "level": "L1",
       "max_abs_v": 7.354267029091588e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.969584872763122e-06,
-      "max_rmse_v": 3.150252362488931e-06,
-      "mean_relative_rms_error": 2.768028983624908e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.969689987149583e-06,
+      "max_rmse_v": 3.150299874191612e-06,
+      "mean_relative_rms_error": 2.047166928035827e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
@@ -13010,10 +13257,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13048,10 +13294,10 @@
       "level": "L1",
       "max_abs_v": 7.354267029091588e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.969584872763122e-06,
-      "max_rmse_v": 3.150252362488931e-06,
-      "mean_relative_rms_error": 2.768028983624908e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.969689987149583e-06,
+      "max_rmse_v": 3.150299874191612e-06,
+      "mean_relative_rms_error": 2.047166928035827e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
@@ -13064,10 +13310,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13102,10 +13347,10 @@
       "level": "L1",
       "max_abs_v": 7.354267029091588e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.969584872763122e-06,
-      "max_rmse_v": 3.150252362488931e-06,
-      "mean_relative_rms_error": 2.768028983624908e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.969689987149583e-06,
+      "max_rmse_v": 3.150299874191612e-06,
+      "mean_relative_rms_error": 2.047166928035827e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
@@ -13118,10 +13363,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13156,10 +13400,10 @@
       "level": "L1",
       "max_abs_v": 7.354267029091588e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 6.969584872763122e-06,
-      "max_rmse_v": 3.150252362488931e-06,
-      "mean_relative_rms_error": 2.768028983624908e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 6.969689987149583e-06,
+      "max_rmse_v": 3.150299874191612e-06,
+      "mean_relative_rms_error": 2.047166928035827e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_ptat_ctat_reference_generator",
@@ -13172,10 +13416,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13582,12 +13825,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_rf_mixer_downconverter_macro:bugfix",
       "level": "L1",
-      "max_abs_v": 0.030226475725184443,
+      "max_abs_v": 0.16406250000000863,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 0.002020729083767753,
-      "max_rmse_v": 0.0010608827689780704,
-      "mean_relative_rms_error": 0.0004041872310803268,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 0.04845525247595544,
+      "max_rmse_v": 0.025439007549876606,
+      "mean_relative_rms_error": 0.00969622878742213,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
@@ -13600,10 +13843,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13636,12 +13878,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_rf_mixer_downconverter_macro:dut",
       "level": "L1",
-      "max_abs_v": 0.030226475725184443,
+      "max_abs_v": 0.16406250000000863,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 0.002020729083767753,
-      "max_rmse_v": 0.0010608827689780704,
-      "mean_relative_rms_error": 0.0004041872310803268,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 0.04845525247595544,
+      "max_rmse_v": 0.025439007549876606,
+      "mean_relative_rms_error": 0.00969622878742213,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
@@ -13654,10 +13896,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13690,12 +13931,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_rf_mixer_downconverter_macro:e2e",
       "level": "L1",
-      "max_abs_v": 0.030226475725184443,
+      "max_abs_v": 0.16406250000000863,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 0.002020729083767753,
-      "max_rmse_v": 0.0010608827689780704,
-      "mean_relative_rms_error": 0.0004041872310803268,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 0.04845525247595544,
+      "max_rmse_v": 0.025439007549876606,
+      "mean_relative_rms_error": 0.00969622878742213,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
@@ -13708,10 +13949,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -13744,12 +13984,12 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l1_rf_mixer_downconverter_macro:tb",
       "level": "L1",
-      "max_abs_v": 0.030226475725184443,
+      "max_abs_v": 0.16406250000000863,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 0.002020729083767753,
-      "max_rmse_v": 0.0010608827689780704,
-      "mean_relative_rms_error": 0.0004041872310803268,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 0.04845525247595544,
+      "max_rmse_v": 0.025439007549876606,
+      "mean_relative_rms_error": 0.00969622878742213,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_rf_mixer_downconverter_macro",
@@ -13762,10 +14002,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -16420,7 +16659,7 @@
       "max_relative_rms_error": 1.7081897614364422e-15,
       "max_rmse_v": 3.416379522872884e-16,
       "mean_relative_rms_error": 3.4163795228728843e-16,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
@@ -16433,10 +16672,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -16474,7 +16712,7 @@
       "max_relative_rms_error": 1.7081897614364422e-15,
       "max_rmse_v": 3.416379522872884e-16,
       "mean_relative_rms_error": 3.4163795228728843e-16,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
@@ -16487,10 +16725,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -16528,7 +16765,7 @@
       "max_relative_rms_error": 1.7081897614364422e-15,
       "max_rmse_v": 3.416379522872884e-16,
       "mean_relative_rms_error": 3.4163795228728843e-16,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
@@ -16541,10 +16778,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -16582,7 +16818,7 @@
       "max_relative_rms_error": 1.7081897614364422e-15,
       "max_rmse_v": 3.416379522872884e-16,
       "mean_relative_rms_error": 3.4163795228728843e-16,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l1_uvlo_brownout_detector",
@@ -16595,10 +16831,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -17147,15 +17382,15 @@
       "level": "L2",
       "max_abs_v": 0.00010650023669189768,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.528548646557464e-06,
-      "max_rmse_v": 4.710323446866961e-06,
-      "mean_relative_rms_error": 1.9386525994218185e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.528515162166848e-06,
+      "max_rmse_v": 4.7102949181661565e-06,
+      "mean_relative_rms_error": 1.7427246626878659e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
       "samples": 1200,
-      "signals_compared": 7,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {},
@@ -17163,10 +17398,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -17201,15 +17435,15 @@
       "level": "L2",
       "max_abs_v": 0.00010650023669189768,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 5.528548646557464e-06,
-      "max_rmse_v": 4.710323446866961e-06,
-      "mean_relative_rms_error": 1.9386525994218185e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.528515162166848e-06,
+      "max_rmse_v": 4.7102949181661565e-06,
+      "mean_relative_rms_error": 1.7427246626878659e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_agc_receiver_leveling_loop",
       "samples": 1200,
-      "signals_compared": 7,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {},
@@ -17217,10 +17451,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -17765,11 +17998,15 @@
       "base_function": "CPPLL tracking and frequency-step reacquire flow",
       "category": "PLL Clock and Timing Systems",
       "certification": "certified",
+      "common_window_s": [
+        0.0,
+        4.2e-07
+      ],
       "content_denominator_included": true,
       "counted_in_score": true,
       "difficulty": "D3",
       "evas": "pass",
-      "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+      "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
       "expansion_status": "certified_v1.1_promoted",
       "form": "bugfix",
       "gold_assets": [
@@ -17779,9 +18016,15 @@
       "gold_status": "promoted_certified",
       "legacy_task_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:bugfix",
       "level": "L2",
-      "parity_policy": "full_300_closure",
+      "max_abs_v": 0.0001675003350048998,
+      "max_relative_rms_error": 2.5412507057047673e-05,
+      "max_rmse_v": 3.15112716196203e-05,
+      "mean_relative_rms_error": 8.259689955117792e-06,
+      "parity_policy": "spectre_equivalence_core_v2",
       "parity_status": "passed",
       "release_entry_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "samples": 1200,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "spectre": "pass",
       "static": "pass",
@@ -18110,7 +18353,7 @@
       "max_relative_rms_error": 1.7916468038854797e-05,
       "max_rmse_v": 1.6124821234969317e-05,
       "mean_relative_rms_error": 1.0203549868129818e-05,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_iq_downconversion_chain",
@@ -18123,10 +18366,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18164,7 +18406,7 @@
       "max_relative_rms_error": 1.7916468038854797e-05,
       "max_rmse_v": 1.6124821234969317e-05,
       "mean_relative_rms_error": 1.0203549868129818e-05,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_iq_downconversion_chain",
@@ -18177,10 +18419,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18213,17 +18454,17 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l2_ldo_load_step_recovery_flow:e2e",
       "level": "L2",
-      "max_abs_v": 8.125871499209403e-05,
+      "max_abs_v": 1.2038274045500508e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 1.1967345060072344e-05,
-      "max_rmse_v": 7.778774289047023e-06,
-      "mean_relative_rms_error": 3.3695833134333863e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.674141344001324e-06,
+      "max_rmse_v": 6.673198758722326e-07,
+      "mean_relative_rms_error": 1.1348282688002648e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
       "samples": 1200,
-      "signals_compared": 7,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {},
@@ -18231,10 +18472,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18267,17 +18507,17 @@
       "gold_status": "existing_certified",
       "legacy_task_id": "vbr1_l2_ldo_load_step_recovery_flow:tb",
       "level": "L2",
-      "max_abs_v": 8.125871499209403e-05,
+      "max_abs_v": 1.2038274045500508e-05,
       "max_digital_mismatch_ratio": 0.0,
-      "max_relative_rms_error": 1.1967345060072344e-05,
-      "max_rmse_v": 7.778774289047023e-06,
-      "mean_relative_rms_error": 3.3695833134333863e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "max_relative_rms_error": 5.674141344001324e-06,
+      "max_rmse_v": 6.673198758722326e-07,
+      "mean_relative_rms_error": 1.1348282688002648e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_ldo_load_step_recovery_flow",
       "samples": 1200,
-      "signals_compared": 7,
+      "signals_compared": 5,
       "source_equivalence_pass": true,
       "special_metric_summary": {
         "deltas": {},
@@ -18285,10 +18525,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18643,8 +18882,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 6.995964727242288e-06,
       "max_rmse_v": 6.2963682545180596e-06,
-      "mean_relative_rms_error": 2.501168523773681e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.5011685234408617e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
@@ -18657,10 +18896,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18697,8 +18935,8 @@
       "max_digital_mismatch_ratio": 0.0,
       "max_relative_rms_error": 6.995964727242288e-06,
       "max_rmse_v": 6.2963682545180596e-06,
-      "mean_relative_rms_error": 2.501168523773681e-06,
-      "parity_policy": "spectre_equivalence_core_v2",
+      "mean_relative_rms_error": 2.5011685234408617e-06,
+      "parity_policy": "spectre_equivalence_core_v1",
       "parity_status": "passed",
       "relative_gain_delta": null,
       "release_entry_id": "vbr1_l2_reference_startup_enable_flow",
@@ -18711,10 +18949,9 @@
         "mode": null,
         "policy": {
           "basis": "Behavior checks are primary; waveform metrics are an acceptance gate for Spectre-equivalent behavioral output, not a claim of higher-than-Spectre precision.",
-          "edge_window_policy": "A bounded edge/discontinuity window may be excluded from acceptance metrics only when the high-error samples are local to signal activity, cover at most 8% of the common sample grid, and the remaining stable-region error is small. Raw metrics are always reported separately.",
-          "policy": "spectre_equivalence_core_v2",
+          "policy": "spectre_equivalence_core_v1",
           "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
-          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, digital mismatch, and raw pointwise metrics when edge-window alignment is applied.",
+          "reporting_terms": "Report simulator-style checks: behavior/spec pass, event consistency, relative RMS waveform error, absolute voltage error, and digital mismatch.",
           "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
         },
         "task_family": null
@@ -18850,39 +19087,40 @@
     "spectre_ax_subset_report": "speed-optimization/reports/e2e_wall_unified_full_20260602_r14_core_fastpath_exactrows.json",
     "spectre_reference_full300_summary": "results/vabench-300-dual-reference-rust-checker29-full-20260622/summary.json",
     "speed_remaining_staging_manifest": "benchmark-vabench-release-v1/reports/speed_remaining_staging_manifest.json",
+    "v11_fresh_spectre_rerun": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
     "vabench300_closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
   },
   "staging_bundle_counts": {
-    "buggy_companion_bundles": 52,
-    "current_dual_staging_bundles": 65,
-    "current_primary_queue_rows": 54,
+    "buggy_companion_bundles": 0,
+    "current_dual_staging_bundles": 0,
+    "current_primary_queue_rows": 0,
     "explanation": "Staging bundles are runnable EVAS/Spectre directories. They exceed benchmark forms because bugfix rows also stage buggy companion bundles expected to fail, and those companions are not benchmark denominator rows.",
-    "speed_remaining_primary_queue_rows": 184,
-    "speed_remaining_staging_bundles": 225,
-    "total_primary_queue_rows": 238,
-    "total_staging_bundles": 290
+    "speed_remaining_primary_queue_rows": 0,
+    "speed_remaining_staging_bundles": 0,
+    "total_primary_queue_rows": 0,
+    "total_staging_bundles": 0
   },
   "status": "ready",
   "summary": {
-    "certified_entry_count": 79,
+    "certified_entry_count": 86,
     "certified_form_count": 300,
-    "content_denominator_entry_count": 66,
-    "content_denominator_form_count": 236,
+    "content_denominator_entry_count": 73,
+    "content_denominator_form_count": 265,
     "content_excluded_entry_count": 13,
     "content_excluded_form_count": 35,
-    "core_entry_count": 66,
-    "core_form_count": 236,
-    "core_scored_entry_count": 66,
-    "core_scored_form_count": 236,
+    "core_entry_count": 73,
+    "core_form_count": 265,
+    "core_scored_entry_count": 73,
+    "core_scored_form_count": 265,
     "difficulty_entry_counts": {
       "D1": 10,
-      "D2": 49,
-      "D3": 20
+      "D2": 50,
+      "D3": 26
     },
     "difficulty_form_counts": {
       "D1": 39,
-      "D2": 186,
-      "D3": 46
+      "D2": 190,
+      "D3": 71
     },
     "dual_certification_status": "pass",
     "dual_certified_release_task_count": 271,
@@ -18890,39 +19128,47 @@
     "dual_pending_release_task_count": 0,
     "entry_count": 86,
     "entry_status_counts": {
-      "certified": 79
+      "certified": 86
     },
     "evas_pass_spectre_fail_count": 0,
     "existing_certified_v1_task_count": 271,
     "form_count": 300,
     "form_status_counts": {
-      "certified": 271
+      "certified": 300
     },
     "four_backend_certified_backend_count": 4,
     "four_backend_completed_backend_count": 4,
     "four_backend_required_backend_count": 4,
     "four_backend_status": "pass",
+    "fresh_spectre_v11_nonpass_count": 0,
+    "fresh_spectre_v11_parity_pass_count": 29,
+    "fresh_spectre_v11_pass_count": 29,
     "l0_conformance_case_count": 4,
     "l0_conformance_counted_in_denominator": 0,
+    "paper_score_disabled_v11_task_count": 0,
+    "paper_score_ready_task_count": 300,
     "pending_entry_count": 0,
     "pending_form_count": 0,
-    "planned_entry_count": 79,
+    "planned_entry_count": 86,
     "promoted_v11_task_count": 29,
+    "provisional_v11_task_count": 0,
+    "score_denominator_admitted_v11_task_count": 29,
+    "score_denominator_pending_v11_task_count": 0,
     "score_denominator_status": "score_enabled",
-    "score_enabled_entry_count": 66,
-    "score_enabled_form_count": 236,
-    "scored_entry_count": 66,
+    "score_enabled_entry_count": 73,
+    "score_enabled_form_count": 265,
+    "scored_entry_count": 73,
     "scored_form_count": 265,
     "support_entry_count": 13,
     "support_form_count": 35,
     "support_scored_entry_count": 0,
     "support_scored_form_count": 0,
     "track_entry_counts": {
-      "core": 66,
+      "core": 73,
       "support": 13
     },
     "track_form_counts": {
-      "core": 236,
+      "core": 265,
       "support": 35
     }
   },
@@ -18931,16 +19177,30 @@
     "closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
     "counted_in_score_task_count": 265,
     "existing_certified_v1_task_count": 271,
-    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 task-specific v1.1 rows with fresh EVAS/Spectre PASS evidence. After score-denominator admission, all 300 rows are simulator-certified assets and 265 core rows are counted in the paper-facing model-evaluation denominator after support-suite exclusions.",
+    "fresh_spectre_v11_nonpass_count": 0,
+    "fresh_spectre_v11_parity_pass_count": 29,
+    "fresh_spectre_v11_pass_count": 29,
     "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json",
-    "negative_full_checker_fail_verified_count": 0,
-    "negative_simulator_shallow_verified_count": 0,
+    "negative_full_checker_fail_verified_count": 145,
+    "negative_simulator_shallow_verified_count": 145,
     "negative_static_shallow_shape_verified_count": 1500,
+    "paper_score_disabled_v11_task_count": 0,
+    "paper_score_ready_task_count": 300,
     "partial_pass_negative_count": 1500,
     "pending_certification_task_count": 0,
     "promoted_v11_task_count": 29,
     "proposed_v11_task_count": 29,
+    "provisional_generic_v11_task_count": 0,
+    "provisional_v11_task_count": 0,
+    "score_denominator_admitted_v11_task_count": 29,
+    "score_denominator_pending_v11_task_count": 0,
     "status": "present",
-    "task_count": 300
+    "task_count": 300,
+    "task_specific_v11_gold_pass_count": 29,
+    "task_specific_v11_negative_full_checker_fail_count": 145,
+    "task_specific_v11_task_count": 29,
+    "v11_fresh_spectre_rerun_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "v11_task_specific_quality_evidence": "benchmark-vabench-release-v1/vabench-300-expansion/v11_task_specific_quality_evidence.json"
   }
 }

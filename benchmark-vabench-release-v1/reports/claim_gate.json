@@ -1,23 +1,23 @@
 {
-  "date": "2026-06-01",
+  "date": "2026-06-23",
   "release": "vabench-release-v1",
   "status": "in_progress",
   "claim_count": 9,
-  "allowed_claim_count": 8,
-  "blocked_claim_count": 1,
+  "allowed_claim_count": 7,
+  "blocked_claim_count": 2,
   "completion_required_claim_count": 8,
-  "blocked_completion_required_claim_count": 1,
+  "blocked_completion_required_claim_count": 2,
   "claims": [
     {
       "id": "C1_coverage_target_defined",
       "status": "allowed",
       "allowed": true,
       "completion_required": true,
-      "claim_text": "The release target defines a 79-entry L1/L2 vaBench coverage plan.",
-      "safe_wording": "The current release package defines 79 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
+      "claim_text": "The release target defines a 86-entry L1/L2 vaBench coverage plan.",
+      "safe_wording": "The current release package defines 86 planned L1/L2 entries; this is a coverage target, not a final scored benchmark result.",
       "unsafe_wording": [
-        "vaBench is fully certified because it has 79 rows.",
-        "The 79-entry table alone proves benchmark correctness."
+        "vaBench is fully certified because it has 86 rows.",
+        "The 86-entry table alone proves benchmark correctness."
       ],
       "evidence": [
         "benchmark-vabench-release-v1/reports/release_status.json",
@@ -25,7 +25,7 @@
       ],
       "required_before_allowed": [],
       "numbers": {
-        "planned_entries": 79
+        "planned_entries": 86
       },
       "notes": []
     },
@@ -35,21 +35,23 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "All release entries have materialized source-task assets and pass static checks.",
-      "safe_wording": "The release has 79 materialized entries for the 79-entry plan and 271 static-certified forms with zero asset issues.",
+      "safe_wording": "The release has 86 materialized entries for the 86-entry plan and 300 static-certified forms with zero asset issues.",
       "unsafe_wording": [
         "Static certification proves EVAS/Spectre behavioral parity.",
         "Asset materialization means the task is scored."
       ],
       "evidence": [
+        "benchmark-vabench-release-v1/MANIFEST.json",
         "benchmark-vabench-release-v1/reports/asset_integrity.json",
         "benchmark-vabench-release-v1/reports/static_certification.json",
         "benchmark-vabench-release-v1/reports/release_status.json"
       ],
       "required_before_allowed": [],
       "numbers": {
-        "source_linked_entries": 79,
-        "materialized_entries": 79,
-        "static_certified_forms": 271
+        "source_linked_entries": 86,
+        "materialized_entries": 86,
+        "static_certified_forms": 300,
+        "package_forms": 300
       },
       "notes": []
     },
@@ -115,10 +117,10 @@
       "allowed": true,
       "completion_required": true,
       "claim_text": "The release benchmark has an enabled score denominator.",
-      "safe_wording": "The release benchmark score denominator is enabled for 66 certified content-denominator entries and 236 forms.",
+      "safe_wording": "The release benchmark score denominator is enabled for 73 certified content-denominator entries and 265 forms.",
       "unsafe_wording": [
         "Current baseline percentages are release benchmark scores.",
-        "The 79 planned entries are already the scored denominator."
+        "The 86 planned entries are already the scored denominator."
       ],
       "evidence": [
         "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
@@ -127,8 +129,8 @@
       "required_before_allowed": [],
       "numbers": {
         "score_denominator_status": "score_enabled",
-        "scored_entries": 66,
-        "scored_forms": 236
+        "scored_entries": 73,
+        "scored_forms": 265
       },
       "notes": []
     },
@@ -155,204 +157,38 @@
         "Do not compute speedup from historical main120 summaries because they lack same-slice runtime metadata."
       ],
       "numbers": {
-        "speed_status": "pending_measurement",
+        "speed_status": "measured_subset",
         "claim_allowed": false,
-        "timed_rows": 0,
-        "timed_scored_forms": 0,
-        "scored_forms": 236
+        "timed_rows": 8,
+        "timed_scored_forms": 8,
+        "scored_forms": 265
       },
       "notes": []
     },
     {
       "id": "C7_model_baseline_claim",
-      "status": "allowed",
-      "allowed": true,
+      "status": "blocked",
+      "allowed": false,
       "completion_required": true,
       "claim_text": "Model baselines are scored on the clean vaBench release package.",
-      "safe_wording": "Same-protocol fixed-budget model baselines are claimable on the 236 scored core forms with Spectre as final judge: mimo-v2.5 92/236 (38.98%); mimo-v2.5-pro 112/236 (47.46%). Report form/category/difficulty and failure-axis slices alongside the headline full_strict score.",
+      "safe_wording": "Model baseline reporting is pending until baseline runs report against the enabled score denominator.",
       "unsafe_wording": [
         "The current unscored release rows support model baseline results.",
-        "Historical candidate runs are release benchmark baselines.",
-        "The aggregate model score alone proves general analog reasoning ability."
+        "Historical candidate runs are release benchmark baselines."
       ],
       "evidence": [
         "benchmark-vabench-release-v1/reports/baseline_artifact.json",
-        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json",
-        "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_highout32k_sameprotocol_currentevas_v5_20260601.json",
-        "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v5_20260601.json",
-        "benchmark-vabench-release-v1/reports/vabench_model_baseline_quality_audit_mimo25_vs_mimo25pro_sameprotocol_highout32k_currentevas_v5_20260601.json"
+        "benchmark-vabench-release-v1/reports/score_denominator_manifest.json"
       ],
-      "required_before_allowed": [],
+      "required_before_allowed": [
+        "baseline runs must report against counted release entries/forms only"
+      ],
       "numbers": {
-        "baseline_status": "claim_ready",
-        "baseline_claim_allowed": true,
-        "baseline_summary_count": 112,
-        "final_judge_baseline_count": 2,
-        "scored_forms": 236,
-        "current_scores": [
-          {
-            "model": "mimo-v2.5",
-            "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25_full236_highout32k_sameprotocol_currentevas_v5_20260601.json",
-            "exists": true,
-            "protocol": "same_protocol_current_evas_v5_highout32k",
-            "judge": "Spectre final judge with EVAS/Spectre parity gate",
-            "total_rows": 236,
-            "expected_scored_forms": 236,
-            "denominator_matches_score_manifest": true,
-            "strict_dual_pass_rows": 92,
-            "strict_dual_pass_rate_pct": 38.98,
-            "valid_candidate_rows": 234,
-            "behavior_ready_rows": 150,
-            "incomplete_generation_rows": 2,
-            "runner_inconclusive_rows": 0,
-            "evas_pass_spectre_fail_rows": 0,
-            "spectre_pass_evas_fail_rows": 0,
-            "parity_gate_rows": 0,
-            "mismatch_count": 0,
-            "category_macro_pass_rate_pct": 38.33,
-            "category_pass_rates_pct": {
-              "Baseband Signal Conditioning": 46.67,
-              "Bias Reference and Power Management": 53.57,
-              "Calibration, DEM, and Control": 30.77,
-              "Comparator and Decision Circuits": 46.67,
-              "Data Converter Models": 38.64,
-              "PLL Clock and Timing Systems": 30.56,
-              "RF and AFE Behavioral Macromodels": 37.5,
-              "Sampling and Analog Memory": 22.22
-            },
-            "form_pass_rates_pct": {
-              "bugfix": 82.69,
-              "dut": 19.23,
-              "e2e": 12.12,
-              "tb": 46.97
-            },
-            "difficulty_pass_rates_pct": {
-              "D1": 69.44,
-              "D2": 33.12,
-              "D3": 35.0
-            },
-            "score_slices": [
-              {
-                "slice": "full_strict",
-                "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
-                "total_rows": 236,
-                "strict_dual_pass_rows": 92,
-                "strict_dual_pass_rate_pct": 38.98,
-                "non_pass_rows": 144
-              },
-              {
-                "slice": "valid_candidate",
-                "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
-                "total_rows": 234,
-                "strict_dual_pass_rows": 92,
-                "strict_dual_pass_rate_pct": 39.32,
-                "non_pass_rows": 142
-              },
-              {
-                "slice": "behavior_ready",
-                "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
-                "total_rows": 150,
-                "strict_dual_pass_rows": 92,
-                "strict_dual_pass_rate_pct": 61.33,
-                "non_pass_rows": 58
-              }
-            ],
-            "axis_counts": {
-              "generation": 2,
-              "model_behavior": 58,
-              "model_dut_compile": 63,
-              "model_spectre_ahdl_compile": 14,
-              "model_spectre_elab_or_topology": 2,
-              "model_spectre_tb_source": 1,
-              "model_tb_compile": 4,
-              "pass": 92
-            }
-          },
-          {
-            "model": "mimo-v2.5-pro",
-            "source": "benchmark-vabench-release-v1/reports/evas_spectre_mismatch_triage_mimo25pro_full236_highout32k_currentevas_v5_20260601.json",
-            "exists": true,
-            "protocol": "same_protocol_current_evas_v5_highout32k",
-            "judge": "Spectre final judge with EVAS/Spectre parity gate",
-            "total_rows": 236,
-            "expected_scored_forms": 236,
-            "denominator_matches_score_manifest": true,
-            "strict_dual_pass_rows": 112,
-            "strict_dual_pass_rate_pct": 47.46,
-            "valid_candidate_rows": 224,
-            "behavior_ready_rows": 190,
-            "incomplete_generation_rows": 8,
-            "runner_inconclusive_rows": 4,
-            "evas_pass_spectre_fail_rows": 0,
-            "spectre_pass_evas_fail_rows": 0,
-            "parity_gate_rows": 0,
-            "mismatch_count": 0,
-            "category_macro_pass_rate_pct": 47.03,
-            "category_pass_rates_pct": {
-              "Baseband Signal Conditioning": 56.67,
-              "Bias Reference and Power Management": 50.0,
-              "Calibration, DEM, and Control": 26.92,
-              "Comparator and Decision Circuits": 66.67,
-              "Data Converter Models": 45.45,
-              "PLL Clock and Timing Systems": 41.67,
-              "RF and AFE Behavioral Macromodels": 50.0,
-              "Sampling and Analog Memory": 38.89
-            },
-            "form_pass_rates_pct": {
-              "bugfix": 80.77,
-              "dut": 36.54,
-              "e2e": 24.24,
-              "tb": 53.03
-            },
-            "difficulty_pass_rates_pct": {
-              "D1": 88.89,
-              "D2": 40.62,
-              "D3": 37.5
-            },
-            "score_slices": [
-              {
-                "slice": "full_strict",
-                "description": "All scored rows. Incomplete generation and runner/output inconclusive rows are counted as failures.",
-                "total_rows": 236,
-                "strict_dual_pass_rows": 112,
-                "strict_dual_pass_rate_pct": 47.46,
-                "non_pass_rows": 124
-              },
-              {
-                "slice": "valid_candidate",
-                "description": "Rows with complete model artifacts and a reliable evaluator judgment. Syntax and behavior failures remain model failures.",
-                "total_rows": 224,
-                "strict_dual_pass_rows": 112,
-                "strict_dual_pass_rate_pct": 50.0,
-                "non_pass_rows": 112
-              },
-              {
-                "slice": "behavior_ready",
-                "description": "Rows that reached the functional checker: strict dual pass plus model_behavior failure rows.",
-                "total_rows": 190,
-                "strict_dual_pass_rows": 112,
-                "strict_dual_pass_rate_pct": 58.95,
-                "non_pass_rows": 78
-              }
-            ],
-            "axis_counts": {
-              "generation": 8,
-              "model_behavior": 78,
-              "model_dut_compile": 27,
-              "model_spectre_ahdl_compile": 2,
-              "model_spectre_elab_or_topology": 1,
-              "model_spectre_tb_source": 2,
-              "model_tb_compile": 2,
-              "pass": 112,
-              "runner": 4
-            }
-          }
-        ]
+        "baseline_status": "ready_for_baseline_runs",
+        "baseline_claim_allowed": false,
+        "baseline_summary_count": 113
       },
-      "notes": [
-        "This is a fixed-budget benchmark stress-test claim, not a claim about general model ability.",
-        "Use full_strict as the headline metric; valid_candidate and behavior_ready are diagnostic slices."
-      ]
+      "notes": []
     },
     {
       "id": "C8_l0_conformance_separate",
@@ -362,7 +198,7 @@
       "claim_text": "L0 EVAS/Spectre conformance cases are kept outside the L1/L2 benchmark denominator.",
       "safe_wording": "L0 conformance has 4 cases and contributes 0 entries to benchmark coverage.",
       "unsafe_wording": [
-        "L0 conformance cases increase the 79-entry benchmark size.",
+        "L0 conformance cases increase the 86-entry benchmark size.",
         "Conformance regressions are scored release tasks."
       ],
       "evidence": [
@@ -398,23 +234,24 @@
         "missing_required_form_entries": 0,
         "current_dual_pending_forms": 0,
         "imported_dual_pending_forms": 0,
-        "scored_entries": 66
+        "scored_entries": 73
       },
       "notes": []
     }
   ],
   "blocked_claim_ids": [
-    "C6_speed_debug_claim"
+    "C6_speed_debug_claim",
+    "C7_model_baseline_claim"
   ],
   "blocked_completion_required_claim_ids": [
-    "C6_speed_debug_claim"
+    "C6_speed_debug_claim",
+    "C7_model_baseline_claim"
   ],
   "claim_policy": [
     "Allowed claims may be used only with their safe_wording scope.",
     "Blocked claims must not appear as paper conclusions, abstract claims, figure captions, or benchmark result text.",
     "Partial imported evidence must not be phrased as full-release certification.",
-    "Score, speed, and baseline claims require an enabled denominator and fresh release evidence.",
-    "Model-baseline claims must report full_strict, form/category/difficulty slices, and failure axes; diagnostic slices cannot replace the fixed denominator."
+    "Score, speed, and baseline claims require an enabled denominator and fresh release evidence."
   ],
   "source_reports": {
     "release_status": "benchmark-vabench-release-v1/reports/release_status.json",

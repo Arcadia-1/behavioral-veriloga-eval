@@ -318,15 +318,20 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--expansion-status",
         action="append",
-        choices=["existing_certified_v1", "certified_v1.1_promoted", "proposed_v1.1_pending_certification"],
+        choices=[
+            "existing_certified_v1",
+            "certified_v1.1_promoted",
+            "proposed_v1.1_pending_certification",
+            "provisional_v1.1_management",
+        ],
         help="Restrict by expansion status.",
     )
     ap.add_argument(
         "--include-pending",
         action="store_true",
         help=(
-            "Compatibility switch for older manifests that still contain pending rows. "
-            "Promoted vaBench 300 manifests select all certified 300 rows by default."
+            "Compatibility switch for older manifests that still contain pending/provisional rows. "
+            "Current vaBench 300 manifests select inherited certified v1 rows by default."
         ),
     )
     ap.add_argument("--workers", type=int, default=1, help="Number of tasks to run concurrently.")

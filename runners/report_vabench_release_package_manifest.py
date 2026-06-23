@@ -8,6 +8,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from vabench_release_surface import read_release_entries
 from vabench_policy import content_denominator_exclusion_reasons, is_content_denominator_entry
 
 
@@ -49,13 +50,6 @@ def score_rows_by_id() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
     return entries, forms
 
 
-def read_entries() -> list[tuple[Path, dict[str, Any]]]:
-    rows: list[tuple[Path, dict[str, Any]]] = []
-    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
-        rows.append((path, read_json(path)))
-    return rows
-
-
 def certification_label(static: str, evas: str, spectre: str) -> str:
     if static == "pass" and evas == "pass" and spectre == "pass":
         return "certified"
@@ -70,12 +64,13 @@ def build_report() -> dict[str, Any]:
     completion = read_json(REPORTS_ROOT / "completion_audit.json")
     claim_gate = read_json(REPORTS_ROOT / "claim_gate.json")
     score_entry_rows, score_form_rows = score_rows_by_id()
-    entries_src = read_entries()
+    entries_src = read_release_entries()
     entry_rows: list[dict[str, Any]] = []
     form_rows: list[dict[str, Any]] = []
 
-    for entry_path, entry in entries_src:
+    for entry in entries_src:
         release_entry_id = str(entry["release_entry_id"])
+        entry_path = ROOT / str(entry.get("_manifest_path", ""))
         content_denominator_included = is_content_denominator_entry(release_entry_id)
         content_exclusion_reasons = content_denominator_exclusion_reasons(release_entry_id)
         forms: list[str] = []
@@ -176,7 +171,7 @@ def build_report() -> dict[str, Any]:
         "status": status,
         "package_root": rel(PACKAGE_ROOT),
         "summary": {
-            "planned_entry_count": int(release_status.get("planned_entries", len(entry_rows)) or 0),
+            "planned_entry_count": len(entry_rows),
             "entry_count": len(entry_rows),
             "form_count": len(form_rows),
             "track_entry_counts": track_entry_counts,

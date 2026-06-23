@@ -10,12 +10,18 @@
     "prompt": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut/prompt.md"
   },
   "base_function": "Bandgap startup and trim convergence flow",
+  "benchmark": "vabench-release-v1",
   "category": "Bias Reference and Power Management",
   "certification": {
     "evas": "pass",
-    "evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "fresh_spectre_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "historical_closure_evidence": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
+    "paper_score_status": "admitted_to_score_denominator",
+    "score_admission_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_score_admission.json",
     "spectre": "pass",
-    "static": "pass"
+    "static": "pass",
+    "task_specific_quality_evidence": "benchmark-vabench-release-v1/vabench-300-expansion/v11_task_specific_quality_evidence.json"
   },
   "counts": {
     "benchmark_score": true,
@@ -28,10 +34,14 @@
   "id": "bandgap_startup_trim:dut",
   "legacy_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
   "legacy_task_id": "vbr11_l2_bandgap_startup_trim_flow:dut",
+  "level": "L2",
   "notes": [
-    "Promoted into the vaBench 300 benchmark management surface by the full-300 EVAS/Spectre closure report.",
-    "Includes five partial-pass near-miss negative candidates by construction."
+    "Rebuilt as a task-specific vaBench 300 candidate; not paper scored until fresh Spectre certification.",
+    "Prompt, gold, checker identity, and near-miss negative variants are task-specific.",
+    "Historical full-300 closure is retained as provenance only and does not certify this rebuilt source.",
+    "Admitted to the paper score denominator after v1.1 score-admission audit."
   ],
+  "release_entry_id": "vbr11_l2_bandgap_startup_trim_flow",
   "score_surface": "model-capability",
   "source": {
     "release_path": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT07_bias_reference_power_management/vbr11_l2_bandgap_startup_trim_flow/forms/dut",

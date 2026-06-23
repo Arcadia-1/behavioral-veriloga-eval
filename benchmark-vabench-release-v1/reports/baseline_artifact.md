@@ -1,6 +1,6 @@
 # vaBench Release Baseline Artifact
 
-Date: 2026-06-01
+Date: 2026-06-23
 
 This artifact gates model-baseline claims for the clean vaBench release.
 It intentionally keeps baseline workflows simple and secondary to the
@@ -10,30 +10,16 @@ benchmark/evaluator contribution.
 
 | Metric | Value |
 | --- | ---: |
-| status | `claim_ready` |
-| claim allowed | `True` |
-| scored release entries | 66 |
-| scored release forms | 236 |
+| status | `ready_for_baseline_runs` |
+| claim allowed | `False` |
+| scored release entries | 73 |
+| scored release forms | 265 |
 | score denominator status | `score_enabled` |
 | fully certified entries | 79 |
 | dual pending forms | 0 |
 | dual failed forms | 0 |
-| baseline summaries | 112 |
-| final-judge baseline reports | 2 |
-| execution plan | `claim_ready` |
-
-## Current Final-Judge Baselines
-
-| Model | Rows | Strict pass | Strict rate | Category macro rate | Mismatches |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| mimo-v2.5 | 236 | 92 | 38.98% | 38.33% | 0 |
-| mimo-v2.5-pro | 236 | 112 | 47.46% | 47.03% | 0 |
-
-## Evaluation Hygiene
-
-- Primary metric: full_strict pass@1 on the 236 scored core forms
-- Diagnostic slices: valid_candidate pass@1, behavior_ready pass rate, category macro-average pass rate, form-level pass rates, failure-axis counts
-- Required stratification: model, form, category, difficulty, failure_axis
+| baseline summaries | 113 |
+| execution plan | `ready_for_baseline_runs` |
 
 ## Minimal Baseline Lanes
 
@@ -56,5 +42,5 @@ benchmark/evaluator contribution.
 
 - Use the enabled score_denominator_manifest.json as the denominator source of truth.
 - Run baseline model outputs through the release evaluator on scored rows.
-- Publish full_strict pass@1, category macro averages, form slices, axis rates, and failure taxonomy with Spectre as the final judge.
-- Keep baseline methods simple and describe them as benchmark stress tests, not as the paper's core method.
+- Publish pass@1 / axis rates / failure taxonomy with Spectre as the final judge.
+- Keep baseline methods simple and describe them as stress tests, not as the paper's core method.

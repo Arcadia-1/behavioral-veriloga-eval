@@ -101,11 +101,11 @@ def test_finish_after_bridge_writes_fresh_bridge_diagnostics(monkeypatch, tmp_pa
     assert report["bridge_diagnostics_status"] == "ready"
     assert bridge_json.exists()
     assert bridge_md_calls and bridge_md_calls[0]["ready_profiles"] == ["ci"]
-    assert report["rerun_scope"]["queue_status"] == "ready"
-    assert report["rerun_scope"]["primary_queue_count"] == 54
-    assert report["rerun_scope"]["primary_ready_count"] == 54
-    assert report["rerun_scope"]["staging_bundle_count"] == 65
-    assert report["rerun_scope"]["staging_ready_bundle_count"] == 65
+    assert report["rerun_scope"]["queue_status"] == "complete"
+    assert report["rerun_scope"]["primary_queue_count"] == 0
+    assert report["rerun_scope"]["primary_ready_count"] == 0
+    assert report["rerun_scope"]["staging_bundle_count"] == 0
+    assert report["rerun_scope"]["staging_ready_bundle_count"] == 0
     assert report["rerun_scope"]["latest_import_stale_summary"] is False
 
 

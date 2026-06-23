@@ -16,20 +16,20 @@ def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
     assert contract["status"] == "ready"
     assert contract["release"] == "vabench-release-v1"
     assert contract["contract_version"] == "v1"
-    assert selection["package_entry_count"] == 79
-    assert selection["package_form_count"] == 271
-    assert selection["certified_entries"] == 79
-    assert selection["certified_forms"] == 271
+    assert selection["package_entry_count"] == 86
+    assert selection["package_form_count"] == 300
+    assert selection["certified_entries"] == 86
+    assert selection["certified_forms"] == 300
     assert selection["pending_entries"] == 0
     assert selection["pending_forms"] == 0
-    assert selection["scored_entries"] == 66
-    assert selection["scored_forms"] == 236
+    assert selection["scored_entries"] == 73
+    assert selection["scored_forms"] == 265
     assert selection["score_enabled"] is True
     assert selection["l0_conformance_excluded"] is True
     assert selection["unscored_rows_excluded"] is True
     assert score_gate["status"] == "score_enabled"
     assert score_gate["score_claim_allowed"] is True
-    assert score_gate["ready_to_finish_release"] is False
+    assert score_gate["ready_to_finish_release"] is True
 
 
 def test_evaluator_contract_declares_backend_and_result_semantics() -> None:
@@ -82,11 +82,11 @@ def test_evaluator_contract_keeps_baseline_and_speed_as_independent_gates() -> N
     commands = contract["commands"]
     boundary = "\n".join(contract["claim_boundary"])
 
-    assert baseline["status"] == "claim_ready"
-    assert baseline["claim_allowed"] is True
-    assert baseline["claim_status"] == "same_protocol_current_evas_final_judge_claim_ready"
-    assert baseline["final_judge_baseline_count"] == 2
-    assert speed["status"] == "pending_measurement"
+    assert baseline["status"] == "ready_for_baseline_runs"
+    assert baseline["claim_allowed"] is False
+    assert baseline["claim_status"] == "baseline_runs_present_claim_pending"
+    assert baseline["final_judge_baseline_count"] == 0
+    assert speed["status"] == "measured_subset"
     assert speed["claim_allowed"] is False
     assert commands["finish_after_bridge"] == "python3 runners/finish_vabench_release_after_bridge.py"
     assert commands["primary_dual_rerun"].startswith("./scripts/run_with_bridge.sh")

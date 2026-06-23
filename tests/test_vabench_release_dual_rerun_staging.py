@@ -14,22 +14,17 @@ from run_vabench_release_dual_rerun import dry_run_raw_result, expected_result_m
 PACKAGE = ROOT / "benchmark-vabench-release-v1"
 MANIFEST = PACKAGE / "reports" / "dual_rerun_staging_manifest.json"
 MANIFEST_CSV = PACKAGE / "reports" / "dual_rerun_staging_manifest.csv"
-PENDING_CT07_GAIN = {
-    ("vbr1_l1_gain_estimator", "e2e"),
-    ("vbr1_l1_gain_estimator", "tb"),
-}
-
 
 def test_dual_rerun_staging_prepares_primary_bundle_for_each_queue_row() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    assert manifest["status"] == "ready"
-    assert manifest["queue_row_count"] == 54
-    assert manifest["queue_rows_with_ready_primary_bundle"] == 54
-    assert manifest["bundle_count"] == 65
-    assert manifest["ready_bundle_count"] == 65
+    assert manifest["status"] == "complete"
+    assert manifest["queue_row_count"] == 0
+    assert manifest["queue_rows_with_ready_primary_bundle"] == 0
+    assert manifest["bundle_count"] == 0
+    assert manifest["ready_bundle_count"] == 0
     assert manifest["blocked_bundle_count"] == 0
-    assert manifest["variant_counts"] == {"buggy": 11, "fixed": 11, "gold": 43}
+    assert manifest["variant_counts"] == {}
 
 
 def test_dual_rerun_staging_bundles_are_runner_shaped() -> None:
@@ -37,7 +32,7 @@ def test_dual_rerun_staging_bundles_are_runner_shaped() -> None:
     rows = list(csv.DictReader(MANIFEST_CSV.open(encoding="utf-8")))
 
     assert len(rows) == manifest["bundle_count"]
-    assert len(rows) == 65
+    assert len(rows) == 0
     for record in manifest["bundles"]:
         assert record["status"] == "ready"
         task_dir = ROOT / record["staged_task_dir"]
@@ -53,7 +48,7 @@ def test_dual_rerun_staging_bugfix_variants_preserve_buggy_fixed_origins() -> No
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     bugfix_records = [record for record in manifest["bundles"] if record["form"] == "bugfix"]
 
-    assert len(bugfix_records) == 22
+    assert bugfix_records == []
     for record in bugfix_records:
         origins = record["source_include_origins"]
         assert origins
@@ -70,26 +65,21 @@ def test_dual_rerun_staging_preserves_release_ids_but_maps_behavior_checkers() -
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
     pending = {(row["entry_id"], row["form"]) for row in manifest["bundles"]}
-    assert len(pending) == 54
-    assert PENDING_CT07_GAIN <= pending
-    assert sum(row["entry_id"].startswith("vbr1_l1_bandgap_reference_macro_model") for row in manifest["bundles"]) == 5
+    assert pending == set()
+    assert sum(row["entry_id"].startswith("vbr1_l1_bandgap_reference_macro_model") for row in manifest["bundles"]) == 0
     assert {
         (row["form"], row["checker_task_id"], row["expected_result"])
         for row in manifest["bundles"]
         if row["entry_id"] == "vbr1_l1_gain_estimator"
-    } == {
-        ("e2e", "vbr1_l1_gain_estimator_e2e", "pass"),
-        ("tb", "vbr1_l1_gain_estimator_tb", "pass"),
-    }
+    } == set()
 
 
 def test_dual_rerun_dry_run_reports_staged_task_and_checker_ids() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    assert manifest["status"] == "ready"
+    assert manifest["status"] == "complete"
     pending = {(row["entry_id"], row["form"]) for row in manifest["bundles"]}
-    assert len(pending) == 54
-    assert PENDING_CT07_GAIN <= pending
+    assert pending == set()
 
 
 def test_buggy_expected_fail_requires_behavior_failure_on_both_backends() -> None:

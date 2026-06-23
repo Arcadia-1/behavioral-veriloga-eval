@@ -31,7 +31,12 @@ def _target_artifacts(form: str, names: list[str], explicit: list[str] | None = 
 
 
 def _release_form_dirs() -> list[Path]:
-    return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
+    manifest = _read_json(MANIFEST)
+    return sorted(
+        ROOT / row["release_task_manifest"]
+        for row in manifest["forms"]
+        if isinstance(row, dict) and row.get("release_task_manifest")
+    )
 
 
 def test_release_prompts_have_public_contract_scaffold() -> None:
@@ -40,9 +45,9 @@ def test_release_prompts_have_public_contract_scaffold() -> None:
     assert len(form_dirs) == manifest["summary"]["form_count"]
 
     for form_dir in form_dirs:
-        release_task = _read_json(form_dir / "release_task.json")
-        prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
-        form = form_dir.name
+        release_task = _read_json(form_dir)
+        prompt = (form_dir.parent / "prompt.md").read_text(encoding="utf-8")
+        form = form_dir.parent.name
 
         assert prompt.startswith(f"# Task: {release_task['id']}\n"), form_dir
         assert "\n## Release Task Contract\n" in prompt, form_dir
@@ -53,12 +58,12 @@ def test_release_prompts_have_public_contract_scaffold() -> None:
 
 def test_release_prompt_targets_match_gold_artifact_contract() -> None:
     for form_dir in _release_form_dirs():
-        release_task = _read_json(form_dir / "release_task.json")
-        prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
+        release_task = _read_json(form_dir)
+        prompt = (form_dir.parent / "prompt.md").read_text(encoding="utf-8")
         artifacts = release_task["artifacts"]
         gold_names = [Path(path).name for path in artifacts["gold"]]
         explicit = artifacts.get("submission_artifacts")
-        for target in _target_artifacts(form_dir.name, gold_names, explicit if isinstance(explicit, list) else None):
+        for target in _target_artifacts(form_dir.parent.name, gold_names, explicit if isinstance(explicit, list) else None):
             assert f"`{target}`" in prompt, form_dir
 
 
@@ -78,7 +83,7 @@ def test_release_prompts_do_not_embed_runner_or_overdirect_repair_text() -> None
         "Reference testbench artifact names:",
     ]
     for form_dir in _release_form_dirs():
-        prompt = (form_dir / "prompt.md").read_text(encoding="utf-8")
+        prompt = (form_dir.parent / "prompt.md").read_text(encoding="utf-8")
         for needle in forbidden:
             assert needle not in prompt, (form_dir, needle)
 

@@ -14,7 +14,7 @@
       "Do not treat the historical 271-row four-way artifact as the current benchmark denominator."
     ]
   },
-  "date": "2026-06-22",
+  "date": "2026-06-23",
   "gates": [
     {
       "label": "Behavior checker",
@@ -186,24 +186,26 @@
     "spectre_ax_classic_self_consistency": "speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json"
   },
   "spectre_self_consistency": {
-    "behavior_fail_pairs": 0,
-    "behavior_pass_pairs": 1036,
-    "compared_pairs": 1036,
-    "max_point_abs_v": 1.0,
-    "max_rms_v": 0.19578900207451216,
-    "median_rms_v": 3.0693005841541733e-17,
-    "mode_a": "ax",
-    "mode_b": "classic",
-    "needs_review_pairs": 0,
-    "pass_fraction_compared": 1.0,
-    "passed_pairs": 1036,
-    "row_mean_relative_rms_max": 0.08136556776886794,
-    "sample_n": 1200,
-    "total_pairs": 1036,
-    "waveform_compared_pairs": 1036,
-    "waveform_pass_pairs": 1036,
-    "worst_signal_relative_rms_max": 0.12439780220440254,
-    "worst_signal_relative_rms_median": 3.836625730192717e-17
+    "artifact": "speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json",
+    "artifact_status": "missing",
+    "behavior_fail_pairs": null,
+    "behavior_pass_pairs": null,
+    "compared_pairs": null,
+    "max_point_abs_v": null,
+    "max_rms_v": null,
+    "median_rms_v": null,
+    "mode_a": null,
+    "mode_b": null,
+    "needs_review_pairs": null,
+    "pass_fraction_compared": null,
+    "passed_pairs": null,
+    "row_mean_relative_rms_max": null,
+    "sample_n": null,
+    "total_pairs": null,
+    "waveform_compared_pairs": null,
+    "waveform_pass_pairs": null,
+    "worst_signal_relative_rms_max": null,
+    "worst_signal_relative_rms_median": null
   },
   "status": "pass",
   "summary": {
@@ -220,10 +222,10 @@
     "precision_needs_review_comparisons": 0,
     "precision_pass_comparisons": 900,
     "precision_total_comparisons": 900,
-    "spectre_self_consistency_needs_review_pairs": 0,
-    "spectre_self_consistency_pairs": 1036,
-    "spectre_self_consistency_pass_fraction": 1.0,
-    "spectre_self_consistency_pass_pairs": 1036,
+    "spectre_self_consistency_needs_review_pairs": null,
+    "spectre_self_consistency_pairs": null,
+    "spectre_self_consistency_pass_fraction": null,
+    "spectre_self_consistency_pass_pairs": null,
     "task_metric_comparisons": 12
   },
   "task_metric_rows": [

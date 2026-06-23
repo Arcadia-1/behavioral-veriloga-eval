@@ -13,23 +13,23 @@ def test_score_denominator_enables_frozen_certified_content_rows() -> None:
     summary = report["summary"]
 
     assert report["status"] == "score_enabled"
-    assert summary["planned_entry_count"] == 79
-    assert summary["release_form_count"] == 271
-    assert summary["track_entry_counts"] == {"core": 66, "support": 13}
-    assert summary["track_form_counts"] == {"core": 236, "support": 35}
-    assert summary["difficulty_entry_counts"] == {"D1": 10, "D2": 49, "D3": 20}
-    assert summary["content_denominator_entry_count"] == 66
+    assert summary["planned_entry_count"] == 86
+    assert summary["release_form_count"] == 300
+    assert summary["track_entry_counts"] == {"core": 73, "support": 13}
+    assert summary["track_form_counts"] == {"core": 265, "support": 35}
+    assert summary["difficulty_entry_counts"] == {"D1": 10, "D2": 50, "D3": 26}
+    assert summary["content_denominator_entry_count"] == 73
     assert summary["content_excluded_entry_count"] == 13
-    assert summary["content_denominator_form_count"] == 236
+    assert summary["content_denominator_form_count"] == 265
     assert summary["content_excluded_form_count"] == 35
-    assert summary["certified_entry_count"] == 79
-    assert summary["certified_form_count"] == 271
-    assert summary["benchmark_score_enabled_entry_count"] == 66
-    assert summary["benchmark_score_enabled_form_count"] == 236
-    assert summary["scored_entry_count"] == 66
-    assert summary["scored_form_count"] == 236
-    assert summary["core_scored_entry_count"] == 66
-    assert summary["core_scored_form_count"] == 236
+    assert summary["certified_entry_count"] == 86
+    assert summary["certified_form_count"] == 300
+    assert summary["benchmark_score_enabled_entry_count"] == 73
+    assert summary["benchmark_score_enabled_form_count"] == 265
+    assert summary["scored_entry_count"] == 73
+    assert summary["scored_form_count"] == 265
+    assert summary["core_scored_entry_count"] == 73
+    assert summary["core_scored_form_count"] == 265
     assert summary["support_scored_entry_count"] == 0
     assert summary["support_scored_form_count"] == 0
     assert summary["l0_conformance_counted_in_denominator"] == 0

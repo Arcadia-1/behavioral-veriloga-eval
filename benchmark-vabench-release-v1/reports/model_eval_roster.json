@@ -1,5 +1,5 @@
 {
-  "date": "2026-06-22",
+  "date": "2026-06-23",
   "example_commands": {
     "deepseek_v4_flash_smoke": "python3 runners/run_vabench_model_eval.py --model deepseek-v4-flash --base-url https://api.deepseek.com --api-format openai --api-key-file <key-file> --limit 1 --final-judge none --proxy-url <proxy-url-if-needed>",
     "evas_only_baseline": "python3 runners/run_vabench_model_eval.py --model <model> --base-url <url> --api-format openai --api-key-file <key-file> --final-judge none --tag <tag> --resume",
@@ -14674,6 +14674,7 @@
     "gold_aligned_rows": 265,
     "inherited_v1_rows": 236,
     "promoted_v1_1_rows": 29,
+    "provisional_v1_1_rows": 0,
     "scored_model_row_count": 265
   }
 }

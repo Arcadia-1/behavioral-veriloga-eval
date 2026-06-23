@@ -30,6 +30,7 @@ reported aggregate is fair.
 | Reasonable tasks | Difficulty labels are not empirically calibrated. | D1/D2/D3 should not be used as calibrated difficulty tiers while baseline results show anomalies such as D3 not always harder than D2. | `benchmark-vabench-release-v1/reports/vabench_model_baseline_quality_audit_20260529.md` |
 | Complete tests | EVAS/Spectre agreement does not prove checker sufficiency. | A weak checker can pass in both simulators. Parity validates evaluator agreement, not semantic discriminative power. | `benchmark-vabench-release-v1/reports/content_contract_audit.md` |
 | Complete tests | Negative/mutation checker evidence is not yet systematic. | We still need evidence that shallow, hardcoded, final-value-only, or protocol-gaming implementations fail. | `benchmark-vabench-release-v1/reports/checker_evidence_workplan.md` |
+| Complete tests | The 29 v1.1 rows in the 300-row surface are provisional because their current prompt/gold/checker surface is generic, not task-specific. | Counting them as final benchmark rows would inflate coverage and checker strength claims. | `docs/VABENCH_300_PROVISIONAL_AUDIT_20260622.md`, `benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json` |
 | Fair evaluation | Entry-level and form-level denominators are correlated. | The headline metric should avoid treating `tb`, `dut`, `e2e`, and `bugfix` forms as fully independent tasks. | `benchmark-vabench-release-v1/reports/score_denominator_manifest.json` |
 | Fair evaluation | Aggregate pass rates mix very different forms and failure modes. | `e2e` is much harder than `bugfix`; syntax/protocol failures should be separated from circuit-behavior failures. | `benchmark-vabench-release-v1/reports/baseline_artifact.json`, `benchmark-vabench-release-v1/reports/vabench_model_baseline_quality_audit_20260529.md` |
 
@@ -149,7 +150,9 @@ Stop condition:
 
 ## Non-Goals
 
-- Do not expand the benchmark count before validity gaps are closed.
+- Do not expand the paper-scored benchmark count before validity gaps are closed.
+- Do not count provisional v1.1 rows from the 300-row management surface until
+  task-specific prompt/gold/checker/negative evidence is complete.
 - Do not restart SFT/GRPO training from this workstream.
 - Do not claim broader analog-design coverage than the voltage-domain,
   event-driven behavioral subset.

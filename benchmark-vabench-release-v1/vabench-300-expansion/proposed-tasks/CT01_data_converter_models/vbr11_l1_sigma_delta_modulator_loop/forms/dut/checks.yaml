@@ -11,8 +11,8 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "integrator_feedback_boundary_nominal_path"
-    - "integrator_feedback_boundary_boundary_path"
+    - "sigma_delta_modulator_loop_full_behavior"
+    - "integrator_feedback_boundary_near_miss_rejection"
 negative_policy:
   required_partial_pass_negatives: 5
   zero_score_negatives_allowed: false

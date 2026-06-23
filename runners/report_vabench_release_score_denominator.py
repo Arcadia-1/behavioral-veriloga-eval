@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from vabench_release_surface import read_release_entries
 from vabench_policy import content_denominator_exclusion_reasons, is_content_denominator_entry
 
 
@@ -29,16 +30,6 @@ def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def read_release_entries() -> list[dict[str, Any]]:
-    entries: list[dict[str, Any]] = []
-    for path in sorted(TASKS_ROOT.glob("*/vbr1_*/release_entry.json")):
-        payload = read_json(path)
-        if payload:
-            payload["_manifest_path"] = rel(path)
-            entries.append(payload)
-    return entries
 
 
 def task_manifest_path(entry: dict[str, Any], task: dict[str, Any]) -> Path:
@@ -274,6 +265,7 @@ def build_report() -> dict[str, Any]:
         "form_rows": form_rows,
         "evidence_sources": {
             "release_tasks_root": rel(TASKS_ROOT),
+            "release_surface_reader": "runners/vabench_release_surface.py",
             "conformance_manifest": rel(CONFORMANCE_JSON),
             "score_denominator_enablement": rel(ENABLEMENT_JSON),
         },

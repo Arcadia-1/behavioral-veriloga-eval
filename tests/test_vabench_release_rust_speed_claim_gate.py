@@ -19,11 +19,17 @@ def test_rust_speed_claim_gate_allows_only_stage_claim_without_ax_artifact() -> 
         same_server_json=None,
     )
 
-    assert report["gates"]["stage55_topwall_engineering_speedup"]["allowed"] is True
+    stage_gate = report["gates"]["stage55_topwall_engineering_speedup"]
+    assert stage_gate["allowed"] is False
+    assert stage_gate["blockers"] == [
+        "no_stage_rows",
+        "stage_completion_below_threshold",
+        "stage_wall_speedup_not_positive",
+    ]
     assert report["gates"]["full_release_rustification"]["allowed"] is False
     assert report["gates"]["evas_faster_than_spectre_ax"]["allowed"] is False
     assert "missing_same_server_ax_artifact" in report["gates"]["evas_faster_than_spectre_ax"]["blockers"]
-    assert report["claim_policy"]["engineering_stage_claim_allowed"] is True
+    assert report["claim_policy"]["engineering_stage_claim_allowed"] is False
     assert report["claim_policy"]["full_rustification_claim_allowed"] is False
     assert report["claim_policy"]["paper_speed_claim_allowed"] is False
 
@@ -37,8 +43,7 @@ def test_spectre_ax_gate_blocks_when_artifact_lacks_rust55_and_claim_allowed() -
 
     ax_gate = report["gates"]["evas_faster_than_spectre_ax"]
     assert ax_gate["allowed"] is False
-    assert "same_server_artifact_claim_allowed_false" in ax_gate["blockers"]
-    assert "missing_evas_mode_summary" in ax_gate["blockers"]
+    assert ax_gate["blockers"] == ["missing_same_server_ax_artifact"]
 
 
 def test_spectre_ax_gate_can_pass_for_complete_synthetic_same_server_artifact() -> None:

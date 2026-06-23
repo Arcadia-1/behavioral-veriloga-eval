@@ -1,6 +1,6 @@
 # vaBench Precision Overview
 
-Date: 2026-06-22
+Date: 2026-06-23
 Status: `pass`
 Precision source: `full300_current_summaries`
 
@@ -14,7 +14,7 @@ Precision source: `full300_current_summaries`
 - Needs-review or blocked comparisons: 0.
 - Task-metric comparisons: 12.
 - Historical four-way reference rows: 271.
-- Spectre AX/classic self-consistency: 1036 / 1036 pairs passed.
+- Spectre AX/classic self-consistency: missing.
 
 ## Precision vs Spectre Strict
 
@@ -45,12 +45,12 @@ Precision source: `full300_current_summaries`
 
 | Metric | Value |
 | --- | ---: |
-| compared pairs | 1036 |
-| passed pairs | 1036 |
-| needs review pairs | 0 |
-| row mean relative RMS max | 0.0813656 |
-| worst-signal relative RMS max | 0.124398 |
-| max point absolute voltage | 1 |
+| compared pairs | None |
+| passed pairs | None |
+| needs review pairs | None |
+| row mean relative RMS max | - |
+| worst-signal relative RMS max | - |
+| max point absolute voltage | - |
 
 ## Pointwise Difference Taxonomy
 

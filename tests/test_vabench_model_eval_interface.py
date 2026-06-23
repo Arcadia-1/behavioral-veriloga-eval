@@ -21,7 +21,7 @@ def test_unified_model_eval_selects_default_model_roster() -> None:
 
     assert len(rows) == 3
     assert all(row["counted_in_score"] is True for row in rows)
-    assert {row["provenance"] for row in rows} <= {"inherited_v1", "promoted_v1.1"}
+    assert {row["provenance"] for row in rows} <= {"inherited_v1"}
 
 
 def test_unified_model_eval_command_preview_writes_redacted_summary(tmp_path: Path) -> None:

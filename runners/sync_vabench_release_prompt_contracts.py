@@ -24,6 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE_ROOT = ROOT / "benchmark-vabench-release-v1"
 TASKS_ROOT = RELEASE_ROOT / "tasks"
+PACKAGE_MANIFEST = RELEASE_ROOT / "MANIFEST.json"
 
 SECTION_RE = re.compile(
     r"\n## (?:Output Contract(?:\s*\([^)]*\))?|Deliverables?|Public Evaluation Contract \(Non-Gold\))\n.*?(?=\n## |\Z)",
@@ -129,6 +130,21 @@ def read_json(path: Path) -> dict:
 
 
 def task_dirs() -> list[Path]:
+    if PACKAGE_MANIFEST.exists():
+        manifest = read_json(PACKAGE_MANIFEST)
+        rows = manifest.get("forms", [])
+        form_dirs: list[Path] = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            value = row.get("release_task_manifest")
+            if not isinstance(value, str) or not value:
+                continue
+            path = ROOT / value
+            if path.exists():
+                form_dirs.append(path.parent)
+        if form_dirs:
+            return sorted(form_dirs)
     return sorted(path.parent for path in TASKS_ROOT.glob("*/vbr1_*/forms/*/release_task.json"))
 
 

@@ -37,6 +37,7 @@ EVAS_RUST_FULL300_SUMMARY = (
 EVAS_PYTHON_FULL300_SUMMARY = (
     ROOT / "results" / "vabench-300-evas-python-full-checker29-metaraw-20260622" / "summary.json"
 )
+V11_FRESH_SPECTRE_REPORT = REPORTS_ROOT / "vabench_300_v11_fresh_spectre_rerun.json"
 
 
 def rel(path: Path) -> str:
@@ -109,6 +110,13 @@ def fmt(value: Any, digits: int = 3) -> str:
 def max_or_none(values: list[float | None]) -> float | None:
     present = [value for value in values if value is not None]
     return max(present) if present else None
+
+
+def first_present(*values: Any) -> Any:
+    for value in values:
+        if value is not None:
+            return value
+    return None
 
 
 def policy_name(policy: Any, parity: dict[str, Any]) -> str:
@@ -375,7 +383,12 @@ def build_vabench300_expansion(manifest_summary: dict[str, Any]) -> dict[str, An
         "existing_certified_v1_task_count": as_int(summary.get("existing_certified_v1_task_count")),
         "proposed_v11_task_count": as_int(summary.get("proposed_v11_task_count")),
         "promoted_v11_task_count": as_int(summary.get("promoted_v11_task_count")),
+        "provisional_v11_task_count": as_int(summary.get("provisional_v11_task_count")),
+        "task_specific_v11_task_count": as_int(summary.get("task_specific_v11_task_count")),
+        "provisional_generic_v11_task_count": as_int(summary.get("provisional_generic_v11_task_count")),
         "pending_certification_task_count": as_int(summary.get("pending_certification_task_count")),
+        "paper_score_ready_task_count": as_int(summary.get("paper_score_ready_task_count")),
+        "paper_score_disabled_v11_task_count": as_int(summary.get("paper_score_disabled_v11_task_count")),
         "counted_in_score_task_count": sum(1 for row in tasks if as_bool(row.get("counted_in_score"))),
         "partial_pass_negative_count": as_int(summary.get("partial_pass_negative_count")),
         "negative_static_shallow_shape_verified_count": as_int(
@@ -383,12 +396,39 @@ def build_vabench300_expansion(manifest_summary: dict[str, Any]) -> dict[str, An
         ),
         "negative_simulator_shallow_verified_count": as_int(summary.get("negative_simulator_shallow_verified_count")),
         "negative_full_checker_fail_verified_count": as_int(summary.get("negative_full_checker_fail_verified_count")),
+        "task_specific_v11_gold_pass_count": as_int(summary.get("task_specific_v11_gold_pass_count")),
+        "task_specific_v11_negative_full_checker_fail_count": as_int(
+            summary.get("task_specific_v11_negative_full_checker_fail_count")
+        ),
+        "fresh_spectre_v11_pass_count": as_int(summary.get("fresh_spectre_v11_pass_count")),
+        "fresh_spectre_v11_nonpass_count": as_int(summary.get("fresh_spectre_v11_nonpass_count")),
+        "fresh_spectre_v11_parity_pass_count": as_int(summary.get("fresh_spectre_v11_parity_pass_count")),
+        "score_denominator_pending_v11_task_count": as_int(
+            summary.get("score_denominator_pending_v11_task_count")
+        ),
+        "score_denominator_admitted_v11_task_count": as_int(
+            summary.get("score_denominator_admitted_v11_task_count")
+        ),
+        "v11_task_specific_quality_evidence": expansion.get("v11_task_specific_quality_evidence"),
+        "v11_fresh_spectre_rerun_evidence": expansion.get("v11_fresh_spectre_rerun_evidence"),
         "closure_report": rel(VABENCH300_CLOSURE_REPORT),
-        "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+        "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 task-specific v1.1 rows with fresh EVAS/Spectre PASS evidence. After score-denominator admission, all 300 rows are simulator-certified assets and 265 core rows are counted in the paper-facing model-evaluation denominator after support-suite exclusions.",
     }
 
 
-def build_backend_coverage(task_count: int) -> dict[str, Any]:
+def build_backend_coverage(
+    task_count: int,
+    provisional_v11_task_count: int = 0,
+    score_denominator_pending_v11_task_count: int = 0,
+) -> dict[str, Any]:
+    blocker_note = ""
+    if provisional_v11_task_count:
+        blocker_note = f" {provisional_v11_task_count} provisional v1.1 rows block a 300-row certification claim."
+    elif score_denominator_pending_v11_task_count:
+        blocker_note = (
+            f" {score_denominator_pending_v11_task_count} fresh-certified v1.1 rows are still score-denominator pending."
+        )
+
     def no_checker_count(summary: dict[str, Any]) -> int:
         count = 0
         for item in summary.get("results", []):
@@ -434,13 +474,21 @@ def build_backend_coverage(task_count: int) -> dict[str, Any]:
         nonpass_count = as_int(summary.get("nonpass_count"))
         no_checker = no_checker_count(summary)
         spectre_ok = spectre_ok_count(summary)
-        status = "pass" if pass_count == task_count and nonpass_count == 0 else "checker_pending"
+        raw_status = "pass" if pass_count == task_count and nonpass_count == 0 else "checker_pending"
+        if raw_status == "pass" and provisional_v11_task_count:
+            status = "pass_with_provisional_rows"
+        elif raw_status == "pass" and score_denominator_pending_v11_task_count:
+            status = "pass_with_score_pending_v11_rows"
+        else:
+            status = raw_status
         return {
             "backend": backend,
             "label": label,
             "full_300_status": status,
             "run_completed": summary.get("status") == "complete",
-            "certification_passed": status == "pass",
+            "certification_passed": raw_status == "pass"
+            and provisional_v11_task_count == 0
+            and score_denominator_pending_v11_task_count == 0,
             "rows": pass_count,
             "total": task_count,
             "nonpass_rows": nonpass_count,
@@ -449,7 +497,7 @@ def build_backend_coverage(task_count: int) -> dict[str, Any]:
             "evidence": rel(path),
             "notes": (
                 f"dual PASS {pass_count}/{task_count}; Spectre ok {spectre_ok}/{task_count}; "
-                f"{no_checker} rows lack behavior checkers."
+                f"{no_checker} rows lack behavior checkers.{blocker_note}"
             ),
         }
 
@@ -471,25 +519,33 @@ def build_backend_coverage(task_count: int) -> dict[str, Any]:
         behavior_pass = as_int(summary.get("behavior_checker_pass_count"))
         behavior_nonpass = as_int(summary.get("behavior_checker_nonpass_count"))
         behavior_missing = as_int(summary.get("behavior_checker_missing_count"))
-        status = "pass" if behavior_pass == task_count and behavior_nonpass == 0 else "compile_sim_pass_behavior_partial"
+        raw_status = "pass" if behavior_pass == task_count and behavior_nonpass == 0 else "compile_sim_pass_behavior_partial"
+        if raw_status == "pass" and provisional_v11_task_count:
+            status = "pass_with_provisional_rows"
+        elif raw_status == "pass" and score_denominator_pending_v11_task_count:
+            status = "pass_with_score_pending_v11_rows"
+        else:
+            status = raw_status
         return {
             "backend": backend,
             "label": label,
             "full_300_status": status,
             "run_completed": summary.get("status") == "pass" and compile_pass == task_count,
-            "certification_passed": status == "pass",
+            "certification_passed": raw_status == "pass"
+            and provisional_v11_task_count == 0
+            and score_denominator_pending_v11_task_count == 0,
             "rows": compile_pass,
             "total": task_count,
             "behavior_checker_pass_rows": behavior_pass,
             "behavior_checker_nonpass_rows": behavior_nonpass,
             "behavior_checker_missing_rows": behavior_missing,
-            "promoted_v11_behavior_checker_missing_rows": as_int(
-                summary.get("promoted_v11_behavior_checker_missing_count")
+            "provisional_v11_behavior_checker_missing_rows": as_int(
+                summary.get("provisional_v11_behavior_checker_missing_count")
             ),
             "evidence": rel(path),
             "notes": (
                 f"compile/sim PASS {compile_pass}/{task_count}; behavior checker PASS "
-                f"{behavior_pass}/{task_count}; missing/nonpass {behavior_missing}/{task_count}."
+                f"{behavior_pass}/{task_count}; missing/nonpass {behavior_missing}/{task_count}.{blocker_note}"
             ),
         }
 
@@ -501,13 +557,24 @@ def build_backend_coverage(task_count: int) -> dict[str, Any]:
     ]
     completed = sum(1 for row in rows if row.get("run_completed"))
     certified = sum(1 for row in rows if row.get("certification_passed"))
+    status = "pass" if certified == len(rows) else "incomplete"
+    if provisional_v11_task_count:
+        status = "provisional_v11_blocked"
+    elif score_denominator_pending_v11_task_count:
+        status = "score_denominator_pending_v11_blocked"
+    claim_boundary = (
+        "Four-backend execution coverage, simulator certification, and score-denominator admission are separate. "
+        "All 29 fresh v1.1 rows are admitted to the current score denominator; support-suite exclusions still apply."
+        if score_denominator_pending_v11_task_count == 0
+        else "Four-backend execution coverage, simulator certification, and score-denominator admission are separate. Fresh v1.1 EVAS/Spectre evidence certifies behavior, but paper scoring still requires score-denominator admission."
+    )
     return {
-        "status": "pass" if certified == len(rows) else "incomplete",
+        "status": status,
         "required_backend_count": len(rows),
         "completed_backend_count": completed,
         "certified_backend_count": certified,
         "rows": rows,
-        "claim_boundary": "Four-backend execution coverage and four-backend certification are separate. Certification requires 300/300 behavior-certified PASS evidence in every listed full-300 summary.",
+        "claim_boundary": claim_boundary,
     }
 
 
@@ -519,6 +586,12 @@ def build_vabench300_form_rows(
         return release_v1_form_rows
     release_by_entry_form = {
         (str(row.get("release_entry_id")), str(row.get("form"))): row for row in release_v1_form_rows
+    }
+    fresh_report = read_json(V11_FRESH_SPECTRE_REPORT)
+    fresh_by_task = {
+        str(row.get("task_id")): row
+        for row in fresh_report.get("rows", [])
+        if isinstance(row, dict) and row.get("task_id")
     }
     rows: list[dict[str, Any]] = []
     for task in expansion.get("tasks", []):
@@ -532,7 +605,12 @@ def build_vabench300_form_rows(
         gold_assets = artifacts.get("gold", [])
         if not isinstance(gold_assets, list):
             gold_assets = []
-        is_promoted = task.get("expansion_status") == "certified_v1.1_promoted"
+        is_v11 = task.get("expansion_status") in {
+            "certified_v1.1_promoted",
+            "provisional_v1.1_management",
+        }
+        fresh = fresh_by_task.get(str(task.get("task_id")), {})
+        is_certified = task.get("certification") in {"certified", "fresh_evas_spectre_certified"}
         inherited.update(
             {
                 "release_entry_id": entry_id,
@@ -549,12 +627,29 @@ def build_vabench300_form_rows(
                 "static": task.get("static"),
                 "evas": task.get("evas"),
                 "spectre": task.get("spectre"),
-                "certification": task.get("certification"),
-                "verdict": "pass" if task.get("certification") == "certified" else task.get("certification"),
-                "source_equivalence_pass": True,
-                "parity_status": inherited.get("parity_status") or ("passed" if is_promoted else None),
-                "parity_policy": inherited.get("parity_policy") or ("full_300_closure" if is_promoted else None),
-                "evidence": inherited.get("evidence") or (rel(VABENCH300_CLOSURE_REPORT) if is_promoted else ""),
+                "certification": "certified" if is_certified else task.get("certification"),
+                "verdict": "pass" if is_certified else task.get("certification"),
+                "source_equivalence_pass": as_bool(inherited.get("source_equivalence_pass")) if inherited else is_certified,
+                "parity_status": inherited.get("parity_status")
+                or fresh.get("parity_status")
+                or ("provisional" if is_v11 else None),
+                "parity_policy": inherited.get("parity_policy")
+                or fresh.get("parity_policy")
+                or ("full_300_closure_not_score_enabling" if is_v11 else None),
+                "signals_compared": first_present(inherited.get("signals_compared"), fresh.get("signals_compared")),
+                "samples": first_present(inherited.get("samples"), fresh.get("samples")),
+                "common_window_s": first_present(inherited.get("common_window_s"), fresh.get("common_window_s")),
+                "mean_relative_rms_error": first_present(
+                    inherited.get("mean_relative_rms_error"), fresh.get("mean_relative_rms_error")
+                ),
+                "max_relative_rms_error": first_present(
+                    inherited.get("max_relative_rms_error"), fresh.get("max_relative_rms_error")
+                ),
+                "max_rmse_v": first_present(inherited.get("max_rmse_v"), fresh.get("max_rmse_v")),
+                "max_abs_v": first_present(inherited.get("max_abs_v"), fresh.get("max_abs_v")),
+                "evidence": inherited.get("evidence")
+                or task.get("fresh_spectre_evidence")
+                or (rel(VABENCH300_CLOSURE_REPORT) if is_v11 else ""),
                 "gold_assets": gold_assets or inherited.get("gold_assets", []),
                 "expansion_status": task.get("expansion_status"),
                 "gold_status": task.get("gold_status"),
@@ -649,11 +744,49 @@ def build_report() -> dict[str, Any]:
             "pending_form_count": vabench300_expansion.get("pending_certification_task_count"),
             "scored_form_count": vabench300_expansion.get("counted_in_score_task_count"),
             "promoted_v11_task_count": vabench300_expansion.get("promoted_v11_task_count"),
+            "provisional_v11_task_count": vabench300_expansion.get("provisional_v11_task_count"),
+            "paper_score_ready_task_count": vabench300_expansion.get("paper_score_ready_task_count"),
+            "paper_score_disabled_v11_task_count": vabench300_expansion.get("paper_score_disabled_v11_task_count"),
             "existing_certified_v1_task_count": vabench300_expansion.get("existing_certified_v1_task_count"),
+            "fresh_spectre_v11_pass_count": vabench300_expansion.get("fresh_spectre_v11_pass_count"),
+            "fresh_spectre_v11_nonpass_count": vabench300_expansion.get("fresh_spectre_v11_nonpass_count"),
+            "fresh_spectre_v11_parity_pass_count": vabench300_expansion.get("fresh_spectre_v11_parity_pass_count"),
+            "score_denominator_pending_v11_task_count": vabench300_expansion.get(
+                "score_denominator_pending_v11_task_count"
+            ),
+            "score_denominator_admitted_v11_task_count": vabench300_expansion.get(
+                "score_denominator_admitted_v11_task_count"
+            ),
         }
 
-    backend_coverage = build_backend_coverage(as_int(manifest_summary.get("form_count")) or len(form_rows))
+    provisional_v11_task_count = as_int(manifest_summary.get("provisional_v11_task_count"))
+    score_denominator_pending_v11_task_count = as_int(
+        manifest_summary.get("score_denominator_pending_v11_task_count")
+    )
+    backend_coverage = build_backend_coverage(
+        as_int(manifest_summary.get("form_count")) or len(form_rows),
+        provisional_v11_task_count,
+        score_denominator_pending_v11_task_count,
+    )
     status = "ready" if all_backend_pass and len(parity_passed) == len(form_rows) else "incomplete"
+    if provisional_v11_task_count:
+        status = "provisional"
+    elif score_denominator_pending_v11_task_count:
+        status = "score_denominator_pending"
+    claim_boundary = [
+        "This overview is a derived navigation/reporting table; VABENCH_300_MANIFEST.json is the benchmark management manifest.",
+        "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
+        "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
+        "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
+    ]
+    if score_denominator_pending_v11_task_count:
+        claim_boundary.append(
+            "Do not count v1.1 rows in the paper score denominator while score_denominator_pending_v11_task_count is nonzero; use paper_score_ready_task_count for paper-facing scoring."
+        )
+    else:
+        claim_boundary.append(
+            "All 29 fresh-certified v1.1 rows are score-denominator admitted; support-suite exclusions still apply to paper-facing scores."
+        )
     return {
         "release": manifest.get("release", "vabench-release-v1"),
         "date": str(date.today()),
@@ -692,6 +825,7 @@ def build_report() -> dict[str, Any]:
             "spectre_ax_full300_summary": rel(SPECTRE_AX_FULL300_SUMMARY),
             "evas_rust_full300_summary": rel(EVAS_RUST_FULL300_SUMMARY),
             "evas_python_full300_summary": rel(EVAS_PYTHON_FULL300_SUMMARY),
+            "v11_fresh_spectre_rerun": rel(V11_FRESH_SPECTRE_REPORT),
         },
         "exports": {
             "markdown": rel(REPORT_MD),
@@ -699,13 +833,7 @@ def build_report() -> dict[str, Any]:
             "forms_csv": rel(FORM_CSV),
             "categories_csv": rel(CATEGORY_CSV),
         },
-        "claim_boundary": [
-            "This overview is a derived navigation/reporting table; VABENCH_300_MANIFEST.json is the benchmark management manifest.",
-            "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
-            "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
-            "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
-            "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current.",
-        ],
+        "claim_boundary": claim_boundary,
         "category_rows": category_rows,
         "entry_rows": entry_rows,
         "form_rows": form_rows,
@@ -739,6 +867,38 @@ def write_markdown(report: dict[str, Any]) -> None:
     reference_backend = backend_by_id.get("spectre_reference", {})
     expansion = report["vabench300_expansion"]
     staging = report["staging_bundle_counts"]
+    pending_v11 = as_int(summary.get("score_denominator_pending_v11_task_count"))
+    management_note = (
+        f"Use {summary.get('form_count')} as the asset-management and certified-task row count. "
+        f"The paper-facing score-ready surface is now {summary.get('paper_score_ready_task_count')} rows; "
+        f"{summary.get('promoted_v11_task_count')} fresh-certified v1.1 rows are admitted through the score-denominator audit. "
+        "Staging bundle counts are execution inputs, not benchmark size."
+        if pending_v11 == 0
+        else f"Use {summary.get('form_count')} as the asset-management row count, not as the current paper-scored count. "
+        f"The paper-facing score-ready surface is {summary.get('paper_score_ready_task_count')} inherited v1 rows; "
+        f"{summary.get('promoted_v11_task_count')} v1.1 rows have task-specific fresh EVAS/Spectre evidence but remain score-disabled until score-denominator admission. "
+        "Staging bundle counts are execution inputs, not benchmark size."
+    )
+    management_row_label = (
+        "asset-management and simulator-certified surface"
+        if pending_v11 == 0
+        else "asset-management surface, including score-pending v1.1 rows"
+    )
+    score_ready_label = (
+        "rows admitted to the current paper-facing score surface"
+        if pending_v11 == 0
+        else "inherited v1 rows with current paper-facing evidence"
+    )
+    v11_pending_label = (
+        "fresh-certified score-admitted v1.1 rows"
+        if pending_v11 == 0
+        else "fresh-certified score-pending v1.1 rows"
+    )
+    v11_pending_meaning = (
+        "admitted by v1.1 score admission audit"
+        if pending_v11 == 0
+        else "excluded from score until denominator admission"
+    )
     lines = [
         "# vaBench 300 Benchmark Overview",
         "",
@@ -750,10 +910,11 @@ def write_markdown(report: dict[str, Any]) -> None:
         "",
         "| Question | Answer | Evidence |",
         "| --- | ---: | --- |",
-        f"| vaBench benchmark tasks | {summary.get('form_count')} | `{report['source_reports']['package_manifest']}` |",
-        f"| certified benchmark tasks | {summary.get('certified_form_count')} | `{report['source_reports']['package_manifest']}` |",
-        f"| pending certification tasks | {summary.get('pending_form_count')} | `{report['source_reports']['package_manifest']}` |",
-        f"| inherited v1 rows + promoted v1.1 rows | {summary.get('existing_certified_v1_task_count')} + {summary.get('promoted_v11_task_count')} | `{report['source_reports']['package_manifest']}` |",
+        f"| vaBench management rows | {summary.get('form_count')} | `{report['source_reports']['package_manifest']}` |",
+        f"| paper-score-ready rows | {summary.get('paper_score_ready_task_count')} | `{report['source_reports']['package_manifest']}` |",
+        f"| pending certification rows | {summary.get('pending_form_count')} | `{report['source_reports']['package_manifest']}` |",
+        f"| score-counted rows | {summary.get('scored_form_count')} | `{report['source_reports']['package_manifest']}` |",
+        f"| inherited v1 rows + fresh-certified v1.1 rows | {summary.get('existing_certified_v1_task_count')} + {summary.get('promoted_v11_task_count')} | `{report['source_reports']['package_manifest']}` |",
         f"| partial-pass negative candidates | {expansion.get('partial_pass_negative_count')} | `{report['source_reports']['package_manifest']}` |",
         f"| current Spectre reference dual PASS | {reference_backend.get('rows')} / {reference_backend.get('total')} | `{reference_backend.get('evidence')}` |",
         f"| current Spectre reference no-checker rows | {reference_backend.get('no_checker_rows')} | `{reference_backend.get('evidence')}` |",
@@ -761,7 +922,7 @@ def write_markdown(report: dict[str, Any]) -> None:
         "",
         "## Backend Coverage",
         "",
-        f"Four-backend certification status: `{backend_coverage['status']}`. Full-300 runs completed for {backend_coverage['completed_backend_count']} / {backend_coverage['required_backend_count']} backend rows; behavior-certified PASS evidence exists for {backend_coverage['certified_backend_count']} / {backend_coverage['required_backend_count']}.",
+        f"Four-backend certification status: `{backend_coverage['status']}`. Full-300 runs completed for {backend_coverage['completed_backend_count']} / {backend_coverage['required_backend_count']} backend rows; currently claimable full-300 behavior certification exists for {backend_coverage['certified_backend_count']} / {backend_coverage['required_backend_count']}.",
         "",
         "| Backend | Full-300 Status | Rows | Evidence | Notes |",
         "| --- | --- | ---: | --- | --- |",
@@ -817,13 +978,17 @@ def write_markdown(report: dict[str, Any]) -> None:
         "",
         "## Management Surface",
         "",
-        f"Use {summary.get('form_count')} as the benchmark task count. The {summary.get('existing_certified_v1_task_count')} inherited v1 rows and {summary.get('promoted_v11_task_count')} promoted v1.1 rows are composition details inside the same 300-row benchmark. Staging bundle counts are execution inputs, not benchmark size.",
+        management_note,
         "",
         "| Count | Value | Meaning |",
         "| --- | ---: | --- |",
-        f"| benchmark tasks | {summary.get('form_count')} | single management denominator |",
-        f"| certified tasks | {summary.get('certified_form_count')} | static/EVAS/Spectre pass by inherited v1 evidence or full-300 closure |",
-        f"| promoted v1.1 tasks | {summary.get('promoted_v11_task_count')} | now managed as part of vaBench 300 |",
+        f"| management rows | {summary.get('form_count')} | {management_row_label} |",
+        f"| paper-score-ready rows | {summary.get('paper_score_ready_task_count')} | {score_ready_label} |",
+        f"| {v11_pending_label} | {summary.get('score_denominator_pending_v11_task_count') if pending_v11 else summary.get('promoted_v11_task_count')} | {v11_pending_meaning} |",
+        f"| task-specific v1.1 EVAS gold pass | {expansion.get('task_specific_v11_gold_pass_count')} | local EVAS full-checker evidence |",
+        f"| task-specific v1.1 fresh Spectre pass | {expansion.get('fresh_spectre_v11_pass_count')} | fresh Spectre + EVAS dual rerun evidence |",
+        f"| task-specific v1.1 negative full-checker fail | {expansion.get('task_specific_v11_negative_full_checker_fail_count')} | local negative quality evidence for v1.1 rows |",
+        f"| score-counted rows | {summary.get('scored_form_count')} | current counted score surface |",
         f"| negative candidates | {expansion.get('partial_pass_negative_count')} | static-shape audited partial-pass candidates |",
         f"| runnable staging bundles | {staging.get('total_staging_bundles')} | execution inputs only; not a benchmark count |",
         "",

@@ -1,164 +1,25 @@
 {
-  "date": "2026-06-01",
-  "status": "partial_imported",
-  "reason": "Stale-count dual rerun summary was partially imported by exact entry/form match; unmatched rows remain skipped and missing rows remain pending.",
+  "date": "2026-06-22",
+  "status": "imported",
+  "reason": "No current dual rerun queue remains; dual_certification.json already reflects imported fresh rerun evidence.",
   "summary": "benchmark-vabench-release-v1/reports/l2_observability_targeted_dual_20260601_r2_import_summary.json",
   "tasks_total": 8,
-  "current_queue_count": 54,
+  "current_queue_count": 0,
   "summary_tasks_total": 8,
-  "stale_summary": true,
-  "stale_reason": "stale dual rerun summary: summary tasks_total=8, primary_result_count=8, current queue_count=54; rerun the current EVAS/Spectre queue before import.",
-  "imported_primary_result_count": 8,
+  "stale_summary": false,
+  "imported_primary_result_count": 0,
   "skipped_result_count": 0,
-  "imported_pass_count": 8,
+  "imported_pass_count": 0,
   "imported_pending_count": 0,
   "imported_fail_count": 0,
   "merged_dual_certified_release_task_count": 271,
   "merged_dual_pending_release_task_count": 0,
   "merged_dual_failed_release_task_count": 0,
   "merged_evas_pass_spectre_fail_count": 0,
-  "imported_rows": [
-    {
-      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
-      "form": "e2e",
-      "source_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/e2e/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
-      "form": "tb",
-      "source_task_id": "vbr1_l2_weighted_sar_adc_dac_loop_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_weighted_sar_adc_dac_loop/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_amplifier_filter_chain",
-      "form": "e2e",
-      "source_task_id": "vbr1_l2_amplifier_filter_chain_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/e2e/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_amplifier_filter_chain",
-      "form": "tb",
-      "source_task_id": "vbr1_l2_amplifier_filter_chain_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_amplifier_filter_chain/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_reference_startup_enable_flow",
-      "form": "e2e",
-      "source_task_id": "vbr1_l2_reference_startup_enable_flow_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_reference_startup_enable_flow/e2e/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_reference_startup_enable_flow",
-      "form": "tb",
-      "source_task_id": "vbr1_l2_reference_startup_enable_flow_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_reference_startup_enable_flow/tb/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_iq_downconversion_chain",
-      "form": "e2e",
-      "source_task_id": "vbr1_l2_iq_downconversion_chain_e2e",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_iq_downconversion_chain/e2e/evidence.json",
-      "simulator_rerun": true
-    },
-    {
-      "entry_id": "vbr1_l2_iq_downconversion_chain",
-      "form": "tb",
-      "source_task_id": "vbr1_l2_iq_downconversion_chain_tb",
-      "status": "pass",
-      "backend_status": {
-        "evas": "pass",
-        "spectre": "pass"
-      },
-      "failure_count": 0,
-      "source_equivalence_failure_count": 0,
-      "blocker_count": 0,
-      "failures": [],
-      "pending_blockers": [],
-      "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_iq_downconversion_chain/tb/evidence.json",
-      "simulator_rerun": true
-    }
-  ],
+  "imported_rows": [],
   "skipped_rows": [],
   "notes": [
-    "Only primary gold/fixed pass bundles are imported into the release denominator.",
-    "Bugfix buggy companion bundles remain separate badcase evidence and are not scored here.",
-    "Partial stale-count import is conservative: it imports only exact current release entry/form matches."
+    "The import step is idempotent once the current rerun queue is empty and dual certification is complete.",
+    "Rerun timing and model-baseline claims remain separate gates."
   ]
 }

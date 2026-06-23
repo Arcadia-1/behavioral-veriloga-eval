@@ -1,6 +1,6 @@
 # vaBench Model Evaluation Roster
 
-Date: 2026-06-22
+Date: 2026-06-23
 Status: `ready`
 
 | Metric | Value |
@@ -9,6 +9,7 @@ Status: `ready`
 | entries | 73 |
 | inherited v1 rows | 236 |
 | promoted v1.1 rows | 29 |
+| provisional v1.1 rows | 0 |
 | gold aligned rows | 265 |
 
 ## Runner Contract

@@ -513,6 +513,157 @@ def load_csv(csv_path: Path) -> list[dict[str, float]]:
     return rows
 
 
+def _v11_rows(rows: list[dict[str, float]]) -> tuple[bool, str, list[dict[str, float]]]:
+    required = {"time", "clk", "in", "out", "metric", "rst"}
+    if not rows:
+        return False, "v11_empty_csv", []
+    missing = sorted(required - set(rows[0]))
+    if missing:
+        return False, f"v11_missing_columns={','.join(missing)}", []
+    return True, "ok", rows
+
+
+def _v11_range(rows: list[dict[str, float]], key: str) -> float:
+    values = [row[key] for row in rows]
+    return max(values) - min(values)
+
+
+def _v11_window_mean(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
+    values = [row[key] for row in rows if start <= row["time"] <= stop]
+    if not values:
+        return None
+    return sum(values) / len(values)
+
+
+def _v11_final(rows: list[dict[str, float]], key: str) -> float:
+    return rows[-1][key]
+
+
+def _v11_high_fraction(rows: list[dict[str, float]], key: str, threshold: float = 0.5) -> float:
+    if not rows:
+        return 0.0
+    return sum(1 for row in rows if row[key] > threshold) / len(rows)
+
+
+def _v11_correlation(rows: list[dict[str, float]], x_key: str, y_key: str) -> float:
+    if not rows:
+        return 0.0
+    xs = [row[x_key] for row in rows]
+    ys = [row[y_key] for row in rows]
+    x_mean = sum(xs) / len(xs)
+    y_mean = sum(ys) / len(ys)
+    cov = sum((x - x_mean) * (y - y_mean) for x, y in zip(xs, ys))
+    x_var = sum((x - x_mean) ** 2 for x in xs)
+    y_var = sum((y - y_mean) ** 2 for y in ys)
+    denom = math.sqrt(max(x_var * y_var, 1e-24))
+    return cov / denom
+
+
+def check_v11_sigma_delta_modulator_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    out_span = _v11_range(rows, "out")
+    metric_final = _v11_final(rows, "metric")
+    high_fraction = _v11_high_fraction(rows, "out", 0.5)
+    passed = out_span >= 0.75 and 0.20 <= metric_final <= 0.80 and 0.20 <= high_fraction <= 0.80
+    return passed, f"v11_sigma_delta out_span={out_span:.3f} metric_final={metric_final:.3f} high_fraction={high_fraction:.3f}"
+
+
+def check_v11_time_interleaved_adc_mismatch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    out_span = _v11_range(rows, "out")
+    metric_span = _v11_range(rows, "metric")
+    metric_final = _v11_final(rows, "metric")
+    passed = out_span >= 0.75 and metric_span >= 0.65 and 0.05 <= metric_final <= 1.05
+    return passed, f"v11_tiadc out_span={out_span:.3f} metric_span={metric_span:.3f} metric_final={metric_final:.3f}"
+
+
+def check_v11_metastability_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    near = [row["metric"] for row in rows if -0.075 <= row["in"] <= 0.075]
+    far = [row["metric"] for row in rows if row["in"] <= -0.25 or row["in"] >= 0.25]
+    if not near or not far:
+        return False, "v11_meta_missing_near_or_far_samples"
+    near_mean = sum(near) / len(near)
+    far_mean = sum(far) / len(far)
+    out_span = _v11_range(rows, "out")
+    passed = out_span >= 0.75 and near_mean >= far_mean + 0.25 and near_mean >= 0.45
+    return passed, f"v11_meta out_span={out_span:.3f} near_metric={near_mean:.3f} far_metric={far_mean:.3f}"
+
+
+def check_v11_bootstrapped_sample_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    out_span = _v11_range(rows, "out")
+    late_metric = _v11_window_mean(rows, "metric", rows[-1]["time"] * 0.65, rows[-1]["time"])
+    corr = _v11_correlation(rows, "in", "out")
+    passed = late_metric is not None and out_span >= 0.25 and late_metric >= 0.75 and corr >= 0.20
+    return passed, f"v11_bootstrap out_span={out_span:.3f} late_metric={(late_metric or 0.0):.3f} corr={corr:.3f}"
+
+
+def check_v11_fractional_n_pll_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    pulse_fraction = _v11_high_fraction(rows, "out", 0.5)
+    metric_span = _v11_range(rows, "metric")
+    passed = 0.04 <= pulse_fraction <= 0.40 and metric_span >= 0.45
+    return passed, f"v11_fracn pulse_fraction={pulse_fraction:.3f} metric_span={metric_span:.3f}"
+
+
+def check_v11_bandgap_startup_trim(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    early_out = _v11_window_mean(rows, "out", 0.0, rows[-1]["time"] * 0.15)
+    late_out = _v11_window_mean(rows, "out", rows[-1]["time"] * 0.75, rows[-1]["time"])
+    late_metric = _v11_window_mean(rows, "metric", rows[-1]["time"] * 0.75, rows[-1]["time"])
+    passed = (
+        early_out is not None
+        and late_out is not None
+        and late_metric is not None
+        and early_out <= 0.45
+        and 1.05 <= late_out <= 1.30
+        and late_metric >= 0.75
+    )
+    return passed, f"v11_bandgap early_out={(early_out or 0.0):.3f} late_out={(late_out or 0.0):.3f} late_metric={(late_metric or 0.0):.3f}"
+
+
+def check_v11_quadrature_iq_imbalance_corrector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    corr = _v11_correlation(rows, "in", "out")
+    out_span = _v11_range(rows, "out")
+    metric_final = _v11_final(rows, "metric")
+    passed = corr >= 0.55 and out_span >= 0.70 and metric_final >= 0.70
+    return passed, f"v11_iq corr={corr:.3f} out_span={out_span:.3f} metric_final={metric_final:.3f}"
+
+
+def check_v11_cppll_tracking_frequency_step_reacquire(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note, rows = _v11_rows(rows)
+    if not ok:
+        return False, note
+    early_metric = _v11_window_mean(rows, "metric", 0.0, rows[-1]["time"] * 0.25)
+    late_metric = _v11_window_mean(rows, "metric", rows[-1]["time"] * 0.70, rows[-1]["time"])
+    late_out = _v11_window_mean(rows, "out", rows[-1]["time"] * 0.70, rows[-1]["time"])
+    passed = (
+        early_metric is not None
+        and late_metric is not None
+        and late_out is not None
+        and early_metric <= 0.30
+        and late_metric >= 0.70
+        and 0.45 <= late_out <= 0.95
+    )
+    return passed, f"v11_cppll early_metric={(early_metric or 0.0):.3f} late_metric={(late_metric or 0.0):.3f} late_out={(late_out or 0.0):.3f}"
+
+
 def evaluate_noise_gen_csv(csv_path: Path) -> tuple[float, list[str]]:
     """Fast streaming checker for noise_gen tasks on very large CSV files."""
     count = 0
@@ -9722,6 +9873,23 @@ RELEASE_FORM_CHECK_ALIASES = {
 }
 
 CHECKS.update(RELEASE_FORM_CHECK_ALIASES)
+
+
+VABENCH300_V11_CHECK_ALIASES = {
+    "sigma_delta_modulator_loop": check_v11_sigma_delta_modulator_loop,
+    "time_interleaved_adc_mismatch": check_v11_time_interleaved_adc_mismatch,
+    "metastability_window_comparator": check_v11_metastability_window_comparator,
+    "bootstrapped_sample_switch": check_v11_bootstrapped_sample_switch,
+    "fractional_n_pll_divider": check_v11_fractional_n_pll_divider,
+    "bandgap_startup_trim": check_v11_bandgap_startup_trim,
+    "quadrature_iq_imbalance_corrector": check_v11_quadrature_iq_imbalance_corrector,
+    "cppll_tracking_frequency_step_reacquire": check_v11_cppll_tracking_frequency_step_reacquire,
+}
+
+for _v11_topic_id, _v11_checker in VABENCH300_V11_CHECK_ALIASES.items():
+    CHECKS.setdefault(_v11_topic_id, _v11_checker)
+    for _v11_form in ("dut", "tb", "bugfix", "e2e"):
+        CHECKS.setdefault(f"{_v11_topic_id}:{_v11_form}", _v11_checker)
 
 
 def has_behavior_check(task_id: str) -> bool:

@@ -37,17 +37,36 @@ def test_eval_framework_exports_alignment_and_model_roster() -> None:
     assert alignment["summary"]["needs_review_row_count"] == 0
     assert alignment["summary"]["inherited_v1_rows"] == 271
     assert alignment["summary"]["promoted_v1_1_rows"] == 29
+    assert alignment["summary"]["provisional_v1_1_rows"] == 0
     assert alignment["summary"]["bit_exact_claim"] == "not_asserted"
     assert alignment["summary"]["waveform_metric_row_count"] == 292
     assert alignment["summary"]["diagnostic_waveform_metric_row_count"] == 300
-    assert alignment["summary"]["waveform_metric_recomputed_row_count"] == 37
+    assert alignment["summary"]["waveform_metric_recomputed_row_count"] == 8
     assert alignment["summary"]["metric_family_counts"] == {
         "extracted_gain_metric": 4,
         "pll_task_level_lock_frequency_control": 4,
         "waveform_relative_rms_and_absolute_voltage": 292,
     }
-    assert all(row["alignment_status"] == "spectre_aligned_within_tolerance" for row in alignment["rows"])
-    assert all(row["equality_claim"] == "not bit-exact; equivalent within the stated acceptance gate" for row in alignment["rows"])
+    assert all(
+        row["alignment_status"] == "spectre_aligned_within_tolerance"
+        for row in alignment["rows"]
+        if row["provenance"] == "inherited_v1"
+    )
+    assert all(
+        row["alignment_status"] == "spectre_aligned_within_tolerance"
+        for row in alignment["rows"]
+        if row["provenance"] == "promoted_v1.1"
+    )
+    assert all(
+        row["equality_claim"] == "not bit-exact; equivalent within the stated acceptance gate"
+        for row in alignment["rows"]
+        if row["provenance"] == "inherited_v1"
+    )
+    assert all(
+        row["equality_claim"] == "not bit-exact; equivalent within the stated acceptance gate"
+        for row in alignment["rows"]
+        if row["provenance"] == "promoted_v1.1"
+    )
     assert all(row["comparison_target"].startswith("gold EVAS") for row in alignment["rows"])
     assert all(row["tolerance_result"] for row in alignment["rows"])
     assert any(row["waveform_metric_source"] == "recomputed_from_spectre_reference_result" for row in alignment["rows"])

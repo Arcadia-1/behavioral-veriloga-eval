@@ -2,7 +2,7 @@ syntax:
   must_include:
     - "tran"
     - "save"
-  must_not_include:[]
+  must_not_include: []
 dut_compile:
   backend: "evas"
 tb_compile:

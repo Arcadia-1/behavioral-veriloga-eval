@@ -13,17 +13,16 @@
     "policy_counts": {
       "gain_extraction_metric_parity_v1": 4,
       "pll_task_aware": 4,
-      "spectre_equivalence_core_v1": 211,
-      "spectre_equivalence_core_v2": 52
+      "spectre_equivalence_core_v1": 263
     },
-    "waveform_metric_form_count": 263
+    "waveform_metric_form_count": 292
   },
   "claim_boundary": [
     "This overview is a derived navigation/reporting table; VABENCH_300_MANIFEST.json is the benchmark management manifest.",
     "Current full-300 backend evidence is grounded by the explicit results/*/summary.json files listed in backend_coverage.",
     "Do not state bit-exact EVAS/Spectre equality; state behavior/spec pass plus tolerance-gated waveform or task-metric parity.",
     "Negative candidates are static-shape audited partial-pass assets unless a separate full-checker validation report is produced.",
-    "Claim 300/300 four-backend behavior certification only when backend_coverage.status is pass and every listed full-300 summary remains current."
+    "All 29 fresh-certified v1.1 rows are score-denominator admitted; support-suite exclusions still apply to paper-facing scores."
   ],
   "equivalence_contract": {
     "acceptance_basis": "behavior/spec pass plus EVAS/Spectre waveform or task-metric parity",
@@ -34,11 +33,16 @@
     "relative_rms_gate": "row_mean_relative_rms_error<=0.10 and worst_signal_relative_rms_error<=0.22; or row_mean_relative_rms_error<=0.08 and worst_signal_relative_rms_error<=0.25",
     "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30"
   },
-  "generated_at": "2026-06-22",
+  "generated_at": "2026-06-23",
   "headline_cards": [
     {
-      "detail": "single vaBench 300 management denominator",
-      "label": "Benchmark Rows",
+      "detail": "vaBench 300 asset-management surface",
+      "label": "Management Rows",
+      "value": 300
+    },
+    {
+      "detail": "current paper-facing certified surface",
+      "label": "Paper-Ready Rows",
       "value": 300
     },
     {
@@ -47,7 +51,7 @@
       "value": 86
     },
     {
-      "detail": "4 / 4 certified",
+      "detail": "4 / 4 full-300 certification rows claimable",
       "label": "Four-Backend Status",
       "value": "pass"
     },
@@ -62,15 +66,17 @@
       "value": 265
     },
     {
-      "detail": "of 300 parity-certified rows",
+      "detail": "of 300 management rows",
       "label": "Parity Rows",
       "value": 300
     }
   ],
   "provenance": {
-    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 task-specific v1.1 rows with fresh EVAS/Spectre PASS evidence. After score-denominator admission, all 300 rows are simulator-certified assets and 265 core rows are counted in the paper-facing model-evaluation denominator after support-suite exclusions.",
     "inherited_v1_rows": 271,
+    "paper_score_ready_rows": 300,
     "promoted_v1_1_rows": 29,
+    "provisional_v1_1_rows": 0,
     "public_denominator": 300
   },
   "release": "vabench-release-v1",
@@ -87,29 +93,30 @@
     "spectre_ax_subset_report": "speed-optimization/reports/e2e_wall_unified_full_20260602_r14_core_fastpath_exactrows.json",
     "spectre_reference_full300_summary": "results/vabench-300-dual-reference-rust-checker29-full-20260622/summary.json",
     "speed_remaining_staging_manifest": "benchmark-vabench-release-v1/reports/speed_remaining_staging_manifest.json",
+    "v11_fresh_spectre_rerun": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
     "vabench300_closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md"
   },
   "status": "ready",
   "summary": {
-    "certified_entry_count": 79,
+    "certified_entry_count": 86,
     "certified_form_count": 300,
-    "content_denominator_entry_count": 66,
-    "content_denominator_form_count": 236,
+    "content_denominator_entry_count": 73,
+    "content_denominator_form_count": 265,
     "content_excluded_entry_count": 13,
     "content_excluded_form_count": 35,
-    "core_entry_count": 66,
-    "core_form_count": 236,
-    "core_scored_entry_count": 66,
-    "core_scored_form_count": 236,
+    "core_entry_count": 73,
+    "core_form_count": 265,
+    "core_scored_entry_count": 73,
+    "core_scored_form_count": 265,
     "difficulty_entry_counts": {
       "D1": 10,
-      "D2": 49,
-      "D3": 20
+      "D2": 50,
+      "D3": 26
     },
     "difficulty_form_counts": {
       "D1": 39,
-      "D2": 186,
-      "D3": 46
+      "D2": 190,
+      "D3": 71
     },
     "dual_certification_status": "pass",
     "dual_certified_release_task_count": 271,
@@ -117,39 +124,47 @@
     "dual_pending_release_task_count": 0,
     "entry_count": 86,
     "entry_status_counts": {
-      "certified": 79
+      "certified": 86
     },
     "evas_pass_spectre_fail_count": 0,
     "existing_certified_v1_task_count": 271,
     "form_count": 300,
     "form_status_counts": {
-      "certified": 271
+      "certified": 300
     },
     "four_backend_certified_backend_count": 4,
     "four_backend_completed_backend_count": 4,
     "four_backend_required_backend_count": 4,
     "four_backend_status": "pass",
+    "fresh_spectre_v11_nonpass_count": 0,
+    "fresh_spectre_v11_parity_pass_count": 29,
+    "fresh_spectre_v11_pass_count": 29,
     "l0_conformance_case_count": 4,
     "l0_conformance_counted_in_denominator": 0,
+    "paper_score_disabled_v11_task_count": 0,
+    "paper_score_ready_task_count": 300,
     "pending_entry_count": 0,
     "pending_form_count": 0,
-    "planned_entry_count": 79,
+    "planned_entry_count": 86,
     "promoted_v11_task_count": 29,
+    "provisional_v11_task_count": 0,
+    "score_denominator_admitted_v11_task_count": 29,
+    "score_denominator_pending_v11_task_count": 0,
     "score_denominator_status": "score_enabled",
-    "score_enabled_entry_count": 66,
-    "score_enabled_form_count": 236,
-    "scored_entry_count": 66,
+    "score_enabled_entry_count": 73,
+    "score_enabled_form_count": 265,
+    "scored_entry_count": 73,
     "scored_form_count": 265,
     "support_entry_count": 13,
     "support_form_count": 35,
     "support_scored_entry_count": 0,
     "support_scored_form_count": 0,
     "track_entry_counts": {
-      "core": 66,
+      "core": 73,
       "support": 13
     },
     "track_form_counts": {
-      "core": 236,
+      "core": 265,
       "support": 35
     }
   },
@@ -158,16 +173,30 @@
     "closure_report": "speed-optimization/reports/vabench300_p0_p2_closure_20260620.md",
     "counted_in_score_task_count": 265,
     "existing_certified_v1_task_count": 271,
-    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 promoted v1.1 rows.",
+    "explanation": "This is the primary vaBench 300 management surface: 271 inherited certified v1 rows plus 29 task-specific v1.1 rows with fresh EVAS/Spectre PASS evidence. After score-denominator admission, all 300 rows are simulator-certified assets and 265 core rows are counted in the paper-facing model-evaluation denominator after support-suite exclusions.",
+    "fresh_spectre_v11_nonpass_count": 0,
+    "fresh_spectre_v11_parity_pass_count": 29,
+    "fresh_spectre_v11_pass_count": 29,
     "manifest": "benchmark-vabench-release-v1/vabench-300-expansion/VABENCH_300_MANIFEST.json",
-    "negative_full_checker_fail_verified_count": 0,
-    "negative_simulator_shallow_verified_count": 0,
+    "negative_full_checker_fail_verified_count": 145,
+    "negative_simulator_shallow_verified_count": 145,
     "negative_static_shallow_shape_verified_count": 1500,
+    "paper_score_disabled_v11_task_count": 0,
+    "paper_score_ready_task_count": 300,
     "partial_pass_negative_count": 1500,
     "pending_certification_task_count": 0,
     "promoted_v11_task_count": 29,
     "proposed_v11_task_count": 29,
+    "provisional_generic_v11_task_count": 0,
+    "provisional_v11_task_count": 0,
+    "score_denominator_admitted_v11_task_count": 29,
+    "score_denominator_pending_v11_task_count": 0,
     "status": "present",
-    "task_count": 300
+    "task_count": 300,
+    "task_specific_v11_gold_pass_count": 29,
+    "task_specific_v11_negative_full_checker_fail_count": 145,
+    "task_specific_v11_task_count": 29,
+    "v11_fresh_spectre_rerun_evidence": "benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json",
+    "v11_task_specific_quality_evidence": "benchmark-vabench-release-v1/vabench-300-expansion/v11_task_specific_quality_evidence.json"
   }
 }

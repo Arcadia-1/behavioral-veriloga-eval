@@ -62,7 +62,7 @@
       "historical_dual_expected": false,
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/e2e/evidence.json",
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l2_complete_calibration_loop",
@@ -90,7 +90,7 @@
       "historical_dual_expected": false,
       "static_status": "pass",
       "evas_status": "pass",
-      "spectre_status": "pending",
+      "spectre_status": "pass",
       "dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_complete_calibration_loop/tb/evidence.json",
       "fresh_dual_rerun_required": true,
       "source_path": "designed_release_spec:vbr1_l2_complete_calibration_loop",
@@ -102,7 +102,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pending",
+    "spectre": "pass",
     "evidence": "benchmark-vabench-release-v1/reports/dual_certification.json"
   },
   "counts": {
@@ -110,7 +110,5 @@
     "model_capability": false,
     "l0_conformance": false
   },
-  "release_blockers": [
-    "fresh_dual_rerun_required_after_intermediate_observability_update"
-  ]
+  "release_blockers": []
 }

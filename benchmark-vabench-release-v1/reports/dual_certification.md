@@ -1,6 +1,6 @@
 # vaBench Release Dual Certification
 
-Date: 2026-06-01
+Date: 2026-06-22
 
 This report is generated from historical imported evidence plus fresh
 release EVAS/Spectre rerun results when available.

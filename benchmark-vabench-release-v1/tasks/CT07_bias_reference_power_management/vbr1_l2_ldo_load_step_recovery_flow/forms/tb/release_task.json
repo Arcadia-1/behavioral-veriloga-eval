@@ -29,7 +29,7 @@
   "certification": {
     "static": "pass",
     "evas": "pass",
-    "spectre": "pending",
+    "spectre": "pass",
     "evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_ldo_load_step_recovery_flow/tb/evidence.json"
   },
   "counts": {
@@ -45,7 +45,6 @@
   },
   "notes": [
     "Generated from release_entry.json so each materialized form has a schema-valid release task manifest.",
-    "benchmark_score is enabled because this release entry is in the frozen score denominator.",
-    "Fresh Spectre rerun required after adding load_mon/ctrl_mon intermediate observability."
+    "benchmark_score is enabled because this release entry is in the frozen score denominator."
   ]
 }

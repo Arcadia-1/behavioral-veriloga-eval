@@ -1,6 +1,6 @@
 # vaBench Release Remaining Work
 
-Date: 2026-05-27
+Date: 2026-06-23
 
 This report is the active queue for finishing the clean vaBench release.
 It separates missing source design from missing simulator evidence and

@@ -154,7 +154,11 @@ def load_evas_status(path: str) -> dict[tuple[str, str], dict[str, Any]]:
 
 def provenance(row: dict[str, Any]) -> str:
     status = str(row.get("expansion_status") or "")
-    return "promoted_v1.1" if "v1.1" in status else "inherited_v1"
+    if status == "provisional_v1.1_management":
+        return "provisional_v1.1"
+    if status == "certified_v1.1_promoted":
+        return "promoted_v1.1"
+    return "inherited_v1"
 
 
 def waveform_gate_text(contract: dict[str, Any]) -> str:
@@ -455,6 +459,7 @@ def build_alignment(overview: dict[str, Any]) -> dict[str, Any]:
             "scored_row_count": sum(1 for row in rows if row.get("counted_in_score")),
             "inherited_v1_rows": sum(1 for row in rows if row.get("provenance") == "inherited_v1"),
             "promoted_v1_1_rows": sum(1 for row in rows if row.get("provenance") == "promoted_v1.1"),
+            "provisional_v1_1_rows": sum(1 for row in rows if row.get("provenance") == "provisional_v1.1"),
             "bit_exact_claim": contract.get("bit_exact_claim", "not_asserted"),
             "waveform_metric_row_count": len(waveform_rows),
             "diagnostic_waveform_metric_row_count": len(diagnostic_waveform_rows),
@@ -532,6 +537,7 @@ def build_model_roster(overview: dict[str, Any], alignment: dict[str, Any]) -> d
             "entry_count": len({row["release_entry_id"] for row in rows}),
             "inherited_v1_rows": sum(1 for row in rows if row["provenance"] == "inherited_v1"),
             "promoted_v1_1_rows": sum(1 for row in rows if row["provenance"] == "promoted_v1.1"),
+            "provisional_v1_1_rows": sum(1 for row in rows if row["provenance"] == "provisional_v1.1"),
             "gold_aligned_rows": sum(
                 1 for row in rows if row.get("gold_alignment_status") == "spectre_aligned_within_tolerance"
             ),
@@ -644,6 +650,7 @@ def write_model_roster_md(report: dict[str, Any]) -> None:
         f"| entries | {summary['entry_count']} |",
         f"| inherited v1 rows | {summary['inherited_v1_rows']} |",
         f"| promoted v1.1 rows | {summary['promoted_v1_1_rows']} |",
+        f"| provisional v1.1 rows | {summary['provisional_v1_1_rows']} |",
         f"| gold aligned rows | {summary['gold_aligned_rows']} |",
         "",
         "## Runner Contract",

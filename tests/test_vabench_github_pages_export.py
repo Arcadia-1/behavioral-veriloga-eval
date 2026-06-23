@@ -33,9 +33,11 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
     assert site["summary"]["form_count"] == 300
     assert site["summary"]["entry_count"] == 86
     assert site["summary"]["four_backend_status"] == "pass"
+    assert site["summary"]["paper_score_ready_task_count"] == 300
     assert site["provenance"]["public_denominator"] == 300
     assert site["provenance"]["inherited_v1_rows"] == 271
     assert site["provenance"]["promoted_v1_1_rows"] == 29
+    assert site["provenance"]["provisional_v1_1_rows"] == 0
 
     assert backends["status"] == "pass"
     assert len(backends["rows"]) == 4
@@ -45,6 +47,7 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
 
     assert tasks["summary"]["row_count"] == 300
     assert tasks["summary"]["promoted_v1_1_rows"] == 29
+    assert tasks["summary"]["provisional_v1_1_rows"] == 0
     assert tasks["summary"]["inherited_v1_rows"] == 271
     assert tasks["summary"]["certified_rows"] == 300
     assert len(tasks["rows"]) == 300

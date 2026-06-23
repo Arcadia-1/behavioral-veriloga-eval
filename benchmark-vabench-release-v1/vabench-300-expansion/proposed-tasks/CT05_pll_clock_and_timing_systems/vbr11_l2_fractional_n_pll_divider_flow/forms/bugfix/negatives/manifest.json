@@ -9,13 +9,15 @@
       ],
       "id": "neg_001",
       "kind": "boundary_near_miss",
+      "module": "fractional_n_pll_divider",
       "note": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "5db240b227fd1b46ae0612cc3b599a946a18c4dd9d117a1cba7bf06facdc396d",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "7d85c299c8eaba5ee2af9db5de0c5e5f1abf1f5966982ba612be1edbb3f993eb",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -26,12 +28,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/neg_001.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_fracn pulse_fraction=0.118 metric_span=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -42,13 +54,15 @@
       ],
       "id": "neg_002",
       "kind": "timing_window_near_miss",
+      "module": "fractional_n_pll_divider",
       "note": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "7c6e1d88448a1c567fde21918b4693d94dc36e604667f7de63f85aa865a7b02d",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "37490d358f59c409f379aaba926213c8e0b3b5d5d114eef9caf3fdf96fb308b7",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -59,12 +73,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/neg_002.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_fracn pulse_fraction=0.035 metric_span=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -75,13 +99,15 @@
       ],
       "id": "neg_003",
       "kind": "polarity_direction_near_miss",
+      "module": "fractional_n_pll_divider",
       "note": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "6a2e5396706f6660fede44b423da5b67a0f7311416f0a6d877c4056afb708b40",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "ffef25ba75095dbe02edccd71e0a9495a164e03baec0b9a1973b2239edb67c84",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -92,12 +118,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/neg_003.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_fracn pulse_fraction=0.587 metric_span=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -108,13 +144,15 @@
       ],
       "id": "neg_004",
       "kind": "state_reset_near_miss",
+      "module": "fractional_n_pll_divider",
       "note": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "041209ffe765fcf3413373b77a5cb4384bfa4081c812ac8e3ffbb1dcd55a84b3",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "38f10e7a271900eaa3e5790722c2384684418f65c658a61f9ab9812a88fb9df0",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -125,12 +163,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/neg_004.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_fracn pulse_fraction=0.339 metric_span=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     },
     {
@@ -141,13 +189,15 @@
       ],
       "id": "neg_005",
       "kind": "metric_writeout_near_miss",
+      "module": "fractional_n_pll_divider",
       "note": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
-      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
-      "sha256": "4d52e57a8ba12532ea50393a501735717d4188faaf21b3ac102752c5b9f128a2",
+      "partial_pass_requirement": "Must compile and run with the task testbench while failing the registered task-specific full checker.",
+      "sha256": "bbc6a12849afb837367b56e422a0f04d790620674dfc31c25bc563c921c49abb",
       "shallow_passes": [
         "artifact_exists",
         "interface_or_testbench_shape_preserved",
-        "nominal_or_smoke_path_intended_to_pass"
+        "module_name_preserved",
+        "nominal_simulation_intended_to_run"
       ],
       "shallow_static_failures": [],
       "shallow_static_passes": [
@@ -158,12 +208,22 @@
         "analog_block_or_keyword_present"
       ],
       "source": "benchmark-vabench-release-v1/vabench-300-expansion/proposed-tasks/CT05_pll_clock_and_timing_systems/vbr11_l2_fractional_n_pll_divider_flow/forms/bugfix/negatives/neg_005.va",
-      "source_kind": "proposed_gold",
+      "source_kind": "proposed_task_specific_gold",
       "validation_evidence": {
-        "full_checker_lane": "pending_external_evas_spectre",
-        "publication_status": "asset_ready_not_simulator_certified",
-        "simulator_shallow_lane": "pending_external_evas_spectre",
+        "full_checker_lane": "pass",
+        "publication_status": "evas_full_checker_verified_spectre_pending",
+        "simulator_shallow_lane": "pass",
         "static_shallow_shape": "pass"
+      },
+      "validation_result": {
+        "compile_sim_pass": true,
+        "full_checker_fail": true,
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas-rust",
+          "v11_fracn pulse_fraction=0.339 metric_span=0.000"
+        ],
+        "raw_status": "FAIL_SIM_CORRECTNESS"
       }
     }
   ],

@@ -11,7 +11,7 @@ PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 REPORT_JSON = REPORTS_ROOT / "claim_gate.json"
 REPORT_MD = REPORTS_ROOT / "claim_gate.md"
-PLANNED_ENTRY_TARGET = 79
+PLANNED_ENTRY_TARGET = 86
 
 
 def rel(path: Path) -> str:
@@ -73,6 +73,10 @@ def build_report() -> dict[str, object]:
     score = read_json(REPORTS_ROOT / "score_denominator_manifest.json")
     speed = read_json(REPORTS_ROOT / "speed_debug_artifact.json")
     baseline = read_json(REPORTS_ROOT / "baseline_artifact.json")
+    package = read_json(PACKAGE_ROOT / "MANIFEST.json")
+    package_summary = package.get("summary", {})
+    if not isinstance(package_summary, dict):
+        package_summary = {}
 
     score_summary = score.get("summary", {})
     if not isinstance(score_summary, dict):
@@ -87,10 +91,17 @@ def build_report() -> dict[str, object]:
     if not isinstance(matrix_summary, dict):
         matrix_summary = {}
 
-    planned_entries = as_int(release_status.get("planned_entries"))
-    source_linked_entries = as_int(release_status.get("source_linked_entry_count"))
-    materialized_entries = as_int(release_status.get("asset_materialized_entry_count"))
-    static_forms = as_int(static.get("static_certified_release_task_count"))
+    planned_entries = as_int(package_summary.get("planned_entry_count")) or as_int(release_status.get("planned_entries"))
+    source_linked_entries = as_int(package_summary.get("entry_count")) or as_int(
+        release_status.get("source_linked_entry_count")
+    )
+    materialized_entries = as_int(package_summary.get("entry_count")) or as_int(
+        release_status.get("asset_materialized_entry_count")
+    )
+    static_forms = as_int(package_summary.get("certified_form_count")) or as_int(
+        static.get("static_certified_release_task_count")
+    )
+    package_form_count = as_int(package_summary.get("form_count"))
     dual_certified_forms = as_int(dual.get("dual_certified_release_task_count"))
     imported_dual_pending_forms = as_int(dual.get("dual_pending_release_task_count"))
     current_dual_pending_forms = as_int(matrix_summary.get("pending_form_count", imported_dual_pending_forms))
@@ -108,6 +119,7 @@ def build_report() -> dict[str, object]:
         planned_entries == PLANNED_ENTRY_TARGET
         and source_linked_entries >= planned_entries
         and materialized_entries >= planned_entries
+        and static_forms == package_form_count
         and asset.get("status") == "pass"
         and static.get("status") == "pass"
     )
@@ -165,6 +177,7 @@ def build_report() -> dict[str, object]:
                 "Asset materialization means the task is scored.",
             ],
             evidence=[
+                rel(PACKAGE_ROOT / "MANIFEST.json"),
                 rel(REPORTS_ROOT / "asset_integrity.json"),
                 rel(REPORTS_ROOT / "static_certification.json"),
                 rel(REPORTS_ROOT / "release_status.json"),
@@ -179,6 +192,7 @@ def build_report() -> dict[str, object]:
                 "source_linked_entries": source_linked_entries,
                 "materialized_entries": materialized_entries,
                 "static_certified_forms": static_forms,
+                "package_forms": package_form_count,
             },
         ),
         claim(
