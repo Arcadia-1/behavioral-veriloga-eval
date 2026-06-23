@@ -22,12 +22,14 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
         "backend_coverage.json",
         "category_coverage.json",
         "site_summary.json",
+        "task_details.json",
         "task_gallery.json",
     }
 
     site = read_json(tmp_path / "site_summary.json")
     backends = read_json(tmp_path / "backend_coverage.json")
     tasks = read_json(tmp_path / "task_gallery.json")
+    task_details = read_json(tmp_path / "task_details.json")
     categories = read_json(tmp_path / "category_coverage.json")
 
     assert site["summary"]["form_count"] == 300
@@ -59,6 +61,24 @@ def test_github_pages_export_materializes_current_300_surface(tmp_path: Path) ->
     assert prompt_row["release_task_manifest"].endswith("release_task.json")
     assert isinstance(prompt_row["gold_count"], int)
 
+    assert task_details["summary"]["row_count"] == 300
+    assert task_details["summary"]["prompt_count"] == 300
+    assert task_details["summary"]["checks_count"] == 300
+    assert task_details["summary"]["meta_count"] == 300
+    assert task_details["summary"]["release_task_count"] == 300
+    assert task_details["summary"]["gold_file_count"] >= 600
+    assert task_details["summary"]["truncated_file_count"] == 0
+    detail_row = next(
+        row
+        for row in task_details["rows"]
+        if row["release_entry_id"] == prompt_row["release_entry_id"] and row["form"] == prompt_row["form"]
+    )
+    detail_files = {file["kind"]: file for file in detail_row["files"] if file["kind"] != "gold"}
+    assert detail_files["prompt"]["content"]
+    assert detail_files["checks"]["content"]
+    assert detail_files["release_task"]["content"]
+    assert any(file["kind"] == "gold" and file["content"] for file in detail_row["files"])
+
     assert len(categories["rows"]) == 10
 
 
@@ -88,6 +108,7 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert 'assets/run-model-eval.js' in guide
     assert 'assets/site.js' in index
     assert 'data/site_summary.json' in site_script
+    assert 'data/task_details.json' in site_script
     assert 'data/precision_overview.json' in site_script
     assert 'data/model_eval_roster.json' in script
     assert "DeepSeek V4 Flash smoke" in guide
@@ -100,12 +121,14 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert "task-metric-table" in accuracy
     assert 'data-page="task-detail"' in task_detail
     assert "task-detail-identity" in task_detail
+    assert "task-detail-content-list" in task_detail
     assert "task-detail-accuracy-table" in task_detail
     assert 'data-page="accuracy-case"' in accuracy_case
     assert "accuracy-case-taxonomy" in accuracy_case
     assert "task.html?" in site_script
     assert "accuracy-case.html?" in site_script
     assert "renderTaskDetail" in site_script
+    assert "renderTaskDetailContents" in site_script
     assert "renderAccuracyCase" in site_script
     assert "renderPointwiseTaxonomy" in site_script
     assert "renderTaskMetricRows" in site_script

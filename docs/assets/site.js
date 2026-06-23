@@ -3,6 +3,7 @@ const DATA = {
   backends: "data/backend_coverage.json",
   alignment: "data/spectre_alignment_table.json",
   tasks: "data/task_gallery.json",
+  taskDetails: "data/task_details.json",
   categories: "data/category_coverage.json",
   modelRoster: "data/model_eval_roster.json",
   precision: "data/precision_overview.json",
@@ -177,7 +178,7 @@ const I18N = {
     benchmarkDetailEyebrow: "Benchmark detail",
     benchmarkDetailTitle: "Benchmark row detail",
     benchmarkDetailText:
-      "Inspect one released row: public task identity, source paths, certification status, and EVAS/Spectre precision evidence. Gold source is referenced by path, not embedded in the page.",
+      "Inspect one released row: public task identity, benchmark contents, certification status, and EVAS/Spectre precision evidence.",
     taskDetailBack: "Back to benchmark",
     taskDetailMissing: "Task row not found",
     taskDetailMissingBody: "The URL does not match a released vaBench row. Return to the benchmark table and open a row from there.",
@@ -185,6 +186,10 @@ const I18N = {
     taskDetailAssetsTitle: "Public assets",
     taskDetailEvaluationTitle: "Certification and parity",
     taskDetailPrecisionTitle: "Precision evidence",
+    taskDetailContentsEyebrow: "Benchmark contents",
+    taskDetailContentsTitle: "Prompt, checker, and reference files",
+    taskDetailContentsDescription: "Read the public task prompt, checker contract, metadata, release manifest, and gold/reference artifacts for this row.",
+    taskDetailNoContents: "No inline benchmark contents are available for this row.",
     taskDetailAccuracyCasesTitle: "Related accuracy cases",
     taskDetailNoAccuracyCase: "No task-metric accuracy case is recorded for this row.",
     openPrompt: "Open prompt",
@@ -192,6 +197,15 @@ const I18N = {
     openMeta: "Open meta",
     openReleaseManifest: "Open release task",
     openEvidence: "Open evidence",
+    openSource: "Open source",
+    fileMissing: "File not found in the website export.",
+    fileTruncated: "Truncated in the website export.",
+    fileBytes: "{count} bytes",
+    contentKindPrompt: "Prompt",
+    contentKindChecks: "Checker",
+    contentKindMeta: "Metadata",
+    contentKindReleaseTask: "Release task",
+    contentKindGold: "Gold/reference artifact",
     protocolEyebrow: "Protocol",
     protocolPageTitle: "Evaluation and certification gates",
     protocolPageText:
@@ -511,7 +525,7 @@ const I18N = {
     benchmarkDetailEyebrow: "Benchmark 详情",
     benchmarkDetailTitle: "单题详情",
     benchmarkDetailText:
-      "查看一个 released row 的公开题目身份、源文件路径、认证状态和 EVAS/Spectre 精度证据。Gold 源码只引用路径，不直接嵌入页面。",
+      "查看一个 released row 的题目身份、benchmark 内容、认证状态和 EVAS/Spectre 精度证据。",
     taskDetailBack: "返回 benchmark",
     taskDetailMissing: "没有找到这道题",
     taskDetailMissingBody: "当前 URL 没有匹配到 released vaBench row。请回到 benchmark 表格，从某一行点进来。",
@@ -519,6 +533,10 @@ const I18N = {
     taskDetailAssetsTitle: "公开资产",
     taskDetailEvaluationTitle: "认证与 parity",
     taskDetailPrecisionTitle: "精度证据",
+    taskDetailContentsEyebrow: "Benchmark 内容",
+    taskDetailContentsTitle: "Prompt、checker 与 reference 文件",
+    taskDetailContentsDescription: "直接查看这一行的公开题目 prompt、checker 合约、metadata、release manifest 和 gold/reference artifacts。",
+    taskDetailNoContents: "这行没有可内嵌展示的 benchmark 内容。",
     taskDetailAccuracyCasesTitle: "相关精度案例",
     taskDetailNoAccuracyCase: "这行没有记录 task-metric 精度案例。",
     openPrompt: "打开 prompt",
@@ -526,6 +544,15 @@ const I18N = {
     openMeta: "打开 meta",
     openReleaseManifest: "打开 release task",
     openEvidence: "打开 evidence",
+    openSource: "打开源码",
+    fileMissing: "网站导出中没有找到这个文件。",
+    fileTruncated: "网站导出中已截断。",
+    fileBytes: "{count} bytes",
+    contentKindPrompt: "Prompt",
+    contentKindChecks: "Checker",
+    contentKindMeta: "Metadata",
+    contentKindReleaseTask: "Release task",
+    contentKindGold: "Gold/reference artifact",
     protocolEyebrow: "协议",
     protocolPageTitle: "评测与认证 gate",
     protocolPageText:
@@ -1203,12 +1230,27 @@ function sourceLink(path, label) {
   return wrapper;
 }
 
+function contentKindLabel(kind) {
+  return {
+    prompt: t("contentKindPrompt"),
+    checks: t("contentKindChecks"),
+    meta: t("contentKindMeta"),
+    release_task: t("contentKindReleaseTask"),
+    gold: t("contentKindGold"),
+  }[kind] || text(kind);
+}
+
 function findTaskRow(entry, form) {
   const rows = state.payloads.tasks?.rows || [];
   return rows.find((row) => {
     const entryMatches = row.release_entry_id === entry || row.task_id === entry || row.legacy_task_id === entry;
     return entryMatches && (!form || row.form === form);
   });
+}
+
+function findTaskDetail(entry, form) {
+  const rows = state.payloads.taskDetails?.rows || [];
+  return rows.find((row) => row.release_entry_id === entry && (!form || row.form === form));
 }
 
 function findAlignmentRow(entry, form) {
@@ -1559,7 +1601,7 @@ function renderTaskDetailMissing() {
   if (metrics) {
     metrics.replaceChildren(metricCard(t("thStatus"), t("taskDetailMissing"), t("taskDetailMissingBody")));
   }
-  ["task-detail-identity", "task-detail-assets", "task-detail-evaluation", "task-detail-precision"].forEach((id) => {
+  ["task-detail-identity", "task-detail-assets", "task-detail-evaluation", "task-detail-precision", "task-detail-content-list"].forEach((id) => {
     const node = byId(id);
     if (node) {
       node.replaceChildren();
@@ -1600,6 +1642,57 @@ function renderTaskDetailAccuracyCases(cases) {
       );
       tr.lastChild.append(caseLink);
       return tr;
+    }),
+  );
+}
+
+function renderTaskDetailContents(row) {
+  const container = byId("task-detail-content-list");
+  if (!container) {
+    return;
+  }
+  const detail = findTaskDetail(row.release_entry_id, row.form);
+  const files = (detail?.files || []).filter((file) => file && file.path);
+  if (files.length === 0) {
+    const empty = make("div", "empty-state");
+    empty.append(make("p", "", t("taskDetailNoContents")));
+    container.replaceChildren(empty);
+    return;
+  }
+  container.replaceChildren(
+    ...files.map((file, index) => {
+      const item = document.createElement("details");
+      item.className = "content-file";
+      item.open = index === 0 || file.kind === "checks";
+
+      const summary = document.createElement("summary");
+      const title = make("span", "content-file-title");
+      const kindLabel = contentKindLabel(file.kind);
+      const fileLabel = file.label || kindLabel;
+      title.append(make("strong", "", fileLabel));
+      if (fileLabel !== kindLabel) {
+        title.append(make("span", "", kindLabel));
+      }
+      const meta = make("span", "content-file-meta");
+      meta.append(
+        make("span", "", format("fileBytes", { count: number(file.size_bytes) })),
+        file.truncated ? pill("pending", t("fileTruncated")) : make("span", "", text(file.language)),
+      );
+      const source = make("a", "text-link", t("openSource"));
+      source.href = githubSourceHref(file.path);
+      source.target = "_blank";
+      source.rel = "noopener";
+      source.addEventListener("click", (event) => event.stopPropagation());
+      summary.append(title, meta, source);
+
+      const path = codeText(file.path);
+      path.classList.add("content-path");
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
+      code.textContent = file.exists ? file.content || "" : t("fileMissing");
+      pre.append(code);
+      item.append(summary, path, pre);
+      return item;
     }),
   );
 }
@@ -1679,6 +1772,7 @@ function renderTaskDetail() {
     [t("labelDigitalMismatch"), preciseNumber(row.max_digital_mismatch_ratio ?? alignment.max_digital_mismatch_ratio)],
     [t("labelRelativeGainDelta"), preciseNumber(row.relative_gain_delta ?? alignment.relative_gain_delta)],
   ]);
+  renderTaskDetailContents(row);
   renderTaskDetailAccuracyCases(cases);
 }
 
@@ -2269,7 +2363,8 @@ async function boot() {
   initLanguageToggle();
   applyStaticTranslations();
   try {
-    const [summary, backends, alignment, tasks, categories, modelRoster, precision] = await Promise.all([
+    const page = document.body.dataset.page || "home";
+    const [summary, backends, alignment, tasks, categories, modelRoster, precision, taskDetails] = await Promise.all([
       fetchJson(DATA.summary),
       fetchJson(DATA.backends),
       fetchJson(DATA.alignment),
@@ -2277,8 +2372,9 @@ async function boot() {
       fetchJson(DATA.categories),
       fetchJson(DATA.modelRoster),
       fetchJson(DATA.precision),
+      page === "task-detail" ? fetchJson(DATA.taskDetails) : Promise.resolve({ rows: [] }),
     ]);
-    state.payloads = { summary, backends, alignment, tasks, categories, modelRoster, precision };
+    state.payloads = { summary, backends, alignment, tasks, categories, modelRoster, precision, taskDetails };
     renderAll();
   } catch (error) {
     showError(error);

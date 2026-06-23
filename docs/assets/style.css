@@ -956,6 +956,67 @@ pre code {
   white-space: normal;
 }
 
+.content-browser {
+  display: grid;
+  gap: 14px;
+}
+
+.content-file {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.content-file summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 58px;
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+
+.content-file[open] summary {
+  border-bottom-color: var(--line);
+}
+
+.content-file-title,
+.content-file-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.content-file-title strong {
+  overflow-wrap: anywhere;
+}
+
+.content-file-title span,
+.content-file-meta {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.content-path {
+  display: block;
+  width: fit-content;
+  max-width: calc(100% - 28px);
+  margin: 14px 14px 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.content-file pre {
+  max-height: 620px;
+  margin: 14px;
+}
+
 .news-list {
   display: grid;
   gap: 14px;
@@ -1141,6 +1202,14 @@ pre code {
   .command-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .content-file summary {
+    grid-template-columns: 1fr;
+  }
+
+  .content-file pre {
+    max-height: 520px;
   }
 
   .site-footer {
