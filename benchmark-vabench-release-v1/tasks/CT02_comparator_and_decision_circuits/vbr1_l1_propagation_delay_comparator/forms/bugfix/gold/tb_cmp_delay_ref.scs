@@ -5,7 +5,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "cmp_delay.va"
+ahdl_include "dut_fixed.va"
 ahdl_include "edge_interval_timer.va"
 
 // Power supplies

@@ -189,6 +189,57 @@ def test_vabench_300_runner_selects_all_certified_rows_by_default() -> None:
     assert len(certified_v11_rows) == 29
 
 
+def test_vabench_300_runner_status_filter_reflects_promoted_v11_rows() -> None:
+    manifest = read_json(MANIFEST)
+
+    certified_only = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses=None,
+        include_pending=False,
+        limit=None,
+    )
+    pending_only = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses={"proposed_v1.1_pending_certification"},
+        include_pending=False,
+        limit=None,
+    )
+    promoted_only = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses={"certified_v1.1_promoted"},
+        include_pending=False,
+        limit=None,
+    )
+    all_rows = run300.select_bundles(
+        manifest,
+        task_ids=None,
+        legacy_entries=None,
+        topics=None,
+        forms=None,
+        expansion_statuses=None,
+        include_pending=True,
+        limit=None,
+    )
+
+    assert len(certified_only) == 300
+    assert len(pending_only) == 0
+    assert len(promoted_only) == 29
+    assert {bundle["expansion_status"] for bundle in promoted_only} == {"certified_v1.1_promoted"}
+    assert len(all_rows) == 300
+
+
 def test_negative_audit_proves_static_shallow_near_miss_shape() -> None:
     audit = read_json(NEGATIVE_AUDIT)
 

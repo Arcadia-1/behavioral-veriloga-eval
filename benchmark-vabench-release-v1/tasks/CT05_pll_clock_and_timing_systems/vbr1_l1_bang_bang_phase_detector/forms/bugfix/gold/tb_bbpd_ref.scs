@@ -1,7 +1,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "bbpd_ref.va"
+ahdl_include "dut_fixed.va"
 
 Vclk          (clk 0)          vsource type=pulse val0=0 val1=0.9 period=1n delay=0.1n rise=20p fall=20p width=0.5n
 Vretimed_data (retimed_data 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=0.6n rise=20p fall=20p width=0.5n

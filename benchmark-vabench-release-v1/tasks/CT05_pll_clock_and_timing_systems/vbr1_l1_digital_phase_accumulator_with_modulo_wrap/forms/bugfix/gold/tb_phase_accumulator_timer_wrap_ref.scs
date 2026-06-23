@@ -10,4 +10,4 @@ simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 
 tran tran stop=75n maxstep=20p errpreset=conservative
 save clk_out phase_out
 
-ahdl_include "./phase_accumulator_timer_wrap_ref.va"
+ahdl_include "dut_fixed.va"

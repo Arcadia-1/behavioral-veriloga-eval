@@ -14,4 +14,4 @@ IDUT (vinn vinp out_n out_p gnd vdd) cmp_hysteresis vhys=10m tedge=50p
 tran tran stop=80n maxstep=100p
 save vinp vinn out_p out_n
 
-ahdl_include "./cmp_hysteresis.va"
+ahdl_include "dut_fixed.va"

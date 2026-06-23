@@ -4,7 +4,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "dwa_ptr_gen.va"
+ahdl_include "dut_fixed.va"
 ahdl_include "v2b_4b.va"
 
 Vclk (clk_i 0) vsource type=pulse val0=0 val1=0.9 period=10n delay=2n rise=0.5n fall=0.5n width=4.5n
