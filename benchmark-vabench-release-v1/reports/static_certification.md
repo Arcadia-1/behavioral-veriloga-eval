@@ -1,6 +1,6 @@
 # vaBench Release Static Certification
 
-Date: 2026-05-26
+Date: 2026-06-08
 
 This report records static release certification for materialized
 release forms. It checks public syntax guardrails against copied gold

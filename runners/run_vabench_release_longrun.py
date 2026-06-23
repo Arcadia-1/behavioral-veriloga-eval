@@ -8,8 +8,10 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import audit_vabench_content_contract
+import audit_vabench_300_expansion
 import audit_vabench_release_assets
 import audit_vabench_release_package
+import build_vabench_300_expansion
 import certify_vabench_release_static
 import import_vabench_release_dual_evidence
 import import_vabench_release_dual_rerun_results
@@ -74,6 +76,7 @@ TESTS = [
     "tests/test_vabench_release_schema_validation.py",
     "tests/test_vabench_release_checksum_manifest.py",
     "tests/test_vabench_release_package_readme.py",
+    "tests/test_vabench_300_expansion.py",
 ]
 
 
@@ -136,6 +139,8 @@ def main() -> None:
     run_step(report_vabench_release_package_manifest.main)
     run_step(audit_vabench_content_contract.main)
     run_step(report_vabench_manual_review_queue.main)
+    run_step(build_vabench_300_expansion.main)
+    run_step(audit_vabench_300_expansion.main)
     run_step(report_vabench_release_evaluator_contract.main)
     run_step(report_vabench_release_completion_audit.main)
     run_step(report_vabench_release_schema_validation.main)
@@ -145,6 +150,8 @@ def main() -> None:
     run_step(report_vabench_release_claim_gate.main)
     run_step(report_vabench_release_paper_tables.main)
     run_step(report_vabench_release_package_manifest.main)
+    run_step(build_vabench_300_expansion.main)
+    run_step(audit_vabench_300_expansion.main)
     run_step(report_vabench_release_evaluator_contract.main)
     run_step(report_vabench_release_checksum_manifest.main)
     run_step(report_vabench_release_artifact_index.main)

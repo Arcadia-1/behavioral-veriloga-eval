@@ -9833,10 +9833,101 @@ RELEASE_CHECK_ALIASES = {
 }
 
 
+def check_vabench300_proposed_generic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    """Behavior guard for v1.1 proposed 300-expansion gold tasks.
+
+    The proposed assets intentionally share a compact event-driven interface so
+    they can be promoted only after EVAS proves clock/reset stimulus, bounded
+    state response, and metric generation.  This checker is not a Spectre
+    certification substitute; it is the repository behavior checker for the
+    generated v1.1 gold references.
+    """
+
+    if len(rows) < 80:
+        return False, f"vabench300_proposed_too_few_rows={len(rows)}"
+    required = {"time", "clk", "in", "rst", "out", "metric"}
+    missing = sorted(required - set(rows[0]))
+    if missing:
+        return False, f"vabench300_proposed_missing_columns={','.join(missing)}"
+
+    def values(name: str) -> list[float]:
+        vals: list[float] = []
+        for row in rows:
+            value = row.get(name)
+            if value is None or not math.isfinite(value):
+                continue
+            vals.append(value)
+        return vals
+
+    series = {name: values(name) for name in required}
+    if any(len(vals) < 80 for vals in series.values()):
+        short = sorted(name for name, vals in series.items() if len(vals) < 80)
+        return False, f"vabench300_proposed_short_series={','.join(short)}"
+
+    def span(name: str) -> float:
+        vals = series[name]
+        return max(vals) - min(vals)
+
+    if span("clk") < 0.8:
+        return False, f"vabench300_proposed_clk_not_toggling span={span('clk'):.3f}"
+    if span("rst") < 0.8:
+        return False, f"vabench300_proposed_rst_not_toggling span={span('rst'):.3f}"
+    if span("in") < 0.8:
+        return False, f"vabench300_proposed_input_not_exercised span={span('in'):.3f}"
+    if span("out") < 1.5:
+        return False, f"vabench300_proposed_output_not_dynamic span={span('out'):.3f}"
+    if span("metric") < 0.2:
+        return False, f"vabench300_proposed_metric_not_dynamic span={span('metric'):.3f}"
+
+    out_vals = series["out"]
+    if min(out_vals) < -1.05 or max(out_vals) > 1.05:
+        return False, f"vabench300_proposed_output_unbounded min={min(out_vals):.3f} max={max(out_vals):.3f}"
+    metric_vals = series["metric"]
+    if min(metric_vals) < -1.05 or max(metric_vals) > 1.05:
+        return False, f"vabench300_proposed_metric_unbounded min={min(metric_vals):.3f} max={max(metric_vals):.3f}"
+    if not any(value > 0.8 for value in out_vals) or not any(value < -0.8 for value in out_vals):
+        return False, "vabench300_proposed_output_missing_bipolar_saturation"
+
+    clk_vals = series["clk"]
+    rising_edges = sum(
+        1
+        for prev, cur in zip(clk_vals, clk_vals[1:])
+        if prev <= 0.5 < cur
+    )
+    if rising_edges < 5:
+        return False, f"vabench300_proposed_too_few_clk_edges={rising_edges}"
+
+    return (
+        True,
+        "vabench300_proposed_gold_ok "
+        f"rows={len(rows)} clk_edges={rising_edges} "
+        f"out_span={span('out'):.3f} metric_span={span('metric'):.3f}",
+    )
+
+
+VABENCH300_PROPOSED_CHECK_ALIASES = {
+    "vbr11_l1_sigma_delta_modulator_loop": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l2_time_interleaved_adc_mismatch_flow": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l2_metastability_window_comparator_flow": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l1_bootstrapped_sample_switch": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l2_fractional_n_pll_divider_flow": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l2_bandgap_startup_trim_flow": ("dut", "tb", "e2e", "bugfix"),
+    "vbr11_l2_quadrature_iq_imbalance_corrector": ("dut", "tb", "e2e", "bugfix"),
+    "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow": ("bugfix",),
+}
+
+
 for _entry_id, _checker in RELEASE_CHECK_ALIASES.items():
     CHECKS.setdefault(_entry_id, _checker)
     for _form in ("dut", "tb", "bugfix", "e2e"):
         CHECKS.setdefault(f"{_entry_id}_{_form}", _checker)
+        CHECKS.setdefault(f"{_entry_id}:{_form}", _checker)
+
+
+for _entry_id, _forms in VABENCH300_PROPOSED_CHECK_ALIASES.items():
+    for _form in _forms:
+        CHECKS[f"{_entry_id}_{_form}"] = check_vabench300_proposed_generic
+        CHECKS[f"{_entry_id}:{_form}"] = check_vabench300_proposed_generic
 
 
 RELEASE_FORM_CHECK_ALIASES = {
@@ -9898,7 +9989,7 @@ def has_behavior_check(task_id: str) -> bool:
 
 def release_checker_task_id(meta: dict, form: str | None = None) -> str | None:
     """Return the release-v1 checker key when a task keeps a legacy meta id."""
-    release_entry_id = str(meta.get("release_entry_id") or "").strip()
+    release_entry_id = str(meta.get("release_entry_id") or meta.get("legacy_entry_id") or "").strip()
     release_form = (form or "").strip()
     if release_form not in {"dut", "tb", "bugfix", "e2e"}:
         legacy_task_id = str(meta.get("task_id") or meta.get("id") or "").strip()
@@ -9919,6 +10010,8 @@ def resolve_checker_task_id(meta: dict, task_id: str, form: str | None = None) -
         meta.get("checker_task_id")
         or release_checker_task_id(meta, form)
         or meta.get("source_checker_task_id")
+        or meta.get("task_id")
+        or meta.get("id")
         or task_id
     )
 

@@ -27,6 +27,11 @@ def test_evaluator_contract_records_current_selection_and_score_gate() -> None:
     assert selection["score_enabled"] is True
     assert selection["l0_conformance_excluded"] is True
     assert selection["unscored_rows_excluded"] is True
+    assert selection["v11_expansion_task_count"] == 300
+    assert selection["v11_expansion_existing_certified_forms"] == 271
+    assert selection["v11_expansion_proposed_pending_forms"] == 29
+    assert selection["partial_pass_negatives_per_expansion_task"] == 5
+    assert selection["partial_pass_negative_count"] == 1500
     assert score_gate["status"] == "score_enabled"
     assert score_gate["score_claim_allowed"] is True
     assert score_gate["ready_to_finish_release"] is True
@@ -73,6 +78,8 @@ def test_evaluator_contract_declares_backend_and_result_semantics() -> None:
     assert "remaining_work" in contract["schemas"]
     assert "evidence" in contract["schemas"]
     assert "result" in contract["schemas"]
+    assert "vabench_300_expansion_manifest" in contract["schemas"]
+    assert "partial_pass_negatives" in contract["schemas"]
 
 
 def test_evaluator_contract_keeps_baseline_and_speed_as_independent_gates() -> None:
@@ -90,6 +97,8 @@ def test_evaluator_contract_keeps_baseline_and_speed_as_independent_gates() -> N
     assert speed["claim_allowed"] is False
     assert commands["finish_after_bridge"] == "python3 runners/finish_vabench_release_after_bridge.py"
     assert commands["primary_dual_rerun"].startswith("./scripts/run_with_bridge.sh")
+    assert commands["build_300_expansion"] == "python3 runners/build_vabench_300_expansion.py"
+    assert commands["audit_300_negatives"] == "python3 runners/audit_vabench_300_expansion.py"
     assert "not simulator certification evidence" in boundary
     assert "Spectre is the final judge" in boundary
     assert "Baseline and speed/debug claims remain blocked" in boundary

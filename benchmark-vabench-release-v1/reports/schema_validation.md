@@ -43,3 +43,5 @@ Date: 2026-06-23
 | `release_task` | 300 | 0 |
 | `evidence` | 542 | 0 |
 | `result` | 813 | 0 |
+| `vabench_300_expansion_manifest` | 1 | 0 |
+| `partial_pass_negatives` | 300 | 0 |

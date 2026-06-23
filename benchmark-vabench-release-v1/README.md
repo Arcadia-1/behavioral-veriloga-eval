@@ -34,6 +34,10 @@ as counted, and no pending or blocked simulator run is certification evidence.
 - `vabench-300-expansion/`: 300 form-level task management surface with
   partial-pass negative manifests and 29 fresh-certified v1.1 task assets.
 - `rerun_staging/`: staged runnable bundles used for EVAS/Spectre dual reruns.
+- `vabench-300-expansion/`: v1.1 expansion assets for the 300 form-level task
+  plan. This includes the existing 271 certified v1 tasks, 29 proposed v1.1
+  tasks, and 5 partial-pass near-miss negatives per task. The proposed tasks
+  remain pending certification until static, EVAS, and Spectre evidence exists.
 
 Rows are planned in `../docs/VABENCH_RELEASE_TRACKER.csv`. A row is not part of
 the scored benchmark until its task assets and EVAS/Spectre evidence are

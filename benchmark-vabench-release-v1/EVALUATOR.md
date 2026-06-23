@@ -16,6 +16,11 @@ and paper-facing baselines. It does not create certification evidence.
 | scored entries | 73 |
 | scored forms | 265 |
 | L0 conformance excluded | `True` |
+| v1.1 expansion tasks | 300 |
+| v1.1 existing certified forms | 271 |
+| v1.1 proposed pending forms | 29 |
+| partial-pass negatives per expansion task | 5 |
+| partial-pass negative candidates | 1500 |
 
 ## Backend Roles
 
@@ -42,6 +47,8 @@ and paper-facing baselines. It does not create certification evidence.
 | `enable_score_denominator` | `python3 runners/enable_vabench_release_score_denominator.py` |
 | `refresh_score_denominator` | `python3 runners/report_vabench_release_score_denominator.py` |
 | `refresh_baseline_gate` | `python3 runners/report_vabench_release_baseline_artifact.py` |
+| `build_300_expansion` | `python3 runners/build_vabench_300_expansion.py` |
+| `audit_300_negatives` | `python3 runners/audit_vabench_300_expansion.py` |
 
 ## Claim Boundary
 
