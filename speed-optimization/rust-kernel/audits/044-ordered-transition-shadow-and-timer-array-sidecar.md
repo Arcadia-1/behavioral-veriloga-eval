@@ -171,4 +171,3 @@ scan 时 Rust 可以直接读这些连续数组。这里减少的是“每步 Py
 3. 选择低风险模型，把 ordered batch 从 shadow 改成 opt-in production target update，但仍让 transition state update/evaluate ramp 保持 Python。
 4. 再迁移 transition state update 和 ramp evaluate 到 Rust typed arrays。
 5. 最后才处理 event/timer queue、cross/above detector 和 event body dispatch。
-

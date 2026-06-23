@@ -93,4 +93,3 @@ Result: pass.
 - It does not justify changing SAR to a numpy-column trace path.
 
 The next real optimization should still be a measured trace/CSV/checker path change with explicit timing split evidence, not a cosmetic rewrite.
-

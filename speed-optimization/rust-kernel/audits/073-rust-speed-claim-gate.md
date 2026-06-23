@@ -131,4 +131,3 @@ py_compile: PASS
 
 - 跑 `profile_fast_rust_55` vs Spectre AX same-server dual rerun，补 AX speed gate；
 - 继续把 B07/B08/B09/B10/B18 这些大面积 partial/shadow/Python-owned behavior 迁到 production Rust/array path，补 full Rustification gate。
-

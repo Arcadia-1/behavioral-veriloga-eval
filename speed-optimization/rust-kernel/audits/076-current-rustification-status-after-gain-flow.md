@@ -103,4 +103,3 @@ Rust55 vs normal fast total wall speedup on this EVAS-only slice:
    - 目标：确认 PFD 是否值得 production Rust，还是应该保持 fallback，因为它已经只有 `~0.177s`。
 4. 080+: Release-wide behavior Rustification。
    - 目标：继续推进 B01-B18 中的 event ordering、transition production、dynamic bus、system task/random/file side-effect 边界。
-
