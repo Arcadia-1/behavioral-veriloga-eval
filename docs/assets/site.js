@@ -192,9 +192,22 @@ const I18N = {
     taskDetailEvaluationTitle: "Certification and parity",
     taskDetailPrecisionTitle: "Precision evidence",
     taskDetailContentsEyebrow: "Benchmark contents",
-    taskDetailContentsTitle: "Prompt, checker, and reference files",
-    taskDetailContentsDescription: "Read the public task prompt, checker contract, metadata, release manifest, and gold/reference artifacts for this row.",
+    taskDetailContentsTitle: "Core benchmark files",
+    taskDetailContentsDescription:
+      "Start with the four files people usually need to inspect: task prompt, reference answer, reference testbench, and evaluation checks. Metadata and manifests are kept below as advanced raw files.",
     taskDetailNoContents: "No inline benchmark contents are available for this row.",
+    taskDetailCorePromptTitle: "Task prompt",
+    taskDetailCorePromptBody: "The exact public prompt given to model submissions.",
+    taskDetailCoreAnswerTitle: "Reference answer",
+    taskDetailCoreAnswerBody: "Gold Verilog-A source files used as the reference implementation. Multi-module e2e rows may have more than one source file.",
+    taskDetailCoreTestbenchTitle: "Reference testbench",
+    taskDetailCoreTestbenchBody: "Spectre testbench files used to exercise the reference implementation.",
+    taskDetailCoreEvaluationTitle: "Evaluation checks",
+    taskDetailCoreEvaluationBody: "Machine-readable checker contract for syntax, compile, simulation correctness, and parity.",
+    taskDetailCoreSuppliedTitle: "Supplied/support artifacts",
+    taskDetailCoreSuppliedBody: "Original inputs or support files that are part of the task context, such as buggy sources in bugfix rows.",
+    taskDetailAdvancedTitle: "Advanced raw files",
+    taskDetailAdvancedDescription: "Machine metadata and complete raw export files for audit and runner integration.",
     taskDetailAccuracyCasesTitle: "Related accuracy cases",
     taskDetailNoAccuracyCase: "No task-metric accuracy case is recorded for this row.",
     openPrompt: "Open prompt",
@@ -211,6 +224,9 @@ const I18N = {
     contentKindMeta: "Metadata",
     contentKindReleaseTask: "Release task",
     contentKindGold: "Gold/reference artifact",
+    contentKindReferenceAnswer: "Reference answer",
+    contentKindReferenceTestbench: "Reference testbench",
+    contentKindSuppliedArtifact: "Supplied/support artifact",
     protocolEyebrow: "Protocol",
     protocolPageTitle: "Evaluation and certification gates",
     protocolPageText:
@@ -545,9 +561,22 @@ const I18N = {
     taskDetailEvaluationTitle: "认证与 parity",
     taskDetailPrecisionTitle: "精度证据",
     taskDetailContentsEyebrow: "Benchmark 内容",
-    taskDetailContentsTitle: "Prompt、checker 与 reference 文件",
-    taskDetailContentsDescription: "直接查看这一行的公开题目 prompt、checker 合约、metadata、release manifest 和 gold/reference artifacts。",
+    taskDetailContentsTitle: "核心 benchmark 文件",
+    taskDetailContentsDescription:
+      "优先查看人工审查最需要的四类文件：题面、参考答案、参考 testbench、评测 checks。Metadata 和 manifest 放在下方高级原始文件区。",
     taskDetailNoContents: "这行没有可内嵌展示的 benchmark 内容。",
+    taskDetailCorePromptTitle: "题面",
+    taskDetailCorePromptBody: "模型提交时看到的原始公开 prompt。",
+    taskDetailCoreAnswerTitle: "参考答案",
+    taskDetailCoreAnswerBody: "作为参考实现的 gold Verilog-A 源文件。多模块 e2e 行可能包含多个源文件。",
+    taskDetailCoreTestbenchTitle: "参考 testbench",
+    taskDetailCoreTestbenchBody: "用于驱动参考实现的 Spectre testbench 文件。",
+    taskDetailCoreEvaluationTitle: "评测 checks",
+    taskDetailCoreEvaluationBody: "机器可读 checker contract，包括语法、编译、仿真正确性和 parity。",
+    taskDetailCoreSuppliedTitle: "题目输入/支持文件",
+    taskDetailCoreSuppliedBody: "属于任务上下文的原始输入或支持文件，例如 bugfix 行里的 buggy source。",
+    taskDetailAdvancedTitle: "高级原始文件",
+    taskDetailAdvancedDescription: "用于审计和 runner 集成的机器 metadata 与完整 raw export 文件。",
     taskDetailAccuracyCasesTitle: "相关精度案例",
     taskDetailNoAccuracyCase: "这行没有记录 task-metric 精度案例。",
     openPrompt: "打开 prompt",
@@ -564,6 +593,9 @@ const I18N = {
     contentKindMeta: "Metadata",
     contentKindReleaseTask: "Release task",
     contentKindGold: "Gold/reference artifact",
+    contentKindReferenceAnswer: "参考答案",
+    contentKindReferenceTestbench: "参考 testbench",
+    contentKindSuppliedArtifact: "题目输入/支持文件",
     protocolEyebrow: "协议",
     protocolPageTitle: "评测与认证 gate",
     protocolPageText:
@@ -1264,6 +1296,9 @@ function contentKindLabel(kind) {
     meta: t("contentKindMeta"),
     release_task: t("contentKindReleaseTask"),
     gold: t("contentKindGold"),
+    reference_answer: t("contentKindReferenceAnswer"),
+    reference_testbench: t("contentKindReferenceTestbench"),
+    supplied_artifact: t("contentKindSuppliedArtifact"),
   }[kind] || text(kind);
 }
 
@@ -1673,6 +1708,85 @@ function renderTaskDetailAccuracyCases(cases) {
   );
 }
 
+function fileBaseName(path) {
+  const parts = String(path || "").split("/");
+  return parts[parts.length - 1] || "";
+}
+
+function isBuggyArtifact(file) {
+  return /(^|[_/-])buggy([_.-]|$)/i.test(fileBaseName(file.path));
+}
+
+function isSpectreTestbench(file) {
+  const name = fileBaseName(file.path).toLowerCase();
+  return name.endsWith(".scs") || name.startsWith("tb_");
+}
+
+function classifyCoreFile(file) {
+  if (file.kind === "prompt") {
+    return "prompt";
+  }
+  if (file.kind === "checks") {
+    return "evaluation";
+  }
+  if (file.kind === "gold") {
+    if (isBuggyArtifact(file)) {
+      return "supplied";
+    }
+    if (isSpectreTestbench(file)) {
+      return "testbench";
+    }
+    return "answer";
+  }
+  return "advanced";
+}
+
+function renderContentFile(file, index, options = {}) {
+  const item = document.createElement("details");
+  item.className = "content-file";
+  item.open = options.open ?? (index === 0 || file.kind === "checks");
+
+  const summary = document.createElement("summary");
+  const title = make("span", "content-file-title");
+  const kindLabel = contentKindLabel(options.kind || file.kind);
+  const fileLabel = options.label || file.label || kindLabel;
+  title.append(make("strong", "", fileLabel));
+  if (fileLabel !== kindLabel) {
+    title.append(make("span", "", kindLabel));
+  }
+  const meta = make("span", "content-file-meta");
+  meta.append(
+    make("span", "", format("fileBytes", { count: number(file.size_bytes) })),
+    file.truncated ? pill("pending", t("fileTruncated")) : make("span", "", text(file.language)),
+  );
+  const source = make("a", "text-link", t("openSource"));
+  source.href = githubSourceHref(file.path);
+  source.target = "_blank";
+  source.rel = "noopener";
+  source.addEventListener("click", (event) => event.stopPropagation());
+  summary.append(title, meta, source);
+
+  const path = codeText(file.path);
+  path.classList.add("content-path");
+  const pre = document.createElement("pre");
+  const code = document.createElement("code");
+  code.textContent = file.exists ? file.content || "" : t("fileMissing");
+  pre.append(code);
+  item.append(summary, path, pre);
+  return item;
+}
+
+function renderCoreFileGroup(titleKey, bodyKey, files, kind, defaultOpen = false) {
+  const section = document.createElement("section");
+  section.className = "content-core-group";
+  const heading = make("div", "content-core-heading");
+  heading.append(make("h3", "", t(titleKey)), make("p", "", t(bodyKey)));
+  const list = make("div", "content-browser compact");
+  list.append(...files.map((file, index) => renderContentFile(file, index, { kind, open: defaultOpen || index === 0 })));
+  section.append(heading, list);
+  return section;
+}
+
 function renderTaskDetailContents(row) {
   const container = byId("task-detail-content-list");
   if (!container) {
@@ -1686,42 +1800,39 @@ function renderTaskDetailContents(row) {
     container.replaceChildren(empty);
     return;
   }
-  container.replaceChildren(
-    ...files.map((file, index) => {
-      const item = document.createElement("details");
-      item.className = "content-file";
-      item.open = index === 0 || file.kind === "checks";
+  const groups = {
+    prompt: [],
+    answer: [],
+    testbench: [],
+    evaluation: [],
+    supplied: [],
+    advanced: [],
+  };
+  files.forEach((file) => groups[classifyCoreFile(file)].push(file));
 
-      const summary = document.createElement("summary");
-      const title = make("span", "content-file-title");
-      const kindLabel = contentKindLabel(file.kind);
-      const fileLabel = file.label || kindLabel;
-      title.append(make("strong", "", fileLabel));
-      if (fileLabel !== kindLabel) {
-        title.append(make("span", "", kindLabel));
-      }
-      const meta = make("span", "content-file-meta");
-      meta.append(
-        make("span", "", format("fileBytes", { count: number(file.size_bytes) })),
-        file.truncated ? pill("pending", t("fileTruncated")) : make("span", "", text(file.language)),
-      );
-      const source = make("a", "text-link", t("openSource"));
-      source.href = githubSourceHref(file.path);
-      source.target = "_blank";
-      source.rel = "noopener";
-      source.addEventListener("click", (event) => event.stopPropagation());
-      summary.append(title, meta, source);
+  const core = make("div", "content-core");
+  [
+    ["taskDetailCorePromptTitle", "taskDetailCorePromptBody", groups.prompt, "prompt", true],
+    ["taskDetailCoreAnswerTitle", "taskDetailCoreAnswerBody", groups.answer, "reference_answer", true],
+    ["taskDetailCoreTestbenchTitle", "taskDetailCoreTestbenchBody", groups.testbench, "reference_testbench", true],
+    ["taskDetailCoreEvaluationTitle", "taskDetailCoreEvaluationBody", groups.evaluation, "checks", true],
+    ["taskDetailCoreSuppliedTitle", "taskDetailCoreSuppliedBody", groups.supplied, "supplied_artifact", false],
+  ].forEach(([titleKey, bodyKey, groupFiles, kind, defaultOpen]) => {
+    if (groupFiles.length) {
+      core.append(renderCoreFileGroup(titleKey, bodyKey, groupFiles, kind, defaultOpen));
+    }
+  });
 
-      const path = codeText(file.path);
-      path.classList.add("content-path");
-      const pre = document.createElement("pre");
-      const code = document.createElement("code");
-      code.textContent = file.exists ? file.content || "" : t("fileMissing");
-      pre.append(code);
-      item.append(summary, path, pre);
-      return item;
-    }),
-  );
+  const advanced = document.createElement("details");
+  advanced.className = "content-advanced";
+  const summary = document.createElement("summary");
+  summary.append(make("strong", "", t("taskDetailAdvancedTitle")), make("span", "", t("taskDetailAdvancedDescription")));
+  advanced.append(summary);
+  const advancedList = make("div", "content-browser compact");
+  advancedList.append(...files.map((file, index) => renderContentFile(file, index, { open: false })));
+  advanced.append(advancedList);
+
+  container.replaceChildren(core, advanced);
 }
 
 function renderTaskDetail() {
