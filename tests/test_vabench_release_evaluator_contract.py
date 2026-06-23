@@ -92,4 +92,4 @@ def test_evaluator_contract_keeps_baseline_and_speed_as_independent_gates() -> N
     assert commands["primary_dual_rerun"].startswith("./scripts/run_with_bridge.sh")
     assert "not simulator certification evidence" in boundary
     assert "Spectre is the final judge" in boundary
-    assert "Baseline and speed/debug claims are independent" in boundary
+    assert "Baseline and speed/debug claims remain blocked" in boundary

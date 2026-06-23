@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vaBench Task Detail</title>
+    <meta name="description" content="Inspect one vaBench released row, public assets, backend certification, and precision evidence.">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body data-page="task-detail">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="vaBench home">
+        <span class="brand-mark">vB</span>
+        <span>
+          <strong>vaBench</strong>
+          <small data-i18n="brandSubtitle">Behavioral Verilog-A Benchmark</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <nav class="top-nav" aria-label="Primary navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a href="leaderboard.html" data-i18n="navLeaderboard">Leaderboard</a>
+          <a href="benchmark.html" aria-current="page" data-i18n="navBenchmark">Benchmark</a>
+          <a href="run-model-eval.html" data-i18n="navRunModels">Run Models</a>
+          <a href="protocol.html" data-i18n="navProtocol">Protocol</a>
+          <a href="accuracy.html" data-i18n="navAccuracy">Accuracy</a>
+          <a href="news.html" data-i18n="navNews">News</a>
+          <a href="contributors.html" data-i18n="navContributors">Contributors</a>
+        </nav>
+        <button class="language-toggle" id="language-toggle" type="button" aria-pressed="false" data-i18n-aria-label="languageToggleAria">
+          <span data-i18n="languageToggle">中文</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="section page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="benchmarkDetailEyebrow">Benchmark detail</p>
+          <h1 id="task-detail-title" data-i18n="benchmarkDetailTitle">Benchmark row detail</h1>
+          <p class="hero-text" id="task-detail-intro" data-i18n="benchmarkDetailText">
+            Inspect one released row: public task identity, source paths, certification status, and EVAS/Spectre precision evidence.
+          </p>
+          <div class="button-row">
+            <a class="button-link" href="benchmark.html" data-i18n="taskDetailBack">Back to benchmark</a>
+          </div>
+          <div class="metric-grid compact" id="task-detail-metrics"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner detail-grid">
+          <article class="detail-panel">
+            <h2 data-i18n="taskDetailIdentityTitle">Task identity</h2>
+            <dl class="field-grid" id="task-detail-identity"></dl>
+          </article>
+          <article class="detail-panel">
+            <h2 data-i18n="taskDetailAssetsTitle">Public assets</h2>
+            <dl class="field-grid" id="task-detail-assets"></dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner detail-grid">
+          <article class="detail-panel">
+            <h2 data-i18n="taskDetailEvaluationTitle">Certification and parity</h2>
+            <dl class="field-grid" id="task-detail-evaluation"></dl>
+          </article>
+          <article class="detail-panel">
+            <h2 data-i18n="taskDetailPrecisionTitle">Precision evidence</h2>
+            <dl class="field-grid" id="task-detail-precision"></dl>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="taskDetailContentsEyebrow">Benchmark contents</p>
+              <h2 data-i18n="taskDetailContentsTitle">Prompt, checker, and reference files</h2>
+            </div>
+            <p data-i18n="taskDetailContentsDescription">Read the public task prompt, checker contract, metadata, release manifest, and gold/reference artifacts for this row.</p>
+          </div>
+          <div class="content-browser" id="task-detail-content-list"></div>
+        </div>
+      </section>
+
+      <section class="section muted">
+        <div class="section-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow" data-i18n="accuracyCaseEyebrow">Accuracy case</p>
+              <h2 data-i18n="taskDetailAccuracyCasesTitle">Related accuracy cases</h2>
+            </div>
+            <p data-i18n="taskMetricDescription">Measurement-flow rows can use extracted circuit metrics as the acceptance gate.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="thSurface">Surface</th>
+                  <th scope="col" data-i18n="thTaskMetricDelta">Metric Delta</th>
+                  <th scope="col" data-i18n="thDiagnosticWaveform">Diagnostic Waveform</th>
+                  <th scope="col" data-i18n="thDiagnosticWorstSignalRms">Diagnostic Worst Signal RMS</th>
+                  <th scope="col" data-i18n="thCase">Case</th>
+                </tr>
+              </thead>
+              <tbody id="task-detail-accuracy-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span data-i18n="footerGenerated">Generated from vaBench release reports.</span>
+      <span id="generated-at"></span>
+    </footer>
+
+    <script src="assets/site.js"></script>
+  </body>
+</html>

@@ -50,6 +50,10 @@ POINTWISE_DIFFERENCE_TAXONOMY = [
         "label": "Solver sampling grid",
         "what_changes": "EVAS and Spectre may save different accepted transient steps, so the report compares common signals on a resampled grid.",
         "why_expected": "Adaptive solvers choose output points differently even when the circuit-level trajectory is equivalent.",
+        "known_shortcoming": "Our comparison does not prove that EVAS reproduced Spectre's internal step acceptance history; it only compares saved observable signals after alignment.",
+        "current_handling": "The released report uses a fixed common sample grid and keeps both effective and raw RMS metrics visible.",
+        "bug_signal": "Treat it as a bug if the stable regions disagree, if the checker result changes, or if a row only passes after hiding a broad time interval.",
+        "feedback_wanted": "Send the row id, both CSV traces, and the first time range where the aligned stable-region values diverge.",
         "reporting_rule": "Use aligned-grid RMS as a diagnostic metric; do not read it as bit-exact equality.",
     },
     {
@@ -57,6 +61,10 @@ POINTWISE_DIFFERENCE_TAXONOMY = [
         "label": "Event time and cross() localization",
         "what_changes": "cross() events and timer events can fire at slightly different localized times.",
         "why_expected": "The two engines use different event scheduling and breakpoint-localization mechanics.",
+        "known_shortcoming": "EVAS does not yet claim full Spectre-equivalent ordering for every cross(), timer(), transition(), and simultaneous-event corner case.",
+        "current_handling": "Rows with event-heavy behavior are checked by behavior checkers first, then by waveform/event diagnostics on the supported subset.",
+        "bug_signal": "Treat it as a bug if an edge is missed, duplicated, ordered differently in a way that changes state, or if EVAS PASS / Spectre FAIL appears.",
+        "feedback_wanted": "A minimal Verilog-A snippet with the triggering cross()/timer() statements is the most useful report.",
         "reporting_rule": "Check behavior, event consistency, and edge-window metrics before calling this a mismatch.",
     },
     {
@@ -64,6 +72,10 @@ POINTWISE_DIFFERENCE_TAXONOMY = [
         "label": "Edge and discontinuity window",
         "what_changes": "A few samples around fast edges, discontinuities, or digital thresholds can dominate raw pointwise error.",
         "why_expected": "One-sample edge placement differences can produce large instantaneous voltage deltas while stable regions match.",
+        "known_shortcoming": "The edge-window rule is a pragmatic acceptance gate. If used carelessly, it could mask a real timing or threshold bug.",
+        "current_handling": "Effective metrics may discount only a bounded localized window, and raw metrics remain visible next to the effective metrics.",
+        "bug_signal": "Treat it as a bug if the excluded window grows, repeats across many edges, changes a sampled decision, or affects a task metric.",
+        "feedback_wanted": "Report the signal name, edge time, raw max error, and whether the post-edge state or checker output changed.",
         "reporting_rule": "Effective metrics may discount a bounded localized window; raw metrics stay visible for audit.",
     },
     {
@@ -71,6 +83,10 @@ POINTWISE_DIFFERENCE_TAXONOMY = [
         "label": "Interpolation on the common grid",
         "what_changes": "Saved waveforms are interpolated before RMS comparison.",
         "why_expected": "Different native output times require interpolation to compare like with like.",
+        "known_shortcoming": "The current diagnostic uses simple common-grid interpolation; it can overstate or understate error for sparse outputs and very sharp transitions.",
+        "current_handling": "We report row-level and worst-signal RMS instead of hiding interpolation-sensitive rows behind a single pass/fail scalar.",
+        "bug_signal": "Treat it as a bug if a denser save grid or direct event-time comparison changes the conclusion for a row.",
+        "feedback_wanted": "A suggested comparison method or a row where interpolation choice flips the result would be directly actionable.",
         "reporting_rule": "Treat interpolation error as part of the precision diagnostic, not as the task's functional score.",
     },
     {
@@ -78,13 +94,32 @@ POINTWISE_DIFFERENCE_TAXONOMY = [
         "label": "transition() smoothing",
         "what_changes": "transition() ramps can differ slightly in breakpoint placement and sampled slope.",
         "why_expected": "EVAS and Spectre do not promise identical internal smoothing schedules.",
+        "known_shortcoming": "EVAS transition handling is aligned for the benchmark-supported cases, but it is not a complete public clone of Spectre's internal smoothing implementation.",
+        "current_handling": "Stable-region behavior, checker results, and raw/effective waveform metrics are shown together so transition artifacts are not silently ignored.",
+        "bug_signal": "Treat it as a bug if transition delay, rise/fall time, or target update semantics change a downstream decision or metric.",
+        "feedback_wanted": "A small transition() example with expected timing, target updates, and saved waveforms is the best repair input.",
         "reporting_rule": "Inspect stable-region behavior and checker metrics when transition edges inflate raw RMS.",
+    },
+    {
+        "name": "noise_like_or_dithered_stimulus",
+        "label": "Noise-like or dithered stimulus",
+        "what_changes": "Rows with dither, pseudo-random control, or measurement stimulus can show poor pointwise phase agreement while preserving the extracted circuit metric.",
+        "why_expected": "For these rows the design objective is usually an aggregate metric such as gain, lock, count, or convergence, not identical sample-by-sample noise phase.",
+        "known_shortcoming": "If the checker metric is too broad, it may miss waveform-level differences that a circuit designer would care about.",
+        "current_handling": "The page lists task-metric rows separately and keeps diagnostic waveform-only RMS visible for the same rows.",
+        "bug_signal": "Treat it as a bug if a different seed, window, or stimulus phase changes pass/fail, or if the aggregate metric hides visible functional drift.",
+        "feedback_wanted": "Suggestions for stronger metric windows, deterministic seeds, or additional observables are especially useful here.",
+        "reporting_rule": "Use deterministic task metrics as the acceptance gate, with pointwise RMS reported as supporting evidence.",
     },
     {
         "name": "task_metric_gate",
         "label": "Task-metric gate",
         "what_changes": "Some rows are accepted by extracted circuit metrics, such as gain or lock/frequency values, not by raw pointwise waveform equality.",
         "why_expected": "Measurement-flow tasks can use dither/noise-like stimulus where pointwise phase is not the design objective.",
+        "known_shortcoming": "A task-metric gate is only as good as the checker behind it. Weak checkers can over-accept; overly tight checkers can reject valid simulator differences.",
+        "current_handling": "The report names the task-metric policy, metric delta, diagnostic waveform status, and raw/effective RMS side by side.",
+        "bug_signal": "Treat it as a bug if the metric tolerance is undocumented, if the metric is not circuit-meaningful, or if a row passes despite an obviously wrong waveform.",
+        "feedback_wanted": "Concrete checker improvements are welcome: extra observables, better windows, stricter metric bounds, or task-specific edge cases.",
         "reporting_rule": "Report the task metric and include pointwise waveform diagnostics only as explanatory context.",
     },
 ]
@@ -630,7 +665,20 @@ def write_md(report: dict[str, Any]) -> None:
         ]
     )
     for item in report["pointwise_difference_taxonomy"]:
-        lines.append(f"- **{item['label']}**: {item['reporting_rule']}")
+        lines.extend(
+            [
+                f"### {item['label']}",
+                "",
+                f"- Why expected: {item['why_expected']}",
+                f"- What changes: {item['what_changes']}",
+                f"- Current shortcoming: {item['known_shortcoming']}",
+                f"- Current handling: {item['current_handling']}",
+                f"- Bug signal: {item['bug_signal']}",
+                f"- Useful feedback: {item['feedback_wanted']}",
+                f"- Reporting rule: {item['reporting_rule']}",
+                "",
+            ]
+        )
     lines.extend(["", "## Interpretation", ""])
     for value in report["interpretation"].values():
         lines.append(f"- {value}")

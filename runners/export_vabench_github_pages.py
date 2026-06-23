@@ -9,9 +9,11 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_ROOT = ROOT / "benchmark-vabench-release-v1" / "reports"
+MANIFEST_JSON = ROOT / "benchmark-vabench-release-v1" / "MANIFEST.json"
 OVERVIEW_JSON = REPORTS_ROOT / "benchmark_overview.json"
 DOCS_ROOT = ROOT / "docs"
 DOCS_DATA_ROOT = DOCS_ROOT / "data"
+MAX_INLINE_FILE_CHARS = 240_000
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -21,6 +23,61 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def repo_path(path: str | None) -> Path | None:
+    if not path:
+        return None
+    candidate = (ROOT / path).resolve()
+    try:
+        candidate.relative_to(ROOT.resolve())
+    except ValueError:
+        return None
+    return candidate
+
+
+def file_language(path: str | None) -> str:
+    suffix = Path(path or "").suffix.lower()
+    return {
+        ".md": "markdown",
+        ".yaml": "yaml",
+        ".yml": "yaml",
+        ".json": "json",
+        ".va": "verilog-a",
+        ".vams": "verilog-a",
+        ".scs": "spectre",
+    }.get(suffix, "text")
+
+
+def read_inline_text(path: str | None, *, pretty_json: bool = False) -> dict[str, Any]:
+    source = repo_path(path)
+    if source is None or not source.exists() or not source.is_file():
+        return {
+            "path": path,
+            "exists": False,
+            "language": file_language(path),
+            "size_bytes": None,
+            "truncated": False,
+            "content": "",
+        }
+    raw = source.read_text(encoding="utf-8", errors="replace")
+    content = raw
+    if pretty_json:
+        try:
+            content = json.dumps(json.loads(raw), indent=2, sort_keys=True)
+        except json.JSONDecodeError:
+            content = raw
+    truncated = len(content) > MAX_INLINE_FILE_CHARS
+    if truncated:
+        content = content[:MAX_INLINE_FILE_CHARS] + "\n\n[truncated in website export]"
+    return {
+        "path": path,
+        "exists": True,
+        "language": file_language(path),
+        "size_bytes": source.stat().st_size,
+        "truncated": truncated,
+        "content": content,
+    }
 
 
 def pass_rate(pass_count: Any, total: Any) -> float | None:
@@ -71,7 +128,16 @@ def boolish(value: Any) -> bool:
     return bool(value)
 
 
-def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
+def manifest_rows_by_key(manifest: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
+    rows: dict[tuple[str, str], dict[str, Any]] = {}
+    for row in manifest.get("forms", []):
+        if not isinstance(row, dict):
+            continue
+        rows[(str(row.get("release_entry_id") or ""), str(row.get("form") or ""))] = row
+    return rows
+
+
+def normalize_task_row(row: dict[str, Any], manifest_row: dict[str, Any] | None = None) -> dict[str, Any]:
     expansion_status = str(row.get("expansion_status") or "")
     if expansion_status == "provisional_v1.1_management":
         provenance = "provisional_v1.1"
@@ -90,6 +156,8 @@ def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
         row.get("difficulty"),
         row.get("track"),
         provenance,
+        manifest_row.get("prompt"),
+        manifest_row.get("checks"),
     ]
     return {
         "task_id": row.get("task_id"),
@@ -122,6 +190,15 @@ def normalize_task_row(row: dict[str, Any]) -> dict[str, Any]:
         "gold_status": row.get("gold_status"),
         "evidence": row.get("evidence"),
         "provenance": provenance,
+        "family": manifest_row.get("family"),
+        "prompt": manifest_row.get("prompt"),
+        "checks": manifest_row.get("checks"),
+        "meta": manifest_row.get("meta"),
+        "release_task_manifest": manifest_row.get("release_task_manifest"),
+        "gold_count": manifest_row.get("gold_count"),
+        "certification": manifest_row.get("certification"),
+        "exclusion_reasons": manifest_row.get("exclusion_reasons", []),
+        "content_exclusion_reasons": manifest_row.get("content_exclusion_reasons", []),
         "search_text": " ".join(str(part) for part in search_parts if part).lower(),
     }
 
@@ -207,8 +284,13 @@ def build_backend_coverage(overview: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_task_gallery(overview: dict[str, Any]) -> dict[str, Any]:
-    rows = [normalize_task_row(row) for row in overview.get("form_rows", []) if isinstance(row, dict)]
+def build_task_gallery(overview: dict[str, Any], manifest: dict[str, Any] | None = None) -> dict[str, Any]:
+    manifest_by_key = manifest_rows_by_key(manifest or {})
+    rows = [
+        normalize_task_row(row, manifest_by_key.get((str(row.get("release_entry_id") or ""), str(row.get("form") or ""))))
+        for row in overview.get("form_rows", [])
+        if isinstance(row, dict)
+    ]
     return {
         "generated_at": date.today().isoformat(),
         "summary": {
@@ -231,6 +313,78 @@ def build_task_gallery(overview: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def release_task_artifacts(path: str | None) -> dict[str, Any]:
+    source = repo_path(path)
+    if source is None or not source.exists() or not source.is_file():
+        return {}
+    try:
+        payload = json.loads(source.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    artifacts = payload.get("artifacts", {})
+    return artifacts if isinstance(artifacts, dict) else {}
+
+
+def content_file(kind: str, label: str, path: str | None, *, pretty_json: bool = False) -> dict[str, Any]:
+    file_payload = read_inline_text(path, pretty_json=pretty_json)
+    return {
+        "kind": kind,
+        "label": label,
+        **file_payload,
+    }
+
+
+def build_task_details(manifest: dict[str, Any]) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    prompt_count = checks_count = meta_count = release_task_count = gold_file_count = truncated_count = 0
+    for row in manifest.get("forms", []):
+        if not isinstance(row, dict):
+            continue
+        release_task_path = row.get("release_task_manifest")
+        artifacts = release_task_artifacts(release_task_path)
+        files = [
+            content_file("prompt", "Prompt", row.get("prompt"), pretty_json=False),
+            content_file("checks", "Checker", row.get("checks"), pretty_json=False),
+            content_file("meta", "Metadata", row.get("meta"), pretty_json=True),
+            content_file("release_task", "Release task manifest", release_task_path, pretty_json=True),
+        ]
+        gold_paths = artifacts.get("gold", [])
+        if isinstance(gold_paths, str):
+            gold_paths = [gold_paths]
+        if isinstance(gold_paths, list):
+            for index, gold_path in enumerate(gold_paths, start=1):
+                files.append(content_file("gold", f"Gold artifact {index}", str(gold_path), pretty_json=False))
+        prompt_count += int(bool(files[0].get("exists")))
+        checks_count += int(bool(files[1].get("exists")))
+        meta_count += int(bool(files[2].get("exists")))
+        release_task_count += int(bool(files[3].get("exists")))
+        gold_file_count += sum(1 for file in files if file.get("kind") == "gold" and file.get("exists"))
+        truncated_count += sum(1 for file in files if file.get("truncated"))
+        rows.append(
+            {
+                "release_entry_id": row.get("release_entry_id"),
+                "form": row.get("form"),
+                "task_id": row.get("task_id"),
+                "base_function": row.get("base_function"),
+                "files": files,
+            }
+        )
+    return {
+        "generated_at": date.today().isoformat(),
+        "summary": {
+            "row_count": len(rows),
+            "prompt_count": prompt_count,
+            "checks_count": checks_count,
+            "meta_count": meta_count,
+            "release_task_count": release_task_count,
+            "gold_file_count": gold_file_count,
+            "truncated_file_count": truncated_count,
+            "max_inline_file_chars": MAX_INLINE_FILE_CHARS,
+        },
+        "rows": rows,
+    }
+
+
 def build_category_coverage(overview: dict[str, Any]) -> dict[str, Any]:
     return {
         "generated_at": date.today().isoformat(),
@@ -240,10 +394,12 @@ def build_category_coverage(overview: dict[str, Any]) -> dict[str, Any]:
 
 def export_site(output_dir: Path = DOCS_DATA_ROOT) -> dict[str, Path]:
     overview = read_json(OVERVIEW_JSON)
+    manifest = read_json(MANIFEST_JSON)
     payloads = {
         "site_summary.json": build_site_summary(overview),
         "backend_coverage.json": build_backend_coverage(overview),
-        "task_gallery.json": build_task_gallery(overview),
+        "task_gallery.json": build_task_gallery(overview, manifest),
+        "task_details.json": build_task_details(manifest),
         "category_coverage.json": build_category_coverage(overview),
     }
     written: dict[str, Path] = {}

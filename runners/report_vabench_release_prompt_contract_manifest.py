@@ -117,7 +117,7 @@ def build_row(form_dir: Path) -> dict[str, Any]:
     return {
         "status": status,
         "prompt_version_id": PROMPT_VERSION_ID,
-        "release_entry_id": release_task.get("release_entry_id", ""),
+        "release_entry_id": release_task.get("release_entry_id") or release_task.get("legacy_entry_id", ""),
         "task_id": release_task.get("id", ""),
         "form": form,
         "level": release_task.get("level", ""),

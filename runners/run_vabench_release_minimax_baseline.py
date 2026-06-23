@@ -984,6 +984,7 @@ def main() -> int:
     ap.add_argument("--output-root", default="")
     ap.add_argument("--score-roster", default=str(SCORE_DENOMINATOR))
     ap.add_argument("--tag", default="")
+    ap.add_argument("--score-roster", default=str(SCORE_DENOMINATOR))
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--entry", action="append", default=[])
     ap.add_argument("--form", action="append", default=[])
@@ -1036,6 +1037,9 @@ def main() -> int:
             if line.strip() and not line.lstrip().startswith("#")
         )
 
+    score_roster_path = Path(args.score_roster)
+    if not score_roster_path.is_absolute():
+        score_roster_path = ROOT / score_roster_path
     rows = scored_form_rows(
         denominator_path=args.score_roster,
         limit=args.limit,
