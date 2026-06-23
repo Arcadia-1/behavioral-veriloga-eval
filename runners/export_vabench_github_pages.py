@@ -268,9 +268,9 @@ def build_site_summary(overview: dict[str, Any]) -> dict[str, Any]:
                 "detail": "audited release mismatch count",
             },
             {
-                "label": "Scored Rows",
+                "label": "Core Score Forms",
                 "value": summary.get("scored_form_count"),
-                "detail": "rows counted in current score surface",
+                "detail": "main leaderboard denominator; 35 certified support forms are reported separately",
             },
             {
                 "label": "Parity Rows",
