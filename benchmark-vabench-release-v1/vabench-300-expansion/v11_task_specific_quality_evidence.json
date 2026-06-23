@@ -1,7 +1,7 @@
 {
   "claim_boundary": [
     "This validates task-specific v1.1 gold and negative behavior with EVAS only.",
-    "Spectre remains the final certification judge before paper-score admission.",
+    "This artifact is not itself Spectre certification; fresh Spectre certification and score admission are recorded in the release reports.",
     "A negative full-checker pass means the negative compiled and simulated but failed sim_correct."
   ],
   "engine": "evas-rust",
@@ -3612,7 +3612,7 @@
     }
   ],
   "output_root": "/private/tmp/vabench300_v11_quality_after_spectre_fix",
-  "spectre_status": "pending_fresh_spectre_after_task_specific_rebuild",
+  "spectre_status": "recorded_separately_in_vabench_300_v11_fresh_spectre_rerun",
   "started_at": "2026-06-23T09:54:41",
   "status": "pass",
   "task_count": 29

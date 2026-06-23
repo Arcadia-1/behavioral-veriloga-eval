@@ -222,8 +222,10 @@ def write_markdown(summary: dict[str, Any]) -> None:
         f"- output root: `{summary['output_root']}`",
         "",
         "This is local EVAS evidence for the rebuilt v1.1 task-specific assets.",
-        "It does not replace fresh Spectre certification, which remains required before",
-        "these rows can enter the paper score denominator.",
+        "It is not itself Spectre certification. Fresh Spectre certification and",
+        "score-denominator admission are recorded separately in",
+        "`benchmark-vabench-release-v1/reports/vabench_300_v11_fresh_spectre_rerun.json`",
+        "and `benchmark-vabench-release-v1/reports/vabench_300_v11_score_admission.json`.",
         "",
     ]
     EVIDENCE_MD.write_text("\n".join(lines), encoding="utf-8")
@@ -286,10 +288,10 @@ def main() -> int:
         "gold_behavior_checker_fail_count": sum(1 for row in gold_results if not row["behavior_checker_pass"]),
         "negative_compile_sim_pass_count": sum(1 for row in negative_results if row["compile_sim_pass"]),
         "negative_full_checker_fail_count": sum(1 for row in negative_results if row["full_checker_fail"]),
-        "spectre_status": "pending_fresh_spectre_after_task_specific_rebuild",
+        "spectre_status": "recorded_separately_in_vabench_300_v11_fresh_spectre_rerun",
         "claim_boundary": [
             "This validates task-specific v1.1 gold and negative behavior with EVAS only.",
-            "Spectre remains the final certification judge before paper-score admission.",
+            "This artifact is not itself Spectre certification; fresh Spectre certification and score admission are recorded in the release reports.",
             "A negative full-checker pass means the negative compiled and simulated but failed sim_correct.",
         ],
         "gold_results": gold_results,

@@ -760,6 +760,9 @@ def build_report() -> dict[str, Any]:
                 "score_denominator_admitted_v11_task_count"
             ),
         }
+    full300_parity_total = as_int(vabench300_expansion.get("task_count")) or len(form_rows)
+    full300_parity_count = len(parity_passed)
+    legacy_dual_certified_count = as_int(vabench300_expansion.get("existing_certified_v1_task_count"))
 
     provisional_v11_task_count = as_int(manifest_summary.get("provisional_v11_task_count"))
     score_denominator_pending_v11_task_count = as_int(

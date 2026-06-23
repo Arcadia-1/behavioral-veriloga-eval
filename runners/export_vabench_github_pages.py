@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_ROOT = ROOT / "benchmark-vabench-release-v1" / "reports"
 MANIFEST_JSON = ROOT / "benchmark-vabench-release-v1" / "MANIFEST.json"
+EXPANSION_MANIFEST_JSON = ROOT / "benchmark-vabench-release-v1" / "vabench-300-expansion" / "VABENCH_300_MANIFEST.json"
 OVERVIEW_JSON = REPORTS_ROOT / "benchmark_overview.json"
 DOCS_ROOT = ROOT / "docs"
 DOCS_DATA_ROOT = DOCS_ROOT / "data"
@@ -128,16 +129,26 @@ def boolish(value: Any) -> bool:
     return bool(value)
 
 
-def manifest_rows_by_key(manifest: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
+def manifest_form_rows(manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = manifest.get("forms")
+    if not isinstance(rows, list):
+        rows = manifest.get("tasks")
+    return [row for row in rows or [] if isinstance(row, dict)]
+
+
+def manifest_rows_by_key(*manifests: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
     rows: dict[tuple[str, str], dict[str, Any]] = {}
-    for row in manifest.get("forms", []):
-        if not isinstance(row, dict):
-            continue
-        rows[(str(row.get("release_entry_id") or ""), str(row.get("form") or ""))] = row
+    for manifest in manifests:
+        for row in manifest_form_rows(manifest):
+            form = str(row.get("form") or "")
+            for entry_key in (row.get("release_entry_id"), row.get("legacy_entry_id")):
+                if entry_key:
+                    rows.setdefault((str(entry_key), form), row)
     return rows
 
 
 def normalize_task_row(row: dict[str, Any], manifest_row: dict[str, Any] | None = None) -> dict[str, Any]:
+    manifest_row = manifest_row or {}
     expansion_status = str(row.get("expansion_status") or "")
     if expansion_status == "provisional_v1.1_management":
         provenance = "provisional_v1.1"
@@ -284,8 +295,12 @@ def build_backend_coverage(overview: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_task_gallery(overview: dict[str, Any], manifest: dict[str, Any] | None = None) -> dict[str, Any]:
-    manifest_by_key = manifest_rows_by_key(manifest or {})
+def build_task_gallery(
+    overview: dict[str, Any],
+    manifest: dict[str, Any] | None = None,
+    expansion_manifest: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    manifest_by_key = manifest_rows_by_key(manifest or {}, expansion_manifest or {})
     rows = [
         normalize_task_row(row, manifest_by_key.get((str(row.get("release_entry_id") or ""), str(row.get("form") or ""))))
         for row in overview.get("form_rows", [])
@@ -334,12 +349,23 @@ def content_file(kind: str, label: str, path: str | None, *, pretty_json: bool =
     }
 
 
-def build_task_details(manifest: dict[str, Any]) -> dict[str, Any]:
+def build_task_details(
+    overview: dict[str, Any],
+    manifest: dict[str, Any],
+    expansion_manifest: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    manifest_by_key = manifest_rows_by_key(manifest, expansion_manifest or {})
     rows: list[dict[str, Any]] = []
     prompt_count = checks_count = meta_count = release_task_count = gold_file_count = truncated_count = 0
-    for row in manifest.get("forms", []):
-        if not isinstance(row, dict):
+    for overview_row in overview.get("form_rows", []):
+        if not isinstance(overview_row, dict):
             continue
+        row = manifest_by_key.get(
+            (str(overview_row.get("release_entry_id") or ""), str(overview_row.get("form") or "")),
+            {},
+        )
+        if not isinstance(row, dict):
+            row = {}
         release_task_path = row.get("release_task_manifest")
         artifacts = release_task_artifacts(release_task_path)
         files = [
@@ -362,10 +388,10 @@ def build_task_details(manifest: dict[str, Any]) -> dict[str, Any]:
         truncated_count += sum(1 for file in files if file.get("truncated"))
         rows.append(
             {
-                "release_entry_id": row.get("release_entry_id"),
-                "form": row.get("form"),
-                "task_id": row.get("task_id"),
-                "base_function": row.get("base_function"),
+                "release_entry_id": overview_row.get("release_entry_id"),
+                "form": overview_row.get("form"),
+                "task_id": overview_row.get("task_id"),
+                "base_function": overview_row.get("base_function"),
                 "files": files,
             }
         )
@@ -395,11 +421,12 @@ def build_category_coverage(overview: dict[str, Any]) -> dict[str, Any]:
 def export_site(output_dir: Path = DOCS_DATA_ROOT) -> dict[str, Path]:
     overview = read_json(OVERVIEW_JSON)
     manifest = read_json(MANIFEST_JSON)
+    expansion_manifest = read_json(EXPANSION_MANIFEST_JSON)
     payloads = {
         "site_summary.json": build_site_summary(overview),
         "backend_coverage.json": build_backend_coverage(overview),
-        "task_gallery.json": build_task_gallery(overview, manifest),
-        "task_details.json": build_task_details(manifest),
+        "task_gallery.json": build_task_gallery(overview, manifest, expansion_manifest),
+        "task_details.json": build_task_details(overview, manifest, expansion_manifest),
         "category_coverage.json": build_category_coverage(overview),
     }
     written: dict[str, Path] = {}

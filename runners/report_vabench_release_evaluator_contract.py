@@ -217,7 +217,7 @@ def build_report() -> dict[str, Any]:
             "Spectre is the final judge for release scoring.",
             "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
             "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
-            "Baseline and speed/debug claims are independent dedicated-artifact gates.",
+            "Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.",
             f"claim_gate_status={claim_gate.get('status', 'missing')}",
         ],
     }

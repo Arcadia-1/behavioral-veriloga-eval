@@ -158,7 +158,10 @@ def build_vabench300_form_rows(tasks: list[dict[str, Any]]) -> list[dict[str, An
         static = str(task.get("static") or "pending")
         evas = str(task.get("evas") or "pending")
         spectre = str(task.get("spectre") or "pending")
-        certification = str(task.get("certification") or certification_label(static, evas, spectre))
+        raw_certification = str(task.get("certification") or "")
+        certification = certification_label(static, evas, spectre)
+        if certification != "certified" and raw_certification:
+            certification = raw_certification
         content_denominator_included = boolish(task.get("content_denominator_included"), default=track == "core")
         content_exclusion_reasons = task.get("content_exclusion_reasons", [])
         if not isinstance(content_exclusion_reasons, list):

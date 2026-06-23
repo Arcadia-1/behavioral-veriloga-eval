@@ -128,17 +128,17 @@ Precision source: `full300_current_summaries`
 ## Interpretation
 
 - No. Bit-exact equality is not asserted.
-- The full 300-row release has common-row precision evidence, and the compared surfaces pass the stated acceptance gates.
-- Remaining numerical differences are dominated by solver sampling, event timing, edge/discontinuity windows, interpolation, transition/cross behavior, and task-specific metric extraction.
 - Tolerance is not one global decimal precision. It is a set of acceptance gates, with Spectre AX/classic self-consistency used as an anchor for waveform drift that exists inside official Spectre modes.
 - The benchmark management denominator and the current precision evidence row count are both 300. The older 271-row artifact is retained only as historical provenance.
 - Rows such as gain extraction measurement flows are accepted by extracted circuit metrics; diagnostic pointwise RMS is shown only to prevent misreading waveform drift as a functional failure.
+- Remaining numerical differences are dominated by solver sampling, event timing, edge/discontinuity windows, interpolation, transition/cross behavior, and task-specific metric extraction.
+- The full 300-row release has common-row precision evidence, and the compared surfaces pass the stated acceptance gates.
 
 ## Source Reports
 
-- `full300_spectre_strict_summary`: `results/vabench-300-dual-reference-rust-checker29-full-20260622/summary.json`
-- `full300_spectre_ax_summary`: `results/vabench-300-dual-ax-rust-checker29-full-20260622/summary.json`
 - `full300_evas_python_summary`: `results/vabench-300-evas-python-full-checker29-metaraw-20260622/summary.json`
 - `full300_evas_rust_summary`: `results/vabench-300-evas-rust-full-checker29-metaraw-20260622/summary.json`
-- `spectre_ax_classic_self_consistency`: `speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json`
+- `full300_spectre_ax_summary`: `results/vabench-300-dual-ax-rust-checker29-full-20260622/summary.json`
+- `full300_spectre_strict_summary`: `results/vabench-300-dual-reference-rust-checker29-full-20260622/summary.json`
 - `historical_fourway_271_reference`: `speed-optimization/reports/full_release_fourway_reference_after_cmp_delay_cross_time_fix_20260608.json`
+- `spectre_ax_classic_self_consistency`: `speed-optimization/reports/spectre_ax_classic_self_consistency_clean_repeats_20260522.json`
