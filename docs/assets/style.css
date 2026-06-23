@@ -445,6 +445,37 @@ dd {
   box-shadow: var(--shadow);
 }
 
+.id-guide {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfa;
+}
+
+.id-guide strong {
+  font-size: 0.95rem;
+}
+
+.id-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.id-guide-grid p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
 .split-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
@@ -1183,7 +1214,8 @@ pre code {
   }
 
   .toolbar.compact,
-  .metric-grid.compact {
+  .metric-grid.compact,
+  .id-guide-grid {
     grid-template-columns: 1fr;
   }
 

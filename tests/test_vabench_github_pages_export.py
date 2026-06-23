@@ -86,6 +86,7 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     index = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
     guide = (ROOT / "docs" / "run-model-eval.html").read_text(encoding="utf-8")
     accuracy = (ROOT / "docs" / "accuracy.html").read_text(encoding="utf-8")
+    benchmark = (ROOT / "docs" / "benchmark.html").read_text(encoding="utf-8")
     task_detail = (ROOT / "docs" / "task.html").read_text(encoding="utf-8")
     accuracy_case = (ROOT / "docs" / "accuracy-case.html").read_text(encoding="utf-8")
     site_script = (ROOT / "docs" / "assets" / "site.js").read_text(encoding="utf-8")
@@ -119,6 +120,9 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert "VERIFIED_LEADERBOARD_ROWS" in site_script
     assert "pointwise-taxonomy" in accuracy
     assert "task-metric-table" in accuracy
+    assert "id-guide" in benchmark
+    assert "idGuideVbr1" in benchmark
+    assert "idGuideVbr11" in benchmark
     assert 'data-page="task-detail"' in task_detail
     assert "task-detail-identity" in task_detail
     assert "task-detail-content-list" in task_detail
@@ -129,6 +133,8 @@ def test_model_eval_guide_is_linked_to_current_roster() -> None:
     assert "accuracy-case.html?" in site_script
     assert "renderTaskDetail" in site_script
     assert "renderTaskDetailContents" in site_script
+    assert "idNamespaceMeaning" in site_script
+    assert "labelIdNamespace" in site_script
     assert "renderAccuracyCase" in site_script
     assert "renderPointwiseTaxonomy" in site_script
     assert "renderTaskMetricRows" in site_script

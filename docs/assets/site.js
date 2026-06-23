@@ -175,6 +175,11 @@ const I18N = {
     taskGalleryEyebrow: "Task gallery",
     taskGalleryTitle: "Released rows",
     taskGalleryDescription: "Search and filter the 300 rows. Click a task name to inspect its public assets, backend status, and precision evidence.",
+    idGuideTitle: "Identifier guide",
+    idGuideVbr1: "vaBench release v1 inherited entry namespace; not a count, rank, or score.",
+    idGuideVbr11: "historical spelling for vaBench v1.1 promoted entries added to the 300-row surface.",
+    idGuideLevel: "benchmark level: reusable function rows versus composed flow rows.",
+    idGuideForm: "form suffix inside one entry; these are rows in the 300-row denominator.",
     benchmarkDetailEyebrow: "Benchmark detail",
     benchmarkDetailTitle: "Benchmark row detail",
     benchmarkDetailText:
@@ -421,6 +426,7 @@ const I18N = {
     labelReleaseEntry: "Release entry",
     labelTaskId: "Task id",
     labelLegacyTaskId: "Legacy task id",
+    labelIdNamespace: "ID namespace",
     labelBaseFunction: "Base function",
     labelCategory: "Category",
     labelForm: "Form",
@@ -522,6 +528,11 @@ const I18N = {
     taskGalleryEyebrow: "题目列表",
     taskGalleryTitle: "Released rows",
     taskGalleryDescription: "搜索和筛选 300 行。点击题目名可以查看公开资产、后端状态和精度证据。",
+    idGuideTitle: "ID 说明",
+    idGuideVbr1: "vaBench release v1 继承 entry 的命名空间；不是数量、排名或分数。",
+    idGuideVbr11: "vaBench v1.1 promoted entry 的历史写法，表示后来补进 300-row surface 的题。",
+    idGuideLevel: "benchmark 层级：可复用功能行与组合 flow 行。",
+    idGuideForm: "同一个 entry 下的 form 后缀；这些 form 才是 300-row 分母里的 row。",
     benchmarkDetailEyebrow: "Benchmark 详情",
     benchmarkDetailTitle: "单题详情",
     benchmarkDetailText:
@@ -768,6 +779,7 @@ const I18N = {
     labelReleaseEntry: "Release entry",
     labelTaskId: "Task id",
     labelLegacyTaskId: "Legacy task id",
+    labelIdNamespace: "ID 命名空间",
     labelBaseFunction: "基础功能",
     labelCategory: "类别",
     labelForm: "表单",
@@ -1129,6 +1141,21 @@ function pill(value, label) {
 
 function codeText(value) {
   return make("code", "mono", text(value));
+}
+
+function idNamespaceMeaning(entryId) {
+  const value = String(entryId || "");
+  if (value.startsWith("vbr11_")) {
+    return state.language === "zh"
+      ? "vaBench v1.1 promoted-entry 命名空间；这是后来补进 300-row benchmark surface 的稳定内部 ID 前缀。"
+      : "vaBench v1.1 promoted-entry namespace; a stable internal ID prefix for rows added to the 300-row benchmark surface.";
+  }
+  if (value.startsWith("vbr1_")) {
+    return state.language === "zh"
+      ? "vaBench release v1 继承 entry 命名空间；这是稳定内部 ID 前缀，不是数量、排名或分数。"
+      : "vaBench release v1 inherited-entry namespace; a stable internal ID prefix, not a count, rank, or score.";
+  }
+  return state.language === "zh" ? "稳定内部 benchmark ID 命名空间。" : "Stable internal benchmark ID namespace.";
 }
 
 function rateBar(value) {
@@ -1728,6 +1755,7 @@ function renderTaskDetail() {
     [t("labelReleaseEntry"), row.release_entry_id],
     [t("labelTaskId"), row.task_id],
     [t("labelLegacyTaskId"), row.legacy_task_id],
+    [t("labelIdNamespace"), idNamespaceMeaning(row.release_entry_id)],
     [t("labelBaseFunction"), row.base_function],
     [t("labelCategory"), categoryLabel(row.category)],
     [t("labelForm"), row.form],
