@@ -1,8 +1,0 @@
-simulator lang=spectre
-global 0
-ahdl_include "time_interleaved_adc_mismatch.va"
-Vclk (clk 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=5n period=10n
-Vrst (rst 0) vsource type=pulse val0=0 val1=1 delay=0 rise=1n fall=1n width=10n period=1u
-Vin (in 0) vsource type=sine sinedc=0 ampl=0.62 freq=11Meg
-Xdut (in clk rst out metric) time_interleaved_adc_mismatch
-tran tran stop=260n maxstep=500p
