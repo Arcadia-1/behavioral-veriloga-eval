@@ -16,6 +16,11 @@ and paper-facing baselines. It does not create certification evidence.
 | scored entries | 73 |
 | scored forms | 265 |
 | L0 conformance excluded | `True` |
+| v1.1 expansion tasks | 300 |
+| v1.1 existing certified forms | 271 |
+| v1.1 proposed pending forms | 29 |
+| partial-pass negatives per expansion task | 5 |
+| partial-pass negative candidates | 1500 |
 
 ## Backend Roles
 
@@ -42,6 +47,8 @@ and paper-facing baselines. It does not create certification evidence.
 | `enable_score_denominator` | `python3 runners/enable_vabench_release_score_denominator.py` |
 | `refresh_score_denominator` | `python3 runners/report_vabench_release_score_denominator.py` |
 | `refresh_baseline_gate` | `python3 runners/report_vabench_release_baseline_artifact.py` |
+| `build_300_expansion` | `python3 runners/build_vabench_300_expansion.py` |
+| `audit_300_negatives` | `python3 runners/audit_vabench_300_expansion.py` |
 
 ## Claim Boundary
 
@@ -49,5 +56,5 @@ and paper-facing baselines. It does not create certification evidence.
 - Spectre is the final judge for release scoring.
 - EVAS is a fast filter/debug evaluator and cannot certify a task by itself.
 - L0 conformance cases are evaluator health checks and never scored benchmark rows.
-- Baseline and speed/debug claims are independent dedicated-artifact gates.
+- Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.
 - claim_gate_status=in_progress

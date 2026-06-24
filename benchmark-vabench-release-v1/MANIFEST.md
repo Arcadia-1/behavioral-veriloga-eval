@@ -54,3 +54,4 @@ certification evidence.
 - Rows with track=support are auxiliary measurement/stimulus assets and must be reported separately from the core circuit score.
 - Imported subset certification must not be phrased as full release certification.
 - claim_gate_status=in_progress
+- release_status_planned_entries=79

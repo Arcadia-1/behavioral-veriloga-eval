@@ -1,7 +1,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "pa_compression_macro.va"
+ahdl_include "dut_fixed.va"
 
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p
 Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]

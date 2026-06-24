@@ -4,7 +4,7 @@
 simulator lang=spectre
 global 0
 
-ahdl_include "sample_hold.va"
+ahdl_include "dut_fixed.va"
 
 Vvdd (vdd 0) vsource dc=0.9 type=dc
 Vvss (vss 0) vsource dc=0.0 type=dc

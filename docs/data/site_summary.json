@@ -61,8 +61,8 @@
       "value": 0
     },
     {
-      "detail": "rows counted in current score surface",
-      "label": "Scored Rows",
+      "detail": "main leaderboard denominator; 35 certified support forms are reported separately",
+      "label": "Core Score Forms",
       "value": 265
     },
     {
@@ -81,6 +81,7 @@
   },
   "release": "vabench-release-v1",
   "source_reports": {
+    "content_contract_audit": "benchmark-vabench-release-v1/reports/content_contract_audit.json",
     "dual_certification": "benchmark-vabench-release-v1/reports/dual_certification.json",
     "dual_rerun_staging_manifest": "benchmark-vabench-release-v1/reports/dual_rerun_staging_manifest.json",
     "evas_python_full300_summary": "results/vabench-300-evas-python-full-checker29-metaraw-20260622/summary.json",
@@ -100,6 +101,7 @@
   "summary": {
     "certified_entry_count": 86,
     "certified_form_count": 300,
+    "content_contract_status": "review_required",
     "content_denominator_entry_count": 73,
     "content_denominator_form_count": 265,
     "content_excluded_entry_count": 13,
@@ -119,7 +121,7 @@
       "D3": 71
     },
     "dual_certification_status": "pass",
-    "dual_certified_release_task_count": 271,
+    "dual_certified_release_task_count": 300,
     "dual_failed_release_task_count": 0,
     "dual_pending_release_task_count": 0,
     "entry_count": 86,
@@ -141,6 +143,7 @@
     "fresh_spectre_v11_pass_count": 29,
     "l0_conformance_case_count": 4,
     "l0_conformance_counted_in_denominator": 0,
+    "legacy_dual_certified_v1_task_count": 271,
     "paper_score_disabled_v11_task_count": 0,
     "paper_score_ready_task_count": 300,
     "pending_entry_count": 0,

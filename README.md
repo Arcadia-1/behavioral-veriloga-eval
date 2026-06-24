@@ -30,6 +30,13 @@ Each release-quality task should contain:
 - `gold/` assets when the task includes a reference implementation or testbench
 - compact EVAS/Spectre evidence links for paper-facing claims
 
+The current certified v1 package remains `benchmark-vabench-release-v1/`.
+The v1.1 expansion plan is materialized under
+`benchmark-vabench-release-v1/vabench-300-expansion/`: 300 form-level
+evaluation tasks, five partial-pass near-miss negatives per task, and explicit
+metadata that keeps the 29 proposed tasks pending until static, EVAS, and
+Spectre certification evidence exists.
+
 The four normal task families are:
 
 - `spec-to-va`

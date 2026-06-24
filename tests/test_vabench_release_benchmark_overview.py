@@ -47,7 +47,8 @@ def test_benchmark_overview_answers_dual_certification_questions() -> None:
     metrics = report["aggregate_parity_metrics"]
 
     assert report["summary"]["dual_certification_status"] == "pass"
-    assert report["summary"]["dual_certified_release_task_count"] == 271
+    assert report["summary"]["dual_certified_release_task_count"] == 300
+    assert report["summary"]["legacy_dual_certified_v1_task_count"] == 271
     assert report["summary"]["dual_failed_release_task_count"] == 0
     assert report["summary"]["dual_pending_release_task_count"] == 0
     assert report["summary"]["evas_pass_spectre_fail_count"] == 0

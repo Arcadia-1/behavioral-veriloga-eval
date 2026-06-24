@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vaBench Benchmark</title>
-    <meta name="description" content="Browse vaBench 300 tasks, categories, and scored model roster.">
+    <meta name="description" content="Browse vaBench 300 tasks, categories, and core-score model roster.">
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="assets/style.css">
   </head>
@@ -41,7 +41,7 @@
           <h1 data-i18n="benchmarkPageTitle">vaBench 300 task set</h1>
           <p class="hero-text" data-i18n="benchmarkPageText">
             Browse the benchmark by function family, task form, level, difficulty, and score surface.
-            The public management denominator is 300 rows; the current model-scored roster is 265 rows.
+            The public management denominator is 300 rows; the current core-score model roster is 265 forms plus 35 certified support forms reported separately.
           </p>
           <div class="metric-grid compact" id="benchmark-metrics"></div>
         </div>
@@ -65,7 +65,7 @@
                   <th scope="col" data-i18n="thRows">Rows</th>
                   <th scope="col">L1</th>
                   <th scope="col">L2</th>
-                  <th scope="col" data-i18n="thScoredRows">Scored Rows</th>
+                  <th scope="col" data-i18n="thScoredRows">Core Score Forms</th>
                 </tr>
               </thead>
               <tbody id="category-table"></tbody>
@@ -82,6 +82,15 @@
               <h2 data-i18n="taskGalleryTitle">Released rows</h2>
             </div>
             <p data-i18n="taskGalleryDescription">Search and filter the 300 rows. Provenance labels are audit labels, not separate benchmark denominators.</p>
+          </div>
+          <div class="id-guide" aria-label="Identifier guide">
+            <strong data-i18n="idGuideTitle">Identifier guide</strong>
+            <div class="id-guide-grid">
+              <p><code>vbr1</code><span data-i18n="idGuideVbr1">vaBench release v1 inherited entry namespace; not a count, rank, or score.</span></p>
+              <p><code>vbr11</code><span data-i18n="idGuideVbr11">historical spelling for vaBench v1.1 promoted entries added to the 300-row surface.</span></p>
+              <p><code>l1/l2</code><span data-i18n="idGuideLevel">benchmark level: reusable function rows versus composed flow rows.</span></p>
+              <p><code>:dut/:tb/:bugfix/:e2e</code><span data-i18n="idGuideForm">form suffix inside one entry; these are rows in the 300-row denominator.</span></p>
+            </div>
           </div>
           <div class="toolbar" aria-label="Task filters">
             <label>

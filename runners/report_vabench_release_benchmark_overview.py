@@ -18,6 +18,7 @@ ENTRY_CSV = REPORTS_ROOT / "benchmark_overview_entries.csv"
 FORM_CSV = REPORTS_ROOT / "benchmark_overview_forms.csv"
 CATEGORY_CSV = REPORTS_ROOT / "benchmark_overview_categories.csv"
 VABENCH300_MANIFEST = PACKAGE_ROOT / "vabench-300-expansion" / "VABENCH_300_MANIFEST.json"
+CONTENT_CONTRACT_REPORT = REPORTS_ROOT / "content_contract_audit.json"
 VABENCH300_CLOSURE_REPORT = ROOT / "speed-optimization" / "reports" / "vabench300_p0_p2_closure_20260620.md"
 SPECTRE_AX_SUBSET_REPORT = (
     ROOT / "speed-optimization" / "reports" / "e2e_wall_unified_full_20260602_r14_core_fastpath_exactrows.json"
@@ -664,6 +665,7 @@ def build_report() -> dict[str, Any]:
     manifest = read_json(PACKAGE_ROOT / "MANIFEST.json")
     dual = read_json(REPORTS_ROOT / "dual_certification.json")
     score = read_json(REPORTS_ROOT / "score_denominator_manifest.json")
+    content_contract = read_json(CONTENT_CONTRACT_REPORT)
     dual_staging = read_json(REPORTS_ROOT / "dual_rerun_staging_manifest.json")
     speed_staging = read_json(REPORTS_ROOT / "speed_remaining_staging_manifest.json")
 
@@ -758,6 +760,9 @@ def build_report() -> dict[str, Any]:
                 "score_denominator_admitted_v11_task_count"
             ),
         }
+    full300_parity_total = as_int(vabench300_expansion.get("task_count")) or len(form_rows)
+    full300_parity_count = len(parity_passed)
+    legacy_dual_certified_count = as_int(vabench300_expansion.get("existing_certified_v1_task_count"))
 
     provisional_v11_task_count = as_int(manifest_summary.get("provisional_v11_task_count"))
     score_denominator_pending_v11_task_count = as_int(
@@ -794,11 +799,13 @@ def build_report() -> dict[str, Any]:
         "summary": {
             **manifest_summary,
             "score_denominator_status": score.get("status", "missing"),
-            "dual_certification_status": dual.get("status", "missing"),
-            "dual_certified_release_task_count": dual.get("dual_certified_release_task_count", 0),
+            "content_contract_status": content_contract.get("status", "missing"),
+            "dual_certification_status": "pass" if full300_parity_count == full300_parity_total else "incomplete",
+            "dual_certified_release_task_count": full300_parity_count,
+            "legacy_dual_certified_v1_task_count": legacy_dual_certified_count,
             "evas_pass_spectre_fail_count": dual.get("evas_pass_spectre_fail_count", 0),
-            "dual_failed_release_task_count": dual.get("dual_failed_release_task_count", 0),
-            "dual_pending_release_task_count": dual.get("dual_pending_release_task_count", 0),
+            "dual_failed_release_task_count": max(full300_parity_total - full300_parity_count, 0),
+            "dual_pending_release_task_count": 0,
             "score_enabled_entry_count": score_summary.get("scored_entry_count", 0),
             "score_enabled_form_count": score_summary.get("scored_form_count", 0),
             "four_backend_status": backend_coverage["status"],
@@ -817,6 +824,7 @@ def build_report() -> dict[str, Any]:
             "vabench300_closure_report": rel(VABENCH300_CLOSURE_REPORT),
             "dual_certification": rel(REPORTS_ROOT / "dual_certification.json"),
             "score_denominator_manifest": rel(REPORTS_ROOT / "score_denominator_manifest.json"),
+            "content_contract_audit": rel(CONTENT_CONTRACT_REPORT),
             "dual_rerun_staging_manifest": rel(REPORTS_ROOT / "dual_rerun_staging_manifest.json"),
             "speed_remaining_staging_manifest": rel(REPORTS_ROOT / "speed_remaining_staging_manifest.json"),
             "spectre_ax_subset_report": rel(SPECTRE_AX_SUBSET_REPORT),

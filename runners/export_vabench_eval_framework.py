@@ -248,6 +248,22 @@ def materialized_waveform_metrics(row: dict[str, Any], result_root: str | None) 
     }, "recomputed_from_spectre_reference_result"
 
 
+def cached_waveform_metrics(row: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not row or row.get("waveform_metric_source") != "recomputed_from_spectre_reference_result":
+        return None
+    if row.get("mean_relative_rms_error") is None:
+        return None
+    return {
+        "mean_relative_rms_error": row.get("mean_relative_rms_error"),
+        "max_relative_rms_error": row.get("max_relative_rms_error"),
+        "max_rmse_v": row.get("max_rmse_v"),
+        "max_abs_v": row.get("max_abs_v"),
+        "max_digital_mismatch_ratio": row.get("max_digital_mismatch_ratio"),
+        "waveform_comparison_status": row.get("waveform_comparison_status"),
+        "waveform_comparison_reason": row.get("waveform_comparison_reason"),
+    }
+
+
 def metric_family(row: dict[str, Any]) -> str:
     if row.get("parity_policy") == "gain_extraction_metric_parity_v1":
         return "extracted_gain_metric"
@@ -368,6 +384,11 @@ def submission_artifacts_for(row: dict[str, Any], release_task: dict[str, Any]) 
 def build_alignment(overview: dict[str, Any]) -> dict[str, Any]:
     source_reports = overview.get("source_reports", {}) if isinstance(overview.get("source_reports"), dict) else {}
     contract = overview.get("equivalence_contract", {}) if isinstance(overview.get("equivalence_contract"), dict) else {}
+    cached = {
+        form_key(row.get("release_entry_id"), row.get("form")): row
+        for row in read_json(ALIGNMENT_JSON).get("rows", [])
+        if isinstance(row, dict)
+    }
     reference = load_dual_status(str(source_reports.get("spectre_reference_full300_summary", "")))
     ax = load_dual_status(str(source_reports.get("spectre_ax_full300_summary", "")))
     evas_rust = load_evas_status(str(source_reports.get("evas_rust_full300_summary", "")))
@@ -393,6 +414,11 @@ def build_alignment(overview: dict[str, Any]) -> dict[str, Any]:
             "evas_python_behavior_checker_pass": py.get("behavior_checker_pass"),
         }
         metrics, waveform_metric_source = materialized_waveform_metrics(row, ref.get("result_root"))
+        if waveform_metric_source == "not_materialized":
+            cached_metrics = cached_waveform_metrics(cached.get(key))
+            if cached_metrics:
+                metrics = cached_metrics
+                waveform_metric_source = "recomputed_from_spectre_reference_result"
         enriched = {**row, **metrics}
         out = {
             "row": idx,

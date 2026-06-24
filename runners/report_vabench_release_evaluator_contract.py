@@ -10,6 +10,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v1"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
+EXPANSION_ROOT = PACKAGE_ROOT / "vabench-300-expansion"
 CONTRACT_JSON = PACKAGE_ROOT / "EVALUATOR.json"
 CONTRACT_MD = PACKAGE_ROOT / "EVALUATOR.md"
 
@@ -39,6 +40,10 @@ def build_report() -> dict[str, Any]:
     finish = read_json(REPORTS_ROOT / "finish_readiness.json")
     claim_gate = read_json(REPORTS_ROOT / "claim_gate.json")
     conformance = read_json(REPORTS_ROOT / "conformance_manifest.json")
+    expansion = read_json(EXPANSION_ROOT / "VABENCH_300_MANIFEST.json")
+    expansion_summary = expansion.get("summary", {})
+    if not isinstance(expansion_summary, dict):
+        expansion_summary = {}
     score_summary = score.get("summary", {})
     if not isinstance(score_summary, dict):
         score_summary = {}
@@ -63,6 +68,7 @@ def build_report() -> dict[str, Any]:
             "claim_gate": rel(REPORTS_ROOT / "claim_gate.json"),
             "finish_readiness": rel(REPORTS_ROOT / "finish_readiness.json"),
             "l0_conformance_manifest": rel(REPORTS_ROOT / "conformance_manifest.json"),
+            "vabench_300_expansion_manifest": rel(EXPANSION_ROOT / "VABENCH_300_MANIFEST.json"),
         },
         "schemas": {
             "release_entry": rel(ROOT / "schemas" / "vabench-release-entry.schema.json"),
@@ -95,6 +101,8 @@ def build_report() -> dict[str, Any]:
             "remaining_work": rel(ROOT / "schemas" / "vabench-remaining-work.schema.json"),
             "evidence": rel(ROOT / "schemas" / "vabench-evidence.schema.json"),
             "result": rel(ROOT / "schemas" / "vabench-release-result.schema.json"),
+            "vabench_300_expansion_manifest": rel(ROOT / "schemas" / "vabench-300-expansion-manifest.schema.json"),
+            "partial_pass_negatives": rel(ROOT / "schemas" / "vabench-partial-pass-negatives.schema.json"),
         },
         "task_selection": {
             "source_of_truth": rel(REPORTS_ROOT / "score_denominator_manifest.json"),
@@ -109,6 +117,11 @@ def build_report() -> dict[str, Any]:
             "score_enabled": score_enabled,
             "l0_conformance_excluded": l0_excluded,
             "unscored_rows_excluded": True,
+            "v11_expansion_task_count": as_int(expansion_summary.get("task_count")),
+            "v11_expansion_existing_certified_forms": as_int(expansion_summary.get("existing_certified_v1_task_count")),
+            "v11_expansion_proposed_pending_forms": as_int(expansion_summary.get("proposed_v11_task_count")),
+            "partial_pass_negatives_per_expansion_task": as_int(expansion_summary.get("required_negative_per_task")),
+            "partial_pass_negative_count": as_int(expansion_summary.get("partial_pass_negative_count")),
             "selection_rule": "Only rows marked counted_in_score=true by score_denominator_manifest.json may enter benchmark scores.",
         },
         "backend_roles": {
@@ -196,13 +209,15 @@ def build_report() -> dict[str, Any]:
             "enable_score_denominator": "python3 runners/enable_vabench_release_score_denominator.py",
             "refresh_score_denominator": "python3 runners/report_vabench_release_score_denominator.py",
             "refresh_baseline_gate": "python3 runners/report_vabench_release_baseline_artifact.py",
+            "build_300_expansion": "python3 runners/build_vabench_300_expansion.py",
+            "audit_300_negatives": "python3 runners/audit_vabench_300_expansion.py",
         },
         "claim_boundary": [
             "This contract defines evaluator IO and score gates; it is not simulator certification evidence.",
             "Spectre is the final judge for release scoring.",
             "EVAS is a fast filter/debug evaluator and cannot certify a task by itself.",
             "L0 conformance cases are evaluator health checks and never scored benchmark rows.",
-            "Baseline and speed/debug claims are independent dedicated-artifact gates.",
+            "Baseline and speed/debug claims remain blocked until their dedicated artifacts satisfy claim gates.",
             f"claim_gate_status={claim_gate.get('status', 'missing')}",
         ],
     }
@@ -232,6 +247,11 @@ def write_markdown(report: dict[str, Any]) -> None:
         f"| scored entries | {selection['scored_entries']} |",
         f"| scored forms | {selection['scored_forms']} |",
         f"| L0 conformance excluded | `{selection['l0_conformance_excluded']}` |",
+        f"| v1.1 expansion tasks | {selection['v11_expansion_task_count']} |",
+        f"| v1.1 existing certified forms | {selection['v11_expansion_existing_certified_forms']} |",
+        f"| v1.1 proposed pending forms | {selection['v11_expansion_proposed_pending_forms']} |",
+        f"| partial-pass negatives per expansion task | {selection['partial_pass_negatives_per_expansion_task']} |",
+        f"| partial-pass negative candidates | {selection['partial_pass_negative_count']} |",
         "",
         "## Backend Roles",
         "",

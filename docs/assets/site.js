@@ -3,6 +3,7 @@ const DATA = {
   backends: "data/backend_coverage.json",
   alignment: "data/spectre_alignment_table.json",
   tasks: "data/task_gallery.json",
+  taskDetails: "data/task_details.json",
   categories: "data/category_coverage.json",
   modelRoster: "data/model_eval_roster.json",
   precision: "data/precision_overview.json",
@@ -11,6 +12,19 @@ const DATA = {
 const LANGUAGE_KEY = "vabench-dashboard-language";
 
 const NEWS_ITEMS = [
+  {
+    date: "2026-06-22",
+    type: "Docs",
+    title: {
+      en: "Benchmark rows and precision cases are now clickable",
+      zh: "Benchmark 行和精度案例现在可以点进详情页",
+    },
+    body: {
+      en: "Each released row can open a task detail page, and task-metric precision rows can open a case page explaining the concrete RMS caveats.",
+      zh: "每个 released row 都可以进入单题详情；task-metric 精度行也可以进入案例页，查看具体 RMS 说明。",
+    },
+    href: "benchmark.html",
+  },
   {
     date: "2026-06-22",
     type: "Accuracy",
@@ -154,13 +168,65 @@ const I18N = {
     benchmarkEyebrow: "Benchmark",
     benchmarkPageTitle: "vaBench 300 task set",
     benchmarkPageText:
-      "Browse the benchmark by function family, task form, level, difficulty, and score surface. The public management denominator is 300 rows; the current model-scored roster is 265 rows.",
+      "Browse the benchmark by function family, task form, level, difficulty, and score surface. The public management denominator is 300 rows; the current core-score roster is 265 forms plus 35 certified support forms reported separately.",
     coverageEyebrow: "Coverage",
     coverageTitle: "Function categories",
     coverageDescription: "Entry and row coverage across analog and mixed-signal behavioral function families.",
     taskGalleryEyebrow: "Task gallery",
     taskGalleryTitle: "Released rows",
-    taskGalleryDescription: "Search and filter the 300 rows. Provenance labels are audit labels, not separate benchmark denominators.",
+    taskGalleryDescription: "Search and filter the 300 rows. Click a task name to inspect its public assets, backend status, and precision evidence.",
+    idGuideTitle: "Identifier guide",
+    idGuideVbr1: "vaBench release v1 inherited entry namespace; not a count, rank, or score.",
+    idGuideVbr11: "historical spelling for vaBench v1.1 promoted entries added to the 300-row surface.",
+    idGuideLevel: "benchmark level: reusable function rows versus composed flow rows.",
+    idGuideForm: "form suffix inside one entry; these are rows in the 300-row denominator.",
+    benchmarkDetailEyebrow: "Benchmark detail",
+    benchmarkDetailTitle: "Benchmark row detail",
+    benchmarkDetailText:
+      "Inspect one released row: public task identity, benchmark contents, certification status, and EVAS/Spectre precision evidence.",
+    taskDetailBack: "Back to benchmark",
+    taskDetailMissing: "Task row not found",
+    taskDetailMissingBody: "The URL does not match a released vaBench row. Return to the benchmark table and open a row from there.",
+    taskDetailIdentityTitle: "Task identity",
+    taskDetailAssetsTitle: "Public assets",
+    taskDetailEvaluationTitle: "Certification and parity",
+    taskDetailPrecisionTitle: "Precision evidence",
+    taskDetailContentsEyebrow: "Benchmark contents",
+    taskDetailContentsTitle: "Core benchmark files",
+    taskDetailContentsDescription:
+      "Start with the four files people usually need to inspect: task prompt, reference answer, reference testbench, and evaluation checks. Metadata and manifests are kept below as advanced raw files.",
+    taskDetailNoContents: "No inline benchmark contents are available for this row.",
+    taskDetailCorePromptTitle: "Task prompt",
+    taskDetailCorePromptBody: "The exact public prompt given to model submissions.",
+    taskDetailCoreAnswerTitle: "Reference answer",
+    taskDetailCoreAnswerBody: "Gold Verilog-A source files used as the reference implementation. Multi-module e2e rows may have more than one source file.",
+    taskDetailCoreTestbenchTitle: "Reference testbench",
+    taskDetailCoreTestbenchBody: "Spectre testbench files used to exercise the reference implementation.",
+    taskDetailCoreEvaluationTitle: "Evaluation checks",
+    taskDetailCoreEvaluationBody: "Machine-readable checker contract for syntax, compile, simulation correctness, and parity.",
+    taskDetailCoreSuppliedTitle: "Supplied/support artifacts",
+    taskDetailCoreSuppliedBody: "Original inputs or support files that are part of the task context, such as buggy sources in bugfix rows.",
+    taskDetailAdvancedTitle: "Advanced raw files",
+    taskDetailAdvancedDescription: "Machine metadata and complete raw export files for audit and runner integration.",
+    taskDetailAccuracyCasesTitle: "Related accuracy cases",
+    taskDetailNoAccuracyCase: "No task-metric accuracy case is recorded for this row.",
+    openPrompt: "Open prompt",
+    openChecks: "Open checks",
+    openMeta: "Open meta",
+    openReleaseManifest: "Open release task",
+    openEvidence: "Open evidence",
+    openSource: "Open source",
+    fileMissing: "File not found in the website export.",
+    fileTruncated: "Truncated in the website export.",
+    fileBytes: "{count} bytes",
+    contentKindPrompt: "Prompt",
+    contentKindChecks: "Checker",
+    contentKindMeta: "Metadata",
+    contentKindReleaseTask: "Release task",
+    contentKindGold: "Gold/reference artifact",
+    contentKindReferenceAnswer: "Reference answer",
+    contentKindReferenceTestbench: "Reference testbench",
+    contentKindSuppliedArtifact: "Supplied/support artifact",
     protocolEyebrow: "Protocol",
     protocolPageTitle: "Evaluation and certification gates",
     protocolPageText:
@@ -179,6 +245,19 @@ const I18N = {
     accuracyPageTitle: "EVAS and Spectre precision",
     accuracyPageText:
       "The benchmark does not claim bit-exact equality. It reports whether each surface is behavior-equivalent to the Spectre reference under explicit gates.",
+    accuracyCaseEyebrow: "Accuracy case",
+    accuracyCaseTitle: "Precision case detail",
+    accuracyCaseText:
+      "Inspect one task-metric precision case and the concrete reason why raw pointwise RMS is diagnostic rather than the acceptance score.",
+    accuracyCaseBack: "Back to accuracy",
+    accuracyCaseMissing: "Accuracy case not found",
+    accuracyCaseMissingBody: "The URL does not match a recorded task-metric precision row. Open a case from the Accuracy table.",
+    accuracyCaseMetricsTitle: "Case metrics",
+    accuracyCaseTaskTitle: "Related benchmark row",
+    accuracyCaseWhyTitle: "Why raw RMS can be large here",
+    accuracyCaseWhyText:
+      "These notes are case-specific reading aids. They document why the current gate accepts the row and where EVAS or the checker can still improve.",
+    accuracyCaseTaskLink: "Open benchmark row",
     accuracyIdenticalEyebrow: "Equivalence answer",
     accuracyIdenticalTitle: "Are the outputs exactly identical?",
     accuracyTermsEyebrow: "Reading tolerance",
@@ -221,7 +300,7 @@ const I18N = {
     thCategory: "Category",
     thEntries: "Entries",
     thRows: "Rows",
-    thScoredRows: "Scored Rows",
+    thScoredRows: "Core Score Forms",
     thTask: "Task",
     thForm: "Form",
     thLevel: "Level",
@@ -248,6 +327,7 @@ const I18N = {
     thReportingRule: "Reporting Rule",
     thMetric: "Metric",
     thValue: "Value",
+    thCase: "Case",
     filterSearch: "Search",
     filterCategory: "Category",
     filterForm: "Form",
@@ -296,7 +376,7 @@ const I18N = {
     pllRows: "PLL rows",
     edgeWindowPolicy: "Edge window policy",
     metricBenchmarkRows: "Benchmark rows",
-    metricScoredRows: "Scored model rows",
+    metricScoredRows: "Core score forms",
     metricFourBackend: "Four-backend status",
     metricMismatch: "EVAS PASS / Spectre FAIL",
     metricReleaseEntries: "Release entries",
@@ -311,7 +391,7 @@ const I18N = {
     metricSpectreSelf: "Spectre self-check",
     metricTaskMetricRows: "Task-metric comparisons",
     detailSingleDenominator: "single public management denominator",
-    detailModelRoster: "rows commercial models should run",
+    detailModelRoster: "main leaderboard denominator; certified support forms are reported separately",
     detailCertifiedSurfaces: "certified execution surfaces",
     detailAuditedMismatch: "audited mismatch count",
     detailFunctionEntries: "function-level entries behind rows",
@@ -337,17 +417,73 @@ const I18N = {
     pointwiseEyebrow: "Pointwise caveats",
     pointwiseTitle: "Why raw RMS can look larger",
     pointwiseDescription:
-      "These categories explain why a waveform-only pointwise comparison can differ even when the row passes behavior or task-metric acceptance.",
+      "These notes are intentionally explicit about known limitations. A row can pass the current gate and still expose a real place where EVAS or the checker should improve.",
+    taxonomySymptom: "Symptom",
+    taxonomyShortcoming: "Current shortcoming",
+    taxonomyHandling: "Current handling",
+    taxonomyBugSignal: "When this is a bug",
+    taxonomyFeedback: "Useful feedback",
+    taxonomyRule: "Reporting rule",
     taskMetricEyebrow: "Task-metric rows",
     taskMetricTitle: "Rows not judged by raw pointwise equality",
     taskMetricDescription:
-      "Measurement-flow rows can use extracted circuit metrics as the acceptance gate. Diagnostic waveform-only RMS is shown to avoid misreading the row as a functional mismatch.",
+      "Measurement-flow rows can use extracted circuit metrics as the acceptance gate. Click a row to inspect why diagnostic waveform-only RMS is not the score.",
     anchorComparedPairs: "Compared pairs",
     anchorPassedPairs: "Passed pairs",
     anchorNeedsReviewPairs: "Needs review pairs",
     anchorRowMeanMax: "Row mean relative RMS max",
     anchorWorstSignalMax: "Worst-signal relative RMS max",
     anchorMaxPointAbs: "Max point absolute voltage",
+    viewDetails: "View details",
+    viewAccuracyCase: "View case",
+    sourceUnavailable: "not listed",
+    yes: "yes",
+    no: "no",
+    labelReleaseEntry: "Release entry",
+    labelTaskId: "Task id",
+    labelLegacyTaskId: "Legacy task id",
+    labelIdNamespace: "ID namespace",
+    labelBaseFunction: "Base function",
+    labelCategory: "Category",
+    labelForm: "Form",
+    labelLevel: "Level",
+    labelDifficulty: "Difficulty",
+    labelTrack: "Track",
+    labelFamily: "Family",
+    labelProvenance: "Provenance",
+    labelScoreSurface: "Counted in score",
+    labelContentDenominator: "In content denominator",
+    labelGoldCount: "Gold assets",
+    labelPromptPath: "Prompt",
+    labelChecksPath: "Checks",
+    labelMetaPath: "Meta",
+    labelReleaseManifestPath: "Release task",
+    labelEvidencePath: "Evidence",
+    labelStatic: "Static",
+    labelEvas: "EVAS",
+    labelSpectre: "Spectre",
+    labelVerdict: "Verdict",
+    labelParityStatus: "Parity status",
+    labelParityPolicy: "Parity policy",
+    labelSourceEquivalence: "Source equivalence",
+    labelSignalsCompared: "Signals compared",
+    labelSamples: "Samples",
+    labelMeanRms: "Mean relative RMS",
+    labelWorstRms: "Worst relative RMS",
+    labelMaxRmse: "Max RMSE",
+    labelMaxAbs: "Max absolute voltage",
+    labelDigitalMismatch: "Digital mismatch ratio",
+    labelRelativeGainDelta: "Relative gain delta",
+    labelAlignmentStatus: "Alignment status",
+    labelEqualityClaim: "Equality claim",
+    labelMetricFamily: "Metric family",
+    labelSimilarity: "Similarity",
+    labelTolerance: "Tolerance",
+    labelWaveformStatus: "Waveform status",
+    labelCandidate: "Candidate",
+    labelCandidateGain: "Candidate gain",
+    labelReferenceGain: "Reference gain",
+    labelDiagnosticNote: "Diagnostic note",
     loadError:
       "Could not load vaBench site data. Run python3 runners/export_vabench_eval_framework.py, python3 runners/export_vabench_github_pages.py, and python3 runners/export_vabench_precision_overview.py, then serve docs/ over HTTP. {message}",
   },
@@ -401,13 +537,65 @@ const I18N = {
     benchmarkEyebrow: "Benchmark",
     benchmarkPageTitle: "vaBench 300 题目集",
     benchmarkPageText:
-      "按功能族、任务表单、层级、难度和计分面浏览 benchmark。公开管理分母是 300 行；当前模型计分 roster 是 265 行。",
+      "按功能族、任务表单、层级、难度和计分面浏览 benchmark。公开管理分母是 300 行；当前核心计分 roster 是 265 个题型，另有 35 个已认证 support 题型单独报告。",
     coverageEyebrow: "覆盖",
     coverageTitle: "功能类别",
     coverageDescription: "模拟与混合信号行为功能族的 entry 和 row 覆盖。",
     taskGalleryEyebrow: "题目列表",
     taskGalleryTitle: "Released rows",
-    taskGalleryDescription: "搜索和筛选 300 行。来源标签只是审计标签，不是单独 benchmark 分母。",
+    taskGalleryDescription: "搜索和筛选 300 行。点击题目名可以查看公开资产、后端状态和精度证据。",
+    idGuideTitle: "ID 说明",
+    idGuideVbr1: "vaBench release v1 继承 entry 的命名空间；不是数量、排名或分数。",
+    idGuideVbr11: "vaBench v1.1 promoted entry 的历史写法，表示后来补进 300-row surface 的题。",
+    idGuideLevel: "benchmark 层级：可复用功能行与组合 flow 行。",
+    idGuideForm: "同一个 entry 下的 form 后缀；这些 form 才是 300-row 分母里的 row。",
+    benchmarkDetailEyebrow: "Benchmark 详情",
+    benchmarkDetailTitle: "单题详情",
+    benchmarkDetailText:
+      "查看一个 released row 的题目身份、benchmark 内容、认证状态和 EVAS/Spectre 精度证据。",
+    taskDetailBack: "返回 benchmark",
+    taskDetailMissing: "没有找到这道题",
+    taskDetailMissingBody: "当前 URL 没有匹配到 released vaBench row。请回到 benchmark 表格，从某一行点进来。",
+    taskDetailIdentityTitle: "题目身份",
+    taskDetailAssetsTitle: "公开资产",
+    taskDetailEvaluationTitle: "认证与 parity",
+    taskDetailPrecisionTitle: "精度证据",
+    taskDetailContentsEyebrow: "Benchmark 内容",
+    taskDetailContentsTitle: "核心 benchmark 文件",
+    taskDetailContentsDescription:
+      "优先查看人工审查最需要的四类文件：题面、参考答案、参考 testbench、评测 checks。Metadata 和 manifest 放在下方高级原始文件区。",
+    taskDetailNoContents: "这行没有可内嵌展示的 benchmark 内容。",
+    taskDetailCorePromptTitle: "题面",
+    taskDetailCorePromptBody: "模型提交时看到的原始公开 prompt。",
+    taskDetailCoreAnswerTitle: "参考答案",
+    taskDetailCoreAnswerBody: "作为参考实现的 gold Verilog-A 源文件。多模块 e2e 行可能包含多个源文件。",
+    taskDetailCoreTestbenchTitle: "参考 testbench",
+    taskDetailCoreTestbenchBody: "用于驱动参考实现的 Spectre testbench 文件。",
+    taskDetailCoreEvaluationTitle: "评测 checks",
+    taskDetailCoreEvaluationBody: "机器可读 checker contract，包括语法、编译、仿真正确性和 parity。",
+    taskDetailCoreSuppliedTitle: "题目输入/支持文件",
+    taskDetailCoreSuppliedBody: "属于任务上下文的原始输入或支持文件，例如 bugfix 行里的 buggy source。",
+    taskDetailAdvancedTitle: "高级原始文件",
+    taskDetailAdvancedDescription: "用于审计和 runner 集成的机器 metadata 与完整 raw export 文件。",
+    taskDetailAccuracyCasesTitle: "相关精度案例",
+    taskDetailNoAccuracyCase: "这行没有记录 task-metric 精度案例。",
+    openPrompt: "打开 prompt",
+    openChecks: "打开 checks",
+    openMeta: "打开 meta",
+    openReleaseManifest: "打开 release task",
+    openEvidence: "打开 evidence",
+    openSource: "打开源码",
+    fileMissing: "网站导出中没有找到这个文件。",
+    fileTruncated: "网站导出中已截断。",
+    fileBytes: "{count} bytes",
+    contentKindPrompt: "Prompt",
+    contentKindChecks: "Checker",
+    contentKindMeta: "Metadata",
+    contentKindReleaseTask: "Release task",
+    contentKindGold: "Gold/reference artifact",
+    contentKindReferenceAnswer: "参考答案",
+    contentKindReferenceTestbench: "参考 testbench",
+    contentKindSuppliedArtifact: "题目输入/支持文件",
     protocolEyebrow: "协议",
     protocolPageTitle: "评测与认证 gate",
     protocolPageText:
@@ -426,6 +614,19 @@ const I18N = {
     accuracyPageTitle: "EVAS 与 Spectre 精度",
     accuracyPageText:
       "benchmark 不声称 bit-exact 完全一致；它报告各执行面是否在明确 gate 下与 Spectre reference 行为等价。",
+    accuracyCaseEyebrow: "精度案例",
+    accuracyCaseTitle: "单个精度案例详情",
+    accuracyCaseText:
+      "查看一个 task-metric 精度案例，以及为什么这里的 raw pointwise RMS 只是诊断信息而不是接受分数。",
+    accuracyCaseBack: "返回精度页",
+    accuracyCaseMissing: "没有找到这个精度案例",
+    accuracyCaseMissingBody: "当前 URL 没有匹配到已记录的 task-metric 精度行。请从 Accuracy 表格点进来。",
+    accuracyCaseMetricsTitle: "案例指标",
+    accuracyCaseTaskTitle: "关联 benchmark row",
+    accuracyCaseWhyTitle: "为什么这里 raw RMS 可能较大",
+    accuracyCaseWhyText:
+      "这些说明用于阅读当前案例：解释为什么当前 gate 接受这行，也诚实标出 EVAS 或 checker 仍可改进的地方。",
+    accuracyCaseTaskLink: "打开 benchmark row",
     accuracyIdenticalEyebrow: "等价结论",
     accuracyIdenticalTitle: "输出是否完全一致？",
     accuracyTermsEyebrow: "如何理解容差",
@@ -468,7 +669,7 @@ const I18N = {
     thCategory: "类别",
     thEntries: "Entries",
     thRows: "行数",
-    thScoredRows: "计分行",
+    thScoredRows: "核心计分题型",
     thTask: "题目",
     thForm: "表单",
     thLevel: "层级",
@@ -495,6 +696,7 @@ const I18N = {
     thReportingRule: "报告规则",
     thMetric: "指标",
     thValue: "值",
+    thCase: "案例",
     filterSearch: "搜索",
     filterCategory: "类别",
     filterForm: "表单",
@@ -543,7 +745,7 @@ const I18N = {
     pllRows: "PLL 行",
     edgeWindowPolicy: "边沿窗口策略",
     metricBenchmarkRows: "Benchmark 行数",
-    metricScoredRows: "模型计分行",
+    metricScoredRows: "核心计分题型",
     metricFourBackend: "四后端状态",
     metricMismatch: "EVAS PASS / Spectre FAIL",
     metricReleaseEntries: "Release entries",
@@ -558,7 +760,7 @@ const I18N = {
     metricSpectreSelf: "Spectre 自检",
     metricTaskMetricRows: "Task-metric 比较",
     detailSingleDenominator: "统一公开管理分母",
-    detailModelRoster: "商业模型应运行的行",
+    detailModelRoster: "主排行榜分母；已认证 support 题型单独报告",
     detailCertifiedSurfaces: "已认证执行面",
     detailAuditedMismatch: "已审计 mismatch 数",
     detailFunctionEntries: "行背后的功能级 entries",
@@ -584,17 +786,73 @@ const I18N = {
     pointwiseEyebrow: "逐点差异说明",
     pointwiseTitle: "为什么 raw RMS 可能更大",
     pointwiseDescription:
-      "这些类别解释为什么纯逐点波形比较可能产生差异，即使该行已经通过 behavior 或 task-metric 接受规则。",
+      "这里会刻意写出现有不足：某一行通过当前 gate，并不代表 EVAS 或 checker 已经没有可改进空间。",
+    taxonomySymptom: "现象",
+    taxonomyShortcoming: "当前不足",
+    taxonomyHandling: "现有处理",
+    taxonomyBugSignal: "什么时候算 bug",
+    taxonomyFeedback: "希望收到的反馈",
+    taxonomyRule: "报告规则",
     taskMetricEyebrow: "Task-metric 行",
     taskMetricTitle: "不是用 raw pointwise equality 判定的行",
     taskMetricDescription:
-      "测量流程类 row 可以用提取出的电路指标作为接受 gate。这里保留诊断用 waveform-only RMS，避免被误读成功能 mismatch。",
+      "测量流程类 row 可以用提取出的电路指标作为接受 gate。点击某一行可以查看为什么诊断 waveform-only RMS 不是 score。",
     anchorComparedPairs: "比较 pair",
     anchorPassedPairs: "通过 pair",
     anchorNeedsReviewPairs: "待复核 pair",
     anchorRowMeanMax: "行平均相对 RMS 最大值",
     anchorWorstSignalMax: "最差信号相对 RMS 最大值",
     anchorMaxPointAbs: "最大点绝对电压",
+    viewDetails: "查看详情",
+    viewAccuracyCase: "查看案例",
+    sourceUnavailable: "未列出",
+    yes: "是",
+    no: "否",
+    labelReleaseEntry: "Release entry",
+    labelTaskId: "Task id",
+    labelLegacyTaskId: "Legacy task id",
+    labelIdNamespace: "ID 命名空间",
+    labelBaseFunction: "基础功能",
+    labelCategory: "类别",
+    labelForm: "表单",
+    labelLevel: "层级",
+    labelDifficulty: "难度",
+    labelTrack: "Track",
+    labelFamily: "Family",
+    labelProvenance: "来源",
+    labelScoreSurface: "是否计分",
+    labelContentDenominator: "是否进入内容分母",
+    labelGoldCount: "Gold 资产数",
+    labelPromptPath: "Prompt",
+    labelChecksPath: "Checks",
+    labelMetaPath: "Meta",
+    labelReleaseManifestPath: "Release task",
+    labelEvidencePath: "Evidence",
+    labelStatic: "Static",
+    labelEvas: "EVAS",
+    labelSpectre: "Spectre",
+    labelVerdict: "Verdict",
+    labelParityStatus: "Parity 状态",
+    labelParityPolicy: "Parity 策略",
+    labelSourceEquivalence: "Source equivalence",
+    labelSignalsCompared: "比较信号数",
+    labelSamples: "采样点",
+    labelMeanRms: "平均相对 RMS",
+    labelWorstRms: "最差相对 RMS",
+    labelMaxRmse: "最大 RMSE",
+    labelMaxAbs: "最大绝对电压",
+    labelDigitalMismatch: "数字 mismatch 比例",
+    labelRelativeGainDelta: "相对增益差",
+    labelAlignmentStatus: "Alignment 状态",
+    labelEqualityClaim: "Equality 声称",
+    labelMetricFamily: "Metric family",
+    labelSimilarity: "相似度",
+    labelTolerance: "容差",
+    labelWaveformStatus: "Waveform 状态",
+    labelCandidate: "候选执行面",
+    labelCandidateGain: "候选 gain",
+    labelReferenceGain: "Reference gain",
+    labelDiagnosticNote: "诊断说明",
     loadError:
       "无法加载 vaBench 网站数据。请运行 python3 runners/export_vabench_eval_framework.py、python3 runners/export_vabench_github_pages.py 和 python3 runners/export_vabench_precision_overview.py，然后通过 HTTP 服务打开 docs/。{message}",
   },
@@ -668,36 +926,70 @@ const TAXONOMY_ZH = {
     label: "Solver 采样网格",
     what_changes: "EVAS 和 Spectre 可能保存不同的 transient accepted steps，因此报告会在重采样后的共同网格上比较共同信号。",
     why_expected: "自适应求解器即使得到等价的电路轨迹，也可能选择不同的输出点。",
+    known_shortcoming: "我们的比较不能证明 EVAS 复现了 Spectre 的内部 accepted-step 历史；它只比较对齐后的可观测保存信号。",
+    current_handling: "当前报告使用固定共同采样网格，同时保留 effective RMS 和 raw RMS。",
+    bug_signal: "如果稳定区域不一致、checker 结果改变，或者某行只能通过隐藏很宽的时间区间才能通过，就应该当作 bug。",
+    feedback_wanted: "请提供 row id、两份 CSV trace，以及对齐后稳定区域首次明显偏离的时间范围。",
     reporting_rule: "把 aligned-grid RMS 当作诊断指标；不要解读为 bit-exact 完全一致。",
   },
   event_time_and_cross: {
     label: "事件时间与 cross() 定位",
     what_changes: "cross() 事件和 timer 事件可能在略有不同的局部时间触发。",
     why_expected: "两个引擎的 event scheduling 和 breakpoint localization 机制不同。",
+    known_shortcoming: "EVAS 还没有声称覆盖所有 Spectre 等价的 cross()、timer()、transition() 和 simultaneous-event corner case 排序语义。",
+    current_handling: "事件密集的 row 先由 behavior checker 判定，再在支持子集内用 waveform/event diagnostics 检查。",
+    bug_signal: "如果边沿漏触发、重复触发、状态更新顺序改变，或出现 EVAS PASS / Spectre FAIL，就应该当作 bug。",
+    feedback_wanted: "最有价值的是能触发问题的最小 Verilog-A 片段，尤其是相关 cross()/timer() 语句。",
     reporting_rule: "先检查 behavior、event consistency 和 edge-window 指标，再判断是否 mismatch。",
   },
   edge_window: {
     label: "边沿与不连续窗口",
     what_changes: "快速边沿、不连续点或数字阈值附近的少数采样点可能主导 raw pointwise error。",
     why_expected: "一个采样点的边沿位置差异可能产生很大的瞬时电压差，但稳定区域仍匹配。",
+    known_shortcoming: "edge-window 是务实的 acceptance gate；如果使用不谨慎，可能掩盖真实的 timing 或 threshold bug。",
+    current_handling: "effective metrics 只允许扣除有界的局部窗口；raw metrics 会并排保留用于审计。",
+    bug_signal: "如果被排除窗口变宽、在多次边沿反复出现、改变采样判决，或影响 task metric，就应该当作 bug。",
+    feedback_wanted: "请报告信号名、边沿时间、raw max error，以及边沿后的状态或 checker 输出是否改变。",
     reporting_rule: "effective metrics 可以扣除有界局部窗口；raw metrics 仍然保留用于审计。",
   },
   interpolation: {
     label: "共同网格插值",
     what_changes: "保存的 waveform 会先插值，再做 RMS 比较。",
     why_expected: "原始输出时间不同，必须插值后才能逐点比较。",
+    known_shortcoming: "当前诊断使用简单共同网格插值；对稀疏输出和很尖锐的 transition，误差可能被放大或缩小。",
+    current_handling: "我们报告 row-level 和 worst-signal RMS，而不是用一个单一 pass/fail 标量隐藏插值敏感性。",
+    bug_signal: "如果更密的 save grid 或直接 event-time 比较会改变某行结论，就应该当作需要修复的问题。",
+    feedback_wanted: "如果有更好的比较方法，或发现某行会因为插值选择而翻转结果，请直接指出。",
     reporting_rule: "把插值误差视为精度诊断的一部分，而不是任务功能分数。",
   },
   transition_smoothing: {
     label: "transition() 平滑",
     what_changes: "transition() ramp 的 breakpoint 位置和采样斜率可能略有不同。",
     why_expected: "EVAS 和 Spectre 不承诺内部平滑调度完全一致。",
+    known_shortcoming: "EVAS 的 transition 处理只对 benchmark 支持的 case 做了对齐，不是 Spectre 内部 smoothing 实现的完整公开克隆。",
+    current_handling: "稳定区行为、checker 结果、raw/effective waveform metrics 会一起展示，避免 transition artifact 被静默忽略。",
+    bug_signal: "如果 transition delay、rise/fall time 或 target update 语义改变下游判决或指标，就应该当作 bug。",
+    feedback_wanted: "最有帮助的是小型 transition() 例子，包含期望时序、target update 和保存 waveform。",
     reporting_rule: "当 transition 边沿抬高 raw RMS 时，应检查稳定区行为和 checker 指标。",
+  },
+  noise_like_or_dithered_stimulus: {
+    label: "噪声式或 dither 激励",
+    what_changes: "带 dither、伪随机控制或测量激励的 row，可能逐点相位不一致，但提取出的电路指标仍一致。",
+    why_expected: "这些 row 的设计目标通常是 gain、lock、count 或 convergence 等聚合指标，不是 sample-by-sample 噪声相位相同。",
+    known_shortcoming: "如果 checker metric 过宽，可能漏掉电路设计者关心的 waveform-level 差异。",
+    current_handling: "页面把 task-metric rows 单独列出，并保留同一行的 diagnostic waveform-only RMS。",
+    bug_signal: "如果换 seed、window 或 stimulus phase 会改变 pass/fail，或者聚合指标掩盖明显功能漂移，就应该当作 bug。",
+    feedback_wanted: "欢迎给出更强的 metric window、确定性 seed 或额外 observable 建议。",
+    reporting_rule: "用确定性的 task metric 作为 acceptance gate，同时把 pointwise RMS 作为辅助证据。",
   },
   task_metric_gate: {
     label: "Task-metric gate",
     what_changes: "部分 row 用提取出的电路指标接受，例如 gain、lock 或 frequency，而不是 raw pointwise waveform equality。",
     why_expected: "测量流程类任务可能使用 dither/noise-like stimulus，逐点相位不是设计目标。",
+    known_shortcoming: "task-metric gate 的质量取决于 checker。checker 太弱会过度接受；太紧又可能误拒有效的 simulator 差异。",
+    current_handling: "报告会并排展示 task-metric policy、metric delta、diagnostic waveform status 和 raw/effective RMS。",
+    bug_signal: "如果 metric tolerance 没有文档、metric 不具备电路意义，或 waveform 明显错误但 row 仍通过，就应该当作 bug。",
+    feedback_wanted: "欢迎给出具体 checker 改进：额外 observable、更好的窗口、更严格的 metric bounds 或 task-specific edge cases。",
     reporting_rule: "报告 task metric，同时只把 pointwise waveform diagnostics 作为解释上下文。",
   },
 };
@@ -883,6 +1175,21 @@ function codeText(value) {
   return make("code", "mono", text(value));
 }
 
+function idNamespaceMeaning(entryId) {
+  const value = String(entryId || "");
+  if (value.startsWith("vbr11_")) {
+    return state.language === "zh"
+      ? "vaBench v1.1 promoted-entry 命名空间；这是后来补进 300-row benchmark surface 的稳定内部 ID 前缀。"
+      : "vaBench v1.1 promoted-entry namespace; a stable internal ID prefix for rows added to the 300-row benchmark surface.";
+  }
+  if (value.startsWith("vbr1_")) {
+    return state.language === "zh"
+      ? "vaBench release v1 继承 entry 命名空间；这是稳定内部 ID 前缀，不是数量、排名或分数。"
+      : "vaBench release v1 inherited-entry namespace; a stable internal ID prefix, not a count, rank, or score.";
+  }
+  return state.language === "zh" ? "稳定内部 benchmark ID 命名空间。" : "Stable internal benchmark ID namespace.";
+}
+
 function rateBar(value) {
   const wrapper = make("div", "rate-bar");
   const fill = document.createElement("span");
@@ -894,6 +1201,133 @@ function rateBar(value) {
 
 function ratioText(passed, total) {
   return `${number(passed)} / ${number(total)}`;
+}
+
+function queryParam(name) {
+  return new URLSearchParams(window.location.search).get(name) || "";
+}
+
+function encodedPath(path) {
+  return String(path || "")
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+}
+
+function githubSourceHref(path) {
+  if (!path) {
+    return "";
+  }
+  return `https://github.com/BucketSran/behavioral-veriloga-eval/blob/main/${encodedPath(path)}`;
+}
+
+function taskHref(row) {
+  const params = new URLSearchParams();
+  params.set("id", row.release_entry_id || row.task_id || "");
+  params.set("form", row.form || "");
+  return `task.html?${params.toString()}`;
+}
+
+function accuracyCaseHref(row) {
+  const params = new URLSearchParams();
+  params.set("candidate", row.candidate || "");
+  params.set("entry", row.release_entry_id || "");
+  params.set("form", row.form || "");
+  return `accuracy-case.html?${params.toString()}`;
+}
+
+function yesNo(value) {
+  return value ? t("yes") : t("no");
+}
+
+function appendDetailValue(parent, value) {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      parent.textContent = "-";
+      return;
+    }
+    parent.textContent = value.map((item) => text(item)).join(", ");
+    return;
+  }
+  if (value instanceof Node) {
+    parent.append(value);
+    return;
+  }
+  parent.textContent = text(value);
+}
+
+function detailGroup(label, value) {
+  const group = make("div");
+  const dd = make("dd");
+  group.append(make("dt", "", label), dd);
+  appendDetailValue(dd, value);
+  return group;
+}
+
+function renderDetailGroups(id, rows) {
+  const container = byId(id);
+  if (!container) {
+    return;
+  }
+  container.replaceChildren(
+    ...rows
+      .filter(([, value]) => value !== undefined && value !== null && !(Array.isArray(value) && value.length === 0))
+      .map(([label, value]) => detailGroup(label, value)),
+  );
+}
+
+function sourceLink(path, label) {
+  if (!path) {
+    return make("span", "table-note", t("sourceUnavailable"));
+  }
+  const wrapper = make("div", "source-link");
+  const anchor = make("a", "text-link", label);
+  anchor.href = githubSourceHref(path);
+  anchor.target = "_blank";
+  anchor.rel = "noopener";
+  wrapper.append(anchor, codeText(path));
+  return wrapper;
+}
+
+function contentKindLabel(kind) {
+  return {
+    prompt: t("contentKindPrompt"),
+    checks: t("contentKindChecks"),
+    meta: t("contentKindMeta"),
+    release_task: t("contentKindReleaseTask"),
+    gold: t("contentKindGold"),
+    reference_answer: t("contentKindReferenceAnswer"),
+    reference_testbench: t("contentKindReferenceTestbench"),
+    supplied_artifact: t("contentKindSuppliedArtifact"),
+  }[kind] || text(kind);
+}
+
+function findTaskRow(entry, form) {
+  const rows = state.payloads.tasks?.rows || [];
+  return rows.find((row) => {
+    const entryMatches = row.release_entry_id === entry || row.task_id === entry || row.legacy_task_id === entry;
+    return entryMatches && (!form || row.form === form);
+  });
+}
+
+function findTaskDetail(entry, form) {
+  const rows = state.payloads.taskDetails?.rows || [];
+  return rows.find((row) => row.release_entry_id === entry && (!form || row.form === form));
+}
+
+function findAlignmentRow(entry, form) {
+  const rows = state.payloads.alignment?.rows || [];
+  return rows.find((row) => row.release_entry_id === entry && (!form || row.form === form));
+}
+
+function taskMetricCasesFor(entry, form) {
+  return (state.payloads.precision?.task_metric_rows || []).filter((row) => row.release_entry_id === entry && (!form || row.form === form));
+}
+
+function findAccuracyCase(candidate, entry, form) {
+  return (state.payloads.precision?.task_metric_rows || []).find(
+    (row) => row.candidate === candidate && row.release_entry_id === entry && (!form || row.form === form),
+  );
 }
 
 function metricCard(label, value, detail) {
@@ -1175,7 +1609,9 @@ function renderTaskTable() {
       const tr = document.createElement("tr");
       const task = make("td");
       const taskTitle = make("div", "task-title");
-      taskTitle.append(make("strong", "", text(row.base_function)), codeText(row.task_id), make("small", "", text(row.release_entry_id)));
+      const taskLink = make("a", "text-link table-link", text(row.base_function));
+      taskLink.href = taskHref(row);
+      taskTitle.append(taskLink, codeText(row.task_id), make("small", "", text(row.release_entry_id)));
       task.append(taskTitle);
 
       const category = make("td");
@@ -1212,6 +1648,271 @@ function renderBenchmark() {
   renderCategories();
   setupTaskFilters();
   renderTaskTable();
+}
+
+function renderTaskDetailMissing() {
+  const title = byId("task-detail-title");
+  const intro = byId("task-detail-intro");
+  if (title) {
+    title.textContent = t("taskDetailMissing");
+  }
+  if (intro) {
+    intro.textContent = t("taskDetailMissingBody");
+  }
+  const metrics = byId("task-detail-metrics");
+  if (metrics) {
+    metrics.replaceChildren(metricCard(t("thStatus"), t("taskDetailMissing"), t("taskDetailMissingBody")));
+  }
+  ["task-detail-identity", "task-detail-assets", "task-detail-evaluation", "task-detail-precision", "task-detail-content-list"].forEach((id) => {
+    const node = byId(id);
+    if (node) {
+      node.replaceChildren();
+    }
+  });
+  const tbody = byId("task-detail-accuracy-table");
+  if (tbody) {
+    tbody.replaceChildren();
+  }
+}
+
+function renderTaskDetailAccuracyCases(cases) {
+  const tbody = byId("task-detail-accuracy-table");
+  if (!tbody) {
+    return;
+  }
+  if (cases.length === 0) {
+    const tr = document.createElement("tr");
+    const td = make("td", "", t("taskDetailNoAccuracyCase"));
+    td.colSpan = 5;
+    tr.append(td);
+    tbody.replaceChildren(tr);
+    return;
+  }
+  tbody.replaceChildren(
+    ...cases.map((row) => {
+      const tr = document.createElement("tr");
+      const caseLink = make("a", "text-link table-link", t("viewAccuracyCase"));
+      caseLink.href = accuracyCaseHref(row);
+      const diagnostic = make("td");
+      diagnostic.append(pill(row.diagnostic_waveform_status), make("div", "table-note", text(row.diagnostic_note)));
+      tr.append(
+        make("td", "", text(row.candidate_label)),
+        make("td", "", preciseNumber(row.relative_gain_delta)),
+        diagnostic,
+        make("td", "", preciseNumber(row.diagnostic_waveform_worst_signal_relative_rms_error)),
+        make("td", "", ""),
+      );
+      tr.lastChild.append(caseLink);
+      return tr;
+    }),
+  );
+}
+
+function fileBaseName(path) {
+  const parts = String(path || "").split("/");
+  return parts[parts.length - 1] || "";
+}
+
+function isBuggyArtifact(file) {
+  return /(^|[_/-])buggy([_.-]|$)/i.test(fileBaseName(file.path));
+}
+
+function isSpectreTestbench(file) {
+  const name = fileBaseName(file.path).toLowerCase();
+  return name.endsWith(".scs") || name.startsWith("tb_");
+}
+
+function classifyCoreFile(file) {
+  if (file.kind === "prompt") {
+    return "prompt";
+  }
+  if (file.kind === "checks") {
+    return "evaluation";
+  }
+  if (file.kind === "gold") {
+    if (isBuggyArtifact(file)) {
+      return "supplied";
+    }
+    if (isSpectreTestbench(file)) {
+      return "testbench";
+    }
+    return "answer";
+  }
+  return "advanced";
+}
+
+function renderContentFile(file, index, options = {}) {
+  const item = document.createElement("details");
+  item.className = "content-file";
+  item.open = options.open ?? (index === 0 || file.kind === "checks");
+
+  const summary = document.createElement("summary");
+  const title = make("span", "content-file-title");
+  const kindLabel = contentKindLabel(options.kind || file.kind);
+  const fileLabel = options.label || file.label || kindLabel;
+  title.append(make("strong", "", fileLabel));
+  if (fileLabel !== kindLabel) {
+    title.append(make("span", "", kindLabel));
+  }
+  const meta = make("span", "content-file-meta");
+  meta.append(
+    make("span", "", format("fileBytes", { count: number(file.size_bytes) })),
+    file.truncated ? pill("pending", t("fileTruncated")) : make("span", "", text(file.language)),
+  );
+  const source = make("a", "text-link", t("openSource"));
+  source.href = githubSourceHref(file.path);
+  source.target = "_blank";
+  source.rel = "noopener";
+  source.addEventListener("click", (event) => event.stopPropagation());
+  summary.append(title, meta, source);
+
+  const path = codeText(file.path);
+  path.classList.add("content-path");
+  const pre = document.createElement("pre");
+  const code = document.createElement("code");
+  code.textContent = file.exists ? file.content || "" : t("fileMissing");
+  pre.append(code);
+  item.append(summary, path, pre);
+  return item;
+}
+
+function renderCoreFileGroup(titleKey, bodyKey, files, kind, defaultOpen = false) {
+  const section = document.createElement("section");
+  section.className = "content-core-group";
+  const heading = make("div", "content-core-heading");
+  heading.append(make("h3", "", t(titleKey)), make("p", "", t(bodyKey)));
+  const list = make("div", "content-browser compact");
+  list.append(...files.map((file, index) => renderContentFile(file, index, { kind, open: defaultOpen || index === 0 })));
+  section.append(heading, list);
+  return section;
+}
+
+function renderTaskDetailContents(row) {
+  const container = byId("task-detail-content-list");
+  if (!container) {
+    return;
+  }
+  const detail = findTaskDetail(row.release_entry_id, row.form);
+  const files = (detail?.files || []).filter((file) => file && file.path);
+  if (files.length === 0) {
+    const empty = make("div", "empty-state");
+    empty.append(make("p", "", t("taskDetailNoContents")));
+    container.replaceChildren(empty);
+    return;
+  }
+  const groups = {
+    prompt: [],
+    answer: [],
+    testbench: [],
+    evaluation: [],
+    supplied: [],
+    advanced: [],
+  };
+  files.forEach((file) => groups[classifyCoreFile(file)].push(file));
+
+  const core = make("div", "content-core");
+  [
+    ["taskDetailCorePromptTitle", "taskDetailCorePromptBody", groups.prompt, "prompt", true],
+    ["taskDetailCoreAnswerTitle", "taskDetailCoreAnswerBody", groups.answer, "reference_answer", true],
+    ["taskDetailCoreTestbenchTitle", "taskDetailCoreTestbenchBody", groups.testbench, "reference_testbench", true],
+    ["taskDetailCoreEvaluationTitle", "taskDetailCoreEvaluationBody", groups.evaluation, "checks", true],
+    ["taskDetailCoreSuppliedTitle", "taskDetailCoreSuppliedBody", groups.supplied, "supplied_artifact", false],
+  ].forEach(([titleKey, bodyKey, groupFiles, kind, defaultOpen]) => {
+    if (groupFiles.length) {
+      core.append(renderCoreFileGroup(titleKey, bodyKey, groupFiles, kind, defaultOpen));
+    }
+  });
+
+  const advanced = document.createElement("details");
+  advanced.className = "content-advanced";
+  const summary = document.createElement("summary");
+  summary.append(make("strong", "", t("taskDetailAdvancedTitle")), make("span", "", t("taskDetailAdvancedDescription")));
+  advanced.append(summary);
+  const advancedList = make("div", "content-browser compact");
+  advancedList.append(...files.map((file, index) => renderContentFile(file, index, { open: false })));
+  advanced.append(advancedList);
+
+  container.replaceChildren(core, advanced);
+}
+
+function renderTaskDetail() {
+  const entry = queryParam("id") || queryParam("entry");
+  const form = queryParam("form");
+  const row = findTaskRow(entry, form);
+  if (!row) {
+    renderTaskDetailMissing();
+    return;
+  }
+  const alignment = findAlignmentRow(row.release_entry_id, row.form) || {};
+  const cases = taskMetricCasesFor(row.release_entry_id, row.form);
+  const title = byId("task-detail-title");
+  const intro = byId("task-detail-intro");
+  if (title) {
+    title.textContent = `${text(row.release_entry_id)}:${text(row.form)}`;
+  }
+  if (intro) {
+    intro.textContent = `${text(row.base_function)} · ${categoryLabel(row.category)} · ${text(row.level)} · ${text(row.difficulty)}`;
+  }
+  const metrics = byId("task-detail-metrics");
+  if (metrics) {
+    metrics.replaceChildren(
+      metricCard(t("labelVerdict"), statusLabel(row.verdict), `${t("labelStatic")} ${statusLabel(row.static)} · ${t("labelEvas")} ${statusLabel(row.evas)} · ${t("labelSpectre")} ${statusLabel(row.spectre)}`),
+      metricCard(t("labelScoreSurface"), yesNo(row.counted_in_score), row.counted_in_score ? t("counted") : t("notCounted")),
+      metricCard(t("labelParityStatus"), statusLabel(row.parity_status), policyLabel(row.parity_policy)),
+      metricCard(t("taskDetailAccuracyCasesTitle"), number(cases.length), t("taskMetricDescription")),
+    );
+  }
+  renderDetailGroups("task-detail-identity", [
+    [t("labelReleaseEntry"), row.release_entry_id],
+    [t("labelTaskId"), row.task_id],
+    [t("labelLegacyTaskId"), row.legacy_task_id],
+    [t("labelIdNamespace"), idNamespaceMeaning(row.release_entry_id)],
+    [t("labelBaseFunction"), row.base_function],
+    [t("labelCategory"), categoryLabel(row.category)],
+    [t("labelForm"), row.form],
+    [t("labelLevel"), row.level],
+    [t("labelDifficulty"), row.difficulty],
+    [t("labelTrack"), row.track],
+    [t("labelFamily"), row.family],
+    [t("labelProvenance"), provenanceLabel(row.provenance)],
+    [t("labelScoreSurface"), yesNo(row.counted_in_score)],
+    [t("labelContentDenominator"), yesNo(row.content_denominator_included)],
+  ]);
+  renderDetailGroups("task-detail-assets", [
+    [t("labelPromptPath"), sourceLink(row.prompt, t("openPrompt"))],
+    [t("labelChecksPath"), sourceLink(row.checks, t("openChecks"))],
+    [t("labelMetaPath"), sourceLink(row.meta, t("openMeta"))],
+    [t("labelReleaseManifestPath"), sourceLink(row.release_task_manifest, t("openReleaseManifest"))],
+    [t("labelEvidencePath"), sourceLink(row.evidence, t("openEvidence"))],
+    [t("labelGoldCount"), number(row.gold_count)],
+  ]);
+  renderDetailGroups("task-detail-evaluation", [
+    [t("labelStatic"), pill(row.static)],
+    [t("labelEvas"), pill(row.evas)],
+    [t("labelSpectre"), pill(row.spectre)],
+    [t("labelVerdict"), pill(row.verdict)],
+    [t("labelParityStatus"), pill(row.parity_status)],
+    [t("labelParityPolicy"), policyLabel(row.parity_policy)],
+    [t("labelSourceEquivalence"), yesNo(row.source_equivalence_pass)],
+    [t("labelAlignmentStatus"), alignment.alignment_status ? pill(alignment.alignment_status) : undefined],
+    [t("labelEqualityClaim"), translated(alignment.equality_claim)],
+  ]);
+  renderDetailGroups("task-detail-precision", [
+    [t("labelMetricFamily"), translated(alignment.metric_family)],
+    [t("labelSimilarity"), translated(alignment.similarity_summary)],
+    [t("labelTolerance"), `${translated(alignment.tolerance_profile)}; ${translated(alignment.tolerance_result)}`],
+    [t("labelWaveformStatus"), alignment.waveform_comparison_status ? pill(alignment.waveform_comparison_status) : undefined],
+    [t("labelSignalsCompared"), number(row.signals_compared ?? alignment.signals_compared)],
+    [t("labelSamples"), number(row.samples ?? alignment.samples)],
+    [t("labelMeanRms"), preciseNumber(row.mean_relative_rms_error ?? alignment.mean_relative_rms_error)],
+    [t("labelWorstRms"), preciseNumber(row.max_relative_rms_error ?? alignment.max_relative_rms_error)],
+    [t("labelMaxRmse"), preciseNumber(row.max_rmse_v ?? alignment.max_rmse_v)],
+    [t("labelMaxAbs"), preciseNumber(row.max_abs_v ?? alignment.max_abs_v)],
+    [t("labelDigitalMismatch"), preciseNumber(row.max_digital_mismatch_ratio ?? alignment.max_digital_mismatch_ratio)],
+    [t("labelRelativeGainDelta"), preciseNumber(row.relative_gain_delta ?? alignment.relative_gain_delta)],
+  ]);
+  renderTaskDetailContents(row);
+  renderTaskDetailAccuracyCases(cases);
 }
 
 function renderProtocolMetrics() {
@@ -1544,8 +2245,10 @@ function renderTaskMetricRows() {
       const tr = document.createElement("tr");
       const task = make("td");
       const stack = make("div", "task-title");
+      const rowLink = make("a", "text-link table-link", `${text(row.release_entry_id)}:${text(row.form)}`);
+      rowLink.href = accuracyCaseHref(row);
       stack.append(
-        make("strong", "", `${text(row.release_entry_id)}:${text(row.form)}`),
+        rowLink,
         make("small", "", categoryLabel(row.category)),
       );
       task.append(stack);
@@ -1571,14 +2274,28 @@ function renderPointwiseTaxonomy() {
     return;
   }
   const rows = state.payloads.precision?.pointwise_difference_taxonomy || [];
+  const detailFields = [
+    ["taxonomySymptom", "what_changes"],
+    ["taxonomyShortcoming", "known_shortcoming"],
+    ["taxonomyHandling", "current_handling"],
+    ["taxonomyBugSignal", "bug_signal"],
+    ["taxonomyFeedback", "feedback_wanted"],
+    ["taxonomyRule", "reporting_rule"],
+  ];
   container.replaceChildren(
     ...rows.map((item) => {
-      const card = make("article", "feature-card static-card");
+      const card = make("article", "taxonomy-card");
+      const details = make("dl", "taxonomy-detail");
+      detailFields.forEach(([labelKey, field]) => {
+        const value = taxonomyField(item, field);
+        if (value) {
+          details.append(make("dt", "", t(labelKey)), make("dd", "", value));
+        }
+      });
       card.append(
         make("span", "", taxonomyField(item, "label")),
-        make("strong", "", taxonomyField(item, "what_changes")),
-        make("p", "", taxonomyField(item, "why_expected")),
-        make("p", "table-note", taxonomyField(item, "reporting_rule")),
+        make("strong", "", taxonomyField(item, "why_expected")),
+        details,
       );
       return card;
     }),
@@ -1608,6 +2325,121 @@ function renderSpectreAnchor() {
   );
 }
 
+function renderAccuracyCaseMissing() {
+  const title = byId("accuracy-case-title");
+  const intro = byId("accuracy-case-intro");
+  if (title) {
+    title.textContent = t("accuracyCaseMissing");
+  }
+  if (intro) {
+    intro.textContent = t("accuracyCaseMissingBody");
+  }
+  const metrics = byId("accuracy-case-metrics");
+  if (metrics) {
+    metrics.replaceChildren(metricCard(t("thStatus"), t("accuracyCaseMissing"), t("accuracyCaseMissingBody")));
+  }
+  ["accuracy-case-detail", "accuracy-case-task", "accuracy-case-taxonomy"].forEach((id) => {
+    const node = byId(id);
+    if (node) {
+      node.replaceChildren();
+    }
+  });
+}
+
+function caseTaxonomyRows(row) {
+  const taxonomy = state.payloads.precision?.pointwise_difference_taxonomy || [];
+  const names = ["task_metric_gate", "noise_like_or_dithered_stimulus", "solver_sampling_grid", "interpolation"];
+  if (row.diagnostic_waveform_status === "needs_review") {
+    names.push("edge_window", "event_time_and_cross");
+  }
+  return names.map((name) => taxonomy.find((item) => item.name === name)).filter(Boolean);
+}
+
+function renderAccuracyCaseTaxonomy(row) {
+  const container = byId("accuracy-case-taxonomy");
+  if (!container) {
+    return;
+  }
+  const detailFields = [
+    ["taxonomyShortcoming", "known_shortcoming"],
+    ["taxonomyHandling", "current_handling"],
+    ["taxonomyBugSignal", "bug_signal"],
+    ["taxonomyFeedback", "feedback_wanted"],
+  ];
+  container.replaceChildren(
+    ...caseTaxonomyRows(row).map((item) => {
+      const card = make("article", "taxonomy-card");
+      const details = make("dl", "taxonomy-detail");
+      detailFields.forEach(([labelKey, field]) => {
+        const value = taxonomyField(item, field);
+        if (value) {
+          details.append(make("dt", "", t(labelKey)), make("dd", "", value));
+        }
+      });
+      card.append(make("span", "", taxonomyField(item, "label")), make("strong", "", taxonomyField(item, "why_expected")), details);
+      return card;
+    }),
+  );
+}
+
+function renderAccuracyCase() {
+  const candidate = queryParam("candidate");
+  const entry = queryParam("entry") || queryParam("id");
+  const form = queryParam("form");
+  const row = findAccuracyCase(candidate, entry, form);
+  if (!row) {
+    renderAccuracyCaseMissing();
+    return;
+  }
+  const task = findTaskRow(row.release_entry_id, row.form) || {};
+  const title = byId("accuracy-case-title");
+  const intro = byId("accuracy-case-intro");
+  if (title) {
+    title.textContent = `${text(row.candidate_label)} · ${text(row.release_entry_id)}:${text(row.form)}`;
+  }
+  if (intro) {
+    intro.textContent = `${categoryLabel(row.category)} · ${translated(row.acceptance_policy)}`;
+  }
+  const metrics = byId("accuracy-case-metrics");
+  if (metrics) {
+    metrics.replaceChildren(
+      metricCard(t("labelRelativeGainDelta"), preciseNumber(row.relative_gain_delta), translated(row.acceptance_policy)),
+      metricCard(t("labelWaveformStatus"), statusLabel(row.diagnostic_waveform_status), text(row.diagnostic_note)),
+      metricCard(t("labelMeanRms"), preciseNumber(row.diagnostic_waveform_mean_relative_rms_error), t("thDiagnosticMeanRms")),
+      metricCard(t("labelWorstRms"), preciseNumber(row.diagnostic_waveform_worst_signal_relative_rms_error), t("thDiagnosticWorstSignalRms")),
+    );
+  }
+  renderDetailGroups("accuracy-case-detail", [
+    [t("labelCandidate"), row.candidate_label],
+    [t("labelReleaseEntry"), row.release_entry_id],
+    [t("labelForm"), row.form],
+    [t("labelTaskId"), row.task_id],
+    [t("labelLegacyTaskId"), row.legacy_task_id],
+    [t("labelCategory"), categoryLabel(row.category)],
+    [t("thAcceptancePolicy"), translated(row.acceptance_policy)],
+    [t("labelRelativeGainDelta"), preciseNumber(row.relative_gain_delta)],
+    [t("labelCandidateGain"), preciseNumber(row.candidate_gain)],
+    [t("labelReferenceGain"), preciseNumber(row.reference_gain)],
+    [t("labelWaveformStatus"), pill(row.diagnostic_waveform_status)],
+    [t("labelDiagnosticNote"), row.diagnostic_note],
+  ]);
+  const taskLink = task.release_entry_id ? make("a", "text-link", t("accuracyCaseTaskLink")) : undefined;
+  if (taskLink) {
+    taskLink.href = taskHref(task);
+  }
+  renderDetailGroups("accuracy-case-task", [
+    [t("labelBaseFunction"), task.base_function],
+    [t("labelCategory"), task.category ? categoryLabel(task.category) : undefined],
+    [t("labelLevel"), task.level],
+    [t("labelDifficulty"), task.difficulty],
+    [t("labelTrack"), task.track],
+    [t("labelScoreSurface"), task.release_entry_id ? yesNo(task.counted_in_score) : undefined],
+    [t("labelParityStatus"), task.parity_status ? pill(task.parity_status) : undefined],
+    [t("accuracyCaseTaskLink"), taskLink],
+  ]);
+  renderAccuracyCaseTaxonomy(row);
+}
+
 function renderAccuracy() {
   renderAccuracyMetrics();
   renderAccuracyAnswer();
@@ -1631,10 +2463,14 @@ function renderAll() {
     renderLeaderboard();
   } else if (page === "benchmark") {
     renderBenchmark();
+  } else if (page === "task-detail") {
+    renderTaskDetail();
   } else if (page === "protocol") {
     renderProtocol();
   } else if (page === "accuracy") {
     renderAccuracy();
+  } else if (page === "accuracy-case") {
+    renderAccuracyCase();
   } else if (page === "news") {
     renderNews();
   }
@@ -1666,7 +2502,8 @@ async function boot() {
   initLanguageToggle();
   applyStaticTranslations();
   try {
-    const [summary, backends, alignment, tasks, categories, modelRoster, precision] = await Promise.all([
+    const page = document.body.dataset.page || "home";
+    const [summary, backends, alignment, tasks, categories, modelRoster, precision, taskDetails] = await Promise.all([
       fetchJson(DATA.summary),
       fetchJson(DATA.backends),
       fetchJson(DATA.alignment),
@@ -1674,8 +2511,9 @@ async function boot() {
       fetchJson(DATA.categories),
       fetchJson(DATA.modelRoster),
       fetchJson(DATA.precision),
+      page === "task-detail" ? fetchJson(DATA.taskDetails) : Promise.resolve({ rows: [] }),
     ]);
-    state.payloads = { summary, backends, alignment, tasks, categories, modelRoster, precision };
+    state.payloads = { summary, backends, alignment, tasks, categories, modelRoster, precision, taskDetails };
     renderAll();
   } catch (error) {
     showError(error);

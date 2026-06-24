@@ -81,8 +81,15 @@ def test_precision_overview_exports_fourway_and_spectre_anchor() -> None:
     assert "Do not treat the historical 271-row four-way artifact as the current benchmark denominator." in report["claim_boundary"]["forbidden"]
     assert "Do not claim bit-exact waveform equality." in report["claim_boundary"]["forbidden"]
     assert "relative_waveform" in {gate["name"] for gate in report["gates"]}
-    assert "transition_smoothing" in {row["name"] for row in report["pointwise_difference_taxonomy"]}
-    assert "event_time_and_cross" in {row["name"] for row in report["pointwise_difference_taxonomy"]}
+    taxonomy = report["pointwise_difference_taxonomy"]
+    assert "transition_smoothing" in {row["name"] for row in taxonomy}
+    assert "event_time_and_cross" in {row["name"] for row in taxonomy}
+    assert "noise_like_or_dithered_stimulus" in {row["name"] for row in taxonomy}
+    for item in taxonomy:
+        assert item["known_shortcoming"]
+        assert item["current_handling"]
+        assert item["bug_signal"]
+        assert item["feedback_wanted"]
     assert len(report["needs_review_rows"]) == 0
     task_metric_rows = report["task_metric_rows"]
     assert len(task_metric_rows) == 12
