@@ -1,0 +1,129 @@
+{
+  "schema_version": "vabench-release-v2-invisible-spec-checker-map",
+  "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+  "source_agent_visible_spec": "public/agent_visible_spec.md",
+  "source_invisible_checker_config": "private/invisible_checker_config.yaml",
+  "source_checker": {
+    "file": "runners/simulate_evas.py",
+    "task_aliases": [
+      "vbr1_l2_weighted_sar_adc_dac_loop",
+      "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
+      "vbr1_l2_weighted_sar_adc_dac_loop:e2e"
+    ]
+  },
+  "auditor": {
+    "forbidden_public_terms": [
+      "sar_bit_trial_sequence_visible",
+      "trial_dac_matches_trial_code_monitor",
+      "comparator_decision_matches_sample_and_trial",
+      "sar_adc_code_range_sufficient",
+      "sar_adc_unique_code_count",
+      "sar_code_matches_sampled_input",
+      "dac_output_matches_weighted_code",
+      "code_monotonic_with_sampled_input",
+      "dac_output_in_range",
+      "check_sar_adc_dac_weighted_8b",
+      "unique_codes >= 48",
+      "code_min <= 8",
+      "code_max >= 247",
+      "avg_quant_err < 0.025",
+      "max_quant_err < 0.060",
+      "avg_dac_err < 0.020",
+      "cmp_frac < 0.94",
+      "sar_trial_bits_not_visible"
+    ]
+  },
+  "requirement_links": [
+    {
+      "id": "sar_trial_sequence_observable",
+      "public_requirement": "The SAR converter exposes an MSB-to-LSB trial sequence over multiple clock edges and exercises all eight trial positions.",
+      "public_anchor_terms": [
+        "MSB-to-LSB",
+        "multiple clock edges",
+        "trial sequence",
+        "bit_index",
+        "all eight trial positions"
+      ],
+      "checker_config_ids": [
+        "sar_bit_trial_sequence_visible"
+      ],
+      "checker_functions": [
+        "check_sar_adc_dac_weighted_8b"
+      ],
+      "private_policy_terms": [
+        "sar_trial_bits_not_visible",
+        "trial_bits=[1,2,3,4,5,6,7,8]"
+      ]
+    },
+    {
+      "id": "trial_dac_and_comparator_consistency",
+      "public_requirement": "The tentative trial code monitor, trial DAC monitor, comparator decision, and sampled input are mutually consistent except near decision boundaries.",
+      "public_anchor_terms": [
+        "trial_code_mon",
+        "trial_vdac",
+        "cmp_decision",
+        "vin_sample",
+        "decision boundaries"
+      ],
+      "checker_config_ids": [
+        "trial_dac_matches_trial_code_monitor",
+        "comparator_decision_matches_sample_and_trial"
+      ],
+      "checker_functions": [
+        "check_sar_adc_dac_weighted_8b"
+      ],
+      "private_policy_terms": [
+        "avg_dac_err < 0.020",
+        "cmp_frac < 0.94"
+      ]
+    },
+    {
+      "id": "completed_code_coverage_and_monotonicity",
+      "public_requirement": "Completed conversions cover a broad 8-bit range, include codes near both rails, and remain monotonic with sampled input within quantization tolerance.",
+      "public_anchor_terms": [
+        "broad range",
+        "near both rails",
+        "monotonic",
+        "sampled input",
+        "normal quantization tolerance"
+      ],
+      "checker_config_ids": [
+        "sar_adc_code_range_sufficient",
+        "sar_adc_unique_code_count",
+        "sar_code_matches_sampled_input",
+        "code_monotonic_with_sampled_input"
+      ],
+      "checker_functions": [
+        "check_sar_adc_dac_weighted_8b"
+      ],
+      "private_policy_terms": [
+        "unique_codes >= 48",
+        "code_min <= 8",
+        "code_max >= 247",
+        "avg_quant_err < 0.025",
+        "max_quant_err < 0.060"
+      ]
+    },
+    {
+      "id": "weighted_dac_reconstruction",
+      "public_requirement": "The weighted DAC reconstructs the final 8-bit code as a voltage-domain output in the 0 V to 0.9 V range.",
+      "public_anchor_terms": [
+        "weighted DAC",
+        "final `dout_7 ... dout_0` code",
+        "0 V",
+        "0.9 V",
+        "vout"
+      ],
+      "checker_config_ids": [
+        "dac_output_matches_weighted_code",
+        "dac_output_in_range"
+      ],
+      "checker_functions": [
+        "check_sar_adc_dac_weighted_8b"
+      ],
+      "private_policy_terms": [
+        "avg_dac_err < 0.020"
+      ]
+    }
+  ]
+}

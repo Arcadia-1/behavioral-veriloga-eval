@@ -1,0 +1,99 @@
+{
+  "release": "vabench-release-v2",
+  "run_kind": "gold_spectre_mini_cert",
+  "status": "PASS",
+  "started_at": "2026-06-24T04:27:57",
+  "finished_at": "2026-06-24T04:28:23",
+  "output_root": "/private/tmp/vabench_v2_gold_spectre_mini_cert_20260624_r3",
+  "row_count": 5,
+  "pass_count": 5,
+  "status_counts": {
+    "PASS": 5
+  },
+  "spectre_backend": "bridge",
+  "spectre_mode": "ax",
+  "rows": [
+    {
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+      "status": "PASS",
+      "checker_task_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form_dir": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e",
+      "evas_status": "PASS",
+      "spectre_ok": true,
+      "spectre_errors": [],
+      "runner_diagnostic_errors": [],
+      "spectre_log_zero_errors": false,
+      "spectre_rows": 16591,
+      "spectre_behavior_score": 1.0,
+      "parity_status": "passed",
+      "evas_wall_time_s": 0.748691541,
+      "spectre_wall_time_s": 6.004270458000001
+    },
+    {
+      "task_id": "vbr1_l1_window_comparator_detector:tb",
+      "status": "PASS",
+      "checker_task_id": "vbr1_l1_window_comparator_detector",
+      "form_dir": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb",
+      "evas_status": "PASS",
+      "spectre_ok": true,
+      "spectre_errors": [],
+      "runner_diagnostic_errors": [],
+      "spectre_log_zero_errors": false,
+      "spectre_rows": 72,
+      "spectre_behavior_score": 1.0,
+      "parity_status": "passed",
+      "evas_wall_time_s": 0.04626924999999993,
+      "spectre_wall_time_s": 4.010210292
+    },
+    {
+      "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+      "status": "PASS",
+      "checker_task_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form_dir": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut",
+      "evas_status": "PASS",
+      "spectre_ok": true,
+      "spectre_errors": [],
+      "runner_diagnostic_errors": [],
+      "spectre_log_zero_errors": false,
+      "spectre_rows": 223,
+      "spectre_behavior_score": 1.0,
+      "parity_status": "passed",
+      "evas_wall_time_s": 0.5372154160000004,
+      "spectre_wall_time_s": 4.021375832999999
+    },
+    {
+      "task_id": "vbr1_l1_first_order_lowpass:bugfix",
+      "status": "PASS",
+      "checker_task_id": "vbr1_l1_first_order_lowpass",
+      "form_dir": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix",
+      "evas_status": "PASS",
+      "spectre_ok": true,
+      "spectre_errors": [],
+      "runner_diagnostic_errors": [],
+      "spectre_log_zero_errors": false,
+      "spectre_rows": 612,
+      "spectre_behavior_score": 1.0,
+      "parity_status": "passed",
+      "evas_wall_time_s": 0.26514537499999946,
+      "spectre_wall_time_s": 4.091775082999998
+    },
+    {
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+      "status": "PASS",
+      "checker_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+      "form_dir": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e",
+      "evas_status": "PASS",
+      "spectre_ok": true,
+      "spectre_errors": [],
+      "runner_diagnostic_errors": [
+        "convergence failure"
+      ],
+      "spectre_log_zero_errors": true,
+      "spectre_rows": 15067,
+      "spectre_behavior_score": 1.0,
+      "parity_status": "passed",
+      "evas_wall_time_s": 0.18550637499999922,
+      "spectre_wall_time_s": 4.886072583999997
+    }
+  ]
+}

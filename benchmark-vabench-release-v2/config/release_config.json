@@ -1,0 +1,87 @@
+{
+  "schema_version": "vabench-release-v2-config",
+  "release": "vabench-release-v2",
+  "package_root_name": "benchmark-vabench-release-v2",
+  "status": "under_construction",
+  "contract_version": "v2",
+  "task_discovery": {
+    "task_card_globs": [
+      "tasks/**/task_release_card.json"
+    ]
+  },
+  "outputs": {
+    "package_manifest_json": "MANIFEST.json",
+    "package_manifest_csv": "MANIFEST.csv",
+    "package_manifest_md": "MANIFEST.md",
+    "evaluator_json": "EVALUATOR.json",
+    "evaluator_md": "EVALUATOR.md",
+    "reports_dir": "reports",
+    "score_denominator": "reports/score_denominator_manifest.json",
+    "prompt_boundary_audit": "reports/prompt_boundary_audit.json",
+    "spec_checker_map_audit": "reports/spec_checker_map_audit.json"
+  },
+  "schemas": {
+    "agent_visible_files": "schemas/agent_visible_files.schema.json",
+    "task_release_card": "schemas/task_release_card.schema.json",
+    "invisible_spec_checker_map": "schemas/invisible_spec_checker_map.schema.json"
+  },
+  "prompt_protocol": {
+    "agent_visible_source": "agent_visible_files.json -> public/agent_visible_spec.md + agent_prompt.md + allowlisted public/support artifacts",
+    "common_agent_prompt": "config/common_agent_prompt.md",
+    "agent_visible_spec_filename": "public/agent_visible_spec.md",
+    "agent_prompt_filename": "agent_prompt.md",
+    "agent_visible_files_filename": "agent_visible_files.json",
+    "task_release_card_filename": "task_release_card.json",
+    "invisible_checker_config_filename": "private/invisible_checker_config.yaml",
+    "invisible_spec_checker_map_filename": "private/invisible_spec_checker_map.json",
+    "public_support_dir": "public/support",
+    "private_dir": "private",
+    "hidden_sources": [
+      "task_release_card.json",
+      "private/invisible_checker_config.yaml",
+      "private/invisible_spec_checker_map.json",
+      "private/gold/*"
+    ],
+    "generic_runner_rules_allowed": true
+  },
+  "evaluation_protocol": {
+    "primary_track": "one_shot",
+    "primary_track_description": "Current v2 task scores use a single agent submission generated from the agent prompt, agent-visible spec, and allowlisted public support artifacts.",
+    "feedback_track": "deferred",
+    "feedback_track_description": "Feedback-style debug benchmarks may be added later as a separate agentic track with its own runner protocol and score table.",
+    "score_mixing_policy": "Do not mix one-shot scores and feedback/debug pass@K scores in the same denominator.",
+    "bugfix_prompt_policy": "For one-shot bugfix tasks, public/agent_visible_spec.md must expose enough coarse behavior envelope to make the repair task solvable without iterative checker feedback while still hiding root cause, gold code, checker source, and private thresholds.",
+    "spec_checker_map_policy": "Every v2 task form must include private/invisible_spec_checker_map.json linking public requirement anchors, private checker config IDs, and executable checker functions without making private IDs or thresholds agent-visible."
+  },
+  "score_policy": {
+    "status": "score_pending_fresh_dual_certification",
+    "score_claim_allowed": false,
+    "score_claim_blocking_reason": "Fresh v2 EVAS/Spectre certification has not been rerun for migrated rows.",
+    "denominator_policy": "Only rows with final_v2_score_enabled=true after fresh v2 EVAS/Spectre certification may enter scores.",
+    "fresh_v2_dual_certification_required": true
+  },
+  "backend_roles": {
+    "static": {
+      "role": "source/package integrity gate",
+      "final_judge": false
+    },
+    "evas": {
+      "role": "fast behavioral Verilog-A filter and debug evaluator",
+      "final_judge": false
+    },
+    "spectre": {
+      "role": "final simulator reference for release certification and scoring",
+      "final_judge": true
+    }
+  },
+  "replaceability": {
+    "runtime_dependencies": [
+      "v2 task-local public/private assets",
+      "v2 config",
+      "v2 scripts",
+      "repository-level Python interpreter"
+    ],
+    "v1_dependency": "provenance_only",
+    "runner_entry_contract": "Use --release-root or --config; do not hard-code benchmark-vabench-release-v1."
+  }
+}

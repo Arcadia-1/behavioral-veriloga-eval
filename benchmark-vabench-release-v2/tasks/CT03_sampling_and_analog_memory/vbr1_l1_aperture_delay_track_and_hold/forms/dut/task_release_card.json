@@ -1,0 +1,96 @@
+{
+  "id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+  "benchmark": "vabench-release-v2",
+  "schema_version": "vabench-release-v2",
+  "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+  "level": "L1",
+  "track": "core",
+  "difficulty": "D2",
+  "category": "Sampling and Analog Memory",
+  "base_function": "Aperture-delay track-and-hold",
+  "family": "spec-to-va",
+  "domain": "voltage",
+  "score_surface": "model-capability",
+  "evaluation_protocol": {
+    "primary_track": "one_shot",
+    "feedback_track": "deferred",
+    "one_shot_prompt_contract": "The public spec exposes the module interface, public harness, aperture-delay behavior, held-output behavior, and voltage-domain constraints without revealing checker internals.",
+    "feedback_track_note": "A future feedback/debug track should reuse task assets only under a separate runner protocol and separate pass@K score table."
+  },
+  "artifacts": {
+    "agent_prompt": "agent_prompt.md",
+    "agent_visible_spec": "public/agent_visible_spec.md",
+    "agent_visible_files": "agent_visible_files.json",
+    "public_support": [
+      "public/support/tb_sample_hold_aperture_ref.scs"
+    ],
+    "invisible_checker_config": "private/invisible_checker_config.yaml",
+    "private_gold": [
+      "private/gold/sample_hold_aperture_ref.va"
+    ],
+    "invisible_spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "migration": {
+    "source_benchmark": "vabench-release-v1",
+    "source_task": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
+    "source_v1_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/dut/evidence.json",
+    "runtime_depends_on_v1": false,
+    "status": "prompt_boundary_cleaned",
+    "notes": [
+      "Public prompt is now a thin task wrapper; public/agent_visible_spec.md is the shared agent-visible behavior contract.",
+      "Public spec removes checker IDs and private checker sample windows.",
+      "Public testbench is copied into v2 public/support so the task is self-contained.",
+      "Private checker policy is behavior-first; it does not require private variable names or a specific implementation template."
+    ]
+  },
+  "certification": {
+    "prompt_boundary": "pass",
+    "static": "inherited_from_v1_pending_fresh_v2_rerun",
+    "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+    "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+    "fresh_v2_evidence": "pending"
+  },
+  "counts": {
+    "benchmark_score_candidate": true,
+    "final_v2_score_enabled": false,
+    "requires_fresh_v2_dual_certification": true
+  },
+  "visibility": "internal_only",
+  "source_v1_task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+  "agent_visible": {
+    "source_of_truth": "agent_visible_files.json"
+  },
+  "private_evaluator_assets": {
+    "gold_dut": "private/gold/sample_hold_aperture_ref.va",
+    "checker_config": "private/invisible_checker_config.yaml",
+    "spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "provenance": {
+    "source_v1_release_task": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
+    "source_v1_dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l1_aperture_delay_track_and_hold/dut/evidence.json",
+    "runtime_required": false
+  },
+  "private_diagnostics": {
+    "checker_family": "track_hold_aperture",
+    "private_sample_policy": "Compare delayed aperture vin samples against settled vout samples after each clock edge.",
+    "gold_expectation": "The private gold DUT schedules sampling at $abstime + taperture on rising clock edges."
+  },
+  "private_checker_contract": {
+    "policy": "behavior_first",
+    "checker_ids": [
+      "sampled_values_match_aperture_delayed_input",
+      "held_output_remains_between_samples"
+    ],
+    "public_behavior_envelope": "The public spec specifies a 200 ps aperture delay after each rising clock transition, delayed capture of vin rather than edge-time capture, held vout between delayed samples, broad held-level coverage, and smooth voltage-domain output transitions.",
+    "syntax_must_include": [],
+    "syntax_must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
+    "implementation_constraints": "No private variable names, exact timer variable names, or fixed implementation template are required by the v2 checker.",
+    "source_of_truth": "private/invisible_checker_config.yaml",
+    "spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "directive": "This release task card is private benchmark/evaluator metadata. Do not render it into agent prompts."
+}

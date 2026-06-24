@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench Release v2 Private Task Release Card",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "visibility",
+    "id",
+    "benchmark",
+    "release_entry_id",
+    "family",
+    "artifacts",
+    "private_evaluator_assets",
+    "private_diagnostics",
+    "private_checker_contract",
+    "directive"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vabench-release-v2"
+    },
+    "visibility": {
+      "const": "internal_only"
+    },
+    "benchmark": {
+      "const": "vabench-release-v2"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_entry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "agent_visible": {
+      "type": "object"
+    },
+    "private_evaluator_assets": {
+      "type": "object"
+    },
+    "private_diagnostics": {
+      "type": "object"
+    },
+    "private_checker_contract": {
+      "type": "object"
+    },
+    "directive": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,36 @@
+schema_version: "vabench-release-v2-checks"
+task_id: "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e"
+checker:
+  task_id: "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e"
+  function: "check_gain_extraction"
+  source: "runners/simulate_evas.py"
+syntax:
+  policy: "behavior_first"
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+  notes: "Do not require a gain-estimator module, exact random sequence, or exact implementation template. Compile and behavior checks decide correctness."
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "support_flow_e2e"
+  strong_benchmark_claim: false
+  checks:
+    - "gain_amplification_present"
+    - "differential_gain_above_threshold"
+  public_observables:
+    - "vinp"
+    - "vinn"
+    - "vamp_p"
+    - "vamp_n"
+  public_behavior_envelope: "The public spec requires a dithered differential input path and saved amplified output pair whose differential variation is clearly larger over many post-reset samples."
+  private_threshold_policy: "Internal checker estimates the input/output differential variation from saved waveforms and applies private gain-separation thresholds."
+parity:
+  required: true
+  tolerance_notes: "Use saved differential input/output waveforms and broad statistical separation, not an internal estimator code."

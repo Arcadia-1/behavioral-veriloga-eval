@@ -1,0 +1,297 @@
+{
+  "date": "2026-06-24",
+  "release": "vabench-release-v2",
+  "status": "under_construction",
+  "release_config": "benchmark-vabench-release-v2/config/release_config.json",
+  "package_root": "benchmark-vabench-release-v2",
+  "summary": {
+    "entry_count": 5,
+    "form_count": 5,
+    "track_entry_counts": {
+      "core": 4,
+      "support": 1
+    },
+    "track_form_counts": {
+      "core": 4,
+      "support": 1
+    },
+    "difficulty_entry_counts": {
+      "D1": 1,
+      "D2": 2,
+      "D3": 2
+    },
+    "difficulty_form_counts": {
+      "D1": 1,
+      "D2": 2,
+      "D3": 2
+    },
+    "prompt_boundary_pass_form_count": 5,
+    "spec_checker_map_form_count": 5,
+    "requirement_link_count": 10,
+    "score_candidate_entry_count": 4,
+    "score_candidate_form_count": 4,
+    "final_score_enabled_entry_count": 0,
+    "final_score_enabled_form_count": 0,
+    "fresh_dual_certification_pending_entry_count": 5,
+    "fresh_dual_certification_pending_form_count": 5
+  },
+  "entries": [
+    {
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D2",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Aperture-delay track-and-hold",
+      "forms": [
+        "spec-to-va"
+      ],
+      "form_count": 1,
+      "prompt_boundary": "pass",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "counted_in_score": false
+    },
+    {
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D1",
+      "category": "Baseband Signal Conditioning",
+      "base_function": "First-order lowpass",
+      "forms": [
+        "bugfix"
+      ],
+      "form_count": 1,
+      "prompt_boundary": "pass",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "counted_in_score": false
+    },
+    {
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D2",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Window comparator/detector",
+      "forms": [
+        "tb-generation"
+      ],
+      "form_count": 1,
+      "prompt_boundary": "pass",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "counted_in_score": false
+    },
+    {
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "level": "L2",
+      "track": "support",
+      "difficulty": "D3",
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Dithered differential gain extraction flow",
+      "forms": [
+        "end-to-end"
+      ],
+      "form_count": 1,
+      "prompt_boundary": "pass",
+      "benchmark_score_candidate": false,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "counted_in_score": false
+    },
+    {
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "level": "L2",
+      "track": "core",
+      "difficulty": "D3",
+      "category": "Data Converter Models",
+      "base_function": "Weighted SAR ADC/DAC loop",
+      "forms": [
+        "end-to-end"
+      ],
+      "form_count": 1,
+      "prompt_boundary": "pass",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "counted_in_score": false
+    }
+  ],
+  "forms": [
+    {
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+      "release_entry_id": "vbr1_l2_weighted_sar_adc_dac_loop",
+      "form": "end-to-end",
+      "level": "L2",
+      "track": "core",
+      "difficulty": "D3",
+      "category": "Data Converter Models",
+      "base_function": "Weighted SAR ADC/DAC loop",
+      "score_surface": "benchmark-e2e",
+      "release_task_manifest": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/task_release_card.json",
+      "agent_prompt": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/agent_prompt.md",
+      "agent_visible_spec": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/public/agent_visible_spec.md",
+      "agent_visible_files": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/agent_visible_files.json",
+      "public_support": [],
+      "invisible_checker_config": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/invisible_checker_config.yaml",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/invisible_spec_checker_map.json",
+      "private_gold": [
+        "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/gold/dac_weighted_8b.va",
+        "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/gold/sar_adc_weighted_8b.va",
+        "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/gold/sh_ideal.va",
+        "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/gold/tb_sar_adc_dac_weighted_8b_ref.scs"
+      ],
+      "prompt_boundary": "pass",
+      "static": "inherited_from_v1_pending_fresh_v2_rerun",
+      "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+      "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "source_v1_release_task": "benchmark-vabench-release-v1/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/release_task.json",
+      "forbidden_phrase_count": 22,
+      "requirement_link_count": 4
+    },
+    {
+      "task_id": "vbr1_l1_window_comparator_detector:tb",
+      "release_entry_id": "vbr1_l1_window_comparator_detector",
+      "form": "tb-generation",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D2",
+      "category": "Comparator and Decision Circuits",
+      "base_function": "Window comparator/detector",
+      "score_surface": "model-capability",
+      "release_task_manifest": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/task_release_card.json",
+      "agent_prompt": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/agent_prompt.md",
+      "agent_visible_spec": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/public/agent_visible_spec.md",
+      "agent_visible_files": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/agent_visible_files.json",
+      "public_support": [
+        "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/public/support/window_comparator_ref.va"
+      ],
+      "invisible_checker_config": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/private/invisible_checker_config.yaml",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/private/invisible_spec_checker_map.json",
+      "private_gold": [
+        "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/private/gold/tb_window_comparator_ref.scs"
+      ],
+      "prompt_boundary": "pass",
+      "static": "inherited_from_v1_pending_fresh_v2_rerun",
+      "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+      "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "source_v1_release_task": "benchmark-vabench-release-v1/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/release_task.json",
+      "forbidden_phrase_count": 9,
+      "requirement_link_count": 1
+    },
+    {
+      "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+      "release_entry_id": "vbr1_l1_aperture_delay_track_and_hold",
+      "form": "spec-to-va",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D2",
+      "category": "Sampling and Analog Memory",
+      "base_function": "Aperture-delay track-and-hold",
+      "score_surface": "model-capability",
+      "release_task_manifest": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/task_release_card.json",
+      "agent_prompt": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/agent_prompt.md",
+      "agent_visible_spec": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/public/agent_visible_spec.md",
+      "agent_visible_files": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/agent_visible_files.json",
+      "public_support": [
+        "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/public/support/tb_sample_hold_aperture_ref.scs"
+      ],
+      "invisible_checker_config": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/private/invisible_checker_config.yaml",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/private/invisible_spec_checker_map.json",
+      "private_gold": [
+        "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/private/gold/sample_hold_aperture_ref.va"
+      ],
+      "prompt_boundary": "pass",
+      "static": "inherited_from_v1_pending_fresh_v2_rerun",
+      "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+      "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "source_v1_release_task": "benchmark-vabench-release-v1/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/release_task.json",
+      "forbidden_phrase_count": 12,
+      "requirement_link_count": 2
+    },
+    {
+      "task_id": "vbr1_l1_first_order_lowpass:bugfix",
+      "release_entry_id": "vbr1_l1_first_order_lowpass",
+      "form": "bugfix",
+      "level": "L1",
+      "track": "core",
+      "difficulty": "D1",
+      "category": "Baseband Signal Conditioning",
+      "base_function": "First-order lowpass",
+      "score_surface": "model-capability",
+      "release_task_manifest": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/task_release_card.json",
+      "agent_prompt": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/agent_prompt.md",
+      "agent_visible_spec": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/public/agent_visible_spec.md",
+      "agent_visible_files": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/agent_visible_files.json",
+      "public_support": [
+        "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/public/support/dut_buggy.va",
+        "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/public/support/tb_first_order_lowpass_buggy.scs",
+        "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/public/support/tb_first_order_lowpass_ref.scs"
+      ],
+      "invisible_checker_config": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/private/invisible_checker_config.yaml",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/private/invisible_spec_checker_map.json",
+      "private_gold": [
+        "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/private/gold/dut_fixed.va"
+      ],
+      "prompt_boundary": "pass",
+      "static": "inherited_from_v1_pending_fresh_v2_rerun",
+      "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+      "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+      "benchmark_score_candidate": true,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "source_v1_release_task": "benchmark-vabench-release-v1/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/release_task.json",
+      "forbidden_phrase_count": 22,
+      "requirement_link_count": 1
+    },
+    {
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+      "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "form": "end-to-end",
+      "level": "L2",
+      "track": "support",
+      "difficulty": "D3",
+      "category": "Measurement Instrumentation Flows",
+      "base_function": "Dithered differential gain extraction flow",
+      "score_surface": "support-flow",
+      "release_task_manifest": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/task_release_card.json",
+      "agent_prompt": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/agent_prompt.md",
+      "agent_visible_spec": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/public/agent_visible_spec.md",
+      "agent_visible_files": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/agent_visible_files.json",
+      "public_support": [],
+      "invisible_checker_config": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/invisible_checker_config.yaml",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/invisible_spec_checker_map.json",
+      "private_gold": [
+        "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/gold/dither_adder.va",
+        "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/gold/gain_amp_fixed.va",
+        "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/gold/lfsr.va",
+        "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/gold/tb_gain_extraction_ref.scs",
+        "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/gold/vin_src.va"
+      ],
+      "prompt_boundary": "pass",
+      "static": "inherited_from_v1_pending_fresh_v2_rerun",
+      "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+      "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+      "benchmark_score_candidate": false,
+      "final_v2_score_enabled": false,
+      "requires_fresh_v2_dual_certification": true,
+      "source_v1_release_task": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
+      "forbidden_phrase_count": 11,
+      "requirement_link_count": 2
+    }
+  ]
+}

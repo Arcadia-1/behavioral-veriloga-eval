@@ -1,0 +1,84 @@
+{
+  "schema_version": "vabench-release-v2-invisible-spec-checker-map",
+  "task_id": "vbr1_l1_first_order_lowpass:bugfix",
+  "source_agent_visible_spec": "public/agent_visible_spec.md",
+  "source_invisible_checker_config": "private/invisible_checker_config.yaml",
+  "source_checker": {
+    "file": "runners/simulate_evas.py",
+    "task_aliases": [
+      "vbr1_l1_first_order_lowpass",
+      "vbr1_l1_first_order_lowpass_bugfix",
+      "vbr1_l1_first_order_lowpass:bugfix"
+    ]
+  },
+  "auditor": {
+    "forbidden_public_terms": [
+      "input_step_exercised",
+      "monotone_first_order_step_response",
+      "lagged_response_not_passthrough",
+      "late_output_settles_near_0p8v",
+      "bounded_without_overshoot",
+      "check_v2_configured_first_order_lowpass",
+      "checker_parameters",
+      "sample_times_ns",
+      "response_sample_1_min_v",
+      "wrong update coefficient",
+      "alpha=0.025",
+      "alpha value",
+      "too small",
+      "updates too slowly",
+      "update cadence",
+      "single-root-cause",
+      "single root cause",
+      "wrong_lowpass_update_coefficient",
+      "buggy_expected",
+      "fixed_expected",
+      "fixed_expectation",
+      "reconstruction_note"
+    ]
+  },
+  "requirement_links": [
+    {
+      "id": "finite_bandwidth_step_response",
+      "public_requirement": "The repaired output is a smooth, stable first-order low-pass response to the public 0 V to about 0.8 V input step near 21 ns.",
+      "public_anchor_terms": [
+        "0 V",
+        "0.8 V",
+        "21 ns",
+        "finite-bandwidth",
+        "tens of nanoseconds",
+        "smoothly and monotonically",
+        "lag",
+        "bounded"
+      ],
+      "checker_config_ids": [
+        "input_step_exercised",
+        "monotone_first_order_step_response",
+        "lagged_response_not_passthrough",
+        "late_output_settles_near_0p8v",
+        "bounded_without_overshoot"
+      ],
+      "checker_functions": [
+        "check_v2_configured_first_order_lowpass"
+      ],
+      "private_policy_terms": [
+        "checker_parameters",
+        "sample_times_ns",
+        "response_sample_1_min_v",
+        "wrong update coefficient",
+        "alpha=0.025",
+        "alpha value",
+        "too small",
+        "updates too slowly",
+        "update cadence",
+        "single-root-cause",
+        "single root cause",
+        "wrong_lowpass_update_coefficient",
+        "buggy_expected",
+        "fixed_expected",
+        "fixed_expectation",
+        "reconstruction_note"
+      ]
+    }
+  ]
+}

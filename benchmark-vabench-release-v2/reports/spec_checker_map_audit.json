@@ -1,0 +1,61 @@
+{
+  "root": "benchmark-vabench-release-v2",
+  "config": "benchmark-vabench-release-v2/config/release_config.json",
+  "release": "vabench-release-v2",
+  "form_count": 5,
+  "spec_checker_map_count": 5,
+  "requirement_link_count": 10,
+  "status": "PASS",
+  "results": [
+    {
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+      "release_task": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/task_release_card.json",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT01_data_converter_models/vbr1_l2_weighted_sar_adc_dac_loop/forms/e2e/private/invisible_spec_checker_map.json",
+      "status": "PASS",
+      "errors": [],
+      "warnings": [],
+      "requirement_link_count": 4,
+      "public_observable_count": 19
+    },
+    {
+      "task_id": "vbr1_l1_window_comparator_detector:tb",
+      "release_task": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/task_release_card.json",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT02_comparator_and_decision_circuits/vbr1_l1_window_comparator_detector/forms/tb/private/invisible_spec_checker_map.json",
+      "status": "PASS",
+      "errors": [],
+      "warnings": [],
+      "requirement_link_count": 1,
+      "public_observable_count": 3
+    },
+    {
+      "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+      "release_task": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/task_release_card.json",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT03_sampling_and_analog_memory/vbr1_l1_aperture_delay_track_and_hold/forms/dut/private/invisible_spec_checker_map.json",
+      "status": "PASS",
+      "errors": [],
+      "warnings": [],
+      "requirement_link_count": 2,
+      "public_observable_count": 3
+    },
+    {
+      "task_id": "vbr1_l1_first_order_lowpass:bugfix",
+      "release_task": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/task_release_card.json",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/CT04_baseband_signal_conditioning/vbr1_l1_first_order_lowpass/forms/bugfix/private/invisible_spec_checker_map.json",
+      "status": "PASS",
+      "errors": [],
+      "warnings": [],
+      "requirement_link_count": 1,
+      "public_observable_count": 2
+    },
+    {
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+      "release_task": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/task_release_card.json",
+      "invisible_spec_checker_map": "benchmark-vabench-release-v2/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/private/invisible_spec_checker_map.json",
+      "status": "PASS",
+      "errors": [],
+      "warnings": [],
+      "requirement_link_count": 2,
+      "public_observable_count": 4
+    }
+  ]
+}
