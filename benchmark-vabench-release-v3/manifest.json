@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 43,
+  "task_count": 49,
   "partitions": {
-    "core_formal_candidate_dut": 13,
+    "core_formal_candidate_dut": 19,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 13 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 19 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -186,6 +186,84 @@
       "path": "benchmark-vabench-release-v3/tasks/013-resettable-integrator",
       "target_artifacts": [
         "resettable_integrator.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_014_sar_logic",
+      "name": "014-sar-logic",
+      "title": "SAR Logic",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/014-sar-logic",
+      "target_artifacts": [
+        "sar_logic_4b.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_015_segmented_dac",
+      "name": "015-segmented-dac",
+      "title": "Segmented DAC",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/015-segmented-dac",
+      "target_artifacts": [
+        "segmented_dac.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_016_binary_weighted_voltage_dac",
+      "name": "016-binary-weighted-voltage-dac",
+      "title": "Binary Weighted Voltage DAC",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/016-binary-weighted-voltage-dac",
+      "target_artifacts": [
+        "simple_binary_voltage_dac_4b.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_017_slew_rate_limiter",
+      "name": "017-slew-rate-limiter",
+      "title": "Slew Rate Limiter",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/017-slew-rate-limiter",
+      "target_artifacts": [
+        "slew_rate_limiter.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_018_strongarm_style_latch_comparator",
+      "name": "018-strongarm-style-latch-comparator",
+      "title": "Strongarm Style Latch Comparator",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/018-strongarm-style-latch-comparator",
+      "target_artifacts": [
+        "cmp_strongarm.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_019_unit_element_thermometer_dac",
+      "name": "019-unit-element-thermometer-dac",
+      "title": "Unit Element Thermometer DAC",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/019-unit-element-thermometer-dac",
+      "target_artifacts": [
+        "thermometer_dac_15seg.va"
       ],
       "tier": "formal-candidate"
     },

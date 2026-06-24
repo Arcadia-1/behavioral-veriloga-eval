@@ -11252,6 +11252,12 @@ CHECKS["v3_010_offset_comparator"] = check_v3_offset_comparator
 CHECKS["v3_011_pfd_up_dn_logic"] = check_pfd_reset_race
 CHECKS["v3_012_clock_divider"] = check_clk_divider
 CHECKS["v3_013_resettable_integrator"] = check_vbm1_resettable_integrator
+CHECKS["v3_014_sar_logic"] = check_vbm1_sar_logic_4b
+CHECKS["v3_015_segmented_dac"] = check_vbm1_segmented_dac
+CHECKS["v3_016_binary_weighted_voltage_dac"] = check_simple_binary_dac_4b
+CHECKS["v3_017_slew_rate_limiter"] = check_vbm1_slew_rate_limiter
+CHECKS["v3_018_strongarm_style_latch_comparator"] = check_release_strongarm_latch_comparator
+CHECKS["v3_019_unit_element_thermometer_dac"] = check_vbm1_thermometer_dac_15seg
 
 
 RELEASE_FORM_CHECK_ALIASES = {
