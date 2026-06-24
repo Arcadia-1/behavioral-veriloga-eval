@@ -1,153 +1,109 @@
 ---
 name: evas-sim
-description: Use when working with visible/public EVAS simulation for an already-written Verilog-A voltage-domain model: checking EVAS compatibility, running evas-sim on a Spectre .scs testbench, reading tran.csv or strobe.txt outputs, debugging EVAS simulation setup, or deciding whether EVAS can simulate a model. Do not use as the primary Verilog-A authoring guide.
+description: Use when visible/public EVAS simulation is allowed for a Verilog-A voltage-domain model. Covers when EVAS applies, how to run evas-sim, minimal Spectre .scs syntax, save/output files, and common EVAS setup failures. Does not teach Verilog-A authoring.
 ---
 
 # EVAS Simulation
 
-Use this skill only for visible/public simulation of an already-written
-Verilog-A voltage-domain model. Do not use it to write the DUT itself; use the
-separate `veriloga` skill for authoring.
+Use this skill only when visible/public EVAS simulation is allowed. Do not use
+hidden files, hidden checks, or reconstructed hidden logic. Use `veriloga` for
+writing the `.va` module itself.
 
-## Compatibility Check
+## Applicability
 
-Before running EVAS, inspect the `.va` file. Continue only if the model is
-voltage-domain behavioral.
+EVAS is for voltage-domain event-driven Verilog-A:
 
-Usually OK:
+- `V(node) <+`
+- `@(cross(...))`, `@(above(...))`, `@(initial_step)`, `@(timer(...))`
+- `transition(...)`
+- `if/else`, `case`, `for`, arrays, real/integer parameters
 
-- `V(node) <+` and differential `V(a,b) <+`
-- `@(cross(...))`, `@(above(...))`, `@(initial_step)`, `@(timer(...))`,
-  `@(final_step)`
-- `transition()` with delay/rise/fall
-- `if/else`, `for`, `case`, `begin/end`
-- arrays and real/integer/string parameters
-- common math functions and SI suffixes
-- `$abstime`, `$temperature`, `$vt`, `$bound_step`
-- `$display`, `$strobe`, `$random`, `$dist_uniform`, `$rdist_normal`
-- file output calls such as `$fopen`, `$fclose`, `$fstrobe`, `$fwrite`,
-  `$fdisplay`
+Do not rely on EVAS for:
 
-Do not use EVAS for:
-
-- `I(...) <+`, `q(...) <+`, `ddt(...)`, `idt(...)`, `idtmod(...)`
-- `laplace_*`, `white_noise`, `flicker_noise`
-- transistor-level devices or KCL-based solving
+- `I(...) <+`
+- `ddt`, `idt`, `idtmod`, `laplace_*`
+- noise sources
+- transistor-level devices
+- KCL/KVL solving
 - AC/DC analysis
 - Spectre `subckt` hierarchy
 
-EVAS acceptance is not the same as Spectre portability. Runtime-indexed
-electrical-bus reads such as `V(DIN[i])` may run in EVAS while still failing in
-Cadence/Spectre. If Spectre is the target and Spectre was not run, say
-explicitly: `not Spectre-compiled`.
+If EVAS passes but Spectre is the target, say `not Spectre-compiled`.
 
-## Install And Verify
+## Commands
 
-```bash
-uv tool install evas-sim
-```
-
-Fallback inside a virtualenv:
-
-```bash
-pip install evas-sim
-```
-
-Verify:
+Verify installation:
 
 ```bash
 evas list
 ```
 
-If `evas` is not on `PATH`, use:
+Fallback:
 
 ```bash
 python -m evas list
 ```
 
-## Run EVAS
-
-Run a custom visible/public Spectre-style testbench:
+Run a visible/public testbench:
 
 ```bash
-evas simulate path/to/tb.scs -o output/mydesign
+evas simulate path/to/tb.scs -o output/run-name
 ```
 
-Bundled examples:
+If the task provides a visible smoke runner, prefer:
 
 ```bash
-evas run clk_div
-evas run comparator
-evas run comparator --tb tb_cmp_strongarm.scs
-evas run digital_basics --tb tb_not_gate.scs
+python3 run_visible_smoke.py
 ```
 
-Output files:
+## Minimal Testbench Syntax
 
-- `tran.csv`: primary time-domain waveform artifact.
-- `strobe.txt`: optional display/strobe log.
-- `tran.png`: optional plot.
-
-Absence of `strobe.txt` or `tran.png` is not by itself a simulation failure.
-
-## Testbench Shape
-
-Keep simulation projects split into exactly two files:
-
-- `dut.va`: Verilog-A model only, no stimulus and no analysis.
-- `tb_*.scs`: testbench only, with sources, DUT instance, `tran`, `save`, and
-  `ahdl_include`.
-
-Recommended `.scs` ordering:
-
-1. Header comments.
-2. Sources.
-3. DUT instance.
-4. `simulatorOptions`.
-5. `tran`.
-6. Optional Spectre `info` statements.
-7. `saveOptions` and explicit `save`.
-8. `ahdl_include`, last.
-
-Minimal shape:
+Use a Spectre-style `.scs` file near the `.va` files:
 
 ```spectre
 simulator lang=spectre
 global 0
 
-Vvdd (vdd 0) vsource type=dc dc=0.9
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n rise=10p fall=10p width=5n
 
-IDUT (clk vdd out) my_module vdd=0.9
+XDUT (clk out) my_module
 
-simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12
-tran tran stop=200n errpreset=conservative
-save clk:2e out:6f
-
+tran tran stop=100n maxstep=100p
+save clk out
 ahdl_include "./my_module.va"
 ```
 
-For hand-written portable testbenches, use relative `ahdl_include` paths. For
-flow-generated temporary testbenches, write the `.scs` next to the `.va` files
-or use an absolute path deliberately.
+Keep DUT source and testbench separate:
 
-## Bus And Save Syntax
+- `.va`: model only
+- `.scs`: sources, instance, `tran`, `save`, `ahdl_include`
 
-- In a DUT instance port list, enumerate bus bits explicitly: `DOUT\<9\>
-  DOUT\<8\> ... DOUT\<0\>`.
-- In a `save` statement, range shorthand is allowed: `save DOUT\<9\>:0`.
-- Escape angle brackets in Spectre net names: `\<9\>`, not `<9>`.
-- Use explicit `save` lists for lean `tran.csv` files.
-- `save sig:6f` gives fixed-point output, `save sig:10e` scientific notation,
-  and `save code:d` integer/digital display.
+Use relative `ahdl_include` paths when possible.
 
-## Common Issues
+## Output Files
+
+After a successful run, inspect:
+
+- `tran.csv`: waveform data, primary artifact
+- `strobe.txt`: optional `$strobe` / display output
+- `tran.png`: optional plot
+
+Absence of `strobe.txt` or `tran.png` is not a failure by itself.
+
+## Save Syntax
+
+- Save explicit signals to keep `tran.csv` small.
+- Fixed point: `save out:6f`
+- Scientific notation: `save vin:10e`
+- Integer/digital display: `save code:d`
+- Escape Spectre bus angle brackets: `DOUT\<3\>`, not `DOUT<3>`.
+
+## Common Failures
 
 - `evas: command not found`: activate the environment or use `python -m evas`.
 - Empty `tran.csv`: add explicit `save` statements.
-- All voltages are zero: the model may use unsupported current-domain
-  constructs such as `I() <+`.
-- No `Compiled Verilog-A module` marker: check parse errors and
-  `ahdl_include` paths.
-- EVAS passes but Spectre rejects the model: remove Spectre-hostile constructs,
-  especially runtime-indexed electrical-bus reads.
+- Missing compile marker: check `ahdl_include`, module name, and parse errors.
+- All outputs zero: look for unsupported current-domain constructs or missing
+  output contributions.
+- Visible EVAS pass but hidden fail: visible test is weaker than hidden; do not
+  infer hidden correctness from public smoke alone.

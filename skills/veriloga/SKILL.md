@@ -1,145 +1,122 @@
 ---
 name: veriloga
-description: Use when writing, generating, fixing, or reviewing Verilog-A behavioral modules for analog/mixed-signal tasks, especially benchmark DUT artifacts. Covers module structure, electrical ports, supply handling, state initialization, edge detection, transition outputs, bus discipline, and EVAS/Spectre portability. Do not use for running simulation; use evas-sim for visible/public EVAS runs.
+description: Use when writing, fixing, or reviewing Verilog-A behavioral modules. Focuses on syntax, module/port discipline, state/event modeling, transition outputs, vector handling, and EVAS/Spectre portability. Does not provide circuit-specific recipes or simulation workflow.
 ---
 
-# Verilog-A
+# Verilog-A Syntax
 
-Use this skill to write or fix Verilog-A behavioral modules. Do not use it to
-run simulation; visible/public EVAS simulation belongs to the separate
-`evas-sim` skill.
+Use this skill as a concise syntax and modeling-discipline checklist for
+Verilog-A behavioral modules. Do not use it as a circuit cookbook. Do not run
+simulation from this skill; use `evas-sim` only when visible/public EVAS
+simulation is allowed.
 
-## Scope
+## File And Module
 
-Write the requested `.va` module only. Do not generate hidden checks, verifier
-logic, private testbenches, or extra wrapper files unless the task explicitly
-asks for them.
-
-Preserve exactly:
-
-- required filename
-- module name
-- port order
-- public port names
-- requested parameters and observable names
-
-## Mandatory Rules
-
-Start portable Verilog-A files with:
+- Write only the requested `.va` artifact(s).
+- Preserve the exact filename, module name, port order, and public port names.
+- Include standard headers:
 
 ```verilog
 `include "constants.vams"
 `include "disciplines.vams"
 ```
 
-Use `electrical` for all signals. Do not use SystemVerilog types such as
-`wire`, `logic`, or `reg`.
+- Declare all ports/signals as `electrical`.
+- Do not use SystemVerilog types: no `wire`, `logic`, `reg`, `always`, or
+  `assign`.
+- Use `inout` for supply ports such as `VDD`, `VSS`, `vdd`, `vss`.
 
-For power ports, use `inout`, not `input`.
+## Declarations
 
-Read supply levels from ports or parameters. Do not hardcode a supply such as
-`1.8` or `0.9` unless the task explicitly fixes that value. Default logic
-threshold is usually the midpoint:
+- Put `parameter`, `real`, `integer`, and `genvar` declarations at module level,
+  before `analog begin`.
+- Initialize persistent state in `@(initial_step)`.
+- Read supply levels from ports or parameters. Do not hardcode `0.9`, `1.2`, or
+  `1.8` unless the task explicitly fixes them.
+- Use the task's threshold when specified; otherwise use midpoint logic:
 
 ```verilog
 vth = (vh + vl) / 2.0;
 ```
 
-Declare `parameter`, `real`, `integer`, and `genvar` at module level before
-`analog begin`.
+## Events And State
 
-Initialize all persistent state in `@(initial_step)`.
+- Rising edge: `@(cross(V(clk) - vth, +1))`
+- Falling edge: `@(cross(V(clk) - vth, -1))`
+- Both edges: use two events or omit direction only when both are intended.
+- Use `@(timer(...))` only for explicit timer-driven behavior.
+- Keep event blocks for state updates; keep output contributions outside branch
+  topology where possible.
 
-Use `@(cross(expr, +1))` for rising edges and `@(cross(expr, -1))` for falling
-edges. Omit the direction only when both edges are required.
+## Output Contributions
 
-Drive outputs once per node using `transition(...)`. Multiple contributions to
-the same node add; they do not overwrite. Prefer:
+- Drive voltage-domain outputs with `V(out) <+ transition(value, delay, rise);`.
+- Compute output target values in `real` variables first.
+- Contribute once per output node. Multiple contributions add; they do not
+  overwrite.
+- Avoid conditional contribution topology:
 
 ```verilog
-real out_val;
-analog begin
-  out_val = state ? vh : vl;
-  V(out) <+ transition(out_val, 0, trise);
-end
+// Prefer this
+out_val = state ? vh : vl;
+V(out) <+ transition(out_val, 0, trise);
 ```
 
-Avoid conditional analog contribution topology such as placing
-`V(out) <+ transition(...)` only inside one branch. Compute the value first,
-then contribute unconditionally.
+```verilog
+// Avoid this pattern
+if (state) V(out) <+ transition(vh, 0, trise);
+else V(out) <+ transition(vl, 0, trise);
+```
 
-## Ports And Buses
+## Ports And Vectors
 
-ANSI-style, one port per line:
+ANSI-style example:
 
 ```verilog
 module example (
   inout electrical VDD,
   inout electrical VSS,
-  input electrical clk_i,
-  output electrical [3:0] dout_o
+  input electrical clk,
+  output electrical [3:0] code
 );
 ```
 
-Old-style separated declaration:
+Old-style example:
 
 ```verilog
-module example (VDD, VSS, clk_i, dout_o);
+module example (VDD, VSS, clk, code);
 inout VDD, VSS;
-input clk_i;
-output [3:0] dout_o;
-electrical VDD, VSS, clk_i;
-electrical [3:0] dout_o;
+input clk;
+output [3:0] code;
+electrical VDD, VSS, clk;
+electrical [3:0] code;
 ```
 
-Avoid body declarations like `inout electrical VDD, VSS;`; Spectre may reject
-this. In ANSI style, do not rely on `electrical` carrying across a comma.
+- Avoid body declarations like `inout electrical VDD, VSS;`; Spectre may reject
+  them.
+- Use `[MSB:LSB]` vector declarations, usually `[N-1:0]`.
+- Use `integer` for runtime loops and `genvar` for repeated analog
+  contributions.
+- For Spectre portability, avoid runtime `integer` indexing of electrical buses
+  in reads such as `V(code_i[k])`; unroll small buses when possible.
 
-For vector ports, use `[MSB:LSB]`, usually `[N-1:0]`.
+## Domain Boundaries
 
-Use `integer` for runtime/procedural loops that update variables. Use `genvar`
-for repeated analog contributions. For Spectre portability, do not use a
-runtime `integer` loop variable to index an electrical bus inside procedural
-reads like `V(code_i[k])`; unroll small buses explicitly or restructure.
-
-## Domain Classification
-
-Voltage-domain behavioral models usually use:
+Prefer voltage-domain behavioral modeling for these benchmark tasks:
 
 - `V(...) <+`
-- event logic such as `@(cross(...))`
+- `@(cross(...))`, `@(initial_step)`, `@(timer(...))`
 - `transition(...)`
-- sampled real/integer state
+- sampled `real`/`integer` state
 
-Current-domain or continuous-time analog models use constructs such as:
+Avoid current-domain or continuous-time analog constructs unless explicitly
+requested:
 
 - `I(...) <+`
-- `ddt(...)`, `idt(...)`, `laplace_*`
-- transistor-level/KCL behavior
+- `ddt`, `idt`, `idtmod`
+- `laplace_*`
+- `white_noise`, `flicker_noise`
+- transistor-level or KCL/KVL solver assumptions
 
-For this benchmark, prefer voltage-domain behavioral models unless the task
-explicitly asks for current-domain behavior.
-
-If a module mixes voltage-domain control and current-domain analog behavior,
-split responsibilities if the task allows it. Otherwise state the limitation
-clearly.
-
-## EVAS Compatibility Notes
-
-EVAS can check voltage-domain event-driven Verilog-A. To keep code EVAS-friendly:
-
-- Prefer `V(node) <+ transition(value, delay, rise)` style outputs.
-- Use explicit event-driven state updates.
-- Avoid `I() <+`, `ddt`, `idt`, `laplace`, noise sources, and transistor-level
-  constructs.
-- Avoid Spectre-hostile runtime electrical-bus indexing if Cadence/Spectre
-  compatibility matters.
-
-EVAS compatibility is not the same as Spectre compatibility. Write for the task
-contract first.
-
-## Output Discipline
-
-Return only the requested artifact content or edit only the requested file(s).
-Do not include prose inside generated source files unless comments are useful
-and concise.
+EVAS compatibility is not identical to Spectre compatibility. Write for the
+task contract first, and keep syntax conservative.
