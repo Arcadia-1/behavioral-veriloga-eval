@@ -1,0 +1,22 @@
+id = "v3_058_config_latch_32b_clocked"
+name = "058-config-latch-32b-clocked"
+title = "Config Latch 32b Clocked"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "testbench_utility_modules"
+dimension = "wide_config_bus"
+level = "L1"
+difficulty = "D2"
+tier = "support-formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["config_latch_32b.va"]

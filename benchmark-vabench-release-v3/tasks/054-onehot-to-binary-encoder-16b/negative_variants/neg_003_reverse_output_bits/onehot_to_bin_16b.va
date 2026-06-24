@@ -1,0 +1,40 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module onehot_to_bin_16b(
+    oh15,
+    oh14,
+    oh13,
+    oh12,
+    oh11,
+    oh10,
+    oh9,
+    oh8,
+    oh7,
+    oh6,
+    oh5,
+    oh4,
+    oh3,
+    oh2,
+    oh1,
+    oh0,
+    b3,
+    b2,
+    b1,
+    b0,
+    valid
+);
+    input oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0;
+    output b3, b2, b1, b0, valid;
+    electrical oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0, b3, b2, b1, b0, valid;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    analog begin
+        V(b3) <+ transition(V(oh0) > vth ? vdd : 0.0, 0, tr, tr);
+        V(b2) <+ transition(0.0, 0, tr, tr);
+        V(b1) <+ transition(0.0, 0, tr, tr);
+        V(b0) <+ transition(0.0, 0, tr, tr);
+        V(valid) <+ transition(0.0, 0, tr, tr);
+    end
+endmodule

@@ -1,0 +1,9 @@
+version: 2
+task_id: gray_to_binary_converter_8b
+backend: evas
+status: formal_candidate
+checker: gray_to_binary_converter_8b
+checks:
+  formal:
+    - gray_sequence_maps_to_binary_count
+    - boundary_codes_decode_correctly

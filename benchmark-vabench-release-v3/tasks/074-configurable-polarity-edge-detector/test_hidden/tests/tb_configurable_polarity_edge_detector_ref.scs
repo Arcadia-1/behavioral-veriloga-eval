@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "configurable_polarity_edge_detector.va"
+
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
+Vrst (rst 0) vsource type=pulse val0=0.9 val1=0 period=200n delay=2n rise=20p fall=20p width=198n
+Vin (in 0) vsource type=pulse val0=-0.9 val1=0.9 period=7n delay=1n rise=100p fall=100p width=3.5n
+
+XDUT (clk rst in out metric) configurable_polarity_edge_detector
+
+tran tran stop=80n maxstep=200p
+save clk rst in out metric

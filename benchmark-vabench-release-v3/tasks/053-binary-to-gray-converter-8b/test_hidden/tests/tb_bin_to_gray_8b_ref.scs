@@ -1,0 +1,18 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "bin_to_gray_8b.va"
+
+Vb7 (b7 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0 49n 0 50n 0 59n 0 60n 0 69n 0 70n 0 79n 0 80n 0 89n 0 90n 0 99n 0 100n 0.9 109n 0.9 110n 0.9 119n 0.9 120n 0.9 129n 0.9 ]
+Vb6 (b6 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0 49n 0 50n 0 59n 0 60n 0 69n 0 70n 0 79n 0 80n 0 89n 0 90n 0.9 99n 0.9 100n 0 109n 0 110n 0.9 119n 0.9 120n 0.9 129n 0.9 ]
+Vb5 (b5 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0 49n 0 50n 0 59n 0 60n 0 69n 0 70n 0 79n 0 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0 119n 0 120n 0.9 129n 0.9 ]
+Vb4 (b4 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0 49n 0 50n 0 59n 0 60n 0.9 69n 0.9 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0 119n 0 120n 0.9 129n 0.9 ]
+Vb3 (b3 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0 49n 0 50n 0.9 59n 0.9 60n 0 69n 0 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0.9 119n 0.9 120n 0.9 129n 0.9 ]
+Vb2 (b2 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 40n 0.9 49n 0.9 50n 0.9 59n 0.9 60n 0 69n 0 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0 119n 0 120n 0.9 129n 0.9 ]
+Vb1 (b1 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0.9 29n 0.9 30n 0.9 39n 0.9 40n 0.9 49n 0.9 50n 0.9 59n 0.9 60n 0 69n 0 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0 119n 0 120n 0.9 129n 0.9 ]
+Vb0 (b0 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0.9 19n 0.9 20n 0 29n 0 30n 0.9 39n 0.9 40n 0.9 49n 0.9 50n 0.9 59n 0.9 60n 0 69n 0 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0 109n 0 110n 0 119n 0 120n 0.9 129n 0.9 ]
+
+XDUT (b7 b6 b5 b4 b3 b2 b1 b0 g7 g6 g5 g4 g3 g2 g1 g0) bin_to_gray_8b
+
+tran tran stop=130n maxstep=200p
+save b7 b6 b5 b4 b3 b2 b1 b0 g7 g6 g5 g4 g3 g2 g1 g0

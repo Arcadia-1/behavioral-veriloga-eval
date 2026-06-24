@@ -1,0 +1,535 @@
+{
+  "version": "v3",
+  "layout": "rtl-forge-style",
+  "task_count": 37,
+  "partitions": {
+    "core_formal_candidate_dut": 7,
+    "support_formal_candidate_testbench_utility": 30,
+    "support_staging_testbench_utility": 0
+  },
+  "agent_visible_files": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "evaluator_files": [
+    "test_hidden/",
+    "test_harness/",
+    "solution/",
+    "negative_variants/"
+  ],
+  "source": "Certified v3 working set: 7 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "tasks": [
+    {
+      "id": "v3_001_bang_bang_phase_detector",
+      "name": "001-bang-bang-phase-detector",
+      "title": "Bang Bang Phase Detector",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/001-bang-bang-phase-detector",
+      "target_artifacts": [
+        "bbpd_ref.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_002_capacitive_weighted_sar_feedback_dac",
+      "name": "002-capacitive-sar-feedback-dac",
+      "title": "Capacitive Weighted SAR Feedback DAC",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/002-capacitive-sar-feedback-dac",
+      "target_artifacts": [
+        "cdac_cal.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_003_pipeline_adc_stage",
+      "name": "003-pipeline-adc-stage",
+      "title": "Pipeline ADC Stage",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D3",
+      "path": "benchmark-vabench-release-v3/tasks/003-pipeline-adc-stage",
+      "target_artifacts": [
+        "pipeline_stage.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_004_trim_calibration_controller",
+      "name": "004-trim-calibration-controller",
+      "title": "Trim Calibration Controller",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/004-trim-calibration-controller",
+      "target_artifacts": [
+        "cdac_calibration.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_005_debounce_latch",
+      "name": "005-debounce-latch",
+      "title": "Debounce Latch",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/005-debounce-latch",
+      "target_artifacts": [
+        "debounce_latch.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_006_element_shuffler",
+      "name": "006-element-shuffler",
+      "title": "Element Shuffler",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/006-element-shuffler",
+      "target_artifacts": [
+        "element_shuffler.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_007_first_order_lowpass",
+      "name": "007-first-order-lowpass",
+      "title": "First Order Lowpass",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/007-first-order-lowpass",
+      "target_artifacts": [
+        "first_order_lowpass.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_050_bin_to_thermometer_decoder_8b",
+      "name": "050-bin-to-thermometer-decoder-8b",
+      "title": "Binary To Thermometer Decoder 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/050-bin-to-thermometer-decoder-8b",
+      "target_artifacts": [
+        "bin_to_therm_8b.va"
+      ]
+    },
+    {
+      "id": "v3_051_thermometer_to_binary_encoder_8b",
+      "name": "051-thermometer-to-binary-encoder-8b",
+      "title": "Thermometer To Binary Encoder 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/051-thermometer-to-binary-encoder-8b",
+      "target_artifacts": [
+        "therm_to_bin_8b.va"
+      ]
+    },
+    {
+      "id": "v3_052_gray_to_binary_converter_8b",
+      "name": "052-gray-to-binary-converter-8b",
+      "title": "Gray To Binary Converter 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/052-gray-to-binary-converter-8b",
+      "target_artifacts": [
+        "gray_to_bin_8b.va"
+      ]
+    },
+    {
+      "id": "v3_053_binary_to_gray_converter_8b",
+      "name": "053-binary-to-gray-converter-8b",
+      "title": "Binary To Gray Converter 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/053-binary-to-gray-converter-8b",
+      "target_artifacts": [
+        "bin_to_gray_8b.va"
+      ]
+    },
+    {
+      "id": "v3_054_onehot_to_binary_encoder_16b",
+      "name": "054-onehot-to-binary-encoder-16b",
+      "title": "Onehot To Binary Encoder 16b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/054-onehot-to-binary-encoder-16b",
+      "target_artifacts": [
+        "onehot_to_bin_16b.va"
+      ]
+    },
+    {
+      "id": "v3_055_binary_to_onehot_decoder_16b",
+      "name": "055-binary-to-onehot-decoder-16b",
+      "title": "Binary To Onehot Decoder 16b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/055-binary-to-onehot-decoder-16b",
+      "target_artifacts": [
+        "bin_to_onehot_16b.va"
+      ]
+    },
+    {
+      "id": "v3_056_decimal_digit_to_bcd_encoder",
+      "name": "056-decimal-digit-to-bcd-encoder",
+      "title": "Decimal Digit To BCD Encoder",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/056-decimal-digit-to-bcd-encoder",
+      "target_artifacts": [
+        "decimal_to_bcd.va"
+      ]
+    },
+    {
+      "id": "v3_057_signed_magnitude_to_twos_complement_8b",
+      "name": "057-signed-magnitude-to-twos-complement-8b",
+      "title": "Signed Magnitude To Twos Complement 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "encoding_conversion",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/057-signed-magnitude-to-twos-complement-8b",
+      "target_artifacts": [
+        "signmag_to_twos_8b.va"
+      ]
+    },
+    {
+      "id": "v3_058_config_latch_32b_clocked",
+      "name": "058-config-latch-32b-clocked",
+      "title": "Config Latch 32b Clocked",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/058-config-latch-32b-clocked",
+      "target_artifacts": [
+        "config_latch_32b.va"
+      ]
+    },
+    {
+      "id": "v3_059_config_latch_128b_static_enable",
+      "name": "059-config-latch-128b-static-enable",
+      "title": "Config Latch 128b Static Enable",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/059-config-latch-128b-static-enable",
+      "target_artifacts": [
+        "config_latch_128b.va"
+      ]
+    },
+    {
+      "id": "v3_060_config_shift_register_64b",
+      "name": "060-config-shift-register-64b",
+      "title": "Config Shift Register 64b",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/060-config-shift-register-64b",
+      "target_artifacts": [
+        "config_shift_reg_64b.va"
+      ]
+    },
+    {
+      "id": "v3_061_bus_splitter_256_to_16x16",
+      "name": "061-bus-splitter-256-to-16x16",
+      "title": "Bus Splitter 256 To 16x16",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/061-bus-splitter-256-to-16x16",
+      "target_artifacts": [
+        "bus_split_256_to_16x16.va"
+      ]
+    },
+    {
+      "id": "v3_062_bus_combiner_16x16_to_256",
+      "name": "062-bus-combiner-16x16-to-256",
+      "title": "Bus Combiner 16x16 To 256",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/062-bus-combiner-16x16-to-256",
+      "target_artifacts": [
+        "bus_combine_16x16_to_256.va"
+      ]
+    },
+    {
+      "id": "v3_063_masked_config_update_32b",
+      "name": "063-masked-config-update-32b",
+      "title": "Masked Config Update 32b",
+      "category": "testbench_utility_modules",
+      "dimension": "wide_config_bus",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/063-masked-config-update-32b",
+      "target_artifacts": [
+        "masked_config_update_32b.va"
+      ]
+    },
+    {
+      "id": "v3_064_edge_interval_tdc_8b",
+      "name": "064-edge-interval-tdc-8b",
+      "title": "Edge Interval TDC 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/064-edge-interval-tdc-8b",
+      "target_artifacts": [
+        "edge_interval_tdc_8b.va"
+      ]
+    },
+    {
+      "id": "v3_065_period_meter_16b",
+      "name": "065-period-meter-16b",
+      "title": "Period Meter 16b",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/065-period-meter-16b",
+      "target_artifacts": [
+        "period_meter_16b.va"
+      ]
+    },
+    {
+      "id": "v3_066_duty_cycle_meter_8b",
+      "name": "066-duty-cycle-meter-8b",
+      "title": "Duty Cycle Meter 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/066-duty-cycle-meter-8b",
+      "target_artifacts": [
+        "duty_cycle_meter_8b.va"
+      ]
+    },
+    {
+      "id": "v3_067_event_counter_windowed_16b",
+      "name": "067-event-counter-windowed-16b",
+      "title": "Event Counter Windowed 16b",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/067-event-counter-windowed-16b",
+      "target_artifacts": [
+        "event_counter_windowed_16b.va"
+      ]
+    },
+    {
+      "id": "v3_068_latency_counter_ready_valid_12b",
+      "name": "068-latency-counter-ready-valid-12b",
+      "title": "Latency Counter Ready Valid 12b",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/068-latency-counter-ready-valid-12b",
+      "target_artifacts": [
+        "ready_valid_latency_counter_12b.va"
+      ]
+    },
+    {
+      "id": "v3_069_settling_window_detector",
+      "name": "069-settling-window-detector",
+      "title": "Settling Window Detector",
+      "category": "testbench_utility_modules",
+      "dimension": "timing_and_event_measurement",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/069-settling-window-detector",
+      "target_artifacts": [
+        "settling_window_detector.va"
+      ]
+    },
+    {
+      "id": "v3_070_active_low_reset_synchronizer",
+      "name": "070-active-low-reset-synchronizer",
+      "title": "Active Low Reset Synchronizer",
+      "category": "testbench_utility_modules",
+      "dimension": "polarity_and_control",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/070-active-low-reset-synchronizer",
+      "target_artifacts": [
+        "reset_sync_active_low.va"
+      ]
+    },
+    {
+      "id": "v3_071_active_high_reset_synchronizer",
+      "name": "071-active-high-reset-synchronizer",
+      "title": "Active High Reset Synchronizer",
+      "category": "testbench_utility_modules",
+      "dimension": "polarity_and_control",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/071-active-high-reset-synchronizer",
+      "target_artifacts": [
+        "reset_sync_active_high.va"
+      ]
+    },
+    {
+      "id": "v3_072_enable_gated_clock_pulse",
+      "name": "072-enable-gated-clock-pulse",
+      "title": "Enable Gated Clock Pulse",
+      "category": "testbench_utility_modules",
+      "dimension": "polarity_and_control",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/072-enable-gated-clock-pulse",
+      "target_artifacts": [
+        "enable_gated_clock_pulse.va"
+      ]
+    },
+    {
+      "id": "v3_073_low_active_enable_decoder_4b",
+      "name": "073-low-active-enable-decoder-4b",
+      "title": "Low Active Enable Decoder 4b",
+      "category": "testbench_utility_modules",
+      "dimension": "polarity_and_control",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/073-low-active-enable-decoder-4b",
+      "target_artifacts": [
+        "low_active_enable_decoder_4b.va"
+      ]
+    },
+    {
+      "id": "v3_074_configurable_polarity_edge_detector",
+      "name": "074-configurable-polarity-edge-detector",
+      "title": "Configurable Polarity Edge Detector",
+      "category": "testbench_utility_modules",
+      "dimension": "polarity_and_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/074-configurable-polarity-edge-detector",
+      "target_artifacts": [
+        "configurable_polarity_edge_detector.va"
+      ]
+    },
+    {
+      "id": "v3_075_prbs_generator_32b_seeded",
+      "name": "075-prbs-generator-32b-seeded",
+      "title": "PRBS Generator 32b Seeded",
+      "category": "testbench_utility_modules",
+      "dimension": "stimulus_generation",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/075-prbs-generator-32b-seeded",
+      "target_artifacts": [
+        "prbs_generator_32b.va"
+      ]
+    },
+    {
+      "id": "v3_076_multiphase_clock_generator_4ph",
+      "name": "076-multiphase-clock-generator-4ph",
+      "title": "Multiphase Clock Generator 4ph",
+      "category": "testbench_utility_modules",
+      "dimension": "stimulus_generation",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/076-multiphase-clock-generator-4ph",
+      "target_artifacts": [
+        "multiphase_clock_generator_4ph.va"
+      ]
+    },
+    {
+      "id": "v3_077_configurable_pulse_train_generator",
+      "name": "077-configurable-pulse-train-generator",
+      "title": "Configurable Pulse Train Generator",
+      "category": "testbench_utility_modules",
+      "dimension": "stimulus_generation",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/077-configurable-pulse-train-generator",
+      "target_artifacts": [
+        "configurable_pulse_train.va"
+      ]
+    },
+    {
+      "id": "v3_078_staircase_dac_stimulus_8b",
+      "name": "078-staircase-dac-stimulus-8b",
+      "title": "Staircase DAC Stimulus 8b",
+      "category": "testbench_utility_modules",
+      "dimension": "stimulus_generation",
+      "level": "L1",
+      "difficulty": "D1",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/078-staircase-dac-stimulus-8b",
+      "target_artifacts": [
+        "staircase_dac_stimulus_8b.va"
+      ]
+    },
+    {
+      "id": "v3_079_jittered_clock_source_deterministic",
+      "name": "079-jittered-clock-source-deterministic",
+      "title": "Jittered Clock Source Deterministic",
+      "category": "testbench_utility_modules",
+      "dimension": "stimulus_generation",
+      "level": "L1",
+      "difficulty": "D2",
+      "tier": "support-formal-candidate",
+      "path": "benchmark-vabench-release-v3/tasks/079-jittered-clock-source-deterministic",
+      "target_artifacts": [
+        "deterministic_jittered_clock.va"
+      ]
+    }
+  ]
+}

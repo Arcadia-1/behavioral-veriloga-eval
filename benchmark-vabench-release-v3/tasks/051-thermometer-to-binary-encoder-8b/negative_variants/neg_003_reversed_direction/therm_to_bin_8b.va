@@ -1,0 +1,1830 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module therm_to_bin_8b(
+    th255,
+    th254,
+    th253,
+    th252,
+    th251,
+    th250,
+    th249,
+    th248,
+    th247,
+    th246,
+    th245,
+    th244,
+    th243,
+    th242,
+    th241,
+    th240,
+    th239,
+    th238,
+    th237,
+    th236,
+    th235,
+    th234,
+    th233,
+    th232,
+    th231,
+    th230,
+    th229,
+    th228,
+    th227,
+    th226,
+    th225,
+    th224,
+    th223,
+    th222,
+    th221,
+    th220,
+    th219,
+    th218,
+    th217,
+    th216,
+    th215,
+    th214,
+    th213,
+    th212,
+    th211,
+    th210,
+    th209,
+    th208,
+    th207,
+    th206,
+    th205,
+    th204,
+    th203,
+    th202,
+    th201,
+    th200,
+    th199,
+    th198,
+    th197,
+    th196,
+    th195,
+    th194,
+    th193,
+    th192,
+    th191,
+    th190,
+    th189,
+    th188,
+    th187,
+    th186,
+    th185,
+    th184,
+    th183,
+    th182,
+    th181,
+    th180,
+    th179,
+    th178,
+    th177,
+    th176,
+    th175,
+    th174,
+    th173,
+    th172,
+    th171,
+    th170,
+    th169,
+    th168,
+    th167,
+    th166,
+    th165,
+    th164,
+    th163,
+    th162,
+    th161,
+    th160,
+    th159,
+    th158,
+    th157,
+    th156,
+    th155,
+    th154,
+    th153,
+    th152,
+    th151,
+    th150,
+    th149,
+    th148,
+    th147,
+    th146,
+    th145,
+    th144,
+    th143,
+    th142,
+    th141,
+    th140,
+    th139,
+    th138,
+    th137,
+    th136,
+    th135,
+    th134,
+    th133,
+    th132,
+    th131,
+    th130,
+    th129,
+    th128,
+    th127,
+    th126,
+    th125,
+    th124,
+    th123,
+    th122,
+    th121,
+    th120,
+    th119,
+    th118,
+    th117,
+    th116,
+    th115,
+    th114,
+    th113,
+    th112,
+    th111,
+    th110,
+    th109,
+    th108,
+    th107,
+    th106,
+    th105,
+    th104,
+    th103,
+    th102,
+    th101,
+    th100,
+    th99,
+    th98,
+    th97,
+    th96,
+    th95,
+    th94,
+    th93,
+    th92,
+    th91,
+    th90,
+    th89,
+    th88,
+    th87,
+    th86,
+    th85,
+    th84,
+    th83,
+    th82,
+    th81,
+    th80,
+    th79,
+    th78,
+    th77,
+    th76,
+    th75,
+    th74,
+    th73,
+    th72,
+    th71,
+    th70,
+    th69,
+    th68,
+    th67,
+    th66,
+    th65,
+    th64,
+    th63,
+    th62,
+    th61,
+    th60,
+    th59,
+    th58,
+    th57,
+    th56,
+    th55,
+    th54,
+    th53,
+    th52,
+    th51,
+    th50,
+    th49,
+    th48,
+    th47,
+    th46,
+    th45,
+    th44,
+    th43,
+    th42,
+    th41,
+    th40,
+    th39,
+    th38,
+    th37,
+    th36,
+    th35,
+    th34,
+    th33,
+    th32,
+    th31,
+    th30,
+    th29,
+    th28,
+    th27,
+    th26,
+    th25,
+    th24,
+    th23,
+    th22,
+    th21,
+    th20,
+    th19,
+    th18,
+    th17,
+    th16,
+    th15,
+    th14,
+    th13,
+    th12,
+    th11,
+    th10,
+    th9,
+    th8,
+    th7,
+    th6,
+    th5,
+    th4,
+    th3,
+    th2,
+    th1,
+    th0,
+    b7,
+    b6,
+    b5,
+    b4,
+    b3,
+    b2,
+    b1,
+    b0,
+    valid
+);
+    input th255, th254, th253, th252, th251, th250, th249, th248, th247, th246, th245, th244, th243, th242, th241, th240, th239, th238, th237, th236, th235, th234, th233, th232, th231, th230, th229, th228, th227, th226, th225, th224, th223, th222, th221, th220, th219, th218, th217, th216, th215, th214, th213, th212, th211, th210, th209, th208, th207, th206, th205, th204, th203, th202, th201, th200, th199, th198, th197, th196, th195, th194, th193, th192, th191, th190, th189, th188, th187, th186, th185, th184, th183, th182, th181, th180, th179, th178, th177, th176, th175, th174, th173, th172, th171, th170, th169, th168, th167, th166, th165, th164, th163, th162, th161, th160, th159, th158, th157, th156, th155, th154, th153, th152, th151, th150, th149, th148, th147, th146, th145, th144, th143, th142, th141, th140, th139, th138, th137, th136, th135, th134, th133, th132, th131, th130, th129, th128, th127, th126, th125, th124, th123, th122, th121, th120, th119, th118, th117, th116, th115, th114, th113, th112, th111, th110, th109, th108, th107, th106, th105, th104, th103, th102, th101, th100, th99, th98, th97, th96, th95, th94, th93, th92, th91, th90, th89, th88, th87, th86, th85, th84, th83, th82, th81, th80, th79, th78, th77, th76, th75, th74, th73, th72, th71, th70, th69, th68, th67, th66, th65, th64, th63, th62, th61, th60, th59, th58, th57, th56, th55, th54, th53, th52, th51, th50, th49, th48, th47, th46, th45, th44, th43, th42, th41, th40, th39, th38, th37, th36, th35, th34, th33, th32, th31, th30, th29, th28, th27, th26, th25, th24, th23, th22, th21, th20, th19, th18, th17, th16, th15, th14, th13, th12, th11, th10, th9, th8, th7, th6, th5, th4, th3, th2, th1, th0;
+    output b7, b6, b5, b4, b3, b2, b1, b0, valid;
+    electrical th255, th254, th253, th252, th251, th250, th249, th248, th247, th246, th245, th244, th243, th242, th241, th240, th239, th238, th237, th236, th235, th234, th233, th232, th231, th230, th229, th228, th227, th226, th225, th224, th223, th222, th221, th220, th219, th218, th217, th216, th215, th214, th213, th212, th211, th210, th209, th208, th207, th206, th205, th204, th203, th202, th201, th200, th199, th198, th197, th196, th195, th194, th193, th192, th191, th190, th189, th188, th187, th186, th185, th184, th183, th182, th181, th180, th179, th178, th177, th176, th175, th174, th173, th172, th171, th170, th169, th168, th167, th166, th165, th164, th163, th162, th161, th160, th159, th158, th157, th156, th155, th154, th153, th152, th151, th150, th149, th148, th147, th146, th145, th144, th143, th142, th141, th140, th139, th138, th137, th136, th135, th134, th133, th132, th131, th130, th129, th128, th127, th126, th125, th124, th123, th122, th121, th120, th119, th118, th117, th116, th115, th114, th113, th112, th111, th110, th109, th108, th107, th106, th105, th104, th103, th102, th101, th100, th99, th98, th97, th96, th95, th94, th93, th92, th91, th90, th89, th88, th87, th86, th85, th84, th83, th82, th81, th80, th79, th78, th77, th76, th75, th74, th73, th72, th71, th70, th69, th68, th67, th66, th65, th64, th63, th62, th61, th60, th59, th58, th57, th56, th55, th54, th53, th52, th51, th50, th49, th48, th47, th46, th45, th44, th43, th42, th41, th40, th39, th38, th37, th36, th35, th34, th33, th32, th31, th30, th29, th28, th27, th26, th25, th24, th23, th22, th21, th20, th19, th18, th17, th16, th15, th14, th13, th12, th11, th10, th9, th8, th7, th6, th5, th4, th3, th2, th1, th0, b7, b6, b5, b4, b3, b2, b1, b0, valid;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    integer count;
+    integer valid_i;
+    integer seen_low;
+    analog begin
+        count = 0;
+        valid_i = 1;
+        seen_low = 0;
+        if (V(th255) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th254) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th2) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th3) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th4) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th5) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th6) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th7) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th8) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th9) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th10) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th11) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th12) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th13) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th14) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th15) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th16) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th17) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th18) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th19) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th20) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th21) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th22) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th23) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th24) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th25) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th26) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th27) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th28) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th29) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th30) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th31) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th32) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th33) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th34) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th35) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th36) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th37) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th38) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th39) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th40) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th41) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th42) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th43) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th44) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th45) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th46) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th47) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th48) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th49) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th50) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th51) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th52) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th53) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th54) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th55) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th56) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th57) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th58) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th59) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th60) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th61) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th62) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th63) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th64) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th65) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th66) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th67) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th68) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th69) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th70) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th71) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th72) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th73) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th74) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th75) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th76) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th77) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th78) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th79) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th80) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th81) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th82) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th83) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th84) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th85) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th86) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th87) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th88) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th89) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th90) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th91) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th92) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th93) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th94) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th95) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th96) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th97) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th98) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th99) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th100) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th101) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th102) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th103) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th104) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th105) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th106) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th107) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th108) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th109) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th110) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th111) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th112) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th113) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th114) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th115) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th116) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th117) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th118) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th119) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th120) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th121) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th122) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th123) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th124) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th125) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th126) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th127) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th128) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th129) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th130) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th131) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th132) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th133) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th134) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th135) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th136) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th137) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th138) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th139) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th140) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th141) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th142) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th143) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th144) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th145) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th146) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th147) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th148) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th149) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th150) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th151) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th152) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th153) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th154) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th155) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th156) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th157) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th158) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th159) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th160) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th161) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th162) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th163) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th164) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th165) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th166) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th167) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th168) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th169) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th170) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th171) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th172) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th173) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th174) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th175) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th176) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th177) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th178) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th179) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th180) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th181) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th182) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th183) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th184) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th185) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th186) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th187) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th188) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th189) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th190) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th191) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th192) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th193) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th194) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th195) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th196) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th197) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th198) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th199) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th200) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th201) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th202) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th203) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th204) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th205) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th206) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th207) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th208) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th209) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th210) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th211) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th212) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th213) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th214) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th215) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th216) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th217) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th218) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th219) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th220) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th221) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th222) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th223) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th224) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th225) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th226) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th227) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th228) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th229) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th230) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th231) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th232) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th233) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th234) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th235) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th236) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th237) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th238) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th239) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th240) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th241) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th242) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th243) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th244) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th245) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th246) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th247) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th248) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th249) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th250) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th251) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th252) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th253) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th254) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        if (V(th255) > vth) begin
+            if (seen_low != 0) valid_i = 0;
+            count = count + 1;
+        end else begin
+            seen_low = 1;
+        end
+        V(b0) <+ transition((valid_i != 0 && (((count >> 0) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b1) <+ transition((valid_i != 0 && (((count >> 1) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b2) <+ transition((valid_i != 0 && (((count >> 2) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b3) <+ transition((valid_i != 0 && (((count >> 3) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b4) <+ transition((valid_i != 0 && (((count >> 4) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b5) <+ transition((valid_i != 0 && (((count >> 5) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b6) <+ transition((valid_i != 0 && (((count >> 6) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b7) <+ transition((valid_i != 0 && (((count >> 7) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(valid) <+ transition((valid_i != 0) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

@@ -1,0 +1,18 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/low_active_enable_decoder_4b.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/low_active_enable_decoder_4b.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/low_active_enable_decoder_4b.va",
+    "test_visible/visible.scs"
+  ]
+}

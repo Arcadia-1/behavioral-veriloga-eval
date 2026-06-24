@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_off_by_one_count",
+      "artifact": "neg_001_off_by_one_count/bin_to_therm_8b.va",
+      "mutation": "Drives code+1 outputs high when enabled.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_reversed_thermometer_bus",
+      "artifact": "neg_002_reversed_thermometer_bus/bin_to_therm_8b.va",
+      "mutation": "Drives a cumulative count from th255 downward instead of from th0 upward.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_enable_ignored",
+      "artifact": "neg_003_enable_ignored/bin_to_therm_8b.va",
+      "mutation": "Decodes the code even when en is low.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_missing_top_cell",
+      "artifact": "neg_004_missing_top_cell/bin_to_therm_8b.va",
+      "mutation": "Drives one fewer output high for every nonzero code.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_reversed_bit_order",
+      "artifact": "neg_005_reversed_bit_order/bin_to_therm_8b.va",
+      "mutation": "Treats b0 as the most significant bit and b7 as the least significant bit.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

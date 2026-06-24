@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_identity_mapping",
+      "artifact": "neg_001_identity_mapping/bin_to_gray_8b.va",
+      "mutation": "identity",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_reverse_input_bits",
+      "artifact": "neg_002_reverse_input_bits/bin_to_gray_8b.va",
+      "mutation": "bitrev",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_invert_lsb",
+      "artifact": "neg_003_invert_lsb/bin_to_gray_8b.va",
+      "mutation": "invert_lsb",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_zero_msb",
+      "artifact": "neg_004_zero_msb/bin_to_gray_8b.va",
+      "mutation": "zero_msb",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_shifted_output",
+      "artifact": "neg_005_shifted_output/bin_to_gray_8b.va",
+      "mutation": "shift",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

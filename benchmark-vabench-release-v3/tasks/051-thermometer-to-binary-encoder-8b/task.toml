@@ -1,0 +1,22 @@
+id = "v3_051_thermometer_to_binary_encoder_8b"
+name = "051-thermometer-to-binary-encoder-8b"
+title = "Thermometer To Binary Encoder 8b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "testbench_utility_modules"
+dimension = "encoding_conversion"
+level = "L1"
+difficulty = "D2"
+tier = "support-formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["therm_to_bin_8b.va"]

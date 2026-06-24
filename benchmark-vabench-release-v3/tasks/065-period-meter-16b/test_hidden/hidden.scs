@@ -1,0 +1,7 @@
+simulator lang=spectre
+global 0
+ahdl_include "period_meter_16b.va"
+Vclk_in (clk_in 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 12n 0 30n 0 30.1n 0.9 32n 0 55n 0 55.1n 0.9 57n 0 90n 0 90.1n 0.9 92n 0 130n 0 130.1n 0.9 132n 0 160n 0]
+XDUT (clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15) period_meter_16b
+tran tran stop=160n maxstep=100p
+save clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15

@@ -1,0 +1,30 @@
+{
+  "task": "063-masked-config-update-32b",
+  "form": "dut",
+  "status": "support_staging_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/masked_config_update_32b.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_masked_config_update_32b_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/masked_config_update_32b.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Generic staging checker only; add task-specific checker before core release.",
+    "Rerun v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

@@ -1,0 +1,38 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module bin_to_gray_8b(
+    b7,
+    b6,
+    b5,
+    b4,
+    b3,
+    b2,
+    b1,
+    b0,
+    g7,
+    g6,
+    g5,
+    g4,
+    g3,
+    g2,
+    g1,
+    g0
+);
+    input b7, b6, b5, b4, b3, b2, b1, b0;
+    output g7, g6, g5, g4, g3, g2, g1, g0;
+    electrical b7, b6, b5, b4, b3, b2, b1, b0, g7, g6, g5, g4, g3, g2, g1, g0;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    analog begin
+        V(g0) <+ transition((V(b1) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g1) <+ transition((V(b2) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g2) <+ transition((V(b3) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g3) <+ transition((V(b4) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g4) <+ transition((V(b5) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g5) <+ transition((V(b6) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g6) <+ transition((V(b7) > vth) ? vdd : 0.0, 0, tr, tr);
+        V(g7) <+ transition((V(b0) > vth) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

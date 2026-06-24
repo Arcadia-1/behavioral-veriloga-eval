@@ -1,0 +1,27 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module staircase_dac_stimulus_8b(clk, rst, vout, code0, code1, code2, code3, code4, code5, code6, code7);
+    input clk, rst;
+    output vout, code0, code1, code2, code3, code4, code5, code6, code7;
+    electrical clk, rst, vout, code0, code1, code2, code3, code4, code5, code6, code7;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    integer code_val;
+    analog begin
+        @(initial_step) begin code_val=0; end
+        @(cross(V(clk)-vth,+1)) begin if (V(rst)>vth) code_val=0; else code_val=(code_val+1)&255; end
+        V(vout) <+ transition(0.5*vdd*code_val/255.0, 0, tr, tr);
+        V(code0) <+ transition((((code_val) >> 0) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code1) <+ transition((((code_val) >> 1) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code2) <+ transition((((code_val) >> 2) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code3) <+ transition((((code_val) >> 3) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code4) <+ transition((((code_val) >> 4) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code5) <+ transition((((code_val) >> 5) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code6) <+ transition((((code_val) >> 6) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(code7) <+ transition((((code_val) >> 7) & 1) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

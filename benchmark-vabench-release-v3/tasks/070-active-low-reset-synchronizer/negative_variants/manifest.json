@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/reset_sync_active_low.va",
+      "mutation": "stuck low",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_one",
+      "artifact": "neg_002_one/reset_sync_active_low.va",
+      "mutation": "stuck high",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_one_stage",
+      "artifact": "neg_003_one_stage/reset_sync_active_low.va",
+      "mutation": "single-stage synchronizer",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_inverted",
+      "artifact": "neg_004_inverted/reset_sync_active_low.va",
+      "mutation": "inverts output",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_ignore_reset",
+      "artifact": "neg_005_ignore_reset/reset_sync_active_low.va",
+      "mutation": "ignores async assertion",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

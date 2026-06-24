@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/period_meter_16b.va",
+      "mutation": "never reports period",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_off_by_one",
+      "artifact": "neg_002_off_by_one/period_meter_16b.va",
+      "mutation": "adds one count",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_half_scale",
+      "artifact": "neg_003_half_scale/period_meter_16b.va",
+      "mutation": "uses 2 ns LSB",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_no_valid",
+      "artifact": "neg_004_no_valid/period_meter_16b.va",
+      "mutation": "does not assert valid",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_constant_20",
+      "artifact": "neg_005_constant_20/period_meter_16b.va",
+      "mutation": "always reports 20",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

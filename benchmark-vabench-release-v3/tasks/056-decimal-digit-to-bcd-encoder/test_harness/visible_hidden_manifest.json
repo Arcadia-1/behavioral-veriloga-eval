@@ -1,0 +1,30 @@
+{
+  "task": "056-decimal-digit-to-bcd-encoder",
+  "form": "dut",
+  "status": "support_staging_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/decimal_to_bcd.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_decimal_to_bcd_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/decimal_to_bcd.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Generic staging checker only; add task-specific checker before core release.",
+    "Rerun v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

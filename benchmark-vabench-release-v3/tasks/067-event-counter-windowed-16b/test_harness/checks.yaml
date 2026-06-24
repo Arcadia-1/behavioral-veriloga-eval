@@ -1,0 +1,30 @@
+version: 1
+task_id: v3_067_event_counter_windowed_16b
+backend: evas
+status: support-formal-candidate
+checker: v3_067_event_counter_windowed_16b
+required_columns:
+  - time
+  - gate
+  - event
+  - done
+  - count0
+  - count1
+  - count2
+  - count3
+  - count4
+  - count5
+  - count6
+  - count7
+  - count8
+  - count9
+  - count10
+  - count11
+  - count12
+  - count13
+  - count14
+  - count15
+checks:
+  hidden:
+    - gold_reference_passes
+    - concrete_negative_variants_fail

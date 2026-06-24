@@ -1,0 +1,10 @@
+version: 2
+task_id: binary_to_onehot_decoder_16b
+backend: evas
+status: formal_candidate
+checker: binary_to_onehot_decoder_16b
+checks:
+  formal:
+    - exactly_one_output_high_when_enabled
+    - selected_output_matches_code
+    - enable_low_forces_all_low

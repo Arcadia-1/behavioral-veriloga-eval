@@ -1,0 +1,18 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "signmag_to_twos_8b.va"
+
+Vsign (sign 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0.9 19n 0.9 20n 0 29n 0 30n 0.9 39n 0.9 ]
+Vmag6 (mag6 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag5 (mag5 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag4 (mag4 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag3 (mag3 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag2 (mag2 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag1 (mag1 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0 29n 0 30n 0 39n 0 ]
+Vmag0 (mag0 0) vsource type=pwl wave=[ 0n 0 9n 0 10n 0 19n 0 20n 0.9 29n 0.9 30n 0.9 39n 0.9 ]
+
+XDUT (sign mag6 mag5 mag4 mag3 mag2 mag1 mag0 y7 y6 y5 y4 y3 y2 y1 y0) signmag_to_twos_8b
+
+tran tran stop=40n maxstep=500p
+save sign mag6 mag5 mag4 mag3 mag2 mag1 mag0 y7 y6 y5 y4 y3 y2 y1 y0

@@ -1,0 +1,14 @@
+version: 1
+task_id: v3_071_active_high_reset_synchronizer
+backend: evas
+status: support-formal-candidate
+checker: v3_071_active_high_reset_synchronizer
+required_columns:
+  - time
+  - clk
+  - rst
+  - sync_rst
+checks:
+  hidden:
+    - gold_reference_passes
+    - concrete_negative_variants_fail

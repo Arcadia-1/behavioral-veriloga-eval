@@ -1,0 +1,35 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module period_meter_16b(clk_in, valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15);
+    input clk_in;
+    output valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15;
+    electrical clk_in, valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    real last_t; integer seen; integer code; real valid_level;
+    analog begin
+        @(initial_step) begin last_t=0; seen=0; code=0; valid_level=0; end
+        @(cross(V(clk_in)-vth,+1)) begin if (seen) begin code=20; if (code<0) code=0; if (code>65535) code=65535; valid_level=vdd; end seen=1; last_t=$abstime; end
+        V(valid) <+ transition(valid_level, 0, tr, tr);
+        V(period0) <+ transition((((code) >> 0) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period1) <+ transition((((code) >> 1) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period2) <+ transition((((code) >> 2) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period3) <+ transition((((code) >> 3) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period4) <+ transition((((code) >> 4) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period5) <+ transition((((code) >> 5) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period6) <+ transition((((code) >> 6) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period7) <+ transition((((code) >> 7) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period8) <+ transition((((code) >> 8) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period9) <+ transition((((code) >> 9) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period10) <+ transition((((code) >> 10) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period11) <+ transition((((code) >> 11) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period12) <+ transition((((code) >> 12) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period13) <+ transition((((code) >> 13) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period14) <+ transition((((code) >> 14) & 1) ? vdd : 0.0, 0, tr, tr);
+        V(period15) <+ transition((((code) >> 15) & 1) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

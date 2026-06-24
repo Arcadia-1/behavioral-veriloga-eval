@@ -1,0 +1,8 @@
+simulator lang=spectre
+global 0
+ahdl_include "staircase_dac_stimulus_8b.va"
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n delay=1n rise=50p fall=50p width=5n
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 8n 0.9 8.1n 0 80n 0 80.1n 0.9 92n 0.9 92.1n 0 150n 0]
+XDUT (clk rst vout code0 code1 code2 code3 code4 code5 code6 code7) staircase_dac_stimulus_8b
+tran tran stop=150n maxstep=100p
+save clk rst vout code0 code1 code2 code3 code4 code5 code6 code7

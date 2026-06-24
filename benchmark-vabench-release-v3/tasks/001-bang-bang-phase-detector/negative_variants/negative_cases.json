@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_swap_outputs",
+      "artifact": "neg_001_swap_outputs/bbpd_ref.va",
+      "mutation": "swaps UP and DOWN output drives",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_ignore_falling_data_edges",
+      "artifact": "neg_002_ignore_falling_data_edges/bbpd_ref.va",
+      "mutation": "detects only rising data transitions",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_never_clears_on_clock",
+      "artifact": "neg_003_never_clears_on_clock/bbpd_ref.va",
+      "mutation": "does not clear pulse on clock transitions",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_both_outputs_on_direction",
+      "artifact": "neg_004_both_outputs_on_direction/bbpd_ref.va",
+      "mutation": "drives both outputs on every directional event",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_retimed_ignored",
+      "artifact": "neg_005_retimed_ignored/bbpd_ref.va",
+      "mutation": "ignores retimed_data and uses only clk polarity",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

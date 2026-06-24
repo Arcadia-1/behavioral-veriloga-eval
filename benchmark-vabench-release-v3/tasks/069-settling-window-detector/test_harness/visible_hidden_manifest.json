@@ -1,0 +1,18 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/settling_window_detector.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/settling_window_detector.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/settling_window_detector.va",
+    "test_visible/visible.scs"
+  ]
+}

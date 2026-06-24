@@ -1,0 +1,22 @@
+id = "v3_060_config_shift_register_64b"
+name = "060-config-shift-register-64b"
+title = "Config Shift Register 64b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "testbench_utility_modules"
+dimension = "wide_config_bus"
+level = "L1"
+difficulty = "D2"
+tier = "support-formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["config_shift_reg_64b.va"]

@@ -1,0 +1,32 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module event_counter_windowed_16b(gate, event, done, count0, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10, count11, count12, count13, count14, count15);
+    input gate, event;
+    output done, count0, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10, count11, count12, count13, count14, count15;
+    electrical gate, event, done, count0, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10, count11, count12, count13, count14, count15;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    analog begin
+        V(done) <+ transition(0.0, 0, tr, tr);
+        V(count0) <+ transition(0.0, 0, tr, tr);
+        V(count1) <+ transition(0.0, 0, tr, tr);
+        V(count2) <+ transition(0.0, 0, tr, tr);
+        V(count3) <+ transition(0.0, 0, tr, tr);
+        V(count4) <+ transition(0.0, 0, tr, tr);
+        V(count5) <+ transition(0.0, 0, tr, tr);
+        V(count6) <+ transition(0.0, 0, tr, tr);
+        V(count7) <+ transition(0.0, 0, tr, tr);
+        V(count8) <+ transition(0.0, 0, tr, tr);
+        V(count9) <+ transition(0.0, 0, tr, tr);
+        V(count10) <+ transition(0.0, 0, tr, tr);
+        V(count11) <+ transition(0.0, 0, tr, tr);
+        V(count12) <+ transition(0.0, 0, tr, tr);
+        V(count13) <+ transition(0.0, 0, tr, tr);
+        V(count14) <+ transition(0.0, 0, tr, tr);
+        V(count15) <+ transition(0.0, 0, tr, tr);
+    end
+endmodule

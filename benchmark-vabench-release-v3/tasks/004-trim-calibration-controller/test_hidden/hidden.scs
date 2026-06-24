@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "cdac_calibration.va"
+
+Vclk (clk 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.9 9n 0.9 9.1n 0 25n 0 25.1n 0.9 29n 0.9 29.1n 0 60n 0 60.1n 0.9 64n 0.9 64.1n 0 95n 0 95.1n 0.9 99n 0.9 99.1n 0 110n 0 110.1n 0.9 114n 0.9 114.1n 0 120n 0 120.1n 0.9 124n 0.9 124.1n 0 130n 0 130.1n 0.9 134n 0.9 134.1n 0 140n 0 140.1n 0.9 144n 0.9 144.1n 0 150n 0 150.1n 0.9 154n 0.9 154.1n 0 160n 0 160.1n 0.9 164n 0.9 164.1n 0 170n 0 170.1n 0.9 174n 0.9 174.1n 0 180n 0 180.1n 0.9 184n 0.9 184.1n 0 188n 0 188.1n 0.9 192n 0.9 192.1n 0 195n 0 195.1n 0.9 199n 0.9 199.1n 0 200n 0 200.1n 0.9 204n 0.9 204.1n 0 205n 0 205.1n 0.9 209n 0.9 209.1n 0 220n 0]
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 25n 0.9 25.2n 0 220n 0]
+Verr (err 0) vsource type=pwl wave=[0 0.9 106n 0.9 106.2n 0 192.5n 0 192.7n 0.9 220n 0.9]
+
+XDUT (clk rst err trim) cdac_calibration
+
+tran tran stop=220n maxstep=500p
+save clk rst err trim

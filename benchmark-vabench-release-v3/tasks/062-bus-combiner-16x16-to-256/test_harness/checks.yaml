@@ -1,0 +1,9 @@
+version: 2
+task_id: bus_combiner_16x16_to_256
+backend: evas
+status: formal_candidate
+checker: bus_combiner_16x16_to_256
+checks:
+  formal:
+    - gold_passes
+    - concrete_negatives_fail

@@ -1,0 +1,20 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module reset_sync_active_low(clk, rst_n, sync_rst_n);
+    input clk, rst_n;
+    output sync_rst_n;
+    electrical clk, rst_n, sync_rst_n;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    integer s0; integer s1;
+    analog begin
+        @(initial_step) begin s0=0; s1=0; end
+        @(cross(V(rst_n)-vth,-1)) begin s0=0; s1=0; end
+        @(cross(V(clk)-vth,+1)) begin if (V(rst_n)<=vth) begin s0=0; s1=0; end else begin s1=s0; s0=1; end end
+        V(sync_rst_n) <+ transition(s1 ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

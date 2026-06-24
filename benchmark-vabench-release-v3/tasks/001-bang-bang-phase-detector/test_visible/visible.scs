@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "bbpd_ref.va"
+
+Vdata (data 0) vsource type=pwl wave=[0 0 9.9n 0 10n 0.9 15n 0.9 19.9n 0.9 20n 0 25n 0 29.9n 0 30n 0.9 35n 0.9 39.9n 0.9 40n 0 45n 0 50n 0]
+Vclk (clk 0) vsource type=pwl wave=[0 0 9n 0.9 12.8n 0.9 13n 0 15n 0 19n 0 22.8n 0 23n 0.9 25n 0.9 29n 0 32.8n 0 33n 0.9 35n 0.9 39n 0.9 42.8n 0.9 43n 0 45n 0 50n 0]
+Vretimed_data (retimed_data 0) vsource type=pwl wave=[0 0 9n 0 15n 0 19n 0.9 25n 0.9 29n 0 35n 0 39n 0.9 45n 0.9 50n 0.9]
+
+XDUT (data clk retimed_data up down) bbpd_ref
+
+tran tran stop=50n maxstep=20p
+save data clk retimed_data up down

@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_all_zero_outputs",
+      "artifact": "neg_001_all_zero_outputs/onehot_to_bin_16b.va",
+      "mutation": "all outputs stuck low",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_invert_lsb_output",
+      "artifact": "neg_002_invert_lsb_output/onehot_to_bin_16b.va",
+      "mutation": "invert least significant output",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_reverse_output_bits",
+      "artifact": "neg_003_reverse_output_bits/onehot_to_bin_16b.va",
+      "mutation": "reverse output bit order",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_ignore_valid_or_enable",
+      "artifact": "neg_004_ignore_valid_or_enable/onehot_to_bin_16b.va",
+      "mutation": "force valid/enable-like output wrong",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_input_bit_order_reversed",
+      "artifact": "neg_005_input_bit_order_reversed/onehot_to_bin_16b.va",
+      "mutation": "decode reversed input bit significance",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

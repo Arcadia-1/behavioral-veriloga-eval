@@ -1,0 +1,78 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module decimal_to_bcd(
+    d9,
+    d8,
+    d7,
+    d6,
+    d5,
+    d4,
+    d3,
+    d2,
+    d1,
+    d0,
+    b3,
+    b2,
+    b1,
+    b0,
+    valid
+);
+    input d9, d8, d7, d6, d5, d4, d3, d2, d1, d0;
+    output b3, b2, b1, b0, valid;
+    electrical d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, b3, b2, b1, b0, valid;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    integer count;
+    integer idx;
+    analog begin
+        count = 0;
+        idx = 0;
+        if (V(d0) > vth) begin
+            count = count + 1;
+            idx = 0;
+        end
+        if (V(d1) > vth) begin
+            count = count + 1;
+            idx = 1;
+        end
+        if (V(d2) > vth) begin
+            count = count + 1;
+            idx = 2;
+        end
+        if (V(d3) > vth) begin
+            count = count + 1;
+            idx = 3;
+        end
+        if (V(d4) > vth) begin
+            count = count + 1;
+            idx = 4;
+        end
+        if (V(d5) > vth) begin
+            count = count + 1;
+            idx = 5;
+        end
+        if (V(d6) > vth) begin
+            count = count + 1;
+            idx = 6;
+        end
+        if (V(d7) > vth) begin
+            count = count + 1;
+            idx = 7;
+        end
+        if (V(d8) > vth) begin
+            count = count + 1;
+            idx = 8;
+        end
+        if (V(d9) > vth) begin
+            count = count + 1;
+            idx = 9;
+        end
+        V(b0) <+ transition((1 == 1 && (((idx >> 0) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b1) <+ transition((1 == 1 && (((idx >> 1) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b2) <+ transition((1 == 1 && (((idx >> 2) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(b3) <+ transition((1 == 1 && (((idx >> 3) & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(valid) <+ transition((1 == 1) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

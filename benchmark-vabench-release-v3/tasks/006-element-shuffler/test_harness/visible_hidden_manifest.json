@@ -1,0 +1,29 @@
+{
+  "task": "006-element-shuffler",
+  "form": "dut",
+  "status": "formal_candidate_pending_runner_checker_alignment",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/element_shuffler.va"
+    ],
+    "public_smoke": {
+      "testbench": "test_visible/visible.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/hidden.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/element_shuffler.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Align or add the runner checker to the sequence documented in checks.yaml.",
+    "Run v3-layout hidden gold smoke and negative recertification after checker alignment."
+  ]
+}

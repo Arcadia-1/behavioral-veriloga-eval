@@ -1,0 +1,30 @@
+{
+  "task": "062-bus-combiner-16x16-to-256",
+  "form": "dut",
+  "status": "support_staging_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/bus_combine_16x16_to_256.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_bus_combine_16x16_to_256_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/bus_combine_16x16_to_256.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Generic staging checker only; add task-specific checker before core release.",
+    "Rerun v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

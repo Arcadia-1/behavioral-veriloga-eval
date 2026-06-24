@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/settling_window_detector.va",
+      "mutation": "never settles",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_no_hold",
+      "artifact": "neg_002_no_hold/settling_window_detector.va",
+      "mutation": "asserts immediately in window",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_wide_tol",
+      "artifact": "neg_003_wide_tol/settling_window_detector.va",
+      "mutation": "uses double tolerance",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_no_reset",
+      "artifact": "neg_004_no_reset/settling_window_detector.va",
+      "mutation": "does not clear outside window",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_wrong_code",
+      "artifact": "neg_005_wrong_code/settling_window_detector.va",
+      "mutation": "reports settle time instead of entry time",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

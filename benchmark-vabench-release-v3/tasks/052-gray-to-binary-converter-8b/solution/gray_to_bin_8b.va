@@ -1,0 +1,47 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module gray_to_bin_8b(
+    g7,
+    g6,
+    g5,
+    g4,
+    g3,
+    g2,
+    g1,
+    g0,
+    b7,
+    b6,
+    b5,
+    b4,
+    b3,
+    b2,
+    b1,
+    b0
+);
+    input g7, g6, g5, g4, g3, g2, g1, g0;
+    output b7, b6, b5, b4, b3, b2, b1, b0;
+    electrical g7, g6, g5, g4, g3, g2, g1, g0, b7, b6, b5, b4, b3, b2, b1, b0;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    integer x0,x1,x2,x3,x4,x5,x6,x7;
+    analog begin
+        x0 = (V(g0) > vth) ? 1 : 0;
+        x1 = (V(g1) > vth) ? 1 : 0;
+        x2 = (V(g2) > vth) ? 1 : 0;
+        x3 = (V(g3) > vth) ? 1 : 0;
+        x4 = (V(g4) > vth) ? 1 : 0;
+        x5 = (V(g5) > vth) ? 1 : 0;
+        x6 = (V(g6) > vth) ? 1 : 0;
+        x7 = (V(g7) > vth) ? 1 : 0;
+        V(b0) <+ transition(((((x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b1) <+ transition(((((x1 + x2 + x3 + x4 + x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b2) <+ transition(((((x2 + x3 + x4 + x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b3) <+ transition(((((x3 + x4 + x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b4) <+ transition(((((x4 + x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b5) <+ transition(((((x5 + x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b6) <+ transition(((((x6 + x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+        V(b7) <+ transition(((((x7) % 2) != 0) ? vdd : 0.0), 0, tr, tr);
+    end
+endmodule

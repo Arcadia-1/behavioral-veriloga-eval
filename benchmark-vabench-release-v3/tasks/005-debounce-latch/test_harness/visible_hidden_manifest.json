@@ -1,0 +1,18 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/debounce_latch.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/debounce_latch.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/debounce_latch.va",
+    "test_visible/visible.scs"
+  ]
+}

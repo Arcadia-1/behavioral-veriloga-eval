@@ -1,0 +1,51 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module bin_to_onehot_16b(
+    en,
+    b3,
+    b2,
+    b1,
+    b0,
+    oh15,
+    oh14,
+    oh13,
+    oh12,
+    oh11,
+    oh10,
+    oh9,
+    oh8,
+    oh7,
+    oh6,
+    oh5,
+    oh4,
+    oh3,
+    oh2,
+    oh1,
+    oh0
+);
+    input en, b3, b2, b1, b0;
+    output oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0;
+    electrical en, b3, b2, b1, b0, oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    analog begin
+        V(oh15) <+ transition(0.0, 0, tr, tr);
+        V(oh14) <+ transition(0.0, 0, tr, tr);
+        V(oh13) <+ transition(0.0, 0, tr, tr);
+        V(oh12) <+ transition(0.0, 0, tr, tr);
+        V(oh11) <+ transition(0.0, 0, tr, tr);
+        V(oh10) <+ transition(0.0, 0, tr, tr);
+        V(oh9) <+ transition(0.0, 0, tr, tr);
+        V(oh8) <+ transition(0.0, 0, tr, tr);
+        V(oh7) <+ transition(0.0, 0, tr, tr);
+        V(oh6) <+ transition(0.0, 0, tr, tr);
+        V(oh5) <+ transition(0.0, 0, tr, tr);
+        V(oh4) <+ transition(0.0, 0, tr, tr);
+        V(oh3) <+ transition(0.0, 0, tr, tr);
+        V(oh2) <+ transition(0.0, 0, tr, tr);
+        V(oh1) <+ transition(0.0, 0, tr, tr);
+        V(oh0) <+ transition(0.0, 0, tr, tr);
+    end
+endmodule

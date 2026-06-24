@@ -1,0 +1,18 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/ready_valid_latency_counter_12b.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/ready_valid_latency_counter_12b.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/ready_valid_latency_counter_12b.va",
+    "test_visible/visible.scs"
+  ]
+}

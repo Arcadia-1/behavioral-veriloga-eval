@@ -1,0 +1,22 @@
+id = "v3_055_binary_to_onehot_decoder_16b"
+name = "055-binary-to-onehot-decoder-16b"
+title = "Binary To Onehot Decoder 16b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "testbench_utility_modules"
+dimension = "encoding_conversion"
+level = "L1"
+difficulty = "D1"
+tier = "support-formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["bin_to_onehot_16b.va"]

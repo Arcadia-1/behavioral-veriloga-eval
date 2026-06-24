@@ -1,0 +1,33 @@
+{
+  "task": "004-trim-calibration-controller",
+  "form": "dut",
+  "status": "formal_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/cdac_calibration.va"
+    ],
+    "public_smoke": {
+      "testbench": "test_visible/visible.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/hidden.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/cdac_calibration.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "coverage": [
+    "synchronous reset to 0.45 V on a rising clk edge",
+    "0.06 V increment while err is high",
+    "0.06 V decrement while err is low",
+    "upper clamp at 0.85 V",
+    "lower clamp at 0.05 V",
+    "recovery away from clamp when err direction reverses"
+  ]
+}

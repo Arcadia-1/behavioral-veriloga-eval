@@ -1,0 +1,10 @@
+version: 2
+task_id: onehot_to_binary_encoder_16b
+backend: evas
+status: formal_candidate
+checker: onehot_to_binary_encoder_16b
+checks:
+  formal:
+    - onehot_index_matches_binary_output
+    - zero_hot_invalid
+    - multi_hot_invalid

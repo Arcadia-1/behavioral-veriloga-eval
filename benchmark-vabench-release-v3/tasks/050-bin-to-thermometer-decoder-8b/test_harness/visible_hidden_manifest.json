@@ -1,0 +1,29 @@
+{
+  "task": "050-bin-to-thermometer-decoder-8b",
+  "form": "dut",
+  "status": "formal_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/bin_to_therm_8b.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_bin_to_therm_8b_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/bin_to_therm_8b.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Run v3-layout gold smoke and negative recertification before release promotion."
+  ]
+}

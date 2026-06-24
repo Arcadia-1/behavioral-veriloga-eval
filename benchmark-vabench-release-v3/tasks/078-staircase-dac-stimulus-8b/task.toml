@@ -1,0 +1,22 @@
+id = "v3_078_staircase_dac_stimulus_8b"
+name = "078-staircase-dac-stimulus-8b"
+title = "Staircase DAC Stimulus 8b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "testbench_utility_modules"
+dimension = "support_utility"
+level = "L1"
+difficulty = "D1"
+tier = "support-formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["staircase_dac_stimulus_8b.va"]

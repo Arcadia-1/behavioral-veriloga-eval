@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_enable_ignored",
+      "artifact": "neg_001_enable_ignored/config_latch_32b.va",
+      "mutation": "enable ignored",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_reversed_bus",
+      "artifact": "neg_002_reversed_bus/config_latch_32b.va",
+      "mutation": "bus reversed",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_inverted_outputs",
+      "artifact": "neg_003_inverted_outputs/config_latch_32b.va",
+      "mutation": "outputs inverted",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_all_zero",
+      "artifact": "neg_004_all_zero/config_latch_32b.va",
+      "mutation": "all outputs low",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_shifted_bus",
+      "artifact": "neg_005_shifted_bus/config_latch_32b.va",
+      "mutation": "bus shifted",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

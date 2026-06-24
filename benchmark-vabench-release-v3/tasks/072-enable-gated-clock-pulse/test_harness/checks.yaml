@@ -1,0 +1,14 @@
+version: 1
+task_id: v3_072_enable_gated_clock_pulse
+backend: evas
+status: support-formal-candidate
+checker: v3_072_enable_gated_clock_pulse
+required_columns:
+  - time
+  - clk
+  - en
+  - pulse
+checks:
+  hidden:
+    - gold_reference_passes
+    - concrete_negative_variants_fail

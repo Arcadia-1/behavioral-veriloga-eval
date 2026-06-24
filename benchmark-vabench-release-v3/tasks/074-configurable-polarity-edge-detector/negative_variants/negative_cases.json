@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/configurable_polarity_edge_detector.va",
+      "mutation": "never pulses",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_all_edges",
+      "artifact": "neg_002_all_edges/configurable_polarity_edge_detector.va",
+      "mutation": "pulses on both polarities",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_wrong_polarity",
+      "artifact": "neg_003_wrong_polarity/configurable_polarity_edge_detector.va",
+      "mutation": "swaps selected polarity",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_stuck_high",
+      "artifact": "neg_004_stuck_high/configurable_polarity_edge_detector.va",
+      "mutation": "never clears pulse",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_long_pulse",
+      "artifact": "neg_005_long_pulse/configurable_polarity_edge_detector.va",
+      "mutation": "uses too long pulse",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+version: 2
+task_id: bin_to_thermometer_decoder_8b
+backend: evas
+status: formal_candidate
+checker: bin_to_thermometer_decoder_8b
+required_columns:
+  - time
+  - en
+  - b7
+  - b6
+  - b5
+  - b4
+  - b3
+  - b2
+  - b1
+  - b0
+checks:
+  formal:
+    - enable_low_forces_all_outputs_low
+    - high_count_matches_binary_code
+    - outputs_are_cumulative_from_th0
+    - boundary_codes_0_1_255

@@ -1,0 +1,18 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "gray_to_bin_8b.va"
+
+Vg0 (g0 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0.9 19.5n 0.9 20n 0.9 29.5n 0.9 30n 0 39.5n 0 40n 0 49.5n 0 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0 89.5n 0 90n 0 99.5n 0 100n 0 109.5n 0 110n 0 119.5n 0 120n 0 129.5n 0]
+Vg1 (g1 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0.9 29.5n 0.9 30n 0.9 39.5n 0.9 40n 0 49.5n 0 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0 89.5n 0 90n 0 99.5n 0 100n 0 109.5n 0 110n 0 119.5n 0 120n 0 129.5n 0]
+Vg2 (g2 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0.9 49.5n 0.9 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0 89.5n 0 90n 0 99.5n 0 100n 0 109.5n 0 110n 0.9 119.5n 0.9 120n 0 129.5n 0]
+Vg3 (g3 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0 49.5n 0 50n 0.9 59.5n 0.9 60n 0.9 69.5n 0.9 70n 0 79.5n 0 80n 0 89.5n 0 90n 0 99.5n 0 100n 0 109.5n 0 110n 0.9 119.5n 0.9 120n 0 129.5n 0]
+Vg4 (g4 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0 49.5n 0 50n 0 59.5n 0 60n 0.9 69.5n 0.9 70n 0.9 79.5n 0.9 80n 0 89.5n 0 90n 0 99.5n 0 100n 0 109.5n 0 110n 0 119.5n 0 120n 0 129.5n 0]
+Vg5 (g5 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0 49.5n 0 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0.9 89.5n 0.9 90n 0 99.5n 0 100n 0 109.5n 0 110n 0.9 119.5n 0.9 120n 0 129.5n 0]
+Vg6 (g6 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0 49.5n 0 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0 89.5n 0 90n 0.9 99.5n 0.9 100n 0.9 109.5n 0.9 110n 0 119.5n 0 120n 0 129.5n 0]
+Vg7 (g7 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0 29.5n 0 30n 0 39.5n 0 40n 0 49.5n 0 50n 0 59.5n 0 60n 0 69.5n 0 70n 0 79.5n 0 80n 0 89.5n 0 90n 0 99.5n 0 100n 0.9 109.5n 0.9 110n 0.9 119.5n 0.9 120n 0.9 129.5n 0.9]
+
+XDUT (g7 g6 g5 g4 g3 g2 g1 g0 b7 b6 b5 b4 b3 b2 b1 b0) gray_to_bin_8b
+
+tran tran stop=135n maxstep=100p
+save g0 g1 g2 g3 g4 g5 g6 g7 b0 b1 b2 b3 b4 b5 b6 b7

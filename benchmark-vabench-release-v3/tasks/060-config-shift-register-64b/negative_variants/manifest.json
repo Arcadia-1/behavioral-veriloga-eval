@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_wrong_shift",
+      "artifact": "neg_001_wrong_shift/config_shift_reg_64b.va",
+      "mutation": "not a shift register",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_wrong_shift",
+      "artifact": "neg_002_wrong_shift/config_shift_reg_64b.va",
+      "mutation": "not a shift register",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_wrong_shift",
+      "artifact": "neg_003_wrong_shift/config_shift_reg_64b.va",
+      "mutation": "not a shift register",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_wrong_shift",
+      "artifact": "neg_004_wrong_shift/config_shift_reg_64b.va",
+      "mutation": "not a shift register",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_wrong_shift",
+      "artifact": "neg_005_wrong_shift/config_shift_reg_64b.va",
+      "mutation": "not a shift register",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

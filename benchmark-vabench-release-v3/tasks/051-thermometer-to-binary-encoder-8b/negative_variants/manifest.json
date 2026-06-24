@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_count_plus_one",
+      "artifact": "neg_001_count_plus_one/therm_to_bin_8b.va",
+      "mutation": "count plus one",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_valid_always_high",
+      "artifact": "neg_002_valid_always_high/therm_to_bin_8b.va",
+      "mutation": "valid always high",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_reversed_direction",
+      "artifact": "neg_003_reversed_direction/therm_to_bin_8b.va",
+      "mutation": "expects high side cumulative",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_valid_always_low",
+      "artifact": "neg_004_valid_always_low/therm_to_bin_8b.va",
+      "mutation": "valid always low",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_bit_order_reversed",
+      "artifact": "neg_005_bit_order_reversed/therm_to_bin_8b.va",
+      "mutation": "binary output bit order reversed",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

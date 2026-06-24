@@ -1,0 +1,32 @@
+version: 1
+task_id: v3_073_low_active_enable_decoder_4b
+backend: evas
+status: support-formal-candidate
+checker: v3_073_low_active_enable_decoder_4b
+required_columns:
+  - time
+  - en_n
+  - a0
+  - a1
+  - a2
+  - a3
+  - y0_n
+  - y1_n
+  - y2_n
+  - y3_n
+  - y4_n
+  - y5_n
+  - y6_n
+  - y7_n
+  - y8_n
+  - y9_n
+  - y10_n
+  - y11_n
+  - y12_n
+  - y13_n
+  - y14_n
+  - y15_n
+checks:
+  hidden:
+    - gold_reference_passes
+    - concrete_negative_variants_fail

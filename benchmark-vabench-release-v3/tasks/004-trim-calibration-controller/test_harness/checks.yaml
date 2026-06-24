@@ -1,0 +1,38 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  trace_signals:
+    time: "time"
+    clk: "clk"
+    rst: "rst"
+    err: "err"
+    trim: "trim"
+  logic:
+    threshold_v: 0.45
+    reset_value_v: 0.45
+    step_v: 0.06
+    min_trim_v: 0.05
+    max_trim_v: 0.85
+    sample_offset_after_clk_rise_ns: 2.0
+    tolerance_v: 0.015
+  checks:
+    - "reset_trim_near_0p45"
+    - "trim_increments_decrements_and_recovers"
+    - "trim_clamped_to_0p05_0p85"
+    - "updates_only_on_rising_clk_edges"
+    - "err_high_increases_err_low_decreases"
+parity:
+  reference: "spectre"
+  status: "pending_until_release_v3_dual_rerun"
+  notes:
+    - "Release-v3 source is concrete; final paper-facing claim still needs fresh EVAS/Spectre dual validation."

@@ -1,0 +1,33 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module low_active_enable_decoder_4b(en_n, a0, a1, a2, a3, y0_n, y1_n, y2_n, y3_n, y4_n, y5_n, y6_n, y7_n, y8_n, y9_n, y10_n, y11_n, y12_n, y13_n, y14_n, y15_n);
+    input en_n, a0, a1, a2, a3;
+    output y0_n, y1_n, y2_n, y3_n, y4_n, y5_n, y6_n, y7_n, y8_n, y9_n, y10_n, y11_n, y12_n, y13_n, y14_n, y15_n;
+    electrical en_n, a0, a1, a2, a3, y0_n, y1_n, y2_n, y3_n, y4_n, y5_n, y6_n, y7_n, y8_n, y9_n, y10_n, y11_n, y12_n, y13_n, y14_n, y15_n;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    integer code;
+    analog begin
+        code = (V(a0)>vth ? 1:0) + (V(a1)>vth ? 2:0) + (V(a2)>vth ? 4:0) + (V(a3)>vth ? 8:0);
+        V(y0_n) <+ transition((V(en_n)<=vth && code==05) ? 0.0 : vdd, 0, tr, tr);
+        V(y1_n) <+ transition((V(en_n)<=vth && code==0) ? 0.0 : vdd, 0, tr, tr);
+        V(y2_n) <+ transition((V(en_n)<=vth && code==2) ? 0.0 : vdd, 0, tr, tr);
+        V(y3_n) <+ transition((V(en_n)<=vth && code==3) ? 0.0 : vdd, 0, tr, tr);
+        V(y4_n) <+ transition((V(en_n)<=vth && code==4) ? 0.0 : vdd, 0, tr, tr);
+        V(y5_n) <+ transition((V(en_n)<=vth && code==5) ? 0.0 : vdd, 0, tr, tr);
+        V(y6_n) <+ transition((V(en_n)<=vth && code==6) ? 0.0 : vdd, 0, tr, tr);
+        V(y7_n) <+ transition((V(en_n)<=vth && code==7) ? 0.0 : vdd, 0, tr, tr);
+        V(y8_n) <+ transition((V(en_n)<=vth && code==8) ? 0.0 : vdd, 0, tr, tr);
+        V(y9_n) <+ transition((V(en_n)<=vth && code==9) ? 0.0 : vdd, 0, tr, tr);
+        V(y10_n) <+ transition((V(en_n)<=vth && code==00) ? 0.0 : vdd, 0, tr, tr);
+        V(y11_n) <+ transition((V(en_n)<=vth && code==01) ? 0.0 : vdd, 0, tr, tr);
+        V(y12_n) <+ transition((V(en_n)<=vth && code==02) ? 0.0 : vdd, 0, tr, tr);
+        V(y13_n) <+ transition((V(en_n)<=vth && code==03) ? 0.0 : vdd, 0, tr, tr);
+        V(y14_n) <+ transition((V(en_n)<=vth && code==04) ? 0.0 : vdd, 0, tr, tr);
+        V(y15_n) <+ transition((V(en_n)<=vth && code==05) ? 0.0 : vdd, 0, tr, tr);
+    end
+endmodule

@@ -1,0 +1,345 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module config_shift_reg_64b(
+    clk,
+    rst_n,
+    sin,
+    q63,
+    q62,
+    q61,
+    q60,
+    q59,
+    q58,
+    q57,
+    q56,
+    q55,
+    q54,
+    q53,
+    q52,
+    q51,
+    q50,
+    q49,
+    q48,
+    q47,
+    q46,
+    q45,
+    q44,
+    q43,
+    q42,
+    q41,
+    q40,
+    q39,
+    q38,
+    q37,
+    q36,
+    q35,
+    q34,
+    q33,
+    q32,
+    q31,
+    q30,
+    q29,
+    q28,
+    q27,
+    q26,
+    q25,
+    q24,
+    q23,
+    q22,
+    q21,
+    q20,
+    q19,
+    q18,
+    q17,
+    q16,
+    q15,
+    q14,
+    q13,
+    q12,
+    q11,
+    q10,
+    q9,
+    q8,
+    q7,
+    q6,
+    q5,
+    q4,
+    q3,
+    q2,
+    q1,
+    q0
+);
+    input clk, rst_n, sin;
+    output q63, q62, q61, q60, q59, q58, q57, q56, q55, q54, q53, q52, q51, q50, q49, q48, q47, q46, q45, q44, q43, q42, q41, q40, q39, q38, q37, q36, q35, q34, q33, q32, q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
+    electrical clk, rst_n, sin, q63, q62, q61, q60, q59, q58, q57, q56, q55, q54, q53, q52, q51, q50, q49, q48, q47, q46, q45, q44, q43, q42, q41, q40, q39, q38, q37, q36, q35, q34, q33, q32, q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+    integer s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23,s24,s25,s26,s27,s28,s29,s30,s31,s32,s33,s34,s35,s36,s37,s38,s39,s40,s41,s42,s43,s44,s45,s46,s47,s48,s49,s50,s51,s52,s53,s54,s55,s56,s57,s58,s59,s60,s61,s62,s63;
+    analog begin
+        @(initial_step) begin
+            s0 = 0;
+            s1 = 0;
+            s2 = 0;
+            s3 = 0;
+            s4 = 0;
+            s5 = 0;
+            s6 = 0;
+            s7 = 0;
+            s8 = 0;
+            s9 = 0;
+            s10 = 0;
+            s11 = 0;
+            s12 = 0;
+            s13 = 0;
+            s14 = 0;
+            s15 = 0;
+            s16 = 0;
+            s17 = 0;
+            s18 = 0;
+            s19 = 0;
+            s20 = 0;
+            s21 = 0;
+            s22 = 0;
+            s23 = 0;
+            s24 = 0;
+            s25 = 0;
+            s26 = 0;
+            s27 = 0;
+            s28 = 0;
+            s29 = 0;
+            s30 = 0;
+            s31 = 0;
+            s32 = 0;
+            s33 = 0;
+            s34 = 0;
+            s35 = 0;
+            s36 = 0;
+            s37 = 0;
+            s38 = 0;
+            s39 = 0;
+            s40 = 0;
+            s41 = 0;
+            s42 = 0;
+            s43 = 0;
+            s44 = 0;
+            s45 = 0;
+            s46 = 0;
+            s47 = 0;
+            s48 = 0;
+            s49 = 0;
+            s50 = 0;
+            s51 = 0;
+            s52 = 0;
+            s53 = 0;
+            s54 = 0;
+            s55 = 0;
+            s56 = 0;
+            s57 = 0;
+            s58 = 0;
+            s59 = 0;
+            s60 = 0;
+            s61 = 0;
+            s62 = 0;
+            s63 = 0;
+        end
+        @(cross(V(clk) - vth, +1)) begin
+            if (V(rst_n) <= vth) begin
+                s0 = 0;
+                s1 = 0;
+                s2 = 0;
+                s3 = 0;
+                s4 = 0;
+                s5 = 0;
+                s6 = 0;
+                s7 = 0;
+                s8 = 0;
+                s9 = 0;
+                s10 = 0;
+                s11 = 0;
+                s12 = 0;
+                s13 = 0;
+                s14 = 0;
+                s15 = 0;
+                s16 = 0;
+                s17 = 0;
+                s18 = 0;
+                s19 = 0;
+                s20 = 0;
+                s21 = 0;
+                s22 = 0;
+                s23 = 0;
+                s24 = 0;
+                s25 = 0;
+                s26 = 0;
+                s27 = 0;
+                s28 = 0;
+                s29 = 0;
+                s30 = 0;
+                s31 = 0;
+                s32 = 0;
+                s33 = 0;
+                s34 = 0;
+                s35 = 0;
+                s36 = 0;
+                s37 = 0;
+                s38 = 0;
+                s39 = 0;
+                s40 = 0;
+                s41 = 0;
+                s42 = 0;
+                s43 = 0;
+                s44 = 0;
+                s45 = 0;
+                s46 = 0;
+                s47 = 0;
+                s48 = 0;
+                s49 = 0;
+                s50 = 0;
+                s51 = 0;
+                s52 = 0;
+                s53 = 0;
+                s54 = 0;
+                s55 = 0;
+                s56 = 0;
+                s57 = 0;
+                s58 = 0;
+                s59 = 0;
+                s60 = 0;
+                s61 = 0;
+                s62 = 0;
+                s63 = 0;
+            end else begin
+                s63 = s62;
+                s62 = s61;
+                s61 = s60;
+                s60 = s59;
+                s59 = s58;
+                s58 = s57;
+                s57 = s56;
+                s56 = s55;
+                s55 = s54;
+                s54 = s53;
+                s53 = s52;
+                s52 = s51;
+                s51 = s50;
+                s50 = s49;
+                s49 = s48;
+                s48 = s47;
+                s47 = s46;
+                s46 = s45;
+                s45 = s44;
+                s44 = s43;
+                s43 = s42;
+                s42 = s41;
+                s41 = s40;
+                s40 = s39;
+                s39 = s38;
+                s38 = s37;
+                s37 = s36;
+                s36 = s35;
+                s35 = s34;
+                s34 = s33;
+                s33 = s32;
+                s32 = s31;
+                s31 = s30;
+                s30 = s29;
+                s29 = s28;
+                s28 = s27;
+                s27 = s26;
+                s26 = s25;
+                s25 = s24;
+                s24 = s23;
+                s23 = s22;
+                s22 = s21;
+                s21 = s20;
+                s20 = s19;
+                s19 = s18;
+                s18 = s17;
+                s17 = s16;
+                s16 = s15;
+                s15 = s14;
+                s14 = s13;
+                s13 = s12;
+                s12 = s11;
+                s11 = s10;
+                s10 = s9;
+                s9 = s8;
+                s8 = s7;
+                s7 = s6;
+                s6 = s5;
+                s5 = s4;
+                s4 = s3;
+                s3 = s2;
+                s2 = s1;
+                s1 = s0;
+                s0 = (V(sin) > vth) ? 1 : 0;
+            end
+        end
+        V(q0) <+ transition((s0 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q1) <+ transition((s1 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q2) <+ transition((s2 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q3) <+ transition((s3 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q4) <+ transition((s4 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q5) <+ transition((s5 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q6) <+ transition((s6 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q7) <+ transition((s7 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q8) <+ transition((s8 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q9) <+ transition((s9 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q10) <+ transition((s10 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q11) <+ transition((s11 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q12) <+ transition((s12 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q13) <+ transition((s13 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q14) <+ transition((s14 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q15) <+ transition((s15 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q16) <+ transition((s16 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q17) <+ transition((s17 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q18) <+ transition((s18 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q19) <+ transition((s19 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q20) <+ transition((s20 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q21) <+ transition((s21 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q22) <+ transition((s22 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q23) <+ transition((s23 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q24) <+ transition((s24 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q25) <+ transition((s25 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q26) <+ transition((s26 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q27) <+ transition((s27 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q28) <+ transition((s28 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q29) <+ transition((s29 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q30) <+ transition((s30 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q31) <+ transition((s31 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q32) <+ transition((s32 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q33) <+ transition((s33 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q34) <+ transition((s34 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q35) <+ transition((s35 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q36) <+ transition((s36 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q37) <+ transition((s37 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q38) <+ transition((s38 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q39) <+ transition((s39 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q40) <+ transition((s40 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q41) <+ transition((s41 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q42) <+ transition((s42 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q43) <+ transition((s43 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q44) <+ transition((s44 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q45) <+ transition((s45 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q46) <+ transition((s46 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q47) <+ transition((s47 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q48) <+ transition((s48 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q49) <+ transition((s49 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q50) <+ transition((s50 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q51) <+ transition((s51 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q52) <+ transition((s52 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q53) <+ transition((s53 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q54) <+ transition((s54 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q55) <+ transition((s55 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q56) <+ transition((s56 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q57) <+ transition((s57 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q58) <+ transition((s58 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q59) <+ transition((s59 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q60) <+ transition((s60 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q61) <+ transition((s61 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q62) <+ transition((s62 != 0) ? vdd : 0.0, 0, tr, tr);
+        V(q63) <+ transition((s63 != 0) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/event_counter_windowed_16b.va",
+      "mutation": "never counts",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_count_all",
+      "artifact": "neg_002_count_all/event_counter_windowed_16b.va",
+      "mutation": "counts events outside gate",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_no_clear",
+      "artifact": "neg_003_no_clear/event_counter_windowed_16b.va",
+      "mutation": "does not clear at new gate",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_no_done",
+      "artifact": "neg_004_no_done/event_counter_windowed_16b.va",
+      "mutation": "does not assert done",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_off_by_one",
+      "artifact": "neg_005_off_by_one/event_counter_windowed_16b.va",
+      "mutation": "starts count at one",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

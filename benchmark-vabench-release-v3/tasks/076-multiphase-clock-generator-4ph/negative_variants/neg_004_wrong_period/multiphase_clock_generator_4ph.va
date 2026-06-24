@@ -1,0 +1,24 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module multiphase_clock_generator_4ph(clk0, clk90, clk180, clk270);
+    output clk0, clk90, clk180, clk270;
+    electrical clk0, clk90, clk180, clk270;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    real p; real t0; real t90; real t180; real t270;
+    analog begin
+        p = 25n;
+        t0 = $abstime - p*floor($abstime/p);
+        t90 = ($abstime-5n) - p*floor(($abstime-5n)/p);
+        t180 = ($abstime-10n) - p*floor(($abstime-10n)/p);
+        t270 = ($abstime-15n) - p*floor(($abstime-15n)/p);
+        V(clk0) <+ transition((t0 < 10n) ? vdd : 0.0, 0, tr, tr);
+        V(clk90) <+ transition((t90 < 10n) ? vdd : 0.0, 0, tr, tr);
+        V(clk180) <+ transition((t180 < 10n) ? vdd : 0.0, 0, tr, tr);
+        V(clk270) <+ transition((t270 < 10n) ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

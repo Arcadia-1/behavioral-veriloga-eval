@@ -1,0 +1,21 @@
+id = "v3_007_first_order_lowpass"
+name = "007-first-order-lowpass"
+title = "First Order Lowpass"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "baseband_signal_conditioning"
+level = "L1"
+difficulty = "D1"
+tier = "formal-candidate"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["first_order_lowpass.va"]

@@ -1,0 +1,30 @@
+{
+  "task": "057-signed-magnitude-to-twos-complement-8b",
+  "form": "dut",
+  "status": "support_staging_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/signmag_to_twos_8b.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_signmag_to_twos_8b_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/signmag_to_twos_8b.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Generic staging checker only; add task-specific checker before core release.",
+    "Rerun v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/multiphase_clock_generator_4ph.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/multiphase_clock_generator_4ph.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/multiphase_clock_generator_4ph.va",
+    "test_visible/visible.scs"
+  ]
+}

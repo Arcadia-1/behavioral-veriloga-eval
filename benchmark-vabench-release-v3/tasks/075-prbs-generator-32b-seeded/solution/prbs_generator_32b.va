@@ -1,0 +1,189 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module prbs_generator_32b(clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31, out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31);
+    input clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31;
+    output out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31;
+    electrical clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31, out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    integer s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26, s27, s28, s29, s30, s31;
+    integer feedback;
+
+    analog begin
+        @(initial_step) begin
+            s0=1;
+            s1=0;
+            s2=0;
+            s3=0;
+            s4=0;
+            s5=0;
+            s6=0;
+            s7=0;
+            s8=0;
+            s9=0;
+            s10=0;
+            s11=0;
+            s12=0;
+            s13=0;
+            s14=0;
+            s15=0;
+            s16=0;
+            s17=0;
+            s18=0;
+            s19=0;
+            s20=0;
+            s21=0;
+            s22=0;
+            s23=0;
+            s24=0;
+            s25=0;
+            s26=0;
+            s27=0;
+            s28=0;
+            s29=0;
+            s30=0;
+            s31=0;
+        end
+
+        @(cross(V(clk)-vth,+1)) begin
+            if (V(rst)>vth) begin
+                s0=1;
+                s1=0;
+                s2=0;
+                s3=0;
+                s4=0;
+                s5=0;
+                s6=0;
+                s7=0;
+                s8=0;
+                s9=0;
+                s10=0;
+                s11=0;
+                s12=0;
+                s13=0;
+                s14=0;
+                s15=0;
+                s16=0;
+                s17=0;
+                s18=0;
+                s19=0;
+                s20=0;
+                s21=0;
+                s22=0;
+                s23=0;
+                s24=0;
+                s25=0;
+                s26=0;
+                s27=0;
+                s28=0;
+                s29=0;
+                s30=0;
+                s31=0;
+            end else if (V(load_seed)>vth) begin
+                s0 = (V(seed0)>vth) ? 1 : 0;
+                s1 = (V(seed1)>vth) ? 1 : 0;
+                s2 = (V(seed2)>vth) ? 1 : 0;
+                s3 = (V(seed3)>vth) ? 1 : 0;
+                s4 = (V(seed4)>vth) ? 1 : 0;
+                s5 = (V(seed5)>vth) ? 1 : 0;
+                s6 = (V(seed6)>vth) ? 1 : 0;
+                s7 = (V(seed7)>vth) ? 1 : 0;
+                s8 = (V(seed8)>vth) ? 1 : 0;
+                s9 = (V(seed9)>vth) ? 1 : 0;
+                s10 = (V(seed10)>vth) ? 1 : 0;
+                s11 = (V(seed11)>vth) ? 1 : 0;
+                s12 = (V(seed12)>vth) ? 1 : 0;
+                s13 = (V(seed13)>vth) ? 1 : 0;
+                s14 = (V(seed14)>vth) ? 1 : 0;
+                s15 = (V(seed15)>vth) ? 1 : 0;
+                s16 = (V(seed16)>vth) ? 1 : 0;
+                s17 = (V(seed17)>vth) ? 1 : 0;
+                s18 = (V(seed18)>vth) ? 1 : 0;
+                s19 = (V(seed19)>vth) ? 1 : 0;
+                s20 = (V(seed20)>vth) ? 1 : 0;
+                s21 = (V(seed21)>vth) ? 1 : 0;
+                s22 = (V(seed22)>vth) ? 1 : 0;
+                s23 = (V(seed23)>vth) ? 1 : 0;
+                s24 = (V(seed24)>vth) ? 1 : 0;
+                s25 = (V(seed25)>vth) ? 1 : 0;
+                s26 = (V(seed26)>vth) ? 1 : 0;
+                s27 = (V(seed27)>vth) ? 1 : 0;
+                s28 = (V(seed28)>vth) ? 1 : 0;
+                s29 = (V(seed29)>vth) ? 1 : 0;
+                s30 = (V(seed30)>vth) ? 1 : 0;
+                s31 = (V(seed31)>vth) ? 1 : 0;
+                if (!(s0||s1||s2||s3||s4||s5||s6||s7||s8||s9||s10||s11||s12||s13||s14||s15||s16||s17||s18||s19||s20||s21||s22||s23||s24||s25||s26||s27||s28||s29||s30||s31)) s0=1;
+            end else begin
+                feedback = (s31 ^ s21 ^ s1 ^ s0) & 1;
+                s31=s30;
+                s30=s29;
+                s29=s28;
+                s28=s27;
+                s27=s26;
+                s26=s25;
+                s25=s24;
+                s24=s23;
+                s23=s22;
+                s22=s21;
+                s21=s20;
+                s20=s19;
+                s19=s18;
+                s18=s17;
+                s17=s16;
+                s16=s15;
+                s15=s14;
+                s14=s13;
+                s13=s12;
+                s12=s11;
+                s11=s10;
+                s10=s9;
+                s9=s8;
+                s8=s7;
+                s7=s6;
+                s6=s5;
+                s5=s4;
+                s4=s3;
+                s3=s2;
+                s2=s1;
+                s1=s0;
+                s0=feedback;
+            end
+        end
+        V(out0) <+ transition(s0 ? vdd : 0.0, 0, tr, tr);
+        V(out1) <+ transition(s1 ? vdd : 0.0, 0, tr, tr);
+        V(out2) <+ transition(s2 ? vdd : 0.0, 0, tr, tr);
+        V(out3) <+ transition(s3 ? vdd : 0.0, 0, tr, tr);
+        V(out4) <+ transition(s4 ? vdd : 0.0, 0, tr, tr);
+        V(out5) <+ transition(s5 ? vdd : 0.0, 0, tr, tr);
+        V(out6) <+ transition(s6 ? vdd : 0.0, 0, tr, tr);
+        V(out7) <+ transition(s7 ? vdd : 0.0, 0, tr, tr);
+        V(out8) <+ transition(s8 ? vdd : 0.0, 0, tr, tr);
+        V(out9) <+ transition(s9 ? vdd : 0.0, 0, tr, tr);
+        V(out10) <+ transition(s10 ? vdd : 0.0, 0, tr, tr);
+        V(out11) <+ transition(s11 ? vdd : 0.0, 0, tr, tr);
+        V(out12) <+ transition(s12 ? vdd : 0.0, 0, tr, tr);
+        V(out13) <+ transition(s13 ? vdd : 0.0, 0, tr, tr);
+        V(out14) <+ transition(s14 ? vdd : 0.0, 0, tr, tr);
+        V(out15) <+ transition(s15 ? vdd : 0.0, 0, tr, tr);
+        V(out16) <+ transition(s16 ? vdd : 0.0, 0, tr, tr);
+        V(out17) <+ transition(s17 ? vdd : 0.0, 0, tr, tr);
+        V(out18) <+ transition(s18 ? vdd : 0.0, 0, tr, tr);
+        V(out19) <+ transition(s19 ? vdd : 0.0, 0, tr, tr);
+        V(out20) <+ transition(s20 ? vdd : 0.0, 0, tr, tr);
+        V(out21) <+ transition(s21 ? vdd : 0.0, 0, tr, tr);
+        V(out22) <+ transition(s22 ? vdd : 0.0, 0, tr, tr);
+        V(out23) <+ transition(s23 ? vdd : 0.0, 0, tr, tr);
+        V(out24) <+ transition(s24 ? vdd : 0.0, 0, tr, tr);
+        V(out25) <+ transition(s25 ? vdd : 0.0, 0, tr, tr);
+        V(out26) <+ transition(s26 ? vdd : 0.0, 0, tr, tr);
+        V(out27) <+ transition(s27 ? vdd : 0.0, 0, tr, tr);
+        V(out28) <+ transition(s28 ? vdd : 0.0, 0, tr, tr);
+        V(out29) <+ transition(s29 ? vdd : 0.0, 0, tr, tr);
+        V(out30) <+ transition(s30 ? vdd : 0.0, 0, tr, tr);
+        V(out31) <+ transition(s31 ? vdd : 0.0, 0, tr, tr);
+    end
+endmodule

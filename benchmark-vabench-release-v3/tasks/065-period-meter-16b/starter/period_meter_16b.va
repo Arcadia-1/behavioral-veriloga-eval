@@ -1,0 +1,32 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module period_meter_16b(clk_in, valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15);
+    input clk_in;
+    output valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15;
+    electrical clk_in, valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15;
+
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    parameter real tr = 20p;
+
+    analog begin
+        V(valid) <+ transition(0.0, 0, tr, tr);
+        V(period0) <+ transition(0.0, 0, tr, tr);
+        V(period1) <+ transition(0.0, 0, tr, tr);
+        V(period2) <+ transition(0.0, 0, tr, tr);
+        V(period3) <+ transition(0.0, 0, tr, tr);
+        V(period4) <+ transition(0.0, 0, tr, tr);
+        V(period5) <+ transition(0.0, 0, tr, tr);
+        V(period6) <+ transition(0.0, 0, tr, tr);
+        V(period7) <+ transition(0.0, 0, tr, tr);
+        V(period8) <+ transition(0.0, 0, tr, tr);
+        V(period9) <+ transition(0.0, 0, tr, tr);
+        V(period10) <+ transition(0.0, 0, tr, tr);
+        V(period11) <+ transition(0.0, 0, tr, tr);
+        V(period12) <+ transition(0.0, 0, tr, tr);
+        V(period13) <+ transition(0.0, 0, tr, tr);
+        V(period14) <+ transition(0.0, 0, tr, tr);
+        V(period15) <+ transition(0.0, 0, tr, tr);
+    end
+endmodule

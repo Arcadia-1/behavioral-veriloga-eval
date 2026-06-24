@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero",
+      "artifact": "neg_001_zero/staircase_dac_stimulus_8b.va",
+      "mutation": "stuck zero",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_step_two",
+      "artifact": "neg_002_step_two/staircase_dac_stimulus_8b.va",
+      "mutation": "increments by two",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_no_reset",
+      "artifact": "neg_003_no_reset/staircase_dac_stimulus_8b.va",
+      "mutation": "ignores reset",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_wrong_vout",
+      "artifact": "neg_004_wrong_vout/staircase_dac_stimulus_8b.va",
+      "mutation": "uses half-scale analog output",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_decrement",
+      "artifact": "neg_005_decrement/staircase_dac_stimulus_8b.va",
+      "mutation": "counts downward",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}
