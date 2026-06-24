@@ -75,6 +75,56 @@ def test_run_evas_defaults_to_strict_rust_evas2(monkeypatch, tmp_path: Path) -> 
     assert captured["env"]["EVAS_ENGINE"] == "evas2"
 
 
+def test_v2_lowpass_checker_uses_yaml_thresholds(tmp_path: Path) -> None:
+    csv_path = tmp_path / "tran.csv"
+    csv_path.write_text(
+        "\n".join(
+            [
+                "time,vin,vout",
+                "0,0.0,0.00",
+                "1e-8,0.0,0.05",
+                "2.1e-8,0.8,0.10",
+                "3.0e-8,0.8,0.30",
+                "5.0e-8,0.8,0.60",
+                "9.0e-8,0.8,0.74",
+                "1.5e-7,0.8,0.79",
+                "1.6e-7,0.8,0.80",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    checks_config = {
+        "checker_parameters": {
+            "sample_times_ns": [30.0, 50.0, 90.0, 150.0],
+            "response_sample_1_min_v": "0.55",
+            "response_sample_2_min_v": "0.70",
+            "response_sample_3_min_v": "0.76",
+        }
+    }
+
+    score, notes = simulate_evas.evaluate_behavior(
+        "vbr1_l1_first_order_lowpass",
+        csv_path,
+        checks_config=checks_config,
+    )
+    assert score == 1.0
+    assert "checker_config_parameters=first_order_lowpass" in notes[0]
+
+    strict_config = {
+        "checker_parameters": {
+            **checks_config["checker_parameters"],
+            "response_sample_1_min_v": "0.65",
+        }
+    }
+    strict_score, strict_notes = simulate_evas.evaluate_behavior(
+        "vbr1_l1_first_order_lowpass",
+        csv_path,
+        checks_config=strict_config,
+    )
+    assert strict_score == 0.0
+    assert "response_fast_enough=False" in strict_notes[0]
+
+
 def test_behavior_checker_policy_marks_streaming_validated(monkeypatch) -> None:
     monkeypatch.delenv("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS", raising=False)
     monkeypatch.delenv("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS", raising=False)
@@ -268,7 +318,13 @@ def test_auto_sparse_row_checker_falls_back_to_full_trace(monkeypatch, tmp_path:
             stderr="",
         )
 
-    def fake_evaluate_behavior_with_timeout(task_id_arg: str, csv_path: Path, *, timeout_s: int):
+    def fake_evaluate_behavior_with_timeout(
+        task_id_arg: str,
+        csv_path: Path,
+        *,
+        timeout_s: int,
+        checks_config=None,
+    ):
         assert task_id_arg == task_id
         return (0.0, ["missing inferred column"]) if calls[-1] else (1.0, ["full_trace_ok"])
 
