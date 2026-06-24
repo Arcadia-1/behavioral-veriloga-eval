@@ -1,0 +1,32 @@
+{
+  "task": "029-dwa-dem-encoder",
+  "form": "dut",
+  "status": "v3_candidate",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/dwa_ptr_gen.va",
+      "starter/v2b_4b.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_dwa_ptr_gen_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/dwa_ptr_gen.va",
+      "solution/v2b_4b.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Run v3-layout visible smoke in an EVAS-capable environment.",
+    "Run v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

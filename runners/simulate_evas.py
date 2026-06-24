@@ -223,6 +223,8 @@ def copy_inputs(
     tb_path: Path,
     *,
     target_filenames: Iterable[str] = (),
+    primary_target_filename: str | None = None,
+    companion_search_dirs: Iterable[Path] = (),
 ) -> tuple[Path, Path]:
     example_dir = tb_path.parent
     for src in example_dir.iterdir():
@@ -246,7 +248,19 @@ def copy_inputs(
     # include-name mismatch.
     for target_name in target_filenames:
         target_path = run_dir / target_name
-        if target_path.name != dut_path.name:
+        if target_path.exists() or target_path.name == dut_path.name:
+            continue
+        if primary_target_filename is not None and target_name == primary_target_filename:
+            shutil.copy2(dut_path, target_path)
+            continue
+        copied_companion = False
+        for search_dir in companion_search_dirs:
+            companion_path = search_dir / target_name
+            if companion_path.exists() and companion_path.is_file():
+                shutil.copy2(companion_path, target_path)
+                copied_companion = True
+                break
+        if not copied_companion:
             shutil.copy2(dut_path, target_path)
 
     dut_dst = run_dir / dut_path.name
@@ -11264,6 +11278,12 @@ CHECKS["v3_022_bandgap_reference_macro_model"] = check_bandgap_reference_macro_m
 CHECKS["v3_023_calibration_deadband_controller"] = check_release_deadband_calibration
 CHECKS["v3_024_charge_pump_abstraction"] = check_release_charge_pump
 CHECKS["v3_025_clocked_adc_quantizer"] = check_flash_adc_3b
+CHECKS["v3_026_clocked_sample_and_hold"] = check_sample_hold
+CHECKS["v3_027_dac_mismatch_unit_weighting_model"] = check_release_dac_mismatch_unit_weighting
+CHECKS["v3_028_digital_phase_accumulator_with_modulo_wrap"] = check_phase_accumulator_timer_wrap
+CHECKS["v3_029_dwa_dem_encoder"] = check_dwa_dem_encoder_release
+CHECKS["v3_030_higher_order_filter"] = check_release_two_pole_filter
+CHECKS["v3_031_hysteresis_comparator"] = check_cmp_hysteresis
 
 
 RELEASE_FORM_CHECK_ALIASES = {
@@ -11588,11 +11608,14 @@ def run_case(
         timing_split["output_setup_s"] = time.perf_counter() - t0
 
         t0 = time.perf_counter()
+        task_artifact_targets = read_task_artifact_targets(task_dir)
         dut_dst, tb_dst = copy_inputs(
             run_dir,
             dut_path,
             tb_path,
-            target_filenames=read_task_artifact_targets(task_dir),
+            target_filenames=task_artifact_targets,
+            primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
+            companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
         )
         timing_split["copy_inputs_s"] = time.perf_counter() - t0
 

@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 55,
+  "task_count": 61,
   "partitions": {
-    "core_formal_candidate_dut": 25,
+    "core_formal_candidate_dut": 31,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 25 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 31 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -342,6 +342,85 @@
       "path": "benchmark-vabench-release-v3/tasks/025-clocked-adc-quantizer",
       "target_artifacts": [
         "flash_adc_3b.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_026_clocked_sample_and_hold",
+      "name": "026-clocked-sample-and-hold",
+      "title": "Clocked Sample And Hold",
+      "category": "sampling_analog_memory",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/026-clocked-sample-and-hold",
+      "target_artifacts": [
+        "sample_hold.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_027_dac_mismatch_unit_weighting_model",
+      "name": "027-dac-mismatch-unit-weighting-model",
+      "title": "DAC Mismatch Unit Weighting Model",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/027-dac-mismatch-unit-weighting-model",
+      "target_artifacts": [
+        "dac_mismatch_unit_weighting_model.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_028_digital_phase_accumulator_with_modulo_wrap",
+      "name": "028-digital-phase-accumulator-with-modulo-wrap",
+      "title": "Digital Phase Accumulator With Modulo Wrap",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/028-digital-phase-accumulator-with-modulo-wrap",
+      "target_artifacts": [
+        "phase_accumulator_timer_wrap_ref.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_029_dwa_dem_encoder",
+      "name": "029-dwa-dem-encoder",
+      "title": "DWA DEM Encoder",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/029-dwa-dem-encoder",
+      "target_artifacts": [
+        "dwa_ptr_gen.va",
+        "v2b_4b.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_030_higher_order_filter",
+      "name": "030-higher-order-filter",
+      "title": "Higher Order Filter",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/030-higher-order-filter",
+      "target_artifacts": [
+        "higher_order_filter.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_031_hysteresis_comparator",
+      "name": "031-hysteresis-comparator",
+      "title": "Hysteresis Comparator",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/031-hysteresis-comparator",
+      "target_artifacts": [
+        "cmp_hysteresis.va"
       ],
       "tier": "formal-candidate"
     },
