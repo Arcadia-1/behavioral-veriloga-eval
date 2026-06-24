@@ -1,9 +1,13 @@
-# Verilog-A Writer Skill
+---
+name: veriloga-writer
+description: Use when writing, generating, fixing, or reviewing Verilog-A behavioral DUT modules for analog/mixed-signal tasks, especially voltage-domain benchmark artifacts. Covers module structure, electrical ports, supply handling, state initialization, edge detection, transition outputs, bus discipline, and EVAS/Spectre portability. Do not use for running simulation; use evas-sim for visible/public EVAS runs.
+---
 
-Use this skill to write or fix Verilog-A behavioral DUT modules.
+# Verilog-A Writer
 
-Do not use this skill to run simulation. Visible/public EVAS simulation belongs
-to the separate `evas_sim` skill.
+Use this skill to write or fix Verilog-A behavioral DUT modules. Do not use it
+to run simulation; visible/public EVAS simulation belongs to the separate
+`evas-sim` skill.
 
 ## Scope
 
@@ -19,7 +23,7 @@ Preserve exactly:
 - public port names
 - requested parameters and observable names
 
-## Mandatory Verilog-A Rules
+## Mandatory Rules
 
 Start portable Verilog-A files with:
 
@@ -65,8 +69,6 @@ Avoid conditional analog contribution topology such as placing
 then contribute unconditionally.
 
 ## Ports And Buses
-
-Use one of these styles.
 
 ANSI-style, one port per line:
 
@@ -122,10 +124,9 @@ If a module mixes voltage-domain control and current-domain analog behavior,
 split responsibilities if the task allows it. Otherwise state the limitation
 clearly.
 
-## EVAS Compatibility Notes For Written Code
+## EVAS Compatibility Notes
 
-The EVAS simulator can check voltage-domain event-driven Verilog-A. To keep code
-EVAS-friendly:
+EVAS can check voltage-domain event-driven Verilog-A. To keep code EVAS-friendly:
 
 - Prefer `V(node) <+ transition(value, delay, rise)` style outputs.
 - Use explicit event-driven state updates.

@@ -1,23 +1,15 @@
-# EVAS Simulation Skill
+---
+name: evas-sim
+description: Use when working with visible/public EVAS simulation for an already-written Verilog-A voltage-domain model: checking EVAS compatibility, running evas-sim on a Spectre .scs testbench, reading tran.csv or strobe.txt outputs, debugging EVAS simulation setup, or deciding whether EVAS can simulate a model. Do not use as the primary Verilog-A authoring guide.
+---
+
+# EVAS Simulation
 
 Use this skill only for visible/public simulation of an already-written
-Verilog-A voltage-domain model.
+Verilog-A voltage-domain model. Do not use it to write the DUT itself; use the
+separate `veriloga-writer` skill for authoring.
 
-Do not use this skill for writing the Verilog-A DUT itself. Authoring rules
-belong to the separate `veriloga_writer` skill.
-
-## What EVAS Is
-
-EVAS is a lightweight event-driven simulator for voltage-mode behavioral
-Verilog-A. It is useful for modules such as comparators, DACs, SAR logic, DFFs,
-counters, clock/control logic, calibration logic, DWA controllers, and
-testbench helper modules.
-
-EVAS is not a SPICE-class analog solver. It does not solve KCL/KVL and it is
-not for transistor-level circuits, current-domain networks, AC/DC/noise
-analysis, or continuous-time analog operators.
-
-## Compatibility Check First
+## Compatibility Check
 
 Before running EVAS, inspect the `.va` file. Continue only if the model is
 voltage-domain behavioral.
@@ -92,8 +84,7 @@ evas run digital_basics --tb tb_not_gate.scs
 
 Output files:
 
-- `tran.csv`: primary time-domain waveform artifact. Treat this as the source
-  of truth.
+- `tran.csv`: primary time-domain waveform artifact.
 - `strobe.txt`: optional display/strobe log.
 - `tran.png`: optional plot.
 

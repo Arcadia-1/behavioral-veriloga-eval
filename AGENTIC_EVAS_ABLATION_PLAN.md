@@ -40,10 +40,10 @@ solutions.
 
 Use two separate skills:
 
-- `skills/veriloga_writer_skill.md`: how to write Verilog-A behavioral DUT
-  modules.
-- `skills/evas_sim_skill.md`: how to run EVAS visible/public simulation and
-  inspect outputs.
+- `skills/veriloga-writer/SKILL.md`: Anthropic/Codex-format skill for writing
+  Verilog-A behavioral DUT modules.
+- `skills/evas-sim/SKILL.md`: Anthropic/Codex-format skill for running EVAS
+  visible/public simulation and inspecting outputs.
 
 Keep them separate. The writer skill should not teach simulation workflow. The
 EVAS skill should not be treated as the main authoring guide.
