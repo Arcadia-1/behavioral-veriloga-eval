@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 49,
+  "task_count": 55,
   "partitions": {
-    "core_formal_candidate_dut": 19,
+    "core_formal_candidate_dut": 25,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 19 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 25 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -264,6 +264,84 @@
       "path": "benchmark-vabench-release-v3/tasks/019-unit-element-thermometer-dac",
       "target_artifacts": [
         "thermometer_dac_15seg.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_020_thermometer_code_decoder",
+      "name": "020-thermometer-code-decoder",
+      "title": "Thermometer Code Decoder",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/020-thermometer-code-decoder",
+      "target_artifacts": [
+        "thermometer_decoder_guarded.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_021_vco_phase_integrator",
+      "name": "021-vco-phase-integrator",
+      "title": "VCO Phase Integrator",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/021-vco-phase-integrator",
+      "target_artifacts": [
+        "vco_phase_integrator.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_022_bandgap_reference_macro_model",
+      "name": "022-bandgap-reference-macro-model",
+      "title": "Bandgap Reference Macro Model",
+      "category": "bias_reference_power_management",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/022-bandgap-reference-macro-model",
+      "target_artifacts": [
+        "bandgap_reference_macro_model.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_023_calibration_deadband_controller",
+      "name": "023-calibration-deadband-controller",
+      "title": "Calibration Deadband Controller",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/023-calibration-deadband-controller",
+      "target_artifacts": [
+        "calibration_deadband_controller.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_024_charge_pump_abstraction",
+      "name": "024-charge-pump-abstraction",
+      "title": "Charge Pump Abstraction",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/024-charge-pump-abstraction",
+      "target_artifacts": [
+        "charge_pump_abstraction.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_025_clocked_adc_quantizer",
+      "name": "025-clocked-adc-quantizer",
+      "title": "Clocked ADC Quantizer",
+      "category": "data_converter",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/025-clocked-adc-quantizer",
+      "target_artifacts": [
+        "flash_adc_3b.va"
       ],
       "tier": "formal-candidate"
     },

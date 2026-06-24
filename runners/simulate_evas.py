@@ -11258,6 +11258,12 @@ CHECKS["v3_016_binary_weighted_voltage_dac"] = check_simple_binary_dac_4b
 CHECKS["v3_017_slew_rate_limiter"] = check_vbm1_slew_rate_limiter
 CHECKS["v3_018_strongarm_style_latch_comparator"] = check_release_strongarm_latch_comparator
 CHECKS["v3_019_unit_element_thermometer_dac"] = check_vbm1_thermometer_dac_15seg
+CHECKS["v3_020_thermometer_code_decoder"] = check_vbm1_thermometer_decoder_guarded
+CHECKS["v3_021_vco_phase_integrator"] = check_vbm1_vco_phase_integrator
+CHECKS["v3_022_bandgap_reference_macro_model"] = check_bandgap_reference_macro_model
+CHECKS["v3_023_calibration_deadband_controller"] = check_release_deadband_calibration
+CHECKS["v3_024_charge_pump_abstraction"] = check_release_charge_pump
+CHECKS["v3_025_clocked_adc_quantizer"] = check_flash_adc_3b
 
 
 RELEASE_FORM_CHECK_ALIASES = {
