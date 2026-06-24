@@ -7,7 +7,7 @@ description: Use when working with visible/public EVAS simulation for an already
 
 Use this skill only for visible/public simulation of an already-written
 Verilog-A voltage-domain model. Do not use it to write the DUT itself; use the
-separate `veriloga-writer` skill for authoring.
+separate `veriloga` skill for authoring.
 
 ## Compatibility Check
 

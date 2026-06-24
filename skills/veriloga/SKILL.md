@@ -1,12 +1,12 @@
 ---
-name: veriloga-writer
-description: Use when writing, generating, fixing, or reviewing Verilog-A behavioral DUT modules for analog/mixed-signal tasks, especially voltage-domain benchmark artifacts. Covers module structure, electrical ports, supply handling, state initialization, edge detection, transition outputs, bus discipline, and EVAS/Spectre portability. Do not use for running simulation; use evas-sim for visible/public EVAS runs.
+name: veriloga
+description: Use when writing, generating, fixing, or reviewing Verilog-A behavioral modules for analog/mixed-signal tasks, especially benchmark DUT artifacts. Covers module structure, electrical ports, supply handling, state initialization, edge detection, transition outputs, bus discipline, and EVAS/Spectre portability. Do not use for running simulation; use evas-sim for visible/public EVAS runs.
 ---
 
-# Verilog-A Writer
+# Verilog-A
 
-Use this skill to write or fix Verilog-A behavioral DUT modules. Do not use it
-to run simulation; visible/public EVAS simulation belongs to the separate
+Use this skill to write or fix Verilog-A behavioral modules. Do not use it to
+run simulation; visible/public EVAS simulation belongs to the separate
 `evas-sim` skill.
 
 ## Scope

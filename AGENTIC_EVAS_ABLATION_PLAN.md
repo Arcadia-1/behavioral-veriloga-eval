@@ -40,7 +40,7 @@ solutions.
 
 Use two separate skills:
 
-- `skills/veriloga-writer/SKILL.md`: Anthropic/Codex-format skill for writing
+- `skills/veriloga/SKILL.md`: Anthropic/Codex-format skill for writing
   Verilog-A behavioral DUT modules.
 - `skills/evas-sim/SKILL.md`: Anthropic/Codex-format skill for running EVAS
   visible/public simulation and inspecting outputs.
