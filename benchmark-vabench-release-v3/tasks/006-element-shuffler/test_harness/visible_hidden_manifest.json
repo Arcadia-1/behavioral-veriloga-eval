@@ -1,7 +1,7 @@
 {
   "task": "006-element-shuffler",
   "form": "dut",
-  "status": "formal_candidate_pending_runner_checker_alignment",
+  "status": "formal_candidate",
   "visible": {
     "instruction": "instruction.md",
     "starter_files": [
@@ -22,8 +22,8 @@
     ],
     "negative_variants": "negative_variants"
   },
-  "promotion_blockers": [
-    "Align or add the runner checker to the sequence documented in checks.yaml.",
-    "Run v3-layout hidden gold smoke and negative recertification after checker alignment."
-  ]
+  "certification": {
+    "status": "evas_certified",
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  }
 }

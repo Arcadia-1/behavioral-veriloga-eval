@@ -18,5 +18,9 @@
     "test_visible/visible.scs",
     "test_visible/tests/tb_visible_smoke.scs",
     "test_visible/tests/run_visible_smoke.py"
-  ]
+  ],
+  "certification": {
+    "status": "evas_certified",
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  }
 }

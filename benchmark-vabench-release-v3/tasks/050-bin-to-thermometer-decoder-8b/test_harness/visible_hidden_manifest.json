@@ -23,7 +23,8 @@
     ],
     "negative_variants": "negative_variants"
   },
-  "promotion_blockers": [
-    "Run v3-layout gold smoke and negative recertification before release promotion."
-  ]
+  "certification": {
+    "status": "evas_certified",
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  }
 }

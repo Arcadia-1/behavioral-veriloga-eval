@@ -1,7 +1,7 @@
 version: 2
 task_id: element_shuffler
 backend: evas
-status: formal_candidate_pending_runner_checker_alignment
+status: formal_candidate
 checker: fixed_time_onehot_sequence
 required_columns:
   - time

@@ -23,8 +23,8 @@
     ],
     "negative_variants": "negative_variants"
   },
-  "promotion_blockers": [
-    "Generic staging checker only; add task-specific checker before core release.",
-    "Rerun v3-layout hidden gold smoke and negative recertification before formal release."
-  ]
+  "certification": {
+    "status": "evas_certified",
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  }
 }

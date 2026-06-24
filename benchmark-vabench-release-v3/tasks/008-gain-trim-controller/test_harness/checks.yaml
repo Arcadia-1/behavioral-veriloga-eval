@@ -1,7 +1,7 @@
 version: 2
 task_id: v3_008_gain_trim_controller
 backend: evas
-status: formal_candidate_pending_runner_checker_mapping
+status: formal_candidate
 checker: main120_stable_checks.check_gain_trim_controller
 checker_name: check_vbm1_gain_trim_controller
 required_columns:

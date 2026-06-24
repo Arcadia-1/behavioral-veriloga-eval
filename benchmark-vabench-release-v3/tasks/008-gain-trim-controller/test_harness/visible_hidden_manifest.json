@@ -1,7 +1,7 @@
 {
   "task": "008-gain-trim-controller",
   "form": "dut",
-  "status": "formal_candidate_pending_runner_checker_mapping",
+  "status": "formal_candidate",
   "visible": {
     "instruction": "instruction.md",
     "starter_files": [
@@ -22,10 +22,8 @@
     ],
     "negative_variants": "negative_variants"
   },
-  "promotion_blockers": [
-    "Add CHECKS[\"v3_008_gain_trim_controller\"] = check_vbm1_gain_trim_controller in the runner.",
-    "Run v3-layout visible smoke in an EVAS-capable environment.",
-    "Run v3-layout hidden gold smoke and negative recertification before formal release.",
-    "Run Spectre/Spectre-AX parity before paper-facing certification."
-  ]
+  "certification": {
+    "status": "evas_certified",
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  }
 }
