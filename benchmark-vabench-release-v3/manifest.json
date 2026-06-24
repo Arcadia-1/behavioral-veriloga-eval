@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 73,
+  "task_count": 79,
   "partitions": {
-    "core_formal_candidate_dut": 43,
+    "core_formal_candidate_dut": 49,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 43 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 49 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -578,6 +578,84 @@
       "path": "benchmark-vabench-release-v3/tasks/043-rf-mixer-downconverter-macro",
       "target_artifacts": [
         "rf_mixer_downconverter_macro.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_044_sample_and_hold_with_droop_leakage",
+      "name": "044-sample-and-hold-with-droop-leakage",
+      "title": "Sample And Hold With Droop Leakage",
+      "category": "sampling_analog_memory",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/044-sample-and-hold-with-droop-leakage",
+      "target_artifacts": [
+        "leaky_hold.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_045_soft_hysteretic_limiter",
+      "name": "045-soft-hysteretic-limiter",
+      "title": "Soft Hysteretic Limiter",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/045-soft-hysteretic-limiter",
+      "target_artifacts": [
+        "soft_hysteretic_limiter.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_046_successive_approximation_calibration_search_fsm",
+      "name": "046-successive-approximation-calibration-search-fsm",
+      "title": "Successive Approximation Calibration Search Fsm",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/046-successive-approximation-calibration-search-fsm",
+      "target_artifacts": [
+        "successive_approximation_calibration_search_fsm.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_047_threshold_comparator",
+      "name": "047-threshold-comparator",
+      "title": "Threshold Comparator",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/047-threshold-comparator",
+      "target_artifacts": [
+        "comparator.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_048_uvlo_brownout_detector",
+      "name": "048-uvlo-brownout-detector",
+      "title": "UVLO Brownout Detector",
+      "category": "bias_reference_power_management",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/048-uvlo-brownout-detector",
+      "target_artifacts": [
+        "uvlo_brownout_detector.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_049_window_comparator_detector",
+      "name": "049-window-comparator-detector",
+      "title": "Window Comparator Detector",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/049-window-comparator-detector",
+      "target_artifacts": [
+        "window_comparator_ref.va"
       ],
       "tier": "formal-candidate"
     },

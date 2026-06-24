@@ -11296,6 +11296,12 @@ CHECKS["v3_040_programmable_gain_amplifier"] = check_programmable_gain_amplifier
 CHECKS["v3_041_propagation_delay_comparator"] = check_cmp_delay
 CHECKS["v3_042_ptat_ctat_reference_generator"] = check_ptat_ctat_reference_generator
 CHECKS["v3_043_rf_mixer_downconverter_macro"] = check_rf_mixer_downconverter_macro
+CHECKS["v3_044_sample_and_hold_with_droop_leakage"] = check_release_vin_sampled_droop_hold
+CHECKS["v3_045_soft_hysteretic_limiter"] = check_release_soft_hysteretic_limiter
+CHECKS["v3_046_successive_approximation_calibration_search_fsm"] = check_release_sar_calibration_fsm
+CHECKS["v3_047_threshold_comparator"] = check_release_threshold_comparator
+CHECKS["v3_048_uvlo_brownout_detector"] = check_uvlo_brownout_detector
+CHECKS["v3_049_window_comparator_detector"] = check_true_window_comparator
 
 
 RELEASE_FORM_CHECK_ALIASES = {
