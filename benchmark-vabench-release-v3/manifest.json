@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 67,
+  "task_count": 73,
   "partitions": {
-    "core_formal_candidate_dut": 37,
+    "core_formal_candidate_dut": 43,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 37 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 43 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -499,6 +499,85 @@
       "path": "benchmark-vabench-release-v3/tasks/037-pa-compression-macro",
       "target_artifacts": [
         "pa_compression_macro.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_038_power_on_reset_detector",
+      "name": "038-power-on-reset-detector",
+      "title": "Power On Reset Detector",
+      "category": "bias_reference_power_management",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/038-power-on-reset-detector",
+      "target_artifacts": [
+        "power_on_reset_detector.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_039_precision_rectifier_envelope_detector",
+      "name": "039-precision-rectifier-envelope-detector",
+      "title": "Precision Rectifier Envelope Detector",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/039-precision-rectifier-envelope-detector",
+      "target_artifacts": [
+        "precision_rectifier_envelope_detector.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_040_programmable_gain_amplifier",
+      "name": "040-programmable-gain-amplifier",
+      "title": "Programmable Gain Amplifier",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/040-programmable-gain-amplifier",
+      "target_artifacts": [
+        "programmable_gain_amplifier.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_041_propagation_delay_comparator",
+      "name": "041-propagation-delay-comparator",
+      "title": "Propagation Delay Comparator",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/041-propagation-delay-comparator",
+      "target_artifacts": [
+        "cmp_delay.va",
+        "edge_interval_timer.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_042_ptat_ctat_reference_generator",
+      "name": "042-ptat-ctat-reference-generator",
+      "title": "PTAT CTAT Reference Generator",
+      "category": "bias_reference_power_management",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/042-ptat-ctat-reference-generator",
+      "target_artifacts": [
+        "ptat_ctat_reference_generator.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_043_rf_mixer_downconverter_macro",
+      "name": "043-rf-mixer-downconverter-macro",
+      "title": "RF Mixer Downconverter Macro",
+      "category": "rf_afe_behavioral_macromodels",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/043-rf-mixer-downconverter-macro",
+      "target_artifacts": [
+        "rf_mixer_downconverter_macro.va"
       ],
       "tier": "formal-candidate"
     },

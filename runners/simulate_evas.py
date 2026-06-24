@@ -11290,6 +11290,12 @@ CHECKS["v3_034_lna_gain_compression_macro"] = check_lna_gain_compression_macro
 CHECKS["v3_035_log_rssi_power_detector"] = check_log_rssi_power_detector
 CHECKS["v3_036_loop_filter_abstraction"] = check_release_loop_filter
 CHECKS["v3_037_pa_compression_macro"] = check_pa_compression_macro
+CHECKS["v3_038_power_on_reset_detector"] = check_power_on_reset_detector
+CHECKS["v3_039_precision_rectifier_envelope_detector"] = check_precision_rectifier_envelope_detector
+CHECKS["v3_040_programmable_gain_amplifier"] = check_programmable_gain_amplifier
+CHECKS["v3_041_propagation_delay_comparator"] = check_cmp_delay
+CHECKS["v3_042_ptat_ctat_reference_generator"] = check_ptat_ctat_reference_generator
+CHECKS["v3_043_rf_mixer_downconverter_macro"] = check_rf_mixer_downconverter_macro
 
 
 RELEASE_FORM_CHECK_ALIASES = {
