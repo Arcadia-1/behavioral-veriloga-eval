@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 61,
+  "task_count": 67,
   "partitions": {
-    "core_formal_candidate_dut": 31,
+    "core_formal_candidate_dut": 37,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 31 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 37 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -421,6 +421,84 @@
       "path": "benchmark-vabench-release-v3/tasks/031-hysteresis-comparator",
       "target_artifacts": [
         "cmp_hysteresis.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_032_ldo_regulator_macro_model",
+      "name": "032-ldo-regulator-macro-model",
+      "title": "LDO Regulator Macro Model",
+      "category": "bias_reference_power_management",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/032-ldo-regulator-macro-model",
+      "target_artifacts": [
+        "ldo_regulator_macro_model.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_033_limiting_amplifier_frontend",
+      "name": "033-limiting-amplifier-frontend",
+      "title": "Limiting Amplifier Frontend",
+      "category": "rf_afe_behavioral_macromodels",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/033-limiting-amplifier-frontend",
+      "target_artifacts": [
+        "limiting_amplifier_frontend.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_034_lna_gain_compression_macro",
+      "name": "034-lna-gain-compression-macro",
+      "title": "LNA Gain Compression Macro",
+      "category": "rf_afe_behavioral_macromodels",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/034-lna-gain-compression-macro",
+      "target_artifacts": [
+        "lna_gain_compression_macro.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_035_log_rssi_power_detector",
+      "name": "035-log-rssi-power-detector",
+      "title": "Log RSSI Power Detector",
+      "category": "rf_afe_behavioral_macromodels",
+      "level": "L1",
+      "difficulty": "D3",
+      "path": "benchmark-vabench-release-v3/tasks/035-log-rssi-power-detector",
+      "target_artifacts": [
+        "log_rssi_power_detector.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_036_loop_filter_abstraction",
+      "name": "036-loop-filter-abstraction",
+      "title": "Loop Filter Abstraction",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/036-loop-filter-abstraction",
+      "target_artifacts": [
+        "loop_filter_abstraction.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_037_pa_compression_macro",
+      "name": "037-pa-compression-macro",
+      "title": "PA Compression Macro",
+      "category": "rf_afe_behavioral_macromodels",
+      "level": "L1",
+      "difficulty": "D3",
+      "path": "benchmark-vabench-release-v3/tasks/037-pa-compression-macro",
+      "target_artifacts": [
+        "pa_compression_macro.va"
       ],
       "tier": "formal-candidate"
     },

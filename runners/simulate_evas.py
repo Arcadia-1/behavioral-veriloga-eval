@@ -11284,6 +11284,12 @@ CHECKS["v3_028_digital_phase_accumulator_with_modulo_wrap"] = check_phase_accumu
 CHECKS["v3_029_dwa_dem_encoder"] = check_dwa_dem_encoder_release
 CHECKS["v3_030_higher_order_filter"] = check_release_two_pole_filter
 CHECKS["v3_031_hysteresis_comparator"] = check_cmp_hysteresis
+CHECKS["v3_032_ldo_regulator_macro_model"] = check_ldo_regulator_macro_model
+CHECKS["v3_033_limiting_amplifier_frontend"] = check_limiting_amplifier_frontend
+CHECKS["v3_034_lna_gain_compression_macro"] = check_lna_gain_compression_macro
+CHECKS["v3_035_log_rssi_power_detector"] = check_log_rssi_power_detector
+CHECKS["v3_036_loop_filter_abstraction"] = check_release_loop_filter
+CHECKS["v3_037_pa_compression_macro"] = check_pa_compression_macro
 
 
 RELEASE_FORM_CHECK_ALIASES = {

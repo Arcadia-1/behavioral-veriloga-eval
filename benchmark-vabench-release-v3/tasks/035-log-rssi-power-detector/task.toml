@@ -1,0 +1,20 @@
+id = "v3_035_log_rssi_power_detector"
+name = "035-log-rssi-power-detector"
+title = "Log RSSI Power Detector"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "rf_afe_behavioral_macromodels"
+level = "L1"
+difficulty = "D3"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["log_rssi_power_detector.va"]
