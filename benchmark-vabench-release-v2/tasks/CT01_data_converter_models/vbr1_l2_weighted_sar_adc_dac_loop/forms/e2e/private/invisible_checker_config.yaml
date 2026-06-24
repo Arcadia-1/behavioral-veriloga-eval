@@ -1,0 +1,56 @@
+schema_version: "vabench-release-v2-checks"
+task_id: "vbr1_l2_weighted_sar_adc_dac_loop:e2e"
+checker:
+  task_id: "vbr1_l2_weighted_sar_adc_dac_loop"
+  function: "check_sar_adc_dac_weighted_8b"
+  source: "runners/simulate_evas.py"
+syntax:
+  policy: "behavior_first"
+  must_include: []
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+  notes: "Do not require private variable names, exact state-machine structure, or a fixed implementation template. Compile and behavior checks decide correctness."
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "composed_flow_e2e"
+  strong_benchmark_claim: true
+  checks:
+    - "sar_bit_trial_sequence_visible"
+    - "trial_dac_matches_trial_code_monitor"
+    - "comparator_decision_matches_sample_and_trial"
+    - "sar_adc_code_range_sufficient"
+    - "sar_adc_unique_code_count"
+    - "sar_code_matches_sampled_input"
+    - "dac_output_matches_weighted_code"
+    - "code_monotonic_with_sampled_input"
+    - "dac_output_in_range"
+  public_observables:
+    - "vin"
+    - "vin_sh"
+    - "clks"
+    - "rst_n"
+    - "vout"
+    - "dout_7"
+    - "dout_6"
+    - "dout_5"
+    - "dout_4"
+    - "dout_3"
+    - "dout_2"
+    - "dout_1"
+    - "dout_0"
+    - "bit_index"
+    - "trial_code_mon"
+    - "trial_vdac"
+    - "cmp_decision"
+    - "conv_done"
+    - "vin_sample"
+  public_behavior_envelope: "The public spec specifies a 20 us full-swing sine transient, visible sample/hold output, MSB-to-LSB SAR trial monitors, comparator/trial-DAC consistency, broad 8-bit code coverage, monotonic code relation to sampled input, and weighted DAC reconstruction in the 0 V to 0.9 V range."
+  private_threshold_policy: "Internal checker uses broad coverage, quantization, DAC reconstruction, comparator agreement, and monotonicity thresholds; exact numeric thresholds are not agent-visible."
+parity:
+  required: true
+  tolerance_notes: "Use completed-conversion rows and public monitor consistency checks."

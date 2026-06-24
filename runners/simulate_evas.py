@@ -62,6 +62,10 @@ def read_meta(task_dir: Path) -> dict:
     return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
 
 
+def check_v2_configured_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_vbm1_first_order_lowpass(rows)
+
+
 def copy_inputs(run_dir: Path, dut_path: Path, tb_path: Path) -> tuple[Path, Path]:
     example_dir = tb_path.parent
     for src in example_dir.iterdir():

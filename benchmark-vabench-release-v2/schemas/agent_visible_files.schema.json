@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench Release v2 Agent Visible Files Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "agent_prompt",
+    "agent_visible_spec",
+    "agent_visible",
+    "agent_hidden",
+    "render_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vabench-release-v2"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_prompt": {
+      "type": "string",
+      "pattern": "agent_prompt\\.md$"
+    },
+    "agent_visible_spec": {
+      "type": "string",
+      "pattern": "public/agent_visible_spec\\.md$"
+    },
+    "agent_visible": {
+      "type": "object",
+      "required": [
+        "prompt",
+        "support_files",
+        "target_files"
+      ]
+    },
+    "agent_hidden": {
+      "type": "array"
+    },
+    "render_policy": {
+      "type": "object",
+      "required": [
+        "render_agent_visible_contract_only",
+        "support_files_must_live_under_public_support",
+        "never_render_task_release_card",
+        "never_render_checker_files",
+        "never_render_private_directory",
+        "never_render_gold_fixed_artifacts"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

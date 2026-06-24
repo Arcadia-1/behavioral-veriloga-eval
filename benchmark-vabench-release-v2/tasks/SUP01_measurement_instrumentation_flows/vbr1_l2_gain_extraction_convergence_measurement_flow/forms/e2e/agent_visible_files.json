@@ -1,0 +1,139 @@
+{
+  "schema_version": "vabench-release-v2",
+  "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+  "agent_prompt": "agent_prompt.md",
+  "agent_visible_spec": "public/agent_visible_spec.md",
+  "agent_visible": {
+    "prompt": "agent_prompt.md",
+    "support_files": [],
+    "target_files": [
+      "dither_adder.va",
+      "gain_amp_fixed.va",
+      "lfsr.va",
+      "tb_gain_extraction_ref.scs",
+      "vin_src.va"
+    ],
+    "spec": "public/agent_visible_spec.md"
+  },
+  "agent_hidden": [
+    {
+      "path": "task_release_card.json",
+      "reason": "private task metadata and provenance"
+    },
+    {
+      "path": "private/invisible_checker_config.yaml",
+      "reason": "agent-invisible checker IDs, thresholds, sample windows, and expected outcomes"
+    },
+    {
+      "path": "private/invisible_spec_checker_map.json",
+      "reason": "agent-invisible public-spec to private-checker map and leak audit terms"
+    },
+    {
+      "path": "private/gold/dither_adder.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/gain_amp_fixed.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/lfsr.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/tb_gain_extraction_ref.scs",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/vin_src.va",
+      "reason": "gold answer"
+    }
+  ],
+  "render_policy": {
+    "render_agent_visible_contract_only": true,
+    "render_agent_prompt_only": false,
+    "render_support_files_only_if_listed": true,
+    "support_files_must_live_under_public_support": true,
+    "never_render_checker_files": true,
+    "never_render_private_directory": true,
+    "never_render_gold_fixed_artifacts": true,
+    "generic_runner_rules_allowed": true,
+    "never_render_task_release_card": true
+  },
+  "leak_audit": {
+    "forbidden_phrases": [
+      "gain_amplification_present",
+      "differential_gain_above_threshold",
+      "check_gain_extraction",
+      "std(vamp_p - vamp_n) / std(vinp - vinn) > 4.0",
+      "gain > 4.0",
+      "diff_gain",
+      "std_out > std_in",
+      "private_threshold_policy",
+      "gold_expectation"
+    ],
+    "allowed_public_concepts": [
+      "the support-flow nature is visible through public/agent_visible_spec.md",
+      "module interfaces and public observables are visible through public/agent_visible_spec.md",
+      "public testbench parameters are visible through public/agent_visible_spec.md",
+      "generic voltage-domain Verilog-A constraints are visible"
+    ]
+  },
+  "contract_audit": {
+    "required_public_anchors": [
+      {
+        "id": "target_files",
+        "all_of": [
+          "dither_adder.va",
+          "gain_amp_fixed.va",
+          "lfsr.va",
+          "tb_gain_extraction_ref.scs",
+          "vin_src.va"
+        ]
+      },
+      {
+        "id": "module_interfaces",
+        "all_of": [
+          "vin_src",
+          "lfsr",
+          "dither_adder",
+          "gain_amp_fixed"
+        ]
+      },
+      {
+        "id": "testbench_parameters",
+        "all_of": [
+          "ACTUAL_GAIN=8.64",
+          "DITHER_AMP=0.014063",
+          "tran tran stop=20u maxstep=8n"
+        ]
+      },
+      {
+        "id": "public_observables",
+        "all_of": [
+          "vinp",
+          "vinn",
+          "vamp_p",
+          "vamp_n"
+        ]
+      },
+      {
+        "id": "gain_relation",
+        "all_of": [
+          "differential input",
+          "repeatable dither",
+          "fixed-gain differential output",
+          "clearly larger"
+        ]
+      },
+      {
+        "id": "score_boundary",
+        "all_of": [
+          "support flow",
+          "reported separately",
+          "core"
+        ]
+      }
+    ]
+  }
+}

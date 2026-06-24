@@ -1,0 +1,124 @@
+{
+  "schema_version": "vabench-release-v2",
+  "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+  "agent_prompt": "agent_prompt.md",
+  "agent_visible_spec": "public/agent_visible_spec.md",
+  "agent_visible": {
+    "prompt": "agent_prompt.md",
+    "support_files": [
+      {
+        "alias": "tb_sample_hold_aperture_ref.scs",
+        "source_path": "public/support/tb_sample_hold_aperture_ref.scs",
+        "render": true,
+        "writable_by_agent": false
+      }
+    ],
+    "target_files": [
+      "sample_hold_aperture_ref.va"
+    ],
+    "spec": "public/agent_visible_spec.md"
+  },
+  "agent_hidden": [
+    {
+      "path": "task_release_card.json",
+      "reason": "private task metadata and provenance"
+    },
+    {
+      "path": "private/invisible_checker_config.yaml",
+      "reason": "agent-invisible checker IDs, thresholds, sample windows, and expected outcomes"
+    },
+    {
+      "path": "private/invisible_spec_checker_map.json",
+      "reason": "agent-invisible public-spec to private-checker map and leak audit terms"
+    },
+    {
+      "path": "private/gold/sample_hold_aperture_ref.va",
+      "reason": "gold answer"
+    }
+  ],
+  "render_policy": {
+    "render_agent_visible_contract_only": true,
+    "render_agent_prompt_only": false,
+    "render_support_files_only_if_listed": true,
+    "support_files_must_live_under_public_support": true,
+    "never_render_checker_files": true,
+    "never_render_private_directory": true,
+    "never_render_gold_fixed_artifacts": true,
+    "generic_runner_rules_allowed": true,
+    "never_render_task_release_card": true
+  },
+  "leak_audit": {
+    "forbidden_phrases": [
+      "sampled_values_match_aperture_delayed_input",
+      "held_output_remains_between_samples",
+      "check_track_hold_aperture",
+      "vbm1_track_hold_aperture",
+      "edge_time + 0.20e-9",
+      "edge_time + 1.00e-9",
+      "mismatches == 0",
+      "span > 0.40",
+      "abs(got - want) > 0.035",
+      "private_sample_policy",
+      "gold_expectation"
+    ],
+    "allowed_public_concepts": [
+      "the public testbench is visible for this DUT-generation task",
+      "module interface and observable behavior are visible through public/agent_visible_spec.md",
+      "200 ps aperture delay is part of the public functional specification in public/agent_visible_spec.md",
+      "generic voltage-domain Verilog-A constraints are visible"
+    ]
+  },
+  "contract_audit": {
+    "required_public_anchors": [
+      {
+        "id": "module_interface",
+        "all_of": [
+          "sample_hold_aperture_ref",
+          "VDD",
+          "VSS",
+          "clk",
+          "vin",
+          "vout"
+        ]
+      },
+      {
+        "id": "aperture_delay",
+        "all_of": [
+          "200 ps",
+          "aperture delay"
+        ]
+      },
+      {
+        "id": "rising_clock_sample",
+        "all_of": [
+          "rising",
+          "clk",
+          "schedule"
+        ]
+      },
+      {
+        "id": "delayed_capture",
+        "all_of": [
+          "delayed aperture",
+          "capture",
+          "current value"
+        ]
+      },
+      {
+        "id": "hold_between_samples",
+        "all_of": [
+          "hold",
+          "until the next delayed sample"
+        ]
+      },
+      {
+        "id": "voltage_transition",
+        "all_of": [
+          "voltage-domain",
+          "smooth",
+          "transitions"
+        ]
+      }
+    ]
+  }
+}

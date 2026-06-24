@@ -1,0 +1,107 @@
+{
+  "id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+  "benchmark": "vabench-release-v2",
+  "schema_version": "vabench-release-v2",
+  "release_entry_id": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+  "level": "L2",
+  "track": "support",
+  "difficulty": "D3",
+  "category": "Measurement Instrumentation Flows",
+  "base_function": "Dithered differential gain extraction flow",
+  "family": "end-to-end",
+  "domain": "voltage",
+  "score_surface": "support-flow",
+  "evaluation_protocol": {
+    "primary_track": "one_shot",
+    "feedback_track": "deferred",
+    "one_shot_prompt_contract": "The public spec exposes the support-flow boundary, module interfaces, public testbench contract, public observables, and broad gain-relation behavior without revealing checker internals or private thresholds.",
+    "feedback_track_note": "A future feedback/debug track should reuse task assets only under a separate runner protocol and separate pass@K score table."
+  },
+  "artifacts": {
+    "agent_prompt": "agent_prompt.md",
+    "agent_visible_spec": "public/agent_visible_spec.md",
+    "agent_visible_files": "agent_visible_files.json",
+    "public_support": [],
+    "invisible_checker_config": "private/invisible_checker_config.yaml",
+    "private_gold": [
+      "private/gold/dither_adder.va",
+      "private/gold/gain_amp_fixed.va",
+      "private/gold/lfsr.va",
+      "private/gold/tb_gain_extraction_ref.scs",
+      "private/gold/vin_src.va"
+    ],
+    "invisible_spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "migration": {
+    "source_benchmark": "vabench-release-v1",
+    "source_task": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
+    "source_v1_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/evidence.json",
+    "runtime_depends_on_v1": false,
+    "status": "prompt_boundary_cleaned",
+    "notes": [
+      "Public prompt is now a thin task wrapper; public/agent_visible_spec.md is the shared agent-visible behavior contract.",
+      "Public spec removes v1 checker IDs, exact statistical checker formulae, and stale gain_estimator/tran.csv artifact references.",
+      "This row remains track=support and benchmark_score_candidate=false to avoid mixing support-flow evidence with core circuit score claims.",
+      "Private checker policy is behavior-first; it does not require a gain-estimator module or exact random sequence."
+    ]
+  },
+  "certification": {
+    "prompt_boundary": "pass",
+    "static": "inherited_from_v1_pending_fresh_v2_rerun",
+    "evas": "inherited_from_v1_pending_fresh_v2_rerun",
+    "spectre": "inherited_from_v1_pending_fresh_v2_rerun",
+    "fresh_v2_evidence": "pending"
+  },
+  "counts": {
+    "benchmark_score_candidate": false,
+    "final_v2_score_enabled": false,
+    "requires_fresh_v2_dual_certification": true
+  },
+  "visibility": "internal_only",
+  "source_v1_task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+  "agent_visible": {
+    "source_of_truth": "agent_visible_files.json"
+  },
+  "private_evaluator_assets": {
+    "gold": [
+      "private/gold/dither_adder.va",
+      "private/gold/gain_amp_fixed.va",
+      "private/gold/lfsr.va",
+      "private/gold/tb_gain_extraction_ref.scs",
+      "private/gold/vin_src.va"
+    ],
+    "checker_config": "private/invisible_checker_config.yaml",
+    "spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "provenance": {
+    "source_v1_release_task": "benchmark-vabench-release-v1/tasks/SUP01_measurement_instrumentation_flows/vbr1_l2_gain_extraction_convergence_measurement_flow/forms/e2e/release_task.json",
+    "source_v1_dual_evidence": "benchmark-vabench-release-v1/evidence/dual/vbr1_l2_gain_extraction_convergence_measurement_flow/e2e/evidence.json",
+    "runtime_required": false
+  },
+  "private_diagnostics": {
+    "checker_family": "gain_extraction",
+    "private_threshold_policy": "Estimate input and output differential waveform variation from saved vinp/vinn/vamp_p/vamp_n and require private gain separation.",
+    "gold_expectation": "The private gold artifacts implement a clocked differential source, LFSR dither sign, dither adder, fixed-gain amplifier, and 20 us transient testbench."
+  },
+  "private_checker_contract": {
+    "policy": "behavior_first_support_flow",
+    "checker_ids": [
+      "gain_amplification_present",
+      "differential_gain_above_threshold"
+    ],
+    "public_behavior_envelope": "The public spec specifies a dithered differential input path and amplified output relation over many saved post-reset samples.",
+    "syntax_must_include": [
+      "@(cross(",
+      "transition("
+    ],
+    "syntax_must_not_include": [
+      "I(",
+      "ddt(",
+      "idt("
+    ],
+    "implementation_constraints": "No gain-estimator module, exact random sequence, or fixed implementation template is required by the v2 checker.",
+    "source_of_truth": "private/invisible_checker_config.yaml",
+    "spec_checker_map": "private/invisible_spec_checker_map.json"
+  },
+  "directive": "This release task card is private benchmark/evaluator metadata. Do not render it into agent prompts."
+}

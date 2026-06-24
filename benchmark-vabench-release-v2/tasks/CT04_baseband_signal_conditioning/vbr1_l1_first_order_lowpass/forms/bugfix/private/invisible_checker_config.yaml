@@ -1,0 +1,60 @@
+schema_version: "vabench-release-v2-checks"
+task_id: "vbr1_l1_first_order_lowpass:bugfix"
+checker:
+  task_id: "vbr1_l1_first_order_lowpass"
+  function: "check_v2_configured_first_order_lowpass"
+  source: "runners/simulate_evas.py"
+checker_parameters:
+  vin_pre_sample_ns: 10.0
+  vin_post_sample_ns: 30.0
+  vin_late_sample_ns: 150.0
+  vin_pre_max_v: 0.10
+  vin_post_min_v: 0.72
+  vin_late_min_v: 0.72
+  monotonic_tail_slack_v: 0.03
+  response_sample_1_min_v: 0.55
+  response_sample_2_min_v: 0.70
+  response_sample_3_min_v: 0.76
+  not_instant_sample_0_max_v: 0.45
+  bounded_start_ns: 22.0
+  bounded_min_v: -0.03
+  bounded_max_v: 0.88
+  sample_times_ns:
+    - 30
+    - 50
+    - 90
+    - 150
+syntax:
+  policy: "behavior_first"
+  must_include: []
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+    - "last_crossing("
+  notes: "Do not require private variable names, fixed coefficients, timer cadence, or a specific implementation template. Compile and behavior checks decide correctness."
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  checks:
+    - "input_step_exercised"
+    - "monotone_first_order_step_response"
+    - "lagged_response_not_passthrough"
+    - "late_output_settles_near_0p8v"
+    - "bounded_without_overshoot"
+  public_observables:
+    - "vin"
+    - "vout"
+  public_behavior_envelope: "The public spec specifies a 0 V to about 0.8 V step near 21 ns, a finite-bandwidth first-order response on the order of tens of nanoseconds, substantial progress within several tens of nanoseconds after the step, and settling close to 0.8 V by the end of the 160 ns transient."
+bugfix:
+  buggy_expected: "FAIL_SIM_CORRECTNESS"
+  fixed_expected: "PASS"
+  reconstruction_note: "Single-root-cause badcase: the low-pass update alpha is too small, making the step response too slow."
+  reconstruction_visibility: "private_provenance_only"
+parity:
+  required: true
+  tolerance_notes: "Samples are taken at safe windows away from the 21 ns input transition and timer boundaries."

@@ -1,0 +1,167 @@
+{
+  "schema_version": "vabench-release-v2",
+  "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+  "agent_prompt": "agent_prompt.md",
+  "agent_visible_spec": "public/agent_visible_spec.md",
+  "agent_visible": {
+    "prompt": "agent_prompt.md",
+    "support_files": [],
+    "target_files": [
+      "dac_weighted_8b.va",
+      "sar_adc_weighted_8b.va",
+      "sh_ideal.va",
+      "tb_sar_adc_dac_weighted_8b_ref.scs"
+    ],
+    "spec": "public/agent_visible_spec.md"
+  },
+  "agent_hidden": [
+    {
+      "path": "task_release_card.json",
+      "reason": "private task metadata and provenance"
+    },
+    {
+      "path": "private/invisible_checker_config.yaml",
+      "reason": "agent-invisible checker IDs, thresholds, sample windows, and expected outcomes"
+    },
+    {
+      "path": "private/invisible_spec_checker_map.json",
+      "reason": "agent-invisible public-spec to private-checker map and leak audit terms"
+    },
+    {
+      "path": "private/gold/dac_weighted_8b.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/sar_adc_weighted_8b.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/sh_ideal.va",
+      "reason": "gold answer"
+    },
+    {
+      "path": "private/gold/tb_sar_adc_dac_weighted_8b_ref.scs",
+      "reason": "gold answer"
+    }
+  ],
+  "render_policy": {
+    "render_agent_visible_contract_only": true,
+    "render_agent_prompt_only": false,
+    "render_support_files_only_if_listed": true,
+    "support_files_must_live_under_public_support": true,
+    "never_render_checker_files": true,
+    "never_render_private_directory": true,
+    "never_render_gold_fixed_artifacts": true,
+    "generic_runner_rules_allowed": true,
+    "never_render_task_release_card": true
+  },
+  "leak_audit": {
+    "forbidden_phrases": [
+      "sar_bit_trial_sequence_visible",
+      "trial_dac_matches_trial_code_monitor",
+      "comparator_decision_matches_sample_and_trial",
+      "sar_adc_code_range_sufficient",
+      "sar_adc_unique_code_count",
+      "sar_code_matches_sampled_input",
+      "dac_output_matches_weighted_code",
+      "code_monotonic_with_sampled_input",
+      "dac_output_in_range",
+      "check_sar_adc_dac_weighted_8b",
+      "unique_codes >= 48",
+      "code_min <= 8",
+      "code_max >= 247",
+      "avg_quant_err < 0.025",
+      "max_quant_err < 0.060",
+      "avg_dac_err < 0.020",
+      "cmp_frac < 0.94",
+      "too_few_completed_conversions",
+      "sar_trial_bits_not_visible",
+      "private_threshold_policy",
+      "gold_expectation"
+    ],
+    "allowed_public_concepts": [
+      "the full end-to-end interface and observables are visible through public/agent_visible_spec.md",
+      "the broad SAR ADC/DAC behavior envelope is visible through public/agent_visible_spec.md",
+      "the public transient stimulus contract is visible through public/agent_visible_spec.md",
+      "generic voltage-domain Verilog-A constraints are visible"
+    ]
+  },
+  "contract_audit": {
+    "required_public_anchors": [
+      {
+        "id": "target_files",
+        "all_of": [
+          "dac_weighted_8b.va",
+          "sar_adc_weighted_8b.va",
+          "sh_ideal.va",
+          "tb_sar_adc_dac_weighted_8b_ref.scs"
+        ]
+      },
+      {
+        "id": "sar_interface",
+        "all_of": [
+          "sar_adc_weighted_8b",
+          "DOUT",
+          "BIT_INDEX",
+          "TRIAL_CODE_MON",
+          "TRIAL_VDAC",
+          "CMP_DECISION",
+          "CONV_DONE",
+          "VIN_SAMPLE"
+        ]
+      },
+      {
+        "id": "testbench_stimulus",
+        "all_of": [
+          "50 MHz",
+          "20u",
+          "full-swing sine",
+          "rst_n"
+        ]
+      },
+      {
+        "id": "public_observables",
+        "all_of": [
+          "vin_sh",
+          "trial_code_mon",
+          "trial_vdac",
+          "cmp_decision",
+          "conv_done",
+          "vin_sample"
+        ]
+      },
+      {
+        "id": "composed_flow",
+        "all_of": [
+          "sample/hold",
+          "SAR conversion",
+          "weighted DAC"
+        ]
+      },
+      {
+        "id": "trial_sequence",
+        "all_of": [
+          "MSB-to-LSB",
+          "multiple clock edges",
+          "trial sequence"
+        ]
+      },
+      {
+        "id": "code_quality",
+        "all_of": [
+          "broad range",
+          "near both rails",
+          "monotonic"
+        ]
+      },
+      {
+        "id": "dac_range",
+        "all_of": [
+          "0 V",
+          "0.9 V",
+          "weighted DAC `vout`"
+        ]
+      }
+    ]
+  }
+}

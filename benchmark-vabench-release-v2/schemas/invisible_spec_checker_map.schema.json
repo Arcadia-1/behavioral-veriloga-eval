@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "vaBench Release v2 Invisible Spec Checker Map",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "source_checker",
+    "requirement_links",
+    "auditor"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vabench-release-v2-invisible-spec-checker-map"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_agent_visible_spec": {
+      "const": "public/agent_visible_spec.md"
+    },
+    "source_invisible_checker_config": {
+      "const": "private/invisible_checker_config.yaml"
+    },
+    "source_checker": {
+      "type": "object",
+      "required": [
+        "file",
+        "task_aliases"
+      ]
+    },
+    "requirement_links": {
+      "type": "array",
+      "minItems": 1
+    },
+    "auditor": {
+      "type": "object",
+      "required": [
+        "forbidden_public_terms"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
