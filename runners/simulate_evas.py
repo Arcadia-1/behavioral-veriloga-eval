@@ -59,11 +59,140 @@ from main120_stable_checks import (
 
 
 def read_meta(task_dir: Path) -> dict:
-    return json.loads((task_dir / "meta.json").read_text(encoding="utf-8"))
+    meta_path = task_dir / "meta.json"
+    if meta_path.exists():
+        return json.loads(meta_path.read_text(encoding="utf-8"))
+    release_task_path = task_dir / "task_release_card.json"
+    if not release_task_path.exists():
+        release_task_path = task_dir / "release_task.json"
+    if release_task_path.exists():
+        release_task = json.loads(release_task_path.read_text(encoding="utf-8"))
+        return {
+            "id": release_task.get("id"),
+            "task_id": release_task.get("id"),
+            "release_entry_id": release_task.get("release_entry_id"),
+            "form": release_task.get("family"),
+            "scoring": ["dut_compile", "tb_compile", "sim_correct"],
+        }
+    raise FileNotFoundError(f"missing meta.json, task_release_card.json, or release_task.json in {task_dir}")
 
 
-def check_v2_configured_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return check_vbm1_first_order_lowpass(rows)
+def _extract_yaml_list_after_key(text: str, key: str) -> list[str]:
+    lines = text.splitlines()
+    for line_index, line in enumerate(lines):
+        if line.strip() != f"{key}:":
+            continue
+        base_indent = len(line) - len(line.lstrip())
+        items: list[str] = []
+        for raw in lines[line_index + 1 :]:
+            stripped = raw.strip()
+            if not stripped:
+                continue
+            indent = len(raw) - len(raw.lstrip())
+            if indent <= base_indent and not stripped.startswith("- "):
+                break
+            if stripped.startswith("- "):
+                items.append(stripped[2:].strip().strip('"').strip("'"))
+        return items
+    return []
+
+
+def _extract_yaml_scalar_after_parent(text: str, parent: str, key: str) -> str | None:
+    lines = text.splitlines()
+    for line_index, line in enumerate(lines):
+        if line.strip() != f"{parent}:":
+            continue
+        base_indent = len(line) - len(line.lstrip())
+        for raw in lines[line_index + 1 :]:
+            stripped = raw.strip()
+            if not stripped:
+                continue
+            indent = len(raw) - len(raw.lstrip())
+            if indent <= base_indent:
+                break
+            prefix = f"{key}:"
+            if stripped.startswith(prefix):
+                return stripped[len(prefix):].strip().strip('"').strip("'")
+    return None
+
+
+def _extract_yaml_mapping_after_parent(text: str, parent: str) -> dict[str, str]:
+    lines = text.splitlines()
+    for line_index, line in enumerate(lines):
+        if line.strip() != f"{parent}:":
+            continue
+        base_indent = len(line) - len(line.lstrip())
+        mapping: dict[str, str] = {}
+        for raw in lines[line_index + 1 :]:
+            stripped = raw.strip()
+            if not stripped:
+                continue
+            indent = len(raw) - len(raw.lstrip())
+            if indent <= base_indent:
+                break
+            if stripped.startswith("- ") or ":" not in stripped:
+                continue
+            key, value = stripped.split(":", 1)
+            value = value.strip()
+            if value:
+                mapping[key.strip()] = value.strip('"').strip("'")
+        return mapping
+    return {}
+
+
+def _float_values(values: list[str]) -> list[float]:
+    parsed: list[float] = []
+    for value in values:
+        try:
+            parsed.append(float(value))
+        except ValueError:
+            continue
+    return parsed
+
+
+def load_v2_checks_config(task_dir: Path) -> dict[str, object]:
+    for checks_path in (
+        task_dir / "private" / "invisible_checker_config.yaml",
+        task_dir / "checks.yaml",
+        task_dir / "private" / "checks.yaml",
+    ):
+        if not checks_path.exists():
+            continue
+        checks_text = checks_path.read_text(encoding="utf-8")
+        if "vabench-release-v2-checks" not in checks_text:
+            continue
+        checker_parameters: dict[str, object] = _extract_yaml_mapping_after_parent(
+            checks_text,
+            "checker_parameters",
+        )
+        sample_times_ns = _float_values(_extract_yaml_list_after_key(checks_text, "sample_times_ns"))
+        if sample_times_ns:
+            checker_parameters["sample_times_ns"] = sample_times_ns
+        return {
+            "path": checks_path,
+            "checker_task_id": _extract_yaml_scalar_after_parent(checks_text, "checker", "task_id"),
+            "syntax_must_include": _extract_yaml_list_after_key(checks_text, "must_include"),
+            "syntax_must_not_include": _extract_yaml_list_after_key(checks_text, "must_not_include"),
+            "checker_parameters": checker_parameters,
+        }
+    return {}
+
+
+def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -> list[str]:
+    if not checks_config:
+        return []
+    source_text = "\n".join(
+        path.read_text(encoding="utf-8", errors="ignore")
+        for path in sorted([*run_dir.glob("*.va"), *run_dir.glob("*.scs")])
+    )
+    failures: list[str] = []
+    for phrase in checks_config.get("syntax_must_include", []):
+        if str(phrase) and str(phrase) not in source_text:
+            failures.append(f"checker_config_must_include_missing={phrase}")
+    for phrase in checks_config.get("syntax_must_not_include", []):
+        if str(phrase) and str(phrase) in source_text:
+            failures.append(f"checker_config_must_not_include_present={phrase}")
+    return failures
 
 
 def copy_inputs(run_dir: Path, dut_path: Path, tb_path: Path) -> tuple[Path, Path]:
@@ -2433,7 +2562,7 @@ STREAMING_BEHAVIOR_CHECKS = {
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
-_SAR8_TRACE = frozenset({f"dout_{idx}" for idx in range(8)})
+_SAR8_TRACE = frozenset({f"dout_{idx}" for idx in range(8)} | {"vin_sample", "trial_vdac"})
 _DWA16_TRACE = frozenset(
     {f"ptr_{idx}" for idx in range(16)}
     | {f"cell_en_{idx}" for idx in range(16)}
@@ -5758,6 +5887,82 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
             alpha = (time_s - t0) / (t1 - t0)
             return v0 + alpha * (v1 - v0)
     return None
+
+
+def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
+    value = params.get(key, default)
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _checker_float_list_param(params: dict[str, object], key: str, default: list[float]) -> list[float]:
+    value = params.get(key)
+    if not isinstance(value, list):
+        return default
+    parsed: list[float] = []
+    for item in value:
+        try:
+            parsed.append(float(item))
+        except (TypeError, ValueError):
+            return default
+    return parsed or default
+
+
+def check_v2_configured_first_order_lowpass(
+    rows: list[dict[str, float]],
+    params: dict[str, object],
+) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+
+    vin_pre_time = _checker_float_param(params, "vin_pre_sample_ns", 10.0) * 1e-9
+    vin_post_time = _checker_float_param(params, "vin_post_sample_ns", 30.0) * 1e-9
+    vin_late_time = _checker_float_param(params, "vin_late_sample_ns", 150.0) * 1e-9
+    vin_pre = sample_signal_at(rows, "vin", vin_pre_time)
+    vin_post = sample_signal_at(rows, "vin", vin_post_time)
+    vin_late = sample_signal_at(rows, "vin", vin_late_time)
+    if vin_pre is None or vin_post is None or vin_late is None:
+        return False, "missing_vin_step_samples"
+    input_step = (
+        vin_pre < _checker_float_param(params, "vin_pre_max_v", 0.10)
+        and vin_post > _checker_float_param(params, "vin_post_min_v", 0.72)
+        and vin_late > _checker_float_param(params, "vin_late_min_v", 0.72)
+    )
+
+    sample_times_ns = _checker_float_list_param(params, "sample_times_ns", [30.0, 50.0, 90.0, 150.0])
+    if len(sample_times_ns) < 4:
+        return False, f"too_few_configured_sample_times={len(sample_times_ns)}"
+    samples: list[float] = []
+    for t_ns in sample_times_ns:
+        value = sample_signal_at(rows, "vout", t_ns * 1e-9)
+        if value is None:
+            return False, f"missing_sample_at={t_ns:g}ns"
+        samples.append(value)
+
+    tail_slack = _checker_float_param(params, "monotonic_tail_slack_v", 0.03)
+    monotonic = samples[0] < samples[1] < samples[2] <= samples[3] + tail_slack
+    response_fast_enough = (
+        samples[1] > _checker_float_param(params, "response_sample_1_min_v", 0.55)
+        and samples[2] > _checker_float_param(params, "response_sample_2_min_v", 0.70)
+        and samples[3] > _checker_float_param(params, "response_sample_3_min_v", 0.76)
+    )
+    not_instant = samples[0] < _checker_float_param(params, "not_instant_sample_0_max_v", 0.45)
+    bounded_start = _checker_float_param(params, "bounded_start_ns", 22.0) * 1e-9
+    post_rows = [row for row in rows if row.get("time", 0.0) >= bounded_start and "vout" in row]
+    bounded_min = _checker_float_param(params, "bounded_min_v", -0.03)
+    bounded_max = _checker_float_param(params, "bounded_max_v", 0.88)
+    bounded = bool(post_rows) and bounded_min <= min(row["vout"] for row in post_rows) <= max(
+        row["vout"] for row in post_rows
+    ) <= bounded_max
+    ok = input_step and monotonic and response_fast_enough and not_instant and bounded
+    values = ",".join(f"{value:.3f}" for value in samples[:4])
+    return ok, (
+        f"configured_lowpass_samples={values} input_step={input_step} monotonic={monotonic} "
+        f"response_fast_enough={response_fast_enough} not_instant={not_instant} bounded={bounded}"
+    )
 
 
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:
@@ -9756,7 +9961,11 @@ def resolve_checker_task_id(meta: dict, task_id: str, form: str | None = None) -
     )
 
 
-def evaluate_behavior(task_id: str, csv_path: Path) -> tuple[float, list[str]]:
+def evaluate_behavior(
+    task_id: str,
+    csv_path: Path,
+    checks_config: dict[str, object] | None = None,
+) -> tuple[float, list[str]]:
     if task_id not in CHECKS:
         return 0.0, [f"no behavior check implemented for {task_id}"]
     if task_id in {"noise_gen", "noise_gen_smoke"}:
@@ -9765,14 +9974,24 @@ def evaluate_behavior(task_id: str, csv_path: Path) -> tuple[float, list[str]]:
     if streaming_result is not None:
         return streaming_result
     rows = normalize_rows_for_task(task_id, load_csv(csv_path))
-    ok, note = CHECKS[task_id](rows)
+    checker_parameters = (checks_config or {}).get("checker_parameters", {})
+    if task_id == "vbr1_l1_first_order_lowpass" and isinstance(checker_parameters, dict) and checker_parameters:
+        ok, note = check_v2_configured_first_order_lowpass(rows, checker_parameters)
+        note = f"{note} checker_config_parameters=first_order_lowpass"
+    else:
+        ok, note = CHECKS[task_id](rows)
     return (1.0 if ok else 0.0), [note]
 
 
-def _behavior_eval_worker(task_id: str, csv_path: str, queue: mp.Queue) -> None:
+def _behavior_eval_worker(
+    task_id: str,
+    csv_path: str,
+    checks_config: dict[str, object] | None,
+    queue: mp.Queue,
+) -> None:
     """Run checker evaluation in a child process so large CSVs cannot hang scoring."""
     try:
-        queue.put(("ok", evaluate_behavior(task_id, Path(csv_path))))
+        queue.put(("ok", evaluate_behavior(task_id, Path(csv_path), checks_config=checks_config)))
     except Exception as exc:  # pragma: no cover - defensive worker boundary
         queue.put(("error", f"{type(exc).__name__}: {str(exc)[:300]}"))
 
@@ -9782,6 +10001,7 @@ def evaluate_behavior_with_timeout(
     csv_path: Path,
     *,
     timeout_s: int,
+    checks_config: dict[str, object] | None = None,
 ) -> tuple[float, list[str]]:
     """Evaluate behavior with a watchdog separate from EVAS simulation timeout.
 
@@ -9793,7 +10013,7 @@ def evaluate_behavior_with_timeout(
     direct_max_bytes = int(os.environ.get("VAEVAS_BEHAVIOR_DIRECT_MAX_BYTES", "5000000"))
     try:
         if csv_path.stat().st_size <= direct_max_bytes:
-            return evaluate_behavior(task_id, csv_path)
+            return evaluate_behavior(task_id, csv_path, checks_config=checks_config)
     except OSError:
         pass
 
@@ -9802,7 +10022,7 @@ def evaluate_behavior_with_timeout(
     queue: mp.Queue = ctx.Queue(maxsize=1)
     proc = ctx.Process(
         target=_behavior_eval_worker,
-        args=(task_id, str(csv_path), queue),
+        args=(task_id, str(csv_path), checks_config, queue),
     )
     proc.start()
     proc.join(eval_timeout_s)
@@ -9949,9 +10169,11 @@ def run_case(
     t_case_start = time.perf_counter()
     timing_split: dict[str, float] = {}
     meta = read_meta(task_dir)
+    v2_checks_config = load_v2_checks_config(task_dir)
     task_id = task_id_override or meta.get("id") or meta.get("task_id") or task_dir.name
     checker_task_id = (
         checker_task_id_override
+        or v2_checks_config.get("checker_task_id")
         or resolve_checker_task_id(meta, str(task_id), form=task_dir.name)
     )
     scoring = set(meta.get("scoring", ["dut_compile", "tb_compile", "sim_correct"]))
@@ -9974,6 +10196,40 @@ def run_case(
         t0 = time.perf_counter()
         dut_dst, tb_dst = copy_inputs(run_dir, dut_path, tb_path)
         timing_split["copy_inputs_s"] = time.perf_counter() - t0
+
+        t0 = time.perf_counter()
+        checker_config_failures = v2_checks_syntax_failures(v2_checks_config, run_dir)
+        timing_split["checker_config_syntax_guard_s"] = time.perf_counter() - t0
+        if checker_config_failures:
+            notes = [
+                "checker_config_syntax_guard_failed",
+                f"checker_config={v2_checks_config.get('path')}",
+                *checker_config_failures,
+            ]
+            return {
+                "task_id": task_id,
+                "checker_task_id": checker_task_id,
+                "checker_policy": behavior_checker_policy(str(checker_task_id), notes),
+                "status": "FAIL_DUT_COMPILE",
+                "backend_used": "evas",
+                "evas_engine_used": evas_engine_used,
+                "scores": {
+                    "dut_compile": 0.0,
+                    "tb_compile": 0.0,
+                    "sim_correct": 0.0,
+                    "weighted_total": 0.0,
+                },
+                "artifacts": [
+                    str(dut_dst),
+                    str(tb_dst),
+                    str(out_dir / "tran.csv"),
+                    str(out_dir / "strobe.txt"),
+                ],
+                "notes": notes,
+                "timing": {},
+                "timing_split": timing_split,
+                "stdout_tail": "\n".join(notes),
+            }
 
         t0 = time.perf_counter()
         preflight_failures = spectre_aligned_veriloga_preflight(run_dir)
@@ -10037,6 +10293,8 @@ def run_case(
         tb_compile = 1.0 if ("Transient Analysis" in combined or (out_dir / "tran.csv").exists()) else 0.0
 
         notes = [f"returncode={proc.returncode}", f"evas_engine={evas_engine_used or 'default'}"]
+        if v2_checks_config:
+            notes.append(f"checker_config={v2_checks_config.get('path')}")
         if required_trace_signals:
             notes.append(f"trace_contract={trace_contract_kind}")
         if extra_trace_signals:
@@ -10053,6 +10311,7 @@ def run_case(
                 checker_task_id,
                 csv_path,
                 timeout_s=timeout_s,
+                checks_config=v2_checks_config,
             )
             timing_split["behavior_checker_s"] = time.perf_counter() - t0
             notes.extend(behavior_notes)
@@ -10102,6 +10361,7 @@ def run_case(
                         checker_task_id,
                         csv_path,
                         timeout_s=timeout_s,
+                        checks_config=v2_checks_config,
                     )
                     timing_split["fallback_full_trace_behavior_checker_s"] = (
                         time.perf_counter() - t0
