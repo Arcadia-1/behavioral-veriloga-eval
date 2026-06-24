@@ -1,0 +1,174 @@
+{
+  "negative_count": 5,
+  "negatives": [
+    {
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "pfd_direction"
+      ],
+      "id": "neg_001",
+      "kind": "swapped_outputs",
+      "note": "UP and DN are driven from the opposite internal states.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "122a29563575291ee6b312bce1e774a46a8049e343b8d4bfd241e2f7fe929510",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "negative_variants/pfd_up_dn_logic__dut/neg_001.va",
+      "source_kind": "hidden_behavior_negative",
+      "validation_evidence": {
+        "static_shallow_shape": "pass",
+        "simulator_shallow_lane": "evas_compile_and_sim_pass",
+        "full_checker_lane": "expected_evas_behavior_rejected",
+        "publication_status": "ready_for_v3_recertification",
+        "v3_status": "candidate_negative"
+      }
+    },
+    {
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "overlap_window_is_bounded"
+      ],
+      "id": "neg_002",
+      "kind": "missing_ref_lead_reset_clear",
+      "note": "DIV after REF sets DN but does not clear both outputs, creating sustained overlap/stuck-high behavior.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "c28d960922e819608a885c0d92917075cfea23de7bcfdd4f4191de16b1af10a6",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "negative_variants/pfd_up_dn_logic__dut/neg_002.va",
+      "source_kind": "hidden_behavior_negative",
+      "validation_evidence": {
+        "static_shallow_shape": "pass",
+        "simulator_shallow_lane": "evas_compile_and_sim_pass",
+        "full_checker_lane": "expected_evas_behavior_rejected",
+        "publication_status": "ready_for_v3_recertification",
+        "v3_status": "candidate_negative"
+      }
+    },
+    {
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "dn_pulses_second"
+      ],
+      "id": "neg_003",
+      "kind": "div_falling_edge",
+      "note": "DIV responds on falling crossings instead of rising crossings.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "87c166e7c7a4fe82c6c9943fc93583d5e7f0cd7465fffab4193e951eec579534",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "negative_variants/pfd_up_dn_logic__dut/neg_003.va",
+      "source_kind": "hidden_behavior_negative",
+      "validation_evidence": {
+        "static_shallow_shape": "pass",
+        "simulator_shallow_lane": "evas_compile_and_sim_pass",
+        "full_checker_lane": "expected_evas_behavior_rejected",
+        "publication_status": "ready_for_v3_recertification",
+        "v3_status": "candidate_negative"
+      }
+    },
+    {
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "dn_pulses_second"
+      ],
+      "id": "neg_004",
+      "kind": "dn_channel_missing",
+      "note": "DIV incorrectly sets UP, so DN is never asserted by DIV-leading cycles.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "fd35b9d23790973312894d7ecf7c48e35b76256b54c173b240f4d0fd53587194",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "negative_variants/pfd_up_dn_logic__dut/neg_004.va",
+      "source_kind": "hidden_behavior_negative",
+      "validation_evidence": {
+        "static_shallow_shape": "pass",
+        "simulator_shallow_lane": "evas_compile_and_sim_pass",
+        "full_checker_lane": "expected_evas_behavior_rejected",
+        "publication_status": "ready_for_v3_recertification",
+        "v3_status": "candidate_negative"
+      }
+    },
+    {
+      "expected": "FAIL_FULL_CHECKER",
+      "full_failures": [
+        "outputs_clear_after_race"
+      ],
+      "id": "neg_005",
+      "kind": "div_lead_reset_leaves_up_high",
+      "note": "REF after DIV clears DN but leaves UP asserted, violating the both-low reset-race state.",
+      "partial_pass_requirement": "Must pass interface/smoke or a nominal shallow case and fail at least one full correctness/parity check.",
+      "sha256": "477b20ee113ab4b9edfd9f41278c3446a8e553ce963e08ef5657cdbe22acefcf",
+      "shallow_passes": [
+        "artifact_exists",
+        "interface_or_testbench_shape_preserved",
+        "nominal_or_smoke_path_intended_to_pass"
+      ],
+      "shallow_static_failures": [],
+      "shallow_static_passes": [
+        "non_empty_candidate",
+        "differs_from_reference",
+        "veriloga_module_signature_present",
+        "veriloga_interface_preserved",
+        "analog_block_or_keyword_present"
+      ],
+      "source": "negative_variants/pfd_up_dn_logic__dut/neg_005.va",
+      "source_kind": "hidden_behavior_negative",
+      "validation_evidence": {
+        "static_shallow_shape": "pass",
+        "simulator_shallow_lane": "evas_compile_and_sim_pass",
+        "full_checker_lane": "expected_evas_behavior_rejected",
+        "publication_status": "ready_for_v3_recertification",
+        "v3_status": "candidate_negative"
+      }
+    }
+  ],
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "task_id": "pfd-up-dn-logic",
+  "certification_status": "candidate_pending_v3_recertification",
+  "certification_note": "Five concrete interface-preserving behavioral negatives are present. Recertify under the v3 runner after CHECKS maps v3_011_pfd_up_dn_logic to check_pfd_reset_race."
+}

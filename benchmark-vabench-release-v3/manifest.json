@@ -1,9 +1,9 @@
 {
   "version": "v3",
   "layout": "rtl-forge-style",
-  "task_count": 37,
+  "task_count": 43,
   "partitions": {
-    "core_formal_candidate_dut": 7,
+    "core_formal_candidate_dut": 13,
     "support_formal_candidate_testbench_utility": 30,
     "support_staging_testbench_utility": 0
   },
@@ -18,7 +18,7 @@
     "solution/",
     "negative_variants/"
   ],
-  "source": "Certified v3 working set: 7 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
+  "source": "Certified v3 working set: 13 DUT tasks plus 30 testbench utility modules migrated to rtl-forge-style structure with EVAS gold/hidden/negative evidence.",
   "tasks": [
     {
       "id": "v3_001_bang_bang_phase_detector",
@@ -108,6 +108,84 @@
       "path": "benchmark-vabench-release-v3/tasks/007-first-order-lowpass",
       "target_artifacts": [
         "first_order_lowpass.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_008_gain_trim_controller",
+      "name": "008-gain-trim-controller",
+      "title": "Gain Trim Controller",
+      "category": "calibration_control",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/008-gain-trim-controller",
+      "target_artifacts": [
+        "gain_trim_controller.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_009_lock_detector",
+      "name": "009-lock-detector",
+      "title": "Lock Detector",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/009-lock-detector",
+      "target_artifacts": [
+        "lock_detector.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_010_offset_comparator",
+      "name": "010-offset-comparator",
+      "title": "Offset Comparator",
+      "category": "comparator_decision",
+      "level": "L1",
+      "difficulty": "D1",
+      "path": "benchmark-vabench-release-v3/tasks/010-offset-comparator",
+      "target_artifacts": [
+        "cmp_offset_ref.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_011_pfd_up_dn_logic",
+      "name": "011-pfd-up-dn-logic",
+      "title": "PFD Up DN Logic",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/011-pfd-up-dn-logic",
+      "target_artifacts": [
+        "pfd_updn.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_012_clock_divider",
+      "name": "012-clock-divider",
+      "title": "Clock Divider",
+      "category": "pll_clock_timing",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/012-clock-divider",
+      "target_artifacts": [
+        "clk_divider_ref.va"
+      ],
+      "tier": "formal-candidate"
+    },
+    {
+      "id": "v3_013_resettable_integrator",
+      "name": "013-resettable-integrator",
+      "title": "Resettable Integrator",
+      "category": "baseband_signal_conditioning",
+      "level": "L1",
+      "difficulty": "D2",
+      "path": "benchmark-vabench-release-v3/tasks/013-resettable-integrator",
+      "target_artifacts": [
+        "resettable_integrator.va"
       ],
       "tier": "formal-candidate"
     },

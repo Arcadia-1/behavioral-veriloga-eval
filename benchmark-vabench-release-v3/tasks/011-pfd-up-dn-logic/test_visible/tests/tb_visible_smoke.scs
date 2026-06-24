@@ -1,0 +1,14 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "pfd_updn.va"
+
+Vvdd (vdd 0) vsource dc=0.9
+Vvss (vss 0) vsource dc=0
+Vref (ref 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+Vdiv (div 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=300p rise=50p fall=50p width=1.4n
+
+XDUT (vdd vss ref div up dn) pfd_updn
+
+tran tran stop=5n maxstep=100p
+save ref div up dn

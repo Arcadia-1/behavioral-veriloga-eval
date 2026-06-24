@@ -195,7 +195,35 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
     return failures
 
 
-def copy_inputs(run_dir: Path, dut_path: Path, tb_path: Path) -> tuple[Path, Path]:
+def read_task_artifact_targets(task_dir: Path) -> list[str]:
+    task_toml = task_dir / "task.toml"
+    if not task_toml.exists():
+        return []
+    text = task_toml.read_text(encoding="utf-8", errors="ignore")
+    match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
+    if not match:
+        return []
+    try:
+        parsed = ast.literal_eval(match.group(1))
+    except (SyntaxError, ValueError):
+        return []
+    if not isinstance(parsed, list):
+        return []
+    targets: list[str] = []
+    for item in parsed:
+        name = str(item).strip()
+        if name and "/" not in name and "\\" not in name:
+            targets.append(name)
+    return targets
+
+
+def copy_inputs(
+    run_dir: Path,
+    dut_path: Path,
+    tb_path: Path,
+    *,
+    target_filenames: Iterable[str] = (),
+) -> tuple[Path, Path]:
     example_dir = tb_path.parent
     for src in example_dir.iterdir():
         dst = run_dir / src.name
@@ -211,6 +239,15 @@ def copy_inputs(run_dir: Path, dut_path: Path, tb_path: Path) -> tuple[Path, Pat
         for src in sorted(dut_path.parent.glob("*.va")):
             shutil.copy2(src, run_dir / src.name)
         shutil.copy2(dut_path, run_dir / dut_path.name)
+
+    # Negative variants often keep their own filenames, while the Spectre deck
+    # includes the canonical artifact name from task.toml. Stage the selected
+    # DUT under that canonical name too so failures are behavioral, not a stale
+    # include-name mismatch.
+    for target_name in target_filenames:
+        target_path = run_dir / target_name
+        if target_path.name != dut_path.name:
+            shutil.copy2(dut_path, target_path)
 
     dut_dst = run_dir / dut_path.name
     tb_dst = run_dir / tb_path.name
@@ -3865,6 +3902,148 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
         f"below_offset_positive={has_below_offset_positive} "
         f"above_offset_positive={has_above_offset_positive}"
     )
+
+
+def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref_clk", "fb_clk", "rst_n", "lock"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    times = [r["time"] for r in rows]
+    ref_edges = rising_edges([r["ref_clk"] for r in rows], times, threshold=0.45)
+    fb_edges = rising_edges([r["fb_clk"] for r in rows], times, threshold=0.45)
+    if len(ref_edges) < 8 or len(fb_edges) < 8:
+        return False, f"too_few_edges ref={len(ref_edges)} fb={len(fb_edges)}"
+
+    events: list[tuple[float, bool, bool]] = []
+    for ref_t in ref_edges:
+        rst = sample_signal_at(rows, "rst_n", ref_t)
+        if rst is None or rst <= 0.45:
+            continue
+        nearest_fb = min((abs(fb_t - ref_t) for fb_t in fb_edges), default=1.0)
+        aligned = nearest_fb <= 2.0e-9
+        lock_after = sample_signal_at(rows, "lock", ref_t + 0.8e-9)
+        events.append((ref_t, aligned, bool(lock_after is not None and lock_after > 0.45)))
+
+    streak = 0
+    good_lock_after_three = 0
+    early_locks = 0
+    mismatch_clears = 0
+    mismatch_failures = 0
+    for ref_t, aligned, lock_high in events:
+        if aligned:
+            streak += 1
+            if streak >= 3 and lock_high:
+                good_lock_after_three += 1
+            if streak < 3 and lock_high:
+                early_locks += 1
+        else:
+            if lock_high:
+                mismatch_failures += 1
+            else:
+                mismatch_clears += 1
+            streak = 0
+
+    reset_sample_times = (1e-9, 58e-9, 59e-9, 95e-9, 99e-9, 102e-9)
+    reset_samples = [sample_signal_at(rows, "lock", t) for t in reset_sample_times]
+    reset_low = all(value is not None and value < 0.45 for value in reset_samples)
+    final_lock = sample_signal_at(rows, "lock", max(times) - 1e-9)
+    final_lock_low = final_lock is not None and final_lock < 0.45
+
+    ok = (
+        reset_low
+        and early_locks == 0
+        and mismatch_failures == 0
+        and mismatch_clears >= 1
+        and good_lock_after_three >= 2
+        and final_lock_low
+    )
+    aligned_count = sum(1 for _, aligned, _ in events if aligned)
+    mismatch_count = sum(1 for _, aligned, _ in events if not aligned)
+    return ok, (
+        f"events={len(events)} aligned={aligned_count} mismatch={mismatch_count} "
+        f"good_lock_after_three={good_lock_after_three} early_locks={early_locks} "
+        f"mismatch_clears={mismatch_clears} mismatch_failures={mismatch_failures} "
+        f"reset_low={reset_low} final_lock_low={final_lock_low}"
+    )
+
+
+def check_v3_gain_trim_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "gain_ctrl"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    sample_times_ns = [20.0, 70.0, 150.0, 250.0, 290.0, 330.0, 470.0, 590.0, 650.0]
+    samples: list[float] = []
+    for t_ns in sample_times_ns:
+        value = sample_signal_at(rows, "gain_ctrl", t_ns * 1e-9)
+        if value is None:
+            return False, f"missing_sample_at={t_ns:g}ns"
+        samples.append(value)
+
+    reset_nominal = abs(samples[0] - 0.30) <= 0.04
+    low_meas_increases = samples[0] < samples[1] < samples[2] < samples[3]
+    reaches_upper_clamp = 0.83 <= samples[3] <= 0.86
+    deadband_holds = abs(samples[4] - samples[3]) <= 0.035
+    high_meas_decreases = samples[4] > samples[5] > samples[6] > samples[7] - 0.02
+    reaches_lower_clamp = 0.04 <= samples[8] <= 0.07
+    in_range = all(0.04 <= value <= 0.86 for value in samples)
+    ok = (
+        reset_nominal
+        and low_meas_increases
+        and reaches_upper_clamp
+        and deadband_holds
+        and high_meas_decreases
+        and reaches_lower_clamp
+        and in_range
+    )
+    values = ",".join(f"{value:.3f}" for value in samples)
+    return ok, (
+        f"gain_trim_samples={values} reset_nominal={reset_nominal} "
+        f"low_meas_increases={low_meas_increases} reaches_upper_clamp={reaches_upper_clamp} "
+        f"deadband_holds={deadband_holds} high_meas_decreases={high_meas_decreases} "
+        f"reaches_lower_clamp={reaches_lower_clamp} in_range={in_range}"
+    )
+
+
+def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_msg = check_release_offset_comparator(rows)
+    if not base_ok:
+        return False, base_msg
+
+    sample_plan = [
+        (1.35e-9, "L", "edge_neg_10mv"),
+        (5.35e-9, "L", "edge_zero_mv"),
+        (9.35e-9, "L", "edge_pos_3mv"),
+        (12.60e-9, "L", "async_hold_before_pos_7mv_edge"),
+        (13.35e-9, "H", "edge_pos_7mv"),
+        (17.35e-9, "H", "edge_pos_20mv"),
+        (20.60e-9, "H", "async_hold_before_zero_edge"),
+        (21.35e-9, "L", "edge_zero_again"),
+        (24.60e-9, "L", "async_hold_before_neg_10mv_edge"),
+        (25.35e-9, "L", "edge_neg_10mv_again"),
+    ]
+    failures: list[str] = []
+    observed: list[str] = []
+    for time_s, expected, label in sample_plan:
+        value = sample_signal_at(rows, "out_p", time_s)
+        if value is None:
+            failures.append(f"{label}=missing")
+            observed.append("?")
+            continue
+        state = _logic_state(value)
+        observed.append(state)
+        if state != expected:
+            failures.append(f"{label}:{state}!={expected}@{value:.3f}")
+        if expected == "H" and value < 0.81:
+            failures.append(f"{label}:high_not_rail={value:.3f}")
+        if expected == "L" and value > 0.09:
+            failures.append(f"{label}:low_not_rail={value:.3f}")
+
+    ok = not failures
+    return ok, base_msg + " strict_samples=" + "".join(observed) + (" " + " ".join(failures) if failures else "")
 
 
 def check_release_strongarm_latch_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11067,6 +11246,12 @@ CHECKS["v3_004_trim_calibration_controller"] = check_v3_trim_calibration_control
 CHECKS["v3_005_debounce_latch"] = check_v3_debounce_latch
 CHECKS["v3_006_element_shuffler"] = check_release_element_shuffler
 CHECKS["v3_007_first_order_lowpass"] = check_vbm1_first_order_lowpass
+CHECKS["v3_008_gain_trim_controller"] = check_v3_gain_trim_controller
+CHECKS["v3_009_lock_detector"] = check_v3_009_lock_detector
+CHECKS["v3_010_offset_comparator"] = check_v3_offset_comparator
+CHECKS["v3_011_pfd_up_dn_logic"] = check_pfd_reset_race
+CHECKS["v3_012_clock_divider"] = check_clk_divider
+CHECKS["v3_013_resettable_integrator"] = check_vbm1_resettable_integrator
 
 
 RELEASE_FORM_CHECK_ALIASES = {
@@ -11391,7 +11576,12 @@ def run_case(
         timing_split["output_setup_s"] = time.perf_counter() - t0
 
         t0 = time.perf_counter()
-        dut_dst, tb_dst = copy_inputs(run_dir, dut_path, tb_path)
+        dut_dst, tb_dst = copy_inputs(
+            run_dir,
+            dut_path,
+            tb_path,
+            target_filenames=read_task_artifact_targets(task_dir),
+        )
         timing_split["copy_inputs_s"] = time.perf_counter() - t0
 
         t0 = time.perf_counter()

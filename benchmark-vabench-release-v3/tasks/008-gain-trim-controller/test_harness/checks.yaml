@@ -1,0 +1,43 @@
+version: 2
+task_id: v3_008_gain_trim_controller
+backend: evas
+status: formal_candidate_pending_runner_checker_mapping
+checker: main120_stable_checks.check_gain_trim_controller
+checker_name: check_vbm1_gain_trim_controller
+required_columns:
+  - time
+  - gain_ctrl
+visible:
+  testbench: test_visible/visible.scs
+  hidden_dependency: false
+hidden:
+  testbench: test_hidden/hidden.scs
+  sample_times_ns: [20, 70, 150, 250, 310, 470, 590, 610]
+  expected:
+    reset_gain_control_near_0p30: true
+    low_measured_value_increases_control: true
+    high_measured_value_decreases_control: true
+    gain_control_reaches_high_and_low_clamps: true
+checks:
+  formal:
+    - reset_gain_control_near_0p30
+    - low_measured_value_increases_control
+    - high_measured_value_decreases_control
+    - gain_control_reaches_high_and_low_clamps
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+runner_mapping_required:
+  checker_id: v3_008_gain_trim_controller
+  checker_name: check_vbm1_gain_trim_controller
+  check_mapping: "CHECKS[\"v3_008_gain_trim_controller\"] = check_vbm1_gain_trim_controller"
+parity:
+  reference: spectre
+  status: pending_until_evas_spectre_rerun
+  notes:
+    - "Requires fresh EVAS/Spectre dual validation for v3 candidate promotion."

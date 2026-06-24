@@ -1,0 +1,23 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/lock_detector.va",
+    "test_visible/visible.scs"
+  ],
+  "hidden": [
+    "solution/lock_detector.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json",
+    "negative_variants/neg_001_requires_four_hits/lock_detector.va",
+    "negative_variants/neg_002_tolerance_too_wide/lock_detector.va",
+    "negative_variants/neg_003_does_not_reset_on_mismatch/lock_detector.va",
+    "negative_variants/neg_004_reset_ignored/lock_detector.va",
+    "negative_variants/neg_005_counts_feedback_events/lock_detector.va"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/lock_detector.va",
+    "test_visible/visible.scs"
+  ]
+}

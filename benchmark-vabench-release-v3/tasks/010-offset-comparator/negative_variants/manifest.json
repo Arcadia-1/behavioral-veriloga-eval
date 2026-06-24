@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_zero_offset",
+      "artifact": "neg_001_zero_offset/neg_001.va",
+      "mutation": "uses a zero offset threshold, so +3 mV incorrectly latches high",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_large_offset",
+      "artifact": "neg_002_large_offset/neg_002.va",
+      "mutation": "uses a 15 mV offset threshold, so +7 mV incorrectly latches low",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_falling_edge",
+      "artifact": "neg_003_falling_edge/neg_003.va",
+      "mutation": "samples on falling clock edges instead of rising clock edges",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_async_response",
+      "artifact": "neg_004_async_response/neg_004.va",
+      "mutation": "acts as a continuous asynchronous comparator instead of latching only on rising CLK edges",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_weak_high",
+      "artifact": "neg_005_weak_high/neg_005.va",
+      "mutation": "drives high decisions to only 0.72 V instead of the VDD rail",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}

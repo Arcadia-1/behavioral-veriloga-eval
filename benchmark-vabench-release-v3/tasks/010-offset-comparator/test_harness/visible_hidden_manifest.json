@@ -1,0 +1,22 @@
+{
+  "visible": [
+    "instruction.md",
+    "starter/cmp_offset_ref.va",
+    "test_visible/visible.scs",
+    "test_visible/tests/tb_visible_smoke.scs",
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "solution/cmp_offset_ref.va",
+    "test_hidden/hidden.scs",
+    "test_harness/checks.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "starter/cmp_offset_ref.va",
+    "test_visible/visible.scs",
+    "test_visible/tests/tb_visible_smoke.scs",
+    "test_visible/tests/run_visible_smoke.py"
+  ]
+}

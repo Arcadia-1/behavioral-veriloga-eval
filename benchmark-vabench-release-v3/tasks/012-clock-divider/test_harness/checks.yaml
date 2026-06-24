@@ -1,0 +1,24 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "ratio_code_decodes_to_5"
+    - "output_period_matches_five_input_edges"
+    - "lock_asserts_after_first_complete_output_period"
+parity:
+  required: true
+  tolerance_notes: "Measure edge intervals after startup on scalar clk_in, clk_out, lock, and div_code_0..div_code_7 waveforms."
+semantic_review:
+  risk: "Hidden stimulus is deterministic but not solver-visible; all scored behavior is stated in instruction.md."
+  release_decision: "Release the normal divider task against the single target artifact `clk_divider_ref.va`."
+  checker_boundary: "Measure ratio-code decode, output period, high/low activity, reset/lock acquisition, and forbidden analog operators."

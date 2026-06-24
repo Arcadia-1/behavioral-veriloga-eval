@@ -1,0 +1,31 @@
+{
+  "task": "011-pfd-up-dn-logic",
+  "form": "dut",
+  "status": "v3_content_candidate_pending_runner_mapping",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/pfd_updn.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_pfd_reset_race_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/pfd_updn.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Add CHECKS mapping: v3_011_pfd_up_dn_logic -> check_pfd_reset_race.",
+    "Run v3-layout visible smoke in an EVAS-capable environment.",
+    "Run v3-layout hidden gold smoke and negative recertification before formal release."
+  ]
+}

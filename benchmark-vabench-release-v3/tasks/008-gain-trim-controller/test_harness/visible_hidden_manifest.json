@@ -1,0 +1,31 @@
+{
+  "task": "008-gain-trim-controller",
+  "form": "dut",
+  "status": "formal_candidate_pending_runner_checker_mapping",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/gain_trim_controller.va"
+    ],
+    "public_smoke": {
+      "testbench": "test_visible/visible.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/hidden.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/gain_trim_controller.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "promotion_blockers": [
+    "Add CHECKS[\"v3_008_gain_trim_controller\"] = check_vbm1_gain_trim_controller in the runner.",
+    "Run v3-layout visible smoke in an EVAS-capable environment.",
+    "Run v3-layout hidden gold smoke and negative recertification before formal release.",
+    "Run Spectre/Spectre-AX parity before paper-facing certification."
+  ]
+}

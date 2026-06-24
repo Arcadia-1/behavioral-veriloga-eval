@@ -1,0 +1,35 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "cases": [
+    {
+      "id": "neg_001_requires_four_hits",
+      "artifact": "neg_001_requires_four_hits/lock_detector.va",
+      "mutation": "requires four consecutive aligned reference events instead of three",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_002_tolerance_too_wide",
+      "artifact": "neg_002_tolerance_too_wide/lock_detector.va",
+      "mutation": "uses a 6 ns alignment window, accepting out-of-window feedback edges",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_003_does_not_reset_on_mismatch",
+      "artifact": "neg_003_does_not_reset_on_mismatch/lock_detector.va",
+      "mutation": "keeps the prior lock state when a reference event is not aligned",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_004_reset_ignored",
+      "artifact": "neg_004_reset_ignored/lock_detector.va",
+      "mutation": "does not clear lock on active-low reset after acquisition",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_005_counts_feedback_events",
+      "artifact": "neg_005_counts_feedback_events/lock_detector.va",
+      "mutation": "increments on feedback edges and can assert before three reference comparisons",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
+    }
+  ]
+}
