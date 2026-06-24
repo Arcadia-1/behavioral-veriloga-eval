@@ -6,6 +6,13 @@
 - Spectre mode: `ax`
 - Raw output root: `/private/tmp/vabench_v2_gold_spectre_mini_cert_20260624_r3`
 
+Reproducibility note: this is a historical Spectre+EVAS dual-cert summary.
+Issue #20 showed that the previous EVAS-only path was not cleanly reproducible
+from checked-in code because `--spectre-backend none` was unsupported and the
+weighted-SAR checker sampled intermediate SAR trial states. The current
+EVAS-only reproduction after that fix is recorded in
+`gold_evas_only_cert_issue20_fix_20260624.md`.
+
 | task | status | EVAS | Spectre | Spectre behavior | parity | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `vbr1_l2_weighted_sar_adc_dac_loop:e2e` | `PASS` | `PASS` | `PASS` | `1.0` | `passed` | spectre_rows=16591 |

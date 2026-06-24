@@ -1138,11 +1138,19 @@ def _stream_dac_binary_clk_4b_csv(csv_path: Path) -> tuple[float, list[str]]:
     return (1.0 if ok else 0.0), [f"levels={len(sorted_codes)} aout_span={span:.3f}"]
 
 
-def _stream_sar_adc_dac_weighted_8b_csv(csv_path: Path) -> tuple[float, list[str]]:
+def _stream_sar_adc_dac_weighted_8b_csv(
+    csv_path: Path,
+    *,
+    require_completed_events: bool = False,
+) -> tuple[float, list[str]]:
     fields = _csv_fields(csv_path)
     required = {"time", "vin", "vin_sh", "clks", "vout", "rst_n"} | {f"dout_{idx}" for idx in range(8)}
     if not required.issubset(fields):
         return 0.0, ["missing time/vin/vin_sh/clks/vout/rst_n or dout_0..7"]
+    completed_event_fields = {"conv_done", "vin_sample"}
+    use_completed_events = completed_event_fields.issubset(fields)
+    if require_completed_events and not use_completed_events:
+        return 0.0, ["missing conv_done/vin_sample completed-conversion monitors"]
     bit_names = [f"dout_{idx}" for idx in range(8)]
     sample_count = 0
     quant_err_sum = 0.0
@@ -1160,43 +1168,67 @@ def _stream_sar_adc_dac_weighted_8b_csv(csv_path: Path) -> tuple[float, list[str
     sorted_pairs: list[tuple[float, int]] = []
     pending_samples: list[float] = []
     prev_clk = 0.0
+    prev_done = 0.0
+    completed_row: dict[str, str] | None = None
     initialized = False
+
+    def add_sample(row: dict[str, str]) -> None:
+        nonlocal sample_count
+        nonlocal quant_err_sum, dac_err_sum, roundtrip_err_sum
+        nonlocal max_quant_err, max_dac_err
+        nonlocal min_code, max_code
+        nonlocal min_vin_sh, max_vin_sh
+        nonlocal min_vout, max_vout
+        if _float_cell(row, "rst_n") <= 0.45:
+            return
+        code = sum((1 if _float_cell(row, bit_name) > 0.45 else 0) << idx for idx, bit_name in enumerate(bit_names))
+        vin_ref = _float_cell(row, "vin_sample") if use_completed_events else _float_cell(row, "vin_sh")
+        vout = _float_cell(row, "vout")
+        code_voltage = code / 255.0 * 0.9
+        quant_err = abs(vin_ref - code_voltage)
+        dac_err = abs(vout - code_voltage)
+        roundtrip_err = abs(vin_ref - vout)
+        codes.add(code)
+        min_code = min(min_code, code)
+        max_code = max(max_code, code)
+        min_vin_sh = min(min_vin_sh, vin_ref)
+        max_vin_sh = max(max_vin_sh, vin_ref)
+        min_vout = min(min_vout, vout)
+        max_vout = max(max_vout, vout)
+        quant_err_sum += quant_err
+        dac_err_sum += dac_err
+        roundtrip_err_sum += roundtrip_err
+        max_quant_err = max(max_quant_err, quant_err)
+        max_dac_err = max(max_dac_err, dac_err)
+        sorted_pairs.append((vin_ref, code))
+        sample_count += 1
+
     with csv_path.open(newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             time = _float_cell(row, "time")
             clk = _float_cell(row, "clks")
-            if initialized and prev_clk < 0.45 <= clk:
-                pending_samples.append(time + 1.0e-9)
-            while pending_samples and time >= pending_samples[0]:
-                pending_samples.pop(0)
-                if _float_cell(row, "rst_n") <= 0.45:
-                    continue
-                code = sum((1 if _float_cell(row, bit_name) > 0.45 else 0) << idx for idx, bit_name in enumerate(bit_names))
-                vin_sh = _float_cell(row, "vin_sh")
-                vout = _float_cell(row, "vout")
-                code_voltage = code / 255.0 * 0.9
-                quant_err = abs(vin_sh - code_voltage)
-                dac_err = abs(vout - code_voltage)
-                roundtrip_err = abs(vin_sh - vout)
-                codes.add(code)
-                min_code = min(min_code, code)
-                max_code = max(max_code, code)
-                min_vin_sh = min(min_vin_sh, vin_sh)
-                max_vin_sh = max(max_vin_sh, vin_sh)
-                min_vout = min(min_vout, vout)
-                max_vout = max(max_vout, vout)
-                quant_err_sum += quant_err
-                dac_err_sum += dac_err
-                roundtrip_err_sum += roundtrip_err
-                max_quant_err = max(max_quant_err, quant_err)
-                max_dac_err = max(max_dac_err, dac_err)
-                sorted_pairs.append((vin_sh, code))
-                sample_count += 1
+            if use_completed_events:
+                done = _float_cell(row, "conv_done")
+                if done > 0.45 and _float_cell(row, "rst_n") > 0.45:
+                    completed_row = row
+                elif prev_done > 0.45 and completed_row is not None:
+                    add_sample(completed_row)
+                    completed_row = None
+                prev_done = done
+            else:
+                if initialized and prev_clk < 0.45 <= clk:
+                    pending_samples.append(time + 1.0e-9)
+                while pending_samples and time >= pending_samples[0]:
+                    pending_samples.pop(0)
+                    add_sample(row)
             prev_clk = clk
             initialized = True
+    if use_completed_events and prev_done > 0.45 and completed_row is not None:
+        add_sample(completed_row)
     if sample_count == 0:
-        return 0.0, ["no post-reset edge samples"]
+        sample_kind = "completed conversions" if use_completed_events else "edge samples"
+        return 0.0, [f"no post-reset {sample_kind}"]
     unique_codes = len(codes)
     sample_span = max_vin_sh - min_vin_sh
     vout_span = max_vout - min_vout
@@ -1225,7 +1257,8 @@ def _stream_sar_adc_dac_weighted_8b_csv(csv_path: Path) -> tuple[float, list[str
         and max_vout <= 0.92
     )
     return (1.0 if ok else 0.0), [
-        f"edge_samples={sample_count} unique_codes={unique_codes} code_range={min_code}..{max_code} "
+        f"{'completed_conversions' if use_completed_events else 'edge_samples'}={sample_count} "
+        f"unique_codes={unique_codes} code_range={min_code}..{max_code} "
         f"sample_span={sample_span:.3f} vout_span={vout_span:.3f} "
         f"avg_quant_err={avg_quant_err:.4f} max_quant_err={max_quant_err:.4f} "
         f"avg_dac_err={avg_dac_err:.4f} max_dac_err={max_dac_err:.4f} "
@@ -1234,7 +1267,7 @@ def _stream_sar_adc_dac_weighted_8b_csv(csv_path: Path) -> tuple[float, list[str
 
 
 def _stream_sar_adc_dac_weighted_8b_release_csv(csv_path: Path) -> tuple[float, list[str]]:
-    score, notes = _stream_sar_adc_dac_weighted_8b_csv(csv_path)
+    score, notes = _stream_sar_adc_dac_weighted_8b_csv(csv_path, require_completed_events=True)
     return score, ["public_contract"] + notes
 
 
@@ -2563,6 +2596,7 @@ STREAMING_BEHAVIOR_CHECKS = {
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
 _SAR8_TRACE = frozenset({f"dout_{idx}" for idx in range(8)} | {"vin_sample", "trial_vdac"})
+_SAR8_COMPLETED_TRACE = _SAR8_TRACE | {"conv_done"}
 _DWA16_TRACE = frozenset(
     {f"ptr_{idx}" for idx in range(16)}
     | {f"cell_en_{idx}" for idx in range(16)}
@@ -2577,7 +2611,7 @@ _STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
     _stream_cppll_freq_step_reacquire_csv: frozenset({"time", "ref_clk", "fb_clk", "lock", "vctrl_mon"}),
     _stream_dac_binary_clk_4b_csv: frozenset({"din3", "din2", "din1", "din0", "aout"}),
     _stream_sar_adc_dac_weighted_8b_csv: frozenset({"time", "vin", "vin_sh", "clks", "vout", "rst_n"}) | _SAR8_TRACE,
-    _stream_sar_adc_dac_weighted_8b_release_csv: frozenset({"time", "vin", "vin_sh", "clks", "vout", "rst_n"}) | _SAR8_TRACE,
+    _stream_sar_adc_dac_weighted_8b_release_csv: frozenset({"time", "vin", "vin_sh", "clks", "vout", "rst_n"}) | _SAR8_COMPLETED_TRACE,
     _stream_dwa_ptr_gen_no_overlap_csv: frozenset({"time", "clk_i", "rst_ni"}) | _DWA16_TRACE,
     _stream_not_gate_csv: frozenset({"time", "a", "y", "not_a", "not_y"}),
     _stream_gray_counter_one_bit_change_csv: frozenset({"time", "clk", "rst", "rstb"}) | _GRAY4_TRACE,
@@ -4145,15 +4179,31 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
     if not set(bit_names).issubset(rows[0]):
         return False, "missing dout_0..7"
 
-    times = [r["time"] for r in rows]
-    edge_times = rising_edges([r["clks"] for r in rows], times)
-    clock_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
-    sample_rows = clock_rows
+    use_completed_events = {"conv_done", "vin_sample"}.issubset(rows[0])
+    if use_completed_events:
+        sample_rows = []
+        prev_done = 0.0
+        completed_row: dict[str, float] | None = None
+        for row in rows:
+            done = row["conv_done"]
+            if done > 0.45 and row.get("rst_n", 0.0) > 0.45:
+                completed_row = row
+            elif prev_done > 0.45 and completed_row is not None:
+                sample_rows.append(completed_row)
+                completed_row = None
+            prev_done = done
+        if prev_done > 0.45 and completed_row is not None:
+            sample_rows.append(completed_row)
+    else:
+        times = [r["time"] for r in rows]
+        edge_times = rising_edges([r["clks"] for r in rows], times)
+        sample_rows = sample_rows_at_or_after_times(rows, [t + 1.0e-9 for t in edge_times], rst_key="rst_n")
     if len(sample_rows) < 48:
-        return False, f"too_few_post_reset_conversions={len(sample_rows)}"
+        sample_kind = "completed_conversions" if use_completed_events else "post_reset_conversions"
+        return False, f"too_few_{sample_kind}={len(sample_rows)}"
 
     codes = decode_bus(sample_rows, bit_names)
-    vinsh = [r["vin_sh"] for r in sample_rows]
+    vinsh = [r["vin_sample"] if use_completed_events else r["vin_sh"] for r in sample_rows]
     vouts = [r["vout"] for r in sample_rows]
     vdd = 0.9
     code_voltages = [code / 255.0 * vdd for code in codes]
@@ -4190,7 +4240,8 @@ def check_sar_adc_dac_weighted_8b(rows: list[dict[str, float]]) -> tuple[bool, s
         and max(vouts) <= vdd + 0.02
     )
     return ok, (
-        f"samples={len(sample_rows)} unique_codes={unique_codes} code_range={code_min}-{code_max} "
+        f"{'completed_conversions' if use_completed_events else 'samples'}={len(sample_rows)} "
+        f"unique_codes={unique_codes} code_range={code_min}-{code_max} "
         f"sample_span={sample_span:.3f} vout_span={vout_span:.3f} "
         f"avg_quant_err={avg_quant_err:.4f} max_quant_err={max_quant_err:.4f} "
         f"avg_dac_err={avg_dac_err:.4f} max_dac_err={max_dac_err:.4f} "

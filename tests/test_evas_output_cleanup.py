@@ -205,6 +205,7 @@ def test_required_trace_signals_follow_streaming_checker_contract() -> None:
     )
 
     assert "vin_sample" in signals
+    assert "conv_done" in signals
     assert "trial_vdac" in signals
     assert {f"dout_{idx}" for idx in range(8)}.issubset(signals)
     assert "dco_clk" not in signals

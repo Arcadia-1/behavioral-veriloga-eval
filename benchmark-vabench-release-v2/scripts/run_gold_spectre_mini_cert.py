@@ -45,6 +45,11 @@ def rel_or_abs(path: Path, root: Path) -> str:
         return str(path)
 
 
+def spectre_backend_disabled(value: str | None) -> bool:
+    key = (value or "").strip().lower().replace("-", "_")
+    return key in {"none", "off", "skip", "skipped", "disabled", "evas_only"}
+
+
 def form_dirs(root: Path) -> list[Path]:
     return sorted(path.parent for path in root.glob("tasks/**/task_release_card.json"))
 
@@ -157,25 +162,21 @@ def run_one_form(
     write_json(task_root / "evas_result.json", evas_result)
 
     side_outputs = behavior_side_output_names(checker_task_id)
-    spectre_t0 = time.perf_counter()
-    spectre_result = run_spectre_case(
-        task_id=task_id,
-        tb_path=tb_path,
-        include_paths=include_paths,
-        output_dir=spectre_root,
-        bridge_repo=bridge_repo,
-        cadence_cshrc=cadence_cshrc,
-        timeout_s=timeout_s,
-        side_output_files=side_outputs,
-        spectre_backend=spectre_backend,
-        sui_host=sui_host,
-        sui_work_root=sui_work_root,
-        spectre_mode=spectre_mode,
-    )
-    spectre_wall_time_s = time.perf_counter() - spectre_t0
-    if should_retry_spectre_upload(spectre_result):
-        notes.append("spectre_retry_after_upload_failure")
-        retry_t0 = time.perf_counter()
+    skip_spectre = spectre_backend_disabled(spectre_backend)
+    if skip_spectre:
+        notes.append("spectre_skipped_evas_only")
+        spectre_wall_time_s = 0.0
+        spectre_result = {
+            "ok": None,
+            "status": "SKIPPED",
+            "backend": "none",
+            "mode": spectre_mode,
+            "reason": "spectre-backend=none",
+        }
+        spectre_behavior_score = None
+        spectre_behavior_notes = ["spectre skipped for EVAS-only gold certification"]
+    else:
+        spectre_t0 = time.perf_counter()
         spectre_result = run_spectre_case(
             task_id=task_id,
             tb_path=tb_path,
@@ -190,28 +191,59 @@ def run_one_form(
             sui_work_root=sui_work_root,
             spectre_mode=spectre_mode,
         )
-        spectre_wall_time_s += time.perf_counter() - retry_t0
+        spectre_wall_time_s = time.perf_counter() - spectre_t0
+        if should_retry_spectre_upload(spectre_result):
+            notes.append("spectre_retry_after_upload_failure")
+            retry_t0 = time.perf_counter()
+            spectre_result = run_spectre_case(
+                task_id=task_id,
+                tb_path=tb_path,
+                include_paths=include_paths,
+                output_dir=spectre_root,
+                bridge_repo=bridge_repo,
+                cadence_cshrc=cadence_cshrc,
+                timeout_s=timeout_s,
+                side_output_files=side_outputs,
+                spectre_backend=spectre_backend,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
+                spectre_mode=spectre_mode,
+            )
+            spectre_wall_time_s += time.perf_counter() - retry_t0
 
-    spectre_csv = spectre_root / "tran_spectre.csv"
-    if spectre_result.get("ok") and spectre_csv.exists():
-        spectre_behavior_score, spectre_behavior_notes = evaluate_behavior(
-            checker_task_id,
-            spectre_csv,
-            checks_config=checks_config,
-        )
-        side_output_result = validate_behavior_side_outputs(checker_task_id, spectre_root, spectre_csv)
-        if side_output_result is not None:
-            side_output_ok, side_output_note = side_output_result
-            spectre_behavior_notes.append(side_output_note)
-            if not side_output_ok:
-                spectre_behavior_score = 0.0
-    else:
-        spectre_behavior_score = 0.0
-        spectre_behavior_notes = ["tran_spectre.csv missing or Spectre run failed"]
+        spectre_csv = spectre_root / "tran_spectre.csv"
+        if spectre_result.get("ok") and spectre_csv.exists():
+            spectre_behavior_score, spectre_behavior_notes = evaluate_behavior(
+                checker_task_id,
+                spectre_csv,
+                checks_config=checks_config,
+            )
+            side_output_result = validate_behavior_side_outputs(checker_task_id, spectre_root, spectre_csv)
+            if side_output_result is not None:
+                side_output_ok, side_output_note = side_output_result
+                spectre_behavior_notes.append(side_output_note)
+                if not side_output_ok:
+                    spectre_behavior_score = 0.0
+        else:
+            spectre_behavior_score = 0.0
+            spectre_behavior_notes = ["tran_spectre.csv missing or Spectre run failed"]
 
     evas_csv = evas_root / "tran.csv"
-    if evas_result.get("status") == "PASS" and spectre_behavior_score >= 1.0 and evas_csv.exists() and spectre_csv.exists():
+    spectre_csv = spectre_root / "tran_spectre.csv"
+    if (
+        not skip_spectre
+        and evas_result.get("status") == "PASS"
+        and isinstance(spectre_behavior_score, (float, int))
+        and spectre_behavior_score >= 1.0
+        and evas_csv.exists()
+        and spectre_csv.exists()
+    ):
         parity = compare_waveforms(checker_task_id, evas_csv, spectre_csv)
+    elif skip_spectre:
+        parity = {
+            "status": "skipped",
+            "reason": "spectre skipped for EVAS-only gold certification",
+        }
     else:
         parity = {
             "status": "blocked",
@@ -220,9 +252,11 @@ def run_one_form(
 
     if evas_result.get("status") != "PASS":
         status = "FAIL_EVAS"
+    elif skip_spectre:
+        status = "PASS"
     elif not spectre_result.get("ok"):
         status = "FAIL_SPECTRE"
-    elif spectre_behavior_score < 1.0:
+    elif isinstance(spectre_behavior_score, (float, int)) and spectre_behavior_score < 1.0:
         status = "FAIL_SPECTRE_BEHAVIOR"
     else:
         status = "PASS"
@@ -276,6 +310,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cadence-cshrc", default=os.environ.get("VB_CADENCE_CSHRC", ""))
     parser.add_argument("--spectre-backend", default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"))
     parser.add_argument("--spectre-mode", default=os.environ.get("VAEVAS_SPECTRE_MODE", "ax"))
+    parser.add_argument(
+        "--evas-engine",
+        default=os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", ""),
+        help="Optional EVAS engine override, e.g. evas or evas2. Sets VAEVAS_DEFAULT_EVAS_ENGINE and EVAS_ENGINE.",
+    )
     parser.add_argument("--sui-host", default=os.environ.get("VAEVAS_SUI_HOST", ""))
     parser.add_argument("--sui-work-root", default=os.environ.get("VAEVAS_SUI_WORK_ROOT", ""))
     return parser.parse_args()
@@ -286,6 +325,9 @@ def main() -> int:
     root = args.root.resolve()
     repo_root = repo_root_from_v2_root(root)
     ensure_runner_import(repo_root)
+    if args.evas_engine:
+        os.environ["VAEVAS_DEFAULT_EVAS_ENGINE"] = args.evas_engine
+        os.environ["EVAS_ENGINE"] = args.evas_engine
 
     selected_task_ids = set(args.task_id)
     candidates = form_dirs(root)
@@ -345,7 +387,7 @@ def main() -> int:
 
     summary = {
         "release": "vabench-release-v2",
-        "run_kind": "gold_spectre_mini_cert",
+        "run_kind": "gold_evas_only_cert" if spectre_backend_disabled(args.spectre_backend) else "gold_spectre_mini_cert",
         "status": "PASS" if rows and all(row.get("status") == "PASS" for row in rows) else "FAIL",
         "started_at": started_at,
         "finished_at": datetime.now().isoformat(timespec="seconds"),
@@ -354,6 +396,7 @@ def main() -> int:
         "row_count": len(rows),
         "pass_count": sum(1 for row in rows if row.get("status") == "PASS"),
         "status_counts": status_counts,
+        "evas_engine": os.environ.get("EVAS_ENGINE") or os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", ""),
         "spectre_backend": args.spectre_backend,
         "spectre_mode": args.spectre_mode,
         "rows": rows,

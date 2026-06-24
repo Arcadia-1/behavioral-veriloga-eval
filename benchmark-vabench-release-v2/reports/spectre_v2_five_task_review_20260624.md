@@ -14,6 +14,12 @@ Bridge evidence:
 - Local raw evidence root for this run:
   `/private/tmp/vabench_v2_spectre_review_20260624`
 
+Reproducibility note: this is a historical Spectre review summary. Issue #20
+identified that the checked-in EVAS-only path did not reproduce the weighted-SAR
+PASS from current code because the checker sampled intermediate SAR trial states
+as final conversions. The post-fix EVAS-only reproduction is recorded in
+`reports/spectre_mini_cert/gold_evas_only_cert_issue20_fix_20260624.md`.
+
 ## Fresh v2 Gold Dual Rerun
 
 All five v2 gold/reference forms passed EVAS, Spectre, behavior checking, and

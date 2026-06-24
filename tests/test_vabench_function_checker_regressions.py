@@ -1950,12 +1950,104 @@ def _sar_adc_dac_rows(*, mode: str = "good") -> list[dict[str, float]]:
     return rows
 
 
+def _sar_adc_dac_multicycle_rows(*, mode: str = "good") -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vdd = 0.9
+
+    def append_row(
+        time_s: float,
+        clks: float,
+        rst_n: float,
+        vin: float,
+        vin_sh: float,
+        code: int,
+        vout: float,
+        *,
+        conv_done: float = 0.0,
+        vin_sample: float | None = None,
+    ) -> None:
+        row = {
+            "time": time_s,
+            "vin": vin,
+            "vin_sh": vin_sh,
+            "clks": clks,
+            "rst_n": rst_n,
+            "vout": vout,
+            "bit_index": 0.0,
+            "trial_code_mon": 0.0,
+            "trial_vdac": 0.0,
+            "cmp_decision": 0.0,
+            "conv_done": conv_done,
+            "vin_sample": vin if vin_sample is None else vin_sample,
+        }
+        for bit in range(8):
+            row[f"dout_{bit}"] = vdd if (code >> bit) & 1 else 0.0
+        rows.append(row)
+
+    for conv_idx in range(96):
+        base = conv_idx * 220.0e-9
+        rst_n = vdd if conv_idx >= 4 else 0.0
+        sample_time = base + 12.0e-9
+        vin = 0.45 + 0.45 * math.sin(2.0 * math.pi * 100.0e3 * sample_time)
+        vin = max(0.0, min(vdd, vin))
+        final_code = max(0, min(255, int(math.floor(vin / vdd * 255.0))))
+        final_vout = final_code / 255.0 * vdd
+        if mode == "final_code_offset":
+            final_code = max(0, min(255, final_code + 35))
+            final_vout = final_code / 255.0 * vdd
+        elif mode != "good":
+            raise ValueError(mode)
+
+        append_row(base, 0.0, rst_n, vin, vin, 0, 0.0, vin_sample=vin)
+        for trial_idx in range(8):
+            partial_code = (255 - final_code + trial_idx * 17) % 256
+            partial_vout = partial_code / 255.0 * vdd
+            append_row(
+                base + (20.0 + trial_idx * 20.0) * 1.0e-9,
+                vdd,
+                rst_n,
+                vin,
+                vin,
+                partial_code,
+                partial_vout,
+                vin_sample=vin,
+            )
+            append_row(
+                base + (30.0 + trial_idx * 20.0) * 1.0e-9,
+                0.0,
+                rst_n,
+                vin,
+                vin,
+                partial_code,
+                partial_vout,
+                vin_sample=vin,
+            )
+        append_row(
+            base + 190.0e-9,
+            vdd,
+            rst_n,
+            vin,
+            vin,
+            final_code,
+            final_vout,
+            conv_done=vdd,
+            vin_sample=vin,
+        )
+        append_row(base + 200.0e-9, 0.0, rst_n, vin, vin, final_code, final_vout, vin_sample=vin)
+
+    return rows
+
+
 def test_sar_adc_dac_checker_requires_code_dac_sample_alignment() -> None:
     assert sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_rows())[0]
+    assert sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_multicycle_rows())[0]
     assert not sim.check_sar_adc_dac_weighted_8b(
         _sar_adc_dac_rows(mode="vout_tracks_input_but_code_fake")
     )[0]
     assert not sim.check_sar_adc_dac_weighted_8b(_sar_adc_dac_rows(mode="code_offset"))[0]
+    assert not sim.check_sar_adc_dac_weighted_8b(
+        _sar_adc_dac_multicycle_rows(mode="final_code_offset")
+    )[0]
 
 
 def test_csv_checker_runtime_maps_common_signal_aliases(tmp_path: Path) -> None:
@@ -2010,11 +2102,11 @@ def test_release_sar_streaming_checker_matches_row_based(tmp_path: Path) -> None
 
     assert stream_score == row_score
     assert stream_notes[0] == "streaming_checker:public_contract"
-    assert stream_notes[1].startswith("streaming_checker:edge_samples=")
+    assert stream_notes[1].startswith("streaming_checker:completed_conversions=")
     assert "avg_quant_err=" in stream_notes[1]
     assert e2e_score == row_score
     assert e2e_notes[0] == "streaming_checker:public_contract"
-    assert e2e_notes[1].startswith("streaming_checker:edge_samples=")
+    assert e2e_notes[1].startswith("streaming_checker:completed_conversions=")
     assert "avg_quant_err=" in e2e_notes[1]
 
 

@@ -1,0 +1,84 @@
+{
+  "release": "vabench-release-v2",
+  "run_kind": "gold_evas_only_cert",
+  "issue": "https://github.com/Arcadia-1/behavioral-veriloga-eval/issues/20",
+  "status": "PASS",
+  "row_count": 5,
+  "pass_count": 5,
+  "status_counts": {
+    "PASS": 5
+  },
+  "command": "VAEVAS_EVAS_PERSISTENT_WORKER=0 VAEVAS_DEFAULT_EVAS_ENGINE=evas EVAS_ENGINE=evas python3 benchmark-vabench-release-v2/scripts/run_gold_spectre_mini_cert.py --spectre-backend none --evas-engine evas --timeout-s 900 --task-id vbr1_l1_window_comparator_detector:tb --task-id vbr1_l1_aperture_delay_track_and_hold:dut --task-id vbr1_l1_first_order_lowpass:bugfix --task-id vbr1_l2_weighted_sar_adc_dac_loop:e2e --task-id vbr1_l2_gain_extraction_convergence_measurement_flow:e2e --output-root /private/tmp/issue20_five_evas_only_cert",
+  "evas_engine": "evas",
+  "spectre_backend": "none",
+  "spectre_mode": "ax",
+  "output_root": "/private/tmp/issue20_five_evas_only_cert",
+  "started_at": "2026-06-24T14:50:35",
+  "finished_at": "2026-06-24T14:52:22",
+  "rows": [
+    {
+      "task_id": "vbr1_l2_weighted_sar_adc_dac_loop:e2e",
+      "status": "PASS",
+      "evas_status": "PASS",
+      "dut_compile": 1.0,
+      "tb_compile": 1.0,
+      "sim_correct": 1.0,
+      "weighted_total": 1.0,
+      "notes": "completed_conversions=124 unique_codes=60 code_range=0..254 sample_span=0.900 vout_span=0.896 avg_quant_err=0.0018 max_quant_err=0.0035 avg_dac_err=0.0032 max_dac_err=0.0565 avg_roundtrip_err=0.0049 monotonic_reversals=0",
+      "evas_wall_time_s": 84.04775308400001
+    },
+    {
+      "task_id": "vbr1_l1_window_comparator_detector:tb",
+      "status": "PASS",
+      "evas_status": "PASS",
+      "dut_compile": 1.0,
+      "tb_compile": 1.0,
+      "sim_correct": 1.0,
+      "weighted_total": 1.0,
+      "notes": "below_hi=0.000 above_hi=0.000 inside_rise_hi=1.000 inside_fall_hi=1.000 span=0.900",
+      "evas_wall_time_s": 4.998194584000004
+    },
+    {
+      "task_id": "vbr1_l1_aperture_delay_track_and_hold:dut",
+      "status": "PASS",
+      "evas_status": "PASS",
+      "dut_compile": 1.0,
+      "tb_compile": 1.0,
+      "sim_correct": 1.0,
+      "weighted_total": 1.0,
+      "notes": "aperture_samples=0.350,0.600,0.250,0.700,0.400,0.800,0.800 expected=0.350,0.600,0.250,0.700,0.400,0.800,0.800 mismatches=0 span=0.550",
+      "evas_wall_time_s": 1.0538732920000058
+    },
+    {
+      "task_id": "vbr1_l1_first_order_lowpass:bugfix",
+      "status": "PASS",
+      "evas_status": "PASS",
+      "dut_compile": 1.0,
+      "tb_compile": 1.0,
+      "sim_correct": 1.0,
+      "weighted_total": 1.0,
+      "notes": "configured_lowpass_samples=0.299,0.618,0.776,0.799 input_step=True monotonic=True response_fast_enough=True not_instant=True bounded=True checker_config_parameters=first_order_lowpass",
+      "evas_wall_time_s": 0.4898060000000015
+    },
+    {
+      "task_id": "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+      "status": "PASS",
+      "evas_status": "PASS",
+      "dut_compile": 1.0,
+      "tb_compile": 1.0,
+      "sim_correct": 1.0,
+      "weighted_total": 1.0,
+      "notes": "diff_gain=11.08",
+      "evas_wall_time_s": 16.85088887500001
+    }
+  ],
+  "spectre": {
+    "status": "SKIPPED",
+    "reason": "EVAS-only issue-20 reproduction/fix check"
+  },
+  "fix_summary": [
+    "SAR release checker now evaluates completed conversion rows via conv_done and vin_sample instead of every clock edge.",
+    "run_gold_spectre_mini_cert.py now accepts --spectre-backend none as a clean EVAS-only mode.",
+    "run_gold_spectre_mini_cert.py now accepts --evas-engine to make Docker Python-EVAS runs explicit."
+  ]
+}
