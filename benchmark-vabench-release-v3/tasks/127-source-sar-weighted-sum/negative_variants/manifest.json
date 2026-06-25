@@ -1,0 +1,9 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_zero",
+      "description": "Drives zero output and therefore fails the weighted-sum semantic contract.",
+      "path": "negative_variants/neg_001_zero/sar_weighted_sum.va"
+    }
+  ]
+}

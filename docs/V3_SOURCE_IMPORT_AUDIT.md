@@ -67,6 +67,28 @@ Evidence artifacts:
 - `WORK/source-import-batch2-evas/summary.json`
 - `WORK/source-import-batch2-spectre/summary.json`
 
+## Certified Batch 3
+
+The third submitted batch adds six more source-import tasks. A low-power
+comparator-ready candidate was screened out before submission: its stable logic
+matched in EVAS and Spectre, but the generic edge-parity gate exposed a 50 ps
+`transition()` timing difference on `RDY`. It remains only as scratch evidence
+under `WORK/`; the submitted batch below has full checker and parity pass.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `122-source-offset-search-comparator` | `caiyizeng25/V_comp_offset.va` | comparator-offset binary search stimulus | PASS | PASS | passed |
+| `123-source-start-gated-offset-search` | `shigao/V_comparator_offset.va` | start-gated comparator-offset search | PASS | PASS | passed |
+| `124-source-comp-os-detect` | `guoxy/ideal_COMP_OS_DETECT.va` | successive-approximation comparator offset detect | PASS | PASS | passed |
+| `125-source-clocked-dac-4b-binary` | `wangxy/DAC_4b.va` | clocked 4-bit binary-weighted DAC reconstruction | PASS | PASS | passed |
+| `126-source-latched-comparator-delay` | `jielu/L2_comp.va` | supply-referenced latched comparator with output delay | PASS | PASS | passed |
+| `127-source-sar-weighted-sum` | `shigao/V_SAR_sum.va` | SAR non-binary weighted residue/code reconstruction | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch3-evas/summary.json`
+- `WORK/source-import-batch3-spectre/summary.json`
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

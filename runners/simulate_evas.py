@@ -6426,6 +6426,133 @@ def check_v3_source_dff_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
+def _sample_differential_sequence(
+    rows: list[dict[str, float]],
+    pos: str,
+    neg: str,
+    expected: list[tuple[float, float]],
+    *,
+    common_mode: float,
+    diff_tol: float,
+    common_tol: float,
+) -> tuple[bool, str]:
+    diffs: list[float] = []
+    commons: list[float] = []
+    for time_ns, expected_diff in expected:
+        vp = sample_signal_at(rows, pos, time_ns * 1e-9)
+        vn = sample_signal_at(rows, neg, time_ns * 1e-9)
+        if vp is None or vn is None:
+            return False, f"missing_{pos}_{neg}_sample_at={time_ns:g}ns"
+        diff = vp - vn
+        cm = 0.5 * (vp + vn)
+        diffs.append(diff)
+        commons.append(cm)
+        if abs(diff - expected_diff) > diff_tol:
+            return False, (
+                f"{pos}-{neg}@{time_ns:g}ns={diff:.5f} expected={expected_diff:.5f} "
+                f"tol={diff_tol:.5f}"
+            )
+        if abs(cm - common_mode) > common_tol:
+            return False, (
+                f"common_mode@{time_ns:g}ns={cm:.5f} expected={common_mode:.5f} "
+                f"tol={common_tol:.5f}"
+            )
+    diff_detail = ",".join(f"{value:.5f}" for value in diffs)
+    cm_detail = ",".join(f"{value:.4f}" for value in commons)
+    return True, f"{pos}-{neg}={diff_detail} cm={cm_detail}"
+
+
+def check_v3_source_offset_search_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vout", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vout/vinp/vinn"
+    return _sample_differential_sequence(
+        rows,
+        "vinp",
+        "vinn",
+        [(8.5, 0.010), (18.5, 0.020), (28.5, 0.015), (38.5, 0.010), (48.5, 0.0125)],
+        common_mode=0.45,
+        diff_tol=0.0025,
+        common_tol=0.0025,
+    )
+
+
+def check_v3_source_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "start", "vout", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/start/vout/vinp/vinn"
+    return _sample_differential_sequence(
+        rows,
+        "vinp",
+        "vinn",
+        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.040), (38.5, 0.030), (48.5, 0.020)],
+        common_mode=0.70,
+        diff_tol=0.0030,
+        common_tol=0.0030,
+    )
+
+
+def check_v3_source_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "dcmpp", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/dcmpp/vinp/vinn"
+    return _sample_differential_sequence(
+        rows,
+        "vinp",
+        "vinn",
+        [(8.5, -0.1000), (18.5, -0.0500), (28.5, -0.0250), (38.5, -0.0375), (48.5, -0.04375)],
+        common_mode=0.45,
+        diff_tol=0.0030,
+        common_tol=0.0030,
+    )
+
+
+def check_v3_source_clocked_dac_4b_binary(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d1", "d2", "d3", "d4", "clk", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/d1/d2/d3/d4/clk/vout"
+    expected = [(6.0, -0.84375), (16.0, -0.28125), (26.0, 0.28125), (36.0, 0.84375)]
+    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
+    if not ok:
+        return ok, detail
+    observed = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
+    monotonic = all(b > a + 0.45 for a, b in zip(observed, observed[1:]))
+    if not monotonic:
+        return False, f"dac4_binary_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
+    return True, detail + " monotonic=True"
+
+
+def check_v3_source_latched_comparator_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vinp/vinn/dout"
+    return _sample_many(
+        rows,
+        {"dout": [(6.0, 0.9), (16.0, 0.0), (26.0, 0.9), (36.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/d10/d9/d8/d7/d6/d5/d4/d3/d2/d1/d0/vout"
+    expected = [
+        (2.0, -1.0),
+        (12.0, -0.125),
+        (22.0, 0.375),
+        (32.0, 0.998046875),
+    ]
+    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
+    if not ok:
+        return ok, detail
+    observed = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
+    monotonic = all(b > a + 0.35 for a, b in zip(observed, observed[1:]))
+    if not monotonic:
+        return False, f"sar_weighted_sum_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
+    return True, detail + " monotonic=True"
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10296,6 +10423,12 @@ CHECKS = {
     "v3_source_crossing_pulse_detector": check_v3_source_crossing_pulse_detector,
     "v3_source_not_gate": check_v3_source_not_gate,
     "v3_source_dff_reset": check_v3_source_dff_reset,
+    "v3_source_offset_search_comparator": check_v3_source_offset_search_comparator,
+    "v3_source_start_gated_offset_search": check_v3_source_start_gated_offset_search,
+    "v3_source_comp_os_detect": check_v3_source_comp_os_detect,
+    "v3_source_clocked_dac_4b_binary": check_v3_source_clocked_dac_4b_binary,
+    "v3_source_latched_comparator_delay": check_v3_source_latched_comparator_delay,
+    "v3_source_sar_weighted_sum": check_v3_source_sar_weighted_sum,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -11556,6 +11689,12 @@ CHECKS["118-source-clocked-dac-restore-7b"] = check_v3_source_clocked_dac_restor
 CHECKS["119-source-crossing-pulse-detector"] = check_v3_source_crossing_pulse_detector
 CHECKS["120-source-not-gate-voltage"] = check_v3_source_not_gate
 CHECKS["121-source-dff-reset-voltage"] = check_v3_source_dff_reset
+CHECKS["122-source-offset-search-comparator"] = check_v3_source_offset_search_comparator
+CHECKS["123-source-start-gated-offset-search"] = check_v3_source_start_gated_offset_search
+CHECKS["124-source-comp-os-detect"] = check_v3_source_comp_os_detect
+CHECKS["125-source-clocked-dac-4b-binary"] = check_v3_source_clocked_dac_4b_binary
+CHECKS["126-source-latched-comparator-delay"] = check_v3_source_latched_comparator_delay
+CHECKS["127-source-sar-weighted-sum"] = check_v3_source_sar_weighted_sum
 
 
 RELEASE_FORM_CHECK_ALIASES = {

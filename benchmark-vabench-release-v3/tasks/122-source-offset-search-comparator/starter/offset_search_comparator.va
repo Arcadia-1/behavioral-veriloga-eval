@@ -1,0 +1,14 @@
+`include "disciplines.vams"
+
+module offset_search_comparator (CLK, VOUT, VINP, VINN);
+
+output VINP;
+output VINN;
+electrical CLK, VOUT, VINP, VINN;
+
+analog begin
+    V(VINP) <+ 0;
+    V(VINN) <+ 0;
+end
+
+endmodule

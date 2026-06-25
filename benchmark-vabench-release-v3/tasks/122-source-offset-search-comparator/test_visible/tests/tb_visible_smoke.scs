@@ -1,0 +1,12 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "offset_search_comparator.va"
+
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=2.5n period=10n width=5n rise=100p fall=100p
+Vout (vout 0) vsource type=pwl wave=[0 0.0 24n 0.0 24.1n 0.9 44n 0.9 44.1n 0.0 60n 0.0]
+
+XDUT (clk vout vinp vinn) offset_search_comparator
+
+tran tran stop=55n maxstep=25p
+save clk vout vinp vinn

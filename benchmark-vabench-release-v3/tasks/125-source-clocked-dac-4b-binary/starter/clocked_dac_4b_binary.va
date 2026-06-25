@@ -1,0 +1,12 @@
+`include "disciplines.vams"
+
+module clocked_dac_4b_binary (D1, D2, D3, D4, CLK, VOUT);
+
+output VOUT;
+electrical D1, D2, D3, D4, CLK, VOUT;
+
+analog begin
+    V(VOUT) <+ 0;
+end
+
+endmodule
