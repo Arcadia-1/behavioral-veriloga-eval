@@ -1,0 +1,62 @@
+{
+  "date": "2026-06-25",
+  "evas_version": "0.4.5",
+  "scope": "benchmark-vabench-release-v3/tasks/001-111",
+  "tasks": 111,
+  "pass": 111,
+  "fail": 0,
+  "max_wall_s": 13.615475269965827,
+  "median_wall_s": 0.9560349790845066,
+  "slowest": [
+    {
+      "task_id": "v3_054_onehot_to_binary_encoder_16b",
+      "wall_s": 13.615,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_002_capacitive_weighted_sar_feedback_dac",
+      "wall_s": 12.272,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_055_binary_to_onehot_decoder_16b",
+      "wall_s": 11.217,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_041_propagation_delay_comparator",
+      "wall_s": 10.677,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_087_lfsr_prbs_generator",
+      "wall_s": 10.148,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_051_thermometer_to_binary_encoder_8b",
+      "wall_s": 7.785,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_001_bang_bang_phase_detector",
+      "wall_s": 6.973,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_050_bin_to_thermometer_decoder_8b",
+      "wall_s": 6.829,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_056_decimal_digit_to_bcd_encoder",
+      "wall_s": 6.57,
+      "status": "PASS"
+    },
+    {
+      "task_id": "v3_011_pfd_up_dn_logic",
+      "wall_s": 5.966,
+      "status": "PASS"
+    }
+  ]
+}

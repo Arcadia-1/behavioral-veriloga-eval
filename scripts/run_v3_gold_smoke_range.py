@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
+import re
 import time
 from pathlib import Path
 
@@ -16,6 +18,23 @@ def task_number(task_dir: Path) -> int | None:
         return int(task_dir.name[:3])
     except ValueError:
         return None
+
+
+def task_toml_id(task_dir: Path) -> str | None:
+    task_toml = task_dir / "task.toml"
+    if not task_toml.exists():
+        return None
+    match = re.search(
+        r'(?m)^\s*id\s*=\s*(".*?"|\'.*?\')\s*$',
+        task_toml.read_text(encoding="utf-8", errors="ignore"),
+    )
+    if not match:
+        return None
+    try:
+        value = ast.literal_eval(match.group(1))
+    except (SyntaxError, ValueError):
+        return None
+    return str(value) if value else None
 
 
 def main() -> int:
@@ -50,17 +69,41 @@ def main() -> int:
         dut_root = task / "negative_variants" / args.variant if args.variant else task / "solution"
         dut = dut_root / targets[0]
         if not dut.exists():
-            row = {
-                "task_id": task.name,
-                "status": "FAIL_NO_DUT",
-                "notes": [f"missing candidate artifact {dut}"],
-            }
-            rows.append(row)
-            print(task.name, row["status"], flush=True)
-            continue
+            fallback_candidates = sorted(dut_root.glob("*.va"))
+            if len(fallback_candidates) == 1:
+                dut = fallback_candidates[0]
+            else:
+                row = {
+                    "task_id": task_toml_id(task) or task.name,
+                    "status": "FAIL_NO_DUT",
+                    "notes": [f"missing candidate artifact {dut}"],
+                }
+                rows.append(row)
+                print(task.name, row["status"], flush=True)
+                continue
         tb = task / "test_hidden" / "hidden.scs"
+        if not tb.exists():
+            tb_candidates = sorted((task / "test_hidden" / "tests").glob("*.scs"))
+            if len(tb_candidates) == 1:
+                tb = tb_candidates[0]
+            else:
+                row = {
+                    "task_id": task_toml_id(task) or task.name,
+                    "status": "FAIL_NO_TB",
+                    "notes": [f"missing hidden.scs and unique test_hidden/tests/*.scs in {task}"],
+                }
+                rows.append(row)
+                print(task.name, row["status"], flush=True)
+                continue
         start = time.perf_counter()
-        result = run_case(task, dut, tb, timeout_s=args.timeout, keep_run_dir=False)
+        result = run_case(
+            task,
+            dut,
+            tb,
+            timeout_s=args.timeout,
+            keep_run_dir=False,
+            task_id_override=task_toml_id(task),
+        )
         result["wall_s"] = time.perf_counter() - start
         rows.append(result)
         print(
