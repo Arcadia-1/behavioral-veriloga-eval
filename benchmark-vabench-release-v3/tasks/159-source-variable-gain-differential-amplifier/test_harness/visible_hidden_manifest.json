@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_variable_gain_differential_amplifier",
+  "evidence": {
+    "evas": "WORK/source-import-batch8-evas/159-source-variable-gain-differential-amplifier",
+    "spectre": "WORK/source-import-batch8-spectre/159-source-variable-gain-differential-amplifier"
+  }
+}

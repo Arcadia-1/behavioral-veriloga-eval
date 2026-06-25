@@ -206,6 +206,33 @@ Batch timings:
 - Spectre AX hidden plus EVAS/Spectre parity: 8/8 passed, wallclock 14.712 s
   with 8-way parallel submission.
 
+## Certified Batch 8
+
+The eighth submitted batch adds six continuous mixed-signal primitives and
+brings the certified source-import count to 50 tasks. These tasks emphasize
+differential analog behavior and nonlinear signal conditioning while staying
+inside EVAS's voltage-domain scope.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `156-source-differential-amplifier-core` | `wangx/diffamp.va` | single-ended output differential amplifier | PASS | PASS | passed |
+| `157-source-logarithmic-amplifier` | `wangx/log_amp.va` | bounded logarithmic measurement | PASS | PASS | passed |
+| `158-source-soft-voltage-clamp` | `wangx/soft_voltage_clamp.va` | smooth exponential voltage limiting | PASS | PASS | passed |
+| `159-source-variable-gain-differential-amplifier` | `wangx/vargain_diffamp.va` | differential amplifier with differential gain control | PASS | PASS | passed |
+| `160-source-voltage-controlled-gain-amplifier` | `wangx/vc_vg_diffamp.va` | voltage-controlled differential gain block | PASS | PASS | passed |
+| `161-source-ideal-differential-opamp` | `taoy/OPAMP.va` | ideal differential output opamp around common-mode | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch8-evas/summary.json`
+- `WORK/source-import-batch8-spectre/summary.json`
+
+Batch timings:
+
+- EVAS hidden: 6/6 PASS, wallclock 0.408 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.163 s
+  with 6-way parallel submission.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

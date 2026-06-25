@@ -6967,6 +6967,85 @@ def check_v3_source_three_way_threshold_mux(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_source_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin_p/sigin_n/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, -0.50), (15.0, -0.10), (25.0, 0.30), (35.0, 0.10)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_logarithmic_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, -2.302585), (15.0, -0.693147), (25.0, -0.693147), (35.0, 0.0)]},
+        tol=0.035,
+    )
+
+
+def check_v3_source_soft_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, -0.17293), (15.0, 0.20), (25.0, 0.57293), (35.0, 0.47869)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_variable_gain_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin_p/sigin_n/sigctrl_p/sigctrl_n/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, 0.0), (15.0, 0.40), (25.0, 0.80), (35.0, -0.40)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_voltage_controlled_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin_p", "vin_n", "vctrl_p", "vctrl_n", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin_p/vin_n/vctrl_p/vctrl_n/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.3125), (15.0, 0.5750), (25.0, 0.9000), (35.0, 0.1000)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinn", "voutp", "voutn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vinp/vinn/voutp/voutn"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "voutp": [(5.0, 0.30), (15.0, 0.50), (25.0, 0.80), (35.0, 0.10)],
+            "voutn": [(5.0, 0.70), (15.0, 0.50), (25.0, 0.20), (35.0, 0.90)],
+        },
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    max_cm_error = 0.0
+    for time_ns in (5.0, 15.0, 25.0, 35.0):
+        voutp = sample_signal_at(rows, "voutp", time_ns * 1e-9)
+        voutn = sample_signal_at(rows, "voutn", time_ns * 1e-9)
+        if voutp is None or voutn is None:
+            return False, f"missing_opamp_output_sample_at={time_ns:g}ns"
+        max_cm_error = max(max_cm_error, abs(0.5 * (voutp + voutn) - 0.5))
+    return max_cm_error <= 0.02, f"{detail} max_cm_error={max_cm_error:.5f}"
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10871,6 +10950,12 @@ CHECKS = {
     "v3_source_limiting_differential_amplifier": check_v3_source_limiting_differential_amplifier,
     "v3_source_analog_multiplier": check_v3_source_analog_multiplier,
     "v3_source_three_way_threshold_mux": check_v3_source_three_way_threshold_mux,
+    "v3_source_differential_amplifier_core": check_v3_source_differential_amplifier_core,
+    "v3_source_logarithmic_amplifier": check_v3_source_logarithmic_amplifier,
+    "v3_source_soft_voltage_clamp": check_v3_source_soft_voltage_clamp,
+    "v3_source_variable_gain_differential_amplifier": check_v3_source_variable_gain_differential_amplifier,
+    "v3_source_voltage_controlled_gain_amplifier": check_v3_source_voltage_controlled_gain_amplifier,
+    "v3_source_ideal_differential_opamp": check_v3_source_ideal_differential_opamp,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
