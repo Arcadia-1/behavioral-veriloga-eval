@@ -1,0 +1,30 @@
+`include "disciplines.vams"
+
+module three_input_or_gate (vin1, vin2, vin3, vout);
+
+input vin1, vin2, vin3;
+output vout;
+electrical vin1, vin2, vin3, vout;
+
+parameter real vlogic_high = 0.9;
+parameter real vlogic_low = 0;
+parameter real vtrans = 0.45;
+parameter real tdel = 0 from [0:inf);
+parameter real trise = 0 from [0:inf);
+parameter real tfall = 0 from [0:inf);
+
+integer logic1, logic2, logic3;
+real vout_val;
+
+analog begin
+    @(initial_step or cross(V(vin1) - vtrans) or cross(V(vin2) - vtrans) or cross(V(vin3) - vtrans)) begin
+        logic1 = V(vin1) > vtrans;
+        logic2 = V(vin2) > vtrans;
+        logic3 = V(vin3) > vtrans;
+        vout_val = (logic1 || logic2 || logic3) ? vlogic_high : vlogic_low;
+    end
+
+    V(vout) <+ transition(vout_val, tdel, trise, tfall);
+end
+
+endmodule

@@ -1,0 +1,20 @@
+id = "v3_140_source_three_input_or_gate"
+name = "140-source-three-input-or-gate"
+title = "Source Three Input OR Gate"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["three_input_or_gate.va"]

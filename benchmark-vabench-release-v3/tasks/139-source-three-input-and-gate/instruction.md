@@ -1,0 +1,1 @@
+Implement a three-input voltage-domain AND gate named `three_input_and_gate` with port order `vin1, vin2, vin3, vout`. Inputs above `vtrans` are high; drive `vout` high only when all three inputs are high.

@@ -121,6 +121,28 @@ Evidence artifacts:
 - `WORK/source-import-batch4-evas/summary.json`
 - `WORK/source-import-batch4-spectre/summary.json`
 
+## Certified Batch 5
+
+The fifth submitted batch adds five logic primitive tasks and brings the
+certified source-import count to 30 tasks, the lower bound of the planned first
+batch. These tasks are intentionally small but still useful as voltage-domain
+truth-table fixtures: they exercise stable event-triggered logic updates,
+multi-input logic contracts, and basic digital control blocks used around ADC
+and timing behavioral models.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `137-source-two-input-nand-gate` | `tangxy/nand2.va` | voltage-domain two-input NAND logic | PASS | PASS | passed |
+| `138-source-two-input-nor-gate` | `tangxy/nor2.va` | voltage-domain two-input NOR logic | PASS | PASS | passed |
+| `139-source-three-input-and-gate` | `wangx/and3.va` | three-input AND control logic | PASS | PASS | passed |
+| `140-source-three-input-or-gate` | `wangx/or3.va` | three-input OR control logic | PASS | PASS | passed |
+| `141-source-three-input-xor-gate` | `wangx/xor3.va` | three-input parity/XOR logic | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch5-evas/summary.json`
+- `WORK/source-import-batch5-spectre/summary.json`
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

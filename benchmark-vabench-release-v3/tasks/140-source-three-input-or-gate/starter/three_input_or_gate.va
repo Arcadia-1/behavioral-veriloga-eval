@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+module three_input_or_gate (vin1, vin2, vin3, vout);
+
+input vin1, vin2, vin3;
+output vout;
+electrical vin1, vin2, vin3, vout;
+
+analog begin
+    V(vout) <+ 0;
+end
+
+endmodule

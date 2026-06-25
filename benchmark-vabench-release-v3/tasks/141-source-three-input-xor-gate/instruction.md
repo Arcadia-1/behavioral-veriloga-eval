@@ -1,0 +1,1 @@
+Implement a three-input voltage-domain XOR gate named `three_input_xor_gate` with port order `vin1, vin2, vin3, vout`. Inputs above `vtrans` are high; drive `vout` high when an odd number of inputs are high.

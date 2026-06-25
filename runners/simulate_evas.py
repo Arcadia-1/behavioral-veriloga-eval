@@ -6685,6 +6685,61 @@ def check_v3_source_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool
     return True, detail + " sample_then_monotone_down=True"
 
 
+def check_v3_source_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/in1/in2/out"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.9), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.9)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_two_input_nor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/in1/in2/out"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.9), (15.0, 0.0), (25.0, 0.0), (35.0, 0.0), (45.0, 0.9)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_three_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vin3", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vin3/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_three_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vin3", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vin3/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.9), (55.0, 0.9), (62.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vin3", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vin3/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0), (55.0, 0.9), (62.0, 0.0)]},
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10570,6 +10625,11 @@ CHECKS = {
     "v3_source_differential_buffer": check_v3_source_differential_buffer,
     "v3_source_two_input_or_gate": check_v3_source_two_input_or_gate,
     "v3_source_sar_cdac_residue": check_v3_source_sar_cdac_residue,
+    "v3_source_two_input_nand_gate": check_v3_source_two_input_nand_gate,
+    "v3_source_two_input_nor_gate": check_v3_source_two_input_nor_gate,
+    "v3_source_three_input_and_gate": check_v3_source_three_input_and_gate,
+    "v3_source_three_input_or_gate": check_v3_source_three_input_or_gate,
+    "v3_source_three_input_xor_gate": check_v3_source_three_input_xor_gate,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -11845,6 +11905,11 @@ CHECKS["133-source-time-diff-detector"] = check_v3_source_time_diff_detector
 CHECKS["134-source-differential-buffer"] = check_v3_source_differential_buffer
 CHECKS["135-source-two-input-or-gate"] = check_v3_source_two_input_or_gate
 CHECKS["136-source-sar-cdac-residue"] = check_v3_source_sar_cdac_residue
+CHECKS["137-source-two-input-nand-gate"] = check_v3_source_two_input_nand_gate
+CHECKS["138-source-two-input-nor-gate"] = check_v3_source_two_input_nor_gate
+CHECKS["139-source-three-input-and-gate"] = check_v3_source_three_input_and_gate
+CHECKS["140-source-three-input-or-gate"] = check_v3_source_three_input_or_gate
+CHECKS["141-source-three-input-xor-gate"] = check_v3_source_three_input_xor_gate
 
 
 RELEASE_FORM_CHECK_ALIASES = {
