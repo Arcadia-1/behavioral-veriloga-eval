@@ -1,0 +1,20 @@
+id = "v3_220_source_spi_shift_mux"
+name = "220-source-spi-shift-mux"
+title = "Source SPI Shift Mux"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "logic"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["spi_shift_mux.va"]

@@ -1,0 +1,1 @@
+Implement `offset_rdac_search_flow` with `ck`, decision input `d`, outputs `vinp/vinn`, `vrefp/vrefn`, and `dc0..dc6`. First refine the RDAC code, then run a bounded offset search around the current reference and step the reference after the search window.

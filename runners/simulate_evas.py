@@ -7823,6 +7823,124 @@ def check_v3_source_dac7_code_generator(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_source_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6", "cvinp", "cvinn", "en", "enb"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing foreground rdac calibrator outputs"
+    return _sample_many(
+        rows,
+        {
+            "dc6": [(0.5, 1.0), (11.7, 1.0), (14.5, 1.0)],
+            "dc5": [(1.7, 1.0), (3.7, 0.0), (14.5, 0.0)],
+            "dc4": [(3.7, 1.0), (14.5, 1.0)],
+            "dc3": [(5.7, 1.0), (7.7, 0.0), (14.5, 0.0)],
+            "dc2": [(7.7, 1.0), (14.5, 1.0)],
+            "dc1": [(9.7, 1.0), (11.7, 0.0), (14.5, 0.0)],
+            "dc0": [(11.7, 1.0), (14.5, 1.0)],
+            "cvinp": [(0.5, 0.78), (8.5, 0.78), (14.5, 0.78)],
+            "cvinn": [(0.5, 0.22), (8.5, 0.22), (14.5, 0.22)],
+            "en": [(0.5, 1.0), (11.7, 1.0), (13.7, 0.0)],
+            "enb": [(0.5, 0.0), (11.7, 0.0), (13.7, 1.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing offset rdac search outputs"
+    return _sample_many(
+        rows,
+        {
+            "dc6": [(0.5, 1.0), (7.7, 1.0), (17.7, 1.0)],
+            "dc5": [(1.7, 1.0), (7.7, 1.0), (17.7, 1.0)],
+            "dc4": [(3.7, 0.0), (7.7, 0.0), (17.7, 0.0)],
+            "dc3": [(3.7, 1.0), (5.7, 0.0), (17.7, 0.0)],
+            "dc2": [(5.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
+            "dc1": [(5.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
+            "dc0": [(7.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
+            "vrefp": [(0.5, 0.3344), (13.7, 0.3344), (17.7, 0.3656)],
+            "vrefn": [(0.5, 0.8656), (13.7, 0.8656), (17.7, 0.8344)],
+            "vinp": [(0.5, 0.3344), (9.7, 0.3294), (17.7, 0.3656)],
+            "vinn": [(0.5, 0.8656), (9.7, 0.8706), (17.7, 0.8344)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing spi shift mux outputs"
+    return _sample_many(
+        rows,
+        {
+            "out7": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (6.3, 0.9)],
+            "out6": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9)],
+            "out5": [(0.2, 0.9), (2.3, 0.0), (4.3, 0.9), (6.3, 0.9)],
+            "out4": [(0.2, 0.9), (1.3, 0.0), (3.3, 0.9), (5.3, 0.9)],
+            "out0": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9)],
+            "sdo": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (5.3, 0.0)],
+            "scko": [(0.2, 0.0), (1.3, 0.9), (2.3, 0.0), (3.3, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_dff_set_reset_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d", "rn", "sn", "qp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dff set/reset outputs"
+    return _sample_many(
+        rows,
+        {
+            "qp": [(0.3, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9), (6.3, 0.0), (7.3, 0.9)],
+            "rn": [(5.3, 0.9), (6.3, 0.0), (7.3, 0.9)],
+            "sn": [(6.3, 0.9), (7.3, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clkc",
+        "dp1",
+        "dp2",
+        "dp3",
+        "dp4",
+        "dm1",
+        "dm2",
+        "dm3",
+        "dm4",
+        "dout0",
+        "dout1",
+        "dout2",
+        "dout3",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sarfend logic outputs"
+    return _sample_many(
+        rows,
+        {
+            "clkc": [(0.3, 0.0), (1.8, 1.0), (2.4, 0.0), (3.0, 1.0), (4.2, 0.0)],
+            "dp4": [(0.3, 0.0), (2.4, 1.0), (7.0, 1.0)],
+            "dm4": [(0.3, 0.0), (2.4, 0.0), (7.0, 0.0)],
+            "dp3": [(0.3, 1.0), (4.2, 0.0), (7.0, 0.0)],
+            "dm3": [(0.3, 1.0), (4.2, 1.0), (7.0, 1.0)],
+            "dp2": [(0.3, 1.0), (6.0, 1.0), (7.0, 1.0)],
+            "dm2": [(0.3, 1.0), (6.0, 1.0), (7.0, 0.0)],
+            "dout3": [(0.3, 0.0), (1.2, 0.0), (7.0, 0.0)],
+            "dout2": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
+            "dout1": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
+            "dout0": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11789,6 +11907,11 @@ CHECKS = {
     "v3_source_pipe15_data_align": check_v3_source_pipe15_data_align,
     "v3_source_clocked_mux4_sampler": check_v3_source_clocked_mux4_sampler,
     "v3_source_dac7_code_generator": check_v3_source_dac7_code_generator,
+    "v3_source_foreground_rdac_calibrator": check_v3_source_foreground_rdac_calibrator,
+    "v3_source_offset_rdac_search_flow": check_v3_source_offset_rdac_search_flow,
+    "v3_source_spi_shift_mux": check_v3_source_spi_shift_mux,
+    "v3_source_dff_set_reset_hold": check_v3_source_dff_set_reset_hold,
+    "v3_source_sarfend_logic_4b": check_v3_source_sarfend_logic_4b,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -13110,6 +13233,11 @@ CHECKS["204-source-pipe-2lane-edge-align"] = check_v3_source_pipe_2lane_edge_ali
 CHECKS["205-source-dac-serial-accumulator"] = check_v3_source_dac_serial_accumulator
 CHECKS["206-source-sar-sum-weighted-11b"] = check_v3_source_sar_sum_weighted_11b
 CHECKS["207-source-iterative-isar-dac"] = check_v3_source_iterative_isar_dac
+CHECKS["218-source-foreground-rdac-calibrator"] = check_v3_source_foreground_rdac_calibrator
+CHECKS["219-source-offset-rdac-search-flow"] = check_v3_source_offset_rdac_search_flow
+CHECKS["220-source-spi-shift-mux"] = check_v3_source_spi_shift_mux
+CHECKS["221-source-dff-set-reset-hold"] = check_v3_source_dff_set_reset_hold
+CHECKS["222-source-sarfend-logic-4b"] = check_v3_source_sarfend_logic_4b
 
 
 RELEASE_FORM_CHECK_ALIASES = {

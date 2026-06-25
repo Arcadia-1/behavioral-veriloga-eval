@@ -1,0 +1,1 @@
+Implement `spi_shift_mux` with serial clock `scki`, serial data `sdi`, reset input `rst`, outputs `out0..out7`, `sdo`, and `scko`. Initialize the configuration word to `10110010`; on each threshold crossing of `scki`, shift toward `out7` and load `sdi` into `out0`.

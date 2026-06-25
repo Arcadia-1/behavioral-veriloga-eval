@@ -1200,6 +1200,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_pipe15_data_align",
     "v3_source_clocked_mux4_sampler",
     "v3_source_dac7_code_generator",
+    "v3_source_foreground_rdac_calibrator",
+    "v3_source_offset_rdac_search_flow",
+    "v3_source_spi_shift_mux",
+    "v3_source_dff_set_reset_hold",
+    "v3_source_sarfend_logic_4b",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1234,6 +1239,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "215-source-pipe15-data-align",
     "216-source-clocked-mux4-sampler",
     "217-source-dac7-code-generator",
+    "218-source-foreground-rdac-calibrator",
+    "219-source-offset-rdac-search-flow",
+    "220-source-spi-shift-mux",
+    "221-source-dff-set-reset-hold",
+    "222-source-sarfend-logic-4b",
 }
 
 

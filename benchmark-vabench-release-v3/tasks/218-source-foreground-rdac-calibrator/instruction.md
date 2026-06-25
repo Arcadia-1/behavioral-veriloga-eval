@@ -1,0 +1,1 @@
+Implement `foreground_rdac_calibrator` with clock `ck`, decision input `d`, references `vrefp/vrefn`, outputs `dc0..dc6`, `cvinp/cvinn`, `en`, and `enb`. Capture a seven-bit RDAC code from MSB toward LSB and deassert `en` after the capture phase.

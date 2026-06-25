@@ -1,0 +1,1 @@
+Implement `dff_set_reset_hold` with `ck`, `d`, active-low reset `rn`, active-low set `sn`, and output `qp`. Capture `d` on rising clock edges, force low when `rn` is low, and force high when `sn` is low.
