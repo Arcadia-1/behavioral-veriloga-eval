@@ -8560,6 +8560,70 @@ def check_v3_source_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tu
     )
 
 
+def check_v3_source_lt_read_sar6b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vout", "gnd", *{f"d{i}" for i in range(6)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing lt read sar6b weighted signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -0.9), (1.5, 0.225), (2.5, 0.45), (3.5, 0.73125)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_lt_read_sar7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vout", "gnd", *{f"d{i}" for i in range(8)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing lt read sar7b weighted signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -0.9), (1.5, 0.225), (2.5, 0.478125), (3.5, 0.82265625)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_sample", "clk_sarready", "data", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac serial 16b nobridge signals"
+    return _sample_many(
+        rows,
+        {
+            "out": [(0.5, -1.1), (1.1, -0.1290701), (2.1, -0.1290701), (3.1, 0.1136623), (4.1, 0.3563948)],
+            "clk_sample": [(0.1, 1.1), (0.35, 0.0), (0.8, 1.1)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_source_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din", "clks", "ready", "dout", "dnum"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sar 13bit serial decoder signals"
+    return _sample_many(
+        rows,
+        {
+            "dout": [(1.0, -0.5), (14.0, -0.5), (15.0, 0.19808326)],
+            "dnum": [(1.0, 0.0), (6.5, 3.0), (13.5, 7.0), (15.0, 0.0)],
+        },
+        tol=0.03,
+    )
+
+
+def check_v3_source_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing single shot timer pulse signals"
+    return _sample_many(
+        rows,
+        {
+            "vout": [(0.5, 0.0), (0.9, 0.9), (2.4, 0.9), (2.9, 0.0), (3.9, 0.9), (5.6, 0.9)],
+            "vin": [(0.5, 0.0), (0.9, 0.9), (1.5, 0.0), (3.9, 0.9), (4.5, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -13927,6 +13991,16 @@ CHECKS["254-source-lt-readout-sar4"] = check_v3_source_lt_readout_sar4
 CHECKS["255-source-tool-4bit-sar-signed-dac"] = check_v3_source_tool_4bit_sar_signed_dac
 CHECKS["256-source-dac4bit-small-swing"] = check_v3_source_dac4bit_small_swing
 CHECKS["257-source-comparator-reset-low-1p8"] = check_v3_source_comparator_reset_low_1p8
+CHECKS["v3_source_lt_read_sar6b_weighted"] = check_v3_source_lt_read_sar6b_weighted
+CHECKS["v3_source_lt_read_sar7b_weighted"] = check_v3_source_lt_read_sar7b_weighted
+CHECKS["v3_source_dac_serial_16b_nobridge"] = check_v3_source_dac_serial_16b_nobridge
+CHECKS["v3_source_sar_13bit_serial_decoder"] = check_v3_source_sar_13bit_serial_decoder
+CHECKS["v3_source_single_shot_timer_pulse"] = check_v3_source_single_shot_timer_pulse
+CHECKS["258-source-lt-read-sar6b-weighted"] = check_v3_source_lt_read_sar6b_weighted
+CHECKS["259-source-lt-read-sar7b-weighted"] = check_v3_source_lt_read_sar7b_weighted
+CHECKS["260-source-dac-serial-16b-nobridge"] = check_v3_source_dac_serial_16b_nobridge
+CHECKS["261-source-sar-13bit-serial-decoder"] = check_v3_source_sar_13bit_serial_decoder
+CHECKS["262-source-single-shot-timer-pulse"] = check_v3_source_single_shot_timer_pulse
 
 
 RELEASE_FORM_CHECK_ALIASES = {

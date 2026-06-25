@@ -1240,6 +1240,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_tool_4bit_sar_signed_dac",
     "v3_source_dac4bit_small_swing",
     "v3_source_comparator_reset_low_1p8",
+    "v3_source_lt_read_sar6b_weighted",
+    "v3_source_lt_read_sar7b_weighted",
+    "v3_source_dac_serial_16b_nobridge",
+    "v3_source_sar_13bit_serial_decoder",
+    "v3_source_single_shot_timer_pulse",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1314,6 +1319,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "255-source-tool-4bit-sar-signed-dac",
     "256-source-dac4bit-small-swing",
     "257-source-comparator-reset-low-1p8",
+    "258-source-lt-read-sar6b-weighted",
+    "259-source-lt-read-sar7b-weighted",
+    "260-source-dac-serial-16b-nobridge",
+    "261-source-sar-13bit-serial-decoder",
+    "262-source-single-shot-timer-pulse",
 }
 
 
