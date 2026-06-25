@@ -1,0 +1,20 @@
+id = "v3_232_source_pipe_adc_gain_control_loop"
+name = "232-source-pipe-adc-gain-control-loop"
+title = "Source Pipe ADC Gain Control Loop"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "calibration"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["pipe_adc_gain_control_loop.va"]

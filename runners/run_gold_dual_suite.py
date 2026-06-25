@@ -1210,6 +1210,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_cdac_bidirect_residue",
     "v3_source_pfd_reset_pulse",
     "v3_source_trim_ctrl_4bit",
+    "v3_source_linearity_rdac_offset_sweep",
+    "v3_source_sar_das_logic_6b",
+    "v3_source_sar_logic_4b_self_timed",
+    "v3_source_pfd_tdomain_reset_window",
+    "v3_source_pipe_adc_gain_control_loop",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1254,6 +1259,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "225-source-cdac-bidirect-residue",
     "226-source-pfd-reset-pulse",
     "227-source-trim-ctrl-4bit",
+    "228-source-linearity-rdac-offset-sweep",
+    "229-source-sar-das-logic-6b",
+    "230-source-sar-logic-4b-self-timed",
+    "231-source-pfd-tdomain-reset-window",
+    "232-source-pipe-adc-gain-control-loop",
 }
 
 

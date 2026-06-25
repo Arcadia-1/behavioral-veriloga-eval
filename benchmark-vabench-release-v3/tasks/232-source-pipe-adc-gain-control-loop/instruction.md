@@ -1,0 +1,1 @@
+Implement `pipe_adc_gain_control_loop`. On each sampling clock edge, read scalar `din20..din26`, alternate the 4-bit test DAC code, and update `gainctrl0..gainctrl6` from the measured plus/minus code difference.

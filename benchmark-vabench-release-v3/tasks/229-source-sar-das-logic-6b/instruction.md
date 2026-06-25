@@ -1,0 +1,1 @@
+Implement `sar_das_logic_6b`. Sampling clock rising clears the differential bit controls; sampling clock falling presets them. Each SAR clock rising edge consumes `vcomp` and updates one bit pair plus `co/cob`.

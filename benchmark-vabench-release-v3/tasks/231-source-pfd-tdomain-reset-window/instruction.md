@@ -1,0 +1,1 @@
+Implement `pfd_tdomain_reset_window`. A leading `in1` edge asserts `up`, a leading `in2` edge asserts `dn`, and when both inputs have arrived the detector holds both outputs for a short reset window before clearing.

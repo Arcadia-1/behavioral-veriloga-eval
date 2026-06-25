@@ -1,0 +1,1 @@
+Implement `sar_logic_4b_self_timed`. Reset initializes the CDAC controls high. A `clkc` edge schedules `cmpck`; comparator result pulses capture `dout1..dout4`, update `dbotp/dbotn`, and schedule the next comparison until the last bit.

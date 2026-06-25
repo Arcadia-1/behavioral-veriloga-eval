@@ -1,0 +1,1 @@
+Implement `linearity_rdac_offset_sweep`. On each rising edge of `ck`, run a short comparator-directed bisection on `vinp/vinn`, then decrement the 7-bit RDAC code `dc0..dc6` and restart from the current reference level.

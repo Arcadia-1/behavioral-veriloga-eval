@@ -8027,6 +8027,151 @@ def check_v3_source_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def check_v3_source_linearity_rdac_offset_sweep(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ck", "d", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing linearity rdac offset sweep signals"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "dc0": [(0.5, 1.0), (5.5, 0.0), (10.5, 1.0)],
+            "dc1": [(0.5, 1.0), (5.5, 1.0), (10.5, 0.0)],
+            "dc2": [(0.5, 1.0), (5.5, 1.0), (10.5, 1.0)],
+            "dc6": [(0.5, 1.0), (5.5, 1.0), (10.5, 1.0)],
+            "vrefp": [(0.5, 0.365625), (5.5, 0.365625), (10.5, 0.365625)],
+            "vrefn": [(0.5, 0.834375), (5.5, 0.834375), (10.5, 0.834375)],
+            "vinp": [(0.5, 0.385625), (2.5, 0.380625), (5.5, 0.345625), (8.0, 0.350625), (10.5, 0.345625)],
+            "vinn": [(0.5, 0.814375), (2.5, 0.819375), (5.5, 0.854375), (8.0, 0.849375), (10.5, 0.854375)],
+        },
+        tol=0.012,
+    )
+    if not ok:
+        return ok, detail
+    return True, detail
+
+
+def check_v3_source_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clk_sampling",
+        "clk_sar",
+        "vcomp",
+        "d1",
+        "d2",
+        "d3",
+        "d4",
+        "d5",
+        "d6",
+        "db1",
+        "db2",
+        "db3",
+        "db4",
+        "db5",
+        "db6",
+        "co",
+        "cob",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sar das logic signals"
+    return _sample_many(
+        rows,
+        {
+            "d1": [(1.2, 1.1), (8.0, 1.1)],
+            "d2": [(1.2, 1.1), (5.5, 1.1), (8.0, 0.0)],
+            "d3": [(1.2, 1.1), (5.5, 0.0), (8.0, 0.0)],
+            "d4": [(1.2, 1.1), (3.1, 1.1), (8.0, 1.1)],
+            "d5": [(1.2, 1.1), (3.0, 0.0), (8.0, 0.0)],
+            "d6": [(1.2, 1.1), (8.0, 1.1)],
+            "db1": [(1.2, 1.1), (8.0, 0.0)],
+            "db2": [(1.2, 1.1), (8.0, 1.1)],
+            "db3": [(1.2, 1.1), (8.0, 1.1)],
+            "db4": [(1.2, 1.1), (4.0, 0.0), (8.0, 0.0)],
+            "db5": [(1.2, 1.1), (8.0, 1.1)],
+            "db6": [(1.2, 1.1), (8.0, 1.1)],
+            "co": [(1.7, 1.1), (2.0, 0.0), (4.1, 1.1), (4.5, 0.0)],
+            "cob": [(1.7, 0.0), (3.1, 1.1), (3.5, 0.0), (5.3, 1.1)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clkc", "rst", "dcmpp", "dcmpn", "cmpck", "dout1", "dout2", "dout3", "dout4", "dbotp1", "dbotp2", "dbotp3", "dbotn1", "dbotn2", "dbotn3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sar logic 4b self timed signals"
+    return _sample_many(
+        rows,
+        {
+            "cmpck": [(0.9, 0.0), (1.05, 1.0), (1.5, 0.0), (2.0, 1.0), (3.0, 0.0), (3.5, 0.0)],
+            "dout4": [(1.8, 1.0), (4.2, 1.0)],
+            "dout3": [(2.5, 0.0), (4.2, 0.0)],
+            "dout2": [(3.2, 1.0), (4.2, 1.0)],
+            "dout1": [(4.0, 0.0), (4.2, 0.0)],
+            "dbotp3": [(0.6, 1.0), (1.8, 0.0), (4.2, 0.0)],
+            "dbotn2": [(0.6, 1.0), (2.5, 0.0), (4.2, 0.0)],
+            "dbotp1": [(0.6, 1.0), (3.2, 0.0), (4.2, 0.0)],
+            "dbotn1": [(0.6, 1.0), (4.2, 1.0)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "up", "dn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd tdomain reset window signals"
+    return _sample_many(
+        rows,
+        {
+            "up": [(1.0, 1.0), (1.50, 1.0), (1.70, 0.0), (2.70, 0.0), (3.10, 1.0), (3.45, 0.0)],
+            "dn": [(1.0, 0.0), (1.50, 1.0), (1.70, 0.0), (2.70, 1.0), (3.10, 1.0), (3.45, 0.0)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clks",
+        "dout10",
+        "dout11",
+        "dout12",
+        "dout13",
+        "gainctrl0",
+        "gainctrl1",
+        "gainctrl2",
+        "gainctrl3",
+        "gainctrl4",
+        "gainctrl5",
+        "gainctrl6",
+        "ddiff",
+        "dop",
+        "dom",
+        "gctrlcode",
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pipe adc gain control loop signals"
+    return _sample_many(
+        rows,
+        {
+            "dout10": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
+            "dout11": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
+            "dout12": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
+            "dout13": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
+            "gctrlcode": [(0.5, 0.90), (1.5, 0.72), (2.5, 0.72), (3.5, 0.86)],
+            "ddiff": [(0.5, 0.0), (1.5, 0.82), (2.5, 0.82), (3.5, 0.50)],
+            "dop": [(0.5, 0.96), (1.5, 1.02), (2.5, 1.02), (3.5, 0.90)],
+            "dom": [(0.5, 0.20), (1.5, 0.20), (2.5, 0.40), (3.5, 0.40)],
+            "gainctrl1": [(1.5, 0.0), (3.5, 0.9)],
+            "gainctrl3": [(1.5, 0.9), (3.5, 0.0)],
+            "gainctrl4": [(1.5, 0.0), (3.5, 0.9)],
+            "gainctrl6": [(1.5, 0.9), (3.5, 0.9)],
+        },
+        tol=0.09,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -12003,6 +12148,11 @@ CHECKS = {
     "v3_source_cdac_bidirect_residue": check_v3_source_cdac_bidirect_residue,
     "v3_source_pfd_reset_pulse": check_v3_source_pfd_reset_pulse,
     "v3_source_trim_ctrl_4bit": check_v3_source_trim_ctrl_4bit,
+    "v3_source_linearity_rdac_offset_sweep": check_v3_source_linearity_rdac_offset_sweep,
+    "v3_source_sar_das_logic_6b": check_v3_source_sar_das_logic_6b,
+    "v3_source_sar_logic_4b_self_timed": check_v3_source_sar_logic_4b_self_timed,
+    "v3_source_pfd_tdomain_reset_window": check_v3_source_pfd_tdomain_reset_window,
+    "v3_source_pipe_adc_gain_control_loop": check_v3_source_pipe_adc_gain_control_loop,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -13334,6 +13484,11 @@ CHECKS["224-source-pipeline-counter-onehot"] = check_v3_source_pipeline_counter_
 CHECKS["225-source-cdac-bidirect-residue"] = check_v3_source_cdac_bidirect_residue
 CHECKS["226-source-pfd-reset-pulse"] = check_v3_source_pfd_reset_pulse
 CHECKS["227-source-trim-ctrl-4bit"] = check_v3_source_trim_ctrl_4bit
+CHECKS["228-source-linearity-rdac-offset-sweep"] = check_v3_source_linearity_rdac_offset_sweep
+CHECKS["229-source-sar-das-logic-6b"] = check_v3_source_sar_das_logic_6b
+CHECKS["230-source-sar-logic-4b-self-timed"] = check_v3_source_sar_logic_4b_self_timed
+CHECKS["231-source-pfd-tdomain-reset-window"] = check_v3_source_pfd_tdomain_reset_window
+CHECKS["232-source-pipe-adc-gain-control-loop"] = check_v3_source_pipe_adc_gain_control_loop
 
 
 RELEASE_FORM_CHECK_ALIASES = {
