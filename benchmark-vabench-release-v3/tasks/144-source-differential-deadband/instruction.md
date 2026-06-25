@@ -1,0 +1,1 @@
+Implement a differential deadband amplifier named `differential_deadband` with port order `sigin_p, sigin_n, sigout`. Let `diff = V(sigin_p, sigin_n)`. Inside `[dead_low, dead_high]`, output `leak`; below the window output `gain*(diff - dead_low) + leak`; above it output `gain*(diff - dead_high) + leak`.

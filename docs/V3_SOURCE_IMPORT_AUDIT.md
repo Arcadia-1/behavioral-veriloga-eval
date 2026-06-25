@@ -143,6 +143,34 @@ Evidence artifacts:
 - `WORK/source-import-batch5-evas/summary.json`
 - `WORK/source-import-batch5-spectre/summary.json`
 
+## Certified Batch 6
+
+The sixth submitted batch adds six continuous voltage-domain primitives from
+the deduplicated source corpus. This extends the source-import coverage beyond
+logic fixtures into reusable signal-conditioning blocks: dB attenuation,
+single-ended and differential deadband extraction, hard clamping, smooth
+comparison, and supply-referenced limiting.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `142-source-attenuator-gain` | `wangx/attenuator.va` | decibel-configured voltage attenuation | PASS | PASS | passed |
+| `143-source-deadband-window` | `wangx/deadband.va` | windowed deadband error extraction | PASS | PASS | passed |
+| `144-source-differential-deadband` | `wangx/deadband_diffamp.va` | differential deadband amplifier with leakage bias | PASS | PASS | passed |
+| `145-source-hard-voltage-clamp` | `wangx/hard_voltage_clamp.va` | hard-limited voltage clamp | PASS | PASS | passed |
+| `146-source-smooth-comparator-tanh` | `chenr/comparator_ideal.va` | continuous tanh comparator macro model | PASS | PASS | passed |
+| `147-source-limiter-rails` | `zhangm/LIMITER.va` | supply-referenced limiter with programmable rail margins | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch6-evas/summary.json`
+- `WORK/source-import-batch6-spectre/summary.json`
+
+Batch timings:
+
+- EVAS hidden: 6/6 PASS, wallclock 0.426 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.511 s
+  with 6-way parallel submission.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

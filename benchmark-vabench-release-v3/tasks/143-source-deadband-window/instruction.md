@@ -1,0 +1,1 @@
+Implement a voltage deadband named `deadband_window` with port order `sigin, sigout`. Output zero inside `[dead_low, dead_high]`; below the window output `sigin - dead_low`; above it output `sigin - dead_high`.

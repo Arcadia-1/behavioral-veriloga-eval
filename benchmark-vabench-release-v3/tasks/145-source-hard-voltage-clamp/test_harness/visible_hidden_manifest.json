@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_hard_voltage_clamp",
+  "evidence": {
+    "evas": "WORK/source-import-batch6-evas/145-source-hard-voltage-clamp",
+    "spectre": "WORK/source-import-batch6-spectre/145-source-hard-voltage-clamp"
+  }
+}

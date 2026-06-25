@@ -6740,6 +6740,103 @@ def check_v3_source_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_source_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    ok, detail = _sample_many(
+        rows,
+        {"vout": [(5.0, 0.10), (15.0, 0.40), (25.0, 0.20), (32.0, 0.20)]},
+        tol=0.015,
+    )
+    if not ok:
+        return ok, detail
+    max_gain_error = 0.0
+    for time_ns in (5.0, 15.0, 25.0, 32.0):
+        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
+        vout = sample_signal_at(rows, "vout", time_ns * 1e-9)
+        if vin is None or vout is None:
+            return False, f"missing_gain_sample_at={time_ns:g}ns"
+        max_gain_error = max(max_gain_error, abs(vout - 0.5 * vin))
+    return max_gain_error <= 0.015, f"{detail} max_gain_error={max_gain_error:.5f}"
+
+
+def check_v3_source_deadband_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, -0.30), (15.0, 0.0), (25.0, 0.30), (35.0, 0.0)]},
+        tol=0.015,
+    )
+
+
+def check_v3_source_differential_deadband(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin_p/sigin_n/sigout"
+    ok, detail = _sample_many(
+        rows,
+        {"sigout": [(5.0, -0.25), (15.0, 0.05), (25.0, 0.35), (35.0, 0.05)]},
+        tol=0.015,
+    )
+    if not ok:
+        return ok, detail
+    diffs: list[float] = []
+    for time_ns in (5.0, 15.0, 25.0, 35.0):
+        vp = sample_signal_at(rows, "sigin_p", time_ns * 1e-9)
+        vn = sample_signal_at(rows, "sigin_n", time_ns * 1e-9)
+        if vp is None or vn is None:
+            return False, f"missing_diff_sample_at={time_ns:g}ns"
+        diffs.append(vp - vn)
+    if not (diffs[0] < -0.45 and abs(diffs[1]) < 0.03 and diffs[2] > 0.45 and abs(diffs[3]) < 0.10):
+        return False, "unexpected_input_diff_sequence=" + ",".join(f"{value:.3f}" for value in diffs)
+    return True, detail + " diff_sequence=" + ",".join(f"{value:.3f}" for value in diffs)
+
+
+def check_v3_source_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, -0.20), (15.0, 0.30), (25.0, 0.60), (35.0, 0.10)]},
+        tol=0.015,
+    )
+
+
+def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigref", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigref/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, 0.00004), (15.0, 0.45), (25.0, 0.89996), (35.0, 0.01619)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "vss", "vmax", "vmin", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vdd/vss/vmax/vmin/vin/vout"
+    ok, detail = _sample_many(
+        rows,
+        {"vout": [(5.0, 0.10), (15.0, 0.40), (25.0, 0.70), (35.0, 0.10)]},
+        tol=0.015,
+    )
+    if not ok:
+        return ok, detail
+    upper = sample_signal_at(rows, "vdd", 25e-9)
+    margin = sample_signal_at(rows, "vmax", 25e-9)
+    lower_base = sample_signal_at(rows, "vss", 5e-9)
+    lower_margin = sample_signal_at(rows, "vmin", 5e-9)
+    if upper is None or margin is None or lower_base is None or lower_margin is None:
+        return False, "missing_limiter_margin_samples"
+    return True, f"{detail} rails=[{lower_base + lower_margin:.3f},{upper - margin:.3f}]"
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10630,6 +10727,12 @@ CHECKS = {
     "v3_source_three_input_and_gate": check_v3_source_three_input_and_gate,
     "v3_source_three_input_or_gate": check_v3_source_three_input_or_gate,
     "v3_source_three_input_xor_gate": check_v3_source_three_input_xor_gate,
+    "v3_source_attenuator_gain": check_v3_source_attenuator_gain,
+    "v3_source_deadband_window": check_v3_source_deadband_window,
+    "v3_source_differential_deadband": check_v3_source_differential_deadband,
+    "v3_source_hard_voltage_clamp": check_v3_source_hard_voltage_clamp,
+    "v3_source_smooth_comparator_tanh": check_v3_source_smooth_comparator_tanh,
+    "v3_source_limiter_rails": check_v3_source_limiter_rails,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
