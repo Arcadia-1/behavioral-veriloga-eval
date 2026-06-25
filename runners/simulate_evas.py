@@ -8323,6 +8323,118 @@ def check_v3_source_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_source_l2_sar_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck",
+        *{f"do{i}" for i in range(7)},
+        *{f"dctrlp{i}" for i in range(1, 7)},
+        *{f"dctrln{i}" for i in range(1, 7)},
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 sar logic 7b signals"
+    return _sample_many(
+        rows,
+        {
+            "cmpck": [(0.95, 1.1), (1.5, 0.0), (2.5, 1.1), (4.5, 1.1), (5.6, 0.0), (6.0, 0.0)],
+            "do6": [(1.7, 1.1), (6.0, 1.1)],
+            "do5": [(2.5, 0.0), (6.0, 0.0)],
+            "do4": [(3.2, 1.1), (6.0, 1.1)],
+            "do3": [(3.9, 1.1), (6.0, 1.1)],
+            "do2": [(4.6, 0.0), (6.0, 0.0)],
+            "do1": [(5.25, 0.0), (6.0, 0.0)],
+            "do0": [(6.0, 1.1)],
+            "dctrln6": [(1.7, 1.1), (6.0, 1.1)],
+            "dctrlp5": [(2.5, 1.1), (6.0, 1.1)],
+            "dctrln4": [(3.2, 1.1), (6.0, 1.1)],
+            "dctrln3": [(3.9, 1.1), (6.0, 1.1)],
+            "dctrlp2": [(4.6, 1.1), (6.0, 1.1)],
+            "dctrlp1": [(5.25, 1.1), (6.0, 1.1)],
+            "dctrlp6": [(6.0, 0.0)],
+            "dctrln5": [(6.0, 0.0)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time", "clk", "dp", "dn", "cmpck",
+        *{f"do{i}" for i in range(7)},
+        *{f"sp{i}" for i in range(1, 7)},
+        *{f"sn{i}" for i in range(1, 7)},
+    }
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l3 sar2 logic 7b signals"
+    return _sample_many(
+        rows,
+        {
+            "cmpck": [(0.95, 0.9), (1.5, 0.0), (2.5, 0.9), (4.5, 0.9), (5.6, 0.0), (6.0, 0.0)],
+            "do6": [(5.9, 0.9)],
+            "do5": [(5.9, 0.0)],
+            "do4": [(5.9, 0.9)],
+            "do3": [(5.9, 0.0)],
+            "do2": [(5.9, 0.9)],
+            "do1": [(5.9, 0.9)],
+            "do0": [(5.9, 0.0)],
+            "sp6": [(0.6, 0.9), (6.0, 0.9)],
+            "sn6": [(0.6, 0.9), (1.7, 0.0), (6.0, 0.0)],
+            "sn5": [(2.5, 0.9), (6.0, 0.9)],
+            "sp4": [(3.2, 0.9), (6.0, 0.9)],
+            "sn3": [(3.9, 0.9), (6.0, 0.9)],
+            "sp2": [(4.6, 0.9), (6.0, 0.9)],
+            "sp1": [(5.25, 0.9), (6.0, 0.9)],
+            "sp5": [(6.0, 0.0)],
+            "sn4": [(6.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(1, 8)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cdac 8b monodown signals"
+    return _sample_many(
+        rows,
+        {
+            "vres": [(0.5, 0.8), (1.0, 0.8), (1.5, 0.3), (2.1, 0.05), (2.7, -0.075), (3.3, -0.1375), (3.9, -0.16875), (4.5, -0.184375), (5.1, -0.1921875)],
+            "dctrl7": [(1.5, 1.0)],
+            "dctrl6": [(2.1, 1.0)],
+            "dctrl5": [(2.7, 1.0)],
+            "dctrl4": [(3.3, 1.0)],
+            "dctrl3": [(3.9, 1.0)],
+            "dctrl2": [(4.5, 1.0)],
+            "dctrl1": [(5.1, 1.0)],
+        },
+        tol=0.02,
+    )
+
+
+def check_v3_source_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rdy", "aout", *{f"din{i}" for i in range(6)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing va dac 6b se signals"
+    return _sample_many(
+        rows,
+        {"aout": [(0.5, -1.0), (1.5, -0.1368421), (2.5, 0.0526316), (3.5, 0.3263158)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_offset_halving_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "dcmpp", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing offset halving search signals"
+    return _sample_many(
+        rows,
+        {
+            "vinp": [(0.5, 0.45), (1.0, 0.4), (2.0, 0.425), (3.0, 0.4375), (4.0, 0.43125)],
+            "vinn": [(0.5, 0.45), (1.0, 0.5), (2.0, 0.475), (3.0, 0.4625), (4.0, 0.46875)],
+        },
+        tol=0.01,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -13660,6 +13772,16 @@ CHECKS["239-source-l2-cdac-4b-switch"] = check_v3_source_l2_cdac_4b_switch
 CHECKS["240-source-cdac-monodown-7b"] = check_v3_source_cdac_monodown_7b
 CHECKS["241-source-cdac-6b-stage1-up"] = check_v3_source_cdac_6b_stage1_up
 CHECKS["242-source-adc-zoom-timing-sequencer"] = check_v3_source_adc_zoom_timing_sequencer
+CHECKS["v3_source_l2_sar_logic_7b"] = check_v3_source_l2_sar_logic_7b
+CHECKS["v3_source_l3_sar2_logic_7b"] = check_v3_source_l3_sar2_logic_7b
+CHECKS["v3_source_cdac_8b_monodown"] = check_v3_source_cdac_8b_monodown
+CHECKS["v3_source_va_dac_6b_se"] = check_v3_source_va_dac_6b_se
+CHECKS["v3_source_offset_halving_search"] = check_v3_source_offset_halving_search
+CHECKS["243-source-l2-sar-logic-7b"] = check_v3_source_l2_sar_logic_7b
+CHECKS["244-source-l3-sar2-logic-7b"] = check_v3_source_l3_sar2_logic_7b
+CHECKS["245-source-cdac-8b-monodown"] = check_v3_source_cdac_8b_monodown
+CHECKS["246-source-va-dac-6b-se"] = check_v3_source_va_dac_6b_se
+CHECKS["247-source-offset-halving-search"] = check_v3_source_offset_halving_search
 
 
 RELEASE_FORM_CHECK_ALIASES = {

@@ -1225,6 +1225,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_cdac_monodown_7b",
     "v3_source_cdac_6b_stage1_up",
     "v3_source_adc_zoom_timing_sequencer",
+    "v3_source_l2_sar_logic_7b",
+    "v3_source_l3_sar2_logic_7b",
+    "v3_source_cdac_8b_monodown",
+    "v3_source_va_dac_6b_se",
+    "v3_source_offset_halving_search",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1284,6 +1289,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "240-source-cdac-monodown-7b",
     "241-source-cdac-6b-stage1-up",
     "242-source-adc-zoom-timing-sequencer",
+    "243-source-l2-sar-logic-7b",
+    "244-source-l3-sar2-logic-7b",
+    "245-source-cdac-8b-monodown",
+    "246-source-va-dac-6b-se",
+    "247-source-offset-halving-search",
 }
 
 

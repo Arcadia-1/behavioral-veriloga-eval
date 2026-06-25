@@ -1,0 +1,9 @@
+simulator lang=spectre
+global 0
+ahdl_include "l3_sar2_logic_7b.va"
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.8n period=20n width=8n rise=20p fall=20p
+Vdp (dp 0) vsource type=pwl wave=[0 0.9 1.95n 0.9 1.97n 0 2.25n 0 2.27n 0.9 3.35n 0.9 3.37n 0 3.65n 0 3.67n 0.9 5.45n 0.9 5.47n 0 5.75n 0 5.77n 0.9 6.3n 0.9]
+Vdn (dn 0) vsource type=pwl wave=[0 0.9 1.25n 0.9 1.27n 0 1.55n 0 1.57n 0.9 2.65n 0.9 2.67n 0 2.95n 0 2.97n 0.9 4.05n 0.9 4.07n 0 4.35n 0 4.37n 0.9 4.75n 0.9 4.77n 0 5.05n 0 5.07n 0.9 6.3n 0.9]
+XDUT (clk dp dn cmpck do0 do1 do2 do3 do4 do5 do6 sp1 sp2 sp3 sp4 sp5 sp6 sn1 sn2 sn3 sn4 sn5 sn6) l3_sar2_logic_7b
+tran tran stop=6.3n maxstep=10p
+save clk dp dn cmpck do0 do1 do2 do3 do4 do5 do6 sp1 sp2 sp3 sp4 sp5 sp6 sn1 sn2 sn3 sn4 sn5 sn6

@@ -1,0 +1,20 @@
+id = "v3_244_source_l3_sar2_logic_7b"
+name = "244-source-l3-sar2-logic-7b"
+title = "Source L3 SAR2 Logic 7b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L3"
+difficulty = "D3"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["l3_sar2_logic_7b.va"]
