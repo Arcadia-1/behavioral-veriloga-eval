@@ -1,0 +1,1 @@
+Implement `ideal_dac_4bit_differential` with port order `clk, digital, vcm, vop, von`. On each falling clock edge, clamp the analog code to 0..15, convert it to a mid-rise differential voltage over +/-1 V full scale, and drive outputs around `vcm`.

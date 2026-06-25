@@ -1,0 +1,1 @@
+Implement `two_period_sample_delay` with port order `update, ain, aout`. On each rising `update` edge, sample `ain` and output the sample captured on the previous update edge; use `init` before two samples are available.

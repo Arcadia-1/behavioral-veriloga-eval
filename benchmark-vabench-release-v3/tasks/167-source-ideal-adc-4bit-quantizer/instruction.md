@@ -1,0 +1,1 @@
+Implement `ideal_adc_4bit_quantizer` with port order `vclk, vip, vin, digital`. On each rising clock edge, quantize `V(vip)-V(vin)` into a 4-bit unsigned code over the range -1 V to +1 V and drive that code as an analog voltage on `digital`.

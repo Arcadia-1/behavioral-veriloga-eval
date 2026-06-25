@@ -261,6 +261,37 @@ Batch timings:
 - Spectre AX hidden plus EVAS/Spectre parity: 5/5 passed, wallclock 12.526 s
   with 5-way parallel submission.
 
+## Certified Batch 10
+
+The tenth submitted batch adds six source-import tasks focused on converter
+utility blocks and sampled state behavior. These are more integration-relevant
+than another pure logic batch: differential ADC quantization, differential DAC
+reconstruction, sampled analog delay, clocked muxing, clock division, and flash
+thermometer post-processing. Their fairness contract is stable sampled state,
+not exact solver edge placement.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `167-source-ideal-adc-4bit-quantizer` | `zhaoh/IDEAL_ADC.va` | rising-edge sampled 4-bit differential ADC quantizer | PASS | PASS | passed |
+| `168-source-ideal-dac-4bit-differential` | `zhaoh/IDEAL_DAC_V.va` | falling-edge sampled 4-bit differential DAC reconstruction | PASS | PASS | passed |
+| `169-source-two-period-sample-delay` | `zhangzixuan/_tool_delay_two_period.va` | one-sample delayed analog pipeline register | PASS | PASS | passed |
+| `170-source-clocked-four-input-mux` | `zhangm/MUX4T1.va` | falling-edge latched four-input analog mux | PASS | PASS | passed |
+| `171-source-divide-by-eight-clock` | `huangsy/DIV8.va` | divide-by-eight 50% duty-cycle clock model | PASS | PASS | passed |
+| `172-source-flash-thermometer-centered-sum` | `zhaoty/TB_flash.va` | centered flash thermometer-code summary | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch10-evas/summary.json`
+- `WORK/source-import-batch10-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 2.014 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.648 s
+  with 6-way parallel submission after explicitly clearing
+  `VAEVAS_SUI_PROXY_JUMP` for the direct `zhangz@101.6.68.147` host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

@@ -1,0 +1,1 @@
+Implement `divide_by_eight_clock` with port order `vin, vout`. Count rising input edges and drive `vout` high for four counts and low for four counts, producing a divide-by-eight 50% duty-cycle waveform.

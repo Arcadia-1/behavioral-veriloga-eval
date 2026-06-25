@@ -7116,6 +7116,97 @@ def check_v3_source_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_v3_source_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vclk", "vip", "vin", "digital"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vclk/vip/vin/digital"
+    return _sample_many(
+        rows,
+        {"digital": [(4.0, 0.0), (14.0, 6.0), (24.0, 8.0), (34.0, 11.0), (44.0, 15.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_ideal_dac_4bit_differential(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "digital", "vcm", "vop", "von"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/digital/vcm/vop/von"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "vop": [(4.0, 0.03125), (14.0, 0.34375), (24.0, 0.53125), (34.0, 0.96875)],
+            "von": [(4.0, 0.96875), (14.0, 0.65625), (24.0, 0.46875), (34.0, 0.03125)],
+        },
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    max_cm_error = 0.0
+    for time_ns in (4.0, 14.0, 24.0, 34.0):
+        vop = sample_signal_at(rows, "vop", time_ns * 1e-9)
+        von = sample_signal_at(rows, "von", time_ns * 1e-9)
+        if vop is None or von is None:
+            return False, f"missing_dac_output_sample_at={time_ns:g}ns"
+        max_cm_error = max(max_cm_error, abs(0.5 * (vop + von) - 0.5))
+    return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
+
+
+def check_v3_source_two_period_sample_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "update", "ain", "aout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/update/ain/aout"
+    return _sample_many(
+        rows,
+        {"aout": [(4.0, 0.0), (14.0, 0.1), (24.0, 0.4), (34.0, 0.8), (44.0, 0.2)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_clocked_four_input_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing mux input/output signals"
+    return _sample_many(
+        rows,
+        {"dout": [(4.0, 0.15), (14.0, 0.35), (24.0, 0.65), (34.0, 0.85)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    return _sample_many(
+        rows,
+        {
+            "vout": [
+                (2.0, 0.9),
+                (4.0, 0.9),
+                (6.0, 0.9),
+                (8.0, 0.9),
+                (10.0, 0.0),
+                (12.0, 0.0),
+                (14.0, 0.0),
+                (16.0, 0.0),
+                (18.0, 0.9),
+            ]
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_flash_thermometer_centered_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing thermometer input/output signals"
+    return _sample_many(
+        rows,
+        {"dout": [(5.0, -0.45), (15.0, -0.1125), (25.0, 0.1125), (35.0, 0.45)]},
+        tol=0.02,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11031,6 +11122,12 @@ CHECKS = {
     "v3_source_half_subtractor_logic": check_v3_source_half_subtractor_logic,
     "v3_source_full_subtractor_logic": check_v3_source_full_subtractor_logic,
     "v3_source_rs_latch_voltage": check_v3_source_rs_latch_voltage,
+    "v3_source_ideal_adc_4bit_quantizer": check_v3_source_ideal_adc_4bit_quantizer,
+    "v3_source_ideal_dac_4bit_differential": check_v3_source_ideal_dac_4bit_differential,
+    "v3_source_two_period_sample_delay": check_v3_source_two_period_sample_delay,
+    "v3_source_clocked_four_input_mux": check_v3_source_clocked_four_input_mux,
+    "v3_source_divide_by_eight_clock": check_v3_source_divide_by_eight_clock,
+    "v3_source_flash_thermometer_centered_sum": check_v3_source_flash_thermometer_centered_sum,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12311,6 +12408,12 @@ CHECKS["138-source-two-input-nor-gate"] = check_v3_source_two_input_nor_gate
 CHECKS["139-source-three-input-and-gate"] = check_v3_source_three_input_and_gate
 CHECKS["140-source-three-input-or-gate"] = check_v3_source_three_input_or_gate
 CHECKS["141-source-three-input-xor-gate"] = check_v3_source_three_input_xor_gate
+CHECKS["167-source-ideal-adc-4bit-quantizer"] = check_v3_source_ideal_adc_4bit_quantizer
+CHECKS["168-source-ideal-dac-4bit-differential"] = check_v3_source_ideal_dac_4bit_differential
+CHECKS["169-source-two-period-sample-delay"] = check_v3_source_two_period_sample_delay
+CHECKS["170-source-clocked-four-input-mux"] = check_v3_source_clocked_four_input_mux
+CHECKS["171-source-divide-by-eight-clock"] = check_v3_source_divide_by_eight_clock
+CHECKS["172-source-flash-thermometer-centered-sum"] = check_v3_source_flash_thermometer_centered_sum
 
 
 RELEASE_FORM_CHECK_ALIASES = {
