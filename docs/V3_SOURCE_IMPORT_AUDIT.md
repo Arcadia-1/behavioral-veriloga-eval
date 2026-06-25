@@ -171,6 +171,41 @@ Batch timings:
 - Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.511 s
   with 6-way parallel submission.
 
+## Certified Batch 7
+
+The seventh submitted batch adds eight function-style voltage-domain behavioral
+primitives. These cover arithmetic and signal-conditioning contracts that are
+useful inside converter and mixed-signal macro models without requiring KCL,
+device models, or current contributions.
+
+One `amp.va`-derived candidate was repaired before certification: the original
+parameterized offset form triggered an EVAS frontend compile failure, so the
+submitted task fixes the gain and offset values directly in the task contract.
+The certified task still checks the offset-gain behavior and passes EVAS,
+Spectre AX, and parity.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `148-source-absolute-value` | `wangx/absolute_value.va` | absolute-value conditioning for bipolar voltages | PASS | PASS | passed |
+| `149-source-offset-gain-amplifier` | `wangx/amp.va` | fixed offset-gain linear amplifier | PASS | PASS | passed |
+| `150-source-safe-voltage-divider` | `wangx/divider.va` | bounded denominator division | PASS | PASS | passed |
+| `151-source-polynomial-differential-vcvs` | `cuiyl/LI_VCVS_NLIN.va` | nonlinear differential VCVS with saturation | PASS | PASS | passed |
+| `152-source-differential-gain-driver` | `wangx/diffdriver.va` | symmetric differential output driver | PASS | PASS | passed |
+| `153-source-limiting-differential-amplifier` | `wangx/limiting_diffamp.va` | clamped differential gain block | PASS | PASS | passed |
+| `154-source-analog-multiplier` | `wangx/multiplier.va` | two-input analog multiplier | PASS | PASS | passed |
+| `155-source-three-way-threshold-mux` | `wangx/multiplexer.va` | three-way analog mux selected by differential thresholds | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch7-evas/summary.json`
+- `WORK/source-import-batch7-spectre/summary.json`
+
+Batch timings:
+
+- EVAS hidden: 8/8 PASS, wallclock 0.510 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 8/8 passed, wallclock 14.712 s
+  with 8-way parallel submission.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

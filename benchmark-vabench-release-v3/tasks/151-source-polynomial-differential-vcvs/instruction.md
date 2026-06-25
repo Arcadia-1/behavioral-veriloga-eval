@@ -1,0 +1,1 @@
+Implement `polynomial_differential_vcvs` with port order `inp, inn, outp, outn`. Compute `vid=V(inp,inn)`, `vod=(a1*vid+a2*vid**2+a3*vid**3+a5*vid**5+a7*vid**7)/2`, limit it to `+/-vsat`, and drive differential outputs around `vcmo`.

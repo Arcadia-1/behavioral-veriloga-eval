@@ -1,0 +1,1 @@
+Implement `limiting_differential_amplifier` with port order `sigin_p, sigin_n, sigout`. Amplify `V(sigin_p,sigin_n)-sigin_offset`, center it at the midpoint of `sigout_high`/`sigout_low`, then clamp to those rails.

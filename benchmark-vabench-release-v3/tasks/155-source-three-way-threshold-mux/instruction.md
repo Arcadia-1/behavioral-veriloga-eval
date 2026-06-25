@@ -1,0 +1,1 @@
+Implement `three_way_threshold_mux` with port order `sigin1, sigin2, sigin3, cntrlp, cntrlm, sigout`. Select `sigin1` below `sigth_low`, `sigin2` inside the threshold window, and `sigin3` above `sigth_high`.

@@ -6837,6 +6837,136 @@ def check_v3_source_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, s
     return True, f"{detail} rails=[{lower_base + lower_margin:.3f},{upper - margin:.3f}]"
 
 
+def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigout"
+    ok, detail = _sample_many(rows, {"sigout": [(5.0, 0.40), (15.0, 0.30), (25.0, 0.10)]}, tol=0.015)
+    if not ok:
+        return ok, detail
+    max_err = 0.0
+    for time_ns in (5.0, 15.0, 25.0):
+        sigin = sample_signal_at(rows, "sigin", time_ns * 1e-9)
+        sigout = sample_signal_at(rows, "sigout", time_ns * 1e-9)
+        if sigin is None or sigout is None:
+            return False, f"missing_abs_sample_at={time_ns:g}ns"
+        max_err = max(max_err, abs(sigout - abs(sigin)))
+    return max_err <= 0.015, f"{detail} max_abs_error={max_err:.5f}"
+
+
+def check_v3_source_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, -0.30), (15.0, 0.90), (25.0, -0.90)]},
+        tol=0.015,
+    )
+
+
+def check_v3_source_safe_voltage_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "signumer", "sigdenom", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/signumer/sigdenom/sigout"
+    ok, detail = _sample_many(
+        rows,
+        {"sigout": [(5.0, 1.00), (15.0, 2.40), (25.0, 1.60)]},
+        tol=0.03,
+    )
+    if not ok:
+        return ok, detail
+    denominators = [sample_signal_at(rows, "sigdenom", time_ns * 1e-9) for time_ns in (5.0, 15.0, 25.0)]
+    if any(value is None for value in denominators):
+        return False, "missing_divider_denominator_samples"
+    return True, f"{detail} denom=" + ",".join(f"{float(value):.3f}" for value in denominators if value is not None)
+
+
+def check_v3_source_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "inn", "outp", "outn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/inp/inn/outp/outn"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "outp": [(5.0, 0.3995), (15.0, 0.5000), (25.0, 0.6005), (35.0, 0.7578)],
+            "outn": [(5.0, 0.6005), (15.0, 0.5000), (25.0, 0.3995), (35.0, 0.2422)],
+        },
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    max_cm_error = 0.0
+    for time_ns in (5.0, 15.0, 25.0, 35.0):
+        outp = sample_signal_at(rows, "outp", time_ns * 1e-9)
+        outn = sample_signal_at(rows, "outn", time_ns * 1e-9)
+        if outp is None or outn is None:
+            return False, f"missing_vcvs_output_sample_at={time_ns:g}ns"
+        max_cm_error = max(max_cm_error, abs(0.5 * (outp + outn) - 0.5))
+    return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
+
+
+def check_v3_source_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout_p", "sigout_n", "sigref"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin_p/sigin_n/sigout_p/sigout_n/sigref"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "sigout_p": [(5.0, 0.35), (15.0, 0.45), (25.0, 0.60)],
+            "sigout_n": [(5.0, 0.55), (15.0, 0.45), (25.0, 0.30)],
+        },
+        tol=0.02,
+    )
+    if not ok:
+        return ok, detail
+    return True, detail
+
+
+def check_v3_source_limiting_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin_p/sigin_n/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, -0.40), (15.0, 0.20), (25.0, 0.80), (35.0, 0.50)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_analog_multiplier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin1", "sigin2", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin1/sigin2/sigout"
+    ok, detail = _sample_many(
+        rows,
+        {"sigout": [(5.0, 0.20), (15.0, 0.48), (25.0, -0.40)]},
+        tol=0.015,
+    )
+    if not ok:
+        return ok, detail
+    max_product_error = 0.0
+    for time_ns in (5.0, 15.0, 25.0):
+        sigin1 = sample_signal_at(rows, "sigin1", time_ns * 1e-9)
+        sigin2 = sample_signal_at(rows, "sigin2", time_ns * 1e-9)
+        sigout = sample_signal_at(rows, "sigout", time_ns * 1e-9)
+        if sigin1 is None or sigin2 is None or sigout is None:
+            return False, f"missing_multiplier_sample_at={time_ns:g}ns"
+        max_product_error = max(max_product_error, abs(sigout - 2.0 * sigin1 * sigin2))
+    return max_product_error <= 0.015, f"{detail} max_product_error={max_product_error:.5f}"
+
+
+def check_v3_source_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin1", "sigin2", "sigin3", "cntrlp", "cntrlm", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin1/sigin2/sigin3/cntrlp/cntrlm/sigout"
+    return _sample_many(
+        rows,
+        {"sigout": [(5.0, 0.10), (15.0, 0.50), (25.0, 0.90)]},
+        tol=0.02,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10733,6 +10863,14 @@ CHECKS = {
     "v3_source_hard_voltage_clamp": check_v3_source_hard_voltage_clamp,
     "v3_source_smooth_comparator_tanh": check_v3_source_smooth_comparator_tanh,
     "v3_source_limiter_rails": check_v3_source_limiter_rails,
+    "v3_source_absolute_value": check_v3_source_absolute_value,
+    "v3_source_offset_gain_amplifier": check_v3_source_offset_gain_amplifier,
+    "v3_source_safe_voltage_divider": check_v3_source_safe_voltage_divider,
+    "v3_source_polynomial_differential_vcvs": check_v3_source_polynomial_differential_vcvs,
+    "v3_source_differential_gain_driver": check_v3_source_differential_gain_driver,
+    "v3_source_limiting_differential_amplifier": check_v3_source_limiting_differential_amplifier,
+    "v3_source_analog_multiplier": check_v3_source_analog_multiplier,
+    "v3_source_three_way_threshold_mux": check_v3_source_three_way_threshold_mux,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,

@@ -1,0 +1,1 @@
+Implement `safe_voltage_divider` with port order `signumer, sigdenom, sigout`. Use `gain*signumer/denominator`, but replace denominators with absolute value below `min_sigdenom` by signed `min_sigdenom`.
