@@ -383,6 +383,36 @@ Batch timings:
   with 5-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
   direct host.
 
+## Certified Batch 14
+
+The fourteenth submitted batch adds six converter-oriented source-import tasks.
+The batch expands width and sequencing coverage: a source-specific 10-bit DAC
+restore equation, an 8-bit ideal DAC, flash thermometer data alignment, a
+ready-pulsed cyclic decoder, weighted seven-bit ADC output compression, and a
+clocked four-bit SAR-style ideal ADC.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `190-source-dac-restore-10bit-offset` | `wangxy/DAC_restore_10bit.va` | clocked 10-bit offset DAC reconstruction | PASS | PASS | passed |
+| `191-source-dac-8bit-ideal-scalar` | `wangx/dac_8bit_ideal.va` | scalarized eight-bit ideal DAC conversion | PASS | PASS | passed |
+| `192-source-flash-data-align-pipeline` | `zhangm/FLASH_DATA_ALIGN_V2.va` | flash thermometer count alignment through a four-cycle pipeline | PASS | PASS | passed |
+| `193-source-cyclic-decoder-10b` | `zhangm/cyclic_decoder.va` | ready-pulsed cyclic ADC decision accumulation | PASS | PASS | passed |
+| `194-source-ideal-adc-out-7bits` | `guoxy/ideal_ADC_OUT_7BITS.va` | weighted seven-bit ADC output compression | PASS | PASS | passed |
+| `195-source-va-lx-adc-ideal-4b` | `zhangfm/VA_Lx_ADC_ideal.va` | clocked four-bit SAR-style ideal ADC conversion | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch14-evas/summary.json`
+- `WORK/source-import-batch14-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 2.366 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 13.981 s
+  with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

@@ -1,0 +1,1 @@
+Implement `dac_restore_10bit_offset` with scalar bits `D0..D10`, clock `clk`, and output `vout`. On each rising clock edge, reconstruct the source 10-bit offset DAC level, including the duplicated D6/D7 64-LSB weights and the -32 code offset.

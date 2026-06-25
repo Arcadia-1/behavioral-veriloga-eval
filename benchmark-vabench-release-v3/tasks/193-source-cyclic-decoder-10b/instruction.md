@@ -1,0 +1,1 @@
+Implement `cyclic_decoder_10b` with comparator outputs `dp/dn`, ready pulses, conversion clock `clks`, and output `dout`. Accumulate full, half, or zero weights on ready edges and emit the normalized 10-bit cyclic ADC result on each conversion clock edge.

@@ -7449,6 +7449,82 @@ def check_v3_source_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_source_dac_restore_10bit_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, -0.9553711), (15.0, 0.3190430), (25.0, 0.5282227), (35.0, 0.9553711)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_dac_8bit_ideal_scalar(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing scalar 8-bit dac signals"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.0), (15.0, 85.0 / 256.0), (25.0, 166.0 / 256.0), (35.0, 255.0 / 256.0)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_flash_data_align_pipeline(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "dout0", "dout1", "dout2", "dout3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing flash data align signals"
+    return _sample_many(
+        rows,
+        {
+            "dout0": [(2.0, 0.0), (8.0, 0.0), (14.0, 0.0), (20.0, 0.0), (26.0, 1.0), (32.0, 1.0), (38.0, 0.0), (44.0, 1.0)],
+            "dout1": [(2.0, 0.0), (8.0, 0.0), (14.0, 0.0), (20.0, 0.0), (26.0, 1.0), (32.0, 0.0), (38.0, 0.0), (44.0, 0.0)],
+            "dout2": [(2.0, 0.0), (8.0, 0.0), (14.0, 0.0), (20.0, 0.0), (26.0, 0.0), (32.0, 1.0), (38.0, 0.0), (44.0, 0.0)],
+            "dout3": [(2.0, 0.0), (8.0, 0.0), (14.0, 0.0), (20.0, 0.0), (26.0, 0.0), (32.0, 0.0), (38.0, 1.0), (44.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dp", "dn", "ready", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cyclic decoder signals"
+    return _sample_many(
+        rows,
+        {"dout": [(12.0, 720.0 / 1023.0 - 0.5), (26.0, 320.0 / 1023.0 - 0.5)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing ideal adc out 7-bit signals"
+    return _sample_many(
+        rows,
+        {"dout": [(5.0, 0.0), (15.0, 0.6640625), (25.0, 0.328125), (35.0, 0.9921875)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "d1", "d2", "d3", "d4"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing va_lx adc signals"
+    return _sample_many(
+        rows,
+        {
+            "d1": [(5.0, 1.0), (15.0, 0.0), (25.0, 1.0), (35.0, 0.0)],
+            "d2": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 1.0)],
+            "d3": [(5.0, 0.0), (15.0, 1.0), (25.0, 0.0), (35.0, 1.0)],
+            "d4": [(5.0, 0.0), (15.0, 0.0), (25.0, 1.0), (35.0, 1.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11387,6 +11463,12 @@ CHECKS = {
     "v3_source_ref_flash_8level_decoder": check_v3_source_ref_flash_8level_decoder,
     "v3_source_ref_flash_15level_decoder": check_v3_source_ref_flash_15level_decoder,
     "v3_source_divide_by_8_9_switch": check_v3_source_divide_by_8_9_switch,
+    "v3_source_dac_restore_10bit_offset": check_v3_source_dac_restore_10bit_offset,
+    "v3_source_dac_8bit_ideal_scalar": check_v3_source_dac_8bit_ideal_scalar,
+    "v3_source_flash_data_align_pipeline": check_v3_source_flash_data_align_pipeline,
+    "v3_source_cyclic_decoder_10b": check_v3_source_cyclic_decoder_10b,
+    "v3_source_ideal_adc_out_7bits": check_v3_source_ideal_adc_out_7bits,
+    "v3_source_va_lx_adc_ideal_4b": check_v3_source_va_lx_adc_ideal_4b,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12690,6 +12772,12 @@ CHECKS["186-source-folded-flash-dac-4b"] = check_v3_source_folded_flash_dac_4b
 CHECKS["187-source-ref-flash-8level-decoder"] = check_v3_source_ref_flash_8level_decoder
 CHECKS["188-source-ref-flash-15level-decoder"] = check_v3_source_ref_flash_15level_decoder
 CHECKS["189-source-divide-by-8-9-switch"] = check_v3_source_divide_by_8_9_switch
+CHECKS["190-source-dac-restore-10bit-offset"] = check_v3_source_dac_restore_10bit_offset
+CHECKS["191-source-dac-8bit-ideal-scalar"] = check_v3_source_dac_8bit_ideal_scalar
+CHECKS["192-source-flash-data-align-pipeline"] = check_v3_source_flash_data_align_pipeline
+CHECKS["193-source-cyclic-decoder-10b"] = check_v3_source_cyclic_decoder_10b
+CHECKS["194-source-ideal-adc-out-7bits"] = check_v3_source_ideal_adc_out_7bits
+CHECKS["195-source-va-lx-adc-ideal-4b"] = check_v3_source_va_lx_adc_ideal_4b
 
 
 RELEASE_FORM_CHECK_ALIASES = {

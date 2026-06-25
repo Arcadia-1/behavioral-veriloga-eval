@@ -1,0 +1,18 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "dac_8bit_ideal_scalar.va"
+
+Vvd7 (vd7 0) vsource type=pwl wave=[0 0 17.95n 0 18n 5.0]
+Vvd6 (vd6 0) vsource type=pwl wave=[0 0 7.95n 0 8n 5.0 17.95n 5.0 18n 0 27.95n 0 28n 5.0]
+Vvd5 (vd5 0) vsource type=pwl wave=[0 0 17.95n 0 18n 5.0]
+Vvd4 (vd4 0) vsource type=pwl wave=[0 0 7.95n 0 8n 5.0 17.95n 5.0 18n 0 27.95n 0 28n 5.0]
+Vvd3 (vd3 0) vsource type=pwl wave=[0 0 27.95n 0 28n 5.0]
+Vvd2 (vd2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 5.0]
+Vvd1 (vd1 0) vsource type=pwl wave=[0 0 17.95n 0 18n 5.0]
+Vvd0 (vd0 0) vsource type=pwl wave=[0 0 7.95n 0 8n 5.0 17.95n 5.0 18n 0 27.95n 0 28n 5.0]
+
+XDUT (vd7 vd6 vd5 vd4 vd3 vd2 vd1 vd0 vout) dac_8bit_ideal_scalar
+
+tran tran stop=40n maxstep=20p
+save vd7 vd6 vd5 vd4 vd3 vd2 vd1 vd0 vout

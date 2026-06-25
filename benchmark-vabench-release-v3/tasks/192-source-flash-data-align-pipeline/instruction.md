@@ -1,0 +1,1 @@
+Implement `flash_data_align_pipeline` with eight scalar thermometer inputs, clock, and four scalar output bits. On each rising clock edge, count high thermometer inputs and output the count delayed by four clock cycles.

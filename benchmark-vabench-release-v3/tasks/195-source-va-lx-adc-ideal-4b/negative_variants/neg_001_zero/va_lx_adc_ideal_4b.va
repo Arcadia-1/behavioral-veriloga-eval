@@ -1,0 +1,15 @@
+`include "disciplines.vams"
+
+module va_lx_adc_ideal_4b(vin, clks, d1, d2, d3, d4);
+input vin, clks;
+output d1, d2, d3, d4;
+electrical vin, clks, d1, d2, d3, d4;
+
+analog begin
+    V(d1) <+ 0;
+    V(d2) <+ 0;
+    V(d3) <+ 0;
+    V(d4) <+ 0;
+end
+
+endmodule

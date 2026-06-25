@@ -1,0 +1,1 @@
+Implement `va_lx_adc_ideal_4b` with analog input `vin`, sampling/conversion clock `clks`, and scalar output bits `d1..d4`. Track `vin` while the clock is high, then perform the source four-step binary-search conversion on the falling edge.

@@ -1,0 +1,1 @@
+Implement `ideal_adc_out_7bits_scalar` with scalar input bits `din0..din6` and output `dout`. Emit the source weighted fractional ADC output where `din6` is the largest weight and `din0` is the quarter-LSB contribution.
