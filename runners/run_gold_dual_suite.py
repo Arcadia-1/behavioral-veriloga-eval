@@ -1255,6 +1255,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_therm8_to_bin4_count",
     "v3_source_coarse_qtz_3bit_residue",
     "v3_source_rs_phase_detector",
+    "v3_source_level_shifter_offset",
+    "v3_source_weighted_decoder_6bit",
+    "v3_source_divide_by_two_toggle_v2",
+    "v3_source_accum3_pulse",
+    "v3_source_xor_phase_detector",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1344,6 +1349,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "270-source-therm8-to-bin4-count",
     "271-source-coarse-qtz-3bit-residue",
     "272-source-rs-phase-detector",
+    "273-source-level-shifter-offset",
+    "274-source-weighted-decoder-6bit",
+    "275-source-divide-by-two-toggle",
+    "276-source-accum3-pulse",
+    "277-source-xor-phase-detector",
 }
 
 

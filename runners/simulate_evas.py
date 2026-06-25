@@ -8769,6 +8769,72 @@ def check_v3_source_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
+def check_v3_source_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing level shifter offset signals"
+    return _sample_many(
+        rows,
+        {
+            "sigout": [(0.4, 0.45), (1.2, 0.75), (2.0, 0.15), (2.8, 1.15)],
+        },
+        tol=0.02,
+    )
+
+
+def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd1", "vd2", "vd3", "vd4", "vd5", "vd6", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing weighted decoder 6bit signals"
+    return _sample_many(
+        rows,
+        {
+            "vout": [(0.4, 0.0), (1.2, 33.0 / 32.0), (2.0, 18.0 / 32.0), (2.8, 63.0 / 32.0)],
+        },
+        tol=0.03,
+    )
+
+
+def check_v3_source_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing divide by two toggle signals"
+    return _sample_many(
+        rows,
+        {
+            "out": [(0.2, 0.0), (0.8, 0.9), (1.6, 0.0), (2.4, 0.9), (3.2, 0.0), (3.9, 0.9)],
+        },
+        tol=0.06,
+    )
+
+
+def check_v3_source_accum3_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing accum3 pulse signals"
+    return _sample_many(
+        rows,
+        {
+            "out": [(0.2, 0.0), (0.8, 0.9), (1.8, 0.0), (7.8, 0.0), (8.8, 0.9), (9.2, 0.9)],
+        },
+        tol=0.06,
+    )
+
+
+def check_v3_source_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "fb", "up", "down"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing xor phase detector signals"
+    return _sample_many(
+        rows,
+        {
+            "up": [(0.4, 0.0), (1.2, 1.2), (2.0, 0.0), (2.8, 1.2)],
+            "down": [(0.4, 1.2), (1.2, 0.0), (2.0, 1.2), (2.8, 0.0)],
+        },
+        tol=0.06,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -14161,11 +14227,21 @@ CHECKS["v3_source_trim_ctrl_5bit"] = check_v3_source_trim_ctrl_5bit
 CHECKS["v3_source_therm8_to_bin4_count"] = check_v3_source_therm8_to_bin4_count
 CHECKS["v3_source_coarse_qtz_3bit_residue"] = check_v3_source_coarse_qtz_3bit_residue
 CHECKS["v3_source_rs_phase_detector"] = check_v3_source_rs_phase_detector
+CHECKS["v3_source_level_shifter_offset"] = check_v3_source_level_shifter_offset
+CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bit
+CHECKS["v3_source_divide_by_two_toggle_v2"] = check_v3_source_divide_by_two_toggle_v2
+CHECKS["v3_source_accum3_pulse"] = check_v3_source_accum3_pulse
+CHECKS["v3_source_xor_phase_detector"] = check_v3_source_xor_phase_detector
 CHECKS["268-source-samplehold-rising-edge"] = check_v3_source_samplehold_rising_edge
 CHECKS["269-source-trim-ctrl-5bit"] = check_v3_source_trim_ctrl_5bit
 CHECKS["270-source-therm8-to-bin4-count"] = check_v3_source_therm8_to_bin4_count
 CHECKS["271-source-coarse-qtz-3bit-residue"] = check_v3_source_coarse_qtz_3bit_residue
 CHECKS["272-source-rs-phase-detector"] = check_v3_source_rs_phase_detector
+CHECKS["273-source-level-shifter-offset"] = check_v3_source_level_shifter_offset
+CHECKS["274-source-weighted-decoder-6bit"] = check_v3_source_weighted_decoder_6bit
+CHECKS["275-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle_v2
+CHECKS["276-source-accum3-pulse"] = check_v3_source_accum3_pulse
+CHECKS["277-source-xor-phase-detector"] = check_v3_source_xor_phase_detector
 
 
 RELEASE_FORM_CHECK_ALIASES = {

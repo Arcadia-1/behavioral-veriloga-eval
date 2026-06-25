@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_source_weighted_decoder_6bit
+  metric: stable_samples
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct
