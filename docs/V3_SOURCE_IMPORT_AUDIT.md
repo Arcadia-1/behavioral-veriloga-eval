@@ -413,6 +413,35 @@ Batch timings:
   with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
   direct host.
 
+## Certified Batch 15
+
+The fifteenth submitted batch adds six source-import tasks around converter
+support and timing/control primitives: ready-triggered unipolar and bipolar
+DACs, a sampled CDAC residue update, an eight-channel clock mux, a four-bit
+offset DAC compressor, and a deterministic linear PFD gain macro.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `196-source-va-lx-dac-ideal-4b` | `zhangfm/VA_Lx_DAC_ideal.va` | ready-triggered four-bit unipolar DAC reconstruction | PASS | PASS | passed |
+| `197-source-l1-dac-4b-bipolar` | `wangxy/L1_DAC_4b_ideal.va` | ready-triggered four-bit bipolar DAC reconstruction | PASS | PASS | passed |
+| `198-source-l2-cdac-4b-residue` | `wangxy/L2_CDAC_4b_ideal.va` | sampled CDAC residue update with three binary control steps | PASS | PASS | passed |
+| `199-source-ideal-clkmux-8channel` | `wangxy/DAC_4bit_restore_8channel.va` | clocked eight-channel analog mux with exposed modulo counter | PASS | PASS | passed |
+| `200-source-dac-ideal-4b-offset` | `caiyizeng25/dac_ideal_4b.va` | four-bit weighted DAC compression with fixed offset term | PASS | PASS | passed |
+| `201-source-linear-pfd-gain` | `zhangz/PFD_20201101.va` | deterministic linear PFD gain macro without stochastic noise terms | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch15-evas/summary.json`
+- `WORK/source-import-batch15-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 1.476 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 13.428 s
+  with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

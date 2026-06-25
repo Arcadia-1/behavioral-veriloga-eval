@@ -1,0 +1,1 @@
+Implement `l2_cdac_4b_residue` with analog input `vin`, clock `clks`, three control inputs, and output `vres`. Sample `vin` on falling clock edges and add 0.5, 0.25, and 0.125 reference steps on the corresponding control rising edges.

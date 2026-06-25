@@ -7525,6 +7525,75 @@ def check_v3_source_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
+def check_v3_source_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rdy", "aout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing va_lx dac signals"
+    return _sample_many(
+        rows,
+        {"aout": [(5.0, 0.0), (15.0, 0.5625), (25.0, 1.575), (35.0, 1.6875)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_l1_dac_4b_bipolar(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rdy", "aout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l1 dac bipolar signals"
+    return _sample_many(
+        rows,
+        {"aout": [(5.0, -1.0), (15.0, -0.375), (25.0, 0.75), (35.0, 0.875)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_l2_cdac_4b_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "dctrl1", "dctrl2", "dctrl3", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 cdac residue signals"
+    return _sample_many(
+        rows,
+        {"vres": [(2.0, 0.1), (4.0, 0.6), (6.0, 0.85), (8.0, 0.975), (14.0, -0.2), (16.0, 0.05)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_ideal_clkmux_8channel(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "out", "count_x"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing ideal clkmux signals"
+    return _sample_many(
+        rows,
+        {
+            "out": [(2.0, 0.2), (4.0, 0.3), (6.0, 0.4), (8.0, 0.5), (10.0, 0.6), (12.0, 0.7), (14.0, 0.8), (16.0, 0.1)],
+            "count_x": [(2.0, 1.0), (4.0, 2.0), (6.0, 3.0), (8.0, 4.0), (10.0, 5.0), (12.0, 6.0), (14.0, 7.0), (16.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_dac_ideal_4b_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din0", "din1", "din2", "din3", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac ideal 4b offset signals"
+    return _sample_many(
+        rows,
+        {"dout": [(5.0, 0.239), (15.0, 0.379625), (25.0, 0.52025), (35.0, 0.660875)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing linear pfd gain signals"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.203), (15.0, 0.203), (25.0, -0.812), (35.0, 1.218)]},
+        tol=0.02,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11469,6 +11538,12 @@ CHECKS = {
     "v3_source_cyclic_decoder_10b": check_v3_source_cyclic_decoder_10b,
     "v3_source_ideal_adc_out_7bits": check_v3_source_ideal_adc_out_7bits,
     "v3_source_va_lx_adc_ideal_4b": check_v3_source_va_lx_adc_ideal_4b,
+    "v3_source_va_lx_dac_ideal_4b": check_v3_source_va_lx_dac_ideal_4b,
+    "v3_source_l1_dac_4b_bipolar": check_v3_source_l1_dac_4b_bipolar,
+    "v3_source_l2_cdac_4b_residue": check_v3_source_l2_cdac_4b_residue,
+    "v3_source_ideal_clkmux_8channel": check_v3_source_ideal_clkmux_8channel,
+    "v3_source_dac_ideal_4b_offset": check_v3_source_dac_ideal_4b_offset,
+    "v3_source_linear_pfd_gain": check_v3_source_linear_pfd_gain,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12778,6 +12853,12 @@ CHECKS["192-source-flash-data-align-pipeline"] = check_v3_source_flash_data_alig
 CHECKS["193-source-cyclic-decoder-10b"] = check_v3_source_cyclic_decoder_10b
 CHECKS["194-source-ideal-adc-out-7bits"] = check_v3_source_ideal_adc_out_7bits
 CHECKS["195-source-va-lx-adc-ideal-4b"] = check_v3_source_va_lx_adc_ideal_4b
+CHECKS["196-source-va-lx-dac-ideal-4b"] = check_v3_source_va_lx_dac_ideal_4b
+CHECKS["197-source-l1-dac-4b-bipolar"] = check_v3_source_l1_dac_4b_bipolar
+CHECKS["198-source-l2-cdac-4b-residue"] = check_v3_source_l2_cdac_4b_residue
+CHECKS["199-source-ideal-clkmux-8channel"] = check_v3_source_ideal_clkmux_8channel
+CHECKS["200-source-dac-ideal-4b-offset"] = check_v3_source_dac_ideal_4b_offset
+CHECKS["201-source-linear-pfd-gain"] = check_v3_source_linear_pfd_gain
 
 
 RELEASE_FORM_CHECK_ALIASES = {

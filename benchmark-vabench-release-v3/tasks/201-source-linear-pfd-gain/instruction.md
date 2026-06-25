@@ -1,0 +1,1 @@
+Implement `linear_pfd_gain` with two analog inputs and output `out`. Emit the deterministic source PFD gain term `2.03*(in1-in2)`; stochastic noise terms from the source are out of scope for this voltage-domain deterministic benchmark.

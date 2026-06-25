@@ -1,0 +1,1 @@
+Implement `l1_dac_4b_bipolar` with scalar bits `din1..din4`, ready input `rdy`, and output `aout`. On each rising ready edge, decode the source binary fraction and map it to the bipolar range `(2*code-1)*vdd`.

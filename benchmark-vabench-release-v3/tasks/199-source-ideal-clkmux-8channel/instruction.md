@@ -1,0 +1,1 @@
+Implement `ideal_clkmux_8channel` with a clock, eight analog inputs, output `out`, and counter output `count_x`. Increment an internal modulo-8 counter on each rising clock edge and route the selected input to `out`.

@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_source_l1_dac_4b_bipolar
+  metric: stable_samples
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct
