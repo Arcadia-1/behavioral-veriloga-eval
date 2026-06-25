@@ -7046,6 +7046,76 @@ def check_v3_source_ideal_differential_opamp(rows: list[dict[str, float]]) -> tu
     return max_cm_error <= 0.02, f"{detail} max_cm_error={max_cm_error:.5f}"
 
 
+def check_v3_source_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vout_sum", "vout_carry"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vout_sum/vout_carry"
+    return _sample_many(
+        rows,
+        {
+            "vout_sum": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0)],
+            "vout_carry": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_full_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vin_carry", "vout_sum", "vout_carry"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vin_carry/vout_sum/vout_carry"
+    return _sample_many(
+        rows,
+        {
+            "vout_sum": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
+            "vout_carry": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.0), (45.0, 0.9), (55.0, 0.9), (65.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_half_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vout_diff", "vout_borrow"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vout_diff/vout_borrow"
+    return _sample_many(
+        rows,
+        {
+            "vout_diff": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0)],
+            "vout_borrow": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_full_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vin_borrow", "vout_diff", "vout_borrow"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vin_borrow/vout_diff/vout_borrow"
+    return _sample_many(
+        rows,
+        {
+            "vout_diff": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
+            "vout_borrow": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin_s", "vin_r", "vout_q", "vout_qbar"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin_s/vin_r/vout_q/vout_qbar"
+    return _sample_many(
+        rows,
+        {
+            "vout_q": [(5.0, 0.0), (12.0, 0.9), (22.0, 0.9), (32.0, 0.0), (42.0, 0.0), (52.0, 0.9), (62.0, 0.9)],
+            "vout_qbar": [(5.0, 0.9), (12.0, 0.0), (22.0, 0.0), (32.0, 0.9), (42.0, 0.9), (52.0, 0.0), (62.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10956,6 +11026,11 @@ CHECKS = {
     "v3_source_variable_gain_differential_amplifier": check_v3_source_variable_gain_differential_amplifier,
     "v3_source_voltage_controlled_gain_amplifier": check_v3_source_voltage_controlled_gain_amplifier,
     "v3_source_ideal_differential_opamp": check_v3_source_ideal_differential_opamp,
+    "v3_source_half_adder_logic": check_v3_source_half_adder_logic,
+    "v3_source_full_adder_logic": check_v3_source_full_adder_logic,
+    "v3_source_half_subtractor_logic": check_v3_source_half_subtractor_logic,
+    "v3_source_full_subtractor_logic": check_v3_source_full_subtractor_logic,
+    "v3_source_rs_latch_voltage": check_v3_source_rs_latch_voltage,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,

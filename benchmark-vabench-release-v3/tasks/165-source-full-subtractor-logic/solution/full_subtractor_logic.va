@@ -1,0 +1,22 @@
+`include "disciplines.vams"
+
+module full_subtractor_logic(vin1, vin2, vin_borrow, vout_diff, vout_borrow);
+input vin1, vin2, vin_borrow;
+output vout_diff, vout_borrow;
+electrical vin1, vin2, vin_borrow, vout_diff, vout_borrow;
+
+integer a, b, c;
+integer diff_state;
+integer borrow_state;
+
+analog begin
+    a = V(vin1) > 0.45;
+    b = V(vin2) > 0.45;
+    c = V(vin_borrow) > 0.45;
+    diff_state = a ^ b ^ c;
+    borrow_state = (b && c) || (!a && b) || (!a && c);
+    V(vout_diff) <+ transition(diff_state ? 0.9 : 0.0, 0, 0);
+    V(vout_borrow) <+ transition(borrow_state ? 0.9 : 0.0, 0, 0);
+end
+
+endmodule

@@ -1,0 +1,14 @@
+`include "disciplines.vams"
+
+module half_subtractor_logic (vin1, vin2, vout_diff, vout_borrow);
+
+input vin1, vin2;
+output vout_diff, vout_borrow;
+electrical vin1, vin2, vout_diff, vout_borrow;
+
+analog begin
+    V(vout_diff) <+ 0;
+    V(vout_borrow) <+ 0;
+end
+
+endmodule

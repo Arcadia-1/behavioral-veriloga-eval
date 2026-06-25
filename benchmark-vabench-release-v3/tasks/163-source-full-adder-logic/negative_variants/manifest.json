@@ -1,0 +1,9 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_zero",
+      "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "path": "negative_variants/neg_001_zero/full_adder_logic.va"
+    }
+  ]
+}

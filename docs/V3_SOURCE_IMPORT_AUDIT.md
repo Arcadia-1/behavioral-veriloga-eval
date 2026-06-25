@@ -233,6 +233,34 @@ Batch timings:
 - Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.163 s
   with 6-way parallel submission.
 
+## Certified Batch 9
+
+The ninth submitted batch adds five voltage-domain digital arithmetic and state
+primitives from the same source corpus. These tasks are intended to exercise
+truth-table and latch-state behavior used around converter control logic, not
+gate-delay characterization. Their parity policy therefore checks stable logic
+and waveform mismatch while ignoring small simulator-dependent output edge
+time deltas.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `162-source-half-adder-logic` | `wangx/half_adder.va` | one-bit half adder | PASS | PASS | passed |
+| `163-source-full-adder-logic` | `wangx/full_adder.va` | one-bit full adder with carry-in | PASS | PASS | passed |
+| `164-source-half-subtractor-logic` | `wangx/half_subtractor.va` | one-bit half subtractor | PASS | PASS | passed |
+| `165-source-full-subtractor-logic` | `wangx/full_subtractor.va` | one-bit full subtractor with borrow-in | PASS | PASS | passed |
+| `166-source-rs-latch-voltage` | `wangx/rs_ff.va` | set/reset voltage-domain latch | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch9-evas/summary.json`
+- `WORK/source-import-batch9-spectre/summary.json`
+
+Batch timings:
+
+- EVAS hidden: 5/5 PASS, wallclock 1.171 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 5/5 passed, wallclock 12.526 s
+  with 5-way parallel submission.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

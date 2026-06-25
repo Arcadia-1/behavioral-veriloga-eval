@@ -1,0 +1,20 @@
+id = "v3_163_source_full_adder_logic"
+name = "163-source-full-adder-logic"
+title = "Source Full Adder Logic"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["full_adder_logic.va"]

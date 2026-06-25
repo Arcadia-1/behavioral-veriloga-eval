@@ -1,0 +1,13 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "full_subtractor_logic.va"
+
+Vin1 (vin1 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0 20n 0 20.1n 0 30n 0 30.1n 0.9 40n 0.9 40.1n 0.9 50n 0.9 50.1n 0.9 60n 0.9 60.1n 0.9 75n 0.9]
+Vin2 (vin2 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0 20n 0 20.1n 0.9 30n 0.9 30.1n 0 40n 0 40.1n 0 50n 0 50.1n 0.9 60n 0.9 60.1n 0.9 75n 0.9]
+Vbin (vin_borrow 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 20n 0.9 20.1n 0 30n 0 30.1n 0 40n 0 40.1n 0.9 50n 0.9 50.1n 0 60n 0 60.1n 0.9 75n 0.9]
+
+XDUT (vin1 vin2 vin_borrow vout_diff vout_borrow) full_subtractor_logic
+
+tran tran stop=70n maxstep=25p
+save vin1 vin2 vin_borrow vout_diff vout_borrow

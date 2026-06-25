@@ -1,0 +1,14 @@
+`include "disciplines.vams"
+
+module half_adder_logic (vin1, vin2, vout_sum, vout_carry);
+
+input vin1, vin2;
+output vout_sum, vout_carry;
+electrical vin1, vin2, vout_sum, vout_carry;
+
+analog begin
+    V(vout_sum) <+ 0;
+    V(vout_carry) <+ 0;
+end
+
+endmodule
