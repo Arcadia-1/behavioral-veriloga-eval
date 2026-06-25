@@ -1,0 +1,20 @@
+id = "v3_099_dither_adder"
+name = "099-dither-adder"
+title = "Dither Adder"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "measurement_instrumentation_flows"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dither_adder.va", "vin_src.va", "lfsr.va", "gain_amp_fixed.va"]

@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_109_sample_hold_droop_front_end",
+  "source_task": "vbr1_l2_converter_front_end",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_converter_front_end_tb",
+  "primary_target": "sample_hold_droop_ref.va",
+  "artifact_targets": [
+    "sample_hold_droop_ref.va"
+  ],
+  "hidden_testbench": "tb_sample_hold_droop_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

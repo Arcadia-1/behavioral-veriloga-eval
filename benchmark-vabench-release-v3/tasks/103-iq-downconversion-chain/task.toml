@@ -1,0 +1,20 @@
+id = "v3_103_iq_downconversion_chain"
+name = "103-iq-downconversion-chain"
+title = "IQ Downconversion Chain"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "rf_afe_behavioral_macromodels"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["iq_downconversion_chain.va"]

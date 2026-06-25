@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_105_pipeline_adc_chain_4b",
+  "source_task": "vbr1_l2_pipeline_adc_chain",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_pipeline_adc_chain_tb",
+  "primary_target": "pipeline_adc_chain_4b.va",
+  "artifact_targets": [
+    "pipeline_adc_chain_4b.va"
+  ],
+  "hidden_testbench": "tb_pipeline_adc_chain_4b_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

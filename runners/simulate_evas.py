@@ -11303,6 +11303,26 @@ CHECKS["v3_046_successive_approximation_calibration_search_fsm"] = check_release
 CHECKS["v3_047_threshold_comparator"] = check_release_threshold_comparator
 CHECKS["v3_048_uvlo_brownout_detector"] = check_uvlo_brownout_detector
 CHECKS["v3_049_window_comparator_detector"] = check_true_window_comparator
+CHECKS["v3_080_acquisition_limited_sample_and_hold"] = check_acquisition_limited_sample_hold
+CHECKS["v3_081_aperture_delay_track_and_hold"] = check_vbm1_track_hold_aperture
+CHECKS["v3_082_bias_voltage_generator_with_enable_trim"] = check_bias_voltage_generator_with_enable_trim
+CHECKS["v3_083_crossing_metric_writer"] = check_vbm1_file_metric_writer
+CHECKS["v3_084_peak_detector"] = check_vbm1_peak_detector
+CHECKS["v3_085_burst_clock_source"] = check_clk_burst_gen
+CHECKS["v3_086_dither_noise_like_deterministic_source"] = check_noise_gen
+CHECKS["v3_087_lfsr_prbs_generator"] = check_prbs7
+CHECKS["v3_088_ramp_step_source"] = check_bound_step_period_guard
+CHECKS["v3_089_sine_periodic_voltage_source"] = check_multitone
+CHECKS["080-acquisition-limited-sample-and-hold"] = check_acquisition_limited_sample_hold
+CHECKS["081-aperture-delay-track-and-hold"] = check_vbm1_track_hold_aperture
+CHECKS["082-bias-voltage-generator-with-enable-trim"] = check_bias_voltage_generator_with_enable_trim
+CHECKS["083-crossing-metric-writer"] = check_vbm1_file_metric_writer
+CHECKS["084-peak-detector"] = check_vbm1_peak_detector
+CHECKS["085-burst-clock-source"] = check_clk_burst_gen
+CHECKS["086-dither-noise-like-deterministic-source"] = check_noise_gen
+CHECKS["087-lfsr-prbs-generator"] = check_prbs7
+CHECKS["088-ramp-step-source"] = check_bound_step_period_guard
+CHECKS["089-sine-periodic-voltage-source"] = check_multitone
 
 
 RELEASE_FORM_CHECK_ALIASES = {
@@ -11339,6 +11359,62 @@ RELEASE_FORM_CHECK_ALIASES = {
 }
 
 CHECKS.update(RELEASE_FORM_CHECK_ALIASES)
+CHECKS.setdefault("vbr1_l1_clock_divider_tb", check_clk_divider)
+CHECKS.setdefault("vbr1_l1_settling_time_detector_tb", check_vbm1_settling_time_measurement_tb)
+
+V3_CANDIDATE_090_111_CHECK_ALIASES = {
+    "v3_090_adpll_ratio_hop_timer": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+    "090-adpll-ratio-hop-timer": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+    "v3_091_agc_receiver_leveling_loop": "vbr1_l2_agc_receiver_leveling_loop_tb",
+    "091-agc-receiver-leveling-loop": "vbr1_l2_agc_receiver_leveling_loop_tb",
+    "v3_092_amplifier_filter_chain": "vbr1_l2_amplifier_filter_chain_tb",
+    "092-amplifier-filter-chain": "vbr1_l2_amplifier_filter_chain_tb",
+    "v3_093_bbpd_data_edge_alignment": "vbr1_l1_bang_bang_phase_detector_tb",
+    "093-bbpd-data-edge-alignment": "vbr1_l1_bang_bang_phase_detector_tb",
+    "v3_094_comparator_offset_search": "vbr1_l2_comparator_measurement_flow_tb",
+    "094-comparator-offset-search": "vbr1_l2_comparator_measurement_flow_tb",
+    "v3_095_complete_calibration_loop": "vbr1_l2_complete_calibration_loop_tb",
+    "095-complete-calibration-loop": "vbr1_l2_complete_calibration_loop_tb",
+    "v3_096_converter_static_linearity_measurement": "vbr1_l2_converter_static_linearity_measurement_flow_tb",
+    "096-converter-static-linearity-measurement": "vbr1_l2_converter_static_linearity_measurement_flow_tb",
+    "v3_097_cppll_tracking_reacquire_timer": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+    "097-cppll-tracking-reacquire-timer": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+    "v3_098_edge_crossing_interval_timer": "vbr1_l1_edge_interval_timer_tb",
+    "098-edge-crossing-interval-timer": "vbr1_l1_edge_interval_timer_tb",
+    "v3_099_dither_adder": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "099-dither-adder": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "v3_100_final_step_file_metric": "vbr1_l2_measurement_flow_tb",
+    "100-final-step-file-metric": "vbr1_l2_measurement_flow_tb",
+    "v3_101_fixed_gain_amplifier": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "101-fixed-gain-amplifier": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "v3_102_gain_estimator": "vbr1_l1_gain_estimator_tb",
+    "102-gain-estimator": "vbr1_l1_gain_estimator_tb",
+    "v3_103_iq_downconversion_chain": "vbr1_l2_iq_downconversion_chain_tb",
+    "103-iq-downconversion-chain": "vbr1_l2_iq_downconversion_chain_tb",
+    "v3_104_ldo_load_step_recovery": "vbr1_l2_ldo_load_step_recovery_flow_tb",
+    "104-ldo-load-step-recovery": "vbr1_l2_ldo_load_step_recovery_flow_tb",
+    "v3_105_pipeline_adc_chain_4b": "vbr1_l2_pipeline_adc_chain_tb",
+    "105-pipeline-adc-chain-4b": "vbr1_l2_pipeline_adc_chain_tb",
+    "v3_106_programmable_stimulus_sequencer": "vbr1_l2_programmable_stimulus_sequencer_tb",
+    "106-programmable-stimulus-sequencer": "vbr1_l2_programmable_stimulus_sequencer_tb",
+    "v3_107_reference_step_clock": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+    "107-reference-step-clock": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+    "v3_108_reference_startup_enable_flow": "vbr1_l2_reference_startup_enable_flow_tb",
+    "108-reference-startup-enable-flow": "vbr1_l2_reference_startup_enable_flow_tb",
+    "v3_109_sample_hold_droop_front_end": "vbr1_l2_converter_front_end_tb",
+    "109-sample-hold-droop-front-end": "vbr1_l2_converter_front_end_tb",
+    "v3_110_settling_time_measurement": "vbr1_l1_settling_time_detector_tb",
+    "110-settling-time-measurement": "vbr1_l1_settling_time_detector_tb",
+    "v3_111_clocked_sine_source": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "111-clocked-sine-source": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+}
+
+for _alias, _source_checker_id in V3_CANDIDATE_090_111_CHECK_ALIASES.items():
+    CHECKS[_alias] = CHECKS[_source_checker_id]
+    if _source_checker_id in STREAMING_BEHAVIOR_CHECKS:
+        STREAMING_BEHAVIOR_CHECKS[_alias] = STREAMING_BEHAVIOR_CHECKS[_source_checker_id]
+
+VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
 
 VABENCH300_V11_CHECK_ALIASES = {

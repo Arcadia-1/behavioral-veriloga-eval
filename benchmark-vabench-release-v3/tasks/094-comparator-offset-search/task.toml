@@ -1,0 +1,20 @@
+id = "v3_094_comparator_offset_search"
+name = "094-comparator-offset-search"
+title = "Comparator Offset Search"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "comparator_decision_circuits"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["comparator_offset_search_ref.va"]

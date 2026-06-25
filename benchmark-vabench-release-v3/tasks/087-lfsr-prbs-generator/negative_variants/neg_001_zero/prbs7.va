@@ -1,0 +1,46 @@
+// PRBS-7 generator gold
+// 7-bit LFSR with XOR feedback taps at positions 7 and 6.
+// Polynomial: x^7 + x^6 + 1 (maximal-length, period=127).
+// Serial output PRBS_OUT + parallel 7-bit state bus S6..S0.
+
+`include "constants.vams"
+`include "disciplines.vams"
+`default_transition 50p
+
+module prbs7(
+    input  electrical CLK,
+    input  electrical RSTB,
+    output electrical PRBS_OUT,
+    output electrical S0,
+    output electrical S1,
+    output electrical S2,
+    output electrical S3,
+    output electrical S4,
+    output electrical S5,
+    output electrical S6
+);
+
+parameter integer seed  = 1;
+parameter real    vth   = 0.45;
+parameter real    vdd   = 0.9;
+parameter real    tedge = 100p;
+
+// sr[0]=bit1 (newest), sr[6]=bit7 (oldest/output)
+integer sr[6:0];
+integer i;
+integer fb;
+real    s_level[6:0];
+real    out_level;
+
+
+    analog begin
+        V(PRBS_OUT) <+ transition(0.0);
+        V(S0) <+ transition(0.0);
+        V(S1) <+ transition(0.0);
+        V(S2) <+ transition(0.0);
+        V(S3) <+ transition(0.0);
+        V(S4) <+ transition(0.0);
+        V(S5) <+ transition(0.0);
+        V(S6) <+ transition(0.0);
+    end
+endmodule

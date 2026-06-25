@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_091_agc_receiver_leveling_loop",
+  "source_task": "vbr1_l2_agc_receiver_leveling_loop",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_agc_receiver_leveling_loop_tb",
+  "primary_target": "agc_receiver_leveling_loop.va",
+  "artifact_targets": [
+    "agc_receiver_leveling_loop.va"
+  ],
+  "hidden_testbench": "tb_agc_receiver_leveling_loop.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

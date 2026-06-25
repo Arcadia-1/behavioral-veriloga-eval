@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_104_ldo_load_step_recovery",
+  "source_task": "vbr1_l2_ldo_load_step_recovery_flow",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_ldo_load_step_recovery_flow_tb",
+  "primary_target": "ldo_load_step_recovery_flow.va",
+  "artifact_targets": [
+    "ldo_load_step_recovery_flow.va"
+  ],
+  "hidden_testbench": "tb_ldo_load_step_recovery_flow.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

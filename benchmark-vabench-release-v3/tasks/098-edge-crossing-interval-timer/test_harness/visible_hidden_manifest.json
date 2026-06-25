@@ -1,0 +1,14 @@
+{
+  "task_id": "v3_098_edge_crossing_interval_timer",
+  "source_task": "vbr1_l1_edge_interval_timer",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l1_edge_interval_timer_tb",
+  "primary_target": "cross_interval_163p333_ref.va",
+  "artifact_targets": [
+    "cross_interval_163p333_ref.va",
+    "./cross_interval_163p333_ref.va"
+  ],
+  "hidden_testbench": "tb_cross_interval_163p333_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

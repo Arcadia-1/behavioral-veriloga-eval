@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_096_converter_static_linearity_measurement",
+  "source_task": "vbr1_l2_converter_static_linearity_measurement_flow",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_converter_static_linearity_measurement_flow_tb",
+  "primary_target": "converter_static_linearity_measurement_flow.va",
+  "artifact_targets": [
+    "converter_static_linearity_measurement_flow.va"
+  ],
+  "hidden_testbench": "tb_converter_static_linearity_measurement_flow.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

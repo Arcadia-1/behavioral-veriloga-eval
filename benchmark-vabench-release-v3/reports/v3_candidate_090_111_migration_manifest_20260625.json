@@ -1,0 +1,312 @@
+{
+  "created": 22,
+  "tasks": [
+    {
+      "task_id": "v3_090_adpll_ratio_hop_timer",
+      "source_task": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+      "primary_target": "adpll_ratio_hop_ref.va",
+      "artifact_targets": [
+        "adpll_ratio_hop_ref.va"
+      ],
+      "hidden_testbench": "tb_adpll_ratio_hop_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_091_agc_receiver_leveling_loop",
+      "source_task": "vbr1_l2_agc_receiver_leveling_loop",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_agc_receiver_leveling_loop_tb",
+      "primary_target": "agc_receiver_leveling_loop.va",
+      "artifact_targets": [
+        "agc_receiver_leveling_loop.va"
+      ],
+      "hidden_testbench": "tb_agc_receiver_leveling_loop.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_092_amplifier_filter_chain",
+      "source_task": "vbr1_l2_amplifier_filter_chain",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_amplifier_filter_chain_tb",
+      "primary_target": "amplifier_filter_chain.va",
+      "artifact_targets": [
+        "amplifier_filter_chain.va"
+      ],
+      "hidden_testbench": "tb_amplifier_filter_chain.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_093_bbpd_data_edge_alignment",
+      "source_task": "vbr1_l1_bang_bang_phase_detector",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l1_bang_bang_phase_detector_tb",
+      "primary_target": "bbpd_data_edge_alignment_ref.va",
+      "artifact_targets": [
+        "bbpd_data_edge_alignment_ref.va"
+      ],
+      "hidden_testbench": "tb_bbpd_data_edge_alignment_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_094_comparator_offset_search",
+      "source_task": "vbr1_l2_comparator_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_comparator_measurement_flow_tb",
+      "primary_target": "comparator_offset_search_ref.va",
+      "artifact_targets": [
+        "comparator_offset_search_ref.va"
+      ],
+      "hidden_testbench": "tb_comparator_offset_search_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_095_complete_calibration_loop",
+      "source_task": "vbr1_l2_complete_calibration_loop",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_complete_calibration_loop_tb",
+      "primary_target": "complete_calibration_loop.va",
+      "artifact_targets": [
+        "complete_calibration_loop.va"
+      ],
+      "hidden_testbench": "tb_complete_calibration_loop.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_096_converter_static_linearity_measurement",
+      "source_task": "vbr1_l2_converter_static_linearity_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_converter_static_linearity_measurement_flow_tb",
+      "primary_target": "converter_static_linearity_measurement_flow.va",
+      "artifact_targets": [
+        "converter_static_linearity_measurement_flow.va"
+      ],
+      "hidden_testbench": "tb_converter_static_linearity_measurement_flow.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_097_cppll_tracking_reacquire_timer",
+      "source_task": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "primary_target": "cppll_timer_ref.va",
+      "artifact_targets": [
+        "cppll_timer_ref.va",
+        "ref_step_clk.va"
+      ],
+      "hidden_testbench": "tb_cppll_freq_step_reacquire_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_098_edge_crossing_interval_timer",
+      "source_task": "vbr1_l1_edge_interval_timer",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l1_edge_interval_timer_tb",
+      "primary_target": "cross_interval_163p333_ref.va",
+      "artifact_targets": [
+        "cross_interval_163p333_ref.va",
+        "./cross_interval_163p333_ref.va"
+      ],
+      "hidden_testbench": "tb_cross_interval_163p333_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_099_dither_adder",
+      "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "primary_target": "dither_adder.va",
+      "artifact_targets": [
+        "dither_adder.va",
+        "vin_src.va",
+        "lfsr.va",
+        "gain_amp_fixed.va"
+      ],
+      "hidden_testbench": "tb_gain_extraction_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_100_final_step_file_metric",
+      "source_task": "vbr1_l2_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_measurement_flow_tb",
+      "primary_target": "final_step_file_metric_ref.va",
+      "artifact_targets": [
+        "final_step_file_metric_ref.va",
+        "./final_step_file_metric_ref.va"
+      ],
+      "hidden_testbench": "tb_final_step_file_metric_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_101_fixed_gain_amplifier",
+      "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "primary_target": "gain_amp_fixed.va",
+      "artifact_targets": [
+        "gain_amp_fixed.va",
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va"
+      ],
+      "hidden_testbench": "tb_gain_extraction_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_102_gain_estimator",
+      "source_task": "vbr1_l1_gain_estimator",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l1_gain_estimator_tb",
+      "primary_target": "gain_estimator.va",
+      "artifact_targets": [
+        "gain_estimator.va",
+        "./gain_estimator.va"
+      ],
+      "hidden_testbench": "tb_gain_estimator_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_103_iq_downconversion_chain",
+      "source_task": "vbr1_l2_iq_downconversion_chain",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_iq_downconversion_chain_tb",
+      "primary_target": "iq_downconversion_chain.va",
+      "artifact_targets": [
+        "iq_downconversion_chain.va"
+      ],
+      "hidden_testbench": "tb_iq_downconversion_chain.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_104_ldo_load_step_recovery",
+      "source_task": "vbr1_l2_ldo_load_step_recovery_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_ldo_load_step_recovery_flow_tb",
+      "primary_target": "ldo_load_step_recovery_flow.va",
+      "artifact_targets": [
+        "ldo_load_step_recovery_flow.va"
+      ],
+      "hidden_testbench": "tb_ldo_load_step_recovery_flow.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_105_pipeline_adc_chain_4b",
+      "source_task": "vbr1_l2_pipeline_adc_chain",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_pipeline_adc_chain_tb",
+      "primary_target": "pipeline_adc_chain_4b.va",
+      "artifact_targets": [
+        "pipeline_adc_chain_4b.va"
+      ],
+      "hidden_testbench": "tb_pipeline_adc_chain_4b_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_106_programmable_stimulus_sequencer",
+      "source_task": "vbr1_l2_programmable_stimulus_sequencer",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_programmable_stimulus_sequencer_tb",
+      "primary_target": "programmable_stimulus_sequencer.va",
+      "artifact_targets": [
+        "programmable_stimulus_sequencer.va"
+      ],
+      "hidden_testbench": "tb_programmable_stimulus_sequencer.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_107_reference_step_clock",
+      "source_task": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+      "primary_target": "ref_step_clk.va",
+      "artifact_targets": [
+        "ref_step_clk.va",
+        "cppll_timer_ref.va"
+      ],
+      "hidden_testbench": "tb_cppll_freq_step_reacquire_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_108_reference_startup_enable_flow",
+      "source_task": "vbr1_l2_reference_startup_enable_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_reference_startup_enable_flow_tb",
+      "primary_target": "reference_startup_enable_flow.va",
+      "artifact_targets": [
+        "reference_startup_enable_flow.va"
+      ],
+      "hidden_testbench": "tb_reference_startup_enable_flow.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_109_sample_hold_droop_front_end",
+      "source_task": "vbr1_l2_converter_front_end",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_converter_front_end_tb",
+      "primary_target": "sample_hold_droop_ref.va",
+      "artifact_targets": [
+        "sample_hold_droop_ref.va"
+      ],
+      "hidden_testbench": "tb_sample_hold_droop_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_110_settling_time_measurement",
+      "source_task": "vbr1_l1_settling_time_detector",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l1_settling_time_detector_tb",
+      "primary_target": "settling_time_measurement_tb.va",
+      "artifact_targets": [
+        "settling_time_measurement_tb.va"
+      ],
+      "hidden_testbench": "tb_settling_time_measurement_tb_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    },
+    {
+      "task_id": "v3_111_clocked_sine_source",
+      "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
+      "source_form": "tb",
+      "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+      "primary_target": "vin_src.va",
+      "artifact_targets": [
+        "vin_src.va",
+        "lfsr.va",
+        "dither_adder.va",
+        "gain_amp_fixed.va"
+      ],
+      "hidden_testbench": "tb_gain_extraction_ref.scs",
+      "visible_smoke": "tb_visible_smoke.scs",
+      "status": "initial_migration_pending_negative_audit"
+    }
+  ],
+  "excluded_after_smoke": [
+    "100-weighted-dac-8b",
+    "113-weighted-sar-adc-8b",
+    "115-ideal-sample-hold",
+    "094-clock-divider",
+    "106-lfsr-dither-source"
+  ]
+}

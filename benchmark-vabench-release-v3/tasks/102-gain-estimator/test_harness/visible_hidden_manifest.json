@@ -1,0 +1,14 @@
+{
+  "task_id": "v3_102_gain_estimator",
+  "source_task": "vbr1_l1_gain_estimator",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l1_gain_estimator_tb",
+  "primary_target": "gain_estimator.va",
+  "artifact_targets": [
+    "gain_estimator.va",
+    "./gain_estimator.va"
+  ],
+  "hidden_testbench": "tb_gain_estimator_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

@@ -1,0 +1,30 @@
+
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+`default_transition 10p
+
+module noise_gen (
+    input electrical  vin_i,
+    output electrical vout_o
+);
+
+    // -------------------------------------------------------
+    // Parameters
+    // -------------------------------------------------------
+    parameter real sigma = 0.01;  // Noise standard deviation (in Volts)
+
+    // -------------------------------------------------------
+    // Internal variables
+    // -------------------------------------------------------
+    real vin, noise, vout;
+
+    // -------------------------------------------------------
+    // Analog behavior
+    // -------------------------------------------------------
+    
+    analog begin
+        V(vout_o) <+ transition(0.0);
+    end
+endmodule

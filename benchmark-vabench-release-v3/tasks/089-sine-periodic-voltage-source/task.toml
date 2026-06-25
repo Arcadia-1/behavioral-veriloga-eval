@@ -1,0 +1,20 @@
+id = "v3_089_sine_periodic_voltage_source"
+name = "089-sine-periodic-voltage-source"
+title = "Sine Periodic Voltage Source"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "stimulus_source_generators"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["multitone.va"]

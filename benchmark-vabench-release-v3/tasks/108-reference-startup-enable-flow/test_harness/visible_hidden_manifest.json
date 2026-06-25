@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_108_reference_startup_enable_flow",
+  "source_task": "vbr1_l2_reference_startup_enable_flow",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_reference_startup_enable_flow_tb",
+  "primary_target": "reference_startup_enable_flow.va",
+  "artifact_targets": [
+    "reference_startup_enable_flow.va"
+  ],
+  "hidden_testbench": "tb_reference_startup_enable_flow.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

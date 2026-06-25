@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_090_adpll_ratio_hop_timer",
+  "source_task": "vbr1_l2_adpll_lock_ratio_hop_timer_flow",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb",
+  "primary_target": "adpll_ratio_hop_ref.va",
+  "artifact_targets": [
+    "adpll_ratio_hop_ref.va"
+  ],
+  "hidden_testbench": "tb_adpll_ratio_hop_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

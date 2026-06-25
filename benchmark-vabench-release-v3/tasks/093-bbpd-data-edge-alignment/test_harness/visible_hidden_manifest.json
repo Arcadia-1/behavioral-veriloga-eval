@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_093_bbpd_data_edge_alignment",
+  "source_task": "vbr1_l1_bang_bang_phase_detector",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l1_bang_bang_phase_detector_tb",
+  "primary_target": "bbpd_data_edge_alignment_ref.va",
+  "artifact_targets": [
+    "bbpd_data_edge_alignment_ref.va"
+  ],
+  "hidden_testbench": "tb_bbpd_data_edge_alignment_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}

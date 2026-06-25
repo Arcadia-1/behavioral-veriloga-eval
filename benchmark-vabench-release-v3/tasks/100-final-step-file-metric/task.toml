@@ -1,0 +1,20 @@
+id = "v3_100_final_step_file_metric"
+name = "100-final-step-file-metric"
+title = "Final Step File Metric"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "measurement_instrumentation_flows"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["final_step_file_metric_ref.va", "./final_step_file_metric_ref.va"]

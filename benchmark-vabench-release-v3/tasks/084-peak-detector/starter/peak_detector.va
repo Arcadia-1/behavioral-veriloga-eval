@@ -1,0 +1,13 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module peak_detector(vin, rst, vout);
+    input vin,rst; output vout; electrical vin,rst,vout;
+    parameter real vth=0.45; parameter real tr=500p; real peak;
+    
+    analog begin
+        V(input) <+ transition(0.0);
+        V(vin) <+ transition(0.0);
+        V(rst) <+ transition(0.0);
+        V(vout) <+ transition(0.0);
+    end
+endmodule

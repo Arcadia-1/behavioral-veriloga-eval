@@ -1,0 +1,13 @@
+{
+  "task_id": "v3_110_settling_time_measurement",
+  "source_task": "vbr1_l1_settling_time_detector",
+  "source_form": "tb",
+  "source_checker_id": "vbr1_l1_settling_time_detector_tb",
+  "primary_target": "settling_time_measurement_tb.va",
+  "artifact_targets": [
+    "settling_time_measurement_tb.va"
+  ],
+  "hidden_testbench": "tb_settling_time_measurement_tb_ref.scs",
+  "visible_smoke": "tb_visible_smoke.scs",
+  "status": "initial_migration_pending_negative_audit"
+}
