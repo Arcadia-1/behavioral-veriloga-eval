@@ -1,0 +1,20 @@
+id = "v3_134_source_differential_buffer"
+name = "134-source-differential-buffer"
+title = "Source Differential Buffer"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "mixed_signal"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["differential_buffer.va"]

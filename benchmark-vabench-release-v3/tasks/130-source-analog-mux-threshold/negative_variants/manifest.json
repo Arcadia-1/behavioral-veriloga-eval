@@ -1,0 +1,9 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_zero",
+      "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+      "path": "negative_variants/neg_001_zero/analog_mux_threshold.va"
+    }
+  ]
+}

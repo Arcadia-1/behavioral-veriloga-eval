@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+module two_input_or_gate (out, in1, in2);
+
+input in1, in2;
+output out;
+electrical out, in1, in2;
+
+analog begin
+    V(out) <+ 0;
+end
+
+endmodule

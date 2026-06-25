@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_analog_mux_threshold",
+  "evidence": {
+    "evas": "WORK/source-import-batch4-evas/130-source-analog-mux-threshold",
+    "spectre": "WORK/source-import-batch4-spectre/130-source-analog-mux-threshold"
+  }
+}

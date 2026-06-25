@@ -6553,6 +6553,138 @@ def check_v3_source_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool
     return True, detail + " monotonic=True"
 
 
+def check_v3_source_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/in1/in2/out"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.9), (35.0, 0.0), (45.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/in1/in2/out"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vsel", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin1/vin2/vsel/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.75), (15.0, 0.20), (25.0, 0.55), (35.0, 0.45)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_two_bit_counter_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clkin", "mc"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clkin/mc"
+    return _sample_many(
+        rows,
+        {"mc": [(6.0, 0.0), (16.0, 0.0), (26.0, 0.0), (36.0, 1.0), (46.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    ok, detail = _sample_many(
+        rows,
+        {"vout": [(5.0, 0.20), (15.0, 0.70), (25.0, 0.70), (35.0, 0.85)]},
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    values = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns in (5.0, 15.0, 25.0, 35.0)]
+    monotonic_hold = all(b >= a - 0.005 for a, b in zip(values, values[1:]))
+    if not monotonic_hold:
+        return False, f"max_detector_not_monotonic samples={','.join(f'{v:.3f}' for v in values)}"
+    return True, detail + " monotonic_hold=True"
+
+
+def check_v3_source_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/vinp/vinn/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(6.0, 0.0), (26.0, -0.9), (46.0, 0.9)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_differential_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinn", "voutp", "voutn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vinp/vinn/voutp/voutn"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "voutp": [(5.0, 0.25), (20.0, 0.65), (35.0, 0.35)],
+            "voutn": [(5.0, 0.55), (20.0, 0.30), (35.0, 0.70)],
+        },
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    max_err = 0.0
+    for signal_in, signal_out in (("vinp", "voutp"), ("vinn", "voutn")):
+        for time_ns in (5.0, 20.0, 35.0):
+            vi = sample_signal_at(rows, signal_in, time_ns * 1e-9)
+            vo = sample_signal_at(rows, signal_out, time_ns * 1e-9)
+            if vi is None or vo is None:
+                return False, f"missing_buffer_pair_sample={signal_in}/{signal_out}@{time_ns:g}ns"
+            max_err = max(max_err, abs(vi - vo))
+    return max_err <= 0.025, f"{detail} max_pair_error={max_err:.4f}"
+
+
+def check_v3_source_two_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "in1", "in2", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/in1/in2/out"
+    return _sample_many(
+        rows,
+        {"out": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "s6", "s5", "s4", "s3", "s2", "s1", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/clk/s6/s5/s4/s3/s2/s1/vres"
+    expected = [
+        (6.0, 0.20),
+        (12.0, 0.65),
+        (17.0, 0.425),
+        (22.0, 0.3125),
+        (27.0, 0.25625),
+        (32.0, 0.228125),
+        (37.0, 0.2140625),
+    ]
+    ok, detail = _sample_many(rows, {"vres": expected}, tol=0.025)
+    if not ok:
+        return ok, detail
+    observed = [float(sample_signal_at(rows, "vres", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
+    has_expected_step = observed[1] > observed[0] + 0.35 and all(a > b for a, b in zip(observed[1:], observed[2:]))
+    if not has_expected_step:
+        return False, f"cdac_sequence_unexpected samples={','.join(f'{v:.4f}' for v in observed)}"
+    return True, detail + " sample_then_monotone_down=True"
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10429,6 +10561,15 @@ CHECKS = {
     "v3_source_clocked_dac_4b_binary": check_v3_source_clocked_dac_4b_binary,
     "v3_source_latched_comparator_delay": check_v3_source_latched_comparator_delay,
     "v3_source_sar_weighted_sum": check_v3_source_sar_weighted_sum,
+    "v3_source_two_input_and_gate": check_v3_source_two_input_and_gate,
+    "v3_source_two_input_xor_gate": check_v3_source_two_input_xor_gate,
+    "v3_source_analog_mux_threshold": check_v3_source_analog_mux_threshold,
+    "v3_source_two_bit_counter_marker": check_v3_source_two_bit_counter_marker,
+    "v3_source_max_detector_hold": check_v3_source_max_detector_hold,
+    "v3_source_time_diff_detector": check_v3_source_time_diff_detector,
+    "v3_source_differential_buffer": check_v3_source_differential_buffer,
+    "v3_source_two_input_or_gate": check_v3_source_two_input_or_gate,
+    "v3_source_sar_cdac_residue": check_v3_source_sar_cdac_residue,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -11695,6 +11836,15 @@ CHECKS["124-source-comp-os-detect"] = check_v3_source_comp_os_detect
 CHECKS["125-source-clocked-dac-4b-binary"] = check_v3_source_clocked_dac_4b_binary
 CHECKS["126-source-latched-comparator-delay"] = check_v3_source_latched_comparator_delay
 CHECKS["127-source-sar-weighted-sum"] = check_v3_source_sar_weighted_sum
+CHECKS["128-source-two-input-and-gate"] = check_v3_source_two_input_and_gate
+CHECKS["129-source-two-input-xor-gate"] = check_v3_source_two_input_xor_gate
+CHECKS["130-source-analog-mux-threshold"] = check_v3_source_analog_mux_threshold
+CHECKS["131-source-two-bit-counter-marker"] = check_v3_source_two_bit_counter_marker
+CHECKS["132-source-max-detector-hold"] = check_v3_source_max_detector_hold
+CHECKS["133-source-time-diff-detector"] = check_v3_source_time_diff_detector
+CHECKS["134-source-differential-buffer"] = check_v3_source_differential_buffer
+CHECKS["135-source-two-input-or-gate"] = check_v3_source_two_input_or_gate
+CHECKS["136-source-sar-cdac-residue"] = check_v3_source_sar_cdac_residue
 
 
 RELEASE_FORM_CHECK_ALIASES = {
