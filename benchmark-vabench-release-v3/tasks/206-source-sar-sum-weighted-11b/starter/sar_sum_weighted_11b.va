@@ -1,0 +1,12 @@
+`include "disciplines.vams"
+
+module sar_sum_weighted_11b(din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, vout);
+input din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10;
+output vout;
+electrical din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, vout;
+
+analog begin
+    V(vout) <+ 0;
+end
+
+endmodule

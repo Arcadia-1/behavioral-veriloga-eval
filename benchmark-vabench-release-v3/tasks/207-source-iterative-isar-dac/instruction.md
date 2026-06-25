@@ -1,0 +1,1 @@
+Implement `iterative_isar_dac` with comparator input `dcmp`, reset `rst`, clock `clk`, and output `vdac`. Reset the DAC estimate on reset rising edges, then update the estimate by a halving delta on each clock edge according to comparator polarity.

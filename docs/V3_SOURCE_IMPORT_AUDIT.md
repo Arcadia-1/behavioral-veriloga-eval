@@ -442,6 +442,35 @@ Batch timings:
   with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
   direct host.
 
+## Certified Batch 16
+
+The sixteenth submitted batch expands source-import coverage into comparator
+and SAR-control behavior: a clocked comparator with reset, a comparator-offset
+binary-search driver, two-lane edge alignment, serial SAR/DAC accumulation, an
+11-bit nonbinary SAR weighted sum, and an iterative SAR DAC estimate update.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `202-source-l2-cmp-ideal-clocked` | `caiyizeng25/L2_CMP_Ideal.va` | clocked comparator decision and reset behavior | PASS | PASS | passed |
+| `203-source-comparator-offset-driver` | `wangxy/L2_comparator_4b_offset.va` | successive-approximation comparator-offset stimulus driver | PASS | PASS | passed |
+| `204-source-pipe-2lane-edge-align` | `guoxy/ideal_PIPE_10B_TI_ALIGN.va` | two-lane pipeline data alignment controlled by clock edge polarity | PASS | PASS | passed |
+| `205-source-dac-serial-accumulator` | `zhangz/DAC_serial_va.va` | serial SAR/DAC bit accumulation into a bipolar analog output | PASS | PASS | passed |
+| `206-source-sar-sum-weighted-11b` | `liudongyang/TB_SAR_SUM.va` | nonbinary 11-bit SAR weighted code compression | PASS | PASS | passed |
+| `207-source-iterative-isar-dac` | `dmanager/_tool_iSAR.va` | iterative SAR DAC estimate update with halving search step | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch16-evas/summary.json`
+- `WORK/source-import-batch16-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 1.675 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 14.151 s
+  with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

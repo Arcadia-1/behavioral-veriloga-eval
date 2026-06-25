@@ -1,0 +1,1 @@
+Implement `comparator_offset_binary_driver` with clock `clk`, comparator output `dcmpp`, and differential stimulus outputs `vinp/vinn`. On each falling clock edge, update the binary-search offset estimate and halve the step.

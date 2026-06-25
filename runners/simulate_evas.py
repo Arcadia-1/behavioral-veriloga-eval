@@ -7594,6 +7594,78 @@ def check_v3_source_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
+def check_v3_source_l2_cmp_ideal_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 cmp ideal clocked signals"
+    return _sample_many(
+        rows,
+        {
+            "dcmpp": [(1.3, 0.9), (2.0, 0.9), (11.3, 0.0), (12.0, 0.9), (21.3, 0.0), (31.3, 0.9)],
+            "dcmpn": [(1.3, 0.0), (2.0, 0.9), (11.3, 0.9), (12.0, 0.9), (21.3, 0.0), (31.3, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_comparator_offset_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "dcmpp", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing comparator offset driver signals"
+    return _sample_many(
+        rows,
+        {
+            "vinp": [(3.0, 0.4), (13.0, 0.425), (23.0, 0.4125), (33.0, 0.40625)],
+            "vinn": [(3.0, 0.5), (13.0, 0.475), (23.0, 0.4875), (33.0, 0.49375)],
+        },
+        tol=0.02,
+    )
+
+
+def check_v3_source_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din1", "din2", "clk_align", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pipe 2lane edge align signals"
+    return _sample_many(
+        rows,
+        {"dout": [(1.3, 0.1), (1.8, 0.8), (11.3, 0.4), (11.8, 0.3), (21.3, 0.7), (21.8, 0.5), (31.3, 0.2), (31.8, 0.9)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_sample", "clk_sarready", "data", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac serial accumulator signals"
+    return _sample_many(
+        rows,
+        {"out": [(2.0, -1.1), (4.0, 0.0), (6.0, 0.0), (8.0, 0.275), (10.0, 0.4125), (14.0, -1.1), (16.0, -1.1), (18.0, -0.55), (20.0, -0.55), (22.0, -0.4125)]},
+        tol=0.035,
+    )
+
+
+def check_v3_source_sar_sum_weighted_11b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sar sum weighted output"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, -1.0), (15.0, 0.314453125), (25.0, -0.25390625), (35.0, 0.998046875)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dcmp", "rst", "clk", "vdac"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing iterative isar dac signals"
+    return _sample_many(
+        rows,
+        {"vdac": [(1.5, 0.0), (2.5, -0.1), (4.5, -0.05), (6.5, -0.025), (8.5, -0.0375), (10.5, -0.03125)]},
+        tol=0.015,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11544,6 +11616,12 @@ CHECKS = {
     "v3_source_ideal_clkmux_8channel": check_v3_source_ideal_clkmux_8channel,
     "v3_source_dac_ideal_4b_offset": check_v3_source_dac_ideal_4b_offset,
     "v3_source_linear_pfd_gain": check_v3_source_linear_pfd_gain,
+    "v3_source_l2_cmp_ideal_clocked": check_v3_source_l2_cmp_ideal_clocked,
+    "v3_source_comparator_offset_driver": check_v3_source_comparator_offset_driver,
+    "v3_source_pipe_2lane_edge_align": check_v3_source_pipe_2lane_edge_align,
+    "v3_source_dac_serial_accumulator": check_v3_source_dac_serial_accumulator,
+    "v3_source_sar_sum_weighted_11b": check_v3_source_sar_sum_weighted_11b,
+    "v3_source_iterative_isar_dac": check_v3_source_iterative_isar_dac,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12859,6 +12937,12 @@ CHECKS["198-source-l2-cdac-4b-residue"] = check_v3_source_l2_cdac_4b_residue
 CHECKS["199-source-ideal-clkmux-8channel"] = check_v3_source_ideal_clkmux_8channel
 CHECKS["200-source-dac-ideal-4b-offset"] = check_v3_source_dac_ideal_4b_offset
 CHECKS["201-source-linear-pfd-gain"] = check_v3_source_linear_pfd_gain
+CHECKS["202-source-l2-cmp-ideal-clocked"] = check_v3_source_l2_cmp_ideal_clocked
+CHECKS["203-source-comparator-offset-driver"] = check_v3_source_comparator_offset_driver
+CHECKS["204-source-pipe-2lane-edge-align"] = check_v3_source_pipe_2lane_edge_align
+CHECKS["205-source-dac-serial-accumulator"] = check_v3_source_dac_serial_accumulator
+CHECKS["206-source-sar-sum-weighted-11b"] = check_v3_source_sar_sum_weighted_11b
+CHECKS["207-source-iterative-isar-dac"] = check_v3_source_iterative_isar_dac
 
 
 RELEASE_FORM_CHECK_ALIASES = {

@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+module l2_cmp_ideal_clocked(cmpck, vinn, vinp, dcmpn, dcmpp);
+input cmpck, vinn, vinp;
+output dcmpn, dcmpp;
+electrical cmpck, vinn, vinp, dcmpn, dcmpp;
+
+analog begin
+    V(dcmpn) <+ 0;
+    V(dcmpp) <+ 0;
+end
+
+endmodule

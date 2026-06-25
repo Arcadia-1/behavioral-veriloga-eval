@@ -1,0 +1,1 @@
+Implement `l2_cmp_ideal_clocked` with comparator clock `cmpck`, inputs `vinp/vinn`, and outputs `dcmpp/dcmpn`. On rising clock edges emit the comparison decision; on falling edges reset both outputs high.

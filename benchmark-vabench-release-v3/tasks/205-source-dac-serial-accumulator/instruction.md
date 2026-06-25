@@ -1,0 +1,1 @@
+Implement `dac_serial_accumulator` with sample reset clock, SAR-ready clock, serial data input, and analog output. Reset the accumulator on sample-clock falling edges and add weighted serial bits on SAR-ready falling edges.
