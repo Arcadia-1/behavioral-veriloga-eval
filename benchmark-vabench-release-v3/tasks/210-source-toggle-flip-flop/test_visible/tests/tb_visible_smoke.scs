@@ -1,0 +1,11 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "toggle_flip_flop.va"
+
+Vvtrig (vtrig 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 1.50n 0.9 1.55n 0 3n 0 3.05n 0.9 3.50n 0.9 3.55n 0 5n 0 5.05n 0.9 5.50n 0.9 5.55n 0 7n 0 7.05n 0.9 7.50n 0.9 7.55n 0]
+
+XDUT (vtrig vout_q vout_qbar) toggle_flip_flop
+
+tran tran stop=9n maxstep=20p
+save vtrig vout_q vout_qbar

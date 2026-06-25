@@ -1,0 +1,1 @@
+Implement `onehot_progress_encoder` with clock `ck`, outputs `d0..d15`, and output `sum`. On each rising clock edge, set the next one-hot/progress bit high and increment the count until all sixteen bits are high.

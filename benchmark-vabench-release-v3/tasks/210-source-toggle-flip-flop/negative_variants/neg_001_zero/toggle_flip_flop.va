@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+        module toggle_flip_flop(vtrig, vout_q, vout_qbar);
+        input vtrig;
+        output vout_q, vout_qbar;
+        electrical vtrig, vout_q, vout_qbar;
+
+analog begin
+    V(vout_q) <+ 0;
+    V(vout_qbar) <+ 0;
+end
+
+endmodule

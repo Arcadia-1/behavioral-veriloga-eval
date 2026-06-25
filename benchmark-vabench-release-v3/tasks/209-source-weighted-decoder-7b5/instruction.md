@@ -1,0 +1,1 @@
+Implement `weighted_decoder_7b5` with scalar inputs `d0..d8` and outputs `aout7b`, `aout7b5`, and `aout8b`. Interpret each input above threshold as +1 and below threshold as -1, with the special `d0/d1` paired LSB rule for the 7.5-bit output.

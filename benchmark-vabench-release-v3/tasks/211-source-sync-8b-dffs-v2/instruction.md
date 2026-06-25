@@ -1,0 +1,1 @@
+Implement `sync_8b_dffs_v2` with phase clocks `ck1..ck9`, data inputs `dl0..dl8`, and outputs `do0..do8`. Each phase captures one new bit and shifts previously captured higher bits toward the final output stage.

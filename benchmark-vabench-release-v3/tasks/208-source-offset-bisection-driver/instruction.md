@@ -1,0 +1,1 @@
+Implement `offset_bisection_driver` with `clk`, comparator output `vout`, common-mode `vcm`, and differential outputs `vinp/vinn`. On each falling clock edge, update the signed differential search value; halve the search step when the comparator polarity changes.

@@ -1,0 +1,1 @@
+Implement `toggle_flip_flop` with trigger input `vtrig` and complementary outputs `vout_q/vout_qbar`. Initialize from `initial_state` and toggle on each rising threshold crossing.

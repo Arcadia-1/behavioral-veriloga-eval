@@ -7666,6 +7666,87 @@ def check_v3_source_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
+def check_v3_source_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vout", "vcm", "vinp", "vinn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing offset bisection driver signals"
+    return _sample_many(
+        rows,
+        {
+            "vinp": [(3.0, 0.505), (5.0, 0.510), (7.0, 0.5075), (9.0, 0.505), (11.0, 0.50625), (13.0, 0.505625)],
+            "vinn": [(3.0, 0.495), (5.0, 0.490), (7.0, 0.4925), (9.0, 0.495), (11.0, 0.49375), (13.0, 0.494375)],
+        },
+        tol=0.005,
+    )
+
+
+def check_v3_source_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "aout7b", "aout7b5", "aout8b"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing weighted decoder outputs"
+    return _sample_many(
+        rows,
+        {
+            "aout7b": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1727941), (35.0, 0.4963235)],
+            "aout7b5": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1691176), (35.0, 0.4963235)],
+            "aout8b": [(5.0, -0.4981618), (15.0, -0.1636029), (25.0, 0.1709559), (35.0, 0.4981618)],
+        },
+        tol=0.01,
+    )
+
+
+def check_v3_source_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vtrig", "vout_q", "vout_qbar"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing toggle flip-flop signals"
+    return _sample_many(
+        rows,
+        {
+            "vout_q": [(0.8, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9), (7.3, 0.0)],
+            "vout_qbar": [(0.8, 0.9), (1.3, 0.0), (3.3, 0.9), (5.3, 0.0), (7.3, 0.9)],
+        },
+        tol=0.04,
+    )
+
+
+def check_v3_source_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "do0", "do1", "do2", "do3", "do4", "do5", "do6", "do7", "do8"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sync 8b dffs outputs"
+    return _sample_many(
+        rows,
+        {
+            "do0": [(9.7, 1.0), (19.7, 0.0)],
+            "do1": [(9.7, 0.0), (19.7, 1.0)],
+            "do2": [(9.7, 1.0), (19.7, 0.0)],
+            "do3": [(9.7, 0.0), (19.7, 1.0)],
+            "do4": [(9.7, 1.0), (19.7, 0.0)],
+            "do5": [(9.7, 0.0), (19.7, 1.0)],
+            "do6": [(9.7, 1.0), (19.7, 0.0)],
+            "do7": [(9.7, 0.0), (19.7, 1.0)],
+            "do8": [(9.7, 1.0), (19.7, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d0", "d1", "d2", "d3", "d4", "d15", "sum"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing onehot progress encoder signals"
+    return _sample_many(
+        rows,
+        {
+            "sum": [(0.8, 0.0), (1.3, 1.0), (4.3, 4.0), (16.3, 16.0), (17.3, 16.0)],
+            "d0": [(0.8, 0.0), (1.3, 1.0)],
+            "d3": [(4.3, 1.0)],
+            "d4": [(4.3, 0.0), (16.3, 1.0)],
+            "d15": [(16.3, 1.0), (17.3, 1.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11622,6 +11703,11 @@ CHECKS = {
     "v3_source_dac_serial_accumulator": check_v3_source_dac_serial_accumulator,
     "v3_source_sar_sum_weighted_11b": check_v3_source_sar_sum_weighted_11b,
     "v3_source_iterative_isar_dac": check_v3_source_iterative_isar_dac,
+    "v3_source_offset_bisection_driver": check_v3_source_offset_bisection_driver,
+    "v3_source_weighted_decoder_7b5": check_v3_source_weighted_decoder_7b5,
+    "v3_source_toggle_flip_flop": check_v3_source_toggle_flip_flop,
+    "v3_source_sync_8b_dffs_v2": check_v3_source_sync_8b_dffs_v2,
+    "v3_source_onehot_progress_encoder": check_v3_source_onehot_progress_encoder,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,

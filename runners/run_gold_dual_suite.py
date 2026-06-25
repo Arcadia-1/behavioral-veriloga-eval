@@ -1190,6 +1190,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_dac_serial_accumulator",
     "v3_source_sar_sum_weighted_11b",
     "v3_source_iterative_isar_dac",
+    "v3_source_offset_bisection_driver",
+    "v3_source_weighted_decoder_7b5",
+    "v3_source_toggle_flip_flop",
+    "v3_source_sync_8b_dffs_v2",
+    "v3_source_onehot_progress_encoder",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1214,6 +1219,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "182-source-differential-dac-calc-6b",
     "183-source-flash-adc-threshold-taps",
     "184-source-divide-by-two-toggle",
+    "208-source-offset-bisection-driver",
+    "209-source-weighted-decoder-7b5",
+    "210-source-toggle-flip-flop",
+    "211-source-sync-8b-dffs-v2",
+    "212-source-onehot-progress-encoder",
 }
 
 
