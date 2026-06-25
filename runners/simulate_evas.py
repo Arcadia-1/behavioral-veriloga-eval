@@ -7391,6 +7391,64 @@ def check_v3_source_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_source_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clks", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clks/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 1.0), (15.0, 3.65625), (25.0, 2.5625), (35.0, 4.96875)]},
+        tol=0.04,
+    )
+
+
+def check_v3_source_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing folded flash dac signals"
+    return _sample_many(
+        rows,
+        {"vout": [(5.0, 0.5), (15.0, 0.0625), (25.0, 0.5), (35.0, 0.9375)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "dout", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing ref flash 8level signals"
+    return _sample_many(
+        rows,
+        {
+            "dout": [(4.0, 0.0), (14.0, 0.375), (24.0, 0.625), (34.0, 1.0)],
+            "vres": [(4.0, 0.6), (14.0, 0.325), (24.0, -0.225), (34.0, -0.2)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_source_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing ref flash 15level signals"
+    return _sample_many(
+        rows,
+        {"dout": [(4.0, 0.0), (14.0, 1.0 / 3.0), (24.0, 2.0 / 3.0), (34.0, 1.0)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clkin", "mc", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing divide-by-8/9 signals"
+    return _sample_many(
+        rows,
+        {"out": [(2.0, 1.2), (4.0, 0.0), (12.0, 1.2), (16.0, 1.2), (20.0, 0.0), (26.0, 0.0), (28.0, 1.2)]},
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11324,6 +11382,11 @@ CHECKS = {
     "v3_source_differential_dac_calc_6b": check_v3_source_differential_dac_calc_6b,
     "v3_source_flash_adc_threshold_taps": check_v3_source_flash_adc_threshold_taps,
     "v3_source_divide_by_two_toggle": check_v3_source_divide_by_two_toggle,
+    "v3_source_dac_5v_weighted_7b": check_v3_source_dac_5v_weighted_7b,
+    "v3_source_folded_flash_dac_4b": check_v3_source_folded_flash_dac_4b,
+    "v3_source_ref_flash_8level_decoder": check_v3_source_ref_flash_8level_decoder,
+    "v3_source_ref_flash_15level_decoder": check_v3_source_ref_flash_15level_decoder,
+    "v3_source_divide_by_8_9_switch": check_v3_source_divide_by_8_9_switch,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12622,6 +12685,11 @@ CHECKS["181-source-two-channel-sample-demux"] = check_v3_source_two_channel_samp
 CHECKS["182-source-differential-dac-calc-6b"] = check_v3_source_differential_dac_calc_6b
 CHECKS["183-source-flash-adc-threshold-taps"] = check_v3_source_flash_adc_threshold_taps
 CHECKS["184-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle
+CHECKS["185-source-dac-5v-weighted-7b"] = check_v3_source_dac_5v_weighted_7b
+CHECKS["186-source-folded-flash-dac-4b"] = check_v3_source_folded_flash_dac_4b
+CHECKS["187-source-ref-flash-8level-decoder"] = check_v3_source_ref_flash_8level_decoder
+CHECKS["188-source-ref-flash-15level-decoder"] = check_v3_source_ref_flash_15level_decoder
+CHECKS["189-source-divide-by-8-9-switch"] = check_v3_source_divide_by_8_9_switch
 
 
 RELEASE_FORM_CHECK_ALIASES = {

@@ -1,0 +1,1 @@
+Implement `folded_flash_dac_4b` with scalar digital-voltage inputs `vd4..vd1` and output `vout`. Decode the 4-bit word into a folded fractional DAC output, where `vd4` selects the direct or mirrored half scale.

@@ -1,0 +1,1 @@
+Implement `ref_flash_15level_decoder` with scalar thermometer inputs `dt0..dt14`, clock `clks`, and output `dout`. On each rising clock edge, count the high taps and output the normalized thermometer fraction.

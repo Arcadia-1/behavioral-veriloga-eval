@@ -1,0 +1,20 @@
+id = "v3_185_source_dac_5v_weighted_7b"
+name = "185-source-dac-5v-weighted-7b"
+title = "Source DAC 5V Weighted 7b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dac_5v_weighted_7b.va"]

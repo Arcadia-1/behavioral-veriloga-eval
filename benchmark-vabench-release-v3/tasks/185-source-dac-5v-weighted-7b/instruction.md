@@ -1,0 +1,1 @@
+Implement `dac_5v_weighted_7b` with scalar clock, seven scalar input bits `din0..din6`, and output `vout`. On each rising clock edge, compute the binary-weighted 7-bit DAC voltage using `din0` as the MSB, `refp=5`, `refn=1`, and the original extra LSB reference term.

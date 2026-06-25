@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_source_dac_5v_weighted_7b
+  metric: stable_samples
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct

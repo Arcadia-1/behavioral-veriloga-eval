@@ -1,0 +1,1 @@
+Implement `divide_by_8_9_switch` with input clock `clkin`, modulus-control input `mc`, and output `out`. Count rising input edges, divide by 8 when `mc` is low, switch to divide-by-9 while `mc` is high, and drive high for counts 0 through 3.

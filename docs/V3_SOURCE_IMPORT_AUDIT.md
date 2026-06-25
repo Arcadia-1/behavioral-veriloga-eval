@@ -353,6 +353,36 @@ Batch timings:
   with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
   direct host.
 
+## Certified Batch 13
+
+The thirteenth submitted batch adds five converter and timing source-import
+tasks from the deduplicated corpus. This batch targets useful ADC/DAC support
+blocks rather than generic gates: a 7-bit weighted DAC, a folded flash DAC, two
+flash reference decoders, and a control-switched divide-by-8/divide-by-9
+divider. These tasks continue to use stable sampled behavior as the scoring
+contract.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `185-source-dac-5v-weighted-7b` | `zhangm/DAC_5V.va` | clocked seven-bit 5 V weighted DAC reconstruction | PASS | PASS | passed |
+| `186-source-folded-flash-dac-4b` | `zhangad/dac_4bit_flash_ideal.va` | folded four-bit flash DAC code-to-voltage mapping | PASS | PASS | passed |
+| `187-source-ref-flash-8level-decoder` | `zhangm/tb_REF_FLASH_8L_DEC.va` | eight-level flash thermometer count plus residue calculation | PASS | PASS | passed |
+| `188-source-ref-flash-15level-decoder` | `zhangm/tb_REF_FLASH_15L_DECODER.va` | fifteen-level flash thermometer count normalization | PASS | PASS | passed |
+| `189-source-divide-by-8-9-switch` | `huangsy/DIV8_9.va` | control-switched divide-by-8/divide-by-9 clock behavior | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch13-evas/summary.json`
+- `WORK/source-import-batch13-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 5/5 PASS.
+- EVAS hidden: 5/5 PASS, wallclock 1.915 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 5/5 passed, wallclock 12.807 s
+  with 5-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

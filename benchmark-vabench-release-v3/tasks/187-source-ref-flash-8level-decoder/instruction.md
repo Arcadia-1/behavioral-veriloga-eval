@@ -1,0 +1,1 @@
+Implement `ref_flash_8level_decoder` with scalar thermometer inputs `dt0..dt7`, analog input `vin`, clock `clks`, and outputs `dout` and `vres`. On each rising clock edge, count the high thermometer taps, emit the normalized count, and compute the residue around the mid-code reference.
