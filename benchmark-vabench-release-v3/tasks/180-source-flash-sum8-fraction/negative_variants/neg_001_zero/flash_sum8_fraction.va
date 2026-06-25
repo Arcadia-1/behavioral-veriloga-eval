@@ -1,0 +1,12 @@
+`include "disciplines.vams"
+
+module flash_sum8_fraction(din0, din1, din2, din3, din4, din5, din6, din7, clks, dout);
+input din0, din1, din2, din3, din4, din5, din6, din7, clks;
+output dout;
+electrical din0, din1, din2, din3, din4, din5, din6, din7, clks, dout;
+
+analog begin
+    V(dout) <+ 0;
+end
+
+endmodule

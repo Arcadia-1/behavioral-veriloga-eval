@@ -324,6 +324,35 @@ Batch timings:
   with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
   direct host.
 
+## Certified Batch 12
+
+The twelfth submitted batch adds six more source-import tasks around flash ADC
+post-processing, time-interleaved sampling, DAC reconstruction, selected flash
+threshold taps, and simple clock division. The tasks stay within voltage-domain
+behavior and use stable sampled values as the scoring contract.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `179-source-flash-8level-sum-delay` | `zhangm/FLASH_8_LEVEL.va` | flash ADC thermometer sum plus one-cycle delayed sum | PASS | PASS | passed |
+| `180-source-flash-sum8-fraction` | `zhangm/FLASH_SUM8_DELAY.va` | clocked eight-input thermometer density measurement | PASS | PASS | passed |
+| `181-source-two-channel-sample-demux` | `zhangm/TI_2C_DEMUX_VA.va` | time-interleaved two-channel analog sample selection | PASS | PASS | passed |
+| `182-source-differential-dac-calc-6b` | `zhangm/DAC_CALC_VA.va` | complementary six-bit DAC voltage reconstruction | PASS | PASS | passed |
+| `183-source-flash-adc-threshold-taps` | `zhangsh/ADC_31LEVEL.va` | selected-threshold flash ADC thermometer sampling | PASS | PASS | passed |
+| `184-source-divide-by-two-toggle` | `taoy/v_DIVIDER_2.va` | divide-by-two clock toggle behavior | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch12-evas/summary.json`
+- `WORK/source-import-batch12-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 2.712 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 13.356 s
+  with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

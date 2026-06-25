@@ -1,0 +1,1 @@
+Implement `differential_dac_calc_6b` with scalar bits `din0..din5`, clock `clks`, and differential outputs. On a rising clock edge, compute the complementary binary-weighted DAC voltages using `refp`, `refn`, and `vcm`.

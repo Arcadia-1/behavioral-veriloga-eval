@@ -7301,6 +7301,96 @@ def check_v3_source_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_source_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vip", "vim", "clks", "doutsum", "doutsumdelay"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing flash8 sum/delay signals"
+    return _sample_many(
+        rows,
+        {
+            "doutsum": [(4.0, 0.0), (14.0, 0.25), (24.0, 0.5), (34.0, 0.875)],
+            "doutsumdelay": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.25), (34.0, 0.5)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_source_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clks/dout"
+    return _sample_many(
+        rows,
+        {"dout": [(4.0, 0.0), (14.0, 0.375), (24.0, 0.625), (34.0, 1.0)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_two_channel_sample_demux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "samp1", "samp2", "clks1", "clks2", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing demux input/output signals"
+    return _sample_many(
+        rows,
+        {"vout": [(4.0, 0.1), (14.0, 0.4), (24.0, 0.5), (34.0, 0.8)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clks", "voutp", "voutn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clks/voutp/voutn"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "voutp": [(5.0, 0.5777344), (15.0, 0.8074219), (25.0, 0.7144531), (35.0, 0.9222656)],
+            "voutn": [(5.0, 0.9222656), (15.0, 0.6925781), (25.0, 0.7855469), (35.0, 0.5777344)],
+        },
+        tol=0.025,
+    )
+    if not ok:
+        return ok, detail
+    max_cm_error = 0.0
+    for time_ns in (5.0, 15.0, 25.0, 35.0):
+        yp = sample_signal_at(rows, "voutp", time_ns * 1e-9)
+        yn = sample_signal_at(rows, "voutn", time_ns * 1e-9)
+        if yp is None or yn is None:
+            return False, f"missing_dac_calc_output_sample_at={time_ns:g}ns"
+        max_cm_error = max(max_cm_error, abs(0.5 * (yp + yn) - 0.75))
+    return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
+
+
+def check_v3_source_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "dout0", "dout1", "dout2", "dout3", "dout4", "dout5", "dout6"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing flash adc threshold tap signals"
+    return _sample_many(
+        rows,
+        {
+            "dout0": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
+            "dout1": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
+            "dout2": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
+            "dout3": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
+            "dout4": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
+            "dout5": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
+            "dout6": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.0), (44.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clkin", "clkout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clkin/clkout"
+    return _sample_many(
+        rows,
+        {"clkout": [(2.0, 0.9), (5.0, 0.0), (8.0, 0.9), (11.0, 0.0), (14.0, 0.9), (17.0, 0.0), (20.0, 0.9), (23.0, 0.0)]},
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11228,6 +11318,12 @@ CHECKS = {
     "v3_source_dual_modulus_divider_16_17": check_v3_source_dual_modulus_divider_16_17,
     "v3_source_sar_5bit_serial_decoder": check_v3_source_sar_5bit_serial_decoder,
     "v3_source_cyclic_decoder_12bit": check_v3_source_cyclic_decoder_12bit,
+    "v3_source_flash_8level_sum_delay": check_v3_source_flash_8level_sum_delay,
+    "v3_source_flash_sum8_fraction": check_v3_source_flash_sum8_fraction,
+    "v3_source_two_channel_sample_demux": check_v3_source_two_channel_sample_demux,
+    "v3_source_differential_dac_calc_6b": check_v3_source_differential_dac_calc_6b,
+    "v3_source_flash_adc_threshold_taps": check_v3_source_flash_adc_threshold_taps,
+    "v3_source_divide_by_two_toggle": check_v3_source_divide_by_two_toggle,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12520,6 +12616,12 @@ CHECKS["175-source-four-channel-edge-sampler"] = check_v3_source_four_channel_ed
 CHECKS["176-source-dual-modulus-divider-16-17"] = check_v3_source_dual_modulus_divider_16_17
 CHECKS["177-source-sar-5bit-serial-decoder"] = check_v3_source_sar_5bit_serial_decoder
 CHECKS["178-source-cyclic-decoder-12bit"] = check_v3_source_cyclic_decoder_12bit
+CHECKS["179-source-flash-8level-sum-delay"] = check_v3_source_flash_8level_sum_delay
+CHECKS["180-source-flash-sum8-fraction"] = check_v3_source_flash_sum8_fraction
+CHECKS["181-source-two-channel-sample-demux"] = check_v3_source_two_channel_sample_demux
+CHECKS["182-source-differential-dac-calc-6b"] = check_v3_source_differential_dac_calc_6b
+CHECKS["183-source-flash-adc-threshold-taps"] = check_v3_source_flash_adc_threshold_taps
+CHECKS["184-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle
 
 
 RELEASE_FORM_CHECK_ALIASES = {

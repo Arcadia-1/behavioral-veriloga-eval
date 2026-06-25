@@ -1,0 +1,1 @@
+Implement `flash_8level_sum_delay` with scalar differential input, clock, references, and outputs `doutsum`, `doutsumdelay`. On each rising clock edge, count eight flash thresholds and output the current and previous normalized thermometer sums.

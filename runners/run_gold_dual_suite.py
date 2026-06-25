@@ -1161,6 +1161,12 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_dual_modulus_divider_16_17",
     "v3_source_sar_5bit_serial_decoder",
     "v3_source_cyclic_decoder_12bit",
+    "v3_source_flash_8level_sum_delay",
+    "v3_source_flash_sum8_fraction",
+    "v3_source_two_channel_sample_demux",
+    "v3_source_differential_dac_calc_6b",
+    "v3_source_flash_adc_threshold_taps",
+    "v3_source_divide_by_two_toggle",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1179,6 +1185,12 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "176-source-dual-modulus-divider-16-17",
     "177-source-sar-5bit-serial-decoder",
     "178-source-cyclic-decoder-12bit",
+    "179-source-flash-8level-sum-delay",
+    "180-source-flash-sum8-fraction",
+    "181-source-two-channel-sample-demux",
+    "182-source-differential-dac-calc-6b",
+    "183-source-flash-adc-threshold-taps",
+    "184-source-divide-by-two-toggle",
 }
 
 
