@@ -16,7 +16,7 @@ module settling_window_detector(vin, target, tol, settled, t_code0, t_code1, t_c
         if (abs(V(vin)-V(target)) <= V(tol)) begin
             if (!in_window) begin entry_t=$abstime; in_window=1; settled_level=0; code=(($abstime/1n)+0.5); end
             if (($abstime-entry_t) >= 20n) settled_level=vdd;
-        end else begin in_window=0; settled_level=0; end
+        end else begin in_window=0; settled_level=0; code=0; end
         V(settled) <+ transition(settled_level, 0, tr, tr);
         V(t_code0) <+ transition((((code) >> 0) & 1) ? vdd : 0.0, 0, tr, tr);
         V(t_code1) <+ transition((((code) >> 1) & 1) ? vdd : 0.0, 0, tr, tr);

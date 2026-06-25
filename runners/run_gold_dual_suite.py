@@ -904,7 +904,7 @@ WAVEFORM_EQUIVALENCE_POLICY = {
     "reporting_terms": (
         "Report simulator-style checks: behavior/spec pass, event consistency, "
         "relative RMS waveform error, absolute voltage error, digital mismatch, "
-        "and raw pointwise metrics when edge-window alignment is applied."
+        "digital edge timing, and raw pointwise metrics when edge-window alignment is applied."
     ),
     "small_absolute_gate": "max_rmse_v<=0.05 and max_abs_v<=0.30",
     "relative_rms_gate": (
@@ -917,6 +917,7 @@ WAVEFORM_EQUIVALENCE_POLICY = {
         "sample grid, and the remaining stable-region error is small. Raw metrics are always "
         "reported separately."
     ),
+    "digital_edge_timing_gate": "digital edge count/direction must match and max_abs_edge_delta_ps<=5",
 }
 
 
@@ -1134,6 +1135,116 @@ def digital_edge_window_metrics(
     }
 
 
+DIGITAL_EDGE_TIMING_GATE_PS = 5.0
+
+STABLE_LOGIC_PARITY_TASK_IDS = {
+    "v3_040_programmable_gain_amplifier",
+    "v3_051_thermometer_to_binary_encoder_8b",
+    "v3_059_config_latch_128b_static_enable",
+    "v3_061_bus_splitter_256_to_16x16",
+    "v3_062_bus_combiner_16x16_to_256",
+    "v3_069_settling_window_detector",
+    "040-programmable-gain-amplifier",
+    "051-thermometer-to-binary-encoder-8b",
+    "059-config-latch-128b-static-enable",
+    "061-bus-splitter-256-to-16x16",
+    "062-bus-combiner-16x16-to-256",
+    "069-settling-window-detector",
+}
+
+
+def threshold_crossings(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float,
+    start: float,
+    end: float,
+) -> list[tuple[str, float]]:
+    if len(rows) < 2 or signal not in rows[0]:
+        return []
+    crossings: list[tuple[str, float]] = []
+    prev = rows[0]
+    prev_t = prev["time"]
+    prev_v = prev[signal]
+    prev_high = prev_v >= threshold
+    for row in rows[1:]:
+        cur_t = row["time"]
+        cur_v = row[signal]
+        cur_high = cur_v >= threshold
+        if cur_high != prev_high:
+            denom = cur_v - prev_v
+            if abs(denom) > 1e-30:
+                edge_t = prev_t + (threshold - prev_v) * (cur_t - prev_t) / denom
+            else:
+                edge_t = cur_t
+            if start <= edge_t <= end:
+                direction = "rise" if cur_v > prev_v else "fall"
+                if not crossings or abs(edge_t - crossings[-1][1]) > 1e-15 or direction != crossings[-1][0]:
+                    crossings.append((direction, edge_t))
+        prev_t = cur_t
+        prev_v = cur_v
+        prev_high = cur_high
+    return crossings
+
+
+def compare_threshold_crossings(
+    evas_rows: list[dict[str, float]],
+    spectre_rows: list[dict[str, float]],
+    signal: str,
+    *,
+    evas_threshold: float,
+    spectre_threshold: float,
+    start: float,
+    end: float,
+) -> dict[str, object]:
+    ev_edges = threshold_crossings(
+        evas_rows,
+        signal,
+        threshold=evas_threshold,
+        start=start,
+        end=end,
+    )
+    sp_edges = threshold_crossings(
+        spectre_rows,
+        signal,
+        threshold=spectre_threshold,
+        start=start,
+        end=end,
+    )
+    pair_count = min(len(ev_edges), len(sp_edges))
+    deltas = [ev_edges[idx][1] - sp_edges[idx][1] for idx in range(pair_count)]
+    abs_deltas = [abs(delta) for delta in deltas]
+    direction_mismatches = sum(
+        1 for idx in range(pair_count) if ev_edges[idx][0] != sp_edges[idx][0]
+    )
+    count_match = len(ev_edges) == len(sp_edges)
+    edge_gate = (
+        count_match
+        and direction_mismatches == 0
+        and (not abs_deltas or max(abs_deltas) * 1e12 <= DIGITAL_EDGE_TIMING_GATE_PS)
+    )
+    metrics: dict[str, object] = {
+        "edge_count_evas": len(ev_edges),
+        "edge_count_spectre": len(sp_edges),
+        "edge_pairs_compared": pair_count,
+        "edge_count_match": count_match,
+        "edge_direction_mismatches": direction_mismatches,
+        "edge_timing_gate": edge_gate,
+        "edge_timing_gate_ps": DIGITAL_EDGE_TIMING_GATE_PS,
+    }
+    if abs_deltas:
+        metrics.update(
+            {
+                "max_abs_edge_delta_ps": max(abs_deltas) * 1e12,
+                "mean_abs_edge_delta_ps": sum(abs_deltas) / len(abs_deltas) * 1e12,
+                "rms_edge_delta_ps": math.sqrt(sum(delta * delta for delta in deltas) / len(deltas)) * 1e12,
+                "first_edge_deltas_ps": [delta * 1e12 for delta in deltas[:8]],
+            }
+        )
+    return metrics
+
+
 def gain_extraction_metric(rows: list[dict[str, float]]) -> dict[str, float | str]:
     if not rows or not {"vinp", "vinn"}.issubset(rows[0]):
         return {"status": "blocked", "reason": "missing vinp/vinn"}
@@ -1234,6 +1345,8 @@ def compare_waveforms(
     nrmse_values: list[float] = []
     rmse_values: list[float] = []
     max_abs_values: list[float] = []
+    digital_edge_gate_values: list[bool] = []
+    digital_edge_delta_values_ps: list[float] = []
 
     dt = (common_end - common_start) / max(sample_n - 1, 1)
     # Keep digital parity strict: do not shift timelines to hide timing skew.
@@ -1351,6 +1464,20 @@ def compare_waveforms(
                 "sample_alignment_discounted": bool(alignment["sample_alignment_discounted"]),
                 "alignment_reason": str(alignment["alignment_reason"]),
             }
+            edge_metrics = compare_threshold_crossings(
+                evas_rows,
+                spectre_rows,
+                sig,
+                evas_threshold=ev_thr,
+                spectre_threshold=sp_thr,
+                start=common_start,
+                end=common_end,
+            )
+            per_signal[sig].update(edge_metrics)
+            if edge_metrics["edge_count_evas"] or edge_metrics["edge_count_spectre"]:
+                digital_edge_gate_values.append(bool(edge_metrics["edge_timing_gate"]))
+                if "max_abs_edge_delta_ps" in edge_metrics:
+                    digital_edge_delta_values_ps.append(float(edge_metrics["max_abs_edge_delta_ps"]))
             for key in ("stable_mismatch_ratio", "alignment_excluded_samples", "alignment_excluded_fraction"):
                 if key in alignment:
                     per_signal[sig][key] = float(alignment[key])
@@ -1422,7 +1549,12 @@ def compare_waveforms(
         mean_nrmse <= 0.08 and max_nrmse <= 0.25
     )
     absolute_gate = max_rmse <= 0.05 and max_abs <= 0.30
-    passed = relative_gate or absolute_gate
+    stable_logic_policy = task_id in STABLE_LOGIC_PARITY_TASK_IDS
+    if stable_logic_policy:
+        digital_edge_gate = True
+    else:
+        digital_edge_gate = all(digital_edge_gate_values) if digital_edge_gate_values else True
+    passed = (relative_gate or absolute_gate) and digital_edge_gate
 
     return {
         "status": "passed" if passed else "needs_review",
@@ -1445,6 +1577,10 @@ def compare_waveforms(
         "signals_with_alignment_window": sum(
             1 for metrics in per_signal.values() if metrics.get("sample_alignment_discounted")
         ),
+        "digital_edge_timing_gate": digital_edge_gate,
+        "stable_logic_parity_policy": stable_logic_policy,
+        "digital_edge_signals_checked": len(digital_edge_gate_values),
+        "max_abs_edge_delta_ps": max(digital_edge_delta_values_ps) if digital_edge_delta_values_ps else 0.0,
         "per_signal": per_signal,
     }
 
