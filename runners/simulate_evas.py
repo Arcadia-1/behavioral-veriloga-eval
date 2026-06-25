@@ -12311,6 +12311,46 @@ def check_release_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, 
     return True, f"active_sequence={observed_text} expected={expected_text}"
 
 
+def check_v3_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst_n", "out0", "out1", "out2", "out3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clk/rst_n/out0/out1/out2/out3"
+
+    signals = ["out0", "out1", "out2", "out3"]
+    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0, 160.0, 180.0, 200.0, 220.0]
+    expected = [2, 0, 3, 1, 2, 0, 2, 0, 3, 1]
+    observed: list[int | None] = []
+    failures: list[str] = []
+    reset_low_probe_ns = 138.0
+    reset_low_value = sample_signal_at(rows, "rst_n", reset_low_probe_ns * 1e-9)
+    if reset_low_value is None:
+        failures.append(f"missing_rst_n_probe_at={reset_low_probe_ns:g}ns")
+    elif reset_low_value > 0.45:
+        failures.append(f"rst_n_not_low_at={reset_low_probe_ns:g}ns")
+
+    for sample_t_ns, expected_idx in zip(sample_times_ns, expected):
+        rst_value = sample_signal_at(rows, "rst_n", sample_t_ns * 1e-9)
+        if rst_value is None:
+            failures.append(f"missing_rst_n_at={sample_t_ns:g}ns")
+        elif rst_value <= 0.45:
+            failures.append(f"rst_n_not_released_at={sample_t_ns:g}ns")
+        values = [sample_signal_at(rows, signal, sample_t_ns * 1e-9) for signal in signals]
+        if any(value is None for value in values):
+            failures.append(f"missing_sample_at={sample_t_ns:g}ns")
+            observed.append(None)
+            continue
+        active = [idx for idx, value in enumerate(values) if value is not None and value > 0.45]
+        observed.append(active[0] if len(active) == 1 else None)
+        if active != [expected_idx]:
+            failures.append(f"{sample_t_ns:g}ns_active={active}_expected={expected_idx}")
+
+    observed_text = ",".join("-" if item is None else str(item) for item in observed)
+    expected_text = ",".join(str(item) for item in expected)
+    if failures:
+        return False, f"active_sequence={observed_text} expected={expected_text} failures={' '.join(failures)}"
+    return True, f"active_sequence={observed_text} expected={expected_text} reset_low_at={reset_low_probe_ns:g}ns"
+
+
 def check_v3_debounce_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """V3 debounce latch: reject glitches, reset-arm leakage, and reset-cancel leakage."""
     required = {"time", "out"}
@@ -13801,7 +13841,7 @@ CHECKS["v3_002_capacitive_weighted_sar_feedback_dac"] = check_v3_cdac_feedback_d
 CHECKS["v3_003_pipeline_adc_stage"] = check_pipeline_stage
 CHECKS["v3_004_trim_calibration_controller"] = check_v3_trim_calibration_controller
 CHECKS["v3_005_debounce_latch"] = check_v3_debounce_latch
-CHECKS["v3_006_element_shuffler"] = check_release_element_shuffler
+CHECKS["v3_006_element_shuffler"] = check_v3_element_shuffler
 CHECKS["v3_007_first_order_lowpass"] = check_vbm1_first_order_lowpass
 CHECKS["v3_008_gain_trim_controller"] = check_v3_gain_trim_controller
 CHECKS["v3_009_lock_detector"] = check_v3_009_lock_detector
