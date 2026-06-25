@@ -1,0 +1,220 @@
+{
+  "run_kind": "v3_issue_24_25_hidden_child_entry_evas_smoke",
+  "date": "2026-06-25",
+  "evas_version": "0.4.5",
+  "workers": 16,
+  "total_elapsed_s": 11.594895808026195,
+  "count": 16,
+  "pass_count": 16,
+  "fail_count": 0,
+  "results": [
+    {
+      "task": "064-edge-interval-tdc-8b",
+      "tb": "test_hidden/tests/tb_edge_interval_tdc_8b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 8.720032242825255,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[8, 23, 39] errors=0"
+      ]
+    },
+    {
+      "task": "065-period-meter-16b",
+      "tb": "test_hidden/tests/tb_period_meter_16b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 9.814404460135847,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[20, 25, 35, 40] errors=0"
+      ]
+    },
+    {
+      "task": "066-duty-cycle-meter-8b",
+      "tb": "test_hidden/tests/tb_duty_cycle_meter_8b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 9.42857235786505,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[38, 50, 62, 42] errors=0"
+      ]
+    },
+    {
+      "task": "067-event-counter-windowed-16b",
+      "tb": "test_hidden/tests/tb_event_counter_windowed_16b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 10.659418119117618,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[3, 3] errors=0"
+      ]
+    },
+    {
+      "task": "068-latency-counter-ready-valid-12b",
+      "tb": "test_hidden/tests/tb_ready_valid_latency_counter_12b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 8.762373366160318,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[2, 3] errors=0"
+      ]
+    },
+    {
+      "task": "069-settling-window-detector",
+      "tb": "test_hidden/tests/tb_settling_window_detector_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 2.666008642874658,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 intervals=[(55.1, 105.1), (115.1, 150.0)] settled_seen=True reset_seen=True early_seen=False"
+      ]
+    },
+    {
+      "task": "070-active-low-reset-synchronizer",
+      "tb": "test_hidden/tests/tb_reset_sync_active_low_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.606830140110105,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=15 errors=1"
+      ]
+    },
+    {
+      "task": "071-active-high-reset-synchronizer",
+      "tb": "test_hidden/tests/tb_reset_sync_active_high_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.893762054853141,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=15 errors=1"
+      ]
+    },
+    {
+      "task": "072-enable-gated-clock-pulse",
+      "tb": "test_hidden/tests/tb_enable_gated_clock_pulse_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 5.951316344086081,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 saw_high=True saw_blocked=True"
+      ]
+    },
+    {
+      "task": "073-low-active-enable-decoder-4b",
+      "tb": "test_hidden/tests/tb_low_active_enable_decoder_4b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 11.364884244045243,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1] errors=0"
+      ]
+    },
+    {
+      "task": "074-configurable-polarity-edge-detector",
+      "tb": "test_hidden/tests/tb_configurable_polarity_edge_detector_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 8.77461687498726,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "events=4 missed=0 false_pulses=0"
+      ]
+    },
+    {
+      "task": "075-prbs-generator-32b-seeded",
+      "tb": "test_hidden/tests/tb_prbs_generator_32b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 11.096572309033945,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=18 errors=0"
+      ]
+    },
+    {
+      "task": "076-multiphase-clock-generator-4ph",
+      "tb": "test_hidden/tests/tb_multiphase_clock_generator_4ph_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.015215208986774,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "edge_counts={'clk0': 4, 'clk90': 4, 'clk180': 4, 'clk270': 4} phase_errors=0 period_errors=0"
+      ]
+    },
+    {
+      "task": "077-configurable-pulse-train-generator",
+      "tb": "test_hidden/tests/tb_configurable_pulse_train_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 7.913840111112222,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 done_seen=True pulse_count=3 expected_total=3"
+      ]
+    },
+    {
+      "task": "078-staircase-dac-stimulus-8b",
+      "tb": "test_hidden/tests/tb_staircase_dac_stimulus_8b_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 7.465243685990572,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 1, 2, 3, 4, 5] errors=0"
+      ]
+    },
+    {
+      "task": "079-jittered-clock-source-deterministic",
+      "tb": "test_hidden/tests/tb_deterministic_jittered_clock_ref.scs",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 9.492560231126845,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "periods_ns=[21.6, 19.2, 20.8, 18.4, 20.0, 21.6, 19.2, 20.8, 18.4, 20.0] varying=True bounded=True prefix_ok=True"
+      ]
+    }
+  ]
+}
