@@ -8435,6 +8435,73 @@ def check_v3_source_offset_halving_search(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_source_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sar comparator reset high signals"
+    return _sample_many(
+        rows,
+        {
+            "dcmpp": [(0.2, 0.9), (0.5, 0.9), (0.95, 0.9), (1.5, 0.0), (1.95, 0.9), (2.5, 0.9)],
+            "dcmpn": [(0.2, 0.9), (0.5, 0.0), (0.95, 0.9), (1.5, 0.9), (1.95, 0.9), (2.5, 0.0)],
+        },
+        tol=0.07,
+    )
+
+
+def check_v3_source_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "d3", "d2", "d1", "d0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac restore 4bit clocked signals"
+    return _sample_many(
+        rows,
+        {
+            "vout": [(0.5, -0.84375), (1.5, -0.28125), (2.5, 0.28125), (3.5, 0.84375)],
+            "d0": [(1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
+            "d1": [(2.5, 0.9), (3.5, 0.9)],
+            "d2": [(1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
+            "d3": [(2.5, 0.9), (3.5, 0.9)],
+        },
+        tol=0.012,
+    )
+
+
+def check_v3_source_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vout", *{f"d{i}" for i in range(7)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac restore 7bit clocked signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -0.89296875), (1.5, -0.30234375), (2.5, 0.30234375), (3.5, 0.89296875)]},
+        tol=0.012,
+    )
+
+
+def check_v3_source_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vout", *{f"d{i}" for i in range(1, 7)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac restore 6bit 1p8 signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -1.771875), (1.5, -0.590625), (2.5, 0.590625), (3.5, 1.771875)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vclk", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sample hold 5v clock signals"
+    return _sample_many(
+        rows,
+        {
+            "vout": [(0.2, 0.0), (0.5, 0.1), (1.5, 0.65), (2.5, -0.2), (3.5, 0.35)],
+            "vclk": [(0.5, 5.0), (0.95, 0.0), (1.5, 5.0)],
+        },
+        tol=0.02,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -13782,6 +13849,16 @@ CHECKS["244-source-l3-sar2-logic-7b"] = check_v3_source_l3_sar2_logic_7b
 CHECKS["245-source-cdac-8b-monodown"] = check_v3_source_cdac_8b_monodown
 CHECKS["246-source-va-dac-6b-se"] = check_v3_source_va_dac_6b_se
 CHECKS["247-source-offset-halving-search"] = check_v3_source_offset_halving_search
+CHECKS["v3_source_sar_comparator_reset_high"] = check_v3_source_sar_comparator_reset_high
+CHECKS["v3_source_dac_restore_4bit_clocked"] = check_v3_source_dac_restore_4bit_clocked
+CHECKS["v3_source_dac_restore_7bit_clocked"] = check_v3_source_dac_restore_7bit_clocked
+CHECKS["v3_source_dac_restore_6bit_1p8"] = check_v3_source_dac_restore_6bit_1p8
+CHECKS["v3_source_sample_hold_5v_clock"] = check_v3_source_sample_hold_5v_clock
+CHECKS["248-source-sar-comparator-reset-high"] = check_v3_source_sar_comparator_reset_high
+CHECKS["249-source-dac-restore-4bit-clocked"] = check_v3_source_dac_restore_4bit_clocked
+CHECKS["250-source-dac-restore-7bit-clocked"] = check_v3_source_dac_restore_7bit_clocked
+CHECKS["251-source-dac-restore-6bit-1p8"] = check_v3_source_dac_restore_6bit_1p8
+CHECKS["252-source-sample-hold-5v-clock"] = check_v3_source_sample_hold_5v_clock
 
 
 RELEASE_FORM_CHECK_ALIASES = {
