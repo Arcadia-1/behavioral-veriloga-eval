@@ -1,0 +1,12 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_sample_hold(vin, vout, vclk);
+    input vin, vclk;
+    output vout;
+    electrical vin, vout, vclk;
+    parameter real vtrans_clk = 0.45;
+    parameter real tr = 20p;
+
+    // TODO: sample vin on rising vclk edges and hold vout between samples.
+endmodule

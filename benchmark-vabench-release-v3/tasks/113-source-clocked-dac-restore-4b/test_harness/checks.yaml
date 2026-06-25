@@ -1,0 +1,21 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - codes_0_5_10_15_sampled_after_clock_edges
+    - restored_midrise_levels_match_lsb_formula
+checker:
+  task_id: "v3_source_clocked_dac_restore_4b"
+parity:
+  required: true
+  tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

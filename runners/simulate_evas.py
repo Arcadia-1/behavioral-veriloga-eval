@@ -6213,6 +6213,121 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
     return None
 
 
+def _sample_many(
+    rows: list[dict[str, float]],
+    samples: dict[str, list[tuple[float, float]]],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
+    details: list[str] = []
+    for signal, expected_samples in samples.items():
+        observed: list[float] = []
+        for time_ns, expected in expected_samples:
+            value = sample_signal_at(rows, signal, time_ns * 1e-9)
+            if value is None:
+                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
+            observed.append(value)
+            if abs(value - expected) > tol:
+                return False, (
+                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
+                    f"tol={tol:.4f}"
+                )
+        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
+    return True, " ".join(details)
+
+
+def check_v3_source_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/cmpck/vinp/vinn/dcmpn/dcmpp"
+    return _sample_many(
+        rows,
+        {
+            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9)],
+            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d3", "d2", "d1", "d0", "clk", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/d3/d2/d1/d0/clk/vout"
+    expected = [
+        (6.0, -0.84375),
+        (16.0, -0.28125),
+        (26.0, 0.28125),
+        (36.0, 0.84375),
+    ]
+    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.02)
+    if not ok:
+        return ok, detail
+    observed = [sample_signal_at(rows, "vout", t_ns * 1e-9) for t_ns, _ in expected]
+    if any(value is None for value in observed):
+        return False, "missing_vout_samples"
+    values = [float(value) for value in observed if value is not None]
+    monotonic = all(b > a + 0.20 for a, b in zip(values, values[1:]))
+    if not monotonic:
+        return False, f"dac_not_monotonic samples={','.join(f'{v:.3f}' for v in values)}"
+    return True, detail + " monotonic=True"
+
+
+def check_v3_source_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout", "vclk"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout/vclk"
+    edge_times_ns = [5.0, 15.0, 25.0, 35.0]
+    errors: list[float] = []
+    held_spans: list[float] = []
+    for edge_ns in edge_times_ns:
+        vin_edge = sample_signal_at(rows, "vin", edge_ns * 1e-9)
+        vout_settled = sample_signal_at(rows, "vout", (edge_ns + 1.0) * 1e-9)
+        if vin_edge is None or vout_settled is None:
+            return False, f"missing_sample_near_edge={edge_ns:g}ns"
+        errors.append(abs(vout_settled - vin_edge))
+    for start_ns, stop_ns in [(7.0, 13.0), (17.0, 23.0), (27.0, 33.0)]:
+        values = [
+            sample_signal_at(rows, "vout", t_ns * 1e-9)
+            for t_ns in (start_ns, 0.5 * (start_ns + stop_ns), stop_ns)
+        ]
+        if any(value is None for value in values):
+            return False, f"missing_hold_window_sample={start_ns:g}-{stop_ns:g}ns"
+        numeric = [float(value) for value in values if value is not None]
+        held_spans.append(max(numeric) - min(numeric))
+    max_error = max(errors)
+    max_hold_span = max(held_spans)
+    ok = max_error <= 0.025 and max_hold_span <= 0.025
+    return ok, f"max_sample_error={max_error:.4f} max_hold_span={max_hold_span:.4f}"
+
+
+def check_v3_source_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "vout": [
+                (4.0, 0.0),
+                (8.0, 0.9),
+                (14.0, 0.9),
+                (18.0, 0.0),
+                (24.0, 0.0),
+                (28.0, 0.9),
+                (34.0, 0.9),
+                (38.0, 0.0),
+            ]
+        },
+        tol=0.08,
+    )
+    if not ok:
+        return ok, detail
+    high_samples = [8.0, 14.0, 28.0, 34.0]
+    low_samples = [4.0, 18.0, 24.0, 38.0]
+    return True, f"{detail} high_windows={high_samples} low_windows={low_samples}"
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10073,6 +10188,10 @@ CHECKS = {
     "mixed_domain_cdac_bug": check_mixed_domain_cdac_bug,
     "spectre_port_discipline": check_spectre_port_discipline,
     "strongarm_reset_priority_bug": check_strongarm_reset_priority_bug,
+    "v3_source_clocked_sar_comparator": check_v3_source_clocked_sar_comparator,
+    "v3_source_clocked_dac_restore_4b": check_v3_source_clocked_dac_restore_4b,
+    "v3_source_sample_hold": check_v3_source_sample_hold,
+    "v3_source_single_shot": check_v3_source_single_shot,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -11323,6 +11442,10 @@ CHECKS["086-dither-noise-like-deterministic-source"] = check_noise_gen
 CHECKS["087-lfsr-prbs-generator"] = check_prbs7
 CHECKS["088-ramp-step-source"] = check_bound_step_period_guard
 CHECKS["089-sine-periodic-voltage-source"] = check_multitone
+CHECKS["112-source-clocked-sar-comparator"] = check_v3_source_clocked_sar_comparator
+CHECKS["113-source-clocked-dac-restore-4b"] = check_v3_source_clocked_dac_restore_4b
+CHECKS["114-source-sample-and-hold-ideal"] = check_v3_source_sample_hold
+CHECKS["115-source-single-shot-pulse"] = check_v3_source_single_shot
 
 
 RELEASE_FORM_CHECK_ALIASES = {

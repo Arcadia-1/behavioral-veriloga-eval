@@ -1,0 +1,14 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module clocked_dac_restore_4b(D3, D2, D1, D0, CLK, VOUT);
+    input D3, D2, D1, D0, CLK;
+    output VOUT;
+    electrical D3, D2, D1, D0, CLK, VOUT;
+
+    parameter real vth = 0.45;
+    parameter real lsb = 1.8 / 16.0;
+    parameter real tr = 20p;
+
+    // TODO: implement the clocked DAC reconstruction behavior.
+endmodule
