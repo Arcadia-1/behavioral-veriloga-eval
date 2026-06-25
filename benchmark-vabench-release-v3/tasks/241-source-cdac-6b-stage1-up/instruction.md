@@ -1,0 +1,1 @@
+Implement `cdac_6b_stage1_up`. Sample `vin` when `clks` falls. Each rising `dctrl` bit adds its binary-weighted residue contribution to `vres`.

@@ -1220,6 +1220,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_phase_detector_chopper",
     "v3_source_single_adc_7b_weighted",
     "v3_source_qtz_differential_2level",
+    "v3_source_l2_7b_dac_ready",
+    "v3_source_l2_cdac_4b_switch",
+    "v3_source_cdac_monodown_7b",
+    "v3_source_cdac_6b_stage1_up",
+    "v3_source_adc_zoom_timing_sequencer",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1274,6 +1279,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "235-source-phase-detector-chopper",
     "236-source-single-adc-7b-weighted",
     "237-source-qtz-differential-2level",
+    "238-source-l2-7b-dac-ready",
+    "239-source-l2-cdac-4b-switch",
+    "240-source-cdac-monodown-7b",
+    "241-source-cdac-6b-stage1-up",
+    "242-source-adc-zoom-timing-sequencer",
 }
 
 

@@ -1,0 +1,1 @@
+Implement `cdac_monodown_7b`. Sample `vin` when `clks` falls. Each rising `dctrl` bit subtracts its binary-weighted residue contribution from `vres`.

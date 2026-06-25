@@ -1,0 +1,1 @@
+Implement `l2_7b_dac_ready`. On the first `rdy` rising edge arm the block without updating. On later `rdy` rising edges, convert scalar bits `din1..din7` using weights 0.5,1,2,4,8,16,32 plus the source normalization term.

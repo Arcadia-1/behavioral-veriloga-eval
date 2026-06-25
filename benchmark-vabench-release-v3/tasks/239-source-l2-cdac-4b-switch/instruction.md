@@ -1,0 +1,1 @@
+Implement `l2_cdac_4b_switch`. Ignore the first `rdy` edge, then convert scalar bits `din1..din4` using weights 0.5,1,2,4 and the source normalization.

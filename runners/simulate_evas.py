@@ -8245,6 +8245,84 @@ def check_v3_source_qtz_differential_2level(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_source_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rdy", "din1", "din2", "din3", "din4", "din5", "din6", "din7", "aout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 7b dac ready signals"
+    return _sample_many(
+        rows,
+        {"aout": [(0.5, 0.0), (1.5, -0.9), (2.5, 0.2860465), (3.5, 0.8720930)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rdy", "din1", "din2", "din3", "din4", "aout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 cdac 4b switch signals"
+    return _sample_many(
+        rows,
+        {"aout": [(0.5, 0.0), (1.5, -1.1), (2.5, 0.1941176), (3.5, 0.8411765)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_cdac_monodown_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "dctrl3", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cdac monodown 7b signals"
+    return _sample_many(
+        rows,
+        {
+            "vres": [(0.5, 0.8), (1.0, 0.8), (1.5, 0.3), (2.1, 0.05), (2.7, -0.075), (3.3, -0.1375), (3.9, -0.16875)],
+            "dctrl7": [(1.5, 1.0)],
+            "dctrl6": [(2.1, 1.0)],
+            "dctrl5": [(2.7, 1.0)],
+            "dctrl4": [(3.3, 1.0)],
+            "dctrl3": [(3.9, 1.0)],
+        },
+        tol=0.02,
+    )
+
+
+def check_v3_source_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cdac 6b stage1 up signals"
+    return _sample_many(
+        rows,
+        {
+            "vres": [(0.5, 0.2), (1.0, 0.2), (1.5, 0.7), (2.1, 0.95), (2.7, 1.075), (3.3, 1.1375)],
+            "dctrl5": [(1.5, 1.0)],
+            "dctrl4": [(2.1, 1.0)],
+            "dctrl3": [(2.7, 1.0)],
+            "dctrl2": [(3.3, 1.0)],
+        },
+        tol=0.02,
+    )
+
+
+def check_v3_source_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rst", "s", "sar", "res", "intg", "clk_sar", "zoom", "clk_zoom", "rst_zoom"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing adc zoom timing sequencer signals"
+    return _sample_many(
+        rows,
+        {
+            "rst": [(0.6, 1.1), (1.0, 0.0)],
+            "s": [(1.8, 1.1), (2.8, 0.0)],
+            "sar": [(3.4, 1.1), (5.8, 0.0)],
+            "clk_sar": [(3.1, 1.1), (3.4, 0.0), (3.7, 1.1), (4.0, 0.0), (4.3, 1.1), (4.7, 0.0)],
+            "res": [(6.3, 1.1), (6.9, 0.0)],
+            "intg": [(8.3, 1.1), (9.0, 0.0)],
+            "zoom": [(9.6, 1.1), (11.0, 0.0)],
+            "clk_zoom": [(9.3, 1.1), (9.6, 0.0), (9.9, 1.1), (10.2, 0.0)],
+            "rst_zoom": [(11.2, 1.1), (11.8, 0.0)],
+        },
+        tol=0.09,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -12231,6 +12309,11 @@ CHECKS = {
     "v3_source_phase_detector_chopper": check_v3_source_phase_detector_chopper,
     "v3_source_single_adc_7b_weighted": check_v3_source_single_adc_7b_weighted,
     "v3_source_qtz_differential_2level": check_v3_source_qtz_differential_2level,
+    "v3_source_l2_7b_dac_ready": check_v3_source_l2_7b_dac_ready,
+    "v3_source_l2_cdac_4b_switch": check_v3_source_l2_cdac_4b_switch,
+    "v3_source_cdac_monodown_7b": check_v3_source_cdac_monodown_7b,
+    "v3_source_cdac_6b_stage1_up": check_v3_source_cdac_6b_stage1_up,
+    "v3_source_adc_zoom_timing_sequencer": check_v3_source_adc_zoom_timing_sequencer,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -13572,6 +13655,11 @@ CHECKS["234-source-l2-sar-logic-4b"] = check_v3_source_l2_sar_logic_4b
 CHECKS["235-source-phase-detector-chopper"] = check_v3_source_phase_detector_chopper
 CHECKS["236-source-single-adc-7b-weighted"] = check_v3_source_single_adc_7b_weighted
 CHECKS["237-source-qtz-differential-2level"] = check_v3_source_qtz_differential_2level
+CHECKS["238-source-l2-7b-dac-ready"] = check_v3_source_l2_7b_dac_ready
+CHECKS["239-source-l2-cdac-4b-switch"] = check_v3_source_l2_cdac_4b_switch
+CHECKS["240-source-cdac-monodown-7b"] = check_v3_source_cdac_monodown_7b
+CHECKS["241-source-cdac-6b-stage1-up"] = check_v3_source_cdac_6b_stage1_up
+CHECKS["242-source-adc-zoom-timing-sequencer"] = check_v3_source_adc_zoom_timing_sequencer
 
 
 RELEASE_FORM_CHECK_ALIASES = {

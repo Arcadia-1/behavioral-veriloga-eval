@@ -1,0 +1,1 @@
+Implement `adc_zoom_timing_sequencer`. Generate one compact ADC timing frame with reset/sample windows, SAR burst and envelope, residue/integration pulses, zoom burst/envelope, and reset-zoom pulse.
