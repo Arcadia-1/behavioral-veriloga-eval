@@ -8692,6 +8692,83 @@ def check_v3_source_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
+def check_v3_source_samplehold_rising_edge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "control", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing samplehold rising edge signals"
+    return _sample_many(
+        rows,
+        {
+            "vin": [(0.3, 1.0), (1.5, 3.0), (2.9, 4.2)],
+            "vout": [(0.3, 0.0), (0.8, 1.0), (1.5, 1.0), (2.3, 3.0), (2.9, 3.0)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ain", "dout0", "dout1", "dout2", "dout3", "dout4"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing trim ctrl 5bit signals"
+    return _sample_many(
+        rows,
+        {
+            "dout0": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.0), (3.0, 0.9)],
+            "dout1": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.9), (3.0, 0.9)],
+            "dout2": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.0)],
+            "dout3": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.9)],
+            "dout4": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.9), (3.0, 0.9)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "b0", "b1", "b2", "b3", *{f"th{i}" for i in range(8)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing therm8 to bin4 count signals"
+    return _sample_many(
+        rows,
+        {
+            "b0": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.9), (3.0, 0.0)],
+            "b1": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.0), (3.0, 0.0)],
+            "b2": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.9), (3.0, 0.0)],
+            "b3": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.9)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "d0", "d1", "d2", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing coarse qtz 3bit residue signals"
+    return _sample_many(
+        rows,
+        {
+            "d0": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 1.0)],
+            "d1": [(0.5, 0.0), (1.2, 1.0), (2.1, 0.0), (3.0, 1.0)],
+            "d2": [(0.5, 0.0), (1.2, 0.0), (2.1, 1.0), (3.0, 1.0)],
+            "vres": [(0.5, 0.0), (1.2, -0.1), (2.1, 0.1), (3.0, 0.15)],
+        },
+        tol=0.03,
+    )
+
+
+def check_v3_source_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "fb", "up", "down"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing rs phase detector signals"
+    return _sample_many(
+        rows,
+        {
+            "up": [(0.2, 0.0), (0.8, 1.2), (1.4, 0.0), (2.2, 1.2), (2.7, 0.0)],
+            "down": [(0.2, 1.2), (0.8, 0.0), (1.4, 1.2), (2.2, 0.0), (2.7, 1.2)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -14079,6 +14156,16 @@ CHECKS["264-source-dac4bit-bipolar-252m"] = check_v3_source_dac4bit_bipolar_252m
 CHECKS["265-source-bin2ther-2b"] = check_v3_source_bin2ther_2b
 CHECKS["266-source-dff-set-reset"] = check_v3_source_dff_set_reset
 CHECKS["267-source-pfd-up-down-state"] = check_v3_source_pfd_up_down_state
+CHECKS["v3_source_samplehold_rising_edge"] = check_v3_source_samplehold_rising_edge
+CHECKS["v3_source_trim_ctrl_5bit"] = check_v3_source_trim_ctrl_5bit
+CHECKS["v3_source_therm8_to_bin4_count"] = check_v3_source_therm8_to_bin4_count
+CHECKS["v3_source_coarse_qtz_3bit_residue"] = check_v3_source_coarse_qtz_3bit_residue
+CHECKS["v3_source_rs_phase_detector"] = check_v3_source_rs_phase_detector
+CHECKS["268-source-samplehold-rising-edge"] = check_v3_source_samplehold_rising_edge
+CHECKS["269-source-trim-ctrl-5bit"] = check_v3_source_trim_ctrl_5bit
+CHECKS["270-source-therm8-to-bin4-count"] = check_v3_source_therm8_to_bin4_count
+CHECKS["271-source-coarse-qtz-3bit-residue"] = check_v3_source_coarse_qtz_3bit_residue
+CHECKS["272-source-rs-phase-detector"] = check_v3_source_rs_phase_detector
 
 
 RELEASE_FORM_CHECK_ALIASES = {
