@@ -1,0 +1,1 @@
+Implement `trim_ctrl_4bit`. Treat `ain` as an analog integer code level and decode its low four bits onto `dout0..dout3` at 0.9 V logic rails.

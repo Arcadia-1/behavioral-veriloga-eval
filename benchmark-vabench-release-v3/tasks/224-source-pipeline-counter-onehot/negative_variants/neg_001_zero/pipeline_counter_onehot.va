@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+        module pipeline_counter_onehot(clk, dout0, dout1, dout2, s0, s1, s2, s3, s4, s5);
+        input clk;
+        output dout0, dout1, dout2, s0, s1, s2, s3, s4, s5;
+        electrical clk, dout0, dout1, dout2, s0, s1, s2, s3, s4, s5;
+
+analog begin
+    V(dout0) <+ 0;
+    V(dout1) <+ 0;
+    V(dout2) <+ 0;
+    V(s0) <+ 0;
+    V(s1) <+ 0;
+    V(s2) <+ 0;
+    V(s3) <+ 0;
+    V(s4) <+ 0;
+    V(s5) <+ 0;
+end
+endmodule

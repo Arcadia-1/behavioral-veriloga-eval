@@ -1,0 +1,1 @@
+Implement `pipeline_counter_onehot`. On each falling edge of `clk`, advance a modulo-six counter. Drive `s0..s5` as one-hot phase outputs and `dout0..dout2` as the binary counter code.

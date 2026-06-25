@@ -1,0 +1,1 @@
+Implement `pfd_reset_pulse`. A rising edge on `a` asserts the active-low up-bar output `ub` low; a rising edge on `b` asserts `d` high. Once both have arrived, reset both states after 10 ps.

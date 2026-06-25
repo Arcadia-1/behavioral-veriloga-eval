@@ -7941,6 +7941,92 @@ def check_v3_source_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_v3_source_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rst", "s", "ss", "nc_az", "nc", "conv"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing adc sample clock sequencer outputs"
+    return _sample_many(
+        rows,
+        {
+            "rst": [(0.1, 0.9), (0.7, 0.0), (18.1, 0.9), (20.6, 0.0)],
+            "s": [(0.7, 0.9), (1.45, 0.0), (6.7, 0.9), (7.45, 0.0), (12.7, 0.9)],
+            "ss": [(0.7, 0.9), (1.45, 0.0), (6.7, 0.9), (7.45, 0.0), (12.7, 0.9)],
+            "nc_az": [(1.45, 0.9), (1.8, 0.0), (7.45, 0.9), (7.85, 0.0), (13.45, 0.9)],
+            "nc": [(1.8, 0.9), (2.6, 0.0), (7.85, 0.9), (8.6, 0.0), (13.85, 0.9)],
+            "conv": [(2.6, 0.9), (5.0, 0.9), (6.7, 0.0), (8.6, 0.9), (14.6, 0.9), (18.1, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_pipeline_counter_onehot(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dout0", "dout1", "dout2", "s0", "s1", "s2", "s3", "s4", "s5"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pipeline counter outputs"
+    return _sample_many(
+        rows,
+        {
+            "dout0": [(0.3, 0.0), (0.8, 0.9), (1.8, 0.0), (2.8, 0.9), (4.8, 0.9), (5.8, 0.0)],
+            "dout1": [(0.3, 0.0), (1.8, 0.9), (2.8, 0.9), (3.8, 0.0), (5.8, 0.0)],
+            "dout2": [(0.3, 0.0), (3.8, 0.9), (4.8, 0.9), (5.8, 0.0)],
+            "s0": [(0.3, 0.9), (0.8, 0.0), (5.8, 0.9)],
+            "s1": [(0.8, 0.9), (1.8, 0.0), (6.8, 0.9)],
+            "s2": [(1.8, 0.9), (2.8, 0.0)],
+            "s3": [(2.8, 0.9), (3.8, 0.0)],
+            "s4": [(3.8, 0.9), (4.8, 0.0)],
+            "s5": [(4.8, 0.9), (5.8, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clks", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cdac bidirect residue signals"
+    return _sample_many(
+        rows,
+        {
+            "vres": [(0.3, 0.30), (1.0, 0.30), (2.0, 0.80), (3.0, 0.55), (4.0, 0.425), (5.0, 0.3625)],
+            "dctrl7": [(0.3, 1.0), (2.0, 0.0)],
+            "dctrl6": [(2.0, 0.0), (3.0, 1.0)],
+            "dctrl5": [(3.0, 0.0), (4.0, 1.0)],
+            "dctrl4": [(4.0, 0.0), (5.0, 1.0)],
+        },
+        tol=0.015,
+    )
+
+
+def check_v3_source_pfd_reset_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "ub", "d"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd reset pulse signals"
+    return _sample_many(
+        rows,
+        {
+            "ub": [(0.5, 0.9), (1.1, 0.0), (1.6, 0.0), (1.9, 0.9), (3.5, 0.9), (4.1, 0.9)],
+            "d": [(0.5, 0.0), (1.1, 0.0), (1.9, 0.0), (3.5, 0.9), (4.1, 0.0), (4.5, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing trim ctrl 4bit signals"
+    return _sample_many(
+        rows,
+        {
+            "dout0": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9), (4.5, 0.0)],
+            "dout1": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.9), (3.5, 0.9), (4.5, 0.9)],
+            "dout2": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0), (4.5, 0.9)],
+            "dout3": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.0), (3.5, 0.9), (4.5, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11912,6 +11998,11 @@ CHECKS = {
     "v3_source_spi_shift_mux": check_v3_source_spi_shift_mux,
     "v3_source_dff_set_reset_hold": check_v3_source_dff_set_reset_hold,
     "v3_source_sarfend_logic_4b": check_v3_source_sarfend_logic_4b,
+    "v3_source_adc_sample_clock_sequencer": check_v3_source_adc_sample_clock_sequencer,
+    "v3_source_pipeline_counter_onehot": check_v3_source_pipeline_counter_onehot,
+    "v3_source_cdac_bidirect_residue": check_v3_source_cdac_bidirect_residue,
+    "v3_source_pfd_reset_pulse": check_v3_source_pfd_reset_pulse,
+    "v3_source_trim_ctrl_4bit": check_v3_source_trim_ctrl_4bit,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -13238,6 +13329,11 @@ CHECKS["219-source-offset-rdac-search-flow"] = check_v3_source_offset_rdac_searc
 CHECKS["220-source-spi-shift-mux"] = check_v3_source_spi_shift_mux
 CHECKS["221-source-dff-set-reset-hold"] = check_v3_source_dff_set_reset_hold
 CHECKS["222-source-sarfend-logic-4b"] = check_v3_source_sarfend_logic_4b
+CHECKS["223-source-adc-sample-clock-sequencer"] = check_v3_source_adc_sample_clock_sequencer
+CHECKS["224-source-pipeline-counter-onehot"] = check_v3_source_pipeline_counter_onehot
+CHECKS["225-source-cdac-bidirect-residue"] = check_v3_source_cdac_bidirect_residue
+CHECKS["226-source-pfd-reset-pulse"] = check_v3_source_pfd_reset_pulse
+CHECKS["227-source-trim-ctrl-4bit"] = check_v3_source_trim_ctrl_4bit
 
 
 RELEASE_FORM_CHECK_ALIASES = {

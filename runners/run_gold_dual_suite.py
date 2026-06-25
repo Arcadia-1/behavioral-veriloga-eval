@@ -1205,6 +1205,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_spi_shift_mux",
     "v3_source_dff_set_reset_hold",
     "v3_source_sarfend_logic_4b",
+    "v3_source_adc_sample_clock_sequencer",
+    "v3_source_pipeline_counter_onehot",
+    "v3_source_cdac_bidirect_residue",
+    "v3_source_pfd_reset_pulse",
+    "v3_source_trim_ctrl_4bit",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1244,6 +1249,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "220-source-spi-shift-mux",
     "221-source-dff-set-reset-hold",
     "222-source-sarfend-logic-4b",
+    "223-source-adc-sample-clock-sequencer",
+    "224-source-pipeline-counter-onehot",
+    "225-source-cdac-bidirect-residue",
+    "226-source-pfd-reset-pulse",
+    "227-source-trim-ctrl-4bit",
 }
 
 

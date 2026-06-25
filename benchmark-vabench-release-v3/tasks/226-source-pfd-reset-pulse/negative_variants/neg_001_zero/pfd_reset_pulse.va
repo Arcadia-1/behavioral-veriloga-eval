@@ -1,0 +1,11 @@
+`include "disciplines.vams"
+        module pfd_reset_pulse(a, b, ub, d);
+        input a, b;
+        output ub, d;
+        electrical a, b, ub, d;
+
+analog begin
+    V(ub) <+ 0;
+    V(d) <+ 0;
+end
+endmodule

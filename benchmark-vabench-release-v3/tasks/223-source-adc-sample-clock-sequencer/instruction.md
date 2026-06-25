@@ -1,0 +1,1 @@
+Implement `adc_sample_clock_sequencer` with outputs `rst`, `s`, `ss`, `nc_az`, `nc`, and `conv`. Generate a periodic ADC timing frame: reset first, then three repeated sample/autozero/non-overlap/convert windows. Hidden tests check stable pulse windows over more than one frame.

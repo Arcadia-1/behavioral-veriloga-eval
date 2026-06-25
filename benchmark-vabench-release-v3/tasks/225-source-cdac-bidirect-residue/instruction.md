@@ -1,0 +1,1 @@
+Implement `cdac_bidirect_residue`. Sample `vin` when `clks` falls, add a half-scale residue step when `dctrl7` falls, and subtract binary-weighted steps when `dctrl6..dctrl1` rise.
