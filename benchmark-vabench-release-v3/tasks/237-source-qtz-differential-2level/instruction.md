@@ -1,0 +1,1 @@
+Implement `qtz_differential_2level`. On each rising `clk` edge, compare `vinp-vinn` against two thresholds derived from `vrefp/vrefn` and drive the signed output code `dout`.

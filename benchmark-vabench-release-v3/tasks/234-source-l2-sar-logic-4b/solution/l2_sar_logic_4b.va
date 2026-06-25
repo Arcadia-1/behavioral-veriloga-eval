@@ -1,0 +1,52 @@
+`include "disciplines.vams"
+module l2_sar_logic_4b(clkc, clks, dcmpp, dcmpn, cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3);
+input clkc, clks, dcmpp, dcmpn;
+output cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3;
+electrical clkc, clks, dcmpp, dcmpn, cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3;
+parameter real vdd = 1.1;
+parameter real t_logic_delay = 100p;
+integer step, cmpck_i, dout0, dout1, dout2, dout3, dp1, dp2, dp3, dn1, dn2, dn3;
+analog begin
+    @(initial_step or cross(V(clks) - vdd / 2.0, +1)) begin
+        step = 3;
+        cmpck_i = 0;
+        dout0 = 0; dout1 = 0; dout2 = 0; dout3 = 0;
+        dp1 = 0; dp2 = 0; dp3 = 0;
+        dn1 = 0; dn2 = 0; dn3 = 0;
+    end
+    @(cross(V(clkc) - vdd / 2.0, +1)) cmpck_i = 1;
+    @(cross(V(dcmpp) - vdd / 2.0, +1) or cross(V(dcmpn) - vdd / 2.0, +1)) begin
+        cmpck_i = 0;
+        if (step == 3) dout3 = V(dcmpp) > V(dcmpn);
+        else if (step == 2) dout2 = V(dcmpp) > V(dcmpn);
+        else if (step == 1) dout1 = V(dcmpp) > V(dcmpn);
+        else if (step == 0) dout0 = V(dcmpp) > V(dcmpn);
+        if (step >= 1) begin
+            if (V(dcmpp) > V(dcmpn)) begin
+                if (step == 3) dn3 = 1;
+                else if (step == 2) dn2 = 1;
+                else if (step == 1) dn1 = 1;
+            end else begin
+                if (step == 3) dp3 = 1;
+                else if (step == 2) dp2 = 1;
+                else if (step == 1) dp1 = 1;
+            end
+        end
+    end
+    @(cross(V(dcmpp) - vdd / 2.0, -1) or cross(V(dcmpn) - vdd / 2.0, -1)) begin
+        step = step - 1;
+        if (step >= 0) cmpck_i = 1;
+    end
+    V(cmpck) <+ transition(cmpck_i * vdd, t_logic_delay, 20p, 20p);
+    V(do0) <+ transition(dout0 * vdd, 0, 20p, 20p);
+    V(do1) <+ transition(dout1 * vdd, 0, 20p, 20p);
+    V(do2) <+ transition(dout2 * vdd, 0, 20p, 20p);
+    V(do3) <+ transition(dout3 * vdd, 0, 20p, 20p);
+    V(dctrlp1) <+ transition(dp1 * vdd, 0, 20p, 20p);
+    V(dctrlp2) <+ transition(dp2 * vdd, 0, 20p, 20p);
+    V(dctrlp3) <+ transition(dp3 * vdd, 0, 20p, 20p);
+    V(dctrln1) <+ transition(dn1 * vdd, 0, 20p, 20p);
+    V(dctrln2) <+ transition(dn2 * vdd, 0, 20p, 20p);
+    V(dctrln3) <+ transition(dn3 * vdd, 0, 20p, 20p);
+end
+endmodule

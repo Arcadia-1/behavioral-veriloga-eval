@@ -1215,6 +1215,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_sar_logic_4b_self_timed",
     "v3_source_pfd_tdomain_reset_window",
     "v3_source_pipe_adc_gain_control_loop",
+    "v3_source_clock_sample_1600n_sequencer",
+    "v3_source_l2_sar_logic_4b",
+    "v3_source_phase_detector_chopper",
+    "v3_source_single_adc_7b_weighted",
+    "v3_source_qtz_differential_2level",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1264,6 +1269,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "230-source-sar-logic-4b-self-timed",
     "231-source-pfd-tdomain-reset-window",
     "232-source-pipe-adc-gain-control-loop",
+    "233-source-clock-sample-1600n-sequencer",
+    "234-source-l2-sar-logic-4b",
+    "235-source-phase-detector-chopper",
+    "236-source-single-adc-7b-weighted",
+    "237-source-qtz-differential-2level",
 }
 
 

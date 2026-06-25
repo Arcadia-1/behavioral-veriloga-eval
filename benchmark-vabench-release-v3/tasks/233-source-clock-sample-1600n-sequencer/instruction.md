@@ -1,0 +1,1 @@
+Implement `clock_sample_1600n_sequencer` with outputs `rst`, `s`, `nc`, `res`, and `conv`. Generate a periodic frame with reset, two sample/non-overlap windows, repeated residue pulses, and two conversion windows.

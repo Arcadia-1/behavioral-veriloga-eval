@@ -1,0 +1,1 @@
+Implement `phase_detector_chopper`. Drive `vif = gain * vin_rf` when `vlocal_osc` is positive, and `vif = -gain * vin_rf` when it is negative. Hidden tests sample both polarities and several RF amplitudes.

@@ -1,0 +1,1 @@
+Implement `single_adc_7b_weighted`. Convert scalar input bits `din0..din6` into a weighted analog output using weights 0.25, 0.5, 1, 2, 4, 8, and 16 divided by 32.

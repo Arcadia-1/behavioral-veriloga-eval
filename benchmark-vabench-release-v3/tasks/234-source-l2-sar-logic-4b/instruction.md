@@ -1,0 +1,1 @@
+Implement `l2_sar_logic_4b`. `clks` resets the conversion state. `clkc` starts conversion. Comparator pulses on `dcmpp/dcmpn` close `cmpck`, latch one decision bit, update `dctrlp/dctrln`, and re-enable `cmpck` after reset until all four bits are complete.

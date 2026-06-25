@@ -1,0 +1,20 @@
+id = "v3_233_source_clock_sample_1600n_sequencer"
+name = "233-source-clock-sample-1600n-sequencer"
+title = "Source Clock Sample 1600n Sequencer"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "clock_timing"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["clock_sample_1600n_sequencer.va"]

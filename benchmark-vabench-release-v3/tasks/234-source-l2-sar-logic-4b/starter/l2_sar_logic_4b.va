@@ -1,0 +1,10 @@
+`include "disciplines.vams"
+module l2_sar_logic_4b(clkc, clks, dcmpp, dcmpn, cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3);
+input clkc, clks, dcmpp, dcmpn;
+output cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3;
+electrical clkc, clks, dcmpp, dcmpn, cmpck, do0, do1, do2, do3, dctrlp1, dctrlp2, dctrlp3, dctrln1, dctrln2, dctrln3;
+analog begin
+    V(cmpck)<+0; V(do0)<+0; V(do1)<+0; V(do2)<+0; V(do3)<+0;
+    V(dctrlp1)<+0; V(dctrlp2)<+0; V(dctrlp3)<+0; V(dctrln1)<+0; V(dctrln2)<+0; V(dctrln3)<+0;
+end
+endmodule

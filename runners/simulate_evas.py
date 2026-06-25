@@ -8172,6 +8172,79 @@ def check_v3_source_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> 
     )
 
 
+def check_v3_source_clock_sample_1600n_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rst", "s", "nc", "res", "conv"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing clock sample 1600n sequencer signals"
+    return _sample_many(
+        rows,
+        {
+            "rst": [(0.1, 1.1), (0.5, 0.0), (16.1, 1.1)],
+            "s": [(1.4, 1.1), (2.0, 0.0), (9.4, 1.1), (10.0, 0.0)],
+            "nc": [(2.1, 1.1), (2.5, 0.0), (10.1, 1.1), (10.5, 0.0)],
+            "res": [(3.1, 1.1), (3.4, 0.0), (4.6, 1.1), (4.9, 0.0), (6.1, 1.1), (7.6, 1.1)],
+            "conv": [(2.5, 0.0), (3.5, 1.1), (7.5, 0.0), (11.5, 1.1), (15.5, 0.0)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_l2_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck", "do0", "do1", "do2", "do3", "dctrlp1", "dctrlp2", "dctrlp3", "dctrln1", "dctrln2", "dctrln3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing l2 sar logic 4b signals"
+    return _sample_many(
+        rows,
+        {
+            "cmpck": [(0.95, 1.1), (1.5, 0.0), (2.0, 1.1), (3.2, 1.1), (4.0, 0.0)],
+            "do3": [(1.7, 1.1), (4.2, 1.1)],
+            "do2": [(2.5, 0.0), (4.2, 0.0)],
+            "do1": [(3.2, 1.1), (4.2, 1.1)],
+            "do0": [(4.0, 0.0), (4.2, 0.0)],
+            "dctrln3": [(1.7, 1.1), (4.2, 1.1)],
+            "dctrlp2": [(2.5, 1.1), (4.2, 1.1)],
+            "dctrln1": [(3.2, 1.1), (4.2, 1.1)],
+            "dctrlp1": [(4.2, 0.0)],
+            "dctrlp3": [(4.2, 0.0)],
+            "dctrln2": [(4.2, 0.0)],
+        },
+        tol=0.09,
+    )
+
+
+def check_v3_source_phase_detector_chopper(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vlocal_osc", "vin_rf", "vif"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing phase detector chopper signals"
+    return _sample_many(
+        rows,
+        {"vif": [(0.5, -0.125), (1.5, 0.25), (2.5, 0.20), (3.5, -0.30)]},
+        tol=0.015,
+    )
+
+
+def check_v3_source_single_adc_7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing single adc 7b weighted signals"
+    return _sample_many(
+        rows,
+        {"dout": [(0.5, 0.0), (1.5, 0.6640625), (2.5, 0.328125), (3.5, 0.9921875)]},
+        tol=0.012,
+    )
+
+
+def check_v3_source_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinn", "vrefp", "vrefn", "clk", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing qtz differential 2level signals"
+    return _sample_many(
+        rows,
+        {"dout": [(0.5, -0.5), (1.5, -0.5), (2.5, 0.5), (3.5, 0.5)]},
+        tol=0.03,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -12153,6 +12226,11 @@ CHECKS = {
     "v3_source_sar_logic_4b_self_timed": check_v3_source_sar_logic_4b_self_timed,
     "v3_source_pfd_tdomain_reset_window": check_v3_source_pfd_tdomain_reset_window,
     "v3_source_pipe_adc_gain_control_loop": check_v3_source_pipe_adc_gain_control_loop,
+    "v3_source_clock_sample_1600n_sequencer": check_v3_source_clock_sample_1600n_sequencer,
+    "v3_source_l2_sar_logic_4b": check_v3_source_l2_sar_logic_4b,
+    "v3_source_phase_detector_chopper": check_v3_source_phase_detector_chopper,
+    "v3_source_single_adc_7b_weighted": check_v3_source_single_adc_7b_weighted,
+    "v3_source_qtz_differential_2level": check_v3_source_qtz_differential_2level,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -13489,6 +13567,11 @@ CHECKS["229-source-sar-das-logic-6b"] = check_v3_source_sar_das_logic_6b
 CHECKS["230-source-sar-logic-4b-self-timed"] = check_v3_source_sar_logic_4b_self_timed
 CHECKS["231-source-pfd-tdomain-reset-window"] = check_v3_source_pfd_tdomain_reset_window
 CHECKS["232-source-pipe-adc-gain-control-loop"] = check_v3_source_pipe_adc_gain_control_loop
+CHECKS["233-source-clock-sample-1600n-sequencer"] = check_v3_source_clock_sample_1600n_sequencer
+CHECKS["234-source-l2-sar-logic-4b"] = check_v3_source_l2_sar_logic_4b
+CHECKS["235-source-phase-detector-chopper"] = check_v3_source_phase_detector_chopper
+CHECKS["236-source-single-adc-7b-weighted"] = check_v3_source_single_adc_7b_weighted
+CHECKS["237-source-qtz-differential-2level"] = check_v3_source_qtz_differential_2level
 
 
 RELEASE_FORM_CHECK_ALIASES = {
