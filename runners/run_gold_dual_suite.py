@@ -1245,6 +1245,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_dac_serial_16b_nobridge",
     "v3_source_sar_13bit_serial_decoder",
     "v3_source_single_shot_timer_pulse",
+    "v3_source_clocked_comparator_dual_output",
+    "v3_source_dac4bit_bipolar_252m",
+    "v3_source_bin2ther_2b",
+    "v3_source_dff_set_reset",
+    "v3_source_pfd_up_down_state",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1324,6 +1329,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "260-source-dac-serial-16b-nobridge",
     "261-source-sar-13bit-serial-decoder",
     "262-source-single-shot-timer-pulse",
+    "263-source-clocked-comparator-dual-output",
+    "264-source-dac4bit-bipolar-252m",
+    "265-source-bin2ther-2b",
+    "266-source-dff-set-reset",
+    "267-source-pfd-up-down-state",
 }
 
 

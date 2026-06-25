@@ -1,0 +1,20 @@
+id = "v3_266_source_dff_set_reset"
+name = "266-source-dff-set-reset"
+title = "Source DFF Set Reset"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dff_set_reset.va"]

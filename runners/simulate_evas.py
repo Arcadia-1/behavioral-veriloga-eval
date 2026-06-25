@@ -8624,6 +8624,74 @@ def check_v3_source_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_source_clocked_comparator_dual_output(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vinn", "vinp", "outn", "outp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing clocked comparator dual output signals"
+    return _sample_many(
+        rows,
+        {
+            "outp": [(0.45, 1.0), (1.0, 0.0), (1.65, 0.0), (2.25, 0.0)],
+            "outn": [(0.45, 0.0), (1.0, 0.0), (1.65, 1.0), (2.25, 0.0)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_dac4bit_bipolar_252m(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d3", "d2", "d1", "d0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac4bit bipolar signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -0.252), (1.5, -0.2184), (2.5, -0.1848), (3.5, -0.0168)]},
+        tol=0.01,
+    )
+
+
+def check_v3_source_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "gnd", "b1", "b0", "t0", "t1", "t2"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing bin2ther 2b signals"
+    return _sample_many(
+        rows,
+        {
+            "t0": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.9), (3.5, 0.9)],
+            "t1": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.9), (3.5, 0.9)],
+            "t2": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_dff_set_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "setb", "rstb", "clk", "vdd", "gnd", "d", "q", "qb"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dff set reset signals"
+    return _sample_many(
+        rows,
+        {
+            "q": [(0.7, 0.0), (1.7, 0.9), (2.3, 0.0), (3.0, 0.9), (3.5, 0.0)],
+            "qb": [(0.7, 0.9), (1.7, 0.0), (2.3, 0.9), (3.0, 0.0), (3.5, 0.9)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "fb", "up", "down"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd up down state signals"
+    return _sample_many(
+        rows,
+        {
+            "up": [(0.7, 0.0), (1.5, 0.0), (2.25, 1.2), (2.65, 0.0)],
+            "down": [(0.7, 1.2), (1.5, 0.0), (2.25, 0.0), (2.65, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -14001,6 +14069,16 @@ CHECKS["259-source-lt-read-sar7b-weighted"] = check_v3_source_lt_read_sar7b_weig
 CHECKS["260-source-dac-serial-16b-nobridge"] = check_v3_source_dac_serial_16b_nobridge
 CHECKS["261-source-sar-13bit-serial-decoder"] = check_v3_source_sar_13bit_serial_decoder
 CHECKS["262-source-single-shot-timer-pulse"] = check_v3_source_single_shot_timer_pulse
+CHECKS["v3_source_clocked_comparator_dual_output"] = check_v3_source_clocked_comparator_dual_output
+CHECKS["v3_source_dac4bit_bipolar_252m"] = check_v3_source_dac4bit_bipolar_252m
+CHECKS["v3_source_bin2ther_2b"] = check_v3_source_bin2ther_2b
+CHECKS["v3_source_dff_set_reset"] = check_v3_source_dff_set_reset
+CHECKS["v3_source_pfd_up_down_state"] = check_v3_source_pfd_up_down_state
+CHECKS["263-source-clocked-comparator-dual-output"] = check_v3_source_clocked_comparator_dual_output
+CHECKS["264-source-dac4bit-bipolar-252m"] = check_v3_source_dac4bit_bipolar_252m
+CHECKS["265-source-bin2ther-2b"] = check_v3_source_bin2ther_2b
+CHECKS["266-source-dff-set-reset"] = check_v3_source_dff_set_reset
+CHECKS["267-source-pfd-up-down-state"] = check_v3_source_pfd_up_down_state
 
 
 RELEASE_FORM_CHECK_ALIASES = {

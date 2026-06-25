@@ -1,0 +1,10 @@
+`include "disciplines.vams"
+module dff_set_reset(setb, rstb, clk, vdd, gnd, d, q, qb);
+input setb, rstb, clk, vdd, gnd, d;
+output q, qb;
+electrical setb, rstb, clk, vdd, gnd, d, q, qb;
+analog begin
+    V(q) <+ 0.0;
+    V(qb) <+ 0.0;
+end
+endmodule
