@@ -4,9 +4,9 @@ global 0
 ahdl_include "config_shift_reg_64b.va"
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n delay=0 rise=20p fall=20p width=5n
 Vrst_n (rst_n 0) vsource type=pwl wave=[ 0n 0.9 9n 0.9 10n 0.9 19n 0.9 20n 0.9 29n 0.9 30n 0.9 39n 0.9 40n 0.9 49n 0.9 50n 0.9 59n 0.9 60n 0.9 69n 0.9 70n 0.9 79n 0.9 80n 0.9 89n 0.9 90n 0.9 99n 0.9 100n 0.9 109n 0.9 110n 0.9 119n 0.9 ]
-Vsin (sin 0) vsource type=pwl wave=[ 0n 0.9 9n 0.9 10n 0 19n 0 20n 0.9 29n 0.9 30n 0.9 39n 0.9 40n 0 49n 0 50n 0 59n 0 60n 0.9 69n 0.9 70n 0 79n 0 80n 0.9 89n 0.9 90n 0 99n 0 100n 0.9 109n 0.9 110n 0.9 119n 0.9 ]
+Vserial_in (serial_in 0) vsource type=pwl wave=[ 0n 0.9 9n 0.9 10n 0 19n 0 20n 0.9 29n 0.9 30n 0.9 39n 0.9 40n 0 49n 0 50n 0 59n 0 60n 0.9 69n 0.9 70n 0 79n 0 80n 0.9 89n 0.9 90n 0 99n 0 100n 0.9 109n 0.9 110n 0.9 119n 0.9 ]
 
-XDUT (clk rst_n sin q63 q62 q61 q60 q59 q58 q57 q56 q55 q54 q53 q52 q51 q50 q49 q48 q47 q46 q45 q44 q43 q42 q41 q40 q39 q38 q37 q36 q35 q34 q33 q32 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0) config_shift_reg_64b
+XDUT (clk rst_n serial_in q63 q62 q61 q60 q59 q58 q57 q56 q55 q54 q53 q52 q51 q50 q49 q48 q47 q46 q45 q44 q43 q42 q41 q40 q39 q38 q37 q36 q35 q34 q33 q32 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0) config_shift_reg_64b
 
 tran tran stop=120n maxstep=200p
-save clk rst_n sin q63 q62 q61 q60 q59 q58 q57 q56 q55 q54 q53 q52 q51 q50 q49 q48 q47 q46 q45 q44 q43 q42 q41 q40 q39 q38 q37 q36 q35 q34 q33 q32 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0
+save clk rst_n serial_in q63 q62 q61 q60 q59 q58 q57 q56 q55 q54 q53 q52 q51 q50 q49 q48 q47 q46 q45 q44 q43 q42 q41 q40 q39 q38 q37 q36 q35 q34 q33 q32 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0

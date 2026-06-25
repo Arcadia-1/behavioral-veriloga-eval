@@ -1,0 +1,201 @@
+{
+  "run_kind": "hidden_negative_audit_legacy_011_012",
+  "date": "2026-06-25",
+  "evas_version": "0.4.5",
+  "case_count": 10,
+  "non_full_credit_count": 10,
+  "full_credit_count": 0,
+  "total_elapsed_s": 92.82685080496594,
+  "results": [
+    {
+      "task": "011-pfd-up-dn-logic",
+      "neg": "neg_001.va",
+      "artifact": "negative_variants/pfd_up_dn_logic__dut/neg_001.va",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 12.246439435053617,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=0.0000 dn_first=0.0116 up_second=0.0111 dn_second=0.0000 up_pulses_first=0 dn_pulses_second=0 overlap_frac=0.0000",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:up_first=0.0000 dn_first=0.0116 up_second=0.0111 dn_second=0.0000 up_pulses_first=0 dn_pulses_second=0 overlap_frac=0.0000"
+      ]
+    },
+    {
+      "task": "011-pfd-up-dn-logic",
+      "neg": "neg_002.va",
+      "artifact": "negative_variants/pfd_up_dn_logic__dut/neg_002.va",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 11.959186414023861,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=0.1577 dn_first=0.9906 up_second=0.0000 dn_second=0.0111 up_pulses_first=0 dn_pulses_second=5 overlap_frac=0.0831",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:up_first=0.1577 dn_first=0.9906 up_second=0.0000 dn_second=0.0111 up_pulses_first=0 dn_pulses_second=5 overlap_frac=0.0831"
+      ]
+    },
+    {
+      "task": "011-pfd-up-dn-logic",
+      "neg": "neg_003.va",
+      "artifact": "negative_variants/pfd_up_dn_logic__dut/neg_003.va",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 12.159721767995507,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=0.4854 dn_first=0.0000 up_second=0.4900 dn_second=0.0000 up_pulses_first=5 dn_pulses_second=0 overlap_frac=0.0000",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:up_first=0.4854 dn_first=0.0000 up_second=0.4900 dn_second=0.0000 up_pulses_first=5 dn_pulses_second=0 overlap_frac=0.0000"
+      ]
+    },
+    {
+      "task": "011-pfd-up-dn-logic",
+      "neg": "neg_004.va",
+      "artifact": "negative_variants/pfd_up_dn_logic__dut/neg_004.va",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 12.037400397006422,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=1.0000 dn_first=0.0000 up_second=1.0000 dn_second=0.0000 up_pulses_first=0 dn_pulses_second=0 overlap_frac=0.0000",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:up_first=1.0000 dn_first=0.0000 up_second=1.0000 dn_second=0.0000 up_pulses_first=0 dn_pulses_second=0 overlap_frac=0.0000"
+      ]
+    },
+    {
+      "task": "011-pfd-up-dn-logic",
+      "neg": "neg_005.va",
+      "artifact": "negative_variants/pfd_up_dn_logic__dut/neg_005.va",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 12.168890158180147,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=0.0116 dn_first=0.0000 up_second=0.9910 dn_second=0.0000 up_pulses_first=5 dn_pulses_second=0 overlap_frac=0.0001",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:up_first=0.0116 dn_first=0.0000 up_second=0.9910 dn_second=0.0000 up_pulses_first=5 dn_pulses_second=0 overlap_frac=0.0001"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "neg": "neg_001.va",
+      "artifact": "negative_variants/clock_divider__dut/neg_001.va",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 9.448815571144223,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ratio_code=5 in_edges=80 out_edges=78 lock_edges=1 final_lock_high=True period_match=0.000 interval_hist={1: 76}",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:ratio_code=5 in_edges=80 out_edges=78 lock_edges=1 final_lock_high=True period_match=0.000 interval_hist={1: 76}"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "neg": "neg_002.va",
+      "artifact": "negative_variants/clock_divider__dut/neg_002.va",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 4.762747521977872,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ratio_code=5 in_edges=80 out_edges=13 lock_edges=1 final_lock_high=True period_match=0.000 interval_hist={6: 11}",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:ratio_code=5 in_edges=80 out_edges=13 lock_edges=1 final_lock_high=True period_match=0.000 interval_hist={6: 11}"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "neg": "neg_003.va",
+      "artifact": "negative_variants/clock_divider__dut/neg_003.va",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 4.577196386875585,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "not enough clock edges",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:not enough clock edges"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "neg": "neg_004.va",
+      "artifact": "negative_variants/clock_divider__dut/neg_004.va",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 8.54645455093123,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ratio_code=5 in_edges=80 out_edges=15 lock_edges=0 final_lock_high=False period_match=1.000 interval_hist={5: 13}",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:ratio_code=5 in_edges=80 out_edges=15 lock_edges=0 final_lock_high=False period_match=1.000 interval_hist={5: 13}"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "neg": "neg_005.va",
+      "artifact": "negative_variants/clock_divider__dut/neg_005.va",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "status": "FAIL_SIM_CORRECTNESS",
+      "score": null,
+      "full_credit": false,
+      "elapsed_s": 4.919894632184878,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "not enough clock edges",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:not enough clock edges"
+      ]
+    }
+  ]
+}

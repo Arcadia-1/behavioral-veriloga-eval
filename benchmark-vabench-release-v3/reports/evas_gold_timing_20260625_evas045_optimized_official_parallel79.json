@@ -1,0 +1,1449 @@
+{
+  "run_kind": "hidden_gold_positive_full_79_official_parallel",
+  "date": "2026-06-25",
+  "evas_distribution": "evas-sim",
+  "evas_version": "0.4.5",
+  "engine_env": "evas",
+  "workers": 79,
+  "persistent_worker": false,
+  "total_elapsed_s": 56.47818488604389,
+  "count": 79,
+  "pass_count": 79,
+  "fail_count": 0,
+  "results": [
+    {
+      "task": "001-bang-bang-phase-detector",
+      "checker": "v3_001_bang_bang_phase_detector",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bbpd_ref.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 48.314467715099454,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "data_edges=8 up_edges=3 down_edges=3 overlap_frac=0.0000 direction_up=3/3 direction_down=3/3 none=2/2 wrong_direction=0 missing_direction=0 false_pulse=0"
+      ]
+    },
+    {
+      "task": "002-capacitive-sar-feedback-dac",
+      "checker": "v3_002_capacitive_weighted_sar_feedback_dac",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "cdac_cal.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 54.59158625896089,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=cal0,cal1,clk,vdac_n,vdac_p",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:samples=17 main_codes=16 cal_codes=[0, 1, 2, 3] mismatches=0 monotonic_errors=0 diff_span=0.6563 max_diff_error=0.0000 max_cm_error=0.0000"
+      ]
+    },
+    {
+      "task": "003-pipeline-adc-stage",
+      "checker": "v3_003_pipeline_adc_stage",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "pipeline_stage.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 15.652786028804258,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "regions=upper:3,middle:4,lower:3 bit_mismatches=0 residue_mismatches=0 max_residue_err=0.0000 bounded_failures=0"
+      ]
+    },
+    {
+      "task": "004-trim-calibration-controller",
+      "checker": "v3_004_trim_calibration_controller",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "cdac_calibration.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 2.995561562012881,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "reset_20ns:0.450/0.450 hold_before_active_40ns:0.450/0.450 first_increment_80ns:0.510/0.510 second_increment_100ns:0.570/0.570 decrement_140ns:0.390/0.390 lower_clamp_path_180ns:0.150/0.150 late_recovery_210ns:0.230/0.230 range=(0.050,0.570)"
+      ]
+    },
+    {
+      "task": "005-debounce-latch",
+      "checker": "v3_005_debounce_latch",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "debounce_latch.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 1.7112624139990658,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "reset_arm_rejected_20ns:0.000 short_glitch_low_34ns:0.000 short_glitch_low_40ns:0.000 reset_cancel_low_67ns:0.000 post_cancel_low_72ns:0.000 pre_qualify_low_82ns:0.000 qualified_high_100ns:0.900 qualified_high_130ns:0.900"
+      ]
+    },
+    {
+      "task": "006-element-shuffler",
+      "checker": "v3_006_element_shuffler",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "element_shuffler.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 13.899842869024724,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "active_sequence=2,0,3,1,2,0 expected=2,0,3,1,2,0"
+      ]
+    },
+    {
+      "task": "007-first-order-lowpass",
+      "checker": "v3_007_first_order_lowpass",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "first_order_lowpass.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 7.778493572957814,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "lowpass_samples=0.305,0.620,0.776,0.799 input_step=True monotonic=True response_fast_enough=True not_instant=True bounded=True"
+      ]
+    },
+    {
+      "task": "008-gain-trim-controller",
+      "checker": "v3_008_gain_trim_controller",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "gain_trim_controller.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 15.622837987961248,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "gain_trim_samples=0.300,0.400,0.600,0.850,0.850,0.800,0.450,0.150,0.050 reset_nominal=True low_meas_increases=True reaches_upper_clamp=True deadband_holds=True high_meas_decreases=True reaches_lower_clamp=True in_range=True"
+      ]
+    },
+    {
+      "task": "009-lock-detector",
+      "checker": "v3_009_lock_detector",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "lock_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 24.340993425110355,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "events=9 aligned=8 mismatch=1 good_lock_after_three=3 early_locks=0 mismatch_clears=1 mismatch_failures=0 reset_low=True final_lock_low=True"
+      ]
+    },
+    {
+      "task": "010-offset-comparator",
+      "checker": "v3_010_offset_comparator",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "cmp_offset_ref.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 10.652914753882214,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "offset_decisions=LLLHHLL expected=LLLHHLL diffs_mv=[-10.0,0.0,3.0,7.0,20.0,0.0,-10.0] mismatches=0 below_offset_positive=True above_offset_positive=True strict_samples=LLLLHHHLLL"
+      ]
+    },
+    {
+      "task": "011-pfd-up-dn-logic",
+      "checker": "v3_011_pfd_up_dn_logic",
+      "tb": "test_hidden/tests/tb_pfd_reset_race_ref.scs",
+      "primary_target": "pfd_updn.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 45.13800412695855,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "up_first=0.0116 dn_first=0.0000 up_second=0.0000 dn_second=0.0111 up_pulses_first=5 dn_pulses_second=5 overlap_frac=0.0000"
+      ]
+    },
+    {
+      "task": "012-clock-divider",
+      "checker": "v3_012_clock_divider",
+      "tb": "test_hidden/tests/tb_clk_divider_ref.scs",
+      "primary_target": "clk_divider_ref.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 39.089394110953435,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ratio_code=5 in_edges=80 out_edges=16 lock_edges=1 final_lock_high=True period_match=1.000 interval_hist={5: 14}"
+      ]
+    },
+    {
+      "task": "013-resettable-integrator",
+      "checker": "v3_013_resettable_integrator",
+      "tb": "test_hidden/tests/tb_resettable_integrator_ref.scs",
+      "primary_target": "resettable_integrator.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 9.789829391054809,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "integrator_samples=0.106,0.346,0.000,0.000,0.096 input_drive=True reset_sequence=True pre_reset_integrated=True reset_clear=True post_reset_restarts=True"
+      ]
+    },
+    {
+      "task": "014-sar-logic",
+      "checker": "v3_014_sar_logic",
+      "tb": "test_hidden/tests/tb_sar_logic_4b_ref.scs",
+      "primary_target": "sar_logic_4b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 17.843936944147572,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "sar_rdy_sequence=LHL expected=LHL code176=1010 expected_code=1010"
+      ]
+    },
+    {
+      "task": "015-segmented-dac",
+      "checker": "v3_015_segmented_dac",
+      "tb": "test_hidden/tests/tb_segmented_dac_ref.scs",
+      "primary_target": "segmented_dac.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.3480137060396373,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "dac_levels=0.000,0.060,0.120,0.420,0.720 expected=0.000,0.060,0.120,0.420,0.720 monotonic=True"
+      ]
+    },
+    {
+      "task": "016-binary-weighted-voltage-dac",
+      "checker": "v3_016_binary_weighted_voltage_dac",
+      "tb": "test_hidden/tests/tb_simple_binary_voltage_dac_4b_ref.scs",
+      "primary_target": "simple_binary_voltage_dac_4b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.993955803103745,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "simple_binary_dac_levels=0.000,0.060,0.120,0.180,0.240,0.300,0.360,0.420,0.480,0.540,0.600,0.660,0.720,0.780,0.840,0.900 expected=0.000,0.060,0.120,0.180,0.240,0.300,0.360,0.420,0.480,0.540,0.600,0.660,0.720,0.780,0.840,0.900 observed_codes=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 code_mismatches=0 max_err=0.000 monotonic=True zero_scale_ok=True full_scale_ok=True"
+      ]
+    },
+    {
+      "task": "017-slew-rate-limiter",
+      "checker": "v3_017_slew_rate_limiter",
+      "tb": "test_hidden/tests/tb_slew_rate_limiter_ref.scs",
+      "primary_target": "slew_rate_limiter.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.411513994913548,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "slew_samples=0.285,0.800,0.755,0.455,0.100 input_sequence=True rising_limited=True high_reached=True falling_limited=True low_reached=True not_passthrough=True"
+      ]
+    },
+    {
+      "task": "018-strongarm-style-latch-comparator",
+      "checker": "v3_018_strongarm_style_latch_comparator",
+      "tb": "test_hidden/tests/tb_cmp_strongarm_ref.scs",
+      "primary_target": "cmp_strongarm.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 30.053889920935035,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "latch_states=PPZNNZPN expected=PPZNNZPN diff_signs=positive,negative,negative,negative,positive,positive,positive,negative mismatches=none"
+      ]
+    },
+    {
+      "task": "019-unit-element-thermometer-dac",
+      "checker": "v3_019_unit_element_thermometer_dac",
+      "tb": "test_hidden/tests/tb_thermometer_dac_15seg_ref.scs",
+      "primary_target": "thermometer_dac_15seg.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.481714322930202,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "levels=0:0.000/0 1:0.060/1 2:0.120/2 7:0.420/7 14:0.840/14 15:0.900/15 max_err=0.000 monotonic=True counts_match=True full_scale_ok=True"
+      ]
+    },
+    {
+      "task": "020-thermometer-code-decoder",
+      "checker": "v3_020_thermometer_code_decoder",
+      "tb": "test_hidden/tests/tb_thermometer_decoder_guarded_ref.scs",
+      "primary_target": "thermometer_decoder_guarded.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 5.117679574061185,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "thermometer_sequence=-,-,0,01,012,012 expected=-,-,0,01,012,012"
+      ]
+    },
+    {
+      "task": "021-vco-phase-integrator",
+      "checker": "v3_021_vco_phase_integrator",
+      "tb": "test_hidden/tests/tb_vco_phase_integrator_ref.scs",
+      "primary_target": "vco_phase_integrator.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 8.612732998095453,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "phase_1ns=0.039 phase_10ns=0.390 phase_span=0.992 clk_edges=7 early_edges=2 late_edges=5"
+      ]
+    },
+    {
+      "task": "022-bandgap-reference-macro-model",
+      "checker": "v3_022_bandgap_reference_macro_model",
+      "tb": "test_hidden/tests/tb_bandgap_reference_macro_model.scs",
+      "primary_target": "bandgap_reference_macro_model.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.7789167282171547,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bandgap_reference_macro_model ref=0.545/0.552 line_delta=0.007 brownout=0.000"
+      ]
+    },
+    {
+      "task": "023-calibration-deadband-controller",
+      "checker": "v3_023_calibration_deadband_controller",
+      "tb": "test_hidden/tests/tb_calibration_deadband_controller.scs",
+      "primary_target": "calibration_deadband_controller.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 15.270544667029753,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "release_calibration_loop reset=0.450 span=0.420 direction=24/24; deadband_hold=10/10"
+      ]
+    },
+    {
+      "task": "024-charge-pump-abstraction",
+      "checker": "v3_024_charge_pump_abstraction",
+      "tb": "test_hidden/tests/tb_charge_pump_abstraction.scs",
+      "primary_target": "charge_pump_abstraction.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.559401341946796,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "release_charge_pump reset=0.450 span=0.400 polarity up=6/6 down=4/4"
+      ]
+    },
+    {
+      "task": "025-clocked-adc-quantizer",
+      "checker": "v3_025_clocked_adc_quantizer",
+      "tb": "test_hidden/tests/tb_flash_adc_3b_ref.scs",
+      "primary_target": "flash_adc_3b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 16.78701764298603,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "codes=8/8 reversals=0"
+      ]
+    },
+    {
+      "task": "026-clocked-sample-and-hold",
+      "checker": "v3_026_clocked_sample_and_hold",
+      "tb": "test_hidden/tests/tb_sample_hold_ref.scs",
+      "primary_target": "sample_hold.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 12.414131455123425,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "edges=50 hold_ok"
+      ]
+    },
+    {
+      "task": "027-dac-mismatch-unit-weighting-model",
+      "checker": "v3_027_dac_mismatch_unit_weighting_model",
+      "tb": "test_hidden/tests/tb_dac_mismatch_unit_weighting_model.scs",
+      "primary_target": "dac_mismatch_unit_weighting_model.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 2.645364136900753,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "dac_weight_samples 7ns:0.0598/0.0598 15ns:0.1207/0.1207 25ns:0.4171/0.4171 35ns:0.9000/0.9000"
+      ]
+    },
+    {
+      "task": "028-digital-phase-accumulator-with-modulo-wrap",
+      "checker": "v3_028_digital_phase_accumulator_with_modulo_wrap",
+      "tb": "test_hidden/tests/tb_phase_accumulator_timer_wrap_ref.scs",
+      "primary_target": "phase_accumulator_timer_wrap_ref.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 14.60386500088498,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "wraps=3 clk_rises=4 phase_span=0.675"
+      ]
+    },
+    {
+      "task": "029-dwa-dem-encoder",
+      "checker": "v3_029_dwa_dem_encoder",
+      "tb": "test_hidden/tests/tb_dwa_ptr_gen_ref.scs",
+      "primary_target": "dwa_ptr_gen.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 24.734722049208358,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "sampled_cycles=9 bad_ptr_rows=0 bad_span_rows=0 ptr_unique=8 wrap_events=2 split_wrap_rows=2 max_active_cells=9"
+      ]
+    },
+    {
+      "task": "030-higher-order-filter",
+      "checker": "v3_030_higher_order_filter",
+      "tb": "test_hidden/tests/tb_higher_order_filter.scs",
+      "primary_target": "higher_order_filter.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 13.451518735149875,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "release_two_pole_filter rise=0.539->0.861 fall=0.693->0.291 metric_span=0.661"
+      ]
+    },
+    {
+      "task": "031-hysteresis-comparator",
+      "checker": "v3_031_hysteresis_comparator",
+      "tb": "test_hidden/tests/tb_cmp_hysteresis_ref.scs",
+      "primary_target": "cmp_hysteresis.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.780990662053227,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "rise_t=30.025ns fall_t=70.025ns"
+      ]
+    },
+    {
+      "task": "032-ldo-regulator-macro-model",
+      "checker": "v3_032_ldo_regulator_macro_model",
+      "tb": "test_hidden/tests/tb_ldo_regulator_macro_model.scs",
+      "primary_target": "ldo_regulator_macro_model.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 1.650153734954074,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ldo_regulator_macro_model light/heavy/recovered=0.612/0.577/0.605"
+      ]
+    },
+    {
+      "task": "033-limiting-amplifier-frontend",
+      "checker": "v3_033_limiting_amplifier_frontend",
+      "tb": "test_hidden/tests/tb_limiting_amplifier_frontend.scs",
+      "primary_target": "limiting_amplifier_frontend.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 4.814064949983731,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "limiting_amplifier_frontend small=0.535 limited=0.089/0.838"
+      ]
+    },
+    {
+      "task": "034-lna-gain-compression-macro",
+      "checker": "v3_034_lna_gain_compression_macro",
+      "tb": "test_hidden/tests/tb_lna_gain_compression_macro.scs",
+      "primary_target": "lna_gain_compression_macro.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.6008008820936084,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "lna_gain_compression_macro small=0.520->0.604 compressed=0.110/0.860"
+      ]
+    },
+    {
+      "task": "035-log-rssi-power-detector",
+      "checker": "v3_035_log_rssi_power_detector",
+      "tb": "test_hidden/tests/tb_log_rssi_power_detector.scs",
+      "primary_target": "log_rssi_power_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.2728716179262847,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "log_rssi_power_detector floor/small/mid/high=0.120/0.300/0.540/0.720"
+      ]
+    },
+    {
+      "task": "036-loop-filter-abstraction",
+      "checker": "v3_036_loop_filter_abstraction",
+      "tb": "test_hidden/tests/tb_loop_filter_abstraction.scs",
+      "primary_target": "loop_filter_abstraction.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 16.902303508948535,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "loop_filter_pi first_pos_delta=0.108 later_pos_delta=0.011 negative_steps=7/7 integral_residual=0.846 metric=0.000/0.900/0.000 reset=0.450/0.450"
+      ]
+    },
+    {
+      "task": "037-pa-compression-macro",
+      "checker": "v3_037_pa_compression_macro",
+      "tb": "test_hidden/tests/tb_pa_compression_macro.scs",
+      "primary_target": "pa_compression_macro.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 5.075535886920989,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "pa_compression_macro small=0.690 limits=0.055/0.877"
+      ]
+    },
+    {
+      "task": "038-power-on-reset-detector",
+      "checker": "v3_038_power_on_reset_detector",
+      "tb": "test_hidden/tests/tb_power_on_reset_detector.scs",
+      "primary_target": "power_on_reset_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 4.257701828842983,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "power_on_reset_detector reset=0.900->0.000 brownout=0.900"
+      ]
+    },
+    {
+      "task": "039-precision-rectifier-envelope-detector",
+      "checker": "v3_039_precision_rectifier_envelope_detector",
+      "tb": "test_hidden/tests/tb_precision_rectifier_envelope_detector.scs",
+      "primary_target": "precision_rectifier_envelope_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 43.81203780998476,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "precision_rectifier_envelope_detector pos/neg=0.719/0.711 env_peak=0.814 hold=0.685/0.499"
+      ]
+    },
+    {
+      "task": "040-programmable-gain-amplifier",
+      "checker": "v3_040_programmable_gain_amplifier",
+      "tb": "test_hidden/tests/tb_programmable_gain_amplifier.scs",
+      "primary_target": "programmable_gain_amplifier.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 29.220833708997816,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "programmable_gain_amplifier out_high_low_unclipped_late=0.900/0.000/0.530/0.900 metric=0.900/0.900/0.000/0.900"
+      ]
+    },
+    {
+      "task": "041-propagation-delay-comparator",
+      "checker": "v3_041_propagation_delay_comparator",
+      "tb": "test_hidden/tests/tb_cmp_delay_ref.scs",
+      "primary_target": "cmp_delay.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 49.651198151987046,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "delays_ns=[0.08, 0.093, 0.103, 0.11] monotonic=True total_growth_ns=0.030"
+      ]
+    },
+    {
+      "task": "042-ptat-ctat-reference-generator",
+      "checker": "v3_042_ptat_ctat_reference_generator",
+      "tb": "test_hidden/tests/tb_ptat_ctat_reference_generator.scs",
+      "primary_target": "ptat_ctat_reference_generator.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 3.0705634569749236,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "ptat_ctat_reference_generator ref_span=0.000 ptat=0.231->0.452"
+      ]
+    },
+    {
+      "task": "043-rf-mixer-downconverter-macro",
+      "checker": "v3_043_rf_mixer_downconverter_macro",
+      "tb": "test_hidden/tests/tb_rf_mixer_downconverter_macro.scs",
+      "primary_target": "rf_mixer_downconverter_macro.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 5.449659388046712,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "rf_mixer_downconverter_macro pos=0.705/0.195 neg=0.193/0.703"
+      ]
+    },
+    {
+      "task": "044-sample-and-hold-with-droop-leakage",
+      "checker": "v3_044_sample_and_hold_with_droop_leakage",
+      "tb": "test_hidden/tests/tb_leaky_hold_ref.scs",
+      "primary_target": "leaky_hold.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.410916485125199,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "vin_samples=0.200,0.720,0.340 held_samples=0.198,0.713,0.337 max_sample_err=0.007 expected_span=0.520 observed_span=0.515 droop=0.296 upward_steps=0 reset_clear=True"
+      ]
+    },
+    {
+      "task": "045-soft-hysteretic-limiter",
+      "checker": "v3_045_soft_hysteretic_limiter",
+      "tb": "test_hidden/tests/tb_soft_hysteretic_limiter.scs",
+      "primary_target": "soft_hysteretic_limiter.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 12.960931219160557,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "release_soft_hysteretic_limiter limited=0.100/0.820 memory=0.306/0.617 metric_span=0.320"
+      ]
+    },
+    {
+      "task": "046-successive-approximation-calibration-search-fsm",
+      "checker": "v3_046_successive_approximation_calibration_search_fsm",
+      "tb": "test_hidden/tests/tb_successive_approximation_calibration_search_fsm.scs",
+      "primary_target": "successive_approximation_calibration_search_fsm.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 16.392459287075326,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "sar_cal reset=0.450 span=0.337 direction=4/4; sar_step_first_last=0.180/0.022"
+      ]
+    },
+    {
+      "task": "047-threshold-comparator",
+      "checker": "v3_047_threshold_comparator",
+      "tb": "test_hidden/tests/tb_comparator_ref.scs",
+      "primary_target": "comparator.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.700822531944141,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "high_frac=1.000 low_frac=1.000 span=0.900 diff_rises=1 diff_falls=1 out_rises=1 out_falls=1 rising_aligned=True falling_aligned=True"
+      ]
+    },
+    {
+      "task": "048-uvlo-brownout-detector",
+      "checker": "v3_048_uvlo_brownout_detector",
+      "tb": "test_hidden/tests/tb_uvlo_brownout_detector.scs",
+      "primary_target": "uvlo_brownout_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 4.570736140944064,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "uvlo_brownout_detector pgood=0.900 hold=0.900/0.000 recover=0.900"
+      ]
+    },
+    {
+      "task": "049-window-comparator-detector",
+      "checker": "v3_049_window_comparator_detector",
+      "tb": "test_hidden/tests/tb_window_comparator_ref.scs",
+      "primary_target": "window_comparator_ref.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 43.059693951159716,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "below_hi=0.000 above_hi=0.000 inside_rise_hi=1.000 inside_fall_hi=1.000 span=0.900"
+      ]
+    },
+    {
+      "task": "050-bin-to-thermometer-decoder-8b",
+      "checker": "v3_050_bin_to_thermometer_decoder_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bin_to_therm_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 45.427271113032475,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[-1, 0, 1, 128, 255] boundary_seen=[0, 1, 255] enable_low_ok=True count_errors=0 cumulative_errors=0"
+      ]
+    },
+    {
+      "task": "051-thermometer-to-binary-encoder-8b",
+      "checker": "v3_051_thermometer_to_binary_encoder_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "therm_to_bin_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 47.02670352207497,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=b0,b1,b2,b3,b4,b5,b6,b7,th0,th1,th10,th100",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=['0', '1', '128', '255', 'invalid'] valid_errors=0 count_errors=0"
+      ]
+    },
+    {
+      "task": "052-gray-to-binary-converter-8b",
+      "checker": "v3_052_gray_to_binary_converter_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "gray_to_bin_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 33.96826723986305,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 7, 15, 16, 31, 63, 127, 128, 200, 255, 255] errors=0"
+      ]
+    },
+    {
+      "task": "053-binary-to-gray-converter-8b",
+      "checker": "v3_053_binary_to_gray_converter_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bin_to_gray_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 29.7838571309112,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 7, 15, 16, 31, 63, 127, 128, 200, 255, 255] errors=0"
+      ]
+    },
+    {
+      "task": "054-onehot-to-binary-encoder-16b",
+      "checker": "v3_054_onehot_to_binary_encoder_16b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "onehot_to_bin_16b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 53.95388877997175,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=b0,b1,b2,b3,oh0,oh1,oh10,oh11,oh12,oh13,oh14,oh15",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'invalid', 'invalid', 'invalid'] valid_errors=0 code_errors=0"
+      ]
+    },
+    {
+      "task": "055-binary-to-onehot-decoder-16b",
+      "checker": "v3_055_binary_to_onehot_decoder_16b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bin_to_onehot_16b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 48.83878573379479,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=b0,b1,b2,b3,oh0,oh1,oh10,oh11,oh12,oh13,oh14,oh15",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1] errors=0 enable_low_seen=True"
+      ]
+    },
+    {
+      "task": "056-decimal-digit-to-bcd-encoder",
+      "checker": "v3_056_decimal_digit_to_bcd_encoder",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "decimal_to_bcd.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 44.89643173688091,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=b0,b1,b2,b3,d0,d1,d2,d3,d4,d5,d6,d7",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'invalid', 'invalid', 'invalid'] valid_errors=0 code_errors=0"
+      ]
+    },
+    {
+      "task": "057-signed-magnitude-to-twos-complement-8b",
+      "checker": "v3_057_signed_magnitude_to_twos_complement_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "signmag_to_twos_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 35.769160847878084,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=mag0,mag1,mag2,mag3,mag4,mag5,mag6,y0,y1,y2,y3,y4",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=[0, 1, -1, 2, -2, 63, -63, 127, -127, 0, 0] errors=0 neg_zero_seen=True"
+      ]
+    },
+    {
+      "task": "058-config-latch-32b-clocked",
+      "checker": "v3_058_config_latch_32b_clocked",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "config_latch_32b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 33.868342247093096,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "checked=6 bit_errors=0"
+      ]
+    },
+    {
+      "task": "059-config-latch-128b-static-enable",
+      "checker": "v3_059_config_latch_128b_static_enable",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "config_latch_128b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 5.800126414047554,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "checked=3 bit_errors=0"
+      ]
+    },
+    {
+      "task": "060-config-shift-register-64b",
+      "checker": "v3_060_config_shift_register_64b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "config_shift_reg_64b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 38.66239958489314,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=12 bit_errors=0"
+      ]
+    },
+    {
+      "task": "061-bus-splitter-256-to-16x16",
+      "checker": "v3_061_bus_splitter_256_to_16x16",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bus_split_256_to_16x16.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 6.777995183132589,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bit_errors=0"
+      ]
+    },
+    {
+      "task": "062-bus-combiner-16x16-to-256",
+      "checker": "v3_062_bus_combiner_16x16_to_256",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "bus_combine_16x16_to_256.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 7.009602724807337,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bit_errors=0"
+      ]
+    },
+    {
+      "task": "063-masked-config-update-32b",
+      "checker": "v3_063_masked_config_update_32b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "masked_config_update_32b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 33.894873375073075,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bit_errors=0"
+      ]
+    },
+    {
+      "task": "064-edge-interval-tdc-8b",
+      "checker": "v3_064_edge_interval_tdc_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "edge_interval_tdc_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 20.03529552393593,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[8, 23, 39] errors=0"
+      ]
+    },
+    {
+      "task": "065-period-meter-16b",
+      "checker": "v3_065_period_meter_16b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "period_meter_16b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 26.75448574894108,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[20, 25, 35, 40] errors=0"
+      ]
+    },
+    {
+      "task": "066-duty-cycle-meter-8b",
+      "checker": "v3_066_duty_cycle_meter_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "duty_cycle_meter_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 25.0600266631227,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[38, 50, 62, 42] errors=0"
+      ]
+    },
+    {
+      "task": "067-event-counter-windowed-16b",
+      "checker": "v3_067_event_counter_windowed_16b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "event_counter_windowed_16b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 34.6298702810891,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[3, 3] errors=0"
+      ]
+    },
+    {
+      "task": "068-latency-counter-ready-valid-12b",
+      "checker": "v3_068_latency_counter_ready_valid_12b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "ready_valid_latency_counter_12b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 16.683040942065418,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[2, 3] errors=0"
+      ]
+    },
+    {
+      "task": "069-settling-window-detector",
+      "checker": "v3_069_settling_window_detector",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "settling_window_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 10.571745261084288,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 intervals=[(55.1, 105.1), (115.1, 150.0)] settled_seen=True reset_seen=True early_seen=False"
+      ]
+    },
+    {
+      "task": "070-active-low-reset-synchronizer",
+      "checker": "v3_070_active_low_reset_synchronizer",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "reset_sync_active_low.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 13.00053682201542,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=15 errors=1"
+      ]
+    },
+    {
+      "task": "071-active-high-reset-synchronizer",
+      "checker": "v3_071_active_high_reset_synchronizer",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "reset_sync_active_high.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 13.796854324871674,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=15 errors=1"
+      ]
+    },
+    {
+      "task": "072-enable-gated-clock-pulse",
+      "checker": "v3_072_enable_gated_clock_pulse",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "enable_gated_clock_pulse.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 11.332646439084783,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 saw_high=True saw_blocked=True"
+      ]
+    },
+    {
+      "task": "073-low-active-enable-decoder-4b",
+      "checker": "v3_073_low_active_enable_decoder_4b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "low_active_enable_decoder_4b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 40.3524410079699,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, -1, -1] errors=0"
+      ]
+    },
+    {
+      "task": "074-configurable-polarity-edge-detector",
+      "checker": "v3_074_configurable_polarity_edge_detector",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "configurable_polarity_edge_detector.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 14.570436806185171,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "events=4 missed=0 false_pulses=0"
+      ]
+    },
+    {
+      "task": "075-prbs-generator-32b-seeded",
+      "checker": "v3_075_prbs_generator_32b_seeded",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "prbs_generator_32b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 27.39669453492388,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=18 errors=0"
+      ]
+    },
+    {
+      "task": "076-multiphase-clock-generator-4ph",
+      "checker": "v3_076_multiphase_clock_generator_4ph",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "multiphase_clock_generator_4ph.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 10.83095714612864,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "edge_counts={'clk0': 4, 'clk90': 4, 'clk180': 4, 'clk270': 4} phase_errors=0 period_errors=0"
+      ]
+    },
+    {
+      "task": "077-configurable-pulse-train-generator",
+      "checker": "v3_077_configurable_pulse_train_generator",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "configurable_pulse_train.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 15.156544489087537,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "errors=0 done_seen=True pulse_count=3 expected_total=3"
+      ]
+    },
+    {
+      "task": "078-staircase-dac-stimulus-8b",
+      "checker": "v3_078_staircase_dac_stimulus_8b",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "staircase_dac_stimulus_8b.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 15.062286622123793,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 1, 2, 3, 4, 5] errors=0"
+      ]
+    },
+    {
+      "task": "079-jittered-clock-source-deterministic",
+      "checker": "v3_079_jittered_clock_source_deterministic",
+      "tb": "test_hidden/hidden.scs",
+      "primary_target": "deterministic_jittered_clock.va",
+      "status": "PASS",
+      "score": null,
+      "elapsed_s": 17.662097746040672,
+      "runner_elapsed_s": null,
+      "evas_subprocess_wall_s": null,
+      "checker_s": null,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "periods_ns=[21.6, 19.2, 20.8, 18.4, 20.0, 21.6, 19.2, 20.8, 18.4, 20.0] varying=True bounded=True prefix_ok=True"
+      ]
+    }
+  ]
+}

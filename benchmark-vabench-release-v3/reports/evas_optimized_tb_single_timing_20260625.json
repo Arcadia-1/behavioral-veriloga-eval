@@ -1,0 +1,90 @@
+{
+  "run_kind": "optimized_hidden_gold_positive_single",
+  "date": "2026-06-25",
+  "evas_distribution": "evas-sim",
+  "evas_version": "0.4.5",
+  "engine_env": "evas",
+  "persistent_worker": false,
+  "count": 5,
+  "pass_count": 5,
+  "max_elapsed_s": 8.271754057146609,
+  "results": [
+    {
+      "task": "050-bin-to-thermometer-decoder-8b",
+      "checker": "v3_050_bin_to_thermometer_decoder_8b",
+      "status": "PASS",
+      "score": 1.0,
+      "elapsed_s": 6.804203126113862,
+      "evas_subprocess_wall_s": 6.724553745938465,
+      "checker_s": 0.0700540638063103,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "checked=[-1, 0, 1, 128, 255] boundary_seen=[0, 1, 255] enable_low_ok=True count_errors=0 cumulative_errors=0"
+      ]
+    },
+    {
+      "task": "051-thermometer-to-binary-encoder-8b",
+      "checker": "v3_051_thermometer_to_binary_encoder_8b",
+      "status": "PASS",
+      "score": 1.0,
+      "elapsed_s": 8.271754057146609,
+      "evas_subprocess_wall_s": 8.154835638124496,
+      "checker_s": 0.01968472101725638,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "missing_columns=b0,b1,b2,b3,b4,b5,b6,b7,th0,th1,th10,th100",
+        "auto_sparse_trace_fallback_full_trace",
+        "fallback_returncode=0",
+        "fallback:checked=['0', '1', '128', '255', 'invalid'] valid_errors=0 count_errors=0"
+      ]
+    },
+    {
+      "task": "059-config-latch-128b-static-enable",
+      "checker": "v3_059_config_latch_128b_static_enable",
+      "status": "PASS",
+      "score": 1.0,
+      "elapsed_s": 0.3482262899633497,
+      "evas_subprocess_wall_s": 0.3118395551573485,
+      "checker_s": 0.03283543209545314,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "checked=3 bit_errors=0"
+      ]
+    },
+    {
+      "task": "061-bus-splitter-256-to-16x16",
+      "checker": "v3_061_bus_splitter_256_to_16x16",
+      "status": "PASS",
+      "score": 1.0,
+      "elapsed_s": 0.4215691720601171,
+      "evas_subprocess_wall_s": 0.37434651609510183,
+      "checker_s": 0.042408308014273643,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bit_errors=0"
+      ]
+    },
+    {
+      "task": "062-bus-combiner-16x16-to-256",
+      "checker": "v3_062_bus_combiner_16x16_to_256",
+      "status": "PASS",
+      "score": 1.0,
+      "elapsed_s": 0.4574332309421152,
+      "evas_subprocess_wall_s": 0.40931487595662475,
+      "checker_s": 0.04321796586737037,
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas",
+        "trace_contract=row_required_set",
+        "bit_errors=0"
+      ]
+    }
+  ]
+}

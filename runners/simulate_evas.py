@@ -3052,7 +3052,7 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         "config_latch_128b_static_enable": frozenset({"time", "en"})
         | frozenset({f"d{idx}" for idx in range(128)})
         | frozenset({f"q{idx}" for idx in range(128)}),
-        "config_shift_register_64b": frozenset({"time", "sin"})
+        "config_shift_register_64b": frozenset({"time"})
         | frozenset({f"q{idx}" for idx in range(64)}),
         "bus_splitter_256_to_16x16": frozenset({"time"})
         | frozenset({f"in{idx}" for idx in range(256)})
@@ -10598,7 +10598,8 @@ def check_config_latch_128b_static_enable(rows: list[dict[str, float]]) -> tuple
 
 
 def check_config_shift_register_64b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sin", *{f"q{i}" for i in range(64)}}
+    serial_key = "serial_in" if rows and "serial_in" in rows[0] else "sin"
+    required = {"time", serial_key, *{f"q{i}" for i in range(64)}}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
@@ -10606,7 +10607,7 @@ def check_config_shift_register_64b(rows: list[dict[str, float]]) -> tuple[bool,
     history: list[int] = []
     errors = 0
     for row in samples:
-        history.insert(0, 1 if row["sin"] > 0.45 else 0)
+        history.insert(0, 1 if row[serial_key] > 0.45 else 0)
         history = history[:64]
         for idx in range(min(len(history), 64)):
             if (row[f"q{idx}"] > 0.45) != (history[idx] == 1):
