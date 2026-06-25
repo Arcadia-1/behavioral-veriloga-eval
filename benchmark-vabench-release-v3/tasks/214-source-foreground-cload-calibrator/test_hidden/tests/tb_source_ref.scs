@@ -1,0 +1,14 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "foreground_cload_calibrator.va"
+
+Vck (ck 0) vsource type=pwl wave=[0 0 1n 0 1.05n 1.0 1.45n 1.0 1.50n 0 3n 0 3.05n 1.0 3.45n 1.0 3.50n 0 5n 0 5.05n 1.0 5.45n 1.0 5.50n 0 7n 0 7.05n 1.0 7.45n 1.0 7.50n 0 9n 0 9.05n 1.0 9.45n 1.0 9.50n 0 11n 0 11.05n 1.0 11.45n 1.0 11.50n 0]
+Vd (d 0) vsource type=pwl wave=[0 0.0 2.8n 0.0 2.9n 1.0 4.8n 1.0 4.9n 0.0 6.8n 0.0 6.9n 1.0 8.8n 1.0 8.9n 0.0]
+Vvrefp (vrefp 0) vsource dc=0.82
+Vvrefn (vrefn 0) vsource dc=0.18
+
+XDUT (ck d vrefp vrefn dcp0 dcp1 dcp2 dcp3 dcp4 dcn0 dcn1 dcn2 dcn3 dcn4 cvinp cvinn en enb) foreground_cload_calibrator
+
+tran tran stop=13n maxstep=20p
+save ck d vrefp vrefn dcp0 dcp1 dcp2 dcp3 dcp4 dcn0 dcn1 dcn2 dcn3 dcn4 cvinp cvinn en enb

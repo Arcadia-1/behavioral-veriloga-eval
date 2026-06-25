@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+
+        module dac7_code_generator(clks, din0, din1, din2, din3, din4, din5, din6);
+        input clks;
+        output din0, din1, din2, din3, din4, din5, din6;
+        electrical clks, din0, din1, din2, din3, din4, din5, din6;
+
+analog begin
+    V(din0) <+ 0;
+    V(din1) <+ 0;
+    V(din2) <+ 0;
+    V(din3) <+ 0;
+    V(din4) <+ 0;
+    V(din5) <+ 0;
+    V(din6) <+ 0;
+end
+
+endmodule

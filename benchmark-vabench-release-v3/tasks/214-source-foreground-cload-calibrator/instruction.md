@@ -1,0 +1,1 @@
+Implement `foreground_cload_calibrator` with clock `ck`, decision input `d`, references `vrefp/vrefn`, outputs `dcp0..dcp4`, `dcn0..dcn4`, `cvinp/cvinn`, `en`, and `enb`. Capture five decision bits from MSB to LSB; drive complementary calibration bit outputs and deassert `en` after the capture phase.

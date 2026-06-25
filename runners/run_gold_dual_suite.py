@@ -1195,6 +1195,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_toggle_flip_flop",
     "v3_source_sync_8b_dffs_v2",
     "v3_source_onehot_progress_encoder",
+    "v3_source_tdc_ideal_edge_delta",
+    "v3_source_foreground_cload_calibrator",
+    "v3_source_pipe15_data_align",
+    "v3_source_clocked_mux4_sampler",
+    "v3_source_dac7_code_generator",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1224,6 +1229,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "210-source-toggle-flip-flop",
     "211-source-sync-8b-dffs-v2",
     "212-source-onehot-progress-encoder",
+    "213-source-tdc-ideal-edge-delta",
+    "214-source-foreground-cload-calibrator",
+    "215-source-pipe15-data-align",
+    "216-source-clocked-mux4-sampler",
+    "217-source-dac7-code-generator",
 }
 
 

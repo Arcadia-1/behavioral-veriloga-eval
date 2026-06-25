@@ -7747,6 +7747,82 @@ def check_v3_source_onehot_progress_encoder(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_source_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "inn", "samp", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing tdc ideal edge delta signals"
+    return _sample_many(
+        rows,
+        {"vout": [(1.0, 0.0), (3.0, -0.3), (7.0, 0.6), (12.0, 0.2)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_foreground_cload_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dcp0", "dcp1", "dcp2", "dcp3", "dcp4", "dcn1", "dcn3", "cvinp", "cvinn", "en", "enb"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing foreground cload calibrator signals"
+    return _sample_many(
+        rows,
+        {
+            "cvinp": [(0.5, 0.82), (12.5, 0.82)],
+            "cvinn": [(0.5, 0.18), (12.5, 0.18)],
+            "dcp4": [(1.7, 1.0)],
+            "dcn3": [(3.7, 1.0)],
+            "dcp2": [(5.7, 1.0)],
+            "dcn1": [(7.7, 1.0)],
+            "dcp0": [(9.7, 1.0), (11.7, 1.0)],
+            "en": [(9.7, 1.0), (11.7, 0.0)],
+            "enb": [(9.7, 0.0), (11.7, 1.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "do0", "do3", "do7", "do11", "do14"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pipe15 data align outputs"
+    return _sample_many(
+        rows,
+        {
+            "do0": [(1.7, 0.9), (11.7, 0.0)],
+            "do3": [(1.7, 0.0), (9.7, 0.0), (11.7, 0.9)],
+            "do7": [(5.7, 0.9), (9.7, 0.9), (11.7, 0.0)],
+            "do11": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
+            "do14": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing clocked mux4 sampler signals"
+    return _sample_many(
+        rows,
+        {"dout": [(0.5, 0.0), (1.3, 0.12), (3.3, 0.34), (5.3, 0.61), (7.3, 0.83), (8.5, 0.83)]},
+        tol=0.015,
+    )
+
+
+def check_v3_source_dac7_code_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac7 code generator outputs"
+    return _sample_many(
+        rows,
+        {
+            "din0": [(0.5, 0.0), (1.3, 0.9), (8.3, 0.9)],
+            "din4": [(4.3, 0.9), (8.3, 0.0), (9.3, 0.0)],
+            "din5": [(2.3, 0.9), (4.3, 0.0), (8.3, 0.9)],
+            "din6": [(1.3, 0.9), (2.3, 0.0), (4.3, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11708,6 +11784,11 @@ CHECKS = {
     "v3_source_toggle_flip_flop": check_v3_source_toggle_flip_flop,
     "v3_source_sync_8b_dffs_v2": check_v3_source_sync_8b_dffs_v2,
     "v3_source_onehot_progress_encoder": check_v3_source_onehot_progress_encoder,
+    "v3_source_tdc_ideal_edge_delta": check_v3_source_tdc_ideal_edge_delta,
+    "v3_source_foreground_cload_calibrator": check_v3_source_foreground_cload_calibrator,
+    "v3_source_pipe15_data_align": check_v3_source_pipe15_data_align,
+    "v3_source_clocked_mux4_sampler": check_v3_source_clocked_mux4_sampler,
+    "v3_source_dac7_code_generator": check_v3_source_dac7_code_generator,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,

@@ -1,0 +1,25 @@
+`include "disciplines.vams"
+
+        module foreground_cload_calibrator(ck, d, vrefp, vrefn, dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb);
+        input ck, d, vrefp, vrefn;
+        output dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb;
+        electrical ck, d, vrefp, vrefn, dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb;
+
+analog begin
+    V(dcp0) <+ 0;
+    V(dcp1) <+ 0;
+    V(dcp2) <+ 0;
+    V(dcp3) <+ 0;
+    V(dcp4) <+ 0;
+    V(dcn0) <+ 0;
+    V(dcn1) <+ 0;
+    V(dcn2) <+ 0;
+    V(dcn3) <+ 0;
+    V(dcn4) <+ 0;
+    V(cvinp) <+ 0;
+    V(cvinn) <+ 0;
+    V(en) <+ 0;
+    V(enb) <+ 0;
+end
+
+endmodule

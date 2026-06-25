@@ -1,0 +1,17 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "clocked_mux4_sampler.va"
+
+Vclks (clks 0) vsource type=pwl wave=[0 0.9 1n 0.9 1.05n 0 1.5n 0 1.55n 0.9 3n 0.9 3.05n 0 3.5n 0 3.55n 0.9 5n 0.9 5.05n 0 5.5n 0 5.55n 0.9 7n 0.9 7.05n 0 7.5n 0 7.55n 0.9]
+Vdsel0 (dsel0 0) vsource type=pwl wave=[0 0 2.8n 0 2.9n 0.9 4.8n 0.9 4.9n 0 6.8n 0 6.9n 0.9]
+Vdsel1 (dsel1 0) vsource type=pwl wave=[0 0 4.8n 0 4.9n 0.9]
+Vdin0 (din0 0) vsource dc=0.12
+Vdin1 (din1 0) vsource dc=0.34
+Vdin2 (din2 0) vsource dc=0.61
+Vdin3 (din3 0) vsource dc=0.83
+
+XDUT (dsel0 dsel1 din0 din1 din2 din3 clks dout) clocked_mux4_sampler
+
+tran tran stop=9n maxstep=20p
+save dsel0 dsel1 din0 din1 din2 din3 clks dout

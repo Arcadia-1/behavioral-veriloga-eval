@@ -1,0 +1,1 @@
+Implement `clocked_mux4_sampler` with select inputs `dsel0/dsel1`, data inputs `din0..din3`, sample clock `clks`, and output `dout`. On each falling clock edge, sample the selected input and hold it until the next falling edge.

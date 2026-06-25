@@ -1,0 +1,1 @@
+Implement `tdc_ideal_edge_delta` with inputs `inp`, `inn`, reset/sample input `samp`, and output `vout`. Reset trigger flags on each rising `samp`; after both `inp` and `inn` have risen, drive `(t_inp - t_inn) / fullrange`.

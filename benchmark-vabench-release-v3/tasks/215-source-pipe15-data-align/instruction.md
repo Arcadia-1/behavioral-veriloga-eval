@@ -1,0 +1,1 @@
+Implement `pipe15_data_align` with sample clock `samp`, scalar inputs `d0..d14`, and outputs `do0..do14`. Bits 14..11, 10..7, 6..3, and 2..0 have progressively shorter sample latency, matching the source pipeline aligner.

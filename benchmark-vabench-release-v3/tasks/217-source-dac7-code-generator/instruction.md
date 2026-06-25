@@ -1,0 +1,1 @@
+Implement `dac7_code_generator` with clock `clks` and outputs `din0..din6`. On each rising clock edge, increment an 8-bit counter and drive the inverted counter bits 7 down to 1 onto outputs 0 through 6.
