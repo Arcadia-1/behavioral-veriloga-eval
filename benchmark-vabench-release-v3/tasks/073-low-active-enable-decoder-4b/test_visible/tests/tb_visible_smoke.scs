@@ -3,11 +3,13 @@ global 0
 
 ahdl_include "low_active_enable_decoder_4b.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_en_n (en_n 0) vsource type=pulse val0=0.9 val1=0 period=4n delay=200p rise=50p fall=50p width=1.5n
+V_a0 (a0 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=400p rise=50p fall=50p width=1.5n
+V_a1 (a1 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=600p rise=50p fall=50p width=1.5n
+V_a2 (a2 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=800p rise=50p fall=50p width=1.5n
+V_a3 (a3 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=1000p rise=50p fall=50p width=1.5n
 
-XDUT (clk rst in out metric) low_active_enable_decoder_4b
+XDUT (en_n a0 a1 a2 a3 y0_n y1_n y2_n y3_n y4_n y5_n y6_n y7_n y8_n y9_n y10_n y11_n y12_n y13_n y14_n y15_n) low_active_enable_decoder_4b
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save en_n a0 a1 a2 a3 y0_n y1_n y2_n y3_n y4_n y5_n y6_n y7_n y8_n y9_n y10_n y11_n y12_n y13_n y14_n y15_n

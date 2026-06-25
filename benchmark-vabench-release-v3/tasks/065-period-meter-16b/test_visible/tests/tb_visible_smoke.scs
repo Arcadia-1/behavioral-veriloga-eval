@@ -3,11 +3,9 @@ global 0
 
 ahdl_include "period_meter_16b.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_clk_in (clk_in 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
 
-XDUT (clk rst in out metric) period_meter_16b
+XDUT (clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15) period_meter_16b
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15

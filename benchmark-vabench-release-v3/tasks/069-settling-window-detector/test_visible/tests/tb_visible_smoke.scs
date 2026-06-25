@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "settling_window_detector.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_vin (vin 0) vsource dc=0.55
+V_target (target 0) vsource dc=0.6
+V_tol (tol 0) vsource dc=0.08
 
-XDUT (clk rst in out metric) settling_window_detector
+XDUT (vin target tol settled t_code0 t_code1 t_code2 t_code3 t_code4 t_code5 t_code6 t_code7) settling_window_detector
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save vin target tol settled t_code0 t_code1 t_code2 t_code3 t_code4 t_code5 t_code6 t_code7

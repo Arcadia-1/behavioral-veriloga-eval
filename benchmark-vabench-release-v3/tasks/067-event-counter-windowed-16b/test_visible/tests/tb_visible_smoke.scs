@@ -3,11 +3,10 @@ global 0
 
 ahdl_include "event_counter_windowed_16b.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_gate (gate 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=200p rise=50p fall=50p width=1.5n
+V_event (event 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=400p rise=50p fall=50p width=1.5n
 
-XDUT (clk rst in out metric) event_counter_windowed_16b
+XDUT (gate event done count0 count1 count2 count3 count4 count5 count6 count7 count8 count9 count10 count11 count12 count13 count14 count15) event_counter_windowed_16b
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save gate event done count0 count1 count2 count3 count4 count5 count6 count7 count8 count9 count10 count11 count12 count13 count14 count15

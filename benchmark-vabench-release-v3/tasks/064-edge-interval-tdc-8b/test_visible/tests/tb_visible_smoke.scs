@@ -3,11 +3,10 @@ global 0
 
 ahdl_include "edge_interval_tdc_8b.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_start (start 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=300p rise=50p fall=50p width=600p
+V_stop (stop 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=1.4n rise=50p fall=50p width=600p
 
-XDUT (clk rst in out metric) edge_interval_tdc_8b
+XDUT (start stop valid code0 code1 code2 code3 code4 code5 code6 code7) edge_interval_tdc_8b
 
 tran tran stop=5n maxstep=100p
-save clk rst in
+save start stop valid code0 code1 code2 code3 code4 code5 code6 code7

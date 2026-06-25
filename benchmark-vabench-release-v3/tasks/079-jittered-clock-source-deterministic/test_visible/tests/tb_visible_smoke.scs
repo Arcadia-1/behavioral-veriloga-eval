@@ -3,11 +3,17 @@ global 0
 
 ahdl_include "deterministic_jittered_clock.va"
 
-V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_jitter_en (jitter_en 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=200p rise=50p fall=50p width=1.5n
+V_seed0 (seed0 0) vsource dc=0.9
+V_seed1 (seed1 0) vsource dc=0.0
+V_seed2 (seed2 0) vsource dc=0.9
+V_seed3 (seed3 0) vsource dc=0.0
+V_seed4 (seed4 0) vsource dc=0.9
+V_seed5 (seed5 0) vsource dc=0.0
+V_seed6 (seed6 0) vsource dc=0.9
+V_seed7 (seed7 0) vsource dc=0.0
 
-XDUT (clk rst in out metric) deterministic_jittered_clock
+XDUT (jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out) deterministic_jittered_clock
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out

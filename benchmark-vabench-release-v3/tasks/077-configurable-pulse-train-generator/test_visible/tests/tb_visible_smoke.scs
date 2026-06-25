@@ -4,10 +4,21 @@ global 0
 ahdl_include "configurable_pulse_train.va"
 
 V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_start (start 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=400p rise=50p fall=50p width=1.5n
+V_period0 (period0 0) vsource dc=0.0
+V_period1 (period1 0) vsource dc=0.9
+V_period2 (period2 0) vsource dc=0.0
+V_period3 (period3 0) vsource dc=0.9
+V_width0 (width0 0) vsource dc=0.0
+V_width1 (width1 0) vsource dc=0.9
+V_width2 (width2 0) vsource dc=0.0
+V_width3 (width3 0) vsource dc=0.9
+V_count0 (count0 0) vsource dc=0.0
+V_count1 (count1 0) vsource dc=0.9
+V_count2 (count2 0) vsource dc=0.0
+V_count3 (count3 0) vsource dc=0.9
 
-XDUT (clk rst in out metric) configurable_pulse_train
+XDUT (clk start period0 period1 period2 period3 width0 width1 width2 width3 count0 count1 count2 count3 pulse done) configurable_pulse_train
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save clk start period0 period1 period2 period3 width0 width1 width2 width3 count0 count1 count2 count3 pulse done

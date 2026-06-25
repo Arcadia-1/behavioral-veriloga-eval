@@ -4,10 +4,10 @@ global 0
 ahdl_include "ready_valid_latency_counter_12b.va"
 
 V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
-V_rst (rst 0) vsource type=pulse val0=0.9 val1=0 period=20n delay=1n rise=50p fall=50p width=18n
-V_in (in 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p fall=50p width=1.4n
+V_valid_i (valid_i 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=400p rise=50p fall=50p width=1.5n
+V_ready_i (ready_i 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=600p rise=50p fall=50p width=1.5n
 
-XDUT (clk rst in out metric) ready_valid_latency_counter_12b
+XDUT (clk valid_i ready_i done lat0 lat1 lat2 lat3 lat4 lat5 lat6 lat7 lat8 lat9 lat10 lat11) ready_valid_latency_counter_12b
 
-tran tran stop=5n maxstep=100p
-save clk rst in
+tran tran stop=8n maxstep=100p
+save clk valid_i ready_i done lat0 lat1 lat2 lat3 lat4 lat5 lat6 lat7 lat8 lat9 lat10 lat11
