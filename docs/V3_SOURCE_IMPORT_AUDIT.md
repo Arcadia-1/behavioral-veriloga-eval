@@ -48,6 +48,25 @@ Spectre was run with the SUI direct backend on `zhangz@101.6.68.147` in AX mode.
 No EVAS/Spectre behavioral discrepancy was observed in this pilot batch, so no
 EVAS issue was filed.
 
+
+## Certified Batch 2
+
+The second submitted batch adds six more tasks under the same SOP. One candidate (`117-source-bipolar-dac-4b-continuous`) initially failed EVAS semantic checking because the raw continuous ternary source did not update under EVAS as written; it was repaired into an event-updated equivalent before certification. Spectre and EVAS then agreed, so no EVAS issue was filed.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `116-source-clocked-comparator-reset-low` | `caiyizeng25/comp_ideal.va` | clocked comparator with falling-clock reset low | PASS | PASS | passed |
+| `117-source-bipolar-dac-4b-continuous` | `shigao/DAC4bit_1.va` | 4-bit bipolar DAC level reconstruction | PASS | PASS | passed |
+| `118-source-clocked-dac-restore-7b` | `wangxy/DAC_restore_7bit.va` | clocked 7-bit mid-rise DAC reconstruction | PASS | PASS | passed |
+| `119-source-crossing-pulse-detector` | `zhangm/crossing_detector.va` | pulse generation after either input crossing | PASS | PASS | passed |
+| `120-source-not-gate-voltage` | `wangx/not_gate.va` | voltage-domain inverter | PASS | PASS | passed |
+| `121-source-dff-reset-voltage` | `hexy/dff_rst.va` | DFF sample-on-clock with reset behavior | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch2-evas/summary.json`
+- `WORK/source-import-batch2-spectre/summary.json`
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

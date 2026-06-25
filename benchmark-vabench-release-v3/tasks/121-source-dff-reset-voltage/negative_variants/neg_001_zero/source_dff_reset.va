@@ -1,0 +1,17 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_dff_reset(vin_d, vclk, rst, vout_q, vout_qbar);
+    input vin_d, vclk, rst;
+    output vout_q, vout_qbar;
+    electrical vin_d, vclk, rst, vout_q, vout_qbar;
+    parameter real vlogic_high = 0.9;
+    parameter real vlogic_low = 0.0;
+    parameter real vtrans_clk = 0.45;
+    parameter real vtrans = 0.45;
+    parameter real tdel = 500p from [0:inf);
+    parameter real trise = 20p from (0:inf);
+    parameter real tfall = 20p from (0:inf);
+
+    // TODO: implement DFF sample-on-rising-clock and reset behavior.
+endmodule

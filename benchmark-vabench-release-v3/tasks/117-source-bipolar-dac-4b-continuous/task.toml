@@ -1,0 +1,20 @@
+id = "v3_117_source_bipolar_dac_4b_continuous"
+name = "117-source-bipolar-dac-4b-continuous"
+title = "Source Bipolar DAC 4b Continuous"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["bipolar_dac_4b_continuous.va"]

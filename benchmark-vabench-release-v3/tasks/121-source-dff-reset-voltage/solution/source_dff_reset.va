@@ -1,0 +1,37 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_dff_reset(vin_d, vclk, rst, vout_q, vout_qbar);
+    input vin_d, vclk, rst;
+    output vout_q, vout_qbar;
+    electrical vin_d, vclk, rst, vout_q, vout_qbar;
+    parameter real vlogic_high = 0.9;
+    parameter real vlogic_low = 0.0;
+    parameter real vtrans_clk = 0.45;
+    parameter real vtrans = 0.45;
+    parameter real tdel = 500p from [0:inf);
+    parameter real trise = 20p from (0:inf);
+    parameter real tfall = 20p from (0:inf);
+    integer x;
+    integer xb;
+
+    analog begin
+        @(initial_step) begin
+            x = 0;
+            xb = 1;
+        end
+
+        @(cross(V(vclk) - vtrans_clk, +1)) begin
+            x = V(vin_d) > vtrans;
+            xb = !(V(vin_d) > vtrans);
+        end
+
+        @(cross(V(rst) - vtrans_clk, +1)) begin
+            x = 0;
+            xb = 0;
+        end
+
+        V(vout_q) <+ transition(vlogic_high * x + vlogic_low * xb, tdel, trise, tfall);
+        V(vout_qbar) <+ transition(vlogic_high * xb + vlogic_low * x, tdel, trise, tfall);
+    end
+endmodule

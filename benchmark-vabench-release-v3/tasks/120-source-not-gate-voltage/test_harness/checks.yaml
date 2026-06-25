@@ -1,0 +1,20 @@
+syntax:
+  must_include:
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - inverts_voltage_logic
+    - stable_after_propagation_delay
+checker:
+  task_id: "v3_source_not_gate"
+parity:
+  required: true
+  tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

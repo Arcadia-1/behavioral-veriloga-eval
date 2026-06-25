@@ -1,0 +1,29 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_not_gate(vin, vout);
+    input vin;
+    output vout;
+    electrical vin, vout;
+    parameter real vlogic_high = 0.9;
+    parameter real vlogic_low = 0.0;
+    parameter real vtrans = 0.45;
+    parameter real tdel = 500p from [0:inf);
+    parameter real trise = 20p from (0:inf);
+    parameter real tfall = 20p from (0:inf);
+    integer logic_in;
+    real vout_val;
+
+    analog begin
+        @(initial_step) begin
+            logic_in = 0;
+        end
+
+        logic_in = V(vin) > vtrans;
+        @(cross(V(vin) - vtrans, +1)) logic_in = 1;
+        @(cross(V(vin) - vtrans, -1)) logic_in = 0;
+
+        vout_val = logic_in ? vlogic_low : vlogic_high;
+        V(vout) <+ transition(vout_val, tdel, trise, tfall);
+    end
+endmodule

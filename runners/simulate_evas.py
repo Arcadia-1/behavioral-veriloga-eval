@@ -6328,6 +6328,104 @@ def check_v3_source_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str
     return True, f"{detail} high_windows={high_samples} low_windows={low_samples}"
 
 
+def check_v3_source_clocked_comparator_reset_low(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/cmpck/vinp/vinn/dcmpn/dcmpp"
+    return _sample_many(
+        rows,
+        {
+            "dcmpp": [(7.0, 0.9), (17.0, 0.0), (27.0, 0.0), (37.0, 0.0)],
+            "dcmpn": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.9), (37.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vd3/vd2/vd1/vd0/vout"
+    expected = [(2.0, -0.9), (12.0, -0.3), (22.0, 0.3), (32.0, 0.9)]
+    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
+    if not ok:
+        return ok, detail
+    observed = [float(sample_signal_at(rows, "vout", t_ns * 1e-9) or 0.0) for t_ns, _ in expected]
+    monotonic = all(b > a + 0.45 for a, b in zip(observed, observed[1:]))
+    if not monotonic:
+        return False, f"bipolar_dac_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
+    return True, detail + " monotonic=True"
+
+
+def check_v3_source_clocked_dac_restore_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d0", "d1", "d2", "d3", "d4", "d5", "d6", "clk", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/d0/d1/d2/d3/d4/d5/d6/clk/vout"
+    expected = [
+        (6.0, -0.89296875),
+        (16.0, -0.30234375),
+        (26.0, 0.30234375),
+        (36.0, 0.89296875),
+    ]
+    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
+    if not ok:
+        return ok, detail
+    observed = [float(sample_signal_at(rows, "vout", t_ns * 1e-9) or 0.0) for t_ns, _ in expected]
+    monotonic = all(b > a + 0.45 for a, b in zip(observed, observed[1:]))
+    if not monotonic:
+        return False, f"dac7_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
+    return True, detail + " monotonic=True"
+
+
+def check_v3_source_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/sigin/sigout"
+    ok, detail = _sample_many(
+        rows,
+        {
+            "sigout": [
+                (4.0, 0.0),
+                (7.0, 0.9),
+                (12.0, 0.0),
+                (17.0, 0.9),
+                (22.0, 0.0),
+                (27.0, 0.9),
+                (32.0, 0.0),
+                (37.0, 0.9),
+                (42.0, 0.0),
+            ]
+        },
+        tol=0.08,
+    )
+    return ok, detail
+
+
+def check_v3_source_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/vout"
+    return _sample_many(
+        rows,
+        {"vout": [(2.0, 0.9), (7.0, 0.0), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9)]},
+        tol=0.08,
+    )
+
+
+def check_v3_source_dff_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin_d", "vclk", "rst", "vout_q", "vout_qbar"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin_d/vclk/rst/vout_q/vout_qbar"
+    return _sample_many(
+        rows,
+        {
+            "vout_q": [(6.0, 0.9), (16.0, 0.0), (26.0, 0.9), (29.0, 0.0), (36.0, 0.9)],
+            "vout_qbar": [(6.0, 0.0), (16.0, 0.9), (26.0, 0.0), (29.0, 0.0), (36.0, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -10192,6 +10290,12 @@ CHECKS = {
     "v3_source_clocked_dac_restore_4b": check_v3_source_clocked_dac_restore_4b,
     "v3_source_sample_hold": check_v3_source_sample_hold,
     "v3_source_single_shot": check_v3_source_single_shot,
+    "v3_source_clocked_comparator_reset_low": check_v3_source_clocked_comparator_reset_low,
+    "v3_source_bipolar_dac_4b_continuous": check_v3_source_bipolar_dac_4b_continuous,
+    "v3_source_clocked_dac_restore_7b": check_v3_source_clocked_dac_restore_7b,
+    "v3_source_crossing_pulse_detector": check_v3_source_crossing_pulse_detector,
+    "v3_source_not_gate": check_v3_source_not_gate,
+    "v3_source_dff_reset": check_v3_source_dff_reset,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -11446,6 +11550,12 @@ CHECKS["112-source-clocked-sar-comparator"] = check_v3_source_clocked_sar_compar
 CHECKS["113-source-clocked-dac-restore-4b"] = check_v3_source_clocked_dac_restore_4b
 CHECKS["114-source-sample-and-hold-ideal"] = check_v3_source_sample_hold
 CHECKS["115-source-single-shot-pulse"] = check_v3_source_single_shot
+CHECKS["116-source-clocked-comparator-reset-low"] = check_v3_source_clocked_comparator_reset_low
+CHECKS["117-source-bipolar-dac-4b-continuous"] = check_v3_source_bipolar_dac_4b_continuous
+CHECKS["118-source-clocked-dac-restore-7b"] = check_v3_source_clocked_dac_restore_7b
+CHECKS["119-source-crossing-pulse-detector"] = check_v3_source_crossing_pulse_detector
+CHECKS["120-source-not-gate-voltage"] = check_v3_source_not_gate
+CHECKS["121-source-dff-reset-voltage"] = check_v3_source_dff_reset
 
 
 RELEASE_FORM_CHECK_ALIASES = {

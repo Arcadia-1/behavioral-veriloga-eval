@@ -1,0 +1,11 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "source_not_gate.va"
+
+Vin (vin 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=20n width=10n rise=100p fall=100p
+
+XDUT (vin vout) source_not_gate
+
+tran tran stop=45n maxstep=50p
+save vin vout

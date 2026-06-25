@@ -1,0 +1,18 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "clocked_dac_restore_7b.va"
+
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=10n width=4n rise=100p fall=100p
+Vd6 (d6 0) vsource type=pwl wave=[0 0 14n 0 14.2n 0 24n 0.9 24.2n 0.9 34n 0.9 34.2n 0.9 60n 0.9]
+Vd5 (d5 0) vsource type=pwl wave=[0 0 14n 0.9 14.2n 0.9 24n 0 24.2n 0 34n 0.9 34.2n 0.9 60n 0.9]
+Vd4 (d4 0) vsource type=pwl wave=[0 0 14n 0 14.2n 0 24n 0.9 24.2n 0.9 34n 0.9 34.2n 0.9 60n 0.9]
+Vd3 (d3 0) vsource type=pwl wave=[0 0 14n 0.9 14.2n 0.9 24n 0 24.2n 0 34n 0.9 34.2n 0.9 60n 0.9]
+Vd2 (d2 0) vsource type=pwl wave=[0 0 14n 0 14.2n 0 24n 0.9 24.2n 0.9 34n 0.9 34.2n 0.9 60n 0.9]
+Vd1 (d1 0) vsource type=pwl wave=[0 0 14n 0.9 14.2n 0.9 24n 0 24.2n 0 34n 0.9 34.2n 0.9 60n 0.9]
+Vd0 (d0 0) vsource type=pwl wave=[0 0 14n 0 14.2n 0 24n 0.9 24.2n 0.9 34n 0.9 34.2n 0.9 60n 0.9]
+
+XDUT (d1 d2 d3 d4 d5 d6 d0 clk vout) clocked_dac_restore_7b
+
+tran tran stop=50n maxstep=50p
+save d0 d1 d2 d3 d4 d5 d6 clk vout
