@@ -1,0 +1,20 @@
+id = "v3_177_source_sar_5bit_serial_decoder"
+name = "177-source-sar-5bit-serial-decoder"
+title = "Source SAR 5bit Serial Decoder"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["sar_5bit_serial_decoder.va"]

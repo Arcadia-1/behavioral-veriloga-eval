@@ -1,0 +1,9 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "control_word_encoder_7b.va"
+
+XDUT (d0 d1 d2 d3 d4 d5 d6) control_word_encoder_7b ctrl=85
+
+tran tran stop=20n maxstep=20p
+save d0 d1 d2 d3 d4 d5 d6

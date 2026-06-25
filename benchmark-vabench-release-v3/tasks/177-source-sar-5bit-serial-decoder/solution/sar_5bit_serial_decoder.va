@@ -1,0 +1,39 @@
+`include "disciplines.vams"
+
+module sar_5bit_serial_decoder(din, clks, ready, dout);
+input din, clks, ready;
+output dout;
+electrical din, clks, ready, dout;
+
+parameter real vth = 0.55;
+parameter integer nbit = 5;
+real sum, counter, sumresult;
+
+analog begin
+    @(initial_step) begin
+        counter = nbit - 1;
+        sum = 0;
+        sumresult = 0;
+    end
+
+    @(cross(V(clks) - vth, +1)) begin
+        sumresult = sum / 31.0 - 0.5;
+        counter = nbit - 1;
+        sum = 0;
+    end
+
+    @(cross(V(ready) - vth, +1)) begin
+        if (V(din) > vth) begin
+            if (counter == 4) sum = sum + 16;
+            else if (counter == 3) sum = sum + 8;
+            else if (counter == 2) sum = sum + 4;
+            else if (counter == 1) sum = sum + 2;
+            else if (counter == 0) sum = sum + 1;
+        end
+        counter = counter - 1;
+    end
+
+    V(dout) <+ transition(sumresult, 1p, 1p, 1p);
+end
+
+endmodule

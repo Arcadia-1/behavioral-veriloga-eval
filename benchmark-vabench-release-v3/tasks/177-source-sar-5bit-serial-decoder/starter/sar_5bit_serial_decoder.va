@@ -1,0 +1,12 @@
+`include "disciplines.vams"
+
+module sar_5bit_serial_decoder(din, clks, ready, dout);
+input din, clks, ready;
+output dout;
+electrical din, clks, ready, dout;
+
+analog begin
+    V(dout) <+ 0;
+end
+
+endmodule

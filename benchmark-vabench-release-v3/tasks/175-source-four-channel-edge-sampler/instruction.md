@@ -1,0 +1,1 @@
+Implement `four_channel_edge_sampler` with port order `clk, vin0, vin1, vin2, vin3, vout0, vout1, vout2, vout3`. On the selected clock edge, sample all four analog inputs and hold them on the outputs.

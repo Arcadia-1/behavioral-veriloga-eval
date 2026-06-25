@@ -1,0 +1,20 @@
+id = "v3_174_source_control_word_encoder_7b"
+name = "174-source-control-word-encoder-7b"
+title = "Source Control Word Encoder 7b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["control_word_encoder_7b.va"]

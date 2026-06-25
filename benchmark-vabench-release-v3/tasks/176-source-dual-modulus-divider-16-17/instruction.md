@@ -1,0 +1,1 @@
+Implement `dual_modulus_divider_16_17` with port order `fin, mc, fout`. Count rising `fin` edges, divide by 16 when `mc` is low and by 17 when `mc` is high, and produce the same high/low marker behavior as the source model.

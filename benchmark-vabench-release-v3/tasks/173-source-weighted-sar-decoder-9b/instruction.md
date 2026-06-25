@@ -1,0 +1,1 @@
+Implement `weighted_sar_decoder_9b` with scalar inputs `d0..d8` and outputs `aout7b`, `aout7b5`, `aout8b`. Convert thresholded bipolar bits into the three weighted analog summary voltages used by the source decoder.

@@ -7207,6 +7207,100 @@ def check_v3_source_flash_thermometer_centered_sum(rows: list[dict[str, float]])
     )
 
 
+def check_v3_source_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "aout7b", "aout7b5", "aout8b"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/aout7b/aout7b5/aout8b"
+    return _sample_many(
+        rows,
+        {
+            "aout7b": [(5.0, -0.4963235), (15.0, 0.1654412), (25.0, -0.1654412), (35.0, 0.4963235)],
+            "aout7b5": [(5.0, -0.4963235), (15.0, 0.1691176), (25.0, -0.1654412), (35.0, 0.4963235)],
+            "aout8b": [(5.0, -0.4981618), (15.0, 0.1672794), (25.0, -0.1636029), (35.0, 0.4981618)],
+        },
+        tol=0.01,
+    )
+
+
+def check_v3_source_control_word_encoder_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d0", "d1", "d2", "d3", "d4", "d5", "d6"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing encoder output signals"
+    return _sample_many(
+        rows,
+        {
+            "d0": [(5.0, 0.9), (15.0, 0.9)],
+            "d1": [(5.0, 0.0), (15.0, 0.0)],
+            "d2": [(5.0, 0.9), (15.0, 0.9)],
+            "d3": [(5.0, 0.0), (15.0, 0.0)],
+            "d4": [(5.0, 0.9), (15.0, 0.9)],
+            "d5": [(5.0, 0.0), (15.0, 0.0)],
+            "d6": [(5.0, 0.9), (15.0, 0.9)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_four_channel_edge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vin0", "vin1", "vin2", "vin3", "vout0", "vout1", "vout2", "vout3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sampler input/output signals"
+    return _sample_many(
+        rows,
+        {
+            "vout0": [(4.0, 0.1), (14.0, 0.2), (24.0, 0.3), (34.0, 0.4)],
+            "vout1": [(4.0, 0.2), (14.0, 0.4), (24.0, 0.6), (34.0, 0.8)],
+            "vout2": [(4.0, 0.3), (14.0, 0.6), (24.0, 0.9), (34.0, 0.1)],
+            "vout3": [(4.0, 0.4), (14.0, 0.8), (24.0, 0.2), (34.0, 0.6)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_source_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "fin", "mc", "fout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/fin/mc/fout"
+    return _sample_many(
+        rows,
+        {
+            "fout": [
+                (30.0, 0.0),
+                (32.0, 1.0),
+                (48.0, 1.0),
+                (50.0, 0.0),
+                (64.0, 0.0),
+                (66.0, 1.0),
+                (82.0, 1.0),
+                (84.0, 0.0),
+            ]
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din", "clks", "ready", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/din/clks/ready/dout"
+    return _sample_many(
+        rows,
+        {"dout": [(3.0, -0.5), (17.0, 0.2096774), (33.0, -0.2096774)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clks", "dout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/clks/dout"
+    return _sample_many(
+        rows,
+        {"dout": [(4.0, -0.5), (14.0, -0.1666667), (24.0, 0.1666667), (34.0, 0.5)]},
+        tol=0.02,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -11128,6 +11222,12 @@ CHECKS = {
     "v3_source_clocked_four_input_mux": check_v3_source_clocked_four_input_mux,
     "v3_source_divide_by_eight_clock": check_v3_source_divide_by_eight_clock,
     "v3_source_flash_thermometer_centered_sum": check_v3_source_flash_thermometer_centered_sum,
+    "v3_source_weighted_sar_decoder_9b": check_v3_source_weighted_sar_decoder_9b,
+    "v3_source_control_word_encoder_7b": check_v3_source_control_word_encoder_7b,
+    "v3_source_four_channel_edge_sampler": check_v3_source_four_channel_edge_sampler,
+    "v3_source_dual_modulus_divider_16_17": check_v3_source_dual_modulus_divider_16_17,
+    "v3_source_sar_5bit_serial_decoder": check_v3_source_sar_5bit_serial_decoder,
+    "v3_source_cyclic_decoder_12bit": check_v3_source_cyclic_decoder_12bit,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -12414,6 +12514,12 @@ CHECKS["169-source-two-period-sample-delay"] = check_v3_source_two_period_sample
 CHECKS["170-source-clocked-four-input-mux"] = check_v3_source_clocked_four_input_mux
 CHECKS["171-source-divide-by-eight-clock"] = check_v3_source_divide_by_eight_clock
 CHECKS["172-source-flash-thermometer-centered-sum"] = check_v3_source_flash_thermometer_centered_sum
+CHECKS["173-source-weighted-sar-decoder-9b"] = check_v3_source_weighted_sar_decoder_9b
+CHECKS["174-source-control-word-encoder-7b"] = check_v3_source_control_word_encoder_7b
+CHECKS["175-source-four-channel-edge-sampler"] = check_v3_source_four_channel_edge_sampler
+CHECKS["176-source-dual-modulus-divider-16-17"] = check_v3_source_dual_modulus_divider_16_17
+CHECKS["177-source-sar-5bit-serial-decoder"] = check_v3_source_sar_5bit_serial_decoder
+CHECKS["178-source-cyclic-decoder-12bit"] = check_v3_source_cyclic_decoder_12bit
 
 
 RELEASE_FORM_CHECK_ALIASES = {

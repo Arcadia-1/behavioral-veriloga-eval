@@ -1155,6 +1155,12 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_clocked_four_input_mux",
     "v3_source_divide_by_eight_clock",
     "v3_source_flash_thermometer_centered_sum",
+    "v3_source_weighted_sar_decoder_9b",
+    "v3_source_control_word_encoder_7b",
+    "v3_source_four_channel_edge_sampler",
+    "v3_source_dual_modulus_divider_16_17",
+    "v3_source_sar_5bit_serial_decoder",
+    "v3_source_cyclic_decoder_12bit",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1167,6 +1173,12 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "170-source-clocked-four-input-mux",
     "171-source-divide-by-eight-clock",
     "172-source-flash-thermometer-centered-sum",
+    "173-source-weighted-sar-decoder-9b",
+    "174-source-control-word-encoder-7b",
+    "175-source-four-channel-edge-sampler",
+    "176-source-dual-modulus-divider-16-17",
+    "177-source-sar-5bit-serial-decoder",
+    "178-source-cyclic-decoder-12bit",
 }
 
 

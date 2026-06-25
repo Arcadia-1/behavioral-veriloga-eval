@@ -292,6 +292,38 @@ Batch timings:
   with 6-way parallel submission after explicitly clearing
   `VAEVAS_SUI_PROXY_JUMP` for the direct `zhangz@101.6.68.147` host.
 
+## Certified Batch 11
+
+The eleventh submitted batch adds six converter/control source-import tasks.
+This batch deliberately focuses on reusable reconstruction and sampled-state
+contracts rather than more primitive gates: weighted SAR decode, deterministic
+control-word generation, multi-lane edge sampling, dual-modulus clock division,
+serial SAR result accumulation, and cyclic ADC code reconstruction. Bus-like
+source modules are scalarized where needed, but the evaluation remains tied to
+the original stable behavior.
+
+| Task | Source | Scenario | EVAS | Spectre | Parity |
+|---|---|---|---|---|---|
+| `173-source-weighted-sar-decoder-9b` | `shigao/V_DECODER_2B.va` | weighted SAR code reconstruction across 7-bit, 7.5-bit, and 8-bit views | PASS | PASS | passed |
+| `174-source-control-word-encoder-7b` | `shigao/V_ENCODER_7B.va` | deterministic voltage-coded trim/config word generation | PASS | PASS | passed |
+| `175-source-four-channel-edge-sampler` | `tangxy/SINGLE_EDGE_SAMPLER.va` | multi-lane edge-triggered analog sample capture | PASS | PASS | passed |
+| `176-source-dual-modulus-divider-16-17` | `zengsy/DIV_16_17_VA.va` | dual-modulus PLL divider marker behavior | PASS | PASS | passed |
+| `177-source-sar-5bit-serial-decoder` | `zhangm/SAR_5bit_decoder.va` | serial SAR decision accumulation and normalized result output | PASS | PASS | passed |
+| `178-source-cyclic-decoder-12bit` | `zhangm/ADC12bit_decoder.va` | cyclic ADC bit-vector reconstruction into normalized analog code | PASS | PASS | passed |
+
+Evidence artifacts:
+
+- `WORK/source-import-batch11-evas/summary.json`
+- `WORK/source-import-batch11-spectre/summary.json`
+
+Batch timings:
+
+- Visible smoke: 6/6 PASS.
+- EVAS hidden: 6/6 PASS, wallclock 4.479 s.
+- Spectre AX hidden plus EVAS/Spectre parity: 6/6 passed, wallclock 12.014 s
+  with 6-way parallel submission and `VAEVAS_SUI_PROXY_JUMP` cleared for the
+  direct host.
+
 ## Next Expansion
 
 The next batch should extend the same SOP to SAR/CDAC/comparator/clock modules

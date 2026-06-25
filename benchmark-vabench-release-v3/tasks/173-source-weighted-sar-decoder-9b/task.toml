@@ -1,0 +1,20 @@
+id = "v3_173_source_weighted_sar_decoder_9b"
+name = "173-source-weighted-sar-decoder-9b"
+title = "Source Weighted SAR Decoder 9b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["weighted_sar_decoder_9b.va"]
