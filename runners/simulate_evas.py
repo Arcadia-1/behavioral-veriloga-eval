@@ -8502,6 +8502,64 @@ def check_v3_source_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_source_sum5_signed_sar_weight(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "out", *{f"d{i}" for i in range(1, 6)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sum5 signed sar weight signals"
+    return _sample_many(
+        rows,
+        {"out": [(0.5, -3.23125), (1.5, -0.34375), (2.5, 0.06875), (3.5, 1.03125)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vout", "gnd", *{f"d{i}" for i in range(4)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing lt readout sar4 signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, 0.0), (1.5, 0.5625), (2.5, 1.125), (3.5, 1.6875)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sh", "aout", *{f"d{i}" for i in range(4)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing tool 4bit sar signed dac signals"
+    return _sample_many(
+        rows,
+        {"aout": [(0.5, -1.6875), (1.5, 0.5625), (2.5, -0.5625), (3.5, 1.6875)]},
+        tol=0.025,
+    )
+
+
+def check_v3_source_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dac4bit small swing signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.5, -0.02), (1.5, -0.0066667), (2.5, 0.0066667), (3.5, 0.02)]},
+        tol=0.0015,
+    )
+
+
+def check_v3_source_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing comparator reset low 1p8 signals"
+    return _sample_many(
+        rows,
+        {
+            "dcmpp": [(0.2, 0.0), (0.55, 1.8), (0.95, 0.0), (1.55, 0.0), (1.95, 0.0), (2.55, 1.8)],
+            "dcmpn": [(0.2, 0.0), (0.55, 0.0), (0.95, 0.0), (1.55, 1.8), (1.95, 0.0), (2.55, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -13859,6 +13917,16 @@ CHECKS["249-source-dac-restore-4bit-clocked"] = check_v3_source_dac_restore_4bit
 CHECKS["250-source-dac-restore-7bit-clocked"] = check_v3_source_dac_restore_7bit_clocked
 CHECKS["251-source-dac-restore-6bit-1p8"] = check_v3_source_dac_restore_6bit_1p8
 CHECKS["252-source-sample-hold-5v-clock"] = check_v3_source_sample_hold_5v_clock
+CHECKS["v3_source_sum5_signed_sar_weight"] = check_v3_source_sum5_signed_sar_weight
+CHECKS["v3_source_lt_readout_sar4"] = check_v3_source_lt_readout_sar4
+CHECKS["v3_source_tool_4bit_sar_signed_dac"] = check_v3_source_tool_4bit_sar_signed_dac
+CHECKS["v3_source_dac4bit_small_swing"] = check_v3_source_dac4bit_small_swing
+CHECKS["v3_source_comparator_reset_low_1p8"] = check_v3_source_comparator_reset_low_1p8
+CHECKS["253-source-sum5-signed-sar-weight"] = check_v3_source_sum5_signed_sar_weight
+CHECKS["254-source-lt-readout-sar4"] = check_v3_source_lt_readout_sar4
+CHECKS["255-source-tool-4bit-sar-signed-dac"] = check_v3_source_tool_4bit_sar_signed_dac
+CHECKS["256-source-dac4bit-small-swing"] = check_v3_source_dac4bit_small_swing
+CHECKS["257-source-comparator-reset-low-1p8"] = check_v3_source_comparator_reset_low_1p8
 
 
 RELEASE_FORM_CHECK_ALIASES = {

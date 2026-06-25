@@ -1235,6 +1235,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_dac_restore_7bit_clocked",
     "v3_source_dac_restore_6bit_1p8",
     "v3_source_sample_hold_5v_clock",
+    "v3_source_sum5_signed_sar_weight",
+    "v3_source_lt_readout_sar4",
+    "v3_source_tool_4bit_sar_signed_dac",
+    "v3_source_dac4bit_small_swing",
+    "v3_source_comparator_reset_low_1p8",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1304,6 +1309,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "250-source-dac-restore-7bit-clocked",
     "251-source-dac-restore-6bit-1p8",
     "252-source-sample-hold-5v-clock",
+    "253-source-sum5-signed-sar-weight",
+    "254-source-lt-readout-sar4",
+    "255-source-tool-4bit-sar-signed-dac",
+    "256-source-dac4bit-small-swing",
+    "257-source-comparator-reset-low-1p8",
 }
 
 

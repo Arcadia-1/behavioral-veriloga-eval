@@ -1,0 +1,9 @@
+`include "disciplines.vams"
+module dac4bit_small_swing(vd3, vd2, vd1, vd0, vout);
+input vd3, vd2, vd1, vd0;
+output vout;
+electrical vd3, vd2, vd1, vd0, vout;
+analog begin
+    V(vout) <+ 0.0;
+end
+endmodule
