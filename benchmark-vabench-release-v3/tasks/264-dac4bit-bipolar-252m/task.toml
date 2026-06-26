@@ -1,0 +1,20 @@
+id = "v3_264_source_dac4bit_bipolar_252m"
+name = "264-dac4bit-bipolar-252m"
+title = "DAC4bit Bipolar 252m"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dac4bit_bipolar_252m.va"]

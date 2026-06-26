@@ -1,0 +1,20 @@
+id = "v3_222_source_sarfend_logic_4b"
+name = "222-sarfend-logic-4b"
+title = "SARFEND Logic 4b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["sarfend_logic_4b.va"]

@@ -1,0 +1,20 @@
+id = "v3_276_source_accum3_pulse"
+name = "276-accum3-pulse"
+title = "Accum3 Pulse"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "clock_timing"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["accum3_pulse.va"]

@@ -1,0 +1,20 @@
+id = "v3_159_source_variable_gain_differential_amplifier"
+name = "159-variable-gain-differential-amplifier"
+title = "Variable Gain Differential Amplifier"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "mixed_signal"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["variable_gain_differential_amplifier.va"]

@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_latched_comparator_delay",
+  "evidence": {
+    "evas": "WORK/source-import-batch3-evas/126-latched-comparator-delay",
+    "spectre": "WORK/source-import-batch3-spectre/126-latched-comparator-delay"
+  }
+}

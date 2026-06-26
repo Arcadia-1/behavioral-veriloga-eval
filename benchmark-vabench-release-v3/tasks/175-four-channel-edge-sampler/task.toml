@@ -1,0 +1,20 @@
+id = "v3_175_source_four_channel_edge_sampler"
+name = "175-four-channel-edge-sampler"
+title = "Four Channel Edge Sampler"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "mixed_signal"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["four_channel_edge_sampler.va"]

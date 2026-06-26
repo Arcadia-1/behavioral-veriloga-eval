@@ -1,0 +1,37 @@
+{
+  "task": "114-sample-and-hold-ideal",
+  "form": "dut",
+  "status": "source_import_certified",
+  "provenance": "wangx/sah_ideal.va",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/source_sample_hold.va"
+    ],
+    "public_smoke": {
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_source_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/source_sample_hold.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "certification": {
+    "status": "certified",
+    "scope": "Visible smoke passed; EVAS hidden gold passed; Spectre AX hidden gold passed; EVAS/Spectre parity passed on stable-window checker.",
+    "evidence": {
+      "evas_summary": "WORK/source-import-pilot-evas/summary.json",
+      "spectre_summary": "WORK/source-import-pilot-spectre/summary.json",
+      "spectre_backend": "sui-direct zhangz@101.6.68.147",
+      "spectre_mode": "ax"
+    }
+  }
+}

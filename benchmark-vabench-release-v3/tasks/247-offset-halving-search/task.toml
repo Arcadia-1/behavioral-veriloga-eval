@@ -1,0 +1,20 @@
+id = "v3_247_source_offset_halving_search"
+name = "247-offset-halving-search"
+title = "Offset Halving Search"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "calibration"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["offset_halving_search.va"]

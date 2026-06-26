@@ -1,0 +1,20 @@
+id = "v3_237_source_qtz_differential_2level"
+name = "237-qtz-differential-2level"
+title = "QTZ Differential 2level"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "quantizer"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["qtz_differential_2level.va"]

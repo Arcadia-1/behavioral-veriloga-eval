@@ -1,0 +1,20 @@
+id = "v3_253_source_sum5_signed_sar_weight"
+name = "253-sum5-signed-sar-weight"
+title = "SUM5 Signed SAR Weight"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["sum5_signed_sar_weight.va"]

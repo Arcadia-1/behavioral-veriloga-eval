@@ -21,8 +21,8 @@ meet these minimum conditions:
 
 ## Completed Pilot: 288-300
 
-Tasks `288-source-absolute-value` through
-`300-source-pfd-active-low-reset` were used as the first source-series repair
+Tasks `288-absolute-value` through
+`300-pfd-active-low-reset` were used as the first source-series repair
 pilot.
 
 Changes made:
@@ -41,14 +41,14 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 112-127
 
-Tasks `112-source-clocked-sar-comparator` through
-`127-source-sar-weighted-sum` were repaired as the second source-series batch.
+Tasks `112-clocked-sar-comparator` through
+`127-sar-weighted-sum` were repaired as the second source-series batch.
 
 Changes made:
 
 - each task now has four negative variants: the original `neg_001_zero` plus
   three targeted behavior mutations;
-- task `123-source-start-gated-offset-search` gold was corrected so START is
+- task `123-start-gated-offset-search` gold was corrected so START is
   handled as an explicit enable transition instead of a continuous reset;
 - source checker aliases now cover the normal `task.toml` ids for this batch.
 
@@ -60,8 +60,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 176-191
 
-Tasks `176-source-dual-modulus-divider-16-17` through
-`191-source-dac-8bit-ideal-scalar` were repaired as the sixth source-series
+Tasks `176-dual-modulus-divider-16-17` through
+`191-dac-8bit-ideal-scalar` were repaired as the sixth source-series
 batch.
 
 Changes made:
@@ -84,8 +84,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 192-207
 
-Tasks `192-source-flash-data-align-pipeline` through
-`207-source-iterative-isar-dac` were repaired as the seventh source-series
+Tasks `192-flash-data-align-pipeline` through
+`207-iterative-isar-dac` were repaired as the seventh source-series
 batch.
 
 Changes made:
@@ -108,8 +108,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 208-223
 
-Tasks `208-source-offset-bisection-driver` through
-`223-source-adc-sample-clock-sequencer` were repaired as the eighth
+Tasks `208-offset-bisection-driver` through
+`223-adc-sample-clock-sequencer` were repaired as the eighth
 source-series batch.
 
 Changes made:
@@ -134,8 +134,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 224-239
 
-Tasks `224-source-pipeline-counter-onehot` through
-`239-source-l2-cdac-4b-switch` were repaired as the ninth source-series batch.
+Tasks `224-pipeline-counter-onehot` through
+`239-l2-cdac-4b-switch` were repaired as the ninth source-series batch.
 
 Changes made:
 
@@ -159,8 +159,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 240-255
 
-Tasks `240-source-cdac-monodown-7b` through
-`255-source-tool-4bit-sar-signed-dac` were repaired as the tenth source-series
+Tasks `240-cdac-monodown-7b` through
+`255-tool-4bit-sar-signed-dac` were repaired as the tenth source-series
 batch.
 
 Changes made:
@@ -184,8 +184,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 160-175
 
-Tasks `160-source-voltage-controlled-gain-amplifier` through
-`175-source-four-channel-edge-sampler` were repaired as the fifth source-series
+Tasks `160-voltage-controlled-gain-amplifier` through
+`175-four-channel-edge-sampler` were repaired as the fifth source-series
 batch.
 
 Changes made:
@@ -208,8 +208,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 144-159
 
-Tasks `144-source-differential-deadband` through
-`159-source-variable-gain-differential-amplifier` were repaired as the fourth
+Tasks `144-differential-deadband` through
+`159-variable-gain-differential-amplifier` were repaired as the fourth
 source-series batch.
 
 Changes made:
@@ -231,8 +231,8 @@ EVAS 0.4.5 local verification:
 
 ## Completed Batch: 128-143
 
-Tasks `128-source-two-input-and-gate` through
-`143-source-deadband-window` were repaired as the third source-series batch.
+Tasks `128-two-input-and-gate` through
+`143-deadband-window` were repaired as the third source-series batch.
 
 Changes made:
 

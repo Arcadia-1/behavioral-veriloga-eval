@@ -1,0 +1,20 @@
+id = "v3_179_source_flash_8level_sum_delay"
+name = "179-flash-8level-sum-delay"
+title = "Flash 8level Sum Delay"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["flash_8level_sum_delay.va"]

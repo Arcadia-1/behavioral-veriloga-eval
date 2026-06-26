@@ -1,0 +1,20 @@
+id = "v3_225_source_cdac_bidirect_residue"
+name = "225-cdac-bidirect-residue"
+title = "CDAC Bidirect Residue"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "dac"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["cdac_bidirect_residue.va"]

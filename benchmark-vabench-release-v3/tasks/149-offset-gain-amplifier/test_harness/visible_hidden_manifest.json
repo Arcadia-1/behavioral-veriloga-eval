@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_offset_gain_amplifier",
+  "evidence": {
+    "evas": "WORK/source-import-batch7-evas/149-offset-gain-amplifier",
+    "spectre": "WORK/source-import-batch7-spectre/149-offset-gain-amplifier"
+  }
+}

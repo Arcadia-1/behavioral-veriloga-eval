@@ -1,0 +1,13 @@
+{
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_source_sar_cdac_residue",
+  "evidence": {
+    "evas": "WORK/source-import-batch4-evas/136-sar-cdac-residue",
+    "spectre": "WORK/source-import-batch4-spectre/136-sar-cdac-residue"
+  }
+}

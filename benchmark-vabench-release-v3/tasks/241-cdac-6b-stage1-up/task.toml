@@ -1,0 +1,20 @@
+id = "v3_241_source_cdac_6b_stage1_up"
+name = "241-cdac-6b-stage1-up"
+title = "CDAC 6b Stage1 Up"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["cdac_6b_stage1_up.va"]

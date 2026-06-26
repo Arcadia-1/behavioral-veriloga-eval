@@ -1,0 +1,20 @@
+id = "v3_242_source_adc_zoom_timing_sequencer"
+name = "242-adc-zoom-timing-sequencer"
+title = "ADC Zoom Timing Sequencer"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "clock_timing"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["adc_zoom_timing_sequencer.va"]

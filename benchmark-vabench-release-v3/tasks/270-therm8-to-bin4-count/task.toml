@@ -1,0 +1,20 @@
+id = "v3_270_source_therm8_to_bin4_count"
+name = "270-therm8-to-bin4-count"
+title = "Therm8 To Bin4 Count"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["therm8_to_bin4_count.va"]

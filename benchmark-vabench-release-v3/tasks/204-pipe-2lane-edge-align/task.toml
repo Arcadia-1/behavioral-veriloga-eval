@@ -1,0 +1,20 @@
+id = "v3_204_source_pipe_2lane_edge_align"
+name = "204-pipe-2lane-edge-align"
+title = "Pipe 2lane Edge Align"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["pipe_2lane_edge_align.va"]

@@ -1,0 +1,20 @@
+id = "v3_265_source_bin2ther_2b"
+name = "265-bin2ther-2b"
+title = "Bin2ther 2b"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "digital_logic"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["bin2ther_2b.va"]

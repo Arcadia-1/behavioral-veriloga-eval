@@ -1,0 +1,20 @@
+id = "v3_257_source_comparator_reset_low_1p8"
+name = "257-comparator-reset-low-1p8"
+title = "Comparator Reset Low 1p8"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "comparator"
+level = "L2"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["comparator_reset_low_1p8.va"]
