@@ -17,10 +17,21 @@ integer sign = 1;
 integer enable = 0;
 
 analog begin
-    @(cross(V(START) - vstart_th, +1))
-        enable = 1;
+    @(initial_step) begin
+        enable = 0;
+        vin = 0;
+        step = 20m;
+        state = 1;
+    end
 
-    if (V(START) < vstart_th) begin
+    @(cross(V(START) - vstart_th, +1)) begin
+        enable = 1;
+        vin = 0;
+        step = 20m;
+        state = 1;
+    end
+
+    @(cross(V(START) - vstart_th, -1)) begin
         enable = 0;
         vin = 0;
         step = 20m;
