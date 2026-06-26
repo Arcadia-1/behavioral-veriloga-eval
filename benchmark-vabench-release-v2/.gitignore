@@ -1,5 +1,0 @@
-# Generated model-smoke outputs are disposable evidence artifacts.
-# Keep compact Markdown/JSON reports under reports/, but do not commit raw
-# prompts, responses, candidate materializations, simulator logs, waveforms,
-# or per-run scoring directories by default.
-/reports/model_smoke/*/
