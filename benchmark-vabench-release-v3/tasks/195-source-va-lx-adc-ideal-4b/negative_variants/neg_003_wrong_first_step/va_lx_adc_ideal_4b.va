@@ -1,0 +1,42 @@
+`include "disciplines.vams"
+
+module va_lx_adc_ideal_4b(vin, clks, d1, d2, d3, d4);
+input vin, clks;
+output d1, d2, d3, d4;
+electrical vin, clks, d1, d2, d3, d4;
+
+parameter real vdd = 1;
+real vsampled, vth_cmp;
+integer dout1, dout2, dout3, dout4;
+
+analog begin
+    @(initial_step or cross(V(clks) - vdd / 2.0, +1)) begin
+        dout1 = 0;
+        dout2 = 0;
+        dout3 = 0;
+        dout4 = 0;
+    end
+
+    if (V(clks) > vdd / 2.0) begin
+        vsampled = V(vin);
+    end
+
+    @(cross(V(clks) - vdd / 2.0, -1)) begin
+        vth_cmp = vdd / 2.0;
+        if (vsampled > vth_cmp) begin dout4 = 1; vth_cmp = vth_cmp + vdd / 8.0; end
+        else begin dout4 = 0; vth_cmp = vth_cmp - vdd / 8.0; end
+        if (vsampled > vth_cmp) begin dout3 = 1; vth_cmp = vth_cmp + vdd / 8.0; end
+        else begin dout3 = 0; vth_cmp = vth_cmp - vdd / 8.0; end
+        if (vsampled > vth_cmp) begin dout2 = 1; vth_cmp = vth_cmp + vdd / 16.0; end
+        else begin dout2 = 0; vth_cmp = vth_cmp - vdd / 16.0; end
+        if (vsampled > vth_cmp) begin dout1 = 1; vth_cmp = vth_cmp + vdd / 32.0; end
+        else begin dout1 = 0; vth_cmp = vth_cmp - vdd / 32.0; end
+    end
+
+    V(d1) <+ transition(dout1, 0, 20p, 20p);
+    V(d2) <+ transition(dout2, 0, 20p, 20p);
+    V(d3) <+ transition(dout3, 0, 20p, 20p);
+    V(d4) <+ transition(dout4, 0, 20p, 20p);
+end
+
+endmodule

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/cyclic_decoder_10b.va"
+    },
+    {
+      "id": "neg_002_wrong_denominator",
+      "description": "Halves the decoded amplitude before applying the midscale offset.",
+      "path": "negative_variants/neg_002_wrong_denominator/cyclic_decoder_10b.va"
+    },
+    {
+      "id": "neg_003_omit_dn_half_weight",
+      "description": "Ignores the dn half-weight contribution for ternary-ready codes.",
+      "path": "negative_variants/neg_003_omit_dn_half_weight/cyclic_decoder_10b.va"
+    },
+    {
+      "id": "neg_004_missing_midscale_offset",
+      "description": "Omits the required minus-0.5 output centering.",
+      "path": "negative_variants/neg_004_missing_midscale_offset/cyclic_decoder_10b.va"
     }
   ]
 }

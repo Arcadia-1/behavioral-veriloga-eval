@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/va_lx_adc_ideal_4b.va"
+    },
+    {
+      "id": "neg_002_invert_msb_decision",
+      "description": "Inverts the first binary-search comparison, corrupting the MSB and later thresholds.",
+      "path": "negative_variants/neg_002_invert_msb_decision/va_lx_adc_ideal_4b.va"
+    },
+    {
+      "id": "neg_003_wrong_first_step",
+      "description": "Uses a one-eighth first threshold update instead of the required one-quarter step.",
+      "path": "negative_variants/neg_003_wrong_first_step/va_lx_adc_ideal_4b.va"
+    },
+    {
+      "id": "neg_004_swap_output_order",
+      "description": "Reverses the emitted bit order after conversion.",
+      "path": "negative_variants/neg_004_swap_output_order/va_lx_adc_ideal_4b.va"
     }
   ]
 }

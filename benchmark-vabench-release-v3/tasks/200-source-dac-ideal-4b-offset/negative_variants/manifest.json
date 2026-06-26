@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_ideal_4b_offset.va"
+    },
+    {
+      "id": "neg_002_missing_offset",
+      "description": "Starts from zero instead of the required fixed 0.239 offset.",
+      "path": "negative_variants/neg_002_missing_offset/dac_ideal_4b_offset.va"
+    },
+    {
+      "id": "neg_003_wrong_scaling",
+      "description": "Uses a denominator of 32 instead of the specified 32*10/9 scaling.",
+      "path": "negative_variants/neg_003_wrong_scaling/dac_ideal_4b_offset.va"
+    },
+    {
+      "id": "neg_004_swap_msb_lsb",
+      "description": "Swaps the din3 MSB and din0 LSB code weights.",
+      "path": "negative_variants/neg_004_swap_msb_lsb/dac_ideal_4b_offset.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ideal_clkmux_8channel.va"
+    },
+    {
+      "id": "neg_002_modulo_seven",
+      "description": "Wraps the channel counter modulo seven, skipping channel 7.",
+      "path": "negative_variants/neg_002_modulo_seven/ideal_clkmux_8channel.va"
+    },
+    {
+      "id": "neg_003_no_initial_increment",
+      "description": "Samples channel 0 on the first clock instead of incrementing before mux selection.",
+      "path": "negative_variants/neg_003_no_initial_increment/ideal_clkmux_8channel.va"
+    },
+    {
+      "id": "neg_004_half_count_output",
+      "description": "Reports the counter monitor at half amplitude.",
+      "path": "negative_variants/neg_004_half_count_output/ideal_clkmux_8channel.va"
     }
   ]
 }

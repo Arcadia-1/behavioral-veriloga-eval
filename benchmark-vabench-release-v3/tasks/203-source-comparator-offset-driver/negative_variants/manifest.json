@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/comparator_offset_binary_driver.va"
+    },
+    {
+      "id": "neg_002_no_step_halving",
+      "description": "Keeps the same offset-search step size after every clock edge.",
+      "path": "negative_variants/neg_002_no_step_halving/comparator_offset_binary_driver.va"
+    },
+    {
+      "id": "neg_003_inverted_update",
+      "description": "Moves vin in the opposite direction for each comparator decision.",
+      "path": "negative_variants/neg_003_inverted_update/comparator_offset_binary_driver.va"
+    },
+    {
+      "id": "neg_004_full_diff_scale",
+      "description": "Uses full vin on each differential output instead of half-scale around common mode.",
+      "path": "negative_variants/neg_004_full_diff_scale/comparator_offset_binary_driver.va"
     }
   ]
 }

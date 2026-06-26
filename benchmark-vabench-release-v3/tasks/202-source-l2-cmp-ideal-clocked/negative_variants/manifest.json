@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/l2_cmp_ideal_clocked.va"
+    },
+    {
+      "id": "neg_002_swap_decision_outputs",
+      "description": "Swaps the comparator decision polarity for dcmpp and dcmpn.",
+      "path": "negative_variants/neg_002_swap_decision_outputs/l2_cmp_ideal_clocked.va"
+    },
+    {
+      "id": "neg_003_no_falling_reset",
+      "description": "Holds the last decision on the falling clock instead of resetting both outputs high.",
+      "path": "negative_variants/neg_003_no_falling_reset/l2_cmp_ideal_clocked.va"
+    },
+    {
+      "id": "neg_004_half_output_level",
+      "description": "Drives comparator logic highs at half vdd.",
+      "path": "negative_variants/neg_004_half_output_level/l2_cmp_ideal_clocked.va"
     }
   ]
 }

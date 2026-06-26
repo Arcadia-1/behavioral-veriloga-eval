@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/iterative_isar_dac.va"
+    },
+    {
+      "id": "neg_002_inverted_comparator_polarity",
+      "description": "Updates vdac in the opposite direction for dcmp decisions.",
+      "path": "negative_variants/neg_002_inverted_comparator_polarity/iterative_isar_dac.va"
+    },
+    {
+      "id": "neg_003_no_delta_halving",
+      "description": "Keeps the DAC search step fixed instead of dividing by radix each cycle.",
+      "path": "negative_variants/neg_003_no_delta_halving/iterative_isar_dac.va"
+    },
+    {
+      "id": "neg_004_no_reset_to_range",
+      "description": "Shrinks the search step twice as fast as the specified radix update.",
+      "path": "negative_variants/neg_004_no_reset_to_range/iterative_isar_dac.va"
     }
   ]
 }

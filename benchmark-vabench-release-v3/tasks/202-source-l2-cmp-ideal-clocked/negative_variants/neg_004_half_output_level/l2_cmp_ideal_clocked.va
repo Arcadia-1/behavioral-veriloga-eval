@@ -1,0 +1,32 @@
+`include "disciplines.vams"
+
+module l2_cmp_ideal_clocked(cmpck, vinn, vinp, dcmpn, dcmpp);
+input cmpck, vinn, vinp;
+output dcmpn, dcmpp;
+electrical cmpck, vinn, vinp, dcmpn, dcmpp;
+
+parameter real vdd = 0.9;
+parameter real td_cmp = 30p;
+real xoutp, xoutn;
+
+analog begin
+    @(initial_step) begin
+        xoutp = 1;
+        xoutn = 1;
+    end
+
+    @(cross(V(cmpck) - vdd / 2.0, +1)) begin
+        xoutp = (V(vinp) > V(vinn));
+        xoutn = (V(vinp) < V(vinn));
+    end
+
+    @(cross(V(cmpck) - vdd / 2.0, -1)) begin
+        xoutp = 1;
+        xoutn = 1;
+    end
+
+    V(dcmpp) <+ transition(xoutp * vdd * 0.5, td_cmp, 20p, 20p);
+    V(dcmpn) <+ transition(xoutn * vdd * 0.5, td_cmp, 20p, 20p);
+end
+
+endmodule

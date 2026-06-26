@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/l1_dac_4b_bipolar.va"
+    },
+    {
+      "id": "neg_002_unipolar_output",
+      "description": "Outputs the unipolar code instead of the required bipolar mapping.",
+      "path": "negative_variants/neg_002_unipolar_output/l1_dac_4b_bipolar.va"
+    },
+    {
+      "id": "neg_003_missing_vdd_scale",
+      "description": "Inverts the bipolar DAC transfer polarity around midscale.",
+      "path": "negative_variants/neg_003_missing_vdd_scale/l1_dac_4b_bipolar.va"
+    },
+    {
+      "id": "neg_004_wrong_msb_weight",
+      "description": "Uses a quarter-scale MSB weight for din4.",
+      "path": "negative_variants/neg_004_wrong_msb_weight/l1_dac_4b_bipolar.va"
     }
   ]
 }

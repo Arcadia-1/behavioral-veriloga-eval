@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/l2_cdac_4b_residue.va"
+    },
+    {
+      "id": "neg_002_wrong_msb_step",
+      "description": "Applies a quarter-reference dctrl3 step instead of the required half-reference step.",
+      "path": "negative_variants/neg_002_wrong_msb_step/l2_cdac_4b_residue.va"
+    },
+    {
+      "id": "neg_003_subtract_control_steps",
+      "description": "Subtracts the dctrl2 control step instead of adding it to the residue.",
+      "path": "negative_variants/neg_003_subtract_control_steps/l2_cdac_4b_residue.va"
+    },
+    {
+      "id": "neg_004_sample_on_rising_clock",
+      "description": "Omits the dctrl1 one-eighth residue increment.",
+      "path": "negative_variants/neg_004_sample_on_rising_clock/l2_cdac_4b_residue.va"
     }
   ]
 }

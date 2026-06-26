@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/linear_pfd_gain.va"
+    },
+    {
+      "id": "neg_002_inverted_sign",
+      "description": "Computes the gain with in2-in1 polarity.",
+      "path": "negative_variants/neg_002_inverted_sign/linear_pfd_gain.va"
+    },
+    {
+      "id": "neg_003_unit_gain",
+      "description": "Drops the required kphi scaling and emits only the raw input difference.",
+      "path": "negative_variants/neg_003_unit_gain/linear_pfd_gain.va"
+    },
+    {
+      "id": "neg_004_single_ended",
+      "description": "Ignores in2 and turns the PFD into a single-ended gain block.",
+      "path": "negative_variants/neg_004_single_ended/linear_pfd_gain.va"
     }
   ]
 }

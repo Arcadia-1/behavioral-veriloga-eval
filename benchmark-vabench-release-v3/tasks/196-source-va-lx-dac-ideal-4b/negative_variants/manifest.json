@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/va_lx_dac_ideal_4b.va"
+    },
+    {
+      "id": "neg_002_missing_vdd_scale",
+      "description": "Leaves the decoded DAC fraction unscaled by vdd.",
+      "path": "negative_variants/neg_002_missing_vdd_scale/va_lx_dac_ideal_4b.va"
+    },
+    {
+      "id": "neg_003_wrong_msb_weight",
+      "description": "Uses a quarter-scale MSB weight for din4.",
+      "path": "negative_variants/neg_003_wrong_msb_weight/va_lx_dac_ideal_4b.va"
+    },
+    {
+      "id": "neg_004_ignore_lsb",
+      "description": "Drops the din1 least-significant bit contribution.",
+      "path": "negative_variants/neg_004_ignore_lsb/va_lx_dac_ideal_4b.va"
     }
   ]
 }

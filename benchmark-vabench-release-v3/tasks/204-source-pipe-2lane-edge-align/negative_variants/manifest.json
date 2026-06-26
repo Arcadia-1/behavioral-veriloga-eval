@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pipe_2lane_edge_align.va"
+    },
+    {
+      "id": "neg_002_swap_edges",
+      "description": "Routes din2 on rising edges and din1 on falling edges.",
+      "path": "negative_variants/neg_002_swap_edges/pipe_2lane_edge_align.va"
+    },
+    {
+      "id": "neg_003_always_first_lane",
+      "description": "Never selects din2 on the falling alignment edge.",
+      "path": "negative_variants/neg_003_always_first_lane/pipe_2lane_edge_align.va"
+    },
+    {
+      "id": "neg_004_half_output_level",
+      "description": "Preserves edge selection but drives the selected lane at half amplitude.",
+      "path": "negative_variants/neg_004_half_output_level/pipe_2lane_edge_align.va"
     }
   ]
 }

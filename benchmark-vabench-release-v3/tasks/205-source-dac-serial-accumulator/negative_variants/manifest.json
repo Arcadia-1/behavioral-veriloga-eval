@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_serial_accumulator.va"
+    },
+    {
+      "id": "neg_002_no_sample_reset",
+      "description": "Does not clear the serial accumulator on the sample clock boundary.",
+      "path": "negative_variants/neg_002_no_sample_reset/dac_serial_accumulator.va"
+    },
+    {
+      "id": "neg_003_reversed_bit_weights",
+      "description": "Uses the reverse serial bit weighting order during accumulation.",
+      "path": "negative_variants/neg_003_reversed_bit_weights/dac_serial_accumulator.va"
+    },
+    {
+      "id": "neg_004_unipolar_output",
+      "description": "Emits unipolar accumulated state instead of the required bipolar output mapping.",
+      "path": "negative_variants/neg_004_unipolar_output/dac_serial_accumulator.va"
     }
   ]
 }

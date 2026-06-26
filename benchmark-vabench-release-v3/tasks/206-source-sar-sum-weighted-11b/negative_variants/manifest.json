@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sar_sum_weighted_11b.va"
+    },
+    {
+      "id": "neg_002_wrong_denominator",
+      "description": "Normalizes by 256 instead of 512.",
+      "path": "negative_variants/neg_002_wrong_denominator/sar_sum_weighted_11b.va"
+    },
+    {
+      "id": "neg_003_omit_top_weight",
+      "description": "Drops the nonbinary din10 weight of 480.",
+      "path": "negative_variants/neg_003_omit_top_weight/sar_sum_weighted_11b.va"
+    },
+    {
+      "id": "neg_004_missing_bipolar_offset",
+      "description": "Omits the minus-one offset in the weighted sum output.",
+      "path": "negative_variants/neg_004_missing_bipolar_offset/sar_sum_weighted_11b.va"
     }
   ]
 }

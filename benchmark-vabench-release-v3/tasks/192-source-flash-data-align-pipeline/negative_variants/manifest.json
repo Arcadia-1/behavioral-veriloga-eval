@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/flash_data_align_pipeline.va"
+    },
+    {
+      "id": "neg_002_three_cycle_delay",
+      "description": "Publishes the third pipeline stage instead of the required fourth-cycle aligned count.",
+      "path": "negative_variants/neg_002_three_cycle_delay/flash_data_align_pipeline.va"
+    },
+    {
+      "id": "neg_003_ignore_upper_inputs",
+      "description": "Counts only the lower four thermometer inputs, missing din4 through din7.",
+      "path": "negative_variants/neg_003_ignore_upper_inputs/flash_data_align_pipeline.va"
+    },
+    {
+      "id": "neg_004_swap_output_bits",
+      "description": "Swaps the two least significant output bits while keeping timing intact.",
+      "path": "negative_variants/neg_004_swap_output_bits/flash_data_align_pipeline.va"
     }
   ]
 }

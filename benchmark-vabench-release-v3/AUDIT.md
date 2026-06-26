@@ -82,6 +82,30 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 192-207
+
+Tasks `192-source-flash-data-align-pipeline` through
+`207-source-iterative-isar-dac` were repaired as the seventh source-series
+batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover pipeline latency and output bit-order mistakes,
+  cyclic-decoder normalization mistakes, ADC/DAC weight and polarity mistakes,
+  residue-control mistakes, clock-mux count mistakes, comparator reset and
+  polarity mistakes, edge-align lane mistakes, serial accumulation mistakes,
+  nonbinary SAR weight mistakes, and iterative DAC search-step mistakes;
+- weak candidate negatives that were hidden-test equivalent or parameter
+  equivalent were replaced with distinguishable behavioral failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-source-voltage-controlled-gain-amplifier` through
