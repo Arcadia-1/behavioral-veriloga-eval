@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/source_dff_reset.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/source_dff_reset.va"
+    },
+    {
+      "id": "neg_002_qbar_not_complement",
+      "description": "Drives qbar equal to q.",
+      "path": "negative_variants/neg_002_qbar_not_complement/source_dff_reset.va"
+    },
+    {
+      "id": "neg_003_ignores_reset",
+      "description": "Ignores the reset input.",
+      "path": "negative_variants/neg_003_ignores_reset/source_dff_reset.va"
+    },
+    {
+      "id": "neg_004_falling_edge_sample",
+      "description": "Samples D on falling clock edges.",
+      "path": "negative_variants/neg_004_falling_edge_sample/source_dff_reset.va"
     }
   ]
 }

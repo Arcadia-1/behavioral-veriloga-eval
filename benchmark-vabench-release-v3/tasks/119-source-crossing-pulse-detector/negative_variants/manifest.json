@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/source_crossing_pulse_detector.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/source_crossing_pulse_detector.va"
+    },
+    {
+      "id": "neg_002_rising_only",
+      "description": "Triggers only on rising crossings, missing falling crossings.",
+      "path": "negative_variants/neg_002_rising_only/source_crossing_pulse_detector.va"
+    },
+    {
+      "id": "neg_003_short_pulse",
+      "description": "Uses a pulse width that is too short.",
+      "path": "negative_variants/neg_003_short_pulse/source_crossing_pulse_detector.va"
+    },
+    {
+      "id": "neg_004_no_delay",
+      "description": "Latches high after the first crossing instead of producing bounded pulses.",
+      "path": "negative_variants/neg_004_no_delay/source_crossing_pulse_detector.va"
     }
   ]
 }

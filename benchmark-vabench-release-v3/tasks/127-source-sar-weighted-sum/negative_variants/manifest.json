@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the weighted-sum semantic contract.",
       "path": "negative_variants/neg_001_zero/sar_weighted_sum.va"
+    },
+    {
+      "id": "neg_002_binary_weights",
+      "description": "Uses ordinary binary weights instead of the specified SAR weights.",
+      "path": "negative_variants/neg_002_binary_weights/sar_weighted_sum.va"
+    },
+    {
+      "id": "neg_003_wrong_normalization",
+      "description": "Uses the wrong normalization denominator.",
+      "path": "negative_variants/neg_003_wrong_normalization/sar_weighted_sum.va"
+    },
+    {
+      "id": "neg_004_missing_offset",
+      "description": "Omits the required -1.0 output offset.",
+      "path": "negative_variants/neg_004_missing_offset/sar_weighted_sum.va"
     }
   ]
 }

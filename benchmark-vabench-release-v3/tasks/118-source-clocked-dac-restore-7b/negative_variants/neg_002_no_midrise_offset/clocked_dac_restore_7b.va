@@ -1,0 +1,33 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module clocked_dac_restore_7b(D1, D2, D3, D4, D5, D6, D0, CLK, VOUT);
+    input D1, D2, D3, D4, D5, D6, D0, CLK;
+    output VOUT;
+    electrical D1, D2, D3, D4, D5, D6, D0, CLK, VOUT;
+    parameter real vth = 0.45;
+    parameter real lsb = 1.8 / 64.0;
+    parameter real tr = 20p;
+    real vout;
+    integer code;
+
+    analog begin
+        @(initial_step) begin
+            vout = -0.89296875;
+        end
+
+        @(cross(V(CLK) - vth, +1)) begin
+            code = 0;
+            code = code + ((V(D6) > vth) ? 64 : 0);
+            code = code + ((V(D5) > vth) ? 32 : 0);
+            code = code + ((V(D4) > vth) ? 16 : 0);
+            code = code + ((V(D3) > vth) ? 8 : 0);
+            code = code + ((V(D2) > vth) ? 4 : 0);
+            code = code + ((V(D1) > vth) ? 2 : 0);
+            code = code + ((V(D0) > vth) ? 1 : 0);
+            vout = (code + 0.5) * lsb - 0.9;
+        end
+
+        V(VOUT) <+ transition(vout, 0, tr, tr);
+    end
+endmodule

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/offset_search_comparator.va"
+    },
+    {
+      "id": "neg_002_no_step_halving",
+      "description": "Never halves the search step on sign changes.",
+      "path": "negative_variants/neg_002_no_step_halving/offset_search_comparator.va"
+    },
+    {
+      "id": "neg_003_inverted_decision",
+      "description": "Uses the opposite comparator decision polarity.",
+      "path": "negative_variants/neg_003_inverted_decision/offset_search_comparator.va"
+    },
+    {
+      "id": "neg_004_wrong_common_mode",
+      "description": "Uses the wrong common-mode voltage.",
+      "path": "negative_variants/neg_004_wrong_common_mode/offset_search_comparator.va"
     }
   ]
 }

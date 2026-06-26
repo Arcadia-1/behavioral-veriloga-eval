@@ -38,3 +38,22 @@ EVAS 0.4.5 local verification:
 - 13/13 gold solutions PASS;
 - 52/52 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
+
+## Completed Batch: 112-127
+
+Tasks `112-source-clocked-sar-comparator` through
+`127-source-sar-weighted-sum` were repaired as the second source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- task `123-source-start-gated-offset-search` gold was corrected so START is
+  handled as an explicit enable transition instead of a continuous reset;
+- source checker aliases now cover the normal `task.toml` ids for this batch.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.

@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/source_single_shot.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/source_single_shot.va"
+    },
+    {
+      "id": "neg_002_short_pulse",
+      "description": "Uses a pulse width that is too short.",
+      "path": "negative_variants/neg_002_short_pulse/source_single_shot.va"
+    },
+    {
+      "id": "neg_003_falling_edge_trigger",
+      "description": "Triggers pulses on falling input crossings.",
+      "path": "negative_variants/neg_003_falling_edge_trigger/source_single_shot.va"
+    },
+    {
+      "id": "neg_004_stuck_high_after_first",
+      "description": "Never turns the pulse off after a trigger.",
+      "path": "negative_variants/neg_004_stuck_high_after_first/source_single_shot.va"
     }
   ]
 }

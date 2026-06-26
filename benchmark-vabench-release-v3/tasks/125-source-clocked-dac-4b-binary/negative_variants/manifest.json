@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/clocked_dac_4b_binary.va"
+    },
+    {
+      "id": "neg_002_no_midrise_offset",
+      "description": "Omits the half-LSB midrise offset.",
+      "path": "negative_variants/neg_002_no_midrise_offset/clocked_dac_4b_binary.va"
+    },
+    {
+      "id": "neg_003_reversed_bit_weights",
+      "description": "Reverses the source bit weights.",
+      "path": "negative_variants/neg_003_reversed_bit_weights/clocked_dac_4b_binary.va"
+    },
+    {
+      "id": "neg_004_falling_edge_update",
+      "description": "Updates on falling clock edges instead of rising edges.",
+      "path": "negative_variants/neg_004_falling_edge_update/clocked_dac_4b_binary.va"
     }
   ]
 }

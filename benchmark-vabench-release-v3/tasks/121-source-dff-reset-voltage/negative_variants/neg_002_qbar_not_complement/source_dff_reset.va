@@ -1,0 +1,6 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_dff_reset(vin_d, vclk, rst, vout_q, vout_qbar);
+input vin_d,vclk,rst; output vout_q,vout_qbar; electrical vin_d,vclk,rst,vout_q,vout_qbar; parameter real vtrans=0.45; integer x; analog begin @(initial_step)x=0; @(cross(V(vclk)-vtrans,+1)) x=V(vin_d)>vtrans; @(cross(V(rst)-vtrans,+1)) x=0; V(vout_q)<+transition(x?0.9:0.0,500p,20p,20p); V(vout_qbar)<+transition(x?0.9:0.0,500p,20p,20p); end
+endmodule

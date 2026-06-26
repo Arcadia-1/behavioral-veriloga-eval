@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/comp_os_detect.va"
+    },
+    {
+      "id": "neg_002_wrong_initial_step",
+      "description": "Starts with the wrong search step.",
+      "path": "negative_variants/neg_002_wrong_initial_step/comp_os_detect.va"
+    },
+    {
+      "id": "neg_003_inverted_decision",
+      "description": "Uses the opposite detector polarity.",
+      "path": "negative_variants/neg_003_inverted_decision/comp_os_detect.va"
+    },
+    {
+      "id": "neg_004_no_step_halving",
+      "description": "Does not halve the search step after each decision.",
+      "path": "negative_variants/neg_004_no_step_halving/comp_os_detect.va"
     }
   ]
 }

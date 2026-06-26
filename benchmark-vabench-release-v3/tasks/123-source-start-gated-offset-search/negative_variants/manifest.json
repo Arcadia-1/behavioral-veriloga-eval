@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/start_gated_offset_search.va"
+    },
+    {
+      "id": "neg_002_ignores_start_gate",
+      "description": "Uses an unreachable START threshold, so the gated search never starts.",
+      "path": "negative_variants/neg_002_ignores_start_gate/start_gated_offset_search.va"
+    },
+    {
+      "id": "neg_003_no_step_halving",
+      "description": "Never halves the search step on sign changes.",
+      "path": "negative_variants/neg_003_no_step_halving/start_gated_offset_search.va"
+    },
+    {
+      "id": "neg_004_wrong_common_mode",
+      "description": "Uses the wrong output common-mode voltage.",
+      "path": "negative_variants/neg_004_wrong_common_mode/start_gated_offset_search.va"
     }
   ]
 }

@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/source_sample_hold.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/source_sample_hold.va"
+    },
+    {
+      "id": "neg_002_transparent_track",
+      "description": "Tracks input continuously instead of holding sampled values.",
+      "path": "negative_variants/neg_002_transparent_track/source_sample_hold.va"
+    },
+    {
+      "id": "neg_003_falling_edge_sample",
+      "description": "Samples on the falling clock edge.",
+      "path": "negative_variants/neg_003_falling_edge_sample/source_sample_hold.va"
+    },
+    {
+      "id": "neg_004_half_gain_hold",
+      "description": "Samples the right edge but stores half the input voltage.",
+      "path": "negative_variants/neg_004_half_gain_hold/source_sample_hold.va"
     }
   ]
 }

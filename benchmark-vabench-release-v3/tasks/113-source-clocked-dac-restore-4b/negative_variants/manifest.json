@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/clocked_dac_restore_4b.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/clocked_dac_restore_4b.va"
+    },
+    {
+      "id": "neg_002_no_midrise_offset",
+      "description": "Omits the half-LSB midrise offset.",
+      "path": "negative_variants/neg_002_no_midrise_offset/clocked_dac_restore_4b.va"
+    },
+    {
+      "id": "neg_003_reversed_bit_weights",
+      "description": "Reverses the 4-bit weight order.",
+      "path": "negative_variants/neg_003_reversed_bit_weights/clocked_dac_restore_4b.va"
+    },
+    {
+      "id": "neg_004_falling_edge_update",
+      "description": "Uses an incorrect DAC scale so all restored levels are compressed.",
+      "path": "negative_variants/neg_004_falling_edge_update/clocked_dac_restore_4b.va"
     }
   ]
 }

@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/source_not_gate.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/source_not_gate.va"
+    },
+    {
+      "id": "neg_002_buffer",
+      "description": "Buffers the input instead of inverting it.",
+      "path": "negative_variants/neg_002_buffer/source_not_gate.va"
+    },
+    {
+      "id": "neg_003_wrong_threshold",
+      "description": "Uses an invalid half-amplitude high level.",
+      "path": "negative_variants/neg_003_wrong_threshold/source_not_gate.va"
+    },
+    {
+      "id": "neg_004_no_delay",
+      "description": "Sticks the inverter output high and ignores input changes.",
+      "path": "negative_variants/neg_004_no_delay/source_not_gate.va"
     }
   ]
 }

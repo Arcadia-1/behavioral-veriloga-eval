@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/bipolar_dac_4b_continuous.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/bipolar_dac_4b_continuous.va"
+    },
+    {
+      "id": "neg_002_unipolar_output",
+      "description": "Implements a unipolar DAC instead of bipolar output.",
+      "path": "negative_variants/neg_002_unipolar_output/bipolar_dac_4b_continuous.va"
+    },
+    {
+      "id": "neg_003_reversed_bit_weights",
+      "description": "Reverses the bit weights.",
+      "path": "negative_variants/neg_003_reversed_bit_weights/bipolar_dac_4b_continuous.va"
+    },
+    {
+      "id": "neg_004_wrong_fullscale",
+      "description": "Uses the wrong denominator for full scale.",
+      "path": "negative_variants/neg_004_wrong_fullscale/bipolar_dac_4b_continuous.va"
     }
   ]
 }

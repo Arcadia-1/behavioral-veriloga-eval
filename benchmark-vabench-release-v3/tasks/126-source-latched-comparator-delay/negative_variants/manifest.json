@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/latched_comparator_delay.va"
+    },
+    {
+      "id": "neg_002_inverted_decision",
+      "description": "Inverts the latched comparator decision.",
+      "path": "negative_variants/neg_002_inverted_decision/latched_comparator_delay.va"
+    },
+    {
+      "id": "neg_003_no_output_delay",
+      "description": "Forces a half-amplitude output high level instead of rail-to-rail logic.",
+      "path": "negative_variants/neg_003_no_output_delay/latched_comparator_delay.va"
+    },
+    {
+      "id": "neg_004_falling_edge_latch",
+      "description": "Latches on falling clock edges.",
+      "path": "negative_variants/neg_004_falling_edge_latch/latched_comparator_delay.va"
     }
   ]
 }

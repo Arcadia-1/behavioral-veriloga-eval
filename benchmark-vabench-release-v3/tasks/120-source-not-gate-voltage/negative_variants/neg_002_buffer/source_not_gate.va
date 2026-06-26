@@ -1,0 +1,6 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module source_not_gate(vin, vout);
+input vin; output vout; electrical vin,vout; parameter real vtrans=0.45; analog begin V(vout)<+transition((V(vin)>vtrans)?0.9:0.0,500p,20p,20p); end
+endmodule

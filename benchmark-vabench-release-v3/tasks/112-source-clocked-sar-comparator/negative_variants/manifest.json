@@ -1,10 +1,24 @@
 {
-  "negative_variants": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "files": [
-        "neg_001_zero/clocked_sar_comparator.va"
-      ]
+      "description": "Existing concrete negative.",
+      "path": "negative_variants/neg_001_zero/clocked_sar_comparator.va"
+    },
+    {
+      "id": "neg_002_never_resets_high",
+      "description": "Reset phase incorrectly drives both outputs low instead of high.",
+      "path": "negative_variants/neg_002_never_resets_high/clocked_sar_comparator.va"
+    },
+    {
+      "id": "neg_003_swapped_decision",
+      "description": "Swaps positive and negative comparator decisions.",
+      "path": "negative_variants/neg_003_swapped_decision/clocked_sar_comparator.va"
+    },
+    {
+      "id": "neg_004_no_equal_both_high",
+      "description": "Drives comparator outputs at half amplitude, violating voltage-coded high levels.",
+      "path": "negative_variants/neg_004_no_equal_both_high/clocked_sar_comparator.va"
     }
   ]
 }
