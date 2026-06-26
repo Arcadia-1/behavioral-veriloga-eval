@@ -1,29 +1,26 @@
 syntax:
   must_include:
-    - "@(cross("
     - "@(timer("
     - "transition("
-    - "tran"
-    - "save"
   must_not_include:
     - "I("
     - "ddt("
     - "idt("
+dut_compile:
+  backend: "evas"
 tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "cppll_reacquires_after_reference_step"
-    - "late_window_tracks_new_reference"
-    - "vctrl_stays_bounded"
+    - "reference_clock_pre_step_period"
+    - "reference_clock_post_step_period"
+    - "reference_clock_switch_near_t_switch"
+    - "reference_clock_50_percent_duty"
+    - "reference_clock_voltage_rails"
   public_observables:
-    - "ref_clk"
-    - "fb_clk"
-    - "dco_clk"
-    - "vctrl_mon"
-    - "lock"
+    - "CLK"
 parity:
   reference: "spectre"
-  status: "certified"
+  status: "needs_rerun"
   notes:
-    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+    - "Task 107 was split from the CPPLL system-level checker into a standalone reference-step-clock checker; rerun EVAS/Spectre certification after this task change."

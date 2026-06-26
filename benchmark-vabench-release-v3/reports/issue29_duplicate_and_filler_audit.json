@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-26T15:53:32+00:00",
+  "generated_at_utc": "2026-06-26T20:13:59+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -12,8 +12,8 @@
       "tb": 1
     },
     "levels": {
-      "L1": 260,
-      "L2": 37,
+      "L1": 261,
+      "L2": 36,
       "L3": 3
     },
     "difficulties": {
@@ -28,7 +28,7 @@
       "calibration": 7,
       "calibration_control": 7,
       "calibration_dem_control": 1,
-      "clock_timing": 16,
+      "clock_timing": 17,
       "clocking": 2,
       "comparator": 7,
       "comparator_decision": 8,
@@ -43,7 +43,7 @@
       "measurement_instrumentation_flows": 10,
       "mixed_signal": 33,
       "pll_clock_timing": 8,
-      "pll_clock_timing_systems": 4,
+      "pll_clock_timing_systems": 3,
       "quantizer": 1,
       "rf_afe_behavioral_macromodels": 7,
       "sampling_analog_memory": 6,
@@ -70,6 +70,8 @@
       "why_flagged": "Same low-pass kernel appears once as a DUT construction task and once as a bugfix task.",
       "missing_tasks": [],
       "classification": "valid_variant_needs_counting_policy",
+      "auto_classification": "valid_variant_needs_counting_policy",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "007-first-order-lowpass",
@@ -135,6 +137,8 @@
       "why_flagged": "Same window-comparator function appears as DUT and testbench-generation variants.",
       "missing_tasks": [],
       "classification": "valid_variant_needs_counting_policy",
+      "auto_classification": "valid_variant_needs_counting_policy",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "049-window-comparator-detector",
@@ -198,6 +202,8 @@
       "why_flagged": "Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording.",
       "missing_tasks": [],
       "classification": "high_overlap",
+      "auto_classification": "high_overlap",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "081-aperture-delay-track-and-hold",
@@ -261,7 +267,14 @@
       "id": "timer_reacquire_pair",
       "why_flagged": "Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels.",
       "missing_tasks": [],
-      "classification": "hard_duplicate",
+      "classification": "manually_split_pending_spectre",
+      "auto_classification": "needs_human_review",
+      "manual_adjudication": {
+        "classification": "manually_split_pending_spectre",
+        "status": "EVAS-only review refreshed; Spectre was not rerun by request.",
+        "decision": "Keep as distinct candidate rows after manual split: task 097 grades the CPPLL reacquire DUT with a supplied reference-step-clock support artifact, while task 107 grades the standalone reference-step-clock DUT.",
+        "evidence": "Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with hidden parameters different from visible smoke parameters."
+      },
       "members": [
         {
           "name": "097-cppll-tracking-reacquire-timer",
@@ -276,10 +289,8 @@
             "ref_step_clk.va"
           ],
           "solution_loc": 156,
-          "negative_count": 1,
-          "risks": [
-            "low_negative_variant_count"
-          ],
+          "negative_count": 5,
+          "risks": [],
           "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
         },
         {
@@ -287,40 +298,37 @@
           "id": "v3_107_reference_step_clock",
           "title": "Reference Step Clock",
           "form": "dut",
-          "level": "L2",
+          "level": "L1",
           "difficulty": "D2",
-          "category": "pll_clock_timing_systems",
+          "category": "clock_timing",
           "targets": [
-            "ref_step_clk.va",
-            "cppll_timer_ref.va"
+            "ref_step_clk.va"
           ],
-          "solution_loc": 156,
-          "negative_count": 1,
-          "risks": [
-            "low_negative_variant_count"
-          ],
-          "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
+          "solution_loc": 36,
+          "negative_count": 5,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:601bb21a5834b8da0881bf662d4a90201b00abac9fecef998ba40c25b8399634"
         }
       ],
       "pairs": [
         {
           "task_a": "097-cppll-tracking-reacquire-timer",
           "task_b": "107-reference-step-clock",
-          "classification": "hard_duplicate",
-          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.9646,
-            "solution_token_jaccard": 1.0,
-            "checker_token_jaccard": 1.0,
-            "prompt_sequence_similarity": 0.9731,
-            "solution_sequence_similarity": 1.0,
-            "checker_sequence_similarity": 1.0
+            "prompt_token_jaccard": 0.2963,
+            "solution_token_jaccard": 0.4066,
+            "checker_token_jaccard": 0.3226,
+            "prompt_sequence_similarity": 0.4547,
+            "solution_sequence_similarity": 0.3392,
+            "checker_sequence_similarity": 0.5722
           }
         }
       ],
       "prompt_excerpts": {
-        "097-cppll-tracking-reacquire-timer": "# CPPLL Tracking Reacquire Timer\nImplement `cppll_timer_ref.va` in Verilog-A.\n## Interface\n```verilog\nmodule cppll_timer_ref (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    input  electrical ref_clk,\n    output electrical fb_clk,\n    output electrical dco_clk,\n    output electrical vctrl_mon,\n    output electrical lock\n);\n```\n## Required Behavior\nThis task asks for the `cppll_timer_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nOriginal public behavior context:\nThis row is a CPPLL frequency-step reacquire flow. The testbench must expose a",
-        "107-reference-step-clock": "# Reference Step Clock\nImplement `ref_step_clk.va` in Verilog-A.\n## Interface\n```verilog\nmodule ref_step_clk (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    output electrical CLK\n);\n```\n## Required Behavior\nThis task asks for the `ref_step_clk` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nOriginal public behavior context:\nThis row is a CPPLL frequency-step reacquire flow. The testbench must expose a\nreference step and enough time for the supplied loop to settle again:\n1. Include both public support files `cppll_timer_ref.va` and `ref_step_clk.va`.\n2. Instantiate the reference-step source and the CPPLL DUT with the public port\n   order."
+        "097-cppll-tracking-reacquire-timer": "# CPPLL Tracking Reacquire Timer\nImplement `cppll_timer_ref.va` in Verilog-A.\n## Interface\n```verilog\nmodule cppll_timer_ref (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    input  electrical ref_clk,\n    output electrical fb_clk,\n    output electrical dco_clk,\n    output electrical vctrl_mon,\n    output electrical lock\n);\n```\n## Required Behavior\nThis task asks for the `cppll_timer_ref` behavioral module, not a Spectre\ntestbench. The evaluator supplies a reference-step clock source and\ninstantiates your module in a CPPLL frequency-step reacquire scenario.",
+        "107-reference-step-clock": "# Reference Step Clock\nImplement `ref_step_clk.va` in Verilog-A.\n## Interface\n```verilog\nmodule ref_step_clk (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    output electrical CLK\n);\n```\n## Required Behavior\nThis task asks for the `ref_step_clk` behavioral module, not a Spectre\ntestbench. The evaluator instantiates this module directly and checks the\ngenerated `CLK` waveform.\n- Generate a voltage-coded square-wave clock on `CLK`.\n- Use the `VDD` and `VSS` supplies as the high and low output rails.\n- Before `t_switch`, use `period_pre` as the full clock period.\n- Near the switching time, transition from the pre-step cadence to the"
       }
     },
     {
@@ -328,6 +336,8 @@
       "why_flagged": "An L2 flow may package kernels that also appear as standalone source/gain/source tasks.",
       "missing_tasks": [],
       "classification": "hard_duplicate",
+      "auto_classification": "hard_duplicate",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "099-dither-adder",
@@ -511,6 +521,8 @@
       "why_flagged": "Two tasks share the same public title and likely the same absolute-value transfer function.",
       "missing_tasks": [],
       "classification": "hard_duplicate",
+      "auto_classification": "hard_duplicate",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "288-absolute-value",
@@ -577,6 +589,8 @@
       "why_flagged": "Two tasks appear to name the same smooth tanh comparator transfer behavior.",
       "missing_tasks": [],
       "classification": "high_overlap",
+      "auto_classification": "high_overlap",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "292-smooth-tanh-comparator",
@@ -643,6 +657,8 @@
       "why_flagged": "Two PFD reset tasks may share state/timer reset semantics.",
       "missing_tasks": [],
       "classification": "high_overlap",
+      "auto_classification": "high_overlap",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "300-pfd-active-low-reset",
@@ -703,6 +719,8 @@
       "why_flagged": "Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel.",
       "missing_tasks": [],
       "classification": "high_overlap",
+      "auto_classification": "high_overlap",
+      "manual_adjudication": null,
       "members": [
         {
           "name": "294-subradix-dac10",
@@ -786,10 +804,6 @@
       "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2": [
         "007-first-order-lowpass",
         "286-first-order-lowpass-bugfix"
-      ],
-      "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2": [
-        "097-cppll-tracking-reacquire-timer",
-        "107-reference-step-clock"
       ]
     },
     "near_solution_pairs": [
@@ -810,24 +824,6 @@
           "Aperture Delay Sample Hold"
         ],
         "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
-      },
-      {
-        "task_a": "097-cppll-tracking-reacquire-timer",
-        "task_b": "107-reference-step-clock",
-        "issue_named_pair": true,
-        "classification": "hard_duplicate",
-        "solution_similarity": 1.0,
-        "solution_token_jaccard": 1.0,
-        "checker_similarity": 1.0,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "CPPLL Tracking Reacquire Timer",
-          "Reference Step Clock"
-        ],
-        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
       },
       {
         "task_a": "099-dither-adder",
@@ -1645,21 +1641,6 @@
         "titles": [
           "Active Low Reset Synchronizer",
           "Active High Reset Synchronizer"
-        ]
-      },
-      {
-        "task_a": "097-cppll-tracking-reacquire-timer",
-        "task_b": "107-reference-step-clock",
-        "issue_named_pair": true,
-        "prompt_similarity": 0.9731,
-        "prompt_token_jaccard": 0.9646,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "CPPLL Tracking Reacquire Timer",
-          "Reference Step Clock"
         ]
       },
       {
@@ -4196,25 +4177,6 @@
         "solution_sha256_normalized": "sha256:89083f600ef814ba809a9f4a38940ff7671f8d8b5b8d6a4a6c38f6aa092248c0"
       },
       {
-        "name": "107-reference-step-clock",
-        "id": "v3_107_reference_step_clock",
-        "title": "Reference Step Clock",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "pll_clock_timing_systems",
-        "targets": [
-          "ref_step_clk.va",
-          "cppll_timer_ref.va"
-        ],
-        "solution_loc": 156,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
-      },
-      {
         "name": "106-programmable-stimulus-sequencer",
         "id": "v3_106_programmable_stimulus_sequencer",
         "title": "Programmable Stimulus Sequencer",
@@ -4384,25 +4346,6 @@
           "low_negative_variant_count"
         ],
         "solution_sha256_normalized": "sha256:db9b6993d2759d6a8f244add717f41d8fb15f4e1043cbf8c430778c930e00a98"
-      },
-      {
-        "name": "097-cppll-tracking-reacquire-timer",
-        "id": "v3_097_cppll_tracking_reacquire_timer",
-        "title": "CPPLL Tracking Reacquire Timer",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "pll_clock_timing_systems",
-        "targets": [
-          "cppll_timer_ref.va",
-          "ref_step_clk.va"
-        ],
-        "solution_loc": 156,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
       },
       {
         "name": "096-converter-static-linearity-measurement",
@@ -5095,9 +5038,6 @@
     "096-converter-static-linearity-measurement": [
       "low_negative_variant_count"
     ],
-    "097-cppll-tracking-reacquire-timer": [
-      "low_negative_variant_count"
-    ],
     "098-edge-crossing-interval-timer": [
       "low_negative_variant_count"
     ],
@@ -5123,9 +5063,6 @@
       "low_negative_variant_count"
     ],
     "106-programmable-stimulus-sequencer": [
-      "low_negative_variant_count"
-    ],
-    "107-reference-step-clock": [
       "low_negative_variant_count"
     ],
     "108-reference-startup-enable-flow": [
@@ -5484,6 +5421,7 @@
   "method": {
     "similarity": "Prompt/checker/solution overlap uses token Jaccard plus difflib sequence ratios on normalized text. These are triage signals, not final benchmark admission decisions.",
     "negative_count": "Both legacy cases/artifact and v3 variants/path negative manifest schemas are counted; the report also counts concrete .va files under negative_variants/.",
-    "source_family_heuristic": "A row is treated as source-family when its task id contains `_source_`, matching the current v3 source-import lineage marker."
+    "source_family_heuristic": "A row is treated as source-family when its task id contains `_source_`, matching the current v3 source-import lineage marker.",
+    "manual_adjudication": "Named groups may include explicit manual adjudication notes when a human review has already resolved the automatic triage signal for the current audit slice."
   }
 }

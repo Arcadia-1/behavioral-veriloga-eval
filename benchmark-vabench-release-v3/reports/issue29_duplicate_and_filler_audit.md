@@ -5,10 +5,10 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-26T15:53:32+00:00`
+- Generated UTC: `2026-06-26T20:13:59+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
-- Levels: `{'L1': 260, 'L2': 37, 'L3': 3}`
+- Levels: `{'L1': 261, 'L2': 36, 'L3': 3}`
 - Source-family heuristic rows: **185**
 - Negative variants per task: min `1`, median `4.0`, max `10`
 - Solution LOC: min `6`, median `25.0`, max `252`
@@ -24,7 +24,7 @@
 | `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy` |
 | `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy` |
 | `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
-| `timer_reacquire_pair` | `hard_duplicate` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `hard_duplicate` |
+| `timer_reacquire_pair` | `manually_split_pending_spectre` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=EVAS-only review refreshed; Spectre was not rerun by request.` |
 | `signal_chain_vs_components` | `hard_duplicate` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `hard_duplicate, valid_variant_needs_counting_policy` |
 | `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
 | `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
@@ -195,11 +195,15 @@ voltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.
 ### `timer_reacquire_pair`
 
 - Why flagged: Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels.
-- Group classification: `hard_duplicate`
+- Group classification: `manually_split_pending_spectre`
+- Automatic classification before manual review: `needs_human_review`
+- Manual status: EVAS-only review refreshed; Spectre was not rerun by request.
+- Manual decision: Keep as distinct candidate rows after manual split: task 097 grades the CPPLL reacquire DUT with a supplied reference-step-clock support artifact, while task 107 grades the standalone reference-step-clock DUT.
+- Manual evidence: Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with hidden parameters different from visible smoke parameters.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `hard_duplicate` | 0.9731 | 1.0 | 1.0 | Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit. |
+| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `needs_human_review` | 0.4547 | 0.3392 | 0.5722 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -221,9 +225,9 @@ module cppll_timer_ref (
 );
 ```
 ## Required Behavior
-This task asks for the `cppll_timer_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-Original public behavior context:
-This row is a CPPLL frequency-step reacquire flow. The testbench must expose a
+This task asks for the `cppll_timer_ref` behavioral module, not a Spectre
+testbench. The evaluator supplies a reference-step clock source and
+instantiates your module in a CPPLL frequency-step reacquire scenario.
 ~~~
 
 #### `107-reference-step-clock`
@@ -240,13 +244,13 @@ module ref_step_clk (
 );
 ```
 ## Required Behavior
-This task asks for the `ref_step_clk` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-Original public behavior context:
-This row is a CPPLL frequency-step reacquire flow. The testbench must expose a
-reference step and enough time for the supplied loop to settle again:
-1. Include both public support files `cppll_timer_ref.va` and `ref_step_clk.va`.
-2. Instantiate the reference-step source and the CPPLL DUT with the public port
-   order.
+This task asks for the `ref_step_clk` behavioral module, not a Spectre
+testbench. The evaluator instantiates this module directly and checks the
+generated `CLK` waveform.
+- Generate a voltage-coded square-wave clock on `CLK`.
+- Use the `VDD` and `VSS` supplies as the high and low output rails.
+- Before `t_switch`, use `period_pre` as the full clock period.
+- Near the switching time, transition from the pre-step cadence to the
 ~~~
 
 </details>
@@ -485,14 +489,12 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 - `sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6`: `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold`
 - `sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14`: `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`
 - `sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2`: `007-first-order-lowpass`, `286-first-order-lowpass-bugfix`
-- `sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2`: `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock`
 
 ### Top Near-Solution Overlap Pairs
 
 | Pair | Issue named | Class | Solution sim | Checker sim | Forms | Titles |
 | --- | --- | --- | ---: | ---: | --- | --- |
 | `081-aperture-delay-track-and-hold` ↔ `285-aperture-delay-sample-hold` | `True` | `high_overlap` | 1.0 | 0.3811 | `['dut', 'dut']` | ['Aperture Delay Track And Hold', 'Aperture Delay Sample Hold'] |
-| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['CPPLL Tracking Reacquire Timer', 'Reference Step Clock'] |
 | `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Dither Adder', 'Fixed Gain Amplifier'] |
 | `099-dither-adder` ↔ `111-clocked-sine-source` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Dither Adder', 'Clocked Sine Source'] |
 | `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Fixed Gain Amplifier', 'Clocked Sine Source'] |
@@ -531,6 +533,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `162-half-adder-logic` ↔ `163-full-adder-logic` | `False` | `high_overlap` | 0.8456 | 0.9756 | `['dut', 'dut']` | ['Half Adder Logic', 'Full Adder Logic'] |
 | `116-clocked-comparator-reset-low` ↔ `257-comparator-reset-low-1p8` | `False` | `needs_human_review` | 0.8369 | 0.291 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Comparator Reset Low 1p8'] |
 | `122-offset-search-comparator` ↔ `208-offset-bisection-driver` | `False` | `high_overlap` | 0.8274 | 0.9042 | `['dut', 'dut']` | ['Offset Search Comparator', 'Offset Bisection Driver'] |
+| `240-cdac-monodown-7b` ↔ `241-cdac-6b-stage1-up` | `False` | `high_overlap` | 0.8258 | 0.915 | `['dut', 'dut']` | ['CDAC Monodown 7b', 'CDAC 6b Stage1 Up'] |
 
 ### Top Prompt-Overlap Pairs
 
@@ -540,7 +543,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `True` | 0.9849 | `['dut', 'dut']` | ['Fixed Gain Amplifier', 'Clocked Sine Source'] |
 | `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `True` | 0.9847 | `['dut', 'dut']` | ['Dither Adder', 'Fixed Gain Amplifier'] |
 | `070-active-low-reset-synchronizer` ↔ `071-active-high-reset-synchronizer` | `False` | 0.9827 | `['dut', 'dut']` | ['Active Low Reset Synchronizer', 'Active High Reset Synchronizer'] |
-| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `True` | 0.9731 | `['dut', 'dut']` | ['CPPLL Tracking Reacquire Timer', 'Reference Step Clock'] |
 | `113-clocked-dac-restore-4b` ↔ `118-clocked-dac-restore-7b` | `False` | 0.9518 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Clocked DAC Restore 7b'] |
 | `098-edge-crossing-interval-timer` ↔ `100-final-step-file-metric` | `False` | 0.9505 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Final Step File Metric'] |
 | `114-sample-and-hold-ideal` ↔ `115-single-shot-pulse` | `False` | 0.9416 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Single Shot Pulse'] |
@@ -576,6 +578,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `117-bipolar-dac-4b-continuous` ↔ `120-not-gate-voltage` | `False` | 0.8884 | `['dut', 'dut']` | ['Bipolar DAC 4b Continuous', 'Not Gate Voltage'] |
 | `115-single-shot-pulse` ↔ `119-crossing-pulse-detector` | `False` | 0.8883 | `['dut', 'dut']` | ['Single Shot Pulse', 'Crossing Pulse Detector'] |
 | `115-single-shot-pulse` ↔ `121-dff-reset-voltage` | `False` | 0.8883 | `['dut', 'dut']` | ['Single Shot Pulse', 'DFF Reset Voltage'] |
+| `114-sample-and-hold-ideal` ↔ `120-not-gate-voltage` | `False` | 0.8881 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Not Gate Voltage'] |
 
 ### Task-Level Risk Flags
 
@@ -674,7 +677,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `111-clocked-sine-source` | `dut` | `L2` | `measurement_instrumentation_flows` | 118 | 1 | `low_negative_variant_count` |
 | `109-sample-hold-droop-front-end` | `dut` | `L2` | `sampling_analog_memory` | 64 | 1 | `low_negative_variant_count` |
 | `108-reference-startup-enable-flow` | `dut` | `L2` | `bias_reference_power_management` | 53 | 1 | `low_negative_variant_count` |
-| `107-reference-step-clock` | `dut` | `L2` | `pll_clock_timing_systems` | 156 | 1 | `low_negative_variant_count` |
 | `106-programmable-stimulus-sequencer` | `dut` | `L2` | `stimulus_source_generators` | 55 | 1 | `low_negative_variant_count` |
 | `105-pipeline-adc-chain-4b` | `dut` | `L2` | `data_converter_models` | 107 | 1 | `low_negative_variant_count` |
 | `104-ldo-load-step-recovery` | `dut` | `L2` | `bias_reference_power_management` | 60 | 1 | `low_negative_variant_count` |
@@ -684,7 +686,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `100-final-step-file-metric` | `dut` | `L2` | `measurement_instrumentation_flows` | 60 | 1 | `low_negative_variant_count` |
 | `099-dither-adder` | `dut` | `L2` | `measurement_instrumentation_flows` | 118 | 1 | `low_negative_variant_count` |
 | `098-edge-crossing-interval-timer` | `dut` | `L1` | `measurement_instrumentation_flows` | 94 | 1 | `low_negative_variant_count` |
-| `097-cppll-tracking-reacquire-timer` | `dut` | `L2` | `pll_clock_timing_systems` | 156 | 1 | `low_negative_variant_count` |
 | `096-converter-static-linearity-measurement` | `dut` | `L2` | `data_converter_models` | 84 | 1 | `low_negative_variant_count` |
 | `095-complete-calibration-loop` | `dut` | `L2` | `calibration_dem_control` | 54 | 1 | `low_negative_variant_count` |
 | `094-comparator-offset-search` | `dut` | `L2` | `comparator_decision_circuits` | 35 | 1 | `low_negative_variant_count` |
@@ -701,6 +702,8 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `074-configurable-polarity-edge-detector` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
 | `072-enable-gated-clock-pulse` | `dut` | `L1` | `testbench_utility_modules` | 13 | 5 | `short_solution_leq_20_loc` |
 | `071-active-high-reset-synchronizer` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
+| `070-active-low-reset-synchronizer` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
+| `063-masked-config-update-32b` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
 
 ## Interpretation Notes
 

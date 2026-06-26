@@ -3,8 +3,6 @@ syntax:
     - "@(cross("
     - "@(timer("
     - "transition("
-    - "tran"
-    - "save"
   must_not_include:
     - "I("
     - "ddt("
@@ -16,6 +14,7 @@ sim_correct:
     - "cppll_reacquires_after_reference_step"
     - "late_window_tracks_new_reference"
     - "vctrl_stays_bounded"
+    - "vctrl_changes_during_reacquire"
   public_observables:
     - "ref_clk"
     - "fb_clk"
@@ -24,6 +23,6 @@ sim_correct:
     - "lock"
 parity:
   reference: "spectre"
-  status: "certified"
+  status: "needs_rerun"
   notes:
-    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+    - "Current v3 audit refresh validates EVAS only by request; Spectre parity should be rerun before final release certification."

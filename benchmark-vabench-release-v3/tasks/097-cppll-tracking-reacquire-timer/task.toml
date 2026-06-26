@@ -18,3 +18,5 @@ negative_variants_dir = "negative_variants"
 
 [artifacts]
 target = ["cppll_timer_ref.va", "ref_step_clk.va"]
+primary_target = "cppll_timer_ref.va"
+support = ["ref_step_clk.va"]

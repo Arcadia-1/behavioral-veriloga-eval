@@ -5,8 +5,8 @@ version = "v3"
 form = "dut"
 language = "verilog-a"
 simulator = "evas"
-category = "pll_clock_timing_systems"
-level = "L2"
+category = "clock_timing"
+level = "L1"
 difficulty = "D2"
 instruction = "instruction.md"
 starter_dir = "starter"
@@ -17,4 +17,4 @@ solution_dir = "solution"
 negative_variants_dir = "negative_variants"
 
 [artifacts]
-target = ["ref_step_clk.va", "cppll_timer_ref.va"]
+target = ["ref_step_clk.va"]

@@ -1302,17 +1302,21 @@ def _stream_cppll_freq_step_reacquire_csv(csv_path: Path) -> tuple[float, list[s
     relock_time = post_lock_edges[0] if post_lock_edges else float("nan")
     lock_high_frac = lock_window_high_dt / max(lock_window_total_dt, 1e-18)
     disturb_low_frac = 1.0 - lock_high_frac
+    vctrl_span = vctrl_max - vctrl_min
+    vctrl_dynamic = vctrl_span >= 0.02
     ok = (
         bool(pre_lock_edges)
         and disturb_low_frac >= 0.25
         and bool(post_lock_edges)
         and 0.97 <= freq_ratio <= 1.03
         and vctrl_in_range
+        and vctrl_dynamic
     )
     return (1.0 if ok else 0.0), [
         f"freq_ratio={freq_ratio:.4f} relock_time={relock_time:.3e} "
         f"disturb_low_frac={disturb_low_frac:.3f} "
-        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f}"
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} "
+        f"vctrl_span={vctrl_span:.3f}"
     ]
 
 
@@ -9522,7 +9526,9 @@ def check_cppll_freq_step_reacquire(rows: list[dict[str, float]]) -> tuple[bool,
     vctrl_vals = [r["vctrl_mon"] for r in rows]
     vctrl_min = min(vctrl_vals)
     vctrl_max = max(vctrl_vals)
+    vctrl_span = vctrl_max - vctrl_min
     vctrl_in_range = all(-1e-6 <= v <= 0.95 for v in vctrl_vals)
+    vctrl_dynamic = vctrl_span >= 0.02
 
     ok = (
         bool(pre_lock_edges)
@@ -9530,6 +9536,7 @@ def check_cppll_freq_step_reacquire(rows: list[dict[str, float]]) -> tuple[bool,
         and bool(post_lock_edges)
         and 0.97 <= freq_ratio <= 1.03
         and vctrl_in_range
+        and vctrl_dynamic
     )
     return ok, (
         f"pre_lock_edges={len(pre_lock_edges)} "
@@ -9538,7 +9545,60 @@ def check_cppll_freq_step_reacquire(rows: list[dict[str, float]]) -> tuple[bool,
         f"late_freq_ratio={freq_ratio:.4f} "
         f"relock_time={(relock_time if post_lock_edges else float('nan')):.3e} "
         f"vctrl_min={vctrl_min:.3f} "
-        f"vctrl_max={vctrl_max:.3f}"
+        f"vctrl_max={vctrl_max:.3f} "
+        f"vctrl_span={vctrl_span:.3f}"
+    )
+
+
+def check_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "empty_rows"
+    clk_key = "CLK" if "CLK" in rows[0] else "clk" if "clk" in rows[0] else None
+    if clk_key is None or "time" not in rows[0]:
+        return False, "missing time/CLK"
+
+    times = [row["time"] for row in rows]
+    clk = [row[clk_key] for row in rows]
+    vmin = min(clk)
+    vmax = max(clk)
+    vth = 0.45
+    edges = rising_edges(clk, times, threshold=vth)
+    if len(edges) < 80:
+        return False, f"not_enough_edges edges={len(edges)}"
+
+    pre_edges = [edge for edge in edges if 0.20e-6 <= edge <= 1.10e-6]
+    early_post_edges = [edge for edge in edges if 1.36e-6 <= edge <= 1.72e-6]
+    post_edges = [edge for edge in edges if 1.55e-6 <= edge <= 2.25e-6]
+    switch_edges = [edge for edge in edges if 1.30e-6 <= edge <= 1.34e-6]
+    if len(pre_edges) < 8 or len(early_post_edges) < 8 or len(post_edges) < 8:
+        return False, (
+            f"not_enough_window_edges pre={len(pre_edges)} "
+            f"early_post={len(early_post_edges)} post={len(post_edges)}"
+        )
+    if not switch_edges:
+        return False, "no_rising_edge_near_switch"
+
+    def median_period(edges_in_window: list[float]) -> float:
+        periods = [b - a for a, b in zip(edges_in_window, edges_in_window[1:])]
+        ordered = sorted(periods)
+        return ordered[len(ordered) // 2] if ordered else float("nan")
+
+    pre_period = median_period(pre_edges)
+    early_post_period = median_period(early_post_edges)
+    post_period = median_period(post_edges)
+    pre_duty = weighted_logic_high_fraction_window(rows, clk_key, vth, 0.25e-6, 1.10e-6)
+    post_duty = weighted_logic_high_fraction_window(rows, clk_key, vth, 1.60e-6, 2.25e-6)
+    rails_ok = vmin <= 0.12 and vmax >= 0.78
+    pre_ok = abs(pre_period - 18.0e-9) <= 0.35e-9
+    early_post_ok = abs(early_post_period - 22.0e-9) <= 0.35e-9
+    post_ok = abs(post_period - 22.0e-9) <= 0.35e-9
+    duty_ok = 0.43 <= pre_duty <= 0.57 and 0.43 <= post_duty <= 0.57
+    ok = rails_ok and pre_ok and early_post_ok and post_ok and duty_ok
+    return ok, (
+        f"pre_period={pre_period:.3e} early_post_period={early_post_period:.3e} "
+        f"post_period={post_period:.3e} "
+        f"switch_edge={switch_edges[0]:.3e} pre_duty={pre_duty:.3f} "
+        f"post_duty={post_duty:.3f} vmin={vmin:.3f} vmax={vmax:.3f}"
     )
 
 
@@ -13062,6 +13122,7 @@ CHECKS = {
     "cmp_strongarm_smoke": check_cmp_strongarm,
     "comparator_smoke": check_comparator,
     "cppll_freq_step_reacquire_smoke": check_cppll_freq_step_reacquire,
+    "v3_reference_step_clock": check_reference_step_clock,
     "cppll_tracking_smoke": check_cppll_tracking,
     "d2b_4bit_smoke": check_d2b,
     "ramp_gen_smoke": check_ramp_gen,
@@ -15004,8 +15065,8 @@ V3_CANDIDATE_090_111_CHECK_ALIASES = {
     "105-pipeline-adc-chain-4b": "vbr1_l2_pipeline_adc_chain_tb",
     "v3_106_programmable_stimulus_sequencer": "vbr1_l2_programmable_stimulus_sequencer_tb",
     "106-programmable-stimulus-sequencer": "vbr1_l2_programmable_stimulus_sequencer_tb",
-    "v3_107_reference_step_clock": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
-    "107-reference-step-clock": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+    "v3_107_reference_step_clock": "v3_reference_step_clock",
+    "107-reference-step-clock": "v3_reference_step_clock",
     "v3_108_reference_startup_enable_flow": "vbr1_l2_reference_startup_enable_flow_tb",
     "108-reference-startup-enable-flow": "vbr1_l2_reference_startup_enable_flow_tb",
     "v3_109_sample_hold_droop_front_end": "vbr1_l2_converter_front_end_tb",

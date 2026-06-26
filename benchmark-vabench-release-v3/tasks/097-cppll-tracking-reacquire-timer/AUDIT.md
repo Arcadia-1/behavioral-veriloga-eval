@@ -2,21 +2,34 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `cppll_timer_ref.va`, migrated from `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in `task.toml` are supplied by the harness when needed by the original system testbench.
+Task boundary is one primary Verilog-A DUT artifact, `cppll_timer_ref.va`,
+migrated from `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb`.
+The `ref_step_clk.va` file is a harness support artifact used to stage the
+reference-frequency step source, not the graded candidate target.
 
 ## Four Standards
 
 - Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
 - Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Complete tests: accepted for current EVAS smoke. Hidden gold passes, visible
+  smoke passes with nearby-but-different public parameters, and five concrete
+  behavior negatives fail by simulation correctness.
+- Fair evaluation: improved. The prompt no longer asks for a testbench or leaks
+  the hidden numeric scenario. The checker now also requires nontrivial
+  `vctrl_mon` movement so a fixed-control implementation cannot pass by staying
+  near the original frequency.
 
 ## Checker And Evidence
 
 - Source checker id: `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- EVAS hidden gold smoke: PASS
+- EVAS visible smoke: PASS
+- Concrete negatives: 5/5 `FAIL_SIM_CORRECTNESS`
+- Additional checker hardening: `vctrl_span >= 0.02` in both streaming and
+  in-memory CPPLL reacquire checkers.
+- Spectre hidden gold smoke: not rerun in this audit by request.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Spectre parity is still pending after this audit refresh. Do not count this
+task in a final release surface until fresh Spectre certification is attached.

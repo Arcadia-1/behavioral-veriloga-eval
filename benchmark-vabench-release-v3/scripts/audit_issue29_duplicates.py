@@ -85,6 +85,24 @@ ISSUE_GROUPS: list[dict[str, Any]] = [
     },
 ]
 
+MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
+    "timer_reacquire_pair": {
+        "classification": "manually_split_pending_spectre",
+        "status": "EVAS-only review refreshed; Spectre was not rerun by request.",
+        "decision": (
+            "Keep as distinct candidate rows after manual split: task 097 grades the "
+            "CPPLL reacquire DUT with a supplied reference-step-clock support artifact, "
+            "while task 107 grades the standalone reference-step-clock DUT."
+        ),
+        "evidence": (
+            "Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives "
+            "FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 "
+            "hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with "
+            "hidden parameters different from visible smoke parameters."
+        ),
+    },
+}
+
 COMMON_WORDS = {
     "the",
     "and",
@@ -519,7 +537,12 @@ def build_issue_group_reports(tasks_by_name: dict[str, TaskInfo]) -> list[dict[s
                 "id": group["id"],
                 "why_flagged": group["why_flagged"],
                 "missing_tasks": missing,
-                "classification": group_class,
+                "classification": MANUAL_GROUP_ADJUDICATIONS.get(group["id"], {}).get(
+                    "classification",
+                    group_class,
+                ),
+                "auto_classification": group_class,
+                "manual_adjudication": MANUAL_GROUP_ADJUDICATIONS.get(group["id"]),
                 "members": [task_summary(member) for member in members],
                 "pairs": pairs,
                 "prompt_excerpts": {
@@ -696,9 +719,13 @@ def build_report() -> dict[str, Any]:
                 "Both legacy cases/artifact and v3 variants/path negative manifest schemas are counted; "
                 "the report also counts concrete .va files under negative_variants/."
             ),
-                "source_family_heuristic": (
+            "source_family_heuristic": (
                 "A row is treated as source-family when its task id contains `_source_`, matching the "
                 "current v3 source-import lineage marker."
+            ),
+            "manual_adjudication": (
+                "Named groups may include explicit manual adjudication notes when a human review has "
+                "already resolved the automatic triage signal for the current audit slice."
             ),
         },
     }
@@ -748,6 +775,8 @@ def render_markdown(report: dict[str, Any]) -> str:
     for group in report["issue29_named_groups"]:
         pair_labels = sorted({pair["classification"] for pair in group["pairs"]})
         signal = ", ".join(pair_labels) if pair_labels else "missing_or_singleton"
+        if group.get("manual_adjudication"):
+            signal = f"{signal}; manual={group['manual_adjudication']['status']}"
         members = ", ".join(f"`{member['name']}`" for member in group["members"])
         lines.append(
             f"| `{group['id']}` | `{group['classification']}` | {members} | "
@@ -761,6 +790,12 @@ def render_markdown(report: dict[str, Any]) -> str:
             lines.append(f"- Missing tasks: `{group['missing_tasks']}`")
         lines.append(f"- Why flagged: {group['why_flagged']}")
         lines.append(f"- Group classification: `{group['classification']}`")
+        if group.get("manual_adjudication"):
+            manual = group["manual_adjudication"]
+            lines.append(f"- Automatic classification before manual review: `{group['auto_classification']}`")
+            lines.append(f"- Manual status: {manual['status']}")
+            lines.append(f"- Manual decision: {manual['decision']}")
+            lines.append(f"- Manual evidence: {manual['evidence']}")
         if group["pairs"]:
             lines.extend(
                 [

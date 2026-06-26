@@ -4,11 +4,17 @@
   "source_form": "tb",
   "source_checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
   "primary_target": "cppll_timer_ref.va",
+  "graded_targets": [
+    "cppll_timer_ref.va"
+  ],
+  "support_artifacts": [
+    "ref_step_clk.va"
+  ],
   "artifact_targets": [
     "cppll_timer_ref.va",
     "ref_step_clk.va"
   ],
   "hidden_testbench": "tb_cppll_freq_step_reacquire_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "status": "primary_dut_with_support_artifact_evas_gold_visible_and_negatives_pass_spectre_pending"
 }
