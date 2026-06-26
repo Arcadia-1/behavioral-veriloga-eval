@@ -1,0 +1,20 @@
+id = "v3_284_window_comparator_testbench"
+name = "284-window-comparator-testbench"
+title = "Window Comparator Testbench"
+version = "v3"
+form = "tb"
+language = "verilog-a"
+simulator = "evas"
+category = "comparator_decision"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["tb_window_comparator_ref.scs"]

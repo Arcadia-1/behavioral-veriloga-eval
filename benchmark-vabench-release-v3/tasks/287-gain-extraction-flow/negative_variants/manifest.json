@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_unity_gain",
+      "artifacts": "neg_001_unity_gain/",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Amplifier passes the dithered input through at unity gain."
+    }
+  ]
+}

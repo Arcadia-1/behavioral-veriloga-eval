@@ -1,7 +1,7 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 111 Verilog-A
-DUT/support tasks.
+This directory is a clean, RTL-Forge-style packaging of 287 Verilog-A
+DUT/support/testbench/e2e tasks.
 
 Partitions:
 
@@ -9,6 +9,8 @@ Partitions:
 - `050`-`079`: testbench utility / Verilog-A helper module tasks.
 - `080`-`089`: additional migrated DUT/support modules from v1.
 - `090`-`111`: additional useful Verilog-A module tasks promoted into v3.
+- `112`-`282`: certified source-import DUT tasks.
+- `283`-`287`: explicit absorption of the obsolete v2 five-task slice.
 
 Each task is self-contained under `tasks/NNN-name/`:
 

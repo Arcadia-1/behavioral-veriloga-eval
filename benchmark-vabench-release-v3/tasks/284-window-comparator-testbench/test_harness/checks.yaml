@@ -1,0 +1,34 @@
+schema_version: "vabench-release-v2-checks"
+task_id: "vbr1_l1_window_comparator_detector:tb"
+checker:
+  task_id: "vbr1_l1_window_comparator_detector"
+  function: "check_true_window_comparator"
+  source: "runners/simulate_evas.py"
+syntax:
+  policy: "behavior_first"
+  must_include:
+    - "ahdl_include"
+    - "window_comparator_ref.va"
+    - "tran"
+    - "save"
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+  notes: "Do not require exact waveform breakpoints or a fixed PWL template. Multiline PWL wave arrays must use Spectre line continuation. Compile and behavior checks decide correctness."
+tb_compile:
+  backend: "evas"
+sim_correct:
+  tb_companion_role: "function_checked_testbench"
+  strong_benchmark_claim: true
+  checks:
+    - "true_window_comparator"
+  public_observables:
+    - "time"
+    - "vin"
+    - "out"
+  public_behavior_envelope: "The public spec requires a triangular or PWL vin stimulus that covers below-window, inside-window on the rising ramp, above-window, and inside-window on the falling ramp, saving plain scalar vin/out waveforms."
+  private_threshold_policy: "Internal checker resamples the waveform on a common time grid and applies private coverage and high/low fraction thresholds."
+parity:
+  required: true
+  tolerance_notes: "Use waveform resampling so EVAS dense CSV and Spectre adaptive breakpoints are judged on the same behavior."

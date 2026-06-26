@@ -1,0 +1,7 @@
+`include "constants.vams"
+`include "disciplines.vams"
+`define NUM_BITS 8
+module sar_adc_weighted_8b(VIN,CLKS,RST_N,DOUT,BIT_INDEX,TRIAL_CODE_MON,TRIAL_VDAC,CMP_DECISION,CONV_DONE,VIN_SAMPLE);
+input VIN,CLKS,RST_N; output [`NUM_BITS-1:0] DOUT; output BIT_INDEX,TRIAL_CODE_MON,TRIAL_VDAC,CMP_DECISION,CONV_DONE,VIN_SAMPLE; electrical VIN,CLKS,RST_N; electrical [`NUM_BITS-1:0] DOUT; electrical BIT_INDEX,TRIAL_CODE_MON,TRIAL_VDAC,CMP_DECISION,CONV_DONE,VIN_SAMPLE;
+analog begin V(DOUT[7])<+0; V(DOUT[6])<+0; V(DOUT[5])<+0; V(DOUT[4])<+0; V(DOUT[3])<+0; V(DOUT[2])<+0; V(DOUT[1])<+0; V(DOUT[0])<+0; V(BIT_INDEX)<+0; V(TRIAL_CODE_MON)<+0; V(TRIAL_VDAC)<+0; V(CMP_DECISION)<+0; V(CONV_DONE)<+0; V(VIN_SAMPLE)<+0; end
+endmodule

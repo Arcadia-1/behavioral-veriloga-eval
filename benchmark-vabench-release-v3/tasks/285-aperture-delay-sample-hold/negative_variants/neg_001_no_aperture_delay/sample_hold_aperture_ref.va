@@ -1,0 +1,3 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module sample_hold_aperture_ref(VDD,VSS,clk,vin,vout); inout electrical VDD,VSS; input electrical clk,vin; output electrical vout; parameter real vth=0.45; parameter real tedge=50p; real sampled; analog begin @(initial_step) sampled=V(vin); @(cross(V(clk)-vth,+1)) sampled=V(vin); V(vout)<+transition(sampled,0,tedge,tedge); end endmodule

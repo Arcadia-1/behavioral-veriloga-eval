@@ -1,0 +1,2 @@
+`include "disciplines.vams"
+module sh_ideal(vin, clk, vdd, vss, rst_n, vout); input vin,clk,vdd,vss,rst_n; output vout; electrical vin,clk,vdd,vss,rst_n,vout; analog begin V(vout,vss)<+0.0; end endmodule

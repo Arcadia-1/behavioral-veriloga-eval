@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_no_aperture_delay",
+      "artifact": "neg_001_no_aperture_delay/sample_hold_aperture_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Samples at the clock edge instead of after the 200 ps aperture delay."
+    }
+  ]
+}

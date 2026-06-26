@@ -14362,6 +14362,31 @@ CHECKS["279-source-safe-analog-divider"] = check_v3_source_safe_analog_divider
 CHECKS["280-source-vargain-diffamp-clip"] = check_v3_source_vargain_diffamp_clip
 CHECKS["281-source-programmable-divider-by-n"] = check_v3_source_programmable_divider_by_n
 CHECKS["282-source-pfd-timer-reset"] = check_v3_source_pfd_timer_reset
+CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
+CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
+CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator
+CHECKS["284-window-comparator-testbench"] = check_true_window_comparator
+CHECKS["v3_285_aperture_delay_sample_hold"] = check_vbm1_track_hold_aperture
+CHECKS["285-aperture-delay-sample-hold"] = check_vbm1_track_hold_aperture
+CHECKS["v3_286_first_order_lowpass_bugfix"] = check_vbm1_first_order_lowpass
+CHECKS["286-first-order-lowpass-bugfix"] = check_vbm1_first_order_lowpass
+CHECKS["v3_287_gain_extraction_flow"] = check_gain_extraction
+CHECKS["287-gain-extraction-flow"] = check_gain_extraction
+
+for _alias, _source_checker_id in {
+    "v3_283_weighted_sar_adc_dac_loop": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
+    "283-weighted-sar-adc-dac-loop": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
+    "v3_284_window_comparator_testbench": "vbr1_l1_window_comparator_detector_tb",
+    "284-window-comparator-testbench": "vbr1_l1_window_comparator_detector_tb",
+    "v3_285_aperture_delay_sample_hold": "vbr1_l1_aperture_delay_track_and_hold",
+    "285-aperture-delay-sample-hold": "vbr1_l1_aperture_delay_track_and_hold",
+    "v3_286_first_order_lowpass_bugfix": "vbr1_l1_first_order_lowpass",
+    "286-first-order-lowpass-bugfix": "vbr1_l1_first_order_lowpass",
+    "v3_287_gain_extraction_flow": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+    "287-gain-extraction-flow": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
+}.items():
+    if _source_checker_id in STREAMING_BEHAVIOR_CHECKS:
+        STREAMING_BEHAVIOR_CHECKS[_alias] = STREAMING_BEHAVIOR_CHECKS[_source_checker_id]
 
 
 RELEASE_FORM_CHECK_ALIASES = {

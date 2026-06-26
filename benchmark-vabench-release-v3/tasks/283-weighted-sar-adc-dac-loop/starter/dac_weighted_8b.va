@@ -1,0 +1,6 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module dac_weighted_8b(DIN7,DIN6,DIN5,DIN4,DIN3,DIN2,DIN1,DIN0,VOUT);
+input DIN7,DIN6,DIN5,DIN4,DIN3,DIN2,DIN1,DIN0; output VOUT; electrical DIN7,DIN6,DIN5,DIN4,DIN3,DIN2,DIN1,DIN0,VOUT;
+analog begin V(VOUT) <+ 0.0; end
+endmodule

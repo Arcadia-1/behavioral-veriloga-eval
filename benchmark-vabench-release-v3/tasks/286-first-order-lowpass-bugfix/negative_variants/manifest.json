@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_leave_buggy",
+      "artifact": "neg_001_leave_buggy/dut_fixed.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Returns the original too-slow alpha=0.010 implementation."
+    }
+  ]
+}

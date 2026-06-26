@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_stuck_zero",
+      "artifacts": "neg_001_stuck_zero/",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "All behavioral outputs are stuck at zero."
+    }
+  ]
+}

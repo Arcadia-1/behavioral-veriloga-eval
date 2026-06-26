@@ -1,0 +1,20 @@
+id = "v3_286_first_order_lowpass_bugfix"
+name = "286-first-order-lowpass-bugfix"
+title = "First Order Lowpass Bugfix"
+version = "v3"
+form = "bugfix"
+language = "verilog-a"
+simulator = "evas"
+category = "baseband_signal_conditioning"
+level = "L1"
+difficulty = "D1"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dut_fixed.va"]

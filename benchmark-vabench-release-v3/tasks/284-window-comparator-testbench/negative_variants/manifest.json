@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_no_window_sweep",
+      "artifact": "neg_001_no_window_sweep/tb_window_comparator_ref.scs",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Input never visits the comparator window."
+    }
+  ]
+}

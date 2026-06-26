@@ -1,0 +1,16 @@
+{
+  "task": "285-aperture-delay-sample-hold",
+  "form": "dut",
+  "source": "v2/vbr1_l1_aperture_delay_track_and_hold:dut",
+  "visible": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "hidden": [
+    "solution/",
+    "test_hidden/",
+    "test_harness/",
+    "negative_variants/"
+  ]
+}
