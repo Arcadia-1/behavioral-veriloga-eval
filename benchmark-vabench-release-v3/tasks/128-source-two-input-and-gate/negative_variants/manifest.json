@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/two_input_and_gate.va"
+    },
+    {
+      "id": "neg_002_or_instead_of_and",
+      "description": "Uses OR instead of AND.",
+      "path": "negative_variants/neg_002_or_instead_of_and/two_input_and_gate.va"
+    },
+    {
+      "id": "neg_003_xor_instead_of_and",
+      "description": "Uses XOR instead of AND.",
+      "path": "negative_variants/neg_003_xor_instead_of_and/two_input_and_gate.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Correct truth table but drives half-amplitude high level.",
+      "path": "negative_variants/neg_004_half_high_level/two_input_and_gate.va"
     }
   ]
 }

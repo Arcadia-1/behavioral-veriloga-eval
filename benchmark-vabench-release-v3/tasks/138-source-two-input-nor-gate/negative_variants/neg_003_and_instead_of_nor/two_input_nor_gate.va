@@ -1,0 +1,9 @@
+`include "disciplines.vams"
+module two_input_nor_gate (out, in1, in2);
+output out; input in1, in2; electrical out, in1, in2;
+parameter real vh=0.9; parameter real vl=0; parameter real vth=0.45; parameter real td=0 from [0:inf); parameter real tt=0 from [0:inf); integer out_state;
+analog begin
+    @(initial_step or cross(V(in1)-vth) or cross(V(in2)-vth)) out_state = ((V(in1)>vth) && (V(in2)>vth));
+    V(out) <+ transition(out_state ? vh : vl, td, tt);
+end
+endmodule

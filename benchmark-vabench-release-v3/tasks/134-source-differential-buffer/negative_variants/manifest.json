@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/differential_buffer.va"
+    },
+    {
+      "id": "neg_002_swapped_outputs",
+      "description": "Swaps positive and negative outputs.",
+      "path": "negative_variants/neg_002_swapped_outputs/differential_buffer.va"
+    },
+    {
+      "id": "neg_003_half_gain",
+      "description": "Copies both inputs with half gain.",
+      "path": "negative_variants/neg_003_half_gain/differential_buffer.va"
+    },
+    {
+      "id": "neg_004_common_mode_only",
+      "description": "Outputs only the common-mode average.",
+      "path": "negative_variants/neg_004_common_mode_only/differential_buffer.va"
     }
   ]
 }

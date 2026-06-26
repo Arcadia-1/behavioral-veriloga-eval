@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/deadband_window.va"
+    },
+    {
+      "id": "neg_002_passes_inside_deadband",
+      "description": "Passes input inside the deadband instead of zeroing it.",
+      "path": "negative_variants/neg_002_passes_inside_deadband/deadband_window.va"
+    },
+    {
+      "id": "neg_003_wrong_offsets",
+      "description": "Uses the wrong deadband edge offset outside the window.",
+      "path": "negative_variants/neg_003_wrong_offsets/deadband_window.va"
+    },
+    {
+      "id": "neg_004_clips_outside_deadband",
+      "description": "Clips outside the window instead of subtracting the edge.",
+      "path": "negative_variants/neg_004_clips_outside_deadband/deadband_window.va"
     }
   ]
 }

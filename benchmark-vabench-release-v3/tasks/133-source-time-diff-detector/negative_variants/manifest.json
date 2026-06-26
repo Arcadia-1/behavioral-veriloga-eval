@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/time_diff_detector.va"
+    },
+    {
+      "id": "neg_002_inverted_time_difference",
+      "description": "Computes vinn time minus vinp time.",
+      "path": "negative_variants/neg_002_inverted_time_difference/time_diff_detector.va"
+    },
+    {
+      "id": "neg_003_half_scale",
+      "description": "Uses one quarter of the requested time-to-voltage scale, avoiding the intended rail clipping.",
+      "path": "negative_variants/neg_003_half_scale/time_diff_detector.va"
+    },
+    {
+      "id": "neg_004_no_rearm_after_cycle",
+      "description": "Fails to re-arm edge detection after each clock cycle.",
+      "path": "negative_variants/neg_004_no_rearm_after_cycle/time_diff_detector.va"
     }
   ]
 }

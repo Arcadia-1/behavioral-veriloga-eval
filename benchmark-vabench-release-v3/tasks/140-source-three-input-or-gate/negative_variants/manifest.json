@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the logic truth-table contract.",
       "path": "negative_variants/neg_001_zero/three_input_or_gate.va"
+    },
+    {
+      "id": "neg_002_and_instead_of_or",
+      "description": "Uses AND instead of three-input OR.",
+      "path": "negative_variants/neg_002_and_instead_of_or/three_input_or_gate.va"
+    },
+    {
+      "id": "neg_003_xor_instead_of_or",
+      "description": "Uses XOR instead of OR.",
+      "path": "negative_variants/neg_003_xor_instead_of_or/three_input_or_gate.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Correct truth table but wrong high level.",
+      "path": "negative_variants/neg_004_half_high_level/three_input_or_gate.va"
     }
   ]
 }

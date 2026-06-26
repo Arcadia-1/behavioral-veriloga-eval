@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/sar_cdac_residue.va"
+    },
+    {
+      "id": "neg_002_wrong_s6_edge",
+      "description": "Applies the S6 residue step on rising instead of falling edge.",
+      "path": "negative_variants/neg_002_wrong_s6_edge/sar_cdac_residue.va"
+    },
+    {
+      "id": "neg_003_wrong_weight_scale",
+      "description": "Uses doubled binary residue weights.",
+      "path": "negative_variants/neg_003_wrong_weight_scale/sar_cdac_residue.va"
+    },
+    {
+      "id": "neg_004_missing_lsb_step",
+      "description": "Omits the S1 least-significant residue step.",
+      "path": "negative_variants/neg_004_missing_lsb_step/sar_cdac_residue.va"
     }
   ]
 }

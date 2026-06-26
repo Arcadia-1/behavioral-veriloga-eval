@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/attenuator_gain.va"
+    },
+    {
+      "id": "neg_002_no_attenuation",
+      "description": "Passes input without attenuation.",
+      "path": "negative_variants/neg_002_no_attenuation/attenuator_gain.va"
+    },
+    {
+      "id": "neg_003_amplifies_by_db_factor",
+      "description": "Multiplies by dB gain factor instead of dividing.",
+      "path": "negative_variants/neg_003_amplifies_by_db_factor/attenuator_gain.va"
+    },
+    {
+      "id": "neg_004_double_attenuation",
+      "description": "Applies attenuation twice.",
+      "path": "negative_variants/neg_004_double_attenuation/attenuator_gain.va"
     }
   ]
 }

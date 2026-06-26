@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the semantic contract.",
       "path": "negative_variants/neg_001_zero/two_input_or_gate.va"
+    },
+    {
+      "id": "neg_002_and_instead_of_or",
+      "description": "Uses AND instead of OR.",
+      "path": "negative_variants/neg_002_and_instead_of_or/two_input_or_gate.va"
+    },
+    {
+      "id": "neg_003_xor_instead_of_or",
+      "description": "Uses XOR instead of OR.",
+      "path": "negative_variants/neg_003_xor_instead_of_or/two_input_or_gate.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Correct OR state but wrong high level.",
+      "path": "negative_variants/neg_004_half_high_level/two_input_or_gate.va"
     }
   ]
 }

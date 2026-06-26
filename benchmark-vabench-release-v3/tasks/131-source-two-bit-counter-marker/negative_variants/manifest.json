@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/two_bit_counter_marker.va"
+    },
+    {
+      "id": "neg_002_pulse_every_edge",
+      "description": "Marks every rising clock edge instead of only modulo-four wrap.",
+      "path": "negative_variants/neg_002_pulse_every_edge/two_bit_counter_marker.va"
+    },
+    {
+      "id": "neg_003_wrap_after_three_edges",
+      "description": "Uses a modulo-three wrap marker.",
+      "path": "negative_variants/neg_003_wrap_after_three_edges/two_bit_counter_marker.va"
+    },
+    {
+      "id": "neg_004_missing_initialization",
+      "description": "Starts the counter at one, shifting marker timing.",
+      "path": "negative_variants/neg_004_missing_initialization/two_bit_counter_marker.va"
     }
   ]
 }

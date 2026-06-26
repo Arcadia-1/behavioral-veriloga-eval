@@ -57,3 +57,24 @@ EVAS 0.4.5 local verification:
 - 16/16 gold solutions PASS;
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
+
+## Completed Batch: 128-143
+
+Tasks `128-source-two-input-and-gate` through
+`143-source-deadband-window` were repaired as the third source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover truth-table substitutions, threshold/edge mistakes,
+  gain/scale mistakes, state-machine mistakes, and missing residue/deadband
+  operations;
+- weak candidate negatives that were hidden-test equivalent were replaced with
+  distinguishable failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.

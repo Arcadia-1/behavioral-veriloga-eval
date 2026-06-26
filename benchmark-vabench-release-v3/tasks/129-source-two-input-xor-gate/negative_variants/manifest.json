@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/two_input_xor_gate.va"
+    },
+    {
+      "id": "neg_002_or_instead_of_xor",
+      "description": "Uses OR instead of XOR.",
+      "path": "negative_variants/neg_002_or_instead_of_xor/two_input_xor_gate.va"
+    },
+    {
+      "id": "neg_003_xnor_instead_of_xor",
+      "description": "Uses XNOR instead of XOR.",
+      "path": "negative_variants/neg_003_xnor_instead_of_xor/two_input_xor_gate.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Correct XOR state but wrong high level.",
+      "path": "negative_variants/neg_004_half_high_level/two_input_xor_gate.va"
     }
   ]
 }

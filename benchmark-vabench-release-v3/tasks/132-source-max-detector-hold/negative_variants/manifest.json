@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the semantic contract.",
       "path": "negative_variants/neg_001_zero/max_detector_hold.va"
+    },
+    {
+      "id": "neg_002_tracks_input",
+      "description": "Tracks input directly instead of holding the maximum.",
+      "path": "negative_variants/neg_002_tracks_input/max_detector_hold.va"
+    },
+    {
+      "id": "neg_003_min_detector",
+      "description": "Holds the minimum instead of the maximum.",
+      "path": "negative_variants/neg_003_min_detector/max_detector_hold.va"
+    },
+    {
+      "id": "neg_004_initial_only",
+      "description": "Never updates after initial sampling.",
+      "path": "negative_variants/neg_004_initial_only/max_detector_hold.va"
     }
   ]
 }

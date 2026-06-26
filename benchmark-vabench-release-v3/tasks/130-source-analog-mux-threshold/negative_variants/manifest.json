@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
       "path": "negative_variants/neg_001_zero/analog_mux_threshold.va"
+    },
+    {
+      "id": "neg_002_swapped_mux_inputs",
+      "description": "Selects the opposite mux input.",
+      "path": "negative_variants/neg_002_swapped_mux_inputs/analog_mux_threshold.va"
+    },
+    {
+      "id": "neg_003_rising_only_select",
+      "description": "Never updates selection on falling threshold crossings.",
+      "path": "negative_variants/neg_003_rising_only_select/analog_mux_threshold.va"
+    },
+    {
+      "id": "neg_004_average_instead_of_select",
+      "description": "Averages both inputs instead of selecting one.",
+      "path": "negative_variants/neg_004_average_instead_of_select/analog_mux_threshold.va"
     }
   ]
 }
