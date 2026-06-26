@@ -19,6 +19,42 @@ meet these minimum conditions:
 - every new negative compiles and fails behavioral correctness rather than
   failing by syntax or missing files.
 
+## Final Source-Series Audit
+
+As of 2026-06-26, the source-series repair covers all 185 source-family tasks
+identified by the current `task.toml` ids.
+
+Current-state checks:
+
+- 185/185 source-family tasks have the required public assets:
+  `instruction.md`, `starter/`, `solution/`, `test_visible/`, `test_hidden/`,
+  `test_harness/checks.yaml`, and `negative_variants/manifest.json`;
+- 185/185 source-family tasks use the v3-standard `variants/path` negative
+  manifest shape;
+- 185/185 source-family tasks have at least four concrete negative variants;
+- no source-family task directory still uses the historical `NNN-source-*`
+  public directory prefix;
+- no stale source-family `negative_cases.json` planned-negative file remains.
+
+EVAS 0.4.5 local verification using the repository `.venv`:
+
+- hidden/formal source sweep: 926/926 expected outcomes;
+- 185/185 gold solutions PASS;
+- 741/741 concrete negative variants fail behavioral correctness;
+- 0 negative variants fail by DUT compile, testbench compile, timeout, or
+  missing artifact;
+- solver-visible smoke scripts: 185/185 PASS using only `starter/` and the
+  public visible smoke testbench.
+
+Follow-up fixes from the final sweep:
+
+- `293-flash-folded-dac4` negative `neg_003_wrong_denominator` was rewritten
+  from an EVAS tuple-triggering compressed expression into the same branch
+  structure as the gold solution with only the denominator changed, so it now
+  compiles and fails behavioral correctness;
+- `079-jittered-clock-source-deterministic` visible smoke now forces the Python
+  EVAS engine, matching the rest of the source visible smoke scripts.
+
 ## Completed Pilot: 288-300
 
 Tasks `288-absolute-value` through
