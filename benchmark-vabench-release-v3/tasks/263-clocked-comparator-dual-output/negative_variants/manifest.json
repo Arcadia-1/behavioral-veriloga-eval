@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/clocked_comparator_dual_output.va"
+    },
+    {
+      "id": "neg_002_no_falling_reset",
+      "description": "Holds comparator outputs after clock falling edges instead of resetting low.",
+      "path": "negative_variants/neg_002_no_falling_reset/clocked_comparator_dual_output.va"
+    },
+    {
+      "id": "neg_003_inverted_compare",
+      "description": "Inverts the latched comparison.",
+      "path": "negative_variants/neg_003_inverted_compare/clocked_comparator_dual_output.va"
+    },
+    {
+      "id": "neg_004_swapped_outputs",
+      "description": "Swaps OUTP and OUTN drive states.",
+      "path": "negative_variants/neg_004_swapped_outputs/clocked_comparator_dual_output.va"
     }
   ]
 }

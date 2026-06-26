@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_serial_16b_nobridge.va"
+    },
+    {
+      "id": "neg_002_no_sample_reset",
+      "description": "Fails to reset state and counter on CLK_SAMPLE falling edges.",
+      "path": "negative_variants/neg_002_no_sample_reset/dac_serial_16b_nobridge.va"
+    },
+    {
+      "id": "neg_003_wrong_ready_edge",
+      "description": "Consumes serial data on CLK_SARREADY rising edges instead of falling edges.",
+      "path": "negative_variants/neg_003_wrong_ready_edge/dac_serial_16b_nobridge.va"
+    },
+    {
+      "id": "neg_004_wrong_first_weight",
+      "description": "Halves the first capacitor weight.",
+      "path": "negative_variants/neg_004_wrong_first_weight/dac_serial_16b_nobridge.va"
     }
   ]
 }

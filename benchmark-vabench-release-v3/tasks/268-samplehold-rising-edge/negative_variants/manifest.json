@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/samplehold_rising_edge.va"
+    },
+    {
+      "id": "neg_002_half_scale_capture",
+      "description": "Captures half of VIN on rising control edges instead of the full held voltage.",
+      "path": "negative_variants/neg_002_half_scale_capture/samplehold_rising_edge.va"
+    },
+    {
+      "id": "neg_003_track_input",
+      "description": "Tracks VIN continuously instead of holding sampled values.",
+      "path": "negative_variants/neg_003_track_input/samplehold_rising_edge.va"
+    },
+    {
+      "id": "neg_004_wrong_threshold",
+      "description": "Uses a threshold above the control high level and never captures after initialization.",
+      "path": "negative_variants/neg_004_wrong_threshold/samplehold_rising_edge.va"
     }
   ]
 }

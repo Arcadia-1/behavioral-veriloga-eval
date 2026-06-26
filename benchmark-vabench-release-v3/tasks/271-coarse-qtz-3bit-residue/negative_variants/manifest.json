@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/coarse_qtz_3bit_residue.va"
+    },
+    {
+      "id": "neg_002_floor_quantizer",
+      "description": "Uses floor quantization instead of rounding to nearest.",
+      "path": "negative_variants/neg_002_floor_quantizer/coarse_qtz_3bit_residue.va"
+    },
+    {
+      "id": "neg_003_no_input_clip",
+      "description": "Does not clip VIN before quantization and residue computation.",
+      "path": "negative_variants/neg_003_no_input_clip/coarse_qtz_3bit_residue.va"
+    },
+    {
+      "id": "neg_004_residue_sign_inverted",
+      "description": "Reports quantized-minus-input residue instead of input-minus-quantized residue.",
+      "path": "negative_variants/neg_004_residue_sign_inverted/coarse_qtz_3bit_residue.va"
     }
   ]
 }

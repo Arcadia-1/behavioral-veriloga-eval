@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/lt_read_sar7b_weighted.va"
+    },
+    {
+      "id": "neg_002_half_scale",
+      "description": "Scales the weighted output by 0.5, preserving syntax but violating every nonzero level.",
+      "path": "negative_variants/neg_002_half_scale/lt_read_sar7b_weighted.va"
+    },
+    {
+      "id": "neg_003_half_offset",
+      "description": "Uses -0.5*vref offset instead of -vref.",
+      "path": "negative_variants/neg_003_half_offset/lt_read_sar7b_weighted.va"
+    },
+    {
+      "id": "neg_004_reversed_endpoint_weights",
+      "description": "Swaps D7 and D0 weights.",
+      "path": "negative_variants/neg_004_reversed_endpoint_weights/lt_read_sar7b_weighted.va"
     }
   ]
 }

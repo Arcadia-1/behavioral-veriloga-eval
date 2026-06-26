@@ -1,0 +1,14 @@
+`include "disciplines.vams"
+module samplehold_rising_edge(control, vin, vout);
+input control, vin;
+output vout;
+electrical control, vin, vout;
+parameter real thresh = 2.5;
+parameter real tdel = 20p;
+parameter real tr = 20p;
+real hold;
+analog begin
+    hold = V(vin);
+    V(vout) <+ transition(hold, tdel, tr, tr);
+end
+endmodule

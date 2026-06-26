@@ -182,6 +182,32 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 256-271
+
+Tasks `256-dac4bit-small-swing` through
+`271-coarse-qtz-3bit-residue` were repaired as the eleventh source-series
+batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover DAC bipolar range, bit-weight, threshold, comparator
+  reset/output/polarity, SAR readout weighting, serial accumulator reset/edge,
+  SAR decoder count and normalization, one-shot trigger/width/turn-off, DFF
+  async-control and complement output, PFD state/output behavior,
+  sample-and-hold capture, trim/popcount encoding, and quantizer/residue
+  mistakes;
+- weak candidate negatives that the current hidden waveform did not observe
+  were replaced with directly observable scale, count, state, or code-offset
+  failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-voltage-controlled-gain-amplifier` through

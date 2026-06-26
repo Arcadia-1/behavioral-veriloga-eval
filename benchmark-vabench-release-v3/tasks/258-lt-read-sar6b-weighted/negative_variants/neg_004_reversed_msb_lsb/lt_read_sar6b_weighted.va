@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+module lt_read_sar6b_weighted(d0, d1, d2, d3, d4, d5, vout, gnd);
+input d0, d1, d2, d3, d4, d5, gnd;
+output vout;
+electrical d0, d1, d2, d3, d4, d5, vout, gnd;
+parameter real vth = 0.45;
+parameter real vref = 0.9;
+real out_v;
+analog begin
+    out_v = -vref
+          + vref * ((V(d5) > vth ? 0.0625 : 0.0)
+          + (V(d4) > vth ? 0.5 : 0.0)
+          + (V(d3) > vth ? 0.25 : 0.0)
+          + (V(d2) > vth ? 0.125 : 0.0)
+          + (V(d1) > vth ? 1.0 : 0.0));
+    V(vout) <+ transition(out_v, 0, 1p, 1p);
+end
+endmodule

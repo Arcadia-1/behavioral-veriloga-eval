@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sar_13bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_002_counts_low_decisions",
+      "description": "Accumulates bit weights when DIN is low instead of high.",
+      "path": "negative_variants/neg_002_counts_low_decisions/sar_13bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_003_wrong_initial_counter",
+      "description": "Starts accumulation at bit 11 instead of bit 12.",
+      "path": "negative_variants/neg_003_wrong_initial_counter/sar_13bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_004_unipolar_result",
+      "description": "Publishes a unipolar normalized result rather than subtracting 0.5.",
+      "path": "negative_variants/neg_004_unipolar_result/sar_13bit_serial_decoder.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac4bit_bipolar_252m.va"
+    },
+    {
+      "id": "neg_002_unipolar_range",
+      "description": "Maps the DAC to 0..vref instead of bipolar -vref..+vref.",
+      "path": "negative_variants/neg_002_unipolar_range/dac4bit_bipolar_252m.va"
+    },
+    {
+      "id": "neg_003_wrong_vref",
+      "description": "Uses a 20 mV reference instead of the specified 252 mV reference.",
+      "path": "negative_variants/neg_003_wrong_vref/dac4bit_bipolar_252m.va"
+    },
+    {
+      "id": "neg_004_swapped_weights",
+      "description": "Swaps D3 and D0 bit weights.",
+      "path": "negative_variants/neg_004_swapped_weights/dac4bit_bipolar_252m.va"
     }
   ]
 }

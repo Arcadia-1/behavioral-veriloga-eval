@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/bin2ther_2b.va"
+    },
+    {
+      "id": "neg_002_standard_thermometer",
+      "description": "Implements a conventional count thermometer instead of the source-specific MSB/MSB/LSB mapping.",
+      "path": "negative_variants/neg_002_standard_thermometer/bin2ther_2b.va"
+    },
+    {
+      "id": "neg_003_lsb_drives_all",
+      "description": "Incorrectly drives all thermometer outputs from the LSB.",
+      "path": "negative_variants/neg_003_lsb_drives_all/bin2ther_2b.va"
+    },
+    {
+      "id": "neg_004_threshold_too_high",
+      "description": "Uses a threshold above the VDD high level, so asserted input bits are ignored.",
+      "path": "negative_variants/neg_004_threshold_too_high/bin2ther_2b.va"
     }
   ]
 }

@@ -1,0 +1,24 @@
+`include "disciplines.vams"
+module dff_set_reset(setb, rstb, clk, vdd, gnd, d, q, qb);
+input setb, rstb, clk, vdd, gnd, d;
+output q, qb;
+electrical setb, rstb, clk, vdd, gnd, d, q, qb;
+parameter real td = 0;
+parameter real tr = 10p;
+real vh, vl, vth;
+integer vd, vq;
+analog begin
+    vh = V(vdd);
+    vl = V(gnd);
+    vth = (vh + vl) / 2.0;
+    @(initial_step) vq = 0;
+    vd = (V(d) > vth);
+    if (V(rstb) < vth) vq = 0;
+    if (V(setb) < vth) vq = 1;
+    @(cross(V(clk) - vth, +1)) begin
+        if ((V(rstb) > vth) && (V(setb) > vth)) vq = vd;
+    end
+    V(q) <+ transition(vq ? vh : vl, td, tr, tr);
+    V(qb) <+ transition(vq ? vh : vl, td, tr, tr);
+end
+endmodule

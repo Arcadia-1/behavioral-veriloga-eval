@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/therm8_to_bin4_count.va"
+    },
+    {
+      "id": "neg_002_count_lower_half_only",
+      "description": "Counts only TH0..TH3 and ignores the upper thermometer inputs.",
+      "path": "negative_variants/neg_002_count_lower_half_only/therm8_to_bin4_count.va"
+    },
+    {
+      "id": "neg_003_threshold_too_high",
+      "description": "Uses a threshold above the stimulus high level, so asserted thermometer inputs are missed.",
+      "path": "negative_variants/neg_003_threshold_too_high/therm8_to_bin4_count.va"
+    },
+    {
+      "id": "neg_004_reversed_bit_order",
+      "description": "Outputs the popcount bits in reversed order.",
+      "path": "negative_variants/neg_004_reversed_bit_order/therm8_to_bin4_count.va"
     }
   ]
 }

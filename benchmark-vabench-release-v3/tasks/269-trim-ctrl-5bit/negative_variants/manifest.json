@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/trim_ctrl_5bit.va"
+    },
+    {
+      "id": "neg_002_code_offset_plus_one",
+      "description": "Adds an erroneous +1 offset after rounding the trim code.",
+      "path": "negative_variants/neg_002_code_offset_plus_one/trim_ctrl_5bit.va"
+    },
+    {
+      "id": "neg_003_clamp_to_15",
+      "description": "Incorrectly clamps the maximum trim code to 15 rather than 31.",
+      "path": "negative_variants/neg_003_clamp_to_15/trim_ctrl_5bit.va"
+    },
+    {
+      "id": "neg_004_reversed_bit_order",
+      "description": "Drives DOUT0..DOUT4 in reversed bit order.",
+      "path": "negative_variants/neg_004_reversed_bit_order/trim_ctrl_5bit.va"
     }
   ]
 }

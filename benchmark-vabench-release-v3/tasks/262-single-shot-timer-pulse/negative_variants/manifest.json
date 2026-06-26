@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/single_shot_timer_pulse.va"
+    },
+    {
+      "id": "neg_002_falling_trigger",
+      "description": "Triggers the one-shot on falling input edges rather than rising edges.",
+      "path": "negative_variants/neg_002_falling_trigger/single_shot_timer_pulse.va"
+    },
+    {
+      "id": "neg_003_short_pulse",
+      "description": "Uses half the required pulse width.",
+      "path": "negative_variants/neg_003_short_pulse/single_shot_timer_pulse.va"
+    },
+    {
+      "id": "neg_004_no_turnoff",
+      "description": "Never schedules the timer turn-off after a trigger.",
+      "path": "negative_variants/neg_004_no_turnoff/single_shot_timer_pulse.va"
     }
   ]
 }

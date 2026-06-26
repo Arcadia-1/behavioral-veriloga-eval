@@ -1,0 +1,16 @@
+`include "disciplines.vams"
+module dac4bit_small_swing(vd3, vd2, vd1, vd0, vout);
+input vd3, vd2, vd1, vd0;
+output vout;
+electrical vd3, vd2, vd1, vd0, vout;
+parameter real vref = 20m;
+parameter real vtrans = 1.2;
+real code;
+analog begin
+    code = (V(vd3) > vtrans ? 8.0 : 0.0)
+         + (V(vd2) > vtrans ? 4.0 : 0.0)
+         + (V(vd1) > vtrans ? 2.0 : 0.0)
+         + (V(vd0) > vtrans ? 1.0 : 0.0);
+    V(vout) <+ transition(vref * (2.0 * code / 15.0 - 1.0), 0, 1p, 1p);
+end
+endmodule

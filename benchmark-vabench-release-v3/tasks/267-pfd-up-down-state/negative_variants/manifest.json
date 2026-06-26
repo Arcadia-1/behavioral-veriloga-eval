@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pfd_up_down_state.va"
+    },
+    {
+      "id": "neg_002_swapped_ref_fb",
+      "description": "Swaps REF and FB state effects, reversing UP/DOWN behavior.",
+      "path": "negative_variants/neg_002_swapped_ref_fb/pfd_up_down_state.va"
+    },
+    {
+      "id": "neg_003_no_fb_decrement",
+      "description": "Ignores FB rising edges, so DOWN never asserts.",
+      "path": "negative_variants/neg_003_no_fb_decrement/pfd_up_down_state.va"
+    },
+    {
+      "id": "neg_004_up_stuck_for_zero_state",
+      "description": "Asserts UP whenever the state is nonnegative, including the neutral zero state.",
+      "path": "negative_variants/neg_004_up_stuck_for_zero_state/pfd_up_down_state.va"
     }
   ]
 }

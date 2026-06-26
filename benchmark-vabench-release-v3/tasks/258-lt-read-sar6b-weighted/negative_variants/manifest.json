@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/lt_read_sar6b_weighted.va"
+    },
+    {
+      "id": "neg_002_uses_d0_weight",
+      "description": "Incorrectly includes D0 as a 1/32-weighted bit although the source model ignores D0.",
+      "path": "negative_variants/neg_002_uses_d0_weight/lt_read_sar6b_weighted.va"
+    },
+    {
+      "id": "neg_003_unipolar_offset",
+      "description": "Drops the required -vref offset and outputs a unipolar weighted sum.",
+      "path": "negative_variants/neg_003_unipolar_offset/lt_read_sar6b_weighted.va"
+    },
+    {
+      "id": "neg_004_reversed_msb_lsb",
+      "description": "Reverses D5 and D1 weights.",
+      "path": "negative_variants/neg_004_reversed_msb_lsb/lt_read_sar6b_weighted.va"
     }
   ]
 }

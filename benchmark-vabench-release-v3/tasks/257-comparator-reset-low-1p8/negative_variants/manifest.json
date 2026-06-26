@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/comparator_reset_low_1p8.va"
+    },
+    {
+      "id": "neg_002_no_falling_reset",
+      "description": "Keeps the latched comparison through clock falling edges instead of resetting both outputs low.",
+      "path": "negative_variants/neg_002_no_falling_reset/comparator_reset_low_1p8.va"
+    },
+    {
+      "id": "neg_003_inverted_compare",
+      "description": "Inverts the VINP/VINN comparison polarity.",
+      "path": "negative_variants/neg_003_inverted_compare/comparator_reset_low_1p8.va"
+    },
+    {
+      "id": "neg_004_swapped_outputs",
+      "description": "Drives DCM/P and DCM/N from the opposite latched states.",
+      "path": "negative_variants/neg_004_swapped_outputs/comparator_reset_low_1p8.va"
     }
   ]
 }
