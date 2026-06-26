@@ -24,29 +24,26 @@ module bus_split_256_to_16x16(
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    genvar block;
     genvar bit;
 
     analog begin
-        for (block = 0; block < 16; block = block + 1) begin
-            for (bit = 0; bit < 16; bit = bit + 1) begin
-                if (block == 0) V(out0[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 1) V(out1[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 2) V(out2[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 3) V(out3[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 4) V(out4[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 5) V(out5[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 6) V(out6[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 7) V(out7[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 8) V(out8[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 9) V(out9[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 10) V(out10[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 11) V(out11[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 12) V(out12[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 13) V(out13[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 14) V(out14[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 15) V(out15[bit]) <+ transition((!(V(in_bus[16 * block + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-            end
+        for (bit = 0; bit < 16; bit = bit + 1) begin
+            V(out0[bit]) <+ transition((!(V(in_bus[0 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out1[bit]) <+ transition((!(V(in_bus[16 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out2[bit]) <+ transition((!(V(in_bus[32 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out3[bit]) <+ transition((!(V(in_bus[48 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out4[bit]) <+ transition((!(V(in_bus[64 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out5[bit]) <+ transition((!(V(in_bus[80 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out6[bit]) <+ transition((!(V(in_bus[96 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out7[bit]) <+ transition((!(V(in_bus[112 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out8[bit]) <+ transition((!(V(in_bus[128 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out9[bit]) <+ transition((!(V(in_bus[144 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out10[bit]) <+ transition((!(V(in_bus[160 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out11[bit]) <+ transition((!(V(in_bus[176 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out12[bit]) <+ transition((!(V(in_bus[192 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out13[bit]) <+ transition((!(V(in_bus[208 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out14[bit]) <+ transition((!(V(in_bus[224 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out15[bit]) <+ transition((!(V(in_bus[240 + bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
         end
     end
 endmodule

@@ -24,29 +24,26 @@ module bus_combine_16x16_to_256(
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    genvar block;
     genvar bit;
 
     analog begin
-        for (block = 0; block < 16; block = block + 1) begin
-            for (bit = 0; bit < 16; bit = bit + 1) begin
-                if (block == 0) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 1) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 2) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 3) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 4) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 5) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 6) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 7) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 8) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 9) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 10) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 11) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 12) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 13) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 14) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-                if (block == 15) V(out_bus[16 * block + bit]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-            end
+        for (bit = 0; bit < 16; bit = bit + 1) begin
+            V(out_bus[0 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[16 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[32 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[48 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[64 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[80 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[96 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[112 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[128 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[144 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[160 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[176 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[192 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[208 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[224 + bit]) <+ transition(0.0, 0, tr, tr);
+            V(out_bus[240 + bit]) <+ transition(0.0, 0, tr, tr);
         end
     end
 endmodule

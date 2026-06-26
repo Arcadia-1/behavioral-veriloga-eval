@@ -24,29 +24,26 @@ module bus_combine_16x16_to_256(
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    genvar block;
     genvar bit;
 
     analog begin
-        for (block = 0; block < 16; block = block + 1) begin
-            for (bit = 0; bit < 16; bit = bit + 1) begin
-                if (block == 0) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in0[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 1) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in1[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 2) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in2[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 3) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in3[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 4) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in4[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 5) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in5[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 6) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in6[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 7) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in7[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 8) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in8[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 9) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in9[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 10) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in10[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 11) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in11[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 12) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in12[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 13) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in13[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 14) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in14[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-                if (block == 15) V(out_bus[16 * block + bit]) <+ transition(((bit != 0) && (V(in15[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
-            end
+        for (bit = 0; bit < 16; bit = bit + 1) begin
+            V(out_bus[0 + bit]) <+ transition((!(V(in0[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[16 + bit]) <+ transition((!(V(in1[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[32 + bit]) <+ transition((!(V(in2[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[48 + bit]) <+ transition((!(V(in3[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[64 + bit]) <+ transition((!(V(in4[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[80 + bit]) <+ transition((!(V(in5[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[96 + bit]) <+ transition((!(V(in6[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[112 + bit]) <+ transition((!(V(in7[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[128 + bit]) <+ transition((!(V(in8[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[144 + bit]) <+ transition((!(V(in9[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[160 + bit]) <+ transition((!(V(in10[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[176 + bit]) <+ transition((!(V(in11[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[192 + bit]) <+ transition((!(V(in12[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[208 + bit]) <+ transition((!(V(in13[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[224 + bit]) <+ transition((!(V(in14[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
+            V(out_bus[240 + bit]) <+ transition((!(V(in15[bit]) > vth)) ? vdd : 0.0, 0, tr, tr);
         end
     end
 endmodule
