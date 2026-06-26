@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/limiting_diffamp.va"
+    },
+    {
+      "id": "neg_002_no_limit",
+      "description": "Applies gain but omits output limiting.",
+      "path": "negative_variants/neg_002_no_limit/limiting_diffamp.va"
+    },
+    {
+      "id": "neg_003_wrong_gain",
+      "description": "Uses an incorrect small-signal gain.",
+      "path": "negative_variants/neg_003_wrong_gain/limiting_diffamp.va"
+    },
+    {
+      "id": "neg_004_inverted_polarity",
+      "description": "Uses reversed input polarity.",
+      "path": "negative_variants/neg_004_inverted_polarity/limiting_diffamp.va"
     }
   ]
 }

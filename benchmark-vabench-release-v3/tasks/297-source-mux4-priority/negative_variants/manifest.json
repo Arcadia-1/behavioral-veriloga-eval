@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/mux4_priority.va"
+    },
+    {
+      "id": "neg_002_swapped_select_bits",
+      "description": "Swaps sel0 and sel1 when decoding the mux select.",
+      "path": "negative_variants/neg_002_swapped_select_bits/mux4_priority.va"
+    },
+    {
+      "id": "neg_003_inverted_select_threshold",
+      "description": "Inverts the select-bit decisions.",
+      "path": "negative_variants/neg_003_inverted_select_threshold/mux4_priority.va"
+    },
+    {
+      "id": "neg_004_always_in0",
+      "description": "Ignores select and always routes input 0.",
+      "path": "negative_variants/neg_004_always_in0/mux4_priority.va"
     }
   ]
 }

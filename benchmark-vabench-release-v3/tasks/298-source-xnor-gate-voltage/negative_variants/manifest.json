@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/xnor_gate_voltage.va"
+    },
+    {
+      "id": "neg_002_xor",
+      "description": "Implements XOR instead of XNOR.",
+      "path": "negative_variants/neg_002_xor/xnor_gate_voltage.va"
+    },
+    {
+      "id": "neg_003_and_gate",
+      "description": "Implements AND instead of XNOR.",
+      "path": "negative_variants/neg_003_and_gate/xnor_gate_voltage.va"
+    },
+    {
+      "id": "neg_004_wrong_threshold",
+      "description": "Uses a threshold that misclassifies mid-level logic inputs.",
+      "path": "negative_variants/neg_004_wrong_threshold/xnor_gate_voltage.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/smooth_tanh_comparator.va"
+    },
+    {
+      "id": "neg_002_missing_offset",
+      "description": "Omits the required input offset.",
+      "path": "negative_variants/neg_002_missing_offset/smooth_tanh_comparator.va"
+    },
+    {
+      "id": "neg_003_wrong_slope",
+      "description": "Uses the wrong tanh slope.",
+      "path": "negative_variants/neg_003_wrong_slope/smooth_tanh_comparator.va"
+    },
+    {
+      "id": "neg_004_hard_comparator",
+      "description": "Uses a hard comparator instead of the smooth tanh transfer.",
+      "path": "negative_variants/neg_004_hard_comparator/smooth_tanh_comparator.va"
     }
   ]
 }

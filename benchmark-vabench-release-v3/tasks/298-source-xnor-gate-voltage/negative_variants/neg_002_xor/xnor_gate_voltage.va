@@ -1,0 +1,5 @@
+`include "disciplines.vams"
+module xnor_gate_voltage(vin1, vin2, vout);
+input vin1,vin2; output vout; electrical vin1,vin2,vout; parameter real vth=0.45; parameter real vh=0.9; integer a,b;
+analog begin a=V(vin1)>vth; b=V(vin2)>vth; V(vout)<+(a!=b)?vh:0.0; end
+endmodule

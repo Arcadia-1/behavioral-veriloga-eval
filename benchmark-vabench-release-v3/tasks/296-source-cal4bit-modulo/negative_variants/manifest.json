@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/cal4bit_modulo.va"
+    },
+    {
+      "id": "neg_002_rounds_instead_of_floor",
+      "description": "Rounds the analog input before encoding instead of flooring it.",
+      "path": "negative_variants/neg_002_rounds_instead_of_floor/cal4bit_modulo.va"
+    },
+    {
+      "id": "neg_003_reverse_bit_order",
+      "description": "Drives the four encoded bits in reverse order.",
+      "path": "negative_variants/neg_003_reverse_bit_order/cal4bit_modulo.va"
+    },
+    {
+      "id": "neg_004_wraps_instead_of_clamping",
+      "description": "Wraps large input values modulo 16 instead of clamping to 15.",
+      "path": "negative_variants/neg_004_wraps_instead_of_clamping/cal4bit_modulo.va"
     }
   ]
 }

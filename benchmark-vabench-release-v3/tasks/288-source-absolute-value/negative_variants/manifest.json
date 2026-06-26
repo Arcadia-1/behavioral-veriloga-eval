@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/absolute_value.va"
+    },
+    {
+      "id": "neg_002_passthrough_negative",
+      "description": "Passes the signed input through instead of taking absolute value.",
+      "path": "negative_variants/neg_002_passthrough_negative/absolute_value.va"
+    },
+    {
+      "id": "neg_003_half_scale",
+      "description": "Computes the absolute value with the wrong gain.",
+      "path": "negative_variants/neg_003_half_scale/absolute_value.va"
+    },
+    {
+      "id": "neg_004_squared",
+      "description": "Squares the input magnitude instead of preserving absolute magnitude.",
+      "path": "negative_variants/neg_004_squared/absolute_value.va"
     }
   ]
 }

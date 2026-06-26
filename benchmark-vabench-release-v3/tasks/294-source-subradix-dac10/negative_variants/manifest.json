@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/subradix_dac10.va"
+    },
+    {
+      "id": "neg_002_binary_weights",
+      "description": "Uses ordinary binary weights instead of the sub-radix sequence.",
+      "path": "negative_variants/neg_002_binary_weights/subradix_dac10.va"
+    },
+    {
+      "id": "neg_003_wrong_scale",
+      "description": "Uses the correct weights with the wrong normalization scale.",
+      "path": "negative_variants/neg_003_wrong_scale/subradix_dac10.va"
+    },
+    {
+      "id": "neg_004_reverse_msb_lsb",
+      "description": "Reverses the MSB/LSB weight order.",
+      "path": "negative_variants/neg_004_reverse_msb_lsb/subradix_dac10.va"
     }
   ]
 }

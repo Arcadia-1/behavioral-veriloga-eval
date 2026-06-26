@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/deadband_voltage.va"
+    },
+    {
+      "id": "neg_002_no_deadband",
+      "description": "Passes the input through and ignores the deadband.",
+      "path": "negative_variants/neg_002_no_deadband/deadband_voltage.va"
+    },
+    {
+      "id": "neg_003_wrong_thresholds",
+      "description": "Uses too-wide deadband thresholds.",
+      "path": "negative_variants/neg_003_wrong_thresholds/deadband_voltage.va"
+    },
+    {
+      "id": "neg_004_rectifies_below_deadband",
+      "description": "Uses the wrong sign for the lower-side residue.",
+      "path": "negative_variants/neg_004_rectifies_below_deadband/deadband_voltage.va"
     }
   ]
 }

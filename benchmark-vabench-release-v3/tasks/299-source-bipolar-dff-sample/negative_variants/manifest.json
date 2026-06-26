@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/bipolar_dff_sample.va"
+    },
+    {
+      "id": "neg_002_qbar_same_as_q",
+      "description": "Drives QBAR with the same polarity as Q.",
+      "path": "negative_variants/neg_002_qbar_same_as_q/bipolar_dff_sample.va"
+    },
+    {
+      "id": "neg_003_transparent_latch",
+      "description": "Tracks D continuously instead of sampling only on rising clock edges.",
+      "path": "negative_variants/neg_003_transparent_latch/bipolar_dff_sample.va"
+    },
+    {
+      "id": "neg_004_falling_edge_sample",
+      "description": "Samples on falling clock edges.",
+      "path": "negative_variants/neg_004_falling_edge_sample/bipolar_dff_sample.va"
     }
   ]
 }

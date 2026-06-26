@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/deadband_diffamp.va"
+    },
+    {
+      "id": "neg_002_no_leak",
+      "description": "Drops the required leakage offset inside and outside the deadband.",
+      "path": "negative_variants/neg_002_no_leak/deadband_diffamp.va"
+    },
+    {
+      "id": "neg_003_symmetric_gain",
+      "description": "Uses the low-side gain for both polarities.",
+      "path": "negative_variants/neg_003_symmetric_gain/deadband_diffamp.va"
+    },
+    {
+      "id": "neg_004_inverted_diff",
+      "description": "Computes the differential input with reversed polarity.",
+      "path": "negative_variants/neg_004_inverted_diff/deadband_diffamp.va"
     }
   ]
 }

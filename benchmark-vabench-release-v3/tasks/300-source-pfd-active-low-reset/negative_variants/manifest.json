@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pfd_active_low_reset.va"
+    },
+    {
+      "id": "neg_002_up_active_high",
+      "description": "Drives UP as active-high instead of active-low UPB.",
+      "path": "negative_variants/neg_002_up_active_high/pfd_active_low_reset.va"
+    },
+    {
+      "id": "neg_003_no_reset_delay",
+      "description": "Resets immediately once both edges have arrived.",
+      "path": "negative_variants/neg_003_no_reset_delay/pfd_active_low_reset.va"
+    },
+    {
+      "id": "neg_004_swapped_edges",
+      "description": "Swaps REF and FB state updates.",
+      "path": "negative_variants/neg_004_swapped_edges/pfd_active_low_reset.va"
     }
   ]
 }
