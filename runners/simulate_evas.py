@@ -556,6 +556,154 @@ def _veriloga_code_without_comments(text: str) -> str:
     return "\n".join(line.split("//", 1)[0] for line in text.splitlines())
 
 
+SPECTRE_RESERVED_IDENTIFIERS = frozenset(
+    {
+        # Spectre built-in functions.
+        "abs",
+        "acos",
+        "acosh",
+        "asin",
+        "asinh",
+        "atan",
+        "atan2",
+        "atanh",
+        "ceil",
+        "cos",
+        "cosh",
+        "exp",
+        "floor",
+        "hypot",
+        "ln",
+        "log",
+        "max",
+        "min",
+        "pow",
+        "sin",
+        "sinh",
+        "sqrt",
+        "tan",
+        "tanh",
+        # Spectre/AHDL library functions and event helpers.
+        "above",
+        "analysis",
+        "cross",
+        "ddt",
+        "final_step",
+        "flicker_noise",
+        "idt",
+        "initial_step",
+        "last_crossing",
+        "limexp",
+        "noise_table",
+        "slew",
+        "timer",
+        "transition",
+        "white_noise",
+        # Verilog-A declaration/control keywords that must not become names.
+        "analog",
+        "begin",
+        "case",
+        "electrical",
+        "else",
+        "end",
+        "endmodule",
+        "for",
+        "if",
+        "inout",
+        "input",
+        "integer",
+        "module",
+        "output",
+        "parameter",
+        "real",
+        "while",
+    }
+)
+
+
+DECLARATION_STARTERS = frozenset(
+    {
+        "electrical",
+        "genvar",
+        "inout",
+        "input",
+        "integer",
+        "output",
+        "real",
+    }
+)
+
+
+def _strip_veriloga_ranges_and_attributes(text: str) -> str:
+    # Ranges may include macro expressions such as [`NUM_BITS-1:0].
+    text = re.sub(r"\[[^\]]*\]", " ", text)
+    text = re.sub(r"\b(?:from|exclude)\s*\([^)]*\)", " ", text)
+    text = re.sub(r"\b(?:from|exclude)\s*\[[^\]]*\]", " ", text)
+    return text
+
+
+def _declared_identifier_tokens(declaration_tail: str) -> list[str]:
+    cleaned = _strip_veriloga_ranges_and_attributes(declaration_tail)
+    cleaned = re.sub(
+        r"\b(?:input|output|inout|electrical|real|integer|parameter|genvar|reg|wire|logic)\b",
+        " ",
+        cleaned,
+    )
+    names: list[str] = []
+    for part in cleaned.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        part = part.split("=", 1)[0].strip()
+        match = re.match(r"([A-Za-z_][A-Za-z0-9_$]*)", part)
+        if match:
+            names.append(match.group(1))
+    return names
+
+
+def _module_header_identifiers(code: str) -> list[tuple[str, str]]:
+    identifiers: list[tuple[str, str]] = []
+    for match in re.finditer(
+        r"\bmodule\s+([A-Za-z_][A-Za-z0-9_$]*)\s*\((.*?)\)\s*;",
+        code,
+        flags=re.DOTALL,
+    ):
+        module_name, port_text = match.groups()
+        identifiers.append(("module", module_name))
+        for name in _declared_identifier_tokens(port_text):
+            identifiers.append(("module_port", name))
+    return identifiers
+
+
+def _declaration_identifiers(code: str) -> list[tuple[str, str]]:
+    identifiers: list[tuple[str, str]] = []
+    declaration_re = re.compile(
+        r"\b(?:(parameter)\s+(?:real|integer)?|(input|output|inout|electrical|real|integer|genvar))\b([^;]*);",
+        flags=re.DOTALL,
+    )
+    for match in declaration_re.finditer(code):
+        kind = "parameter" if match.group(1) else str(match.group(2))
+        if kind not in DECLARATION_STARTERS and kind != "parameter":
+            continue
+        for name in _declared_identifier_tokens(match.group(3)):
+            identifiers.append((kind, name))
+    return identifiers
+
+
+def spectre_reserved_identifier_failures(filename: str, code: str) -> list[str]:
+    """Return Spectre/AHDL reserved identifier failures for declared names."""
+    failures: list[str] = []
+    seen: set[tuple[str, str]] = set()
+    for context, name in [*_module_header_identifiers(code), *_declaration_identifiers(code)]:
+        key = (context, name)
+        if key in seen:
+            continue
+        seen.add(key)
+        if name.lower() in SPECTRE_RESERVED_IDENTIFIERS:
+            failures.append(f"{filename}:spectre_reserved_identifier:{context}:{name}")
+    return failures
+
+
 def spectre_aligned_veriloga_preflight(run_dir: Path) -> list[str]:
     """Reject .va files outside the shared EVAS/Spectre release subset."""
     failures: list[str] = []
@@ -571,6 +719,7 @@ def spectre_aligned_veriloga_preflight(run_dir: Path) -> list[str]:
             failures.append(f"{path.name}:missing_disciplines_vams")
         if re.search(r"\bwhile\s*\(\s*(?:1|1\.0|true)\s*\)|\bforever\b", code):
             failures.append(f"{path.name}:unsupported_unbounded_event_loop")
+        failures.extend(spectre_reserved_identifier_failures(path.name, code))
     return failures
 
 

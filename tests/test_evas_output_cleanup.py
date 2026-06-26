@@ -211,6 +211,64 @@ def test_required_trace_signals_follow_streaming_checker_contract() -> None:
     assert simulate_evas.required_trace_signals_for_checker("unknown_task") == frozenset()
 
 
+def test_spectre_preflight_rejects_reserved_port_names(tmp_path: Path) -> None:
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    (run_dir / "bad.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module bad(sin, out);\n"
+        "input sin; output out; electrical sin, out;\n"
+        "analog begin V(out) <+ V(sin); end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+
+    failures = simulate_evas.spectre_aligned_veriloga_preflight(run_dir)
+
+    assert "bad.va:spectre_reserved_identifier:module_port:sin" in failures
+    assert "bad.va:spectre_reserved_identifier:input:sin" in failures
+    assert "bad.va:spectre_reserved_identifier:electrical:sin" in failures
+
+
+def test_spectre_preflight_rejects_reserved_variables_and_parameters(tmp_path: Path) -> None:
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    (run_dir / "bad.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module bad(vin, out);\n"
+        "input vin; output out; electrical vin, out;\n"
+        "parameter real transition = 1n;\n"
+        "real cross;\n"
+        "analog begin cross = V(vin); V(out) <+ cross; end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+
+    failures = simulate_evas.spectre_aligned_veriloga_preflight(run_dir)
+
+    assert "bad.va:spectre_reserved_identifier:parameter:transition" in failures
+    assert "bad.va:spectre_reserved_identifier:real:cross" in failures
+
+
+def test_spectre_preflight_allows_reserved_function_calls(tmp_path: Path) -> None:
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    (run_dir / "ok.va").write_text(
+        '`include "disciplines.vams"\n'
+        "module ok(vin, out);\n"
+        "input vin; output out; electrical vin, out;\n"
+        "real y;\n"
+        "analog begin @(initial_step) y = 0.0; "
+        "@(timer(0, 1n)) y = tanh(V(vin)); V(out) <+ transition(y, 0, 1p); end\n"
+        "endmodule\n",
+        encoding="utf-8",
+    )
+
+    failures = simulate_evas.spectre_aligned_veriloga_preflight(run_dir)
+
+    assert failures == []
+
+
 def test_row_checker_required_set_gets_sparse_trace_contract(monkeypatch) -> None:
     monkeypatch.delenv("VAEVAS_DISABLE_REQUIRED_TRACE", raising=False)
     monkeypatch.delenv("VAEVAS_DISABLE_ROW_CHECKER_TRACE_CONTRACTS", raising=False)
