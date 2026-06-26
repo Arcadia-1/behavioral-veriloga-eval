@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_source_safe_analog_divider
+  metric: stable_samples
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct

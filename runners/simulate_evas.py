@@ -8835,6 +8835,76 @@ def check_v3_source_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
+def check_v3_source_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "valid", "x", "y", "z", "dm", "dl"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing decision router logic signals"
+    return _sample_many(
+        rows,
+        {
+            "x": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.0), (2.8, 0.0), (3.5, 0.0)],
+            "y": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9), (3.5, 0.0)],
+            "z": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.0), (3.5, 0.0)],
+            "dm": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9), (3.5, 0.9)],
+            "dl": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.0), (3.5, 0.0)],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_source_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "signumer", "sigdenom", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing safe analog divider signals"
+    return _sample_many(
+        rows,
+        {
+            "sigout": [(0.4, 0.3), (1.2, 3.0), (2.0, -3.0), (2.8, -0.6)],
+        },
+        tol=0.04,
+    )
+
+
+def check_v3_source_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vargain diffamp clip signals"
+    return _sample_many(
+        rows,
+        {
+            "sigout": [(0.4, 0.375), (1.2, 1.0), (2.0, -1.0), (2.8, -0.675)],
+        },
+        tol=0.04,
+    )
+
+
+def check_v3_source_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "divctrl", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing programmable divider by n signals"
+    return _sample_many(
+        rows,
+        {
+            "out": [(0.2, 0.9), (0.6, 0.0), (1.4, 0.0), (2.2, 0.9), (3.0, 0.0), (3.8, 0.0), (4.6, 0.9)],
+        },
+        tol=0.06,
+    )
+
+
+def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "ub", "d"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd timer reset signals"
+    return _sample_many(
+        rows,
+        {
+            "ub": [(0.2, 0.9), (0.6, 0.0), (1.22, 0.0), (1.4, 0.9), (2.3, 0.9), (2.72, 0.0), (2.9, 0.9)],
+            "d": [(0.2, 0.0), (0.6, 0.0), (1.22, 0.9), (1.4, 0.0), (2.3, 0.9), (2.72, 0.9), (2.9, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -14232,6 +14302,11 @@ CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bi
 CHECKS["v3_source_divide_by_two_toggle_v2"] = check_v3_source_divide_by_two_toggle_v2
 CHECKS["v3_source_accum3_pulse"] = check_v3_source_accum3_pulse
 CHECKS["v3_source_xor_phase_detector"] = check_v3_source_xor_phase_detector
+CHECKS["v3_source_decision_router_logic"] = check_v3_source_decision_router_logic
+CHECKS["v3_source_safe_analog_divider"] = check_v3_source_safe_analog_divider
+CHECKS["v3_source_vargain_diffamp_clip"] = check_v3_source_vargain_diffamp_clip
+CHECKS["v3_source_programmable_divider_by_n"] = check_v3_source_programmable_divider_by_n
+CHECKS["v3_source_pfd_timer_reset"] = check_v3_source_pfd_timer_reset
 CHECKS["268-source-samplehold-rising-edge"] = check_v3_source_samplehold_rising_edge
 CHECKS["269-source-trim-ctrl-5bit"] = check_v3_source_trim_ctrl_5bit
 CHECKS["270-source-therm8-to-bin4-count"] = check_v3_source_therm8_to_bin4_count
@@ -14242,6 +14317,11 @@ CHECKS["274-source-weighted-decoder-6bit"] = check_v3_source_weighted_decoder_6b
 CHECKS["275-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle_v2
 CHECKS["276-source-accum3-pulse"] = check_v3_source_accum3_pulse
 CHECKS["277-source-xor-phase-detector"] = check_v3_source_xor_phase_detector
+CHECKS["278-source-decision-router-logic"] = check_v3_source_decision_router_logic
+CHECKS["279-source-safe-analog-divider"] = check_v3_source_safe_analog_divider
+CHECKS["280-source-vargain-diffamp-clip"] = check_v3_source_vargain_diffamp_clip
+CHECKS["281-source-programmable-divider-by-n"] = check_v3_source_programmable_divider_by_n
+CHECKS["282-source-pfd-timer-reset"] = check_v3_source_pfd_timer_reset
 
 
 RELEASE_FORM_CHECK_ALIASES = {

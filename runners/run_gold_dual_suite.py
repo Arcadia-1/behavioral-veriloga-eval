@@ -1260,6 +1260,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_source_divide_by_two_toggle_v2",
     "v3_source_accum3_pulse",
     "v3_source_xor_phase_detector",
+    "v3_source_decision_router_logic",
+    "v3_source_safe_analog_divider",
+    "v3_source_vargain_diffamp_clip",
+    "v3_source_programmable_divider_by_n",
+    "v3_source_pfd_timer_reset",
     "040-programmable-gain-amplifier",
     "051-thermometer-to-binary-encoder-8b",
     "059-config-latch-128b-static-enable",
@@ -1354,6 +1359,11 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "275-source-divide-by-two-toggle",
     "276-source-accum3-pulse",
     "277-source-xor-phase-detector",
+    "278-source-decision-router-logic",
+    "279-source-safe-analog-divider",
+    "280-source-vargain-diffamp-clip",
+    "281-source-programmable-divider-by-n",
+    "282-source-pfd-timer-reset",
 }
 
 

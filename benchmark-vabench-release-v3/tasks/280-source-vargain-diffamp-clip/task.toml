@@ -1,0 +1,20 @@
+id = "v3_280_source_vargain_diffamp_clip"
+name = "280-source-vargain-diffamp-clip"
+title = "Source Vargain Diffamp Clip"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "filter_amp"
+level = "L1"
+difficulty = "D2"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["vargain_diffamp_clip.va"]
