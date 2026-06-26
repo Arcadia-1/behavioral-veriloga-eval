@@ -6990,17 +6990,17 @@ def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
-    ok, detail = _sample_many(rows, {"sigout": [(5.0, 0.40), (15.0, 0.30), (25.0, 0.10)]}, tol=0.015)
-    if not ok:
-        return ok, detail
     max_err = 0.0
-    for time_ns in (5.0, 15.0, 25.0):
-        sigin = sample_signal_at(rows, "sigin", time_ns * 1e-9)
-        sigout = sample_signal_at(rows, "sigout", time_ns * 1e-9)
-        if sigin is None or sigout is None:
-            return False, f"missing_abs_sample_at={time_ns:g}ns"
-        max_err = max(max_err, abs(sigout - abs(sigin)))
-    return max_err <= 0.015, f"{detail} max_abs_error={max_err:.5f}"
+    checked = 0
+    for row in rows:
+        if row.get("time", 0.0) < 0.2e-9:
+            continue
+        err = abs(row["sigout"] - abs(row["sigin"]))
+        max_err = max(max_err, err)
+        checked += 1
+    if checked == 0:
+        return False, "no_absolute_value_rows_checked"
+    return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 
 def check_v3_source_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9058,11 +9058,17 @@ def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing absolute value signals"
-    return _sample_many(
-        rows,
-        {"sigout": [(0.4, 0.8), (1.2, 0.2), (2.0, 0.0), (2.8, 0.7)]},
-        tol=0.02,
-    )
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        if row.get("time", 0.0) < 0.2e-9:
+            continue
+        err = abs(row["sigout"] - abs(row["sigin"]))
+        max_err = max(max_err, err)
+        checked += 1
+    if checked == 0:
+        return False, "no_absolute_value_rows_checked"
+    return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 
 def check_v3_source_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:

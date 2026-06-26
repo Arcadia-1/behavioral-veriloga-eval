@@ -58,6 +58,29 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 144-159
+
+Tasks `144-source-differential-deadband` through
+`159-source-variable-gain-differential-amplifier` were repaired as the fourth
+source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover clamp rails, gain and offset mistakes, differential
+  polarity mistakes, mux selection mistakes, denominator safety mistakes,
+  logarithm/floor mistakes, and soft-clamp shape mistakes;
+- the absolute-value checker was made semantic (`sigout ~= abs(sigin)`) instead
+  of being tied to one historical waveform, so both source absolute-value tasks
+  are checked by behavior rather than by stale sample constants.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 128-143
 
 Tasks `128-source-two-input-and-gate` through

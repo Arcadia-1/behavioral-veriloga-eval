@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/limiting_differential_amplifier.va"
+    },
+    {
+      "id": "neg_002_missing_input_offset",
+      "description": "Does not subtract sigin_offset before amplification.",
+      "path": "negative_variants/neg_002_missing_input_offset/limiting_differential_amplifier.va"
+    },
+    {
+      "id": "neg_003_no_clamp",
+      "description": "Does not clamp the amplified output to the rails.",
+      "path": "negative_variants/neg_003_no_clamp/limiting_differential_amplifier.va"
+    },
+    {
+      "id": "neg_004_wrong_reference",
+      "description": "Centers the amplifier at zero instead of the rail midpoint.",
+      "path": "negative_variants/neg_004_wrong_reference/limiting_differential_amplifier.va"
     }
   ]
 }

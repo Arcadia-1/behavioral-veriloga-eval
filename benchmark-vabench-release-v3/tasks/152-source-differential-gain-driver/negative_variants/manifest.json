@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/differential_gain_driver.va"
+    },
+    {
+      "id": "neg_002_single_ended_gain",
+      "description": "Drives only the positive output and leaves the negative output at the reference.",
+      "path": "negative_variants/neg_002_single_ended_gain/differential_gain_driver.va"
+    },
+    {
+      "id": "neg_003_missing_half_split",
+      "description": "Applies full gain to both output halves.",
+      "path": "negative_variants/neg_003_missing_half_split/differential_gain_driver.va"
+    },
+    {
+      "id": "neg_004_inverted_polarity",
+      "description": "Inverts the differential output polarity.",
+      "path": "negative_variants/neg_004_inverted_polarity/differential_gain_driver.va"
     }
   ]
 }

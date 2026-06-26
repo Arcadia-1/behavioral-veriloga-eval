@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/three_way_threshold_mux.va"
+    },
+    {
+      "id": "neg_002_swapped_low_high_outputs",
+      "description": "Swaps the below-window and above-window selected inputs.",
+      "path": "negative_variants/neg_002_swapped_low_high_outputs/three_way_threshold_mux.va"
+    },
+    {
+      "id": "neg_003_uses_single_ended_control",
+      "description": "Uses cntrlp single-ended instead of cntrlp-cntrlm.",
+      "path": "negative_variants/neg_003_uses_single_ended_control/three_way_threshold_mux.va"
+    },
+    {
+      "id": "neg_004_missing_middle_selection",
+      "description": "Selects only the low or high input and never the middle input.",
+      "path": "negative_variants/neg_004_missing_middle_selection/three_way_threshold_mux.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/soft_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_002_hard_clamp",
+      "description": "Uses hard clamp rails instead of the exponential soft clamp.",
+      "path": "negative_variants/neg_002_hard_clamp/soft_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_003_wrong_knee_points",
+      "description": "Uses the final rail values as soft-clamp knees.",
+      "path": "negative_variants/neg_003_wrong_knee_points/soft_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_004_half_soft_fraction",
+      "description": "Uses half of the intended exponential soft-clamp fraction.",
+      "path": "negative_variants/neg_004_half_soft_fraction/soft_voltage_clamp_behavior.va"
     }
   ]
 }

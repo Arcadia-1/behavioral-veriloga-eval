@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/differential_deadband.va"
+    },
+    {
+      "id": "neg_002_no_leak_inside_deadband",
+      "description": "Outputs zero inside the deadband instead of the leak value.",
+      "path": "negative_variants/neg_002_no_leak_inside_deadband/differential_deadband.va"
+    },
+    {
+      "id": "neg_003_wrong_offsets",
+      "description": "Subtracts the wrong deadband edge outside the window.",
+      "path": "negative_variants/neg_003_wrong_offsets/differential_deadband.va"
+    },
+    {
+      "id": "neg_004_single_ended_input",
+      "description": "Uses only the positive input instead of the differential input.",
+      "path": "negative_variants/neg_004_single_ended_input/differential_deadband.va"
     }
   ]
 }

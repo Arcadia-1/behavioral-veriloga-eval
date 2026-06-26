@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/logarithmic_amplifier.va"
+    },
+    {
+      "id": "neg_002_no_abs",
+      "description": "Uses signed adjusted input without absolute value.",
+      "path": "negative_variants/neg_002_no_abs/logarithmic_amplifier.va"
+    },
+    {
+      "id": "neg_003_missing_floor",
+      "description": "Does not floor the logarithm argument at 0.1.",
+      "path": "negative_variants/neg_003_missing_floor/logarithmic_amplifier.va"
+    },
+    {
+      "id": "neg_004_wrong_offset",
+      "description": "Uses zero offset instead of subtracting 0.2.",
+      "path": "negative_variants/neg_004_wrong_offset/logarithmic_amplifier.va"
     }
   ]
 }

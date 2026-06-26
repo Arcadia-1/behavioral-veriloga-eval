@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/polynomial_differential_vcvs.va"
+    },
+    {
+      "id": "neg_002_missing_half_factor",
+      "description": "Uses the full polynomial as vod instead of half.",
+      "path": "negative_variants/neg_002_missing_half_factor/polynomial_differential_vcvs.va"
+    },
+    {
+      "id": "neg_003_inverted_output_polarity",
+      "description": "Inverts the differential output polarity.",
+      "path": "negative_variants/neg_003_inverted_output_polarity/polynomial_differential_vcvs.va"
+    },
+    {
+      "id": "neg_004_common_mode_zero",
+      "description": "Drives outputs around zero common mode instead of vcmo.",
+      "path": "negative_variants/neg_004_common_mode_zero/polynomial_differential_vcvs.va"
     }
   ]
 }

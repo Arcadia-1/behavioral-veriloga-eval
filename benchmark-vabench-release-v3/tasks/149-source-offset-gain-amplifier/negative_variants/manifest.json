@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/offset_gain_amplifier.va"
+    },
+    {
+      "id": "neg_002_missing_offset",
+      "description": "Uses gain without subtracting the input offset.",
+      "path": "negative_variants/neg_002_missing_offset/offset_gain_amplifier.va"
+    },
+    {
+      "id": "neg_003_wrong_gain",
+      "description": "Uses the wrong gain factor.",
+      "path": "negative_variants/neg_003_wrong_gain/offset_gain_amplifier.va"
+    },
+    {
+      "id": "neg_004_adds_offset",
+      "description": "Adds the offset instead of subtracting it.",
+      "path": "negative_variants/neg_004_adds_offset/offset_gain_amplifier.va"
     }
   ]
 }

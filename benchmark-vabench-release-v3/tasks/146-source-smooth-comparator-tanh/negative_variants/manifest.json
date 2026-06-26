@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/smooth_comparator_tanh.va"
+    },
+    {
+      "id": "neg_002_inverted_difference",
+      "description": "Uses sigref minus sigin in the tanh comparator.",
+      "path": "negative_variants/neg_002_inverted_difference/smooth_comparator_tanh.va"
+    },
+    {
+      "id": "neg_003_half_slope",
+      "description": "Uses half of the requested tanh comparator slope.",
+      "path": "negative_variants/neg_003_half_slope/smooth_comparator_tanh.va"
+    },
+    {
+      "id": "neg_004_half_output_span",
+      "description": "Uses half of the requested output span.",
+      "path": "negative_variants/neg_004_half_output_span/smooth_comparator_tanh.va"
     }
   ]
 }

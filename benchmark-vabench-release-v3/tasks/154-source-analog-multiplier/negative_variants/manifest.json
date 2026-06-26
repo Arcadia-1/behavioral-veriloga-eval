@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/analog_multiplier_gain.va"
+    },
+    {
+      "id": "neg_002_adds_inputs",
+      "description": "Adds the inputs instead of multiplying them.",
+      "path": "negative_variants/neg_002_adds_inputs/analog_multiplier_gain.va"
+    },
+    {
+      "id": "neg_003_missing_gain",
+      "description": "Omits the multiplier gain parameter.",
+      "path": "negative_variants/neg_003_missing_gain/analog_multiplier_gain.va"
+    },
+    {
+      "id": "neg_004_square_first_input",
+      "description": "Squares the first input instead of multiplying both inputs.",
+      "path": "negative_variants/neg_004_square_first_input/analog_multiplier_gain.va"
     }
   ]
 }

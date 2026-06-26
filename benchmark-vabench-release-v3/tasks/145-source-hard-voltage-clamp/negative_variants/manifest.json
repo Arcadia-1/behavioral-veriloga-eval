@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/hard_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_002_no_lower_clamp",
+      "description": "Passes values below the lower clamp through.",
+      "path": "negative_variants/neg_002_no_lower_clamp/hard_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_003_no_upper_clamp",
+      "description": "Passes values above the upper clamp through.",
+      "path": "negative_variants/neg_003_no_upper_clamp/hard_voltage_clamp_behavior.va"
+    },
+    {
+      "id": "neg_004_swapped_clamp_rails",
+      "description": "Uses the opposite rail for each clamp condition.",
+      "path": "negative_variants/neg_004_swapped_clamp_rails/hard_voltage_clamp_behavior.va"
     }
   ]
 }

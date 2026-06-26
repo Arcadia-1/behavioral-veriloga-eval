@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/differential_amplifier_core.va"
+    },
+    {
+      "id": "neg_002_single_ended_input",
+      "description": "Uses sigin_p single-ended instead of the differential input.",
+      "path": "negative_variants/neg_002_single_ended_input/differential_amplifier_core.va"
+    },
+    {
+      "id": "neg_003_missing_offset",
+      "description": "Does not subtract the 0.05 input offset.",
+      "path": "negative_variants/neg_003_missing_offset/differential_amplifier_core.va"
+    },
+    {
+      "id": "neg_004_wrong_gain",
+      "description": "Uses gain 1 instead of gain 2.",
+      "path": "negative_variants/neg_004_wrong_gain/differential_amplifier_core.va"
     }
   ]
 }

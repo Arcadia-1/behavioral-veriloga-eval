@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/variable_gain_differential_amplifier.va"
+    },
+    {
+      "id": "neg_002_missing_midpoint",
+      "description": "Omits the 0.2 output midpoint.",
+      "path": "negative_variants/neg_002_missing_midpoint/variable_gain_differential_amplifier.va"
+    },
+    {
+      "id": "neg_003_single_ended_control",
+      "description": "Uses sigctrl_p single-ended instead of differential control.",
+      "path": "negative_variants/neg_003_single_ended_control/variable_gain_differential_amplifier.va"
+    },
+    {
+      "id": "neg_004_no_clamp",
+      "description": "Does not clamp the variable-gain output.",
+      "path": "negative_variants/neg_004_no_clamp/variable_gain_differential_amplifier.va"
     }
   ]
 }
