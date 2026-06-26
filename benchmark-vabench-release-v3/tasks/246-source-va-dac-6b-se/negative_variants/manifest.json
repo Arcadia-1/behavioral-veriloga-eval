@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/va_dac_6b_se.va"
+    },
+    {
+      "id": "neg_002_wrong_denominator",
+      "description": "Uses half the required MSB weight for din5.",
+      "path": "negative_variants/neg_002_wrong_denominator/va_dac_6b_se.va"
+    },
+    {
+      "id": "neg_003_unipolar_output",
+      "description": "Omits the bipolar minus-vdd offset.",
+      "path": "negative_variants/neg_003_unipolar_output/va_dac_6b_se.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives aout at half amplitude.",
+      "path": "negative_variants/neg_004_half_output/va_dac_6b_se.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sar_comparator_reset_high.va"
+    },
+    {
+      "id": "neg_002_swap_decision_outputs",
+      "description": "Swaps comparator decision polarity.",
+      "path": "negative_variants/neg_002_swap_decision_outputs/sar_comparator_reset_high.va"
+    },
+    {
+      "id": "neg_003_no_reset_high",
+      "description": "Does not reset comparator outputs high on falling cmpck.",
+      "path": "negative_variants/neg_003_no_reset_high/sar_comparator_reset_high.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives comparator logic highs at half vdd.",
+      "path": "negative_variants/neg_004_half_output/sar_comparator_reset_high.va"
     }
   ]
 }

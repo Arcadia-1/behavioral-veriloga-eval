@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/cdac_8b_monodown.va"
+    },
+    {
+      "id": "neg_002_wrong_msb_weight",
+      "description": "Uses a quarter-scale dctrl7 subtraction instead of the required half-scale.",
+      "path": "negative_variants/neg_002_wrong_msb_weight/cdac_8b_monodown.va"
+    },
+    {
+      "id": "neg_003_wrong_sign",
+      "description": "Adds the dctrl6 residue step instead of subtracting it.",
+      "path": "negative_variants/neg_003_wrong_sign/cdac_8b_monodown.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives the residue output at half amplitude.",
+      "path": "negative_variants/neg_004_half_output/cdac_8b_monodown.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_restore_4bit_clocked.va"
+    },
+    {
+      "id": "neg_002_omit_half_lsb",
+      "description": "Omits the 0.5 restore offset before scaling.",
+      "path": "negative_variants/neg_002_omit_half_lsb/dac_restore_4bit_clocked.va"
+    },
+    {
+      "id": "neg_003_wrong_denominator",
+      "description": "Normalizes by 15 instead of 16.",
+      "path": "negative_variants/neg_003_wrong_denominator/dac_restore_4bit_clocked.va"
+    },
+    {
+      "id": "neg_004_unipolar_output",
+      "description": "Omits the bipolar -0.9 offset.",
+      "path": "negative_variants/neg_004_unipolar_output/dac_restore_4bit_clocked.va"
     }
   ]
 }

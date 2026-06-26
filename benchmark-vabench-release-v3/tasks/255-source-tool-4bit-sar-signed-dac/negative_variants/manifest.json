@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/tool_4bit_sar_signed_dac.va"
+    },
+    {
+      "id": "neg_002_unipolar_bits",
+      "description": "Treats low bits as zero instead of negative signed weights.",
+      "path": "negative_variants/neg_002_unipolar_bits/tool_4bit_sar_signed_dac.va"
+    },
+    {
+      "id": "neg_003_wrong_gain",
+      "description": "Uses half of the specified signed DAC gain.",
+      "path": "negative_variants/neg_003_wrong_gain/tool_4bit_sar_signed_dac.va"
+    },
+    {
+      "id": "neg_004_falling_sample",
+      "description": "Samples the signed DAC on falling sh edges instead of rising edges.",
+      "path": "negative_variants/neg_004_falling_sample/tool_4bit_sar_signed_dac.va"
     }
   ]
 }

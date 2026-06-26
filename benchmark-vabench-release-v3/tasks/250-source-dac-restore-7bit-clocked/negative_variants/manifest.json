@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_restore_7bit_clocked.va"
+    },
+    {
+      "id": "neg_002_omit_msb",
+      "description": "Drops the d6 MSB contribution.",
+      "path": "negative_variants/neg_002_omit_msb/dac_restore_7bit_clocked.va"
+    },
+    {
+      "id": "neg_003_wrong_denominator",
+      "description": "Normalizes by 127 instead of 128.",
+      "path": "negative_variants/neg_003_wrong_denominator/dac_restore_7bit_clocked.va"
+    },
+    {
+      "id": "neg_004_unipolar_output",
+      "description": "Omits the bipolar -0.9 offset.",
+      "path": "negative_variants/neg_004_unipolar_output/dac_restore_7bit_clocked.va"
     }
   ]
 }

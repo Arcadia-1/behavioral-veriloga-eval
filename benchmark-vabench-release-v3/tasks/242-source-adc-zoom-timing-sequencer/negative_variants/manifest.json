@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/adc_zoom_timing_sequencer.va"
+    },
+    {
+      "id": "neg_002_half_clk_sar",
+      "description": "Drives SAR clock pulses at half amplitude.",
+      "path": "negative_variants/neg_002_half_clk_sar/adc_zoom_timing_sequencer.va"
+    },
+    {
+      "id": "neg_003_swap_sar_res",
+      "description": "Swaps SAR and residue-phase output routing.",
+      "path": "negative_variants/neg_003_swap_sar_res/adc_zoom_timing_sequencer.va"
+    },
+    {
+      "id": "neg_004_missing_zoom_clock",
+      "description": "Suppresses the zoom clock output.",
+      "path": "negative_variants/neg_004_missing_zoom_clock/adc_zoom_timing_sequencer.va"
     }
   ]
 }

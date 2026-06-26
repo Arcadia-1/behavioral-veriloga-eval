@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sum5_signed_sar_weight.va"
+    },
+    {
+      "id": "neg_002_wrong_msb_sign",
+      "description": "Treats d5 low as zero instead of -1 for the signed MSB contribution.",
+      "path": "negative_variants/neg_002_wrong_msb_sign/sum5_signed_sar_weight.va"
+    },
+    {
+      "id": "neg_003_wrong_output_mapping",
+      "description": "Omits the signed output remapping vout*2-1.",
+      "path": "negative_variants/neg_003_wrong_output_mapping/sum5_signed_sar_weight.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives the signed weighted output at half amplitude.",
+      "path": "negative_variants/neg_004_half_output/sum5_signed_sar_weight.va"
     }
   ]
 }

@@ -157,6 +157,31 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 240-255
+
+Tasks `240-source-cdac-monodown-7b` through
+`255-source-tool-4bit-sar-signed-dac` were repaired as the tenth source-series
+batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover CDAC residue sign/weight/output mistakes, zoom timing
+  sequencer output mistakes, 7-bit SAR/SAR2 decision and comparator-clock
+  mistakes, DAC denominator/bipolar-offset/output-scale mistakes, offset-search
+  step/polarity mistakes, comparator reset/output mistakes, sample-hold edge
+  and tracking mistakes, signed SAR weighting mistakes, and readout/signed-DAC
+  weight/gain/sample-edge mistakes;
+- weak candidate negatives that were below tolerance were replaced with
+  distinguishable output-level or weight failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-source-voltage-controlled-gain-amplifier` through

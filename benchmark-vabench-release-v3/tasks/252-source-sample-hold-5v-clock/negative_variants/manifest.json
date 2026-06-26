@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sample_hold_5v_clock.va"
+    },
+    {
+      "id": "neg_002_falling_edge_sample",
+      "description": "Samples vin on falling clock edges instead of rising edges.",
+      "path": "negative_variants/neg_002_falling_edge_sample/sample_hold_5v_clock.va"
+    },
+    {
+      "id": "neg_003_track_input",
+      "description": "Tracks vin continuously instead of holding the sampled value.",
+      "path": "negative_variants/neg_003_track_input/sample_hold_5v_clock.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives the held output at half amplitude.",
+      "path": "negative_variants/neg_004_half_output/sample_hold_5v_clock.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/l3_sar2_logic_7b.va"
+    },
+    {
+      "id": "neg_002_invert_decision",
+      "description": "Uses inverted dp/dn comparator polarity.",
+      "path": "negative_variants/neg_002_invert_decision/l3_sar2_logic_7b.va"
+    },
+    {
+      "id": "neg_003_no_step_decrement",
+      "description": "Does not advance the SAR2 step after comparator recovery.",
+      "path": "negative_variants/neg_003_no_step_decrement/l3_sar2_logic_7b.va"
+    },
+    {
+      "id": "neg_004_half_cmpck",
+      "description": "Drives cmpck at half amplitude.",
+      "path": "negative_variants/neg_004_half_cmpck/l3_sar2_logic_7b.va"
     }
   ]
 }

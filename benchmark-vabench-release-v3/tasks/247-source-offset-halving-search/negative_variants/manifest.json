@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/offset_halving_search.va"
+    },
+    {
+      "id": "neg_002_no_step_halving",
+      "description": "Keeps the offset search step fixed after each clock.",
+      "path": "negative_variants/neg_002_no_step_halving/offset_halving_search.va"
+    },
+    {
+      "id": "neg_003_inverted_update",
+      "description": "Moves vin in the opposite direction for each comparator decision.",
+      "path": "negative_variants/neg_003_inverted_update/offset_halving_search.va"
+    },
+    {
+      "id": "neg_004_full_diff_scale",
+      "description": "Uses full differential vin instead of half-scale around common mode.",
+      "path": "negative_variants/neg_004_full_diff_scale/offset_halving_search.va"
     }
   ]
 }
