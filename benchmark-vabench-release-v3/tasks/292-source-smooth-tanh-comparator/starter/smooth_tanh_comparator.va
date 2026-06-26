@@ -1,0 +1,9 @@
+`include "disciplines.vams"
+module smooth_tanh_comparator(sigin, sigref, sigout);
+input sigin, sigref;
+output sigout;
+electrical sigin, sigref, sigout;
+analog begin
+    V(sigout) <+ 0.0;
+end
+endmodule

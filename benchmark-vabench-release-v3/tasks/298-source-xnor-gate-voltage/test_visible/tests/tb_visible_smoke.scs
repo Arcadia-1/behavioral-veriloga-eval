@@ -1,0 +1,8 @@
+simulator lang=spectre
+global 0
+ahdl_include "xnor_gate_voltage.va"
+Vin1 (vin1 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 0.9 1.6n 0.9 1.65n 0 2.4n 0 2.45n 0.9 3.2n 0.9]
+Vin2 (vin2 0) vsource type=pwl wave=[0 0 1.6n 0 1.65n 0.9 3.2n 0.9]
+XDUT (vin1 vin2 vout) xnor_gate_voltage
+tran tran stop=3.0n maxstep=5p
+save vin1 vin2 vout

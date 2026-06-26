@@ -9054,6 +9054,164 @@ def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
+def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing absolute value signals"
+    return _sample_many(
+        rows,
+        {"sigout": [(0.4, 0.8), (1.2, 0.2), (2.0, 0.0), (2.8, 0.7)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing deadband voltage signals"
+    return _sample_many(
+        rows,
+        {"sigout": [(0.4, -0.45), (1.2, 0.0), (2.0, 0.0), (2.8, 0.55)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_deadband_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing deadband diffamp signals"
+    return _sample_many(
+        rows,
+        {"sigout": [(0.4, -0.58), (1.2, 0.02), (2.0, 0.02), (2.8, 1.22)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin_p", "sigin_n", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing limiting diffamp signals"
+    return _sample_many(
+        rows,
+        {"sigout": [(0.4, -0.75), (1.2, -0.4), (2.0, 0.4), (2.8, 0.75)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigref", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing smooth tanh comparator signals"
+    return _sample_many(
+        rows,
+        {"sigout": [(0.4, -0.975743), (1.2, -0.197375), (2.0, 0.197375), (2.8, 0.995055)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing flash folded dac4 signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.4, 0.5), (1.2, 0.25), (2.0, 0.625), (2.8, 0.9375)]},
+        tol=0.03,
+    )
+
+
+def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing subradix dac10 signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.4, 0.0), (1.2, 0.194687), (2.0, 0.118845), (2.8, 0.314313)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vclk", "vd0", "vd1", "vd2"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing clocked adc3bit signals"
+    return _sample_many(
+        rows,
+        {
+            "vd0": [(0.6, 0.0), (1.4, 0.0), (2.2, 0.0), (2.9, 0.9)],
+            "vd1": [(0.6, 0.0), (1.4, 0.9), (2.2, 0.0), (2.9, 0.9)],
+            "vd2": [(0.6, 0.0), (1.4, 0.0), (2.2, 0.9), (2.9, 0.9)],
+        },
+        tol=0.06,
+    )
+
+
+def check_v3_source_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ain", "d0", "d1", "d2", "d3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing cal4bit modulo signals"
+    return _sample_many(
+        rows,
+        {
+            "d0": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.0), (2.8, 0.9)],
+            "d1": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.9), (2.8, 0.9)],
+            "d2": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9)],
+            "d3": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.9)],
+        },
+        tol=0.06,
+    )
+
+
+def check_v3_source_mux4_priority(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sel0", "sel1", "in0", "in1", "in2", "in3", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing mux4 priority signals"
+    return _sample_many(
+        rows,
+        {"out": [(0.4, 0.1), (1.2, 0.4), (2.0, -0.2), (2.8, 0.8)]},
+        tol=0.02,
+    )
+
+
+def check_v3_source_xnor_gate_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing xnor gate voltage signals"
+    return _sample_many(
+        rows,
+        {"vout": [(0.4, 0.9), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9)]},
+        tol=0.06,
+    )
+
+
+def check_v3_source_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin_d", "vclk", "vout_q", "vout_qbar"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing bipolar dff sample signals"
+    return _sample_many(
+        rows,
+        {
+            "vout_q": [(0.6, -1.0), (1.4, 1.0), (2.2, -1.0), (2.9, 1.0)],
+            "vout_qbar": [(0.6, 1.0), (1.4, -1.0), (2.2, 1.0), (2.9, -1.0)],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "fb", "upb", "down"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd active low reset signals"
+    return _sample_many(
+        rows,
+        {
+            "upb": [(0.2, 0.9), (0.7, 0.0), (1.1, 0.0), (1.25, 0.9), (2.1, 0.9), (2.5, 0.0), (2.7, 0.9)],
+            "down": [(0.2, 0.0), (0.7, 0.0), (1.1, 0.9), (1.25, 0.0), (2.1, 0.9), (2.5, 0.9), (2.7, 0.0)],
+        },
+        tol=0.08,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -14511,6 +14669,32 @@ CHECKS["279-source-safe-analog-divider"] = check_v3_source_safe_analog_divider
 CHECKS["280-source-vargain-diffamp-clip"] = check_v3_source_vargain_diffamp_clip
 CHECKS["281-source-programmable-divider-by-n"] = check_v3_source_programmable_divider_by_n
 CHECKS["282-source-pfd-timer-reset"] = check_v3_source_pfd_timer_reset
+CHECKS["v3_source_absolute_value"] = check_v3_source_absolute_value
+CHECKS["v3_source_deadband_voltage"] = check_v3_source_deadband_voltage
+CHECKS["v3_source_deadband_diffamp"] = check_v3_source_deadband_diffamp
+CHECKS["v3_source_limiting_diffamp"] = check_v3_source_limiting_diffamp
+CHECKS["v3_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
+CHECKS["v3_source_flash_folded_dac4"] = check_v3_source_flash_folded_dac4
+CHECKS["v3_source_subradix_dac10"] = check_v3_source_subradix_dac10
+CHECKS["v3_source_clocked_adc3bit"] = check_v3_source_clocked_adc3bit
+CHECKS["v3_source_cal4bit_modulo"] = check_v3_source_cal4bit_modulo
+CHECKS["v3_source_mux4_priority"] = check_v3_source_mux4_priority
+CHECKS["v3_source_xnor_gate_voltage"] = check_v3_source_xnor_gate_voltage
+CHECKS["v3_source_bipolar_dff_sample"] = check_v3_source_bipolar_dff_sample
+CHECKS["v3_source_pfd_active_low_reset"] = check_v3_source_pfd_active_low_reset
+CHECKS["288-source-absolute-value"] = check_v3_source_absolute_value
+CHECKS["289-source-deadband-voltage"] = check_v3_source_deadband_voltage
+CHECKS["290-source-deadband-diffamp"] = check_v3_source_deadband_diffamp
+CHECKS["291-source-limiting-diffamp"] = check_v3_source_limiting_diffamp
+CHECKS["292-source-smooth-tanh-comparator"] = check_v3_source_smooth_tanh_comparator
+CHECKS["293-source-flash-folded-dac4"] = check_v3_source_flash_folded_dac4
+CHECKS["294-source-subradix-dac10"] = check_v3_source_subradix_dac10
+CHECKS["295-source-clocked-adc3bit"] = check_v3_source_clocked_adc3bit
+CHECKS["296-source-cal4bit-modulo"] = check_v3_source_cal4bit_modulo
+CHECKS["297-source-mux4-priority"] = check_v3_source_mux4_priority
+CHECKS["298-source-xnor-gate-voltage"] = check_v3_source_xnor_gate_voltage
+CHECKS["299-source-bipolar-dff-sample"] = check_v3_source_bipolar_dff_sample
+CHECKS["300-source-pfd-active-low-reset"] = check_v3_source_pfd_active_low_reset
 CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator
