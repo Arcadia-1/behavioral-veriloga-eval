@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pfd_reset_pulse.va"
+    },
+    {
+      "id": "neg_002_no_reset_delay",
+      "description": "Drives the down pulse at half logic amplitude.",
+      "path": "negative_variants/neg_002_no_reset_delay/pfd_reset_pulse.va"
+    },
+    {
+      "id": "neg_003_ub_noninverted",
+      "description": "Drives ub as an active-high up output instead of active-low.",
+      "path": "negative_variants/neg_003_ub_noninverted/pfd_reset_pulse.va"
+    },
+    {
+      "id": "neg_004_no_down_reset_request",
+      "description": "Does not schedule reset when b arrives after up.",
+      "path": "negative_variants/neg_004_no_down_reset_request/pfd_reset_pulse.va"
     }
   ]
 }

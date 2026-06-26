@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/cdac_bidirect_residue.va"
+    },
+    {
+      "id": "neg_002_wrong_msb_sign",
+      "description": "Subtracts the dctrl7 half-scale residue step instead of adding it.",
+      "path": "negative_variants/neg_002_wrong_msb_sign/cdac_bidirect_residue.va"
+    },
+    {
+      "id": "neg_003_wrong_dctrl6_weight",
+      "description": "Uses a half-scale dctrl6 subtraction instead of quarter-scale.",
+      "path": "negative_variants/neg_003_wrong_dctrl6_weight/cdac_bidirect_residue.va"
+    },
+    {
+      "id": "neg_004_sample_on_rising",
+      "description": "Drives the CDAC residue output at half amplitude.",
+      "path": "negative_variants/neg_004_sample_on_rising/cdac_bidirect_residue.va"
     }
   ]
 }

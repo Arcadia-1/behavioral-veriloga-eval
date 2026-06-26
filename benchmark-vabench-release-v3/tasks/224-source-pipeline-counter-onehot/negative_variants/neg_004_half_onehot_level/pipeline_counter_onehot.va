@@ -1,0 +1,23 @@
+`include "disciplines.vams"
+module pipeline_counter_onehot(clk, dout0, dout1, dout2, s0, s1, s2, s3, s4, s5);
+input clk;
+output dout0, dout1, dout2, s0, s1, s2, s3, s4, s5;
+electrical clk, dout0, dout1, dout2, s0, s1, s2, s3, s4, s5;
+integer counter;
+analog begin
+    @(initial_step) counter = 0;
+    @(cross(V(clk) - 0.45, -1)) begin
+        if (counter < 5) counter = counter + 1;
+        else counter = 0;
+    end
+    V(s0) <+ transition((counter == 0) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(s1) <+ transition((counter == 1) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(s2) <+ transition((counter == 2) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(s3) <+ transition((counter == 3) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(s4) <+ transition((counter == 4) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(s5) <+ transition((counter == 5) ? 0.45 : 0.0, 50p, 20p, 20p);
+    V(dout0) <+ transition((counter & 1) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(dout1) <+ transition(((counter >> 1) & 1) ? 0.9 : 0.0, 50p, 20p, 20p);
+    V(dout2) <+ transition(((counter >> 2) & 1) ? 0.9 : 0.0, 50p, 20p, 20p);
+end
+endmodule

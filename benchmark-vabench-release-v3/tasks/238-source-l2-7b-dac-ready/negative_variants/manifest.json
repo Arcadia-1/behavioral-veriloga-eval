@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/l2_7b_dac_ready.va"
+    },
+    {
+      "id": "neg_002_no_ready_skip",
+      "description": "Updates aout on the first ready edge instead of skipping it.",
+      "path": "negative_variants/neg_002_no_ready_skip/l2_7b_dac_ready.va"
+    },
+    {
+      "id": "neg_003_wrong_denominator",
+      "description": "Drives the ready-sampled DAC output at half amplitude.",
+      "path": "negative_variants/neg_003_wrong_denominator/l2_7b_dac_ready.va"
+    },
+    {
+      "id": "neg_004_unipolar_output",
+      "description": "Omits the bipolar minus-vdd output offset.",
+      "path": "negative_variants/neg_004_unipolar_output/l2_7b_dac_ready.va"
     }
   ]
 }

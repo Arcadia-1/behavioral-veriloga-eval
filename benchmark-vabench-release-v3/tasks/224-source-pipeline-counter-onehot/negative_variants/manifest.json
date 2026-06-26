@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pipeline_counter_onehot.va"
+    },
+    {
+      "id": "neg_002_modulo_five",
+      "description": "Wraps the pipeline counter after state 4 instead of including state 5.",
+      "path": "negative_variants/neg_002_modulo_five/pipeline_counter_onehot.va"
+    },
+    {
+      "id": "neg_003_rising_edge_count",
+      "description": "Advances the counter on rising instead of falling clock edges.",
+      "path": "negative_variants/neg_003_rising_edge_count/pipeline_counter_onehot.va"
+    },
+    {
+      "id": "neg_004_half_onehot_level",
+      "description": "Drives one-hot state s5 at half logic level.",
+      "path": "negative_variants/neg_004_half_onehot_level/pipeline_counter_onehot.va"
     }
   ]
 }

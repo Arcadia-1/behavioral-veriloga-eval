@@ -1,0 +1,26 @@
+`include "disciplines.vams"
+module pfd_reset_pulse(a, b, ub, d);
+input a, b;
+output ub, d;
+electrical a, b, ub, d;
+integer up, down;
+real trst;
+analog begin
+    @(initial_step) begin
+        up = 0; down = 0; trst = -1;
+    end
+    @(cross(V(a) - 0.45, +1)) begin
+        up = 1;
+        if (down == 1) trst = $abstime + 10p;
+    end
+    @(cross(V(b) - 0.45, +1)) begin
+        down = 1;
+        if (up == 1) trst = trst;
+    end
+    @(timer(trst)) begin
+        up = 0; down = 0; trst = -1;
+    end
+    V(ub) <+ transition(up ? 0.0 : 0.9, 0, 10p, 10p);
+    V(d) <+ transition(down ? 0.9 : 0.0, 0, 10p, 10p);
+end
+endmodule

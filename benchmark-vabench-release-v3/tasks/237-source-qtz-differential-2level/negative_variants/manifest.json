@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/qtz_differential_2level.va"
+    },
+    {
+      "id": "neg_002_invert_decision",
+      "description": "Inverts the two-level quantizer decision.",
+      "path": "negative_variants/neg_002_invert_decision/qtz_differential_2level.va"
+    },
+    {
+      "id": "neg_003_wrong_threshold",
+      "description": "Compares against the full differential reference instead of the midpoint threshold.",
+      "path": "negative_variants/neg_003_wrong_threshold/qtz_differential_2level.va"
+    },
+    {
+      "id": "neg_004_unipolar_output",
+      "description": "Outputs 0/1 instead of -0.5/+0.5 quantizer levels.",
+      "path": "negative_variants/neg_004_unipolar_output/qtz_differential_2level.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sar_das_logic_6b.va"
+    },
+    {
+      "id": "neg_002_invert_comparator",
+      "description": "Uses inverted comparator polarity for SAR decision updates.",
+      "path": "negative_variants/neg_002_invert_comparator/sar_das_logic_6b.va"
+    },
+    {
+      "id": "neg_003_no_sample_reset",
+      "description": "Drives SAR output d6 at half logic amplitude.",
+      "path": "negative_variants/neg_003_no_sample_reset/sar_das_logic_6b.va"
+    },
+    {
+      "id": "neg_004_half_co_level",
+      "description": "Drives co at half logic level.",
+      "path": "negative_variants/neg_004_half_co_level/sar_das_logic_6b.va"
     }
   ]
 }

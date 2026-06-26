@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/phase_detector_chopper.va"
+    },
+    {
+      "id": "neg_002_no_chop_inversion",
+      "description": "Passes vin_rf without sign inversion when the local oscillator is low.",
+      "path": "negative_variants/neg_002_no_chop_inversion/phase_detector_chopper.va"
+    },
+    {
+      "id": "neg_003_wrong_gain",
+      "description": "Uses unity gain instead of the specified 1.25 conversion gain.",
+      "path": "negative_variants/neg_003_wrong_gain/phase_detector_chopper.va"
+    },
+    {
+      "id": "neg_004_inverted_lo_polarity",
+      "description": "Uses the opposite local-oscillator polarity for chopping.",
+      "path": "negative_variants/neg_004_inverted_lo_polarity/phase_detector_chopper.va"
     }
   ]
 }

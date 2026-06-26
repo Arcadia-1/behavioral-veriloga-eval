@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/trim_ctrl_4bit.va"
+    },
+    {
+      "id": "neg_002_floor_without_round",
+      "description": "Inverts output bit dout1 of the rounded trim code.",
+      "path": "negative_variants/neg_002_floor_without_round/trim_ctrl_4bit.va"
+    },
+    {
+      "id": "neg_003_invert_msb",
+      "description": "Inverts the MSB output bit.",
+      "path": "negative_variants/neg_003_invert_msb/trim_ctrl_4bit.va"
+    },
+    {
+      "id": "neg_004_half_output_level",
+      "description": "Drives dout0 high at half logic level.",
+      "path": "negative_variants/neg_004_half_output_level/trim_ctrl_4bit.va"
     }
   ]
 }

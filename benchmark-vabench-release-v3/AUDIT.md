@@ -132,6 +132,31 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 224-239
+
+Tasks `224-source-pipeline-counter-onehot` through
+`239-source-l2-cdac-4b-switch` were repaired as the ninth source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover counter modulus and edge mistakes, CDAC residue
+  sign/weight/output mistakes, PFD reset and output polarity mistakes, trim
+  code output mistakes, RDAC sweep output mistakes, SAR decision/reset/output
+  mistakes, self-timed SAR step and comparator-clock mistakes, PFD reset-window
+  mistakes, pipe-ADC gain-control mistakes, clock sequencer output mistakes,
+  chopper gain/polarity mistakes, weighted ADC/DAC scale mistakes, quantizer
+  threshold/level mistakes, and ready-gated DAC output mistakes;
+- weak candidate negatives that were below tolerance or not exercised by the
+  current hidden waveform were replaced with observable behavioral failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-source-voltage-controlled-gain-amplifier` through

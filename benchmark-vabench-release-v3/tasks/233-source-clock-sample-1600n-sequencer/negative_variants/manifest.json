@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/clock_sample_1600n_sequencer.va"
+    },
+    {
+      "id": "neg_002_half_conv_level",
+      "description": "Drives conversion pulses at half amplitude.",
+      "path": "negative_variants/neg_002_half_conv_level/clock_sample_1600n_sequencer.va"
+    },
+    {
+      "id": "neg_003_swap_nc_res",
+      "description": "Swaps nc and res output routing.",
+      "path": "negative_variants/neg_003_swap_nc_res/clock_sample_1600n_sequencer.va"
+    },
+    {
+      "id": "neg_004_missing_second_sample",
+      "description": "Removes the second sample pulse from the 16 ns sequence.",
+      "path": "negative_variants/neg_004_missing_second_sample/clock_sample_1600n_sequencer.va"
     }
   ]
 }

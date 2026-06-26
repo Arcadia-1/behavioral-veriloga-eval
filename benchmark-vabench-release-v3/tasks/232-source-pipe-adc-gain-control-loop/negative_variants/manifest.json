@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pipe_adc_gain_control_loop.va"
+    },
+    {
+      "id": "neg_002_wrong_target_diff",
+      "description": "Uses target difference 32 instead of 64 for gain correction.",
+      "path": "negative_variants/neg_002_wrong_target_diff/pipe_adc_gain_control_loop.va"
+    },
+    {
+      "id": "neg_003_no_gain_update",
+      "description": "Leaves gainctrlcode unchanged during closed-loop correction.",
+      "path": "negative_variants/neg_003_no_gain_update/pipe_adc_gain_control_loop.va"
+    },
+    {
+      "id": "neg_004_half_gain_outputs",
+      "description": "Drives gainctrl6 at half logic level.",
+      "path": "negative_variants/neg_004_half_gain_outputs/pipe_adc_gain_control_loop.va"
     }
   ]
 }

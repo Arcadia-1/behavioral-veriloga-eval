@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/single_adc_7b_weighted.va"
+    },
+    {
+      "id": "neg_002_omit_msb",
+      "description": "Drops the din6 MSB contribution.",
+      "path": "negative_variants/neg_002_omit_msb/single_adc_7b_weighted.va"
+    },
+    {
+      "id": "neg_003_half_scale",
+      "description": "Uses half-scale denominator for all weighted terms.",
+      "path": "negative_variants/neg_003_half_scale/single_adc_7b_weighted.va"
+    },
+    {
+      "id": "neg_004_fixed_offset",
+      "description": "Adds a fixed output offset to all decoded codes.",
+      "path": "negative_variants/neg_004_fixed_offset/single_adc_7b_weighted.va"
     }
   ]
 }
