@@ -7,7 +7,7 @@ Status: support formal candidate for EVAS-based evaluation.
 ## Four-Standard Review
 
 - Useful scenario: pass. `Thermometer To Binary Encoder 8b` is a reusable analog/mixed-signal testbench utility.
-- Reasonable task: pass. The public prompt fixes the exact scalar port order, logic threshold, output encoding, and invalid-state behavior when applicable.
+- Reasonable task: pass. The public prompt fixes the vector port order, logic threshold, output encoding, and invalid-state behavior while avoiding mechanical scalar-port expansion.
 - Complete tests: pass for EVAS formal-candidate scope. Hidden tests cover boundary values, representative interior values, and invalid/gating cases when applicable.
 - Fair evaluation: pass for the stated prompt. Hidden scoring requirements are stated in `instruction.md`; public smoke only checks compile/basic simulation viability.
 
@@ -15,6 +15,7 @@ Status: support formal candidate for EVAS-based evaluation.
 
 - Hidden gold expected result: `PASS`, `dut_compile=1.0`, `tb_compile=1.0`, `sim_correct=1.0`.
 - Positive vectors: 0,1,2,3,7,15,16,31,63,127,128,200,255 plus invalid bubbles.
+- Interface cleanup: task now uses Verilog-A vector ports `th[255:0]` and `b[7:0]` instead of 256 manually listed scalar thermometer inputs.
 - Concrete negative variants: 5 expected rejections.
 
 Negative coverage:
