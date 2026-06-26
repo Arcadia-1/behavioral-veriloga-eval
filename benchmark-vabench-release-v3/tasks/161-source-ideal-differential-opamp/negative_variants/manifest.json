@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ideal_differential_opamp.va"
+    },
+    {
+      "id": "neg_002_half_gain",
+      "description": "Uses half the required differential gain.",
+      "path": "negative_variants/neg_002_half_gain/ideal_differential_opamp.va"
+    },
+    {
+      "id": "neg_003_inverted_polarity",
+      "description": "Inverts the differential output polarity.",
+      "path": "negative_variants/neg_003_inverted_polarity/ideal_differential_opamp.va"
+    },
+    {
+      "id": "neg_004_wrong_common_mode",
+      "description": "Drives outputs around zero common mode.",
+      "path": "negative_variants/neg_004_wrong_common_mode/ideal_differential_opamp.va"
     }
   ]
 }

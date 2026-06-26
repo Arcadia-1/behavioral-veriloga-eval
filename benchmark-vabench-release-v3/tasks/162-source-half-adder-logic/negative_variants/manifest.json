@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
       "path": "negative_variants/neg_001_zero/half_adder_logic.va"
+    },
+    {
+      "id": "neg_002_or_sum",
+      "description": "Uses OR for sum instead of XOR.",
+      "path": "negative_variants/neg_002_or_sum/half_adder_logic.va"
+    },
+    {
+      "id": "neg_003_or_carry",
+      "description": "Uses OR for carry instead of AND.",
+      "path": "negative_variants/neg_003_or_carry/half_adder_logic.va"
+    },
+    {
+      "id": "neg_004_half_levels",
+      "description": "Correct logic but half output high level.",
+      "path": "negative_variants/neg_004_half_levels/half_adder_logic.va"
     }
   ]
 }

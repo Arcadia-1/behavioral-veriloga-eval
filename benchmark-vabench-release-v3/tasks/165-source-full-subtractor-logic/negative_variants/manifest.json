@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
       "path": "negative_variants/neg_001_zero/full_subtractor_logic.va"
+    },
+    {
+      "id": "neg_002_ignores_borrow_in",
+      "description": "Ignores borrow input and acts as half subtractor.",
+      "path": "negative_variants/neg_002_ignores_borrow_in/full_subtractor_logic.va"
+    },
+    {
+      "id": "neg_003_wrong_borrow_majority",
+      "description": "Uses adder carry majority instead of subtractor borrow.",
+      "path": "negative_variants/neg_003_wrong_borrow_majority/full_subtractor_logic.va"
+    },
+    {
+      "id": "neg_004_inverted_diff",
+      "description": "Inverts difference output.",
+      "path": "negative_variants/neg_004_inverted_diff/full_subtractor_logic.va"
     }
   ]
 }

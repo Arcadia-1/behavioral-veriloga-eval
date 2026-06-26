@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/clocked_four_input_mux.va"
+    },
+    {
+      "id": "neg_002_rising_edge_latch",
+      "description": "Latches selected input on rising clock edge.",
+      "path": "negative_variants/neg_002_rising_edge_latch/clocked_four_input_mux.va"
+    },
+    {
+      "id": "neg_003_swapped_select_bits",
+      "description": "Swaps dsel0 and dsel1 in the address decode.",
+      "path": "negative_variants/neg_003_swapped_select_bits/clocked_four_input_mux.va"
+    },
+    {
+      "id": "neg_004_ignores_dsel1",
+      "description": "Ignores dsel1 and selects only din0/din1.",
+      "path": "negative_variants/neg_004_ignores_dsel1/clocked_four_input_mux.va"
     }
   ]
 }

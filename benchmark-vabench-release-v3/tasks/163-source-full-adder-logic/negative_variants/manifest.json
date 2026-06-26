@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
       "path": "negative_variants/neg_001_zero/full_adder_logic.va"
+    },
+    {
+      "id": "neg_002_ignores_carry_in",
+      "description": "Computes a half-adder and ignores carry input.",
+      "path": "negative_variants/neg_002_ignores_carry_in/full_adder_logic.va"
+    },
+    {
+      "id": "neg_003_wrong_carry_exactly_three",
+      "description": "Asserts carry only when all three inputs are high.",
+      "path": "negative_variants/neg_003_wrong_carry_exactly_three/full_adder_logic.va"
+    },
+    {
+      "id": "neg_004_even_parity_sum",
+      "description": "Uses even parity for sum.",
+      "path": "negative_variants/neg_004_even_parity_sum/full_adder_logic.va"
     }
   ]
 }

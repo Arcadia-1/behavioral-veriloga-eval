@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
       "path": "negative_variants/neg_001_zero/half_subtractor_logic.va"
+    },
+    {
+      "id": "neg_002_wrong_borrow_direction",
+      "description": "Uses a && !b for borrow instead of !a && b.",
+      "path": "negative_variants/neg_002_wrong_borrow_direction/half_subtractor_logic.va"
+    },
+    {
+      "id": "neg_003_and_diff",
+      "description": "Uses AND for difference.",
+      "path": "negative_variants/neg_003_and_diff/half_subtractor_logic.va"
+    },
+    {
+      "id": "neg_004_half_levels",
+      "description": "Correct logic but half output high level.",
+      "path": "negative_variants/neg_004_half_levels/half_subtractor_logic.va"
     }
   ]
 }

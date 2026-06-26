@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/two_period_sample_delay.va"
+    },
+    {
+      "id": "neg_002_one_period_delay",
+      "description": "Outputs the current sample with only one-period delay.",
+      "path": "negative_variants/neg_002_one_period_delay/two_period_sample_delay.va"
+    },
+    {
+      "id": "neg_003_half_output_gain",
+      "description": "Applies half gain to the delayed output.",
+      "path": "negative_variants/neg_003_half_output_gain/two_period_sample_delay.va"
+    },
+    {
+      "id": "neg_004_wrong_initial_value",
+      "description": "Uses wrong initial output before samples are available.",
+      "path": "negative_variants/neg_004_wrong_initial_value/two_period_sample_delay.va"
     }
   ]
 }

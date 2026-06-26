@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ideal_adc_4bit_quantizer.va"
+    },
+    {
+      "id": "neg_002_half_scale_code",
+      "description": "Uses half-scale output codes.",
+      "path": "negative_variants/neg_002_half_scale_code/ideal_adc_4bit_quantizer.va"
+    },
+    {
+      "id": "neg_003_unipolar_range",
+      "description": "Quantizes over 0..vref instead of -vref..+vref.",
+      "path": "negative_variants/neg_003_unipolar_range/ideal_adc_4bit_quantizer.va"
+    },
+    {
+      "id": "neg_004_wrong_lsb",
+      "description": "Uses the wrong ADC LSB size.",
+      "path": "negative_variants/neg_004_wrong_lsb/ideal_adc_4bit_quantizer.va"
     }
   ]
 }

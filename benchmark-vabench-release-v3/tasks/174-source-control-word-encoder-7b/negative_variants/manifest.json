@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/control_word_encoder_7b.va"
+    },
+    {
+      "id": "neg_002_shifted_bits",
+      "description": "Shifts every decoded bit by one position.",
+      "path": "negative_variants/neg_002_shifted_bits/control_word_encoder_7b.va"
+    },
+    {
+      "id": "neg_003_inverted_bits",
+      "description": "Inverts every output bit.",
+      "path": "negative_variants/neg_003_inverted_bits/control_word_encoder_7b.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Uses half high level for logic one.",
+      "path": "negative_variants/neg_004_half_high_level/control_word_encoder_7b.va"
     }
   ]
 }

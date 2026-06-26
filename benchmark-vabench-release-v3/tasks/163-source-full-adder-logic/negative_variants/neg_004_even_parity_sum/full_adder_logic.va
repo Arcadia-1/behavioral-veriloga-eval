@@ -1,0 +1,5 @@
+`include "disciplines.vams"
+module full_adder_logic(vin1, vin2, vin_carry, vout_sum, vout_carry);
+input vin1, vin2, vin_carry; output vout_sum, vout_carry; electrical vin1, vin2, vin_carry, vout_sum, vout_carry; integer a,b,c,ones;
+analog begin a=V(vin1)>0.45; b=V(vin2)>0.45; c=V(vin_carry)>0.45; ones=a+b+c; V(vout_sum)<+transition((ones==0||ones==2)?0.9:0,0,0); V(vout_carry)<+transition((ones>=2)?0.9:0,0,0); end
+endmodule

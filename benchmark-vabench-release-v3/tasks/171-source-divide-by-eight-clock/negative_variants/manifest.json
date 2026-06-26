@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/divide_by_eight_clock.va"
+    },
+    {
+      "id": "neg_002_divide_by_four",
+      "description": "Uses divide-by-four instead of divide-by-eight.",
+      "path": "negative_variants/neg_002_divide_by_four/divide_by_eight_clock.va"
+    },
+    {
+      "id": "neg_003_wrong_duty",
+      "description": "Uses one high count and seven low counts instead of 50 percent duty.",
+      "path": "negative_variants/neg_003_wrong_duty/divide_by_eight_clock.va"
+    },
+    {
+      "id": "neg_004_wrong_initial_count",
+      "description": "Starts at zero, shifting output phase.",
+      "path": "negative_variants/neg_004_wrong_initial_count/divide_by_eight_clock.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
       "path": "negative_variants/neg_001_zero/rs_latch_voltage.va"
+    },
+    {
+      "id": "neg_002_no_hold",
+      "description": "Drops Q low whenever set is not asserted.",
+      "path": "negative_variants/neg_002_no_hold/rs_latch_voltage.va"
+    },
+    {
+      "id": "neg_003_swapped_set_reset",
+      "description": "Treats reset as set and set as reset.",
+      "path": "negative_variants/neg_003_swapped_set_reset/rs_latch_voltage.va"
+    },
+    {
+      "id": "neg_004_qbar_not_complement",
+      "description": "Drives qbar equal to q.",
+      "path": "negative_variants/neg_004_qbar_not_complement/rs_latch_voltage.va"
     }
   ]
 }

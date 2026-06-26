@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/weighted_sar_decoder_9b.va"
+    },
+    {
+      "id": "neg_002_unipolar_bits",
+      "description": "Maps low bits to 0 instead of bipolar -1.",
+      "path": "negative_variants/neg_002_unipolar_bits/weighted_sar_decoder_9b.va"
+    },
+    {
+      "id": "neg_003_missing_msb_weight",
+      "description": "Omits the d8 MSB contribution from all weighted sums.",
+      "path": "negative_variants/neg_003_missing_msb_weight/weighted_sar_decoder_9b.va"
+    },
+    {
+      "id": "neg_004_wrong_normalization",
+      "description": "Uses the wrong denominator for weighted sums.",
+      "path": "negative_variants/neg_004_wrong_normalization/weighted_sar_decoder_9b.va"
     }
   ]
 }

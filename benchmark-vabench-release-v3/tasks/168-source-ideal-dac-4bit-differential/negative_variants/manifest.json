@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ideal_dac_4bit_differential.va"
+    },
+    {
+      "id": "neg_002_wrong_lsb_scale",
+      "description": "Uses a wrong DAC LSB scale.",
+      "path": "negative_variants/neg_002_wrong_lsb_scale/ideal_dac_4bit_differential.va"
+    },
+    {
+      "id": "neg_003_no_midrise_offset",
+      "description": "Uses endpoint DAC levels without half-LSB mid-rise offset.",
+      "path": "negative_variants/neg_003_no_midrise_offset/ideal_dac_4bit_differential.va"
+    },
+    {
+      "id": "neg_004_inverted_outputs",
+      "description": "Swaps DAC differential output polarity.",
+      "path": "negative_variants/neg_004_inverted_outputs/ideal_dac_4bit_differential.va"
     }
   ]
 }

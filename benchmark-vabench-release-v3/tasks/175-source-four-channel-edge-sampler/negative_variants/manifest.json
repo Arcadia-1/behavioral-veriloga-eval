@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/four_channel_edge_sampler.va"
+    },
+    {
+      "id": "neg_002_half_output_gain",
+      "description": "Samples correctly but drives half-amplitude outputs.",
+      "path": "negative_variants/neg_002_half_output_gain/four_channel_edge_sampler.va"
+    },
+    {
+      "id": "neg_003_swapped_channels",
+      "description": "Swaps sampled channel outputs.",
+      "path": "negative_variants/neg_003_swapped_channels/four_channel_edge_sampler.va"
+    },
+    {
+      "id": "neg_004_channel3_stuck_initial",
+      "description": "Leaves channel 3 stuck at its initial value.",
+      "path": "negative_variants/neg_004_channel3_stuck_initial/four_channel_edge_sampler.va"
     }
   ]
 }

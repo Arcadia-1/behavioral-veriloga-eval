@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/flash_thermometer_centered_sum.va"
+    },
+    {
+      "id": "neg_002_uncentered_sum",
+      "description": "Adds a fixed DC offset to the centered thermometer sum.",
+      "path": "negative_variants/neg_002_uncentered_sum/flash_thermometer_centered_sum.va"
+    },
+    {
+      "id": "neg_003_wrong_gain",
+      "description": "Uses the wrong output gain.",
+      "path": "negative_variants/neg_003_wrong_gain/flash_thermometer_centered_sum.va"
+    },
+    {
+      "id": "neg_004_ignores_upper_bits",
+      "description": "Counts only the lower four thermometer inputs.",
+      "path": "negative_variants/neg_004_ignores_upper_bits/flash_thermometer_centered_sum.va"
     }
   ]
 }

@@ -58,6 +58,30 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 160-175
+
+Tasks `160-source-voltage-controlled-gain-amplifier` through
+`175-source-four-channel-edge-sampler` were repaired as the fifth source-series
+batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover controlled-gain mistakes, differential polarity and
+  common-mode mistakes, adder/subtractor truth-table mistakes, latch hold and
+  complement mistakes, ADC/DAC quantization mistakes, sample-delay mistakes,
+  mux decode mistakes, clock-divider duty/phase mistakes, weighted decoder
+  mistakes, bit-encoder mistakes, and multi-channel sampler mistakes;
+- weak edge-trigger negatives that were equivalent under the current hidden
+  stimulus were replaced with distinguishable behavioral failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 144-159
 
 Tasks `144-source-differential-deadband` through
