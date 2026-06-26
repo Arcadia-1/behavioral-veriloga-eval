@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pipe15_data_align.va"
+    },
+    {
+      "id": "neg_002_top_group_three_delay",
+      "description": "Uses the third delay stage for bits 11-14 instead of the fourth.",
+      "path": "negative_variants/neg_002_top_group_three_delay/pipe15_data_align.va"
+    },
+    {
+      "id": "neg_003_middle_group_one_delay",
+      "description": "Uses only one delay stage for bits 7-10 instead of three.",
+      "path": "negative_variants/neg_003_middle_group_one_delay/pipe15_data_align.va"
+    },
+    {
+      "id": "neg_004_swap_low_outputs",
+      "description": "Forces traced aligned output do14 low.",
+      "path": "negative_variants/neg_004_swap_low_outputs/pipe15_data_align.va"
     }
   ]
 }

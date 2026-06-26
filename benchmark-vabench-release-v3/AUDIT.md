@@ -106,6 +106,32 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 208-223
+
+Tasks `208-source-offset-bisection-driver` through
+`223-source-adc-sample-clock-sequencer` were repaired as the eighth
+source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover offset-bisection sign and step mistakes, weighted
+  decoder normalization/output mistakes, toggle and DFF control mistakes,
+  synchronization pipeline mistakes, progress encoder mistakes, TDC sign/scale
+  mistakes, foreground calibration mistakes, pipeline alignment mistakes,
+  mux-sampling mistakes, DAC code-generation mistakes, RDAC search-flow
+  mistakes, SPI shift-direction mistakes, SAR-front-end clock/output mistakes,
+  and ADC sample-clock sequencer output mistakes;
+- weak candidate negatives that were not observed by the current hidden
+  waveform were replaced with directly observable behavioral failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-source-voltage-controlled-gain-amplifier` through

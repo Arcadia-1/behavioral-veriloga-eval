@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/foreground_cload_calibrator.va"
+    },
+    {
+      "id": "neg_002_inverted_decision",
+      "description": "Swaps the dp/dn update decision during foreground calibration.",
+      "path": "negative_variants/neg_002_inverted_decision/foreground_cload_calibrator.va"
+    },
+    {
+      "id": "neg_003_enable_never_finishes",
+      "description": "Leaves calibration enable high after the final iteration.",
+      "path": "negative_variants/neg_003_enable_never_finishes/foreground_cload_calibrator.va"
+    },
+    {
+      "id": "neg_004_swap_reference_outputs",
+      "description": "Swaps cvinp/cvinn reference routing.",
+      "path": "negative_variants/neg_004_swap_reference_outputs/foreground_cload_calibrator.va"
     }
   ]
 }

@@ -1,0 +1,19 @@
+`include "disciplines.vams"
+module dff_set_reset_hold(ck, d, rn, sn, qp);
+input ck, d, rn, sn;
+output qp;
+electrical ck, d, rn, sn, qp;
+real q;
+analog begin
+    @(initial_step) q = 0.0;
+    @(cross(V(ck) - 0.45, +1)) begin
+        if (V(rn) < 0.45) q = 0.0;
+        else if (V(sn) < 0.45) q = 0.9;
+        else q = (V(d) > 0.45) ? 0.9 : 0.0;
+    end
+    @(cross(V(rn) - 0.45, -1) or cross(V(sn) - 0.45, -1)) begin
+        q = q;
+    end
+    V(qp) <+ transition(q, 50p, 20p, 20p);
+end
+endmodule

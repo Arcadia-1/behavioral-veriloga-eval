@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/clocked_mux4_sampler.va"
+    },
+    {
+      "id": "neg_002_rising_edge_sample",
+      "description": "Samples on rising clks instead of falling clks.",
+      "path": "negative_variants/neg_002_rising_edge_sample/clocked_mux4_sampler.va"
+    },
+    {
+      "id": "neg_003_swap_select_lsb",
+      "description": "Swaps din0 and din1 for dsel1=0 selection.",
+      "path": "negative_variants/neg_003_swap_select_lsb/clocked_mux4_sampler.va"
+    },
+    {
+      "id": "neg_004_half_output",
+      "description": "Drives the sampled mux output at half amplitude.",
+      "path": "negative_variants/neg_004_half_output/clocked_mux4_sampler.va"
     }
   ]
 }

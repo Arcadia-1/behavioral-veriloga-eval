@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sarfend_logic_4b.va"
+    },
+    {
+      "id": "neg_002_inverted_comparator",
+      "description": "Uses dcompb>dcomp as the SAR comparator decision.",
+      "path": "negative_variants/neg_002_inverted_comparator/sarfend_logic_4b.va"
+    },
+    {
+      "id": "neg_003_no_test_override",
+      "description": "Drives the internal conversion clock output at half amplitude.",
+      "path": "negative_variants/neg_003_no_test_override/sarfend_logic_4b.va"
+    },
+    {
+      "id": "neg_004_wrong_dout_mapping",
+      "description": "Maps the previous p state to dout in the wrong bit order.",
+      "path": "negative_variants/neg_004_wrong_dout_mapping/sarfend_logic_4b.va"
     }
   ]
 }

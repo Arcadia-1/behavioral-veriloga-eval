@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/adc_sample_clock_sequencer.va"
+    },
+    {
+      "id": "neg_002_shift_conv_early",
+      "description": "Drives conv pulses at half amplitude.",
+      "path": "negative_variants/neg_002_shift_conv_early/adc_sample_clock_sequencer.va"
+    },
+    {
+      "id": "neg_003_short_sample_pulse",
+      "description": "Drives sample pulses at half amplitude.",
+      "path": "negative_variants/neg_003_short_sample_pulse/adc_sample_clock_sequencer.va"
+    },
+    {
+      "id": "neg_004_swap_nc_outputs",
+      "description": "Swaps nc and nc_az output routing.",
+      "path": "negative_variants/neg_004_swap_nc_outputs/adc_sample_clock_sequencer.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/tdc_ideal_edge_delta.va"
+    },
+    {
+      "id": "neg_002_inverted_delta",
+      "description": "Computes inn-inp timing instead of inp-inn timing.",
+      "path": "negative_variants/neg_002_inverted_delta/tdc_ideal_edge_delta.va"
+    },
+    {
+      "id": "neg_003_wrong_fullrange",
+      "description": "Uses a 50 ps full range instead of 100 ps.",
+      "path": "negative_variants/neg_003_wrong_fullrange/tdc_ideal_edge_delta.va"
+    },
+    {
+      "id": "neg_004_no_sample_reset",
+      "description": "Drives the measured TDC delta at half scale.",
+      "path": "negative_variants/neg_004_no_sample_reset/tdc_ideal_edge_delta.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/spi_shift_mux.va"
+    },
+    {
+      "id": "neg_002_shift_on_rising_only",
+      "description": "Shifts only on rising SCKI edges instead of every SCKI transition.",
+      "path": "negative_variants/neg_002_shift_on_rising_only/spi_shift_mux.va"
+    },
+    {
+      "id": "neg_003_reverse_shift_direction",
+      "description": "Shifts toward lower indexes and loads SDI into bit 7.",
+      "path": "negative_variants/neg_003_reverse_shift_direction/spi_shift_mux.va"
+    },
+    {
+      "id": "neg_004_wrong_sdo_bit",
+      "description": "Drives SDO from bit 0 instead of the shifted-out bit 7.",
+      "path": "negative_variants/neg_004_wrong_sdo_bit/spi_shift_mux.va"
     }
   ]
 }

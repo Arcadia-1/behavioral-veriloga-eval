@@ -1,0 +1,30 @@
+`include "disciplines.vams"
+
+module toggle_flip_flop(vtrig, vout_q, vout_qbar);
+input vtrig;
+output vout_q, vout_qbar;
+electrical vtrig, vout_q, vout_qbar;
+
+parameter integer initial_state = 0 from [0:1];
+parameter real vlogic_high = 0.9;
+parameter real vlogic_low = 0;
+parameter real vtrans = 0.45;
+parameter real tdel = 50p from [0:inf);
+parameter real trise = 20p from (0:inf);
+parameter real tfall = 20p from (0:inf);
+integer q;
+
+analog begin
+    @(initial_step) begin
+        q = initial_state;
+    end
+
+    @(cross(V(vtrig) - vtrans, +1)) begin
+        q = 1;
+    end
+
+    V(vout_q) <+ transition(vlogic_high * q + vlogic_low * !q, tdel, trise, tfall);
+    V(vout_qbar) <+ transition(vlogic_high * !q + vlogic_low * q, tdel, trise, tfall);
+end
+
+endmodule

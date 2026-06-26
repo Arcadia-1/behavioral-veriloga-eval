@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac7_code_generator.va"
+    },
+    {
+      "id": "neg_002_no_initial_increment",
+      "description": "Emits code zero on the first clock by incrementing after bit decode.",
+      "path": "negative_variants/neg_002_no_initial_increment/dac7_code_generator.va"
+    },
+    {
+      "id": "neg_003_non_inverted_bits",
+      "description": "Outputs raw counter bits instead of inverted DAC code bits.",
+      "path": "negative_variants/neg_003_non_inverted_bits/dac7_code_generator.va"
+    },
+    {
+      "id": "neg_004_shift_wrong_msb",
+      "description": "Drives din0 high level at half amplitude.",
+      "path": "negative_variants/neg_004_shift_wrong_msb/dac7_code_generator.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/toggle_flip_flop.va"
+    },
+    {
+      "id": "neg_002_no_toggle",
+      "description": "Samples high on every trigger instead of toggling state.",
+      "path": "negative_variants/neg_002_no_toggle/toggle_flip_flop.va"
+    },
+    {
+      "id": "neg_003_falling_edge_toggle",
+      "description": "Toggles on falling trigger crossings instead of rising crossings.",
+      "path": "negative_variants/neg_003_falling_edge_toggle/toggle_flip_flop.va"
+    },
+    {
+      "id": "neg_004_qbar_not_complement",
+      "description": "Drives qbar equal to q instead of the complement.",
+      "path": "negative_variants/neg_004_qbar_not_complement/toggle_flip_flop.va"
     }
   ]
 }

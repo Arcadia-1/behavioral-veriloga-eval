@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/offset_rdac_search_flow.va"
+    },
+    {
+      "id": "neg_002_no_bisection_halving",
+      "description": "Uses full differential search amplitude instead of half-scale around common mode.",
+      "path": "negative_variants/neg_002_no_bisection_halving/offset_rdac_search_flow.va"
+    },
+    {
+      "id": "neg_003_inverted_search_sign",
+      "description": "Uses the opposite comparator polarity for both RDAC and offset search decisions.",
+      "path": "negative_variants/neg_003_inverted_search_sign/offset_rdac_search_flow.va"
+    },
+    {
+      "id": "neg_004_no_reference_advance",
+      "description": "Collapses the differential reference outputs to common mode.",
+      "path": "negative_variants/neg_004_no_reference_advance/offset_rdac_search_flow.va"
     }
   ]
 }

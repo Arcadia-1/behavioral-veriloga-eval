@@ -1,0 +1,46 @@
+`include "disciplines.vams"
+
+module foreground_cload_calibrator(ck, d, vrefp, vrefn, dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb);
+input ck, d, vrefp, vrefn;
+output dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb;
+electrical ck, d, vrefp, vrefn, dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, dcn3, dcn4, cvinp, cvinn, en, enb;
+
+parameter real vdd = 1.0;
+integer iter;
+integer flag_calib;
+integer dp[0:4];
+integer dn[0:4];
+genvar i;
+
+analog begin
+    @(initial_step) begin
+        iter = 4;
+        flag_calib = 1;
+        for (i = 0; i < 5; i = i + 1) begin
+            dp[i] = 0;
+            dn[i] = 0;
+        end
+    end
+    @(cross(V(ck) - 0.5 * vdd, +1)) begin
+        if (iter > -1) begin
+            if (V(d) < 0.5 * vdd) begin
+                dp[iter] = 1;
+                dn[iter] = 0;
+            end else begin
+                dp[iter] = 0;
+                dn[iter] = 1;
+            end
+            iter = iter - 1;
+        end else begin
+            flag_calib = 1;
+        end
+    end
+    V(cvinp) <+ V(vrefp);
+    V(cvinn) <+ V(vrefn);
+    V(en) <+ transition(flag_calib, 0, 20p, 20p);
+    V(enb) <+ transition(1 - flag_calib, 0, 20p, 20p);
+    V(dcp0) <+ dp[0]; V(dcp1) <+ dp[1]; V(dcp2) <+ dp[2]; V(dcp3) <+ dp[3]; V(dcp4) <+ dp[4];
+    V(dcn0) <+ dn[0]; V(dcn1) <+ dn[1]; V(dcn2) <+ dn[2]; V(dcn3) <+ dn[3]; V(dcn4) <+ dn[4];
+end
+
+endmodule

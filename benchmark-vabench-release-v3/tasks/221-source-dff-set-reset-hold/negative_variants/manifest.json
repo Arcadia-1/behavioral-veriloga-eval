@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dff_set_reset_hold.va"
+    },
+    {
+      "id": "neg_002_reset_set_priority_swapped",
+      "description": "Drives the DFF output at half amplitude.",
+      "path": "negative_variants/neg_002_reset_set_priority_swapped/dff_set_reset_hold.va"
+    },
+    {
+      "id": "neg_003_no_async_controls",
+      "description": "Ignores asynchronous set/reset transitions outside clock edges.",
+      "path": "negative_variants/neg_003_no_async_controls/dff_set_reset_hold.va"
+    },
+    {
+      "id": "neg_004_invert_data_capture",
+      "description": "Captures inverted data on normal clock edges.",
+      "path": "negative_variants/neg_004_invert_data_capture/dff_set_reset_hold.va"
     }
   ]
 }

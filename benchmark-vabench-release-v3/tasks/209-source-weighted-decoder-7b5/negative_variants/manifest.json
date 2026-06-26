@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/weighted_decoder_7b5.va"
+    },
+    {
+      "id": "neg_002_wrong_denominator",
+      "description": "Normalizes all weighted outputs by 256 instead of 272.",
+      "path": "negative_variants/neg_002_wrong_denominator/weighted_decoder_7b5.va"
+    },
+    {
+      "id": "neg_003_omit_half_bit",
+      "description": "Drives the 8-bit weighted output at half amplitude.",
+      "path": "negative_variants/neg_003_omit_half_bit/weighted_decoder_7b5.va"
+    },
+    {
+      "id": "neg_004_wrong_lsb_vote",
+      "description": "Inverts the 7.5-bit weighted output polarity.",
+      "path": "negative_variants/neg_004_wrong_lsb_vote/weighted_decoder_7b5.va"
     }
   ]
 }

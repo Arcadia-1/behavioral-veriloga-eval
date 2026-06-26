@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/onehot_progress_encoder.va"
+    },
+    {
+      "id": "neg_002_start_at_one",
+      "description": "Starts progress at index 1, skipping d0 on the first clock.",
+      "path": "negative_variants/neg_002_start_at_one/onehot_progress_encoder.va"
+    },
+    {
+      "id": "neg_003_wrong_sum",
+      "description": "Reports one less than the active progress count.",
+      "path": "negative_variants/neg_003_wrong_sum/onehot_progress_encoder.va"
+    },
+    {
+      "id": "neg_004_clear_previous_bits",
+      "description": "Clears the previous one-hot/progress bits before setting the next bit.",
+      "path": "negative_variants/neg_004_clear_previous_bits/onehot_progress_encoder.va"
     }
   ]
 }
