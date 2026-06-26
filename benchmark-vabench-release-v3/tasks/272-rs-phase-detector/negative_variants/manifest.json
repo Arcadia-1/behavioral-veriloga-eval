@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/rs_phase_detector.va"
+    },
+    {
+      "id": "neg_002_swapped_edges",
+      "description": "Swaps REF/FB effects, so REF clears and FB sets the latch.",
+      "path": "negative_variants/neg_002_swapped_edges/rs_phase_detector.va"
+    },
+    {
+      "id": "neg_003_down_not_complement",
+      "description": "Drives DOWN equal to UP instead of the complementary latch state.",
+      "path": "negative_variants/neg_003_down_not_complement/rs_phase_detector.va"
+    },
+    {
+      "id": "neg_004_ignore_fb_reset",
+      "description": "Ignores FB rising edges, so UP stays asserted after REF.",
+      "path": "negative_variants/neg_004_ignore_fb_reset/rs_phase_detector.va"
     }
   ]
 }

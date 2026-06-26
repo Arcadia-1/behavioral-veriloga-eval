@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/level_shifter_offset.va"
+    },
+    {
+      "id": "neg_002_wrong_offset",
+      "description": "Adds 200 mV instead of the required 350 mV offset.",
+      "path": "negative_variants/neg_002_wrong_offset/level_shifter_offset.va"
+    },
+    {
+      "id": "neg_003_subtract_offset",
+      "description": "Subtracts the level shift instead of adding it.",
+      "path": "negative_variants/neg_003_subtract_offset/level_shifter_offset.va"
+    },
+    {
+      "id": "neg_004_gain_plus_offset",
+      "description": "Adds an erroneous gain of 2 before the offset.",
+      "path": "negative_variants/neg_004_gain_plus_offset/level_shifter_offset.va"
     }
   ]
 }

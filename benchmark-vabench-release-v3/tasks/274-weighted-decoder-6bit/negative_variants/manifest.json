@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/weighted_decoder_6bit.va"
+    },
+    {
+      "id": "neg_002_wrong_denominator",
+      "description": "Normalizes by 64 instead of 32.",
+      "path": "negative_variants/neg_002_wrong_denominator/weighted_decoder_6bit.va"
+    },
+    {
+      "id": "neg_003_half_scale",
+      "description": "Scales the decoded weighted output by 0.5.",
+      "path": "negative_variants/neg_003_half_scale/weighted_decoder_6bit.va"
+    },
+    {
+      "id": "neg_004_threshold_too_high",
+      "description": "Uses a threshold above the input high level.",
+      "path": "negative_variants/neg_004_threshold_too_high/weighted_decoder_6bit.va"
     }
   ]
 }

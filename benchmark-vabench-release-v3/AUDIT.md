@@ -208,6 +208,34 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 272-282
+
+Tasks `272-rs-phase-detector` through `282-pfd-timer-reset` were repaired as
+the twelfth source-series batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover RS latch set/reset behavior, level-shift offset and
+  gain mistakes, weighted decoder normalization/threshold mistakes,
+  divide-by-two toggle state mistakes, modulo-8 accumulator pulse mistakes,
+  XOR detector complement/FB mistakes, decision-router truth-table mistakes,
+  safe-divider denominator guard mistakes, variable-gain differential polarity
+  and clipping mistakes, programmable divider ratio/counter mistakes, and PFD
+  delayed-reset/output-polarity mistakes;
+- weak candidate negatives that were hidden-test equivalent were replaced with
+  directly observable stuck-state, scale, threshold, or pulse-count failures;
+- EVAS issue Arcadia-1/EVAS#17 was filed for the `V(node) - scalar` compile
+  bug encountered during negative construction; the committed negative uses an
+  equivalent parenthesized expression that compiles on EVAS 0.4.5.
+
+EVAS 0.4.5 local verification:
+
+- 11/11 gold solutions PASS;
+- 44/44 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-voltage-controlled-gain-amplifier` through

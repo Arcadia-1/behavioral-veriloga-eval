@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/programmable_divider_by_n.va"
+    },
+    {
+      "id": "neg_002_floor_minus_one_ratio",
+      "description": "Uses DIVCTRL-1 as the divider ratio.",
+      "path": "negative_variants/neg_002_floor_minus_one_ratio/programmable_divider_by_n.va"
+    },
+    {
+      "id": "neg_003_threshold_too_high",
+      "description": "Uses a clock threshold above the high level, so the divider never counts edges.",
+      "path": "negative_variants/neg_003_threshold_too_high/programmable_divider_by_n.va"
+    },
+    {
+      "id": "neg_004_output_when_one",
+      "description": "Asserts OUT when the counter is one rather than zero.",
+      "path": "negative_variants/neg_004_output_when_one/programmable_divider_by_n.va"
     }
   ]
 }

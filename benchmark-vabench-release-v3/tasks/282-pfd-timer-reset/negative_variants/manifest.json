@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/pfd_timer_reset.va"
+    },
+    {
+      "id": "neg_002_no_delayed_reset",
+      "description": "Never schedules the delayed reset when both PFD sides have occurred.",
+      "path": "negative_variants/neg_002_no_delayed_reset/pfd_timer_reset.va"
+    },
+    {
+      "id": "neg_003_active_high_up_output",
+      "description": "Drives UB active-high instead of active-low.",
+      "path": "negative_variants/neg_003_active_high_up_output/pfd_timer_reset.va"
+    },
+    {
+      "id": "neg_004_zero_reset_delay",
+      "description": "Resets immediately instead of after the 100 ps delay.",
+      "path": "negative_variants/neg_004_zero_reset_delay/pfd_timer_reset.va"
     }
   ]
 }

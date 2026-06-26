@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/xor_phase_detector.va"
+    },
+    {
+      "id": "neg_002_xnor_up",
+      "description": "Drives UP on matches instead of mismatches.",
+      "path": "negative_variants/neg_002_xnor_up/xor_phase_detector.va"
+    },
+    {
+      "id": "neg_003_down_not_complement",
+      "description": "Drives DOWN equal to UP instead of complement.",
+      "path": "negative_variants/neg_003_down_not_complement/xor_phase_detector.va"
+    },
+    {
+      "id": "neg_004_ignore_fb",
+      "description": "Ignores FB and compares REF against constant zero.",
+      "path": "negative_variants/neg_004_ignore_fb/xor_phase_detector.va"
     }
   ]
 }

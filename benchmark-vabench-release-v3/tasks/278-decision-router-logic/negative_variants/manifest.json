@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/decision_router_logic.va"
+    },
+    {
+      "id": "neg_002_ignore_valid_for_x",
+      "description": "Asserts X for input 00 even when VALID is low.",
+      "path": "negative_variants/neg_002_ignore_valid_for_x/decision_router_logic.va"
+    },
+    {
+      "id": "neg_003_swap_dm_dl",
+      "description": "Swaps the DM and DL output equations.",
+      "path": "negative_variants/neg_003_swap_dm_dl/decision_router_logic.va"
+    },
+    {
+      "id": "neg_004_y_for_a_only",
+      "description": "Asserts Y for A regardless of B instead of only A&B&VALID.",
+      "path": "negative_variants/neg_004_y_for_a_only/decision_router_logic.va"
     }
   ]
 }

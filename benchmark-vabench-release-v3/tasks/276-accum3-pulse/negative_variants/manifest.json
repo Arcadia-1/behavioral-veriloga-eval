@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/accum3_pulse.va"
+    },
+    {
+      "id": "neg_002_wrong_initial_count",
+      "description": "Starts the modulo accumulator at zero instead of seven.",
+      "path": "negative_variants/neg_002_wrong_initial_count/accum3_pulse.va"
+    },
+    {
+      "id": "neg_003_wrong_pulse_count",
+      "description": "Asserts OUT at count 1 instead of count 0.",
+      "path": "negative_variants/neg_003_wrong_pulse_count/accum3_pulse.va"
+    },
+    {
+      "id": "neg_004_active_high_window",
+      "description": "Drives OUT high for counts below 2 instead of only count zero.",
+      "path": "negative_variants/neg_004_active_high_window/accum3_pulse.va"
     }
   ]
 }

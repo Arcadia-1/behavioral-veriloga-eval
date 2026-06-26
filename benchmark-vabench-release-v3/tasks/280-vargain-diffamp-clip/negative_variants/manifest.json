@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/vargain_diffamp_clip.va"
+    },
+    {
+      "id": "neg_002_missing_input_offset",
+      "description": "Omits the required 50 mV input offset.",
+      "path": "negative_variants/neg_002_missing_input_offset/vargain_diffamp_clip.va"
+    },
+    {
+      "id": "neg_003_inverted_control_polarity",
+      "description": "Reverses the control differential polarity.",
+      "path": "negative_variants/neg_003_inverted_control_polarity/vargain_diffamp_clip.va"
+    },
+    {
+      "id": "neg_004_no_positive_clip",
+      "description": "Clips only the negative rail and leaves positive outputs unclamped.",
+      "path": "negative_variants/neg_004_no_positive_clip/vargain_diffamp_clip.va"
     }
   ]
 }

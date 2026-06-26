@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/safe_analog_divider.va"
+    },
+    {
+      "id": "neg_002_no_denominator_guard",
+      "description": "Divides by the raw denominator without the small-signal clamp.",
+      "path": "negative_variants/neg_002_no_denominator_guard/safe_analog_divider.va"
+    },
+    {
+      "id": "neg_003_positive_guard_only",
+      "description": "Clamps both small positive and small negative denominators to +0.2 V.",
+      "path": "negative_variants/neg_003_positive_guard_only/safe_analog_divider.va"
+    },
+    {
+      "id": "neg_004_half_gain",
+      "description": "Uses half the required divider gain.",
+      "path": "negative_variants/neg_004_half_gain/safe_analog_divider.va"
     }
   ]
 }
