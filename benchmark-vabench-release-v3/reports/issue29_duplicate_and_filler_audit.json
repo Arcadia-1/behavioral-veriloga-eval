@@ -1,0 +1,5489 @@
+{
+  "report_id": "issue29_duplicate_and_filler_audit",
+  "generated_at_utc": "2026-06-26T15:53:32+00:00",
+  "release": "benchmark-vabench-release-v3",
+  "scope": {
+    "task_count": 300,
+    "source_family_heuristic_count": 185,
+    "forms": {
+      "bugfix": 1,
+      "dut": 296,
+      "e2e": 2,
+      "tb": 1
+    },
+    "levels": {
+      "L1": 260,
+      "L2": 37,
+      "L3": 3
+    },
+    "difficulties": {
+      "D1": 57,
+      "D2": 235,
+      "D3": 8
+    },
+    "categories": {
+      "analog_primitive": 3,
+      "baseband_signal_conditioning": 12,
+      "bias_reference_power_management": 8,
+      "calibration": 7,
+      "calibration_control": 7,
+      "calibration_dem_control": 1,
+      "clock_timing": 16,
+      "clocking": 2,
+      "comparator": 7,
+      "comparator_decision": 8,
+      "comparator_decision_circuits": 1,
+      "dac": 1,
+      "data_converter": 79,
+      "data_converter_models": 2,
+      "digital_logic": 19,
+      "filter_amp": 1,
+      "logic": 8,
+      "measurement": 1,
+      "measurement_instrumentation_flows": 10,
+      "mixed_signal": 33,
+      "pll_clock_timing": 8,
+      "pll_clock_timing_systems": 4,
+      "quantizer": 1,
+      "rf_afe_behavioral_macromodels": 7,
+      "sampling_analog_memory": 6,
+      "sampling_memory": 1,
+      "sar_logic": 3,
+      "signal_processing": 1,
+      "stimulus": 1,
+      "stimulus_source_generators": 6,
+      "testbench_utility_modules": 31,
+      "timing": 3,
+      "timing_primitive": 2
+    },
+    "negative_count_min": 1,
+    "negative_count_median": 4.0,
+    "negative_count_max": 10,
+    "solution_loc_min": 6,
+    "solution_loc_median": 25.0,
+    "solution_loc_max": 252
+  },
+  "release_wording_recommendation": "Until duplicate/high-overlap groups are manually resolved, describe v3 as \"300 candidate task directories\" rather than \"300 high-quality independent tasks\".",
+  "issue29_named_groups": [
+    {
+      "id": "lowpass_original_vs_bugfix",
+      "why_flagged": "Same low-pass kernel appears once as a DUT construction task and once as a bugfix task.",
+      "missing_tasks": [],
+      "classification": "valid_variant_needs_counting_policy",
+      "members": [
+        {
+          "name": "007-first-order-lowpass",
+          "id": "v3_007_first_order_lowpass",
+          "title": "First Order Lowpass",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D1",
+          "category": "baseband_signal_conditioning",
+          "targets": [
+            "first_order_lowpass.va"
+          ],
+          "solution_loc": 6,
+          "negative_count": 5,
+          "risks": [
+            "short_solution_leq_20_loc"
+          ],
+          "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
+        },
+        {
+          "name": "286-first-order-lowpass-bugfix",
+          "id": "v3_286_first_order_lowpass_bugfix",
+          "title": "First Order Lowpass Bugfix",
+          "form": "bugfix",
+          "level": "L1",
+          "difficulty": "D1",
+          "category": "baseband_signal_conditioning",
+          "targets": [
+            "dut_fixed.va"
+          ],
+          "solution_loc": 6,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count",
+            "short_solution_leq_20_loc"
+          ],
+          "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "007-first-order-lowpass",
+          "task_b": "286-first-order-lowpass-bugfix",
+          "classification": "valid_variant_needs_counting_policy",
+          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1456,
+            "solution_token_jaccard": 0.913,
+            "checker_token_jaccard": 0.1965,
+            "prompt_sequence_similarity": 0.1963,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 0.4465
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "007-first-order-lowpass": "# First Order Lowpass\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Baseband Signal Conditioning\n- Base function: First-order lowpass\n- Domain: `voltage`\n- Target artifact(s): `first_order_lowpass.va`\n- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.\n## Public Testbench And Observabl…",
+        "286-first-order-lowpass-bugfix": "# First Order Lowpass Bugfix\nOne-shot bugfix task for a voltage-domain first-order low-pass filter.\n## Agent-Visible Inputs\n- `dut_buggy.va`\n- `tb_first_order_lowpass_buggy.scs`\n- `tb_first_order_lowpass_ref.scs`\n## Required Output\n- `dut_fixed.va`\n## Public Interface\nPreserve module `first_order_lowpass(vin, vout)` with electrical\nvoltage-domain ports.\n## Public Scenario\nThe harness drives `vin` from about `0 V` to about `0.8 V` near `21 ns` and\nobserves a `160 ns` transient.\n## Functional Contract\n- `vout` should be a stable finite-bandwidth low-pass response with an\n  effective time constant on the order of tens of nanoseconds.\n- After the step, `vout` should move smoothly and monotonically toward `0.8 V`."
+      }
+    },
+    {
+      "id": "window_comparator_dut_vs_tb",
+      "why_flagged": "Same window-comparator function appears as DUT and testbench-generation variants.",
+      "missing_tasks": [],
+      "classification": "valid_variant_needs_counting_policy",
+      "members": [
+        {
+          "name": "049-window-comparator-detector",
+          "id": "v3_049_window_comparator_detector",
+          "title": "Window Comparator Detector",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "comparator_decision",
+          "targets": [
+            "window_comparator_ref.va"
+          ],
+          "solution_loc": 31,
+          "negative_count": 5,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:37ef63f12b4df588297d65099c1214260ebbe906d3f9fd082573e293010eaae7"
+        },
+        {
+          "name": "284-window-comparator-testbench",
+          "id": "v3_284_window_comparator_testbench",
+          "title": "Window Comparator Testbench",
+          "form": "tb",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "comparator_decision",
+          "targets": [
+            "tb_window_comparator_ref.scs"
+          ],
+          "solution_loc": 10,
+          "negative_count": 2,
+          "risks": [
+            "low_negative_variant_count",
+            "short_solution_leq_20_loc"
+          ],
+          "solution_sha256_normalized": "sha256:4bf85ae6ea01401a7abd0366bde96d96961af63ba7be4b215471a6103099c337"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "049-window-comparator-detector",
+          "task_b": "284-window-comparator-testbench",
+          "classification": "valid_variant_needs_counting_policy",
+          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1512,
+            "solution_token_jaccard": 0.125,
+            "checker_token_jaccard": 0.1852,
+            "prompt_sequence_similarity": 0.1493,
+            "solution_sequence_similarity": 0.1099,
+            "checker_sequence_similarity": 0.3799
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "049-window-comparator-detector": "# Window Comparator Detector\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Comparator and Decision Circuits\n- Base function: Window comparator/detector\n- Domain: `voltage`\n- Target artifact(s): `window_comparator_ref.va`\n- Supplied/reference support artifact(s): `tb_window_comparator_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`…",
+        "284-window-comparator-testbench": "# Window Comparator Testbench\nGenerate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.\nThe DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.\nThe testbench must include `ahdl_include \"window_comparator_ref.va\"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.\nReturn only `tb_window_comparator_ref.scs`. Do not modify the support DUT."
+      }
+    },
+    {
+      "id": "aperture_delay_pair",
+      "why_flagged": "Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording.",
+      "missing_tasks": [],
+      "classification": "high_overlap",
+      "members": [
+        {
+          "name": "081-aperture-delay-track-and-hold",
+          "id": "v3_081_aperture_delay_track_and_hold",
+          "title": "Aperture Delay Track And Hold",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "sampling_analog_memory",
+          "targets": [
+            "sample_hold_aperture_ref.va"
+          ],
+          "solution_loc": 38,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
+        },
+        {
+          "name": "285-aperture-delay-sample-hold",
+          "id": "v3_285_aperture_delay_sample_hold",
+          "title": "Aperture Delay Sample Hold",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "sampling_analog_memory",
+          "targets": [
+            "sample_hold_aperture_ref.va"
+          ],
+          "solution_loc": 38,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "081-aperture-delay-track-and-hold",
+          "task_b": "285-aperture-delay-sample-hold",
+          "classification": "high_overlap",
+          "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task.",
+          "metrics": {
+            "prompt_token_jaccard": 0.2486,
+            "solution_token_jaccard": 1.0,
+            "checker_token_jaccard": 0.2391,
+            "prompt_sequence_similarity": 0.3333,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 0.3811
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "081-aperture-delay-track-and-hold": "# Task: vbr1_l1_aperture_delay_track_and_hold:dut\n## Release Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Sampling and Analog Memory\n- Base function: Aperture-delay track-and-hold\n- Domain: `voltage`\n- Target artifact(s): `sample_hold_aperture_ref.va`\n- Supplied/reference support artifact(s): `tb_sample_hold_aperture_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `sample_hold_aperture_ref.va` declares module `sample_hold_aperture_ref` with positi…",
+        "285-aperture-delay-sample-hold": "# Aperture Delay Track And Hold\nOne-shot DUT-generation task for a voltage-domain aperture-delay\ntrack-and-hold.\n## Agent-Visible Input\n- `tb_sample_hold_aperture_ref.scs`\n## Required Output\n- `sample_hold_aperture_ref.va`\n## Public Interface\nDeclare `sample_hold_aperture_ref(VDD, VSS, clk, vin, vout)` with electrical\nvoltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.\n## Functional Contract\n- On each rising `clk` transition, schedule a sample after a `200 ps` aperture\n  delay.\n- At the delayed aperture instant, capture the current value of `vin`; do not\n  capture the value present exactly at the clock edge.\n- After a short settling interval, `vout` should be close to the delayed\n  sampled value and should hold until the next delayed sample.\n- The harness exercises a broad voltage range, so the held output sequence"
+      }
+    },
+    {
+      "id": "timer_reacquire_pair",
+      "why_flagged": "Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels.",
+      "missing_tasks": [],
+      "classification": "hard_duplicate",
+      "members": [
+        {
+          "name": "097-cppll-tracking-reacquire-timer",
+          "id": "v3_097_cppll_tracking_reacquire_timer",
+          "title": "CPPLL Tracking Reacquire Timer",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "pll_clock_timing_systems",
+          "targets": [
+            "cppll_timer_ref.va",
+            "ref_step_clk.va"
+          ],
+          "solution_loc": 156,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
+        },
+        {
+          "name": "107-reference-step-clock",
+          "id": "v3_107_reference_step_clock",
+          "title": "Reference Step Clock",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "pll_clock_timing_systems",
+          "targets": [
+            "ref_step_clk.va",
+            "cppll_timer_ref.va"
+          ],
+          "solution_loc": 156,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "097-cppll-tracking-reacquire-timer",
+          "task_b": "107-reference-step-clock",
+          "classification": "hard_duplicate",
+          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "metrics": {
+            "prompt_token_jaccard": 0.9646,
+            "solution_token_jaccard": 1.0,
+            "checker_token_jaccard": 1.0,
+            "prompt_sequence_similarity": 0.9731,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 1.0
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "097-cppll-tracking-reacquire-timer": "# CPPLL Tracking Reacquire Timer\nImplement `cppll_timer_ref.va` in Verilog-A.\n## Interface\n```verilog\nmodule cppll_timer_ref (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    input  electrical ref_clk,\n    output electrical fb_clk,\n    output electrical dco_clk,\n    output electrical vctrl_mon,\n    output electrical lock\n);\n```\n## Required Behavior\nThis task asks for the `cppll_timer_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nOriginal public behavior context:\nThis row is a CPPLL frequency-step reacquire flow. The testbench must expose a",
+        "107-reference-step-clock": "# Reference Step Clock\nImplement `ref_step_clk.va` in Verilog-A.\n## Interface\n```verilog\nmodule ref_step_clk (\n    inout  electrical VDD,\n    inout  electrical VSS,\n    output electrical CLK\n);\n```\n## Required Behavior\nThis task asks for the `ref_step_clk` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nOriginal public behavior context:\nThis row is a CPPLL frequency-step reacquire flow. The testbench must expose a\nreference step and enough time for the supplied loop to settle again:\n1. Include both public support files `cppll_timer_ref.va` and `ref_step_clk.va`.\n2. Instantiate the reference-step source and the CPPLL DUT with the public port\n   order."
+      }
+    },
+    {
+      "id": "signal_chain_vs_components",
+      "why_flagged": "An L2 flow may package kernels that also appear as standalone source/gain/source tasks.",
+      "missing_tasks": [],
+      "classification": "hard_duplicate",
+      "members": [
+        {
+          "name": "099-dither-adder",
+          "id": "v3_099_dither_adder",
+          "title": "Dither Adder",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "measurement_instrumentation_flows",
+          "targets": [
+            "dither_adder.va",
+            "vin_src.va",
+            "lfsr.va",
+            "gain_amp_fixed.va"
+          ],
+          "solution_loc": 118,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+        },
+        {
+          "name": "101-fixed-gain-amplifier",
+          "id": "v3_101_fixed_gain_amplifier",
+          "title": "Fixed Gain Amplifier",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "measurement_instrumentation_flows",
+          "targets": [
+            "gain_amp_fixed.va",
+            "vin_src.va",
+            "lfsr.va",
+            "dither_adder.va"
+          ],
+          "solution_loc": 118,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+        },
+        {
+          "name": "111-clocked-sine-source",
+          "id": "v3_111_clocked_sine_source",
+          "title": "Clocked Sine Source",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "measurement_instrumentation_flows",
+          "targets": [
+            "vin_src.va",
+            "lfsr.va",
+            "dither_adder.va",
+            "gain_amp_fixed.va"
+          ],
+          "solution_loc": 118,
+          "negative_count": 1,
+          "risks": [
+            "low_negative_variant_count"
+          ],
+          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+        },
+        {
+          "name": "287-gain-extraction-flow",
+          "id": "v3_287_gain_extraction_flow",
+          "title": "Gain Extraction Flow",
+          "form": "e2e",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "measurement_instrumentation_flows",
+          "targets": [
+            "dither_adder.va",
+            "gain_amp_fixed.va",
+            "lfsr.va",
+            "vin_src.va",
+            "tb_gain_extraction_ref.scs"
+          ],
+          "solution_loc": 136,
+          "negative_count": 5,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:ce20222bd386842fab82f87a0ee2dbc2252c510ccfafd05fb29c2fd204158f5a"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "099-dither-adder",
+          "task_b": "101-fixed-gain-amplifier",
+          "classification": "hard_duplicate",
+          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "metrics": {
+            "prompt_token_jaccard": 0.9273,
+            "solution_token_jaccard": 1.0,
+            "checker_token_jaccard": 1.0,
+            "prompt_sequence_similarity": 0.9847,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 1.0
+          }
+        },
+        {
+          "task_a": "099-dither-adder",
+          "task_b": "111-clocked-sine-source",
+          "classification": "hard_duplicate",
+          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "metrics": {
+            "prompt_token_jaccard": 0.9189,
+            "solution_token_jaccard": 1.0,
+            "checker_token_jaccard": 1.0,
+            "prompt_sequence_similarity": 0.986,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 1.0
+          }
+        },
+        {
+          "task_a": "099-dither-adder",
+          "task_b": "287-gain-extraction-flow",
+          "classification": "valid_variant_needs_counting_policy",
+          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1348,
+            "solution_token_jaccard": 0.4051,
+            "checker_token_jaccard": 0.1237,
+            "prompt_sequence_similarity": 0.1875,
+            "solution_sequence_similarity": 0.8701,
+            "checker_sequence_similarity": 0.2672
+          }
+        },
+        {
+          "task_a": "101-fixed-gain-amplifier",
+          "task_b": "111-clocked-sine-source",
+          "classification": "hard_duplicate",
+          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "metrics": {
+            "prompt_token_jaccard": 0.9189,
+            "solution_token_jaccard": 1.0,
+            "checker_token_jaccard": 1.0,
+            "prompt_sequence_similarity": 0.9849,
+            "solution_sequence_similarity": 1.0,
+            "checker_sequence_similarity": 1.0
+          }
+        },
+        {
+          "task_a": "101-fixed-gain-amplifier",
+          "task_b": "287-gain-extraction-flow",
+          "classification": "valid_variant_needs_counting_policy",
+          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1299,
+            "solution_token_jaccard": 0.4051,
+            "checker_token_jaccard": 0.1237,
+            "prompt_sequence_similarity": 0.1874,
+            "solution_sequence_similarity": 0.8701,
+            "checker_sequence_similarity": 0.2672
+          }
+        },
+        {
+          "task_a": "111-clocked-sine-source",
+          "task_b": "287-gain-extraction-flow",
+          "classification": "valid_variant_needs_counting_policy",
+          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1342,
+            "solution_token_jaccard": 0.4051,
+            "checker_token_jaccard": 0.1237,
+            "prompt_sequence_similarity": 0.1876,
+            "solution_sequence_similarity": 0.8701,
+            "checker_sequence_similarity": 0.2672
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "099-dither-adder": "# Dither Adder\nImplement `dither_adder.va` in Verilog-A.\n## Interface\n```verilog\nmodule dither_adder(\n    input  electrical VRES_P,\n    input  electrical VRES_N,\n    input  electrical DPN,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `dither_adder` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Differential dither adder — benchmark gold style.\n// Keeps a direct contribution instead of the original transition(V(VRES_P)+...)",
+        "101-fixed-gain-amplifier": "# Fixed Gain Amplifier\nImplement `gain_amp_fixed.va` in Verilog-A.\n## Interface\n```verilog\nmodule gain_amp_fixed(\n    input  electrical VIN_P,\n    input  electrical VIN_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `gain_amp_fixed` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Fixed-gain differential amplifier (no programmable CTRL).\n//\n//   VOUT_P = vdd/2 + ACTUAL_GAIN * (VIN_P - VIN_N) / 2",
+        "111-clocked-sine-source": "# Clocked Sine Source\nImplement `vin_src.va` in Verilog-A.\n## Interface\n```verilog\nmodule vin_src(\n    input  electrical CLK,\n    input  electrical RST_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `vin_src` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Clocked noisy sine source (sample-and-hold at CLK rising edge).\n//\n// VOUT_P = vdd/2 + ampl*sin(2*pi*freq*t) + N(0, sigma)",
+        "287-gain-extraction-flow": "# Gain Extraction Flow\nOne-shot L2 support flow: build a voltage-domain dithered differential input\npath, fixed-gain differential output path, and Spectre transient testbench. This\nis a support flow and should be reported separately from core analog/mixed-signal\ncircuit-function score claims.\n## Required Output\n- `dither_adder.va`\n- `gain_amp_fixed.va`\n- `lfsr.va`\n- `tb_gain_extraction_ref.scs`\n- `vin_src.va`\nDo not return `gain_estimator.va` or waveform files.\n## Public Interfaces\n- `vin_src(CLK, RST_N, VOUT_P, VOUT_N)`\n- `lfsr(DPN, VDD, VSS, CLK, EN, RSTB)`\n- `dither_adder(VRES_P, VRES_N, DPN, VOUT_P, VOUT_N)`\n- `gain_amp_fixed(VIN_P, VIN_N, VOUT_P, VOUT_N)`\nAll ports are scalar voltage-domain electrical nodes."
+      }
+    },
+    {
+      "id": "absolute_value_duplicate",
+      "why_flagged": "Two tasks share the same public title and likely the same absolute-value transfer function.",
+      "missing_tasks": [],
+      "classification": "hard_duplicate",
+      "members": [
+        {
+          "name": "288-absolute-value",
+          "id": "v3_288_source_absolute_value",
+          "title": "Absolute Value",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D1",
+          "category": "analog_primitive",
+          "targets": [
+            "absolute_value.va"
+          ],
+          "solution_loc": 9,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:4ba2578dd19ba574e48f19da5db273ea043eb2eeb9fc6ed431bef5e7e331eae1"
+        },
+        {
+          "name": "148-absolute-value",
+          "id": "v3_148_source_absolute_value",
+          "title": "Absolute Value",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D1",
+          "category": "mixed_signal",
+          "targets": [
+            "absolute_value_behavior.va"
+          ],
+          "solution_loc": 9,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:9d4ba5e934fa83f30573605a7d0b5c2cde3bc291c7ee13796054a7a563e0f7cd"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "288-absolute-value",
+          "task_b": "148-absolute-value",
+          "classification": "hard_duplicate",
+          "recommendation": "Same public title and near-identical solution in the same artifact form; keep at most one scored row unless tests prove distinct behavior.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1333,
+            "solution_token_jaccard": 0.7143,
+            "checker_token_jaccard": 1.0,
+            "prompt_sequence_similarity": 0.1244,
+            "solution_sequence_similarity": 0.972,
+            "checker_sequence_similarity": 1.0
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "288-absolute-value": "# Source Absolute Value\nImplement an absolute-value voltage primitive. OUT must track abs(IN) for positive and negative inputs.\nThe module name and port list must match `absolute_value.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/absolute_value.va`.",
+        "148-absolute-value": "Implement `absolute_value_behavior` with port order `sigin, sigout`. Drive `sigout` to the absolute value of `sigin`."
+      }
+    },
+    {
+      "id": "smooth_tanh_comparator_duplicate",
+      "why_flagged": "Two tasks appear to name the same smooth tanh comparator transfer behavior.",
+      "missing_tasks": [],
+      "classification": "high_overlap",
+      "members": [
+        {
+          "name": "292-smooth-tanh-comparator",
+          "id": "v3_292_source_smooth_tanh_comparator",
+          "title": "Smooth Tanh Comparator",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "comparator",
+          "targets": [
+            "smooth_tanh_comparator.va"
+          ],
+          "solution_loc": 14,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:26b9e08ad70a6f1edddb8028d4664c9978c1c48da2c46a20a5fe50cfd051cbbd"
+        },
+        {
+          "name": "146-smooth-comparator-tanh",
+          "id": "v3_146_source_smooth_comparator_tanh",
+          "title": "Smooth Comparator Tanh",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "mixed_signal",
+          "targets": [
+            "smooth_comparator_tanh.va"
+          ],
+          "solution_loc": 13,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:46622ad9607cccaf6f5eeee76c149faa876f591ceb2bc7593df98933d3dad4c5"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "292-smooth-tanh-comparator",
+          "task_b": "146-smooth-comparator-tanh",
+          "classification": "high_overlap",
+          "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task.",
+          "metrics": {
+            "prompt_token_jaccard": 0.1389,
+            "solution_token_jaccard": 0.4839,
+            "checker_token_jaccard": 0.8182,
+            "prompt_sequence_similarity": 0.312,
+            "solution_sequence_similarity": 0.8846,
+            "checker_sequence_similarity": 0.9612
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "292-smooth-tanh-comparator": "# Source Smooth Tanh Comparator\nImplement a smooth comparator macro. OUT follows tanh(4*(IN-REF-0.05)) and ranges from -1 V to +1 V.\nThe module name and port list must match `smooth_tanh_comparator.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/comparator.va`.",
+        "146-smooth-comparator-tanh": "Implement a smooth comparator named `smooth_comparator_tanh` with port order `sigin, sigref, sigout`. Use `0.5*(high-low)*tanh(comp_slope*(V(sigin,sigref)-offset)) + 0.5*(high+low)`."
+      }
+    },
+    {
+      "id": "pfd_active_low_reset_pair",
+      "why_flagged": "Two PFD reset tasks may share state/timer reset semantics.",
+      "missing_tasks": [],
+      "classification": "high_overlap",
+      "members": [
+        {
+          "name": "300-pfd-active-low-reset",
+          "id": "v3_300_source_pfd_active_low_reset",
+          "title": "PFD Active Low Reset",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "clock_timing",
+          "targets": [
+            "pfd_active_low_reset.va"
+          ],
+          "solution_loc": 33,
+          "negative_count": 4,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:5b06cf27b4804d5fde3254b4628bac91407ed3643ebfbfcfbc8f90235d7fc843"
+        },
+        {
+          "name": "282-pfd-timer-reset",
+          "id": "v3_282_source_pfd_timer_reset",
+          "title": "PFD Timer Reset",
+          "form": "dut",
+          "level": "L2",
+          "difficulty": "D2",
+          "category": "clock_timing",
+          "targets": [
+            "pfd_timer_reset.va"
+          ],
+          "solution_loc": 33,
+          "negative_count": 4,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:caeb99e43a3487df53faa8d8f57bf74d089f7f0035b605ed1b4f0bb5eb6d3a4c"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "300-pfd-active-low-reset",
+          "task_b": "282-pfd-timer-reset",
+          "classification": "high_overlap",
+          "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task.",
+          "metrics": {
+            "prompt_token_jaccard": 0.4255,
+            "solution_token_jaccard": 0.6765,
+            "checker_token_jaccard": 0.8182,
+            "prompt_sequence_similarity": 0.7585,
+            "solution_sequence_similarity": 0.8803,
+            "checker_sequence_similarity": 0.9639
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "300-pfd-active-low-reset": "# Source PFD Active Low Reset\nImplement a PFD with active-low UPB and active-high DOWN. A rising REF asserts UPB low; a rising FB asserts DOWN high; both reset after both edges arrive.\nThe module name and port list must match `pfd_active_low_reset.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `taoy/v_PFD.va`.",
+        "282-pfd-timer-reset": "# Source PFD Timer Reset\nImplement a phase-frequency detector with delayed reset. A rising A edge asserts active-low UB; a rising B edge asserts D; when both have occurred, both reset after 100 ps.\nThe module name and port list must match `pfd_timer_reset.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `zhangz/L2_PFD.va`."
+      }
+    },
+    {
+      "id": "subradix_vs_weighted_decoder",
+      "why_flagged": "Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel.",
+      "missing_tasks": [],
+      "classification": "high_overlap",
+      "members": [
+        {
+          "name": "294-subradix-dac10",
+          "id": "v3_294_source_subradix_dac10",
+          "title": "Subradix DAC10",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "data_converter",
+          "targets": [
+            "subradix_dac10.va"
+          ],
+          "solution_loc": 21,
+          "negative_count": 4,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:aa8485452df62b18492b5781c18c039a69c0d4ceda5a7bb1eb61e387b8b744b3"
+        },
+        {
+          "name": "274-weighted-decoder-6bit",
+          "id": "v3_274_source_weighted_decoder_6bit",
+          "title": "Weighted Decoder 6bit",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "data_converter",
+          "targets": [
+            "weighted_decoder_6bit.va"
+          ],
+          "solution_loc": 18,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:88485bc423cb1050224229dbad5af210a5480397ee132d30b64f4cef4c7c3d73"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "294-subradix-dac10",
+          "task_b": "274-weighted-decoder-6bit",
+          "classification": "high_overlap",
+          "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task.",
+          "metrics": {
+            "prompt_token_jaccard": 0.3409,
+            "solution_token_jaccard": 0.4773,
+            "checker_token_jaccard": 0.8182,
+            "prompt_sequence_similarity": 0.7201,
+            "solution_sequence_similarity": 0.6361,
+            "checker_sequence_similarity": 0.8916
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "294-subradix-dac10": "# Source Subradix DAC10\nImplement a 10-bit sub-radix weighted DAC using radix 1.8 weights and normalization by 1024.\nThe module name and port list must match `subradix_dac10.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `zhangad/dac_10bit_ideal.va`.",
+        "274-weighted-decoder-6bit": "# Source Weighted Decoder 6bit\nImplement a six-input weighted decoder. Inputs vd1..vd6 have weights 32,16,8,4,2,1 and VOUT equals VREF times the weighted sum divided by 32.\nThe module name and port list must match `weighted_decoder_6bit.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `lis/DEC_6bit.va`."
+      }
+    }
+  ],
+  "coarse_scan": {
+    "duplicate_titles": {
+      "absolute value": [
+        "148-absolute-value",
+        "288-absolute-value"
+      ],
+      "divide by two toggle": [
+        "184-divide-by-two-toggle",
+        "275-divide-by-two-toggle"
+      ]
+    },
+    "exact_solution_duplicates": {
+      "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6": [
+        "081-aperture-delay-track-and-hold",
+        "285-aperture-delay-sample-hold"
+      ],
+      "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14": [
+        "099-dither-adder",
+        "101-fixed-gain-amplifier",
+        "111-clocked-sine-source"
+      ],
+      "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2": [
+        "007-first-order-lowpass",
+        "286-first-order-lowpass-bugfix"
+      ],
+      "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2": [
+        "097-cppll-tracking-reacquire-timer",
+        "107-reference-step-clock"
+      ]
+    },
+    "near_solution_pairs": [
+      {
+        "task_a": "081-aperture-delay-track-and-hold",
+        "task_b": "285-aperture-delay-sample-hold",
+        "issue_named_pair": true,
+        "classification": "high_overlap",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 1.0,
+        "checker_similarity": 0.3811,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Aperture Delay Track And Hold",
+          "Aperture Delay Sample Hold"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "097-cppll-tracking-reacquire-timer",
+        "task_b": "107-reference-step-clock",
+        "issue_named_pair": true,
+        "classification": "hard_duplicate",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 1.0,
+        "checker_similarity": 1.0,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CPPLL Tracking Reacquire Timer",
+          "Reference Step Clock"
+        ],
+        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
+      },
+      {
+        "task_a": "099-dither-adder",
+        "task_b": "101-fixed-gain-amplifier",
+        "issue_named_pair": true,
+        "classification": "hard_duplicate",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 1.0,
+        "checker_similarity": 1.0,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Dither Adder",
+          "Fixed Gain Amplifier"
+        ],
+        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
+      },
+      {
+        "task_a": "099-dither-adder",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": true,
+        "classification": "hard_duplicate",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 1.0,
+        "checker_similarity": 1.0,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Dither Adder",
+          "Clocked Sine Source"
+        ],
+        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
+      },
+      {
+        "task_a": "101-fixed-gain-amplifier",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": true,
+        "classification": "hard_duplicate",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 1.0,
+        "checker_similarity": 1.0,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Fixed Gain Amplifier",
+          "Clocked Sine Source"
+        ],
+        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
+      },
+      {
+        "task_a": "007-first-order-lowpass",
+        "task_b": "286-first-order-lowpass-bugfix",
+        "issue_named_pair": true,
+        "classification": "valid_variant_needs_counting_policy",
+        "solution_similarity": 1.0,
+        "solution_token_jaccard": 0.913,
+        "checker_similarity": 0.4465,
+        "forms": [
+          "dut",
+          "bugfix"
+        ],
+        "titles": [
+          "First Order Lowpass",
+          "First Order Lowpass Bugfix"
+        ],
+        "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function."
+      },
+      {
+        "task_a": "128-two-input-and-gate",
+        "task_b": "137-two-input-nand-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9975,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.996,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input AND Gate",
+          "Two Input NAND Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "135-two-input-or-gate",
+        "task_b": "138-two-input-nor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9975,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.996,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input OR Gate",
+          "Two Input NOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "240-cdac-monodown-7b",
+        "task_b": "245-cdac-8b-monodown",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9961,
+        "solution_token_jaccard": 0.8947,
+        "checker_similarity": 0.9756,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CDAC Monodown 7b",
+          "CDAC 8b Monodown"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "129-two-input-xor-gate",
+        "task_b": "135-two-input-or-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.995,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.996,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input XOR Gate",
+          "Two Input OR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "140-three-input-or-gate",
+        "task_b": "141-three-input-xor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9945,
+        "solution_token_jaccard": 0.8857,
+        "checker_similarity": 0.996,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Three Input OR Gate",
+          "Three Input XOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "129-two-input-xor-gate",
+        "task_b": "138-two-input-nor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9925,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.992,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input XOR Gate",
+          "Two Input NOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "139-three-input-and-gate",
+        "task_b": "141-three-input-xor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9906,
+        "solution_token_jaccard": 0.8857,
+        "checker_similarity": 0.9764,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Three Input AND Gate",
+          "Three Input XOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "139-three-input-and-gate",
+        "task_b": "140-three-input-or-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9898,
+        "solution_token_jaccard": 0.8857,
+        "checker_similarity": 0.9802,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Three Input AND Gate",
+          "Three Input OR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "128-two-input-and-gate",
+        "task_b": "129-two-input-xor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9888,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.976,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input AND Gate",
+          "Two Input XOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "128-two-input-and-gate",
+        "task_b": "135-two-input-or-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9888,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.9799,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input AND Gate",
+          "Two Input OR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "128-two-input-and-gate",
+        "task_b": "138-two-input-nor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9888,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.984,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input AND Gate",
+          "Two Input NOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "137-two-input-nand-gate",
+        "task_b": "138-two-input-nor-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9888,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.9801,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input NAND Gate",
+          "Two Input NOR Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "129-two-input-xor-gate",
+        "task_b": "137-two-input-nand-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9863,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.9721,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input XOR Gate",
+          "Two Input NAND Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "135-two-input-or-gate",
+        "task_b": "137-two-input-nand-gate",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9863,
+        "solution_token_jaccard": 0.8462,
+        "checker_similarity": 0.976,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Two Input OR Gate",
+          "Two Input NAND Gate"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "058-config-latch-32b-clocked",
+        "task_b": "059-config-latch-128b-static-enable",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9817,
+        "solution_token_jaccard": 0.72,
+        "checker_similarity": 0.9056,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Config Latch 32b Clocked",
+          "Config Latch 128b Static Enable"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "116-clocked-comparator-reset-low",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9783,
+        "solution_token_jaccard": 0.7879,
+        "checker_similarity": 0.9534,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Clocked Comparator Reset Low"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "148-absolute-value",
+        "task_b": "288-absolute-value",
+        "issue_named_pair": true,
+        "classification": "hard_duplicate",
+        "solution_similarity": 0.972,
+        "solution_token_jaccard": 0.7143,
+        "checker_similarity": 1.0,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Absolute Value",
+          "Absolute Value"
+        ],
+        "recommendation": "Same public title and near-identical solution in the same artifact form; keep at most one scored row unless tests prove distinct behavior."
+      },
+      {
+        "task_a": "070-active-low-reset-synchronizer",
+        "task_b": "071-active-high-reset-synchronizer",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9533,
+        "solution_token_jaccard": 0.7419,
+        "checker_similarity": 0.9599,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Active Low Reset Synchronizer",
+          "Active High Reset Synchronizer"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "170-clocked-four-input-mux",
+        "task_b": "216-clocked-mux4-sampler",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9406,
+        "solution_token_jaccard": 0.8621,
+        "checker_similarity": 0.9219,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Four Input Mux",
+          "Clocked Mux4 Sampler"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "203-comparator-offset-driver",
+        "task_b": "247-offset-halving-search",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9242,
+        "solution_token_jaccard": 0.7667,
+        "checker_similarity": 0.888,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Comparator Offset Driver",
+          "Offset Halving Search"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "248-sar-comparator-reset-high",
+        "task_b": "257-comparator-reset-low-1p8",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9214,
+        "solution_token_jaccard": 0.7419,
+        "checker_similarity": 0.943,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "SAR Comparator Reset High",
+          "Comparator Reset Low 1p8"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "202-l2-cmp-ideal-clocked",
+        "task_b": "248-sar-comparator-reset-high",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.9004,
+        "solution_token_jaccard": 0.8,
+        "checker_similarity": 0.8726,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "L2 CMP Ideal Clocked",
+          "SAR Comparator Reset High"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "275-divide-by-two-toggle",
+        "task_b": "276-accum3-pulse",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8906,
+        "solution_token_jaccard": 0.7857,
+        "checker_similarity": 0.8675,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Divide By Two Toggle",
+          "Accum3 Pulse"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "258-lt-read-sar6b-weighted",
+        "task_b": "259-lt-read-sar7b-weighted",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8901,
+        "solution_token_jaccard": 0.7742,
+        "checker_similarity": 0.9922,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "LT Read SAR6B Weighted",
+          "LT Read SAR7B Weighted"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "249-dac-restore-4bit-clocked",
+        "task_b": "250-dac-restore-7bit-clocked",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8889,
+        "solution_token_jaccard": 0.7879,
+        "checker_similarity": 0.9924,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "DAC Restore 4bit Clocked",
+          "DAC Restore 7bit Clocked"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "124-comp-os-detect",
+        "task_b": "247-offset-halving-search",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8824,
+        "solution_token_jaccard": 0.7333,
+        "checker_similarity": 0.9076,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Comparator Offset Detect",
+          "Offset Halving Search"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "267-pfd-up-down-state",
+        "task_b": "272-rs-phase-detector",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8815,
+        "solution_token_jaccard": 0.7407,
+        "checker_similarity": 0.9032,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "PFD Up Down State",
+          "RS Phase Detector"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.881,
+        "solution_token_jaccard": 0.75,
+        "checker_similarity": 0.9719,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "Clocked DAC Restore 7b"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "249-dac-restore-4bit-clocked",
+        "task_b": "251-dac-restore-6bit-1p8",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8571,
+        "solution_token_jaccard": 0.7576,
+        "checker_similarity": 0.9535,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "DAC Restore 4bit Clocked",
+          "DAC Restore 6bit 1p8"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "196-va-lx-dac-ideal-4b",
+        "task_b": "197-l1-dac-4b-bipolar",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8517,
+        "solution_token_jaccard": 0.7222,
+        "checker_similarity": 0.9237,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "VA Lx DAC Ideal 4b",
+          "L1 DAC 4b Bipolar"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "250-dac-restore-7bit-clocked",
+        "task_b": "251-dac-restore-6bit-1p8",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8462,
+        "solution_token_jaccard": 0.7941,
+        "checker_similarity": 0.9535,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "DAC Restore 7bit Clocked",
+          "DAC Restore 6bit 1p8"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "162-half-adder-logic",
+        "task_b": "163-full-adder-logic",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8456,
+        "solution_token_jaccard": 0.7273,
+        "checker_similarity": 0.9756,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Half Adder Logic",
+          "Full Adder Logic"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "257-comparator-reset-low-1p8",
+        "issue_named_pair": false,
+        "classification": "needs_human_review",
+        "solution_similarity": 0.8369,
+        "solution_token_jaccard": 0.7273,
+        "checker_similarity": 0.291,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "Comparator Reset Low 1p8"
+        ],
+        "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually."
+      },
+      {
+        "task_a": "122-offset-search-comparator",
+        "task_b": "208-offset-bisection-driver",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8274,
+        "solution_token_jaccard": 0.7273,
+        "checker_similarity": 0.9042,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Offset Search Comparator",
+          "Offset Bisection Driver"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "240-cdac-monodown-7b",
+        "task_b": "241-cdac-6b-stage1-up",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8258,
+        "solution_token_jaccard": 0.7949,
+        "checker_similarity": 0.915,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CDAC Monodown 7b",
+          "CDAC 6b Stage1 Up"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "241-cdac-6b-stage1-up",
+        "task_b": "245-cdac-8b-monodown",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.8258,
+        "solution_token_jaccard": 0.7949,
+        "checker_similarity": 0.9231,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CDAC 6b Stage1 Up",
+          "CDAC 8b Monodown"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "202-l2-cmp-ideal-clocked",
+        "issue_named_pair": false,
+        "classification": "needs_human_review",
+        "solution_similarity": 0.8214,
+        "solution_token_jaccard": 0.75,
+        "checker_similarity": 0.2454,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "L2 CMP Ideal Clocked"
+        ],
+        "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually."
+      },
+      {
+        "task_a": "184-divide-by-two-toggle",
+        "task_b": "275-divide-by-two-toggle",
+        "issue_named_pair": false,
+        "classification": "high_overlap",
+        "solution_similarity": 0.774,
+        "solution_token_jaccard": 0.6071,
+        "checker_similarity": 0.9883,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Divide By Two Toggle",
+          "Divide By Two Toggle"
+        ],
+        "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
+      }
+    ],
+    "prompt_overlap_pairs": [
+      {
+        "task_a": "099-dither-adder",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": true,
+        "prompt_similarity": 0.986,
+        "prompt_token_jaccard": 0.9189,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Dither Adder",
+          "Clocked Sine Source"
+        ]
+      },
+      {
+        "task_a": "101-fixed-gain-amplifier",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": true,
+        "prompt_similarity": 0.9849,
+        "prompt_token_jaccard": 0.9189,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Fixed Gain Amplifier",
+          "Clocked Sine Source"
+        ]
+      },
+      {
+        "task_a": "099-dither-adder",
+        "task_b": "101-fixed-gain-amplifier",
+        "issue_named_pair": true,
+        "prompt_similarity": 0.9847,
+        "prompt_token_jaccard": 0.9273,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Dither Adder",
+          "Fixed Gain Amplifier"
+        ]
+      },
+      {
+        "task_a": "070-active-low-reset-synchronizer",
+        "task_b": "071-active-high-reset-synchronizer",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9827,
+        "prompt_token_jaccard": 0.8868,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Active Low Reset Synchronizer",
+          "Active High Reset Synchronizer"
+        ]
+      },
+      {
+        "task_a": "097-cppll-tracking-reacquire-timer",
+        "task_b": "107-reference-step-clock",
+        "issue_named_pair": true,
+        "prompt_similarity": 0.9731,
+        "prompt_token_jaccard": 0.9646,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CPPLL Tracking Reacquire Timer",
+          "Reference Step Clock"
+        ]
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9518,
+        "prompt_token_jaccard": 0.8226,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "Clocked DAC Restore 7b"
+        ]
+      },
+      {
+        "task_a": "098-edge-crossing-interval-timer",
+        "task_b": "100-final-step-file-metric",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9505,
+        "prompt_token_jaccard": 0.8654,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Edge Crossing Interval Timer",
+          "Final Step File Metric"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "115-single-shot-pulse",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9416,
+        "prompt_token_jaccard": 0.843,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "Single Shot Pulse"
+        ]
+      },
+      {
+        "task_a": "140-three-input-or-gate",
+        "task_b": "141-three-input-xor-gate",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9387,
+        "prompt_token_jaccard": 0.76,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Three Input OR Gate",
+          "Three Input XOR Gate"
+        ]
+      },
+      {
+        "task_a": "100-final-step-file-metric",
+        "task_b": "101-fixed-gain-amplifier",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.935,
+        "prompt_token_jaccard": 0.8125,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Final Step File Metric",
+          "Fixed Gain Amplifier"
+        ]
+      },
+      {
+        "task_a": "100-final-step-file-metric",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9344,
+        "prompt_token_jaccard": 0.8053,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Final Step File Metric",
+          "Clocked Sine Source"
+        ]
+      },
+      {
+        "task_a": "120-not-gate-voltage",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9337,
+        "prompt_token_jaccard": 0.8739,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Not Gate Voltage",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "099-dither-adder",
+        "task_b": "100-final-step-file-metric",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9331,
+        "prompt_token_jaccard": 0.8125,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Dither Adder",
+          "Final Step File Metric"
+        ]
+      },
+      {
+        "task_a": "098-edge-crossing-interval-timer",
+        "task_b": "099-dither-adder",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9246,
+        "prompt_token_jaccard": 0.7965,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Edge Crossing Interval Timer",
+          "Dither Adder"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "116-clocked-comparator-reset-low",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9243,
+        "prompt_token_jaccard": 0.816,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Clocked Comparator Reset Low"
+        ]
+      },
+      {
+        "task_a": "098-edge-crossing-interval-timer",
+        "task_b": "111-clocked-sine-source",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.922,
+        "prompt_token_jaccard": 0.7895,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Edge Crossing Interval Timer",
+          "Clocked Sine Source"
+        ]
+      },
+      {
+        "task_a": "118-clocked-dac-restore-7b",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9214,
+        "prompt_token_jaccard": 0.8374,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 7b",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "098-edge-crossing-interval-timer",
+        "task_b": "101-fixed-gain-amplifier",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9193,
+        "prompt_token_jaccard": 0.7965,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Edge Crossing Interval Timer",
+          "Fixed Gain Amplifier"
+        ]
+      },
+      {
+        "task_a": "139-three-input-and-gate",
+        "task_b": "140-three-input-or-gate",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9169,
+        "prompt_token_jaccard": 0.76,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Three Input AND Gate",
+          "Three Input OR Gate"
+        ]
+      },
+      {
+        "task_a": "054-onehot-to-binary-encoder-16b",
+        "task_b": "056-decimal-digit-to-bcd-encoder",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9166,
+        "prompt_token_jaccard": 0.8082,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Onehot To Binary Encoder 16b",
+          "Decimal Digit To BCD Encoder"
+        ]
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9145,
+        "prompt_token_jaccard": 0.8618,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "Clocked DAC Restore 7b"
+        ]
+      },
+      {
+        "task_a": "119-crossing-pulse-detector",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9138,
+        "prompt_token_jaccard": 0.8512,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Crossing Pulse Detector",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "119-crossing-pulse-detector",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9129,
+        "prompt_token_jaccard": 0.8443,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Crossing Pulse Detector",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "114-sample-and-hold-ideal",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9127,
+        "prompt_token_jaccard": 0.8512,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Ideal Sample And Hold"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "113-clocked-dac-restore-4b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9095,
+        "prompt_token_jaccard": 0.8667,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Clocked DAC Restore 4b"
+        ]
+      },
+      {
+        "task_a": "117-bipolar-dac-4b-continuous",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9046,
+        "prompt_token_jaccard": 0.8374,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Bipolar DAC 4b Continuous",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.9035,
+        "prompt_token_jaccard": 0.8455,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8997,
+        "prompt_token_jaccard": 0.8374,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "118-clocked-dac-restore-7b",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8969,
+        "prompt_token_jaccard": 0.8443,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 7b",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "117-bipolar-dac-4b-continuous",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8967,
+        "prompt_token_jaccard": 0.8689,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Bipolar DAC 4b Continuous",
+          "Clocked DAC Restore 7b"
+        ]
+      },
+      {
+        "task_a": "164-half-subtractor-logic",
+        "task_b": "165-full-subtractor-logic",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8946,
+        "prompt_token_jaccard": 0.7778,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Half Subtractor Logic",
+          "Full Subtractor Logic"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "115-single-shot-pulse",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8941,
+        "prompt_token_jaccard": 0.8279,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Single Shot Pulse"
+        ]
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "114-sample-and-hold-ideal",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8939,
+        "prompt_token_jaccard": 0.8512,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "Ideal Sample And Hold"
+        ]
+      },
+      {
+        "task_a": "115-single-shot-pulse",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8935,
+        "prompt_token_jaccard": 0.776,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Single Shot Pulse",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8932,
+        "prompt_token_jaccard": 0.75,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "118-clocked-dac-restore-7b",
+        "task_b": "119-crossing-pulse-detector",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.89,
+        "prompt_token_jaccard": 0.8306,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 7b",
+          "Crossing Pulse Detector"
+        ]
+      },
+      {
+        "task_a": "052-gray-to-binary-converter-8b",
+        "task_b": "053-binary-to-gray-converter-8b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8899,
+        "prompt_token_jaccard": 0.8333,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Gray To Binary Converter 8b",
+          "Binary To Gray Converter 8b"
+        ]
+      },
+      {
+        "task_a": "117-bipolar-dac-4b-continuous",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8884,
+        "prompt_token_jaccard": 0.8443,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Bipolar DAC 4b Continuous",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "115-single-shot-pulse",
+        "task_b": "119-crossing-pulse-detector",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8883,
+        "prompt_token_jaccard": 0.7778,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Single Shot Pulse",
+          "Crossing Pulse Detector"
+        ]
+      },
+      {
+        "task_a": "115-single-shot-pulse",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8883,
+        "prompt_token_jaccard": 0.7559,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Single Shot Pulse",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8881,
+        "prompt_token_jaccard": 0.7698,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "115-single-shot-pulse",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8873,
+        "prompt_token_jaccard": 0.8279,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "Single Shot Pulse"
+        ]
+      },
+      {
+        "task_a": "061-bus-splitter-256-to-16x16",
+        "task_b": "062-bus-combiner-16x16-to-256",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.885,
+        "prompt_token_jaccard": 0.7778,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Bus Splitter 256 To 16x16",
+          "Bus Combiner 16x16 To 256"
+        ]
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "117-bipolar-dac-4b-continuous",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8811,
+        "prompt_token_jaccard": 0.8468,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "Bipolar DAC 4b Continuous"
+        ]
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "121-dff-reset-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8801,
+        "prompt_token_jaccard": 0.75,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "DFF Reset Voltage"
+        ]
+      },
+      {
+        "task_a": "117-bipolar-dac-4b-continuous",
+        "task_b": "119-crossing-pulse-detector",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8795,
+        "prompt_token_jaccard": 0.8306,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Bipolar DAC 4b Continuous",
+          "Crossing Pulse Detector"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "119-crossing-pulse-detector",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8772,
+        "prompt_token_jaccard": 0.7442,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "Crossing Pulse Detector"
+        ]
+      },
+      {
+        "task_a": "240-cdac-monodown-7b",
+        "task_b": "241-cdac-6b-stage1-up",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8768,
+        "prompt_token_jaccard": 0.75,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "CDAC Monodown 7b",
+          "CDAC 6b Stage1 Up"
+        ]
+      },
+      {
+        "task_a": "116-clocked-comparator-reset-low",
+        "task_b": "119-crossing-pulse-detector",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8747,
+        "prompt_token_jaccard": 0.824,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked Comparator Reset Low",
+          "Crossing Pulse Detector"
+        ]
+      },
+      {
+        "task_a": "113-clocked-dac-restore-4b",
+        "task_b": "116-clocked-comparator-reset-low",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8746,
+        "prompt_token_jaccard": 0.7734,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked DAC Restore 4b",
+          "Clocked Comparator Reset Low"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8703,
+        "prompt_token_jaccard": 0.7795,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Clocked DAC Restore 7b"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "118-clocked-dac-restore-7b",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8647,
+        "prompt_token_jaccard": 0.7656,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "Clocked DAC Restore 7b"
+        ]
+      },
+      {
+        "task_a": "114-sample-and-hold-ideal",
+        "task_b": "116-clocked-comparator-reset-low",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8643,
+        "prompt_token_jaccard": 0.7597,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Ideal Sample And Hold",
+          "Clocked Comparator Reset Low"
+        ]
+      },
+      {
+        "task_a": "112-clocked-sar-comparator",
+        "task_b": "120-not-gate-voltage",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.8605,
+        "prompt_token_jaccard": 0.7559,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Clocked SAR Comparator",
+          "Not Gate Voltage"
+        ]
+      },
+      {
+        "task_a": "184-divide-by-two-toggle",
+        "task_b": "275-divide-by-two-toggle",
+        "issue_named_pair": false,
+        "prompt_similarity": 0.2278,
+        "prompt_token_jaccard": 0.1538,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Divide By Two Toggle",
+          "Divide By Two Toggle"
+        ]
+      },
+      {
+        "task_a": "148-absolute-value",
+        "task_b": "288-absolute-value",
+        "issue_named_pair": true,
+        "prompt_similarity": 0.129,
+        "prompt_token_jaccard": 0.1333,
+        "forms": [
+          "dut",
+          "dut"
+        ],
+        "titles": [
+          "Absolute Value",
+          "Absolute Value"
+        ]
+      }
+    ],
+    "task_risks": [
+      {
+        "name": "299-bipolar-dff-sample",
+        "id": "v3_299_source_bipolar_dff_sample",
+        "title": "Bipolar DFF Sample",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "clock_timing",
+        "targets": [
+          "bipolar_dff_sample.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:70912aae2bcd6cc32f43e95dd998640a3b8a7a2482ac8665d756297be88899c1"
+      },
+      {
+        "name": "298-xnor-gate-voltage",
+        "id": "v3_298_source_xnor_gate_voltage",
+        "title": "XNOR Gate Voltage",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "digital_logic",
+        "targets": [
+          "xnor_gate_voltage.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:a0c467e211b73e7b6e1b176de12e070300905f689eca6cd8710392df454ad83b"
+      },
+      {
+        "name": "297-mux4-priority",
+        "id": "v3_297_source_mux4_priority",
+        "title": "Mux4 Priority",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "mux4_priority.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:cda74ef728caa86f391127fa9bee40848008480a10a7b39d4c296d34201dd361"
+      },
+      {
+        "name": "296-cal4bit-modulo",
+        "id": "v3_296_source_cal4bit_modulo",
+        "title": "CAL4bit Modulo",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "calibration_control",
+        "targets": [
+          "cal4bit_modulo.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:22ea53193ca6dcbde8b904fdbdd4d1b64abd47e53b710e16ecf2aef67ee039a2"
+      },
+      {
+        "name": "295-clocked-adc3bit",
+        "id": "v3_295_source_clocked_adc3bit",
+        "title": "Clocked ADC3bit",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "clocked_adc3bit.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e3a9ab68bfbe50082eb62e798eb69cbe8bb4f740c2d2758b256fc275414a72a2"
+      },
+      {
+        "name": "293-flash-folded-dac4",
+        "id": "v3_293_source_flash_folded_dac4",
+        "title": "Flash Folded DAC4",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "flash_folded_dac4.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:15ccbb2b934aeaadeaf46f5c1d3edc9865d2a6be36849e3b31168ef0c156b9d0"
+      },
+      {
+        "name": "292-smooth-tanh-comparator",
+        "id": "v3_292_source_smooth_tanh_comparator",
+        "title": "Smooth Tanh Comparator",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "comparator",
+        "targets": [
+          "smooth_tanh_comparator.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:26b9e08ad70a6f1edddb8028d4664c9978c1c48da2c46a20a5fe50cfd051cbbd"
+      },
+      {
+        "name": "291-limiting-diffamp",
+        "id": "v3_291_source_limiting_diffamp",
+        "title": "Limiting Diffamp",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "limiting_diffamp.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:028a3161fed378bd1a50157eca9b321aa7477e62e5a7fe8498fbead9ae037fb3"
+      },
+      {
+        "name": "289-deadband-voltage",
+        "id": "v3_289_source_deadband_voltage",
+        "title": "Deadband Voltage",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "deadband_voltage.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:def217829a4d93b7fa9d25ac4b8f81e03c92bd0e3c5c0bf43cc6573516c7db17"
+      },
+      {
+        "name": "288-absolute-value",
+        "id": "v3_288_source_absolute_value",
+        "title": "Absolute Value",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "analog_primitive",
+        "targets": [
+          "absolute_value.va"
+        ],
+        "solution_loc": 9,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:4ba2578dd19ba574e48f19da5db273ea043eb2eeb9fc6ed431bef5e7e331eae1"
+      },
+      {
+        "name": "286-first-order-lowpass-bugfix",
+        "id": "v3_286_first_order_lowpass_bugfix",
+        "title": "First Order Lowpass Bugfix",
+        "form": "bugfix",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "dut_fixed.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
+      },
+      {
+        "name": "284-window-comparator-testbench",
+        "id": "v3_284_window_comparator_testbench",
+        "title": "Window Comparator Testbench",
+        "form": "tb",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "comparator_decision",
+        "targets": [
+          "tb_window_comparator_ref.scs"
+        ],
+        "solution_loc": 10,
+        "negative_count": 2,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:4bf85ae6ea01401a7abd0366bde96d96961af63ba7be4b215471a6103099c337"
+      },
+      {
+        "name": "281-programmable-divider-by-n",
+        "id": "v3_281_source_programmable_divider_by_n",
+        "title": "Programmable Divider By N",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "clock_timing",
+        "targets": [
+          "programmable_divider_by_n.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:33967327b2222d82a3c64d446918bf3872ab45661ff5d232998ee148656f16ca"
+      },
+      {
+        "name": "280-vargain-diffamp-clip",
+        "id": "v3_280_source_vargain_diffamp_clip",
+        "title": "Vargain Diffamp Clip",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "filter_amp",
+        "targets": [
+          "vargain_diffamp_clip.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:9a2eab2338ba2f631c2902453326ce1f17b4b19415e9bdd26c3035ff7dece9f5"
+      },
+      {
+        "name": "279-safe-analog-divider",
+        "id": "v3_279_source_safe_analog_divider",
+        "title": "Safe Analog Divider",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "analog_primitive",
+        "targets": [
+          "safe_analog_divider.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:607431fdfe38a485500674628c43a605bdcc1cfba7cb9d3b6f1f830ad0db1668"
+      },
+      {
+        "name": "278-decision-router-logic",
+        "id": "v3_278_source_decision_router_logic",
+        "title": "Decision Router Logic",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "decision_router_logic.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:657a59a8cfd75167183c872bed0b6ddfe4ecb9d732969e5eee8ed3de58ab842a"
+      },
+      {
+        "name": "277-xor-phase-detector",
+        "id": "v3_277_source_xor_phase_detector",
+        "title": "XOR Phase Detector",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "clock_timing",
+        "targets": [
+          "xor_phase_detector.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:1ca91e5d3d060b786078e722967cf583f5cc98dd5f3ab28993993dca563df5e6"
+      },
+      {
+        "name": "276-accum3-pulse",
+        "id": "v3_276_source_accum3_pulse",
+        "title": "Accum3 Pulse",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "clock_timing",
+        "targets": [
+          "accum3_pulse.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:b701a9fe42c387e65c0c9835b1956d10f60b32b7767c0c3fde751bd8ad65ef12"
+      },
+      {
+        "name": "275-divide-by-two-toggle",
+        "id": "v3_275_source_divide_by_two_toggle",
+        "title": "Divide By Two Toggle",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "clock_timing",
+        "targets": [
+          "divide_by_two_toggle.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:bd434725cbf185757f79030e83022d1cf5beb9c8cfd1f98bf4e5078670ffc4be"
+      },
+      {
+        "name": "274-weighted-decoder-6bit",
+        "id": "v3_274_source_weighted_decoder_6bit",
+        "title": "Weighted Decoder 6bit",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "weighted_decoder_6bit.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:88485bc423cb1050224229dbad5af210a5480397ee132d30b64f4cef4c7c3d73"
+      },
+      {
+        "name": "273-level-shifter-offset",
+        "id": "v3_273_source_level_shifter_offset",
+        "title": "Level Shifter Offset",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "analog_primitive",
+        "targets": [
+          "level_shifter_offset.va"
+        ],
+        "solution_loc": 10,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:187217398fa28d03c991d5a19f2bc9cc3f4954401e12fd7e77735e826f666ffd"
+      },
+      {
+        "name": "272-rs-phase-detector",
+        "id": "v3_272_source_rs_phase_detector",
+        "title": "RS Phase Detector",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "clock_timing",
+        "targets": [
+          "rs_phase_detector.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:b289354830684f77e15bfefe573e0d00b0c1a1c87dddb53bd430092836e8cfe8"
+      },
+      {
+        "name": "269-trim-ctrl-5bit",
+        "id": "v3_269_source_trim_ctrl_5bit",
+        "title": "Trim Ctrl 5bit",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "digital_logic",
+        "targets": [
+          "trim_ctrl_5bit.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:58d7ea5428913a6805346e181ac076a5da4d5cf26308afcbe455f81de3d77e2f"
+      },
+      {
+        "name": "268-samplehold-rising-edge",
+        "id": "v3_268_source_samplehold_rising_edge",
+        "title": "Samplehold Rising Edge",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "sampling_memory",
+        "targets": [
+          "samplehold_rising_edge.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:deadc2c6536bd99a573ec677220d5805b771e1738a5232ce5c6129d6a263293e"
+      },
+      {
+        "name": "265-bin2ther-2b",
+        "id": "v3_265_source_bin2ther_2b",
+        "title": "Bin2ther 2b",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "digital_logic",
+        "targets": [
+          "bin2ther_2b.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:f33406478a38250f011548e7a07de07624a3629fdc72cae22b884eac2f4ef0c2"
+      },
+      {
+        "name": "258-lt-read-sar6b-weighted",
+        "id": "v3_258_source_lt_read_sar6b_weighted",
+        "title": "LT Read SAR6B Weighted",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "lt_read_sar6b_weighted.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:10e97d85a5f3dfd1b3398df2c7b0db7194d8d06ded43b2fd74467712abe167b7"
+      },
+      {
+        "name": "256-dac4bit-small-swing",
+        "id": "v3_256_source_dac4bit_small_swing",
+        "title": "DAC4bit Small Swing",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "data_converter",
+        "targets": [
+          "dac4bit_small_swing.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:f52617bf58ca088d5f10cd0d3bf558cae1c0e152fa49fcffeca993af3c233075"
+      },
+      {
+        "name": "255-tool-4bit-sar-signed-dac",
+        "id": "v3_255_source_tool_4bit_sar_signed_dac",
+        "title": "Tool 4bit SAR Signed DAC",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "tool_4bit_sar_signed_dac.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:890e7d32b32a95aa22d1e6d1e04a8af570993057e711b82701a90c9a074a4358"
+      },
+      {
+        "name": "254-lt-readout-sar4",
+        "id": "v3_254_source_lt_readout_sar4",
+        "title": "LT Readout SAR4",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "lt_readout_sar4.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:ef35501881ac141eef692726f66d3a3b2ab26168c9d26d732a4d8cb685a3d2a9"
+      },
+      {
+        "name": "253-sum5-signed-sar-weight",
+        "id": "v3_253_source_sum5_signed_sar_weight",
+        "title": "SUM5 Signed SAR Weight",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "sum5_signed_sar_weight.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:4230088c7db02ac23f5cda86a64493673201b88085c4c7df8abe70438fc60b85"
+      },
+      {
+        "name": "252-sample-hold-5v-clock",
+        "id": "v3_252_source_sample_hold_5v_clock",
+        "title": "Sample Hold 5v Clock",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "clock_timing",
+        "targets": [
+          "sample_hold_5v_clock.va"
+        ],
+        "solution_loc": 13,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e6e01d5a7254dc690ae39fe7d98f31f1b1476a8e5619632b583cc793c5e8b9e8"
+      },
+      {
+        "name": "251-dac-restore-6bit-1p8",
+        "id": "v3_251_source_dac_restore_6bit_1p8",
+        "title": "DAC Restore 6bit 1p8",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "dac_restore_6bit_1p8.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:7764f57a9579194a77ae03febc5228239527ef118f84f9f8b77ecc00d57d77b2"
+      },
+      {
+        "name": "250-dac-restore-7bit-clocked",
+        "id": "v3_250_source_dac_restore_7bit_clocked",
+        "title": "DAC Restore 7bit Clocked",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "dac_restore_7bit_clocked.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:413880812cf1da3841c1ccc35553b5484868487aaf54072372fbbc06484028bf"
+      },
+      {
+        "name": "249-dac-restore-4bit-clocked",
+        "id": "v3_249_source_dac_restore_4bit_clocked",
+        "title": "DAC Restore 4bit Clocked",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "dac_restore_4bit_clocked.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:889a03b93a23f867568bcf81f26be9a40589003b8afdf0bb941b3c5298d0d458"
+      },
+      {
+        "name": "245-cdac-8b-monodown",
+        "id": "v3_245_source_cdac_8b_monodown",
+        "title": "CDAC 8b Monodown",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "cdac_8b_monodown.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e956f6a252f2f1cd2fb3f34fe10ade6e7f2725aac38ceedfe49b0591d2b1396e"
+      },
+      {
+        "name": "241-cdac-6b-stage1-up",
+        "id": "v3_241_source_cdac_6b_stage1_up",
+        "title": "CDAC 6b Stage1 Up",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "cdac_6b_stage1_up.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e6e98e295f3a4942a32f1ba5a3b70552032ab8777a319929a5a39a1329407922"
+      },
+      {
+        "name": "240-cdac-monodown-7b",
+        "id": "v3_240_source_cdac_monodown_7b",
+        "title": "CDAC Monodown 7b",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "cdac_monodown_7b.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:bbf2c5d87bbcaac909fc27a1118a80ee42ea243feca8e9d0f4f8b239020565c0"
+      },
+      {
+        "name": "237-qtz-differential-2level",
+        "id": "v3_237_source_qtz_differential_2level",
+        "title": "QTZ Differential 2level",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "quantizer",
+        "targets": [
+          "qtz_differential_2level.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:04d7275b8a284bfe81abd149837928f35b8a7151d85062cd1f178c0e837ef197"
+      },
+      {
+        "name": "236-single-adc-7b-weighted",
+        "id": "v3_236_source_single_adc_7b_weighted",
+        "title": "Single ADC 7b Weighted",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "single_adc_7b_weighted.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:6cbc648c11ccedb670481aad5491273a08199cb2005075218f93303e0e49b622"
+      },
+      {
+        "name": "235-phase-detector-chopper",
+        "id": "v3_235_source_phase_detector_chopper",
+        "title": "Phase Detector Chopper",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "signal_processing",
+        "targets": [
+          "phase_detector_chopper.va"
+        ],
+        "solution_loc": 10,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:6af743e10de6d1b1f53c52901e0a665cf6fe04d9785a032f2018b971e9493dcf"
+      },
+      {
+        "name": "227-trim-ctrl-4bit",
+        "id": "v3_227_source_trim_ctrl_4bit",
+        "title": "Trim Ctrl 4bit",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "calibration",
+        "targets": [
+          "trim_ctrl_4bit.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:1f79770d5c0f9ae6305137f45ec6840441ec65087cec561f8b4b0285c4523532"
+      },
+      {
+        "name": "225-cdac-bidirect-residue",
+        "id": "v3_225_source_cdac_bidirect_residue",
+        "title": "CDAC Bidirect Residue",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "dac",
+        "targets": [
+          "cdac_bidirect_residue.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e3d190c93272c0878bb28b65de8fb9a1f519953af0d4b76f31c6178d13046a21"
+      },
+      {
+        "name": "221-dff-set-reset-hold",
+        "id": "v3_221_source_dff_set_reset_hold",
+        "title": "DFF Set Reset Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "logic",
+        "targets": [
+          "dff_set_reset_hold.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:fcb144efb03b32710b6cdc10f43b64f61fb6125041fcf1cd825d501d44b257bb"
+      },
+      {
+        "name": "220-spi-shift-mux",
+        "id": "v3_220_source_spi_shift_mux",
+        "title": "SPI Shift Mux",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "logic",
+        "targets": [
+          "spi_shift_mux.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:ccb2dd3db40709dffaf5f51c52ac8fb66cace842ff97df29a268723e2762b959"
+      },
+      {
+        "name": "204-pipe-2lane-edge-align",
+        "id": "v3_204_source_pipe_2lane_edge_align",
+        "title": "Pipe 2lane Edge Align",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "pipe_2lane_edge_align.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:b15eaed24104394ea616f87f73d1ecaf5fc28c77bb76c792772432925348f933"
+      },
+      {
+        "name": "201-linear-pfd-gain",
+        "id": "v3_201_source_linear_pfd_gain",
+        "title": "Linear PFD Gain",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "timing",
+        "targets": [
+          "linear_pfd_gain.va"
+        ],
+        "solution_loc": 10,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:a65eff48f2a498c69db1ead6d53f0abdc5c24f293632ba4e85a2bca04c38821d"
+      },
+      {
+        "name": "200-dac-ideal-4b-offset",
+        "id": "v3_200_source_dac_ideal_4b_offset",
+        "title": "DAC Ideal 4b Offset",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "dac_ideal_4b_offset.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:af8641e0ab51359df179042cde3bc73a7e332dd26fdfc775f8872268ed37c98a"
+      },
+      {
+        "name": "184-divide-by-two-toggle",
+        "id": "v3_184_source_divide_by_two_toggle",
+        "title": "Divide By Two Toggle",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "clocking",
+        "targets": [
+          "divide_by_two_toggle.va"
+        ],
+        "solution_loc": 12,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:b17c28505ac5724a3593d74f1b7f46ba99674fb01c9216852c22f910b2f80e9b"
+      },
+      {
+        "name": "181-two-channel-sample-demux",
+        "id": "v3_181_source_two_channel_sample_demux",
+        "title": "Two Channel Sample Demux",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "two_channel_sample_demux.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:99cd37919b0da891614d98d02d78dd9e4615614db1b24000f7225a9cafe5b2ab"
+      },
+      {
+        "name": "180-flash-sum8-fraction",
+        "id": "v3_180_source_flash_sum8_fraction",
+        "title": "Flash Sum8 Fraction",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "flash_sum8_fraction.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:cb08b6929c8a18cb1930a4ba625cd6c99cdba3423059d220957ed1b0edd85042"
+      },
+      {
+        "name": "174-control-word-encoder-7b",
+        "id": "v3_174_source_control_word_encoder_7b",
+        "title": "Control Word Encoder 7b",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "control_word_encoder_7b.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:4424f65c6c05bdfe704c77732d08313c30af01d49844f1c8b52f6d25b5f3b7ce"
+      },
+      {
+        "name": "172-flash-thermometer-centered-sum",
+        "id": "v3_172_source_flash_thermometer_centered_sum",
+        "title": "Flash Thermometer Centered Sum",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "flash_thermometer_centered_sum.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:fcaa78accf124a5e21d4861038c98dde84afd95faf45670372df2479f8d63692"
+      },
+      {
+        "name": "166-rs-latch-voltage",
+        "id": "v3_166_source_rs_latch_voltage",
+        "title": "RS Latch Voltage",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "rs_latch_voltage.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:46cf6073de73b4bc60f3ce1933f2d3b004be57de79237355840b9568c8949bf8"
+      },
+      {
+        "name": "165-full-subtractor-logic",
+        "id": "v3_165_source_full_subtractor_logic",
+        "title": "Full Subtractor Logic",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "full_subtractor_logic.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:efcb1fa3e04b69ebe08921b48e4e55bedf75ff00b32c649a9ad5e94e4b569394"
+      },
+      {
+        "name": "164-half-subtractor-logic",
+        "id": "v3_164_source_half_subtractor_logic",
+        "title": "Half Subtractor Logic",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "half_subtractor_logic.va"
+        ],
+        "solution_loc": 13,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:4d6d5b5ab45bc323bfbbf897e3f4b5da761dd8277457088e353b17adee67c55e"
+      },
+      {
+        "name": "163-full-adder-logic",
+        "id": "v3_163_source_full_adder_logic",
+        "title": "Full Adder Logic",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "full_adder_logic.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:f8e479f919e735a276ed8a0bced7a52d25ec8c6d758e6be227c3b4994620ddc9"
+      },
+      {
+        "name": "162-half-adder-logic",
+        "id": "v3_162_source_half_adder_logic",
+        "title": "Half Adder Logic",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "digital_logic",
+        "targets": [
+          "half_adder_logic.va"
+        ],
+        "solution_loc": 13,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:782576d75d646f72837c0e5ba1b025ff1b965f2b4ba13ff973274e9f4331978d"
+      },
+      {
+        "name": "161-ideal-differential-opamp",
+        "id": "v3_161_source_ideal_differential_opamp",
+        "title": "Ideal Differential Opamp",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "ideal_differential_opamp.va"
+        ],
+        "solution_loc": 12,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:c91fa8a9db993925cd2ca96e5d08677e0d1e263a6b74d585d039ca469293dd9b"
+      },
+      {
+        "name": "160-voltage-controlled-gain-amplifier",
+        "id": "v3_160_source_voltage_controlled_gain_amplifier",
+        "title": "Voltage Controlled Gain Amplifier",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "voltage_controlled_gain_amplifier.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:200233120af014fac97f4b414fd633750bda91745b4a22d9de33bb3906413710"
+      },
+      {
+        "name": "159-variable-gain-differential-amplifier",
+        "id": "v3_159_source_variable_gain_differential_amplifier",
+        "title": "Variable Gain Differential Amplifier",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "variable_gain_differential_amplifier.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:32638a4bac257b20e1f626aed71a20258d676e6c7688a9bcc3102ff1e1ae3554"
+      },
+      {
+        "name": "158-soft-voltage-clamp",
+        "id": "v3_158_source_soft_voltage_clamp",
+        "title": "Soft Voltage Clamp",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "soft_voltage_clamp_behavior.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:f97a6cbf02c19b11ebb63ccdc1f5a3059dcb0217bc8b7f000c4bc246246c1fdc"
+      },
+      {
+        "name": "157-logarithmic-amplifier",
+        "id": "v3_157_source_logarithmic_amplifier",
+        "title": "Logarithmic Amplifier",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "logarithmic_amplifier.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:2681ceccffa58fda21b29d649ecb2d62bb5d44be8f00715c701c5f583f1aa9ad"
+      },
+      {
+        "name": "156-differential-amplifier-core",
+        "id": "v3_156_source_differential_amplifier_core",
+        "title": "Differential Amplifier Core",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "differential_amplifier_core.va"
+        ],
+        "solution_loc": 11,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:b6ab1b1e71b6d700f2c047044f5a0538cad7bf4dbc34039e6f40aacba67c7a0c"
+      },
+      {
+        "name": "155-three-way-threshold-mux",
+        "id": "v3_155_source_three_way_threshold_mux",
+        "title": "Three Way Threshold Mux",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "three_way_threshold_mux.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:8e341df0fe83007e6bc241a819f551057392d5eddbe01a98c1eaefaea277b2d8"
+      },
+      {
+        "name": "154-analog-multiplier",
+        "id": "v3_154_source_analog_multiplier",
+        "title": "Analog Multiplier",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "analog_multiplier_gain.va"
+        ],
+        "solution_loc": 10,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:3e6820f8e252e5bf8f4929397a5e4f991be65890c8034c8b1bb61222db9111f4"
+      },
+      {
+        "name": "152-differential-gain-driver",
+        "id": "v3_152_source_differential_gain_driver",
+        "title": "Differential Gain Driver",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "differential_gain_driver.va"
+        ],
+        "solution_loc": 11,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:5bc7c5d624be5daeedfe5b83d092f17a53524d19bac891a2d5f08ecacf5c9cc1"
+      },
+      {
+        "name": "150-safe-voltage-divider",
+        "id": "v3_150_source_safe_voltage_divider",
+        "title": "Safe Voltage Divider",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "safe_voltage_divider.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:66bcc6c972dd58d74af6d8cb67a736382b9974e66161c365d21a71eb64d93d48"
+      },
+      {
+        "name": "149-offset-gain-amplifier",
+        "id": "v3_149_source_offset_gain_amplifier",
+        "title": "Offset Gain Amplifier",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "offset_gain_amplifier.va"
+        ],
+        "solution_loc": 12,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:7ac4d5a94b2ccd145233acc513a7618812e5344597e9516faa099db456ebb754"
+      },
+      {
+        "name": "148-absolute-value",
+        "id": "v3_148_source_absolute_value",
+        "title": "Absolute Value",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "absolute_value_behavior.va"
+        ],
+        "solution_loc": 9,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:9d4ba5e934fa83f30573605a7d0b5c2cde3bc291c7ee13796054a7a563e0f7cd"
+      },
+      {
+        "name": "147-limiter-rails",
+        "id": "v3_147_source_limiter_rails",
+        "title": "Limiter Rails",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "limiter_rails.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:be89d45315fa94218f59eddc0531b14c9e459731ea585ca56985b012be15b4df"
+      },
+      {
+        "name": "146-smooth-comparator-tanh",
+        "id": "v3_146_source_smooth_comparator_tanh",
+        "title": "Smooth Comparator Tanh",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "smooth_comparator_tanh.va"
+        ],
+        "solution_loc": 13,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:46622ad9607cccaf6f5eeee76c149faa876f591ceb2bc7593df98933d3dad4c5"
+      },
+      {
+        "name": "145-hard-voltage-clamp",
+        "id": "v3_145_source_hard_voltage_clamp",
+        "title": "Hard Voltage Clamp",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "hard_voltage_clamp_behavior.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:665894469d03dc931fa2a805f8f13da07790021896e162faf33acc042898b8f5"
+      },
+      {
+        "name": "143-deadband-window",
+        "id": "v3_143_source_deadband_window",
+        "title": "Deadband Window",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "deadband_window.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:418c02a78a323b3054f7a42203ee3993dbc49091d19dbf01679a1fe6bac3bd74"
+      },
+      {
+        "name": "142-attenuator-gain",
+        "id": "v3_142_source_attenuator_gain",
+        "title": "Attenuator Gain",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "mixed_signal",
+        "targets": [
+          "attenuator_gain.va"
+        ],
+        "solution_loc": 12,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:1c2da24c52b13d874b822f437f3c0a329709832c873c2fa519355bdc9fbf9c67"
+      },
+      {
+        "name": "138-two-input-nor-gate",
+        "id": "v3_138_source_two_input_nor_gate",
+        "title": "Two Input NOR Gate",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "digital_logic",
+        "targets": [
+          "two_input_nor_gate.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:651167a63ed2b6c8c74050bac6f5f6bfe030739fa2f3f220ae98b15c1dba8b18"
+      },
+      {
+        "name": "137-two-input-nand-gate",
+        "id": "v3_137_source_two_input_nand_gate",
+        "title": "Two Input NAND Gate",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "digital_logic",
+        "targets": [
+          "two_input_nand_gate.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:1acc65aeb1f419ba01044588168571a4d66209515d4b50a35a043171bbbe05be"
+      },
+      {
+        "name": "135-two-input-or-gate",
+        "id": "v3_135_source_two_input_or_gate",
+        "title": "Two Input OR Gate",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "two_input_or_gate.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:a8e95a84c260fd075e57ddf466b6cc9e0038f88dd3a65c15ea840c83d8dda8dc"
+      },
+      {
+        "name": "134-differential-buffer",
+        "id": "v3_134_source_differential_buffer",
+        "title": "Differential Buffer",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "differential_buffer.va"
+        ],
+        "solution_loc": 10,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:e6c86e2d4f6931316fc20005ec5ed57eba8bc33883c05613ff7162da3a769fd4"
+      },
+      {
+        "name": "132-max-detector-hold",
+        "id": "v3_132_source_max_detector_hold",
+        "title": "Max Detector Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "max_detector_hold.va"
+        ],
+        "solution_loc": 14,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:81ecd531e655d112c60ebd61a0d818f262d90744049d313f1fb59b1ce45c96d8"
+      },
+      {
+        "name": "129-two-input-xor-gate",
+        "id": "v3_129_source_two_input_xor_gate",
+        "title": "Two Input XOR Gate",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "two_input_xor_gate.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:dc3e232a42ebfdfaa358c27c0b31cdc59eccf39ef1f0d3d2cad59b63b1c57170"
+      },
+      {
+        "name": "128-two-input-and-gate",
+        "id": "v3_128_source_two_input_and_gate",
+        "title": "Two Input AND Gate",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "mixed_signal",
+        "targets": [
+          "two_input_and_gate.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:342b6ce73cd20531c61fa04d5982d38950ce661d2ab153ce3e0bd5c4f6e3c891"
+      },
+      {
+        "name": "125-clocked-dac-4b-binary",
+        "id": "v3_125_source_clocked_dac_4b_binary",
+        "title": "Clocked DAC 4b Binary",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "clocked_dac_4b_binary.va"
+        ],
+        "solution_loc": 20,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:51253b0fec81b2e49d97b6f6748cff31ffc19c7805af7b27e5b9734642f02498"
+      },
+      {
+        "name": "124-comp-os-detect",
+        "id": "v3_124_source_comp_os_detect",
+        "title": "Comparator Offset Detect",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "comp_os_detect.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:36ecc3c74bba60678ae4018836839a08e5525bd43547f975ba7f6388d2aae404"
+      },
+      {
+        "name": "114-sample-and-hold-ideal",
+        "id": "v3_114_source_sample_and_hold_ideal",
+        "title": "Ideal Sample And Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "data_converter",
+        "targets": [
+          "source_sample_hold.va"
+        ],
+        "solution_loc": 19,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc",
+          "source_family_short_solution"
+        ],
+        "solution_sha256_normalized": "sha256:4e53c12600ed460c53e02d8b7bcb6a975297d4cb65b3c036bb9391ec57bd51b1"
+      },
+      {
+        "name": "110-settling-time-measurement",
+        "id": "v3_110_settling_time_measurement",
+        "title": "Settling Time Measurement",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "settling_time_measurement_tb.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:228485557614d82b610b785a5313d3e73dadeb3042d31e00e747254392c1b040"
+      },
+      {
+        "name": "089-sine-periodic-voltage-source",
+        "id": "v3_089_sine_periodic_voltage_source",
+        "title": "Sine Periodic Voltage Source",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "multitone.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:6f8285cf4923363c9187a0c36fbe242f19647aa843064c9a0f70dc69c38a6578"
+      },
+      {
+        "name": "086-dither-noise-like-deterministic-source",
+        "id": "v3_086_dither_noise_like_deterministic_source",
+        "title": "Dither Noise Like Deterministic Source",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "noise_gen.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:09ae31939d1d056c3ee9504183594b2444590f636adb96726c11a1bf5f68f63a"
+      },
+      {
+        "name": "084-peak-detector",
+        "id": "v3_084_peak_detector",
+        "title": "Peak Detector",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "peak_detector.va"
+        ],
+        "solution_loc": 11,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:737aad9695497d17de5d9dc412f22e58801f540309259c3a1c2582c0d0a0286d"
+      },
+      {
+        "name": "083-crossing-metric-writer",
+        "id": "v3_083_crossing_metric_writer",
+        "title": "Crossing Metric Writer",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "file_metric_writer.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:43a1061890dc9676eff4792587378671e0a4528da565f1970b55fbbb633f9bf4"
+      },
+      {
+        "name": "285-aperture-delay-sample-hold",
+        "id": "v3_285_aperture_delay_sample_hold",
+        "title": "Aperture Delay Sample Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "sampling_analog_memory",
+        "targets": [
+          "sample_hold_aperture_ref.va"
+        ],
+        "solution_loc": 38,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
+      },
+      {
+        "name": "111-clocked-sine-source",
+        "id": "v3_111_clocked_sine_source",
+        "title": "Clocked Sine Source",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "vin_src.va",
+          "lfsr.va",
+          "dither_adder.va",
+          "gain_amp_fixed.va"
+        ],
+        "solution_loc": 118,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+      },
+      {
+        "name": "109-sample-hold-droop-front-end",
+        "id": "v3_109_sample_hold_droop_front_end",
+        "title": "Sample Hold Droop Front End",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "sampling_analog_memory",
+        "targets": [
+          "sample_hold_droop_ref.va"
+        ],
+        "solution_loc": 64,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:bf405fffaf8b25945e4feef0f7dfd4cd5d2ab0a82d143ae6700bbe7b4cdfb9cb"
+      },
+      {
+        "name": "108-reference-startup-enable-flow",
+        "id": "v3_108_reference_startup_enable_flow",
+        "title": "Reference Startup Enable Flow",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "bias_reference_power_management",
+        "targets": [
+          "reference_startup_enable_flow.va"
+        ],
+        "solution_loc": 53,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:89083f600ef814ba809a9f4a38940ff7671f8d8b5b8d6a4a6c38f6aa092248c0"
+      },
+      {
+        "name": "107-reference-step-clock",
+        "id": "v3_107_reference_step_clock",
+        "title": "Reference Step Clock",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "pll_clock_timing_systems",
+        "targets": [
+          "ref_step_clk.va",
+          "cppll_timer_ref.va"
+        ],
+        "solution_loc": 156,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
+      },
+      {
+        "name": "106-programmable-stimulus-sequencer",
+        "id": "v3_106_programmable_stimulus_sequencer",
+        "title": "Programmable Stimulus Sequencer",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "programmable_stimulus_sequencer.va"
+        ],
+        "solution_loc": 55,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:8e71b896f25a3eeb7f87ad6a1d1cffda4491de3690c9119a73f84fc0a6774b27"
+      },
+      {
+        "name": "105-pipeline-adc-chain-4b",
+        "id": "v3_105_pipeline_adc_chain_4b",
+        "title": "Pipeline ADC Chain 4b",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "data_converter_models",
+        "targets": [
+          "pipeline_adc_chain_4b.va"
+        ],
+        "solution_loc": 107,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:8e2850456cf6df1ab0f7c9717960983299f1013055f7a54b34c25812d6ec678d"
+      },
+      {
+        "name": "104-ldo-load-step-recovery",
+        "id": "v3_104_ldo_load_step_recovery",
+        "title": "LDO Load Step Recovery",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "bias_reference_power_management",
+        "targets": [
+          "ldo_load_step_recovery_flow.va"
+        ],
+        "solution_loc": 60,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:c72b3b19b3305f790727c2d1fe452036572caf86e3b23052fa057f0a8dcd377e"
+      },
+      {
+        "name": "103-iq-downconversion-chain",
+        "id": "v3_103_iq_downconversion_chain",
+        "title": "IQ Downconversion Chain",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "rf_afe_behavioral_macromodels",
+        "targets": [
+          "iq_downconversion_chain.va"
+        ],
+        "solution_loc": 69,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:274cc4d5a71ea9f9142d184d424d5acbbbff0bf3967d0ca9eeff9a706128fbe7"
+      },
+      {
+        "name": "102-gain-estimator",
+        "id": "v3_102_gain_estimator",
+        "title": "Gain Estimator",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "gain_estimator.va",
+          "./gain_estimator.va"
+        ],
+        "solution_loc": 94,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:f1dddc22b87dec200c59709dbdb9e5d5c853464a91ab5240a16a4ab649dbd87d"
+      },
+      {
+        "name": "101-fixed-gain-amplifier",
+        "id": "v3_101_fixed_gain_amplifier",
+        "title": "Fixed Gain Amplifier",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "gain_amp_fixed.va",
+          "vin_src.va",
+          "lfsr.va",
+          "dither_adder.va"
+        ],
+        "solution_loc": 118,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+      },
+      {
+        "name": "100-final-step-file-metric",
+        "id": "v3_100_final_step_file_metric",
+        "title": "Final Step File Metric",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "final_step_file_metric_ref.va",
+          "./final_step_file_metric_ref.va"
+        ],
+        "solution_loc": 60,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:665037f2ad1841df84815d6cf48d0d0b2c430e3f388ab80795add62d1d210a03"
+      },
+      {
+        "name": "099-dither-adder",
+        "id": "v3_099_dither_adder",
+        "title": "Dither Adder",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "dither_adder.va",
+          "vin_src.va",
+          "lfsr.va",
+          "gain_amp_fixed.va"
+        ],
+        "solution_loc": 118,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+      },
+      {
+        "name": "098-edge-crossing-interval-timer",
+        "id": "v3_098_edge_crossing_interval_timer",
+        "title": "Edge Crossing Interval Timer",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "measurement_instrumentation_flows",
+        "targets": [
+          "cross_interval_163p333_ref.va",
+          "./cross_interval_163p333_ref.va"
+        ],
+        "solution_loc": 94,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:db9b6993d2759d6a8f244add717f41d8fb15f4e1043cbf8c430778c930e00a98"
+      },
+      {
+        "name": "097-cppll-tracking-reacquire-timer",
+        "id": "v3_097_cppll_tracking_reacquire_timer",
+        "title": "CPPLL Tracking Reacquire Timer",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "pll_clock_timing_systems",
+        "targets": [
+          "cppll_timer_ref.va",
+          "ref_step_clk.va"
+        ],
+        "solution_loc": 156,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:f7790dcadc3cbf9a4dbe81998fa4809a8497ab34a677cc4774dbdc398188e9c2"
+      },
+      {
+        "name": "096-converter-static-linearity-measurement",
+        "id": "v3_096_converter_static_linearity_measurement",
+        "title": "Converter Static Linearity Measurement",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "data_converter_models",
+        "targets": [
+          "converter_static_linearity_measurement_flow.va"
+        ],
+        "solution_loc": 84,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:897290f476fdd671e483f6765e949bb12976f9b01e3ff0615119b7b030887299"
+      },
+      {
+        "name": "095-complete-calibration-loop",
+        "id": "v3_095_complete_calibration_loop",
+        "title": "Complete Calibration Loop",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "calibration_dem_control",
+        "targets": [
+          "complete_calibration_loop.va"
+        ],
+        "solution_loc": 54,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:5c79a97ee7d5c765a395a198cd9eb47f3156ee03356eea77ba1dd073cc29a516"
+      },
+      {
+        "name": "094-comparator-offset-search",
+        "id": "v3_094_comparator_offset_search",
+        "title": "Comparator Offset Search",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "comparator_decision_circuits",
+        "targets": [
+          "comparator_offset_search_ref.va"
+        ],
+        "solution_loc": 35,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:74a4931d1667f5fbb0952235272a841119d6a846f09bb04c8a0897f497699560"
+      },
+      {
+        "name": "093-bbpd-data-edge-alignment",
+        "id": "v3_093_bbpd_data_edge_alignment",
+        "title": "BBPD Data Edge Alignment",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "pll_clock_timing_systems",
+        "targets": [
+          "bbpd_data_edge_alignment_ref.va"
+        ],
+        "solution_loc": 66,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:fa8566483c8ad4f0550f26198c81bc6d0387c94ed4858ca83ea68454e94f0520"
+      },
+      {
+        "name": "092-amplifier-filter-chain",
+        "id": "v3_092_amplifier_filter_chain",
+        "title": "Amplifier Filter Chain",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "amplifier_filter_chain.va"
+        ],
+        "solution_loc": 47,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:d882309a0acd5eeec4d489db47337e7090706170cb578d4c340ace96ba35a30c"
+      },
+      {
+        "name": "091-agc-receiver-leveling-loop",
+        "id": "v3_091_agc_receiver_leveling_loop",
+        "title": "AGC Receiver Leveling Loop",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "rf_afe_behavioral_macromodels",
+        "targets": [
+          "agc_receiver_leveling_loop.va"
+        ],
+        "solution_loc": 57,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:649c73e2009f5bda0c67b6e2ff598fc6c521b3ae008e27d17da3e24d183aa8e4"
+      },
+      {
+        "name": "090-adpll-ratio-hop-timer",
+        "id": "v3_090_adpll_ratio_hop_timer",
+        "title": "ADPLL Ratio Hop Timer",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "pll_clock_timing_systems",
+        "targets": [
+          "adpll_ratio_hop_ref.va"
+        ],
+        "solution_loc": 177,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:7a13f77cfc581926bf7c4ee389dab2855865aebea9c105517d5f1f4cbee51ff5"
+      },
+      {
+        "name": "088-ramp-step-source",
+        "id": "v3_088_ramp_step_source",
+        "title": "Ramp Step Source",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "bound_step_period_guard_ref.va"
+        ],
+        "solution_loc": 42,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:e16127dada694a3021d4fa57be07593b1f85d6ce584770d77ab0304f26dd41ca"
+      },
+      {
+        "name": "087-lfsr-prbs-generator",
+        "id": "v3_087_lfsr_prbs_generator",
+        "title": "LFSR PRBS Generator",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "prbs7.va"
+        ],
+        "solution_loc": 58,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:27af2cfe6696469e3c070188022d7fff2d473662dd0831b9e8c314cd389f9dcd"
+      },
+      {
+        "name": "085-burst-clock-source",
+        "id": "v3_085_burst_clock_source",
+        "title": "Burst Clock Source",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "clk_burst_gen.va"
+        ],
+        "solution_loc": 38,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:c0e9126b77ab2d4984a685e51cf0635282f9bc371ccef8ec9e5028009ce1b36e"
+      },
+      {
+        "name": "082-bias-voltage-generator-with-enable-trim",
+        "id": "v3_082_bias_voltage_generator_with_enable_trim",
+        "title": "Bias Voltage Generator With Enable Trim",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "bias_reference_power_management",
+        "targets": [
+          "bias_voltage_generator_with_enable_trim.va"
+        ],
+        "solution_loc": 31,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:a295bc4562133541e5b9d0a10510443cfee760d752495238d9ecfeab7f6b2e45"
+      },
+      {
+        "name": "081-aperture-delay-track-and-hold",
+        "id": "v3_081_aperture_delay_track_and_hold",
+        "title": "Aperture Delay Track And Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "sampling_analog_memory",
+        "targets": [
+          "sample_hold_aperture_ref.va"
+        ],
+        "solution_loc": 38,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
+      },
+      {
+        "name": "080-acquisition-limited-sample-and-hold",
+        "id": "v3_080_acquisition_limited_sample_and_hold",
+        "title": "Acquisition Limited Sample And Hold",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "sampling_analog_memory",
+        "targets": [
+          "acquisition_limited_sample_hold.va"
+        ],
+        "solution_loc": 41,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count"
+        ],
+        "solution_sha256_normalized": "sha256:649addb8df75e463c39d34089ce5d12ba5e906372d63c7934e569f110bd8e218"
+      },
+      {
+        "name": "074-configurable-polarity-edge-detector",
+        "id": "v3_074_configurable_polarity_edge_detector",
+        "title": "Configurable Polarity Edge Detector",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "configurable_polarity_edge_detector.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:4c4be941de11039004a9722530b55202299f76f8158cce758d7c34475b5f0293"
+      },
+      {
+        "name": "072-enable-gated-clock-pulse",
+        "id": "v3_072_enable_gated_clock_pulse",
+        "title": "Enable Gated Clock Pulse",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "enable_gated_clock_pulse.va"
+        ],
+        "solution_loc": 13,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:3e213e1f99a7cb69bdbca08195c9fbdadfcaa0d62d8f3200699920cf5974b579"
+      },
+      {
+        "name": "071-active-high-reset-synchronizer",
+        "id": "v3_071_active_high_reset_synchronizer",
+        "title": "Active High Reset Synchronizer",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "reset_sync_active_high.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:768eb2b2a2d387f094ffbe07f8c63725d30924e33155b91b1e600873038262e6"
+      },
+      {
+        "name": "070-active-low-reset-synchronizer",
+        "id": "v3_070_active_low_reset_synchronizer",
+        "title": "Active Low Reset Synchronizer",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "reset_sync_active_low.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:38daf0cb8bf889601721580b2fbcd3c6b8dab9387aab2439e87abc2334a8cd4c"
+      },
+      {
+        "name": "063-masked-config-update-32b",
+        "id": "v3_063_masked_config_update_32b",
+        "title": "Masked Config Update 32b",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "masked_config_update_32b.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:1de769a29b54379389b78583788e73ac73f5265fcbbf6a1a1e04008a7ceeca4a"
+      },
+      {
+        "name": "059-config-latch-128b-static-enable",
+        "id": "v3_059_config_latch_128b_static_enable",
+        "title": "Config Latch 128b Static Enable",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "config_latch_128b.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:e32e16cbce98674668352566d9efdfec96739bd8997699d68209628d30347c15"
+      },
+      {
+        "name": "058-config-latch-32b-clocked",
+        "id": "v3_058_config_latch_32b_clocked",
+        "title": "Config Latch 32b Clocked",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "config_latch_32b.va"
+        ],
+        "solution_loc": 17,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:d566c65e9329bfa63801f777004da19d4e7676e41b910e3f6180409f26932ee0"
+      },
+      {
+        "name": "027-dac-mismatch-unit-weighting-model",
+        "id": "v3_027_dac_mismatch_unit_weighting_model",
+        "title": "DAC Mismatch Unit Weighting Model",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "dac_mismatch_unit_weighting_model.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:09dcb82b05de30aac62352303a232fa87367115aab8505c40f8944b587f87c96"
+      },
+      {
+        "name": "021-vco-phase-integrator",
+        "id": "v3_021_vco_phase_integrator",
+        "title": "VCO Phase Integrator",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "pll_clock_timing",
+        "targets": [
+          "vco_phase_integrator.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:167fe1e257d60363bee74dff20aaeadc77286e699d597ec1161c01e62944c44d"
+      },
+      {
+        "name": "020-thermometer-code-decoder",
+        "id": "v3_020_thermometer_code_decoder",
+        "title": "Thermometer Code Decoder",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "testbench_utility_modules",
+        "targets": [
+          "thermometer_decoder_guarded.va"
+        ],
+        "solution_loc": 11,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:4242669035985f73f23dcfade8882804e43a14e0dd071dd36118fc1d9a86a303"
+      },
+      {
+        "name": "017-slew-rate-limiter",
+        "id": "v3_017_slew_rate_limiter",
+        "title": "Slew Rate Limiter",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "slew_rate_limiter.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:1042c275d23fa3884206a9a6c90fb4391c4d9c640bea589f47e521e87e4dfefc"
+      },
+      {
+        "name": "016-binary-weighted-voltage-dac",
+        "id": "v3_016_binary_weighted_voltage_dac",
+        "title": "Binary Weighted Voltage DAC",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "data_converter",
+        "targets": [
+          "simple_binary_voltage_dac_4b.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:033331e806edbceffc687b5ee061157c39104ae1c2e280b8b4d98ec538a5cd51"
+      },
+      {
+        "name": "015-segmented-dac",
+        "id": "v3_015_segmented_dac",
+        "title": "Segmented DAC",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "data_converter",
+        "targets": [
+          "segmented_dac.va"
+        ],
+        "solution_loc": 11,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:f04b092c1785803f766cccdaae31267275cebfa291a863dac6ad2aeb849bb0a2"
+      },
+      {
+        "name": "010-offset-comparator",
+        "id": "v3_010_offset_comparator",
+        "title": "Offset Comparator",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "comparator_decision",
+        "targets": [
+          "cmp_offset_ref.va"
+        ],
+        "solution_loc": 18,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:7f78b65d00d770ab679ed7796c3cc8ee2a464dd93010865edcba2873926dd51c"
+      },
+      {
+        "name": "008-gain-trim-controller",
+        "id": "v3_008_gain_trim_controller",
+        "title": "Gain Trim Controller",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "calibration_control",
+        "targets": [
+          "gain_trim_controller.va"
+        ],
+        "solution_loc": 16,
+        "negative_count": 6,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:09bb6dff234df7982a1f7fa9a8b8f22e261612a97ec9aa2bb96c35fe207407e3"
+      },
+      {
+        "name": "007-first-order-lowpass",
+        "id": "v3_007_first_order_lowpass",
+        "title": "First Order Lowpass",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "first_order_lowpass.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
+      },
+      {
+        "name": "006-element-shuffler",
+        "id": "v3_006_element_shuffler",
+        "title": "Element Shuffler",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "calibration_control",
+        "targets": [
+          "element_shuffler.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 6,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:5fcbde2fcde3ff8d170ae0dd41aa9f1968f4e28287a7c7dd5dc4eb1218e0f02e"
+      },
+      {
+        "name": "005-debounce-latch",
+        "id": "v3_005_debounce_latch",
+        "title": "Debounce Latch",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "comparator_decision",
+        "targets": [
+          "debounce_latch.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:a1fb7b559f615f2a69a868a3874498cb5a101a35b2422302d27e8662972d2822"
+      },
+      {
+        "name": "004-trim-calibration-controller",
+        "id": "v3_004_trim_calibration_controller",
+        "title": "Trim Calibration Controller",
+        "form": "dut",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "calibration_control",
+        "targets": [
+          "cdac_calibration.va"
+        ],
+        "solution_loc": 15,
+        "negative_count": 5,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:df64823ddfea35905a973574632a89aa68347cd5480838528e90821fe538bc2b"
+      }
+    ]
+  },
+  "risks_by_task": {
+    "004-trim-calibration-controller": [
+      "short_solution_leq_20_loc"
+    ],
+    "005-debounce-latch": [
+      "short_solution_leq_20_loc"
+    ],
+    "006-element-shuffler": [
+      "short_solution_leq_20_loc"
+    ],
+    "007-first-order-lowpass": [
+      "short_solution_leq_20_loc"
+    ],
+    "008-gain-trim-controller": [
+      "short_solution_leq_20_loc"
+    ],
+    "010-offset-comparator": [
+      "short_solution_leq_20_loc"
+    ],
+    "015-segmented-dac": [
+      "short_solution_leq_20_loc"
+    ],
+    "016-binary-weighted-voltage-dac": [
+      "short_solution_leq_20_loc"
+    ],
+    "017-slew-rate-limiter": [
+      "short_solution_leq_20_loc"
+    ],
+    "020-thermometer-code-decoder": [
+      "short_solution_leq_20_loc"
+    ],
+    "021-vco-phase-integrator": [
+      "short_solution_leq_20_loc"
+    ],
+    "027-dac-mismatch-unit-weighting-model": [
+      "short_solution_leq_20_loc"
+    ],
+    "058-config-latch-32b-clocked": [
+      "short_solution_leq_20_loc"
+    ],
+    "059-config-latch-128b-static-enable": [
+      "short_solution_leq_20_loc"
+    ],
+    "063-masked-config-update-32b": [
+      "short_solution_leq_20_loc"
+    ],
+    "070-active-low-reset-synchronizer": [
+      "short_solution_leq_20_loc"
+    ],
+    "071-active-high-reset-synchronizer": [
+      "short_solution_leq_20_loc"
+    ],
+    "072-enable-gated-clock-pulse": [
+      "short_solution_leq_20_loc"
+    ],
+    "074-configurable-polarity-edge-detector": [
+      "short_solution_leq_20_loc"
+    ],
+    "080-acquisition-limited-sample-and-hold": [
+      "low_negative_variant_count"
+    ],
+    "081-aperture-delay-track-and-hold": [
+      "low_negative_variant_count"
+    ],
+    "082-bias-voltage-generator-with-enable-trim": [
+      "low_negative_variant_count"
+    ],
+    "083-crossing-metric-writer": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "084-peak-detector": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "085-burst-clock-source": [
+      "low_negative_variant_count"
+    ],
+    "086-dither-noise-like-deterministic-source": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "087-lfsr-prbs-generator": [
+      "low_negative_variant_count"
+    ],
+    "088-ramp-step-source": [
+      "low_negative_variant_count"
+    ],
+    "089-sine-periodic-voltage-source": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "090-adpll-ratio-hop-timer": [
+      "low_negative_variant_count"
+    ],
+    "091-agc-receiver-leveling-loop": [
+      "low_negative_variant_count"
+    ],
+    "092-amplifier-filter-chain": [
+      "low_negative_variant_count"
+    ],
+    "093-bbpd-data-edge-alignment": [
+      "low_negative_variant_count"
+    ],
+    "094-comparator-offset-search": [
+      "low_negative_variant_count"
+    ],
+    "095-complete-calibration-loop": [
+      "low_negative_variant_count"
+    ],
+    "096-converter-static-linearity-measurement": [
+      "low_negative_variant_count"
+    ],
+    "097-cppll-tracking-reacquire-timer": [
+      "low_negative_variant_count"
+    ],
+    "098-edge-crossing-interval-timer": [
+      "low_negative_variant_count"
+    ],
+    "099-dither-adder": [
+      "low_negative_variant_count"
+    ],
+    "100-final-step-file-metric": [
+      "low_negative_variant_count"
+    ],
+    "101-fixed-gain-amplifier": [
+      "low_negative_variant_count"
+    ],
+    "102-gain-estimator": [
+      "low_negative_variant_count"
+    ],
+    "103-iq-downconversion-chain": [
+      "low_negative_variant_count"
+    ],
+    "104-ldo-load-step-recovery": [
+      "low_negative_variant_count"
+    ],
+    "105-pipeline-adc-chain-4b": [
+      "low_negative_variant_count"
+    ],
+    "106-programmable-stimulus-sequencer": [
+      "low_negative_variant_count"
+    ],
+    "107-reference-step-clock": [
+      "low_negative_variant_count"
+    ],
+    "108-reference-startup-enable-flow": [
+      "low_negative_variant_count"
+    ],
+    "109-sample-hold-droop-front-end": [
+      "low_negative_variant_count"
+    ],
+    "110-settling-time-measurement": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "111-clocked-sine-source": [
+      "low_negative_variant_count"
+    ],
+    "114-sample-and-hold-ideal": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "124-comp-os-detect": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "125-clocked-dac-4b-binary": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "128-two-input-and-gate": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "129-two-input-xor-gate": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "132-max-detector-hold": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "134-differential-buffer": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "135-two-input-or-gate": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "137-two-input-nand-gate": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "138-two-input-nor-gate": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "142-attenuator-gain": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "143-deadband-window": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "145-hard-voltage-clamp": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "146-smooth-comparator-tanh": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "147-limiter-rails": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "148-absolute-value": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "149-offset-gain-amplifier": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "150-safe-voltage-divider": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "152-differential-gain-driver": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "154-analog-multiplier": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "155-three-way-threshold-mux": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "156-differential-amplifier-core": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "157-logarithmic-amplifier": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "158-soft-voltage-clamp": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "159-variable-gain-differential-amplifier": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "160-voltage-controlled-gain-amplifier": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "161-ideal-differential-opamp": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "162-half-adder-logic": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "163-full-adder-logic": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "164-half-subtractor-logic": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "165-full-subtractor-logic": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "166-rs-latch-voltage": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "172-flash-thermometer-centered-sum": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "174-control-word-encoder-7b": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "180-flash-sum8-fraction": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "181-two-channel-sample-demux": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "184-divide-by-two-toggle": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "200-dac-ideal-4b-offset": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "201-linear-pfd-gain": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "204-pipe-2lane-edge-align": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "220-spi-shift-mux": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "221-dff-set-reset-hold": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "225-cdac-bidirect-residue": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "227-trim-ctrl-4bit": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "235-phase-detector-chopper": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "236-single-adc-7b-weighted": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "237-qtz-differential-2level": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "240-cdac-monodown-7b": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "241-cdac-6b-stage1-up": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "245-cdac-8b-monodown": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "249-dac-restore-4bit-clocked": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "250-dac-restore-7bit-clocked": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "251-dac-restore-6bit-1p8": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "252-sample-hold-5v-clock": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "253-sum5-signed-sar-weight": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "254-lt-readout-sar4": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "255-tool-4bit-sar-signed-dac": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "256-dac4bit-small-swing": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "258-lt-read-sar6b-weighted": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "265-bin2ther-2b": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "268-samplehold-rising-edge": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "269-trim-ctrl-5bit": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "272-rs-phase-detector": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "273-level-shifter-offset": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "274-weighted-decoder-6bit": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "275-divide-by-two-toggle": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "276-accum3-pulse": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "277-xor-phase-detector": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "278-decision-router-logic": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "279-safe-analog-divider": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "280-vargain-diffamp-clip": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "281-programmable-divider-by-n": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "284-window-comparator-testbench": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "285-aperture-delay-sample-hold": [
+      "low_negative_variant_count"
+    ],
+    "286-first-order-lowpass-bugfix": [
+      "low_negative_variant_count",
+      "short_solution_leq_20_loc"
+    ],
+    "288-absolute-value": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "289-deadband-voltage": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "291-limiting-diffamp": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "292-smooth-tanh-comparator": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "293-flash-folded-dac4": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "295-clocked-adc3bit": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "296-cal4bit-modulo": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "297-mux4-priority": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "298-xnor-gate-voltage": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ],
+    "299-bipolar-dff-sample": [
+      "short_solution_leq_20_loc",
+      "source_family_short_solution"
+    ]
+  },
+  "method": {
+    "similarity": "Prompt/checker/solution overlap uses token Jaccard plus difflib sequence ratios on normalized text. These are triage signals, not final benchmark admission decisions.",
+    "negative_count": "Both legacy cases/artifact and v3 variants/path negative manifest schemas are counted; the report also counts concrete .va files under negative_variants/.",
+    "source_family_heuristic": "A row is treated as source-family when its task id contains `_source_`, matching the current v3 source-import lineage marker."
+  }
+}
