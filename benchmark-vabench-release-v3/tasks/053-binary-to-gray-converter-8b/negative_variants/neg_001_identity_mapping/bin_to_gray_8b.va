@@ -2,37 +2,21 @@
 `include "disciplines.vams"
 
 module bin_to_gray_8b(
-    b7,
-    b6,
-    b5,
-    b4,
-    b3,
-    b2,
-    b1,
-    b0,
-    g7,
-    g6,
-    g5,
-    g4,
-    g3,
-    g2,
-    g1,
-    g0
+    input electrical [7:0] b,
+    output electrical [7:0] g
 );
-    input b7, b6, b5, b4, b3, b2, b1, b0;
-    output g7, g6, g5, g4, g3, g2, g1, g0;
-    electrical b7, b6, b5, b4, b3, b2, b1, b0, g7, g6, g5, g4, g3, g2, g1, g0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+
+    integer bit_y[7:0];
+    integer j;
+    genvar i;
+
     analog begin
-        V(g0) <+ transition((V(b0) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g1) <+ transition((V(b1) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g2) <+ transition((V(b2) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g3) <+ transition((V(b3) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g4) <+ transition((V(b4) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g5) <+ transition((V(b5) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g6) <+ transition((V(b6) > vth) ? vdd : 0.0, 0, tr, tr);
-        V(g7) <+ transition((V(b7) > vth) ? vdd : 0.0, 0, tr, tr);
+        for (j = 0; j < 8; j = j + 1) bit_y[j] = (V(b[j]) > vth) ? 1 : 0;
+        for (i = 0; i < 8; i = i + 1) begin
+            V(g[i]) <+ transition((bit_y[i]) ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule

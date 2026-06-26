@@ -2,37 +2,14 @@
 `include "disciplines.vams"
 
 module gray_to_bin_8b(
-    g7,
-    g6,
-    g5,
-    g4,
-    g3,
-    g2,
-    g1,
-    g0,
-    b7,
-    b6,
-    b5,
-    b4,
-    b3,
-    b2,
-    b1,
-    b0
+    input electrical [7:0] g,
+    output electrical [7:0] b
 );
-    input g7, g6, g5, g4, g3, g2, g1, g0;
-    output b7, b6, b5, b4, b3, b2, b1, b0;
-    electrical g7, g6, g5, g4, g3, g2, g1, g0, b7, b6, b5, b4, b3, b2, b1, b0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+    genvar i;
     analog begin
-        V(b7) <+ transition(0.0, 0, tr, tr);
-        V(b6) <+ transition(0.0, 0, tr, tr);
-        V(b5) <+ transition(0.0, 0, tr, tr);
-        V(b4) <+ transition(0.0, 0, tr, tr);
-        V(b3) <+ transition(0.0, 0, tr, tr);
-        V(b2) <+ transition(0.0, 0, tr, tr);
-        V(b1) <+ transition(0.0, 0, tr, tr);
-        V(b0) <+ transition(0.0, 0, tr, tr);
+        for (i = 0; i < 8; i = i + 1) V(b[i]) <+ transition(0.0, 0, tr, tr);
     end
 endmodule

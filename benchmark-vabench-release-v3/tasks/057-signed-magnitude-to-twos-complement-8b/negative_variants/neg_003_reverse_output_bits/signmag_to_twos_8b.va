@@ -2,37 +2,26 @@
 `include "disciplines.vams"
 
 module signmag_to_twos_8b(
-    sign,
-    mag6,
-    mag5,
-    mag4,
-    mag3,
-    mag2,
-    mag1,
-    mag0,
-    y7,
-    y6,
-    y5,
-    y4,
-    y3,
-    y2,
-    y1,
-    y0
+    input electrical sign,
+    input electrical [6:0] mag,
+    output electrical [7:0] y
 );
-    input sign, mag6, mag5, mag4, mag3, mag2, mag1, mag0;
-    output y7, y6, y5, y4, y3, y2, y1, y0;
-    electrical sign, mag6, mag5, mag4, mag3, mag2, mag1, mag0, y7, y6, y5, y4, y3, y2, y1, y0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+
+    integer magnitude;
+    integer value;
+    integer j;
+    genvar i;
+
     analog begin
-        V(y7) <+ transition(V(mag0) > vth ? vdd : 0.0, 0, tr, tr);
-        V(y6) <+ transition(0.0, 0, tr, tr);
-        V(y5) <+ transition(0.0, 0, tr, tr);
-        V(y4) <+ transition(0.0, 0, tr, tr);
-        V(y3) <+ transition(0.0, 0, tr, tr);
-        V(y2) <+ transition(0.0, 0, tr, tr);
-        V(y1) <+ transition(0.0, 0, tr, tr);
-        V(y0) <+ transition(0.0, 0, tr, tr);
+        magnitude = 0;
+        for (j = 0; j < 7; j = j + 1) if (V(mag[j]) > vth) magnitude = magnitude + (1 << j);
+        if ((V(sign) > vth) && (magnitude != 0)) value = 256 - magnitude;
+        else value = magnitude;
+        for (i = 0; i < 8; i = i + 1) begin
+            V(y[i]) <+ transition((((value / (1 << (7 - i))) % 2) != 0) ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule

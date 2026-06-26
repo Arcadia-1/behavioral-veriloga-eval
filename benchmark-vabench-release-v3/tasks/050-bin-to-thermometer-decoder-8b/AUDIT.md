@@ -7,7 +7,7 @@ Status: support formal candidate for EVAS-based evaluation.
 ## Four-Standard Review
 
 - Useful scenario: pass. An 8-bit binary-to-thermometer utility is a common analog/mixed-signal testbench building block for DAC arrays, element selection, and encoded stimulus expansion.
-- Reasonable task: pass. The public prompt fixes the exact scalar Verilog-A port order, voltage logic threshold, enable behavior, binary bit order, cumulative thermometer direction, and boundary behavior for codes 0 and 255.
+- Reasonable task: pass. The public prompt fixes the exact vector Verilog-A port order, voltage logic threshold, enable behavior, binary bit order, cumulative thermometer direction, and boundary behavior for codes 0 and 255.
 - Complete tests: pass for EVAS formal-candidate scope. The hidden `.scs` testbench exercises enabled codes `0, 1, 2, 3, 7, 15, 16, 31, 63, 127, 128, 200, 255` plus an enable-low segment. The checker samples away from transitions and verifies high count, cumulative order from `th0`, enable gating, and required boundary cases.
 - Fair evaluation: pass for the stated prompt. Every hidden scoring requirement is stated in `instruction.md`; the public smoke only checks compile/basic simulation and does not expose the hidden code sequence.
 
@@ -25,6 +25,10 @@ Negative coverage:
 - `neg_003_enable_ignored`: rejects ignoring `en`.
 - `neg_004_missing_top_cell`: rejects one fewer high output.
 - `neg_005_reversed_bit_order`: rejects swapped binary bit significance.
+
+## Interface Cleanup
+
+- The task now uses Verilog-A vector ports to keep the benchmark focused on behavior rather than mechanical scalar-port expansion. Existing EVAS testbenches still save the same scalar node columns for checker compatibility.
 
 ## Remaining Risk
 

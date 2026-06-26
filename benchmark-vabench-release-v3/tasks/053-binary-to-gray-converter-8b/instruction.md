@@ -6,30 +6,23 @@ The DUT is a voltage-domain utility module for analog/mixed-signal testbenches.
 
 ## Interface
 
-The file must define module `bin_to_gray_8b` with scalar electrical ports in this exact order:
+Define module `bin_to_gray_8b` with vector electrical ports in this exact order:
 
-```text
-b7, b6, b5, b4, b3, b2, b1, b0, g7, g6, g5, g4, g3, g2, g1, g0
+```verilog
+module bin_to_gray_8b(
+    input electrical [7:0] b,
+    output electrical [7:0] g
+);
 ```
 
-Use these public parameters unless you have a compatible reason to add more:
-
-- `vdd = 0.9`
-- `vth = 0.45`
-- `tr = 20p`
+Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
 
 ## Required Behavior
 
-Treat all logic inputs as 0/0.9 V logic using the `vth` threshold.
+Treat `b[7:0]` as 0/0.9 V logic using `vth`. Convert binary input `b[7:0]` into Gray-code output `g[7:0]`, where `g[7] = b[7]` and each lower Gray bit is the XOR of adjacent binary bits.
 
-Convert binary input `b7..b0` into Gray-code output `g7..g0`, where `g7 = b7` and each lower Gray bit is the XOR of adjacent binary bits.
-
-Drive high outputs near `vdd` and low outputs near 0 V. Use smooth Verilog-A voltage contributions such as `transition(...)`.
-
-## Public Smoke
-
-The public smoke test checks interface and simulation viability; hidden tests exercise boundary and invalid cases.
+Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions. Compact loop-based Verilog-A is preferred.
 
 ## Output
 
-Return exactly one source artifact named `bin_to_gray_8b.va`. Do not generate a Spectre testbench for this task.
+Return exactly one source artifact named `bin_to_gray_8b.va`. Do not generate a Spectre testbench.

@@ -4,19 +4,24 @@ Implement one Verilog-A DUT file named `masked_config_update_32b.va`.
 
 ## Interface
 
-Define module `masked_config_update_32b` with scalar electrical ports in this exact order:
+Define module `masked_config_update_32b` with vector electrical ports in this exact order:
 
-```text
-old31, old30, old29, old28, old27, old26, old25, old24, old23, old22, old21, old20, old19, old18, old17, old16, old15, old14, old13, old12, old11, old10, old9, old8, old7, old6, old5, old4, old3, old2, old1, old0, new31, new30, new29, new28, new27, new26, new25, new24, new23, new22, new21, new20, new19, new18, new17, new16, new15, new14, new13, new12, new11, new10, new9, new8, new7, new6, new5, new4, new3, new2, new1, new0, mask31, mask30, mask29, mask28, mask27, mask26, mask25, mask24, mask23, mask22, mask21, mask20, mask19, mask18, mask17, mask16, mask15, mask14, mask13, mask12, mask11, mask10, mask9, mask8, mask7, mask6, mask5, mask4, mask3, mask2, mask1, mask0, out31, out30, out29, out28, out27, out26, out25, out24, out23, out22, out21, out20, out19, out18, out17, out16, out15, out14, out13, out12, out11, out10, out9, out8, out7, out6, out5, out4, out3, out2, out1, out0
+```verilog
+module masked_config_update_32b(
+    input electrical [31:0] old_cfg,
+    input electrical [31:0] new_cfg,
+    input electrical [31:0] mask,
+    output electrical [31:0] out_cfg
+);
 ```
 
-Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed. Treat logic inputs as 0/0.9 V using `vth`.
+Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
 
 ## Required Behavior
 
-For each bit `N`, drive `outN = newN` when `maskN` is high, otherwise drive `outN = oldN`.
+Treat all input bits as 0/0.9 V logic using `vth`. For each bit `N`, drive `out_cfg[N] = new_cfg[N]` when `mask[N]` is high, otherwise drive `out_cfg[N] = old_cfg[N]`.
 
-Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions.
+Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions. Compact loop-based Verilog-A is preferred; do not manually expand 32 scalar input/output ports.
 
 ## Output
 

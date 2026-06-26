@@ -7,7 +7,7 @@ Status: support formal candidate for EVAS-based evaluation.
 ## Four-Standard Review
 
 - Useful scenario: pass. `Signed Magnitude To Twos Complement 8b` is a reusable analog/mixed-signal testbench utility.
-- Reasonable task: pass. The public prompt fixes the exact scalar port order, logic threshold, output encoding, and invalid-state behavior when applicable.
+- Reasonable task: pass. The public prompt fixes the exact vector port order, logic threshold, output encoding, and invalid-state behavior when applicable.
 - Complete tests: pass for EVAS formal-candidate scope. Hidden tests cover boundary values, representative interior values, and invalid/gating cases when applicable.
 - Fair evaluation: pass for the stated prompt. Hidden scoring requirements are stated in `instruction.md`; public smoke only checks compile/basic simulation viability.
 
@@ -24,6 +24,10 @@ Negative coverage:
 - `neg_003`: rejected as `FAIL_SIM_CORRECTNESS`.
 - `neg_004`: rejected as `FAIL_SIM_CORRECTNESS`.
 - `neg_005`: rejected as `FAIL_SIM_CORRECTNESS`.
+
+## Interface Cleanup
+
+- The task now uses Verilog-A vector ports to keep the benchmark focused on behavior rather than mechanical scalar-port expansion. Existing EVAS testbenches still save the same scalar node columns for checker compatibility.
 
 ## Remaining Risk
 

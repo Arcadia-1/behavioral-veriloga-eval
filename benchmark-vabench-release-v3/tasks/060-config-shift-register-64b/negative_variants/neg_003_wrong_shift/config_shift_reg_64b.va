@@ -2,144 +2,29 @@
 `include "disciplines.vams"
 
 module config_shift_reg_64b(
-    clk,
-    rst_n,
-    serial_in,
-    q63,
-    q62,
-    q61,
-    q60,
-    q59,
-    q58,
-    q57,
-    q56,
-    q55,
-    q54,
-    q53,
-    q52,
-    q51,
-    q50,
-    q49,
-    q48,
-    q47,
-    q46,
-    q45,
-    q44,
-    q43,
-    q42,
-    q41,
-    q40,
-    q39,
-    q38,
-    q37,
-    q36,
-    q35,
-    q34,
-    q33,
-    q32,
-    q31,
-    q30,
-    q29,
-    q28,
-    q27,
-    q26,
-    q25,
-    q24,
-    q23,
-    q22,
-    q21,
-    q20,
-    q19,
-    q18,
-    q17,
-    q16,
-    q15,
-    q14,
-    q13,
-    q12,
-    q11,
-    q10,
-    q9,
-    q8,
-    q7,
-    q6,
-    q5,
-    q4,
-    q3,
-    q2,
-    q1,
-    q0
+    input electrical clk,
+    input electrical rst_n,
+    input electrical serial_in,
+    output electrical [63:0] q
 );
-    input clk, rst_n, serial_in;
-    output q63, q62, q61, q60, q59, q58, q57, q56, q55, q54, q53, q52, q51, q50, q49, q48, q47, q46, q45, q44, q43, q42, q41, q40, q39, q38, q37, q36, q35, q34, q33, q32, q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
-    electrical clk, rst_n, serial_in, q63, q62, q61, q60, q59, q58, q57, q56, q55, q54, q53, q52, q51, q50, q49, q48, q47, q46, q45, q44, q43, q42, q41, q40, q39, q38, q37, q36, q35, q34, q33, q32, q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+
+    integer bit_q[63:0];
+    integer j;
+    genvar i;
+
     analog begin
-        V(q63) <+ transition(0.0, 0, tr, tr);
-        V(q62) <+ transition(0.0, 0, tr, tr);
-        V(q61) <+ transition(0.0, 0, tr, tr);
-        V(q60) <+ transition(0.0, 0, tr, tr);
-        V(q59) <+ transition(0.0, 0, tr, tr);
-        V(q58) <+ transition(0.0, 0, tr, tr);
-        V(q57) <+ transition(0.0, 0, tr, tr);
-        V(q56) <+ transition(0.0, 0, tr, tr);
-        V(q55) <+ transition(0.0, 0, tr, tr);
-        V(q54) <+ transition(0.0, 0, tr, tr);
-        V(q53) <+ transition(0.0, 0, tr, tr);
-        V(q52) <+ transition(0.0, 0, tr, tr);
-        V(q51) <+ transition(0.0, 0, tr, tr);
-        V(q50) <+ transition(0.0, 0, tr, tr);
-        V(q49) <+ transition(0.0, 0, tr, tr);
-        V(q48) <+ transition(0.0, 0, tr, tr);
-        V(q47) <+ transition(0.0, 0, tr, tr);
-        V(q46) <+ transition(0.0, 0, tr, tr);
-        V(q45) <+ transition(0.0, 0, tr, tr);
-        V(q44) <+ transition(0.0, 0, tr, tr);
-        V(q43) <+ transition(0.0, 0, tr, tr);
-        V(q42) <+ transition(0.0, 0, tr, tr);
-        V(q41) <+ transition(0.0, 0, tr, tr);
-        V(q40) <+ transition(0.0, 0, tr, tr);
-        V(q39) <+ transition(0.0, 0, tr, tr);
-        V(q38) <+ transition(0.0, 0, tr, tr);
-        V(q37) <+ transition(0.0, 0, tr, tr);
-        V(q36) <+ transition(0.0, 0, tr, tr);
-        V(q35) <+ transition(0.0, 0, tr, tr);
-        V(q34) <+ transition(0.0, 0, tr, tr);
-        V(q33) <+ transition(0.0, 0, tr, tr);
-        V(q32) <+ transition(0.0, 0, tr, tr);
-        V(q31) <+ transition(0.0, 0, tr, tr);
-        V(q30) <+ transition(0.0, 0, tr, tr);
-        V(q29) <+ transition(0.0, 0, tr, tr);
-        V(q28) <+ transition(0.0, 0, tr, tr);
-        V(q27) <+ transition(0.0, 0, tr, tr);
-        V(q26) <+ transition(0.0, 0, tr, tr);
-        V(q25) <+ transition(0.0, 0, tr, tr);
-        V(q24) <+ transition(0.0, 0, tr, tr);
-        V(q23) <+ transition(0.0, 0, tr, tr);
-        V(q22) <+ transition(0.0, 0, tr, tr);
-        V(q21) <+ transition(0.0, 0, tr, tr);
-        V(q20) <+ transition(0.0, 0, tr, tr);
-        V(q19) <+ transition(0.0, 0, tr, tr);
-        V(q18) <+ transition(0.0, 0, tr, tr);
-        V(q17) <+ transition(0.0, 0, tr, tr);
-        V(q16) <+ transition(0.0, 0, tr, tr);
-        V(q15) <+ transition(0.0, 0, tr, tr);
-        V(q14) <+ transition(0.0, 0, tr, tr);
-        V(q13) <+ transition(0.0, 0, tr, tr);
-        V(q12) <+ transition(0.0, 0, tr, tr);
-        V(q11) <+ transition(0.0, 0, tr, tr);
-        V(q10) <+ transition(0.0, 0, tr, tr);
-        V(q9) <+ transition(0.0, 0, tr, tr);
-        V(q8) <+ transition(0.0, 0, tr, tr);
-        V(q7) <+ transition(0.0, 0, tr, tr);
-        V(q6) <+ transition(0.0, 0, tr, tr);
-        V(q5) <+ transition(0.0, 0, tr, tr);
-        V(q4) <+ transition(0.0, 0, tr, tr);
-        V(q3) <+ transition(0.0, 0, tr, tr);
-        V(q2) <+ transition(0.0, 0, tr, tr);
-        V(q1) <+ transition(0.0, 0, tr, tr);
-        V(q0) <+ transition(0.0, 0, tr, tr);
+        @(initial_step) begin
+            for (j = 0; j < 64; j = j + 1) bit_q[j] = 0;
+        end
+        @(cross(V(clk) - vth, +1)) begin
+            for (j = 63; j > 0; j = j - 1) bit_q[j] = bit_q[j - 1];
+            bit_q[0] = (V(serial_in) > vth) ? 1 : 0;
+        end
+        for (i = 0; i < 64; i = i + 1) begin
+            V(q[i]) <+ transition((bit_q[i] != 0) ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule

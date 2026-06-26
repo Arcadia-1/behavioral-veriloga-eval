@@ -2,56 +2,23 @@
 `include "disciplines.vams"
 
 module bin_to_onehot_16b(
-    en,
-    b3,
-    b2,
-    b1,
-    b0,
-    oh15,
-    oh14,
-    oh13,
-    oh12,
-    oh11,
-    oh10,
-    oh9,
-    oh8,
-    oh7,
-    oh6,
-    oh5,
-    oh4,
-    oh3,
-    oh2,
-    oh1,
-    oh0
+    input electrical en,
+    input electrical [3:0] b,
+    output electrical [15:0] oh
 );
-    input en, b3, b2, b1, b0;
-    output oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0;
-    electrical en, b3, b2, b1, b0, oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+
     integer code;
+    integer j;
+    genvar i;
+
     analog begin
         code = 0;
-        if (V(b0) > vth) code = code + 1;
-        if (V(b1) > vth) code = code + 2;
-        if (V(b2) > vth) code = code + 4;
-        if (V(b3) > vth) code = code + 8;
-        V(oh0) <+ transition((V(en) > vth && code == 0) ? 0.0 : vdd, 0, tr, tr);
-        V(oh1) <+ transition((V(en) > vth && code == 1) ? vdd : 0.0, 0, tr, tr);
-        V(oh2) <+ transition((V(en) > vth && code == 2) ? vdd : 0.0, 0, tr, tr);
-        V(oh3) <+ transition((V(en) > vth && code == 3) ? vdd : 0.0, 0, tr, tr);
-        V(oh4) <+ transition((V(en) > vth && code == 4) ? vdd : 0.0, 0, tr, tr);
-        V(oh5) <+ transition((V(en) > vth && code == 5) ? vdd : 0.0, 0, tr, tr);
-        V(oh6) <+ transition((V(en) > vth && code == 6) ? vdd : 0.0, 0, tr, tr);
-        V(oh7) <+ transition((V(en) > vth && code == 7) ? vdd : 0.0, 0, tr, tr);
-        V(oh8) <+ transition((V(en) > vth && code == 8) ? vdd : 0.0, 0, tr, tr);
-        V(oh9) <+ transition((V(en) > vth && code == 9) ? vdd : 0.0, 0, tr, tr);
-        V(oh10) <+ transition((V(en) > vth && code == 10) ? vdd : 0.0, 0, tr, tr);
-        V(oh11) <+ transition((V(en) > vth && code == 11) ? vdd : 0.0, 0, tr, tr);
-        V(oh12) <+ transition((V(en) > vth && code == 12) ? vdd : 0.0, 0, tr, tr);
-        V(oh13) <+ transition((V(en) > vth && code == 13) ? vdd : 0.0, 0, tr, tr);
-        V(oh14) <+ transition((V(en) > vth && code == 14) ? vdd : 0.0, 0, tr, tr);
-        V(oh15) <+ transition((V(en) > vth && code == 15) ? vdd : 0.0, 0, tr, tr);
+        for (j = 0; j < 4; j = j + 1) if (V(b[j]) > vth) code = code + (1 << j);
+        for (i = 0; i < 16; i = i + 1) begin
+            V(oh[i]) <+ transition((((V(en) > vth) && (i == code)) != (i == 0)) ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule

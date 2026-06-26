@@ -2,110 +2,19 @@
 `include "disciplines.vams"
 
 module config_latch_32b(
-    en,
-    d31,
-    d30,
-    d29,
-    d28,
-    d27,
-    d26,
-    d25,
-    d24,
-    d23,
-    d22,
-    d21,
-    d20,
-    d19,
-    d18,
-    d17,
-    d16,
-    d15,
-    d14,
-    d13,
-    d12,
-    d11,
-    d10,
-    d9,
-    d8,
-    d7,
-    d6,
-    d5,
-    d4,
-    d3,
-    d2,
-    d1,
-    d0,
-    q31,
-    q30,
-    q29,
-    q28,
-    q27,
-    q26,
-    q25,
-    q24,
-    q23,
-    q22,
-    q21,
-    q20,
-    q19,
-    q18,
-    q17,
-    q16,
-    q15,
-    q14,
-    q13,
-    q12,
-    q11,
-    q10,
-    q9,
-    q8,
-    q7,
-    q6,
-    q5,
-    q4,
-    q3,
-    q2,
-    q1,
-    q0
+    input electrical en,
+    input electrical [31:0] d,
+    output electrical [31:0] q
 );
-    input en, d31, d30, d29, d28, d27, d26, d25, d24, d23, d22, d21, d20, d19, d18, d17, d16, d15, d14, d13, d12, d11, d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0;
-    output q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
-    electrical en, d31, d30, d29, d28, d27, d26, d25, d24, d23, d22, d21, d20, d19, d18, d17, d16, d15, d14, d13, d12, d11, d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, q31, q30, q29, q28, q27, q26, q25, q24, q23, q22, q21, q20, q19, q18, q17, q16, q15, q14, q13, q12, q11, q10, q9, q8, q7, q6, q5, q4, q3, q2, q1, q0;
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
+
+    genvar i;
+
     analog begin
-        V(q31) <+ transition(0.0, 0, tr, tr);
-        V(q30) <+ transition(0.0, 0, tr, tr);
-        V(q29) <+ transition(0.0, 0, tr, tr);
-        V(q28) <+ transition(0.0, 0, tr, tr);
-        V(q27) <+ transition(0.0, 0, tr, tr);
-        V(q26) <+ transition(0.0, 0, tr, tr);
-        V(q25) <+ transition(0.0, 0, tr, tr);
-        V(q24) <+ transition(0.0, 0, tr, tr);
-        V(q23) <+ transition(0.0, 0, tr, tr);
-        V(q22) <+ transition(0.0, 0, tr, tr);
-        V(q21) <+ transition(0.0, 0, tr, tr);
-        V(q20) <+ transition(0.0, 0, tr, tr);
-        V(q19) <+ transition(0.0, 0, tr, tr);
-        V(q18) <+ transition(0.0, 0, tr, tr);
-        V(q17) <+ transition(0.0, 0, tr, tr);
-        V(q16) <+ transition(0.0, 0, tr, tr);
-        V(q15) <+ transition(0.0, 0, tr, tr);
-        V(q14) <+ transition(0.0, 0, tr, tr);
-        V(q13) <+ transition(0.0, 0, tr, tr);
-        V(q12) <+ transition(0.0, 0, tr, tr);
-        V(q11) <+ transition(0.0, 0, tr, tr);
-        V(q10) <+ transition(0.0, 0, tr, tr);
-        V(q9) <+ transition(0.0, 0, tr, tr);
-        V(q8) <+ transition(0.0, 0, tr, tr);
-        V(q7) <+ transition(0.0, 0, tr, tr);
-        V(q6) <+ transition(0.0, 0, tr, tr);
-        V(q5) <+ transition(0.0, 0, tr, tr);
-        V(q4) <+ transition(0.0, 0, tr, tr);
-        V(q3) <+ transition(0.0, 0, tr, tr);
-        V(q2) <+ transition(0.0, 0, tr, tr);
-        V(q1) <+ transition(0.0, 0, tr, tr);
-        V(q0) <+ transition(0.0, 0, tr, tr);
+        for (i = 0; i < 32; i = i + 1) begin
+            V(q[i]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule

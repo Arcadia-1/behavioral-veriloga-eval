@@ -6,30 +6,24 @@ The DUT is a voltage-domain utility module for analog/mixed-signal testbenches.
 
 ## Interface
 
-The file must define module `onehot_to_bin_16b` with scalar electrical ports in this exact order:
+Define module `onehot_to_bin_16b` with vector electrical ports in this exact order:
 
-```text
-oh15, oh14, oh13, oh12, oh11, oh10, oh9, oh8, oh7, oh6, oh5, oh4, oh3, oh2, oh1, oh0, b3, b2, b1, b0, valid
+```verilog
+module onehot_to_bin_16b(
+    input electrical [15:0] oh,
+    output electrical [3:0] b,
+    output electrical valid
+);
 ```
 
-Use these public parameters unless you have a compatible reason to add more:
-
-- `vdd = 0.9`
-- `vth = 0.45`
-- `tr = 20p`
+Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
 
 ## Required Behavior
 
-Treat all logic inputs as 0/0.9 V logic using the `vth` threshold.
+Treat `oh[15:0]` as 0/0.9 V logic using `vth`. Encode a 16-line one-hot input into binary index `b[3:0]`. Drive `valid` high only when exactly one input is high. For zero-hot or multi-hot inputs, drive `valid` low and drive `b[3:0]` to zero.
 
-Encode a 16-line one-hot input `oh15..oh0` into binary index `b3..b0`. Drive `valid` high only when exactly one input is high. For zero-hot or multi-hot inputs, drive `valid` low and drive `b3..b0` to zero.
-
-Drive high outputs near `vdd` and low outputs near 0 V. Use smooth Verilog-A voltage contributions such as `transition(...)`.
-
-## Public Smoke
-
-The public smoke test checks interface and simulation viability; hidden tests exercise boundary and invalid cases.
+Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions. Compact loop-based Verilog-A is preferred.
 
 ## Output
 
-Return exactly one source artifact named `onehot_to_bin_16b.va`. Do not generate a Spectre testbench for this task.
+Return exactly one source artifact named `onehot_to_bin_16b.va`. Do not generate a Spectre testbench.
