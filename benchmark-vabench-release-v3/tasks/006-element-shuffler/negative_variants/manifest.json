@@ -30,6 +30,12 @@
       "artifact": "neg_005_out0_stuck_high/element_shuffler.va",
       "mutation": "Drives a plausible voltage output but violates one-hot rotation by keeping only out0 high.",
       "expected_status": "FAIL_SIM_CORRECTNESS"
+    },
+    {
+      "id": "neg_006_ignore_midrun_reset",
+      "artifact": "neg_006_ignore_midrun_reset/element_shuffler.va",
+      "mutation": "Matches the first public sequence window but ignores asynchronous reset assertions between clock edges, so the hidden post-reset window does not restart.",
+      "expected_status": "FAIL_SIM_CORRECTNESS"
     }
   ]
 }

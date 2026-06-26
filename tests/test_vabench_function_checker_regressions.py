@@ -697,20 +697,40 @@ def test_dwa_release_checker_rejects_wrong_cell_span() -> None:
     assert not sim.check_dwa_dem_encoder_release(_dwa_rows(corrupt_cell_span=True))[0]
 
 
-def _element_shuffler_rows(sequence: list[int]) -> list[dict[str, float]]:
-    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0]
+def _element_shuffler_rows(sequence: list[int], *, reset_low_probe: bool = True) -> list[dict[str, float]]:
+    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0, 160.0, 180.0, 200.0, 220.0]
+    active_by_time = dict(zip(sample_times_ns, sequence))
     rows: list[dict[str, float]] = []
-    for time_ns, active in zip(sample_times_ns, sequence):
-        row = {"time": time_ns * 1e-9}
+    for time_ns in sorted(set(sample_times_ns[: len(sequence)]) | {138.0}):
+        active = active_by_time.get(time_ns)
+        row = {
+            "time": time_ns * 1e-9,
+            "clk": 0.0,
+            "rst_n": 0.0 if reset_low_probe and time_ns == 138.0 else 0.9,
+        }
         for idx in range(4):
             row[f"out{idx}"] = 0.9 if idx == active else 0.0
         rows.append(row)
     return rows
 
 
-def test_release_element_shuffler_checker_rejects_plain_rotation() -> None:
+def test_release_element_shuffler_checker_keeps_public_window() -> None:
     assert sim.check_release_element_shuffler(_element_shuffler_rows([2, 0, 3, 1, 2, 0]))[0]
     assert not sim.check_release_element_shuffler(_element_shuffler_rows([1, 2, 3, 0, 1, 2]))[0]
+
+
+def test_v3_element_shuffler_checker_rejects_plain_rotation() -> None:
+    assert sim.check_v3_element_shuffler(_element_shuffler_rows([2, 0, 3, 1, 2, 0, 2, 0, 3, 1]))[0]
+    assert not sim.check_v3_element_shuffler(_element_shuffler_rows([1, 2, 3, 0, 1, 2, 3, 0, 1, 2]))[0]
+
+
+def test_v3_element_shuffler_checker_rejects_missing_reset_restart() -> None:
+    assert not sim.check_v3_element_shuffler(_element_shuffler_rows([2, 0, 3, 1, 2, 0, 1, 2, 3, 0]))[0]
+
+
+def test_v3_element_shuffler_checker_rejects_missing_reset_probe() -> None:
+    rows = _element_shuffler_rows([2, 0, 3, 1, 2, 0, 2, 0, 3, 1], reset_low_probe=False)
+    assert not sim.check_v3_element_shuffler(rows)[0]
 
 
 def _ramp_rows(*, flat_phase: bool = False) -> list[dict[str, float]]:

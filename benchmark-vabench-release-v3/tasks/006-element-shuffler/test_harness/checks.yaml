@@ -39,4 +39,4 @@ notes:
   - "At each listed sample time, classify each output as high when V(out*) > 0.45 V and low otherwise."
   - "A passing waveform has exactly one high output per sample and the active output name equals expected_active_outputs."
   - "The hidden bench asserts rst_n low between the first and second windows; the second window must restart at out2."
-  - "The current public simulate_evas.py legacy checker for vbm1_element_shuffler_dut expects an older sequence and must be aligned before formal automated certification."
+  - "The release checker must enforce both the first window and the post-reset second window."
