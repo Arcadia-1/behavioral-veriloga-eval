@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/divide_by_8_9_switch.va"
+    },
+    {
+      "id": "neg_002_half_high_level",
+      "description": "Uses half the output high level.",
+      "path": "negative_variants/neg_002_half_high_level/divide_by_8_9_switch.va"
+    },
+    {
+      "id": "neg_003_wrong_duty",
+      "description": "Drives high for only two counts.",
+      "path": "negative_variants/neg_003_wrong_duty/divide_by_8_9_switch.va"
+    },
+    {
+      "id": "neg_004_no_restore_to_divide_by_8",
+      "description": "Does not switch back to divide-by-8 when mc falls.",
+      "path": "negative_variants/neg_004_no_restore_to_divide_by_8/divide_by_8_9_switch.va"
     }
   ]
 }

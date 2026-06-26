@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_8bit_ideal_scalar.va"
+    },
+    {
+      "id": "neg_002_reversed_weights",
+      "description": "Reverses bit weights.",
+      "path": "negative_variants/neg_002_reversed_weights/dac_8bit_ideal_scalar.va"
+    },
+    {
+      "id": "neg_003_wrong_denominator",
+      "description": "Divides by 128 instead of 256.",
+      "path": "negative_variants/neg_003_wrong_denominator/dac_8bit_ideal_scalar.va"
+    },
+    {
+      "id": "neg_004_half_output_gain",
+      "description": "Outputs half of the decoded DAC voltage.",
+      "path": "negative_variants/neg_004_half_output_gain/dac_8bit_ideal_scalar.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ref_flash_8level_decoder.va"
+    },
+    {
+      "id": "neg_002_wrong_count_normalization",
+      "description": "Normalizes flash count by four instead of eight.",
+      "path": "negative_variants/neg_002_wrong_count_normalization/ref_flash_8level_decoder.va"
+    },
+    {
+      "id": "neg_003_uncentered_residue",
+      "description": "Computes residue without subtracting mid-code four.",
+      "path": "negative_variants/neg_003_uncentered_residue/ref_flash_8level_decoder.va"
+    },
+    {
+      "id": "neg_004_ignore_upper_taps",
+      "description": "Ignores upper four thermometer taps.",
+      "path": "negative_variants/neg_004_ignore_upper_taps/ref_flash_8level_decoder.va"
     }
   ]
 }

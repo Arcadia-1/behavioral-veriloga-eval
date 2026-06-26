@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/flash_sum8_fraction.va"
+    },
+    {
+      "id": "neg_002_wrong_normalization",
+      "description": "Divides count by four instead of eight.",
+      "path": "negative_variants/neg_002_wrong_normalization/flash_sum8_fraction.va"
+    },
+    {
+      "id": "neg_003_ignores_upper_inputs",
+      "description": "Counts only lower four thermometer inputs.",
+      "path": "negative_variants/neg_003_ignores_upper_inputs/flash_sum8_fraction.va"
+    },
+    {
+      "id": "neg_004_output_offset",
+      "description": "Adds a fixed output offset after counting.",
+      "path": "negative_variants/neg_004_output_offset/flash_sum8_fraction.va"
     }
   ]
 }

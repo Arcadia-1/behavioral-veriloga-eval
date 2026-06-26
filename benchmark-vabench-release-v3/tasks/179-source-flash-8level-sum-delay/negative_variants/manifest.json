@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/flash_8level_sum_delay.va"
+    },
+    {
+      "id": "neg_002_wrong_ref_scaling",
+      "description": "Uses full reference scaling instead of ref_scaling.",
+      "path": "negative_variants/neg_002_wrong_ref_scaling/flash_8level_sum_delay.va"
+    },
+    {
+      "id": "neg_003_delay_equals_current",
+      "description": "Drives delayed sum equal to current sum.",
+      "path": "negative_variants/neg_003_delay_equals_current/flash_8level_sum_delay.va"
+    },
+    {
+      "id": "neg_004_wrong_normalization",
+      "description": "Divides the thermometer count by 4 instead of 8.",
+      "path": "negative_variants/neg_004_wrong_normalization/flash_8level_sum_delay.va"
     }
   ]
 }

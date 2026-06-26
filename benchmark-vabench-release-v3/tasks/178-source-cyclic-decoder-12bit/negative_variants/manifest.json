@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/cyclic_decoder_12bit.va"
+    },
+    {
+      "id": "neg_002_half_output_scale",
+      "description": "Compresses the decoded output by half.",
+      "path": "negative_variants/neg_002_half_output_scale/cyclic_decoder_12bit.va"
+    },
+    {
+      "id": "neg_003_reversed_bit_weights",
+      "description": "Reverses LSB/MSB bit weights.",
+      "path": "negative_variants/neg_003_reversed_bit_weights/cyclic_decoder_12bit.va"
+    },
+    {
+      "id": "neg_004_missing_midscale_offset",
+      "description": "Omits the -0.5 midscale offset.",
+      "path": "negative_variants/neg_004_missing_midscale_offset/cyclic_decoder_12bit.va"
     }
   ]
 }

@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/ref_flash_15level_decoder.va"
+    },
+    {
+      "id": "neg_002_wrong_normalization",
+      "description": "Normalizes by eight instead of fifteen.",
+      "path": "negative_variants/neg_002_wrong_normalization/ref_flash_15level_decoder.va"
+    },
+    {
+      "id": "neg_003_ignore_upper_taps",
+      "description": "Counts only the first ten taps.",
+      "path": "negative_variants/neg_003_ignore_upper_taps/ref_flash_15level_decoder.va"
+    },
+    {
+      "id": "neg_004_half_output_gain",
+      "description": "Outputs half of the normalized fraction.",
+      "path": "negative_variants/neg_004_half_output_gain/ref_flash_15level_decoder.va"
     }
   ]
 }

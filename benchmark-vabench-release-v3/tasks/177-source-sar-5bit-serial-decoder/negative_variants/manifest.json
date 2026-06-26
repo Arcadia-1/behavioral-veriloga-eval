@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/sar_5bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_002_wrong_normalization",
+      "description": "Normalizes by 32 instead of 31.",
+      "path": "negative_variants/neg_002_wrong_normalization/sar_5bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_003_reversed_serial_weights",
+      "description": "Assigns the first serial bit to LSB instead of MSB.",
+      "path": "negative_variants/neg_003_reversed_serial_weights/sar_5bit_serial_decoder.va"
+    },
+    {
+      "id": "neg_004_missing_midscale_offset",
+      "description": "Publishes the normalized code without subtracting the midscale offset.",
+      "path": "negative_variants/neg_004_missing_midscale_offset/sar_5bit_serial_decoder.va"
     }
   ]
 }

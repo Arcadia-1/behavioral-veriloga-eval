@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dual_modulus_divider_16_17.va"
+    },
+    {
+      "id": "neg_002_always_divide_by_16",
+      "description": "Ignores mc and always resets at divide-by-16.",
+      "path": "negative_variants/neg_002_always_divide_by_16/dual_modulus_divider_16_17.va"
+    },
+    {
+      "id": "neg_003_always_divide_by_17",
+      "description": "Ignores mc and always extends to divide-by-17.",
+      "path": "negative_variants/neg_003_always_divide_by_17/dual_modulus_divider_16_17.va"
+    },
+    {
+      "id": "neg_004_wrong_low_marker_count",
+      "description": "Drops the output low at count 7 instead of count 8.",
+      "path": "negative_variants/neg_004_wrong_low_marker_count/dual_modulus_divider_16_17.va"
     }
   ]
 }

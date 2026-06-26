@@ -58,6 +58,30 @@ EVAS 0.4.5 local verification:
 - 64/64 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Batch: 176-191
+
+Tasks `176-source-dual-modulus-divider-16-17` through
+`191-source-dac-8bit-ideal-scalar` were repaired as the sixth source-series
+batch.
+
+Changes made:
+
+- each task now has four negative variants: the original `neg_001_zero` plus
+  three targeted behavior mutations;
+- the new negatives cover divider modulus and duty mistakes, serial and cyclic
+  decoder normalization mistakes, flash-threshold mistakes, current/delayed
+  output mistakes, sample-demux channel mistakes, DAC weight and polarity
+  mistakes, folded-DAC mirror mistakes, residue/normalization mistakes, and
+  scalar DAC bit-order mistakes;
+- weak candidate negatives that were hidden-test equivalent or below tolerance
+  were replaced with distinguishable behavioral failures.
+
+EVAS 0.4.5 local verification:
+
+- 16/16 gold solutions PASS;
+- 64/64 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-source-voltage-controlled-gain-amplifier` through

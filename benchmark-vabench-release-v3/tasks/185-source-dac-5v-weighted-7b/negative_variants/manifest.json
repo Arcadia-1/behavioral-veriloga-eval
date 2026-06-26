@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_5v_weighted_7b.va"
+    },
+    {
+      "id": "neg_002_half_output_scale",
+      "description": "Scales the final DAC output by half.",
+      "path": "negative_variants/neg_002_half_output_scale/dac_5v_weighted_7b.va"
+    },
+    {
+      "id": "neg_003_missing_msb_contribution",
+      "description": "Omits the din0 MSB contribution.",
+      "path": "negative_variants/neg_003_missing_msb_contribution/dac_5v_weighted_7b.va"
+    },
+    {
+      "id": "neg_004_wrong_refn",
+      "description": "Uses zero as the low reference.",
+      "path": "negative_variants/neg_004_wrong_refn/dac_5v_weighted_7b.va"
     }
   ]
 }

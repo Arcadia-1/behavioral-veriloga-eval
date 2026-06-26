@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/flash_adc_threshold_taps.va"
+    },
+    {
+      "id": "neg_002_missing_top_tap",
+      "description": "Forces the top threshold tap low.",
+      "path": "negative_variants/neg_002_missing_top_tap/flash_adc_threshold_taps.va"
+    },
+    {
+      "id": "neg_003_inverted_outputs",
+      "description": "Inverts all thermometer output polarities.",
+      "path": "negative_variants/neg_003_inverted_outputs/flash_adc_threshold_taps.va"
+    },
+    {
+      "id": "neg_004_half_high_level",
+      "description": "Uses half high level for asserted thermometer outputs.",
+      "path": "negative_variants/neg_004_half_high_level/flash_adc_threshold_taps.va"
     }
   ]
 }

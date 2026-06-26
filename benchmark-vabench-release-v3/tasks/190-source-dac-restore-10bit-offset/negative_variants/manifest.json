@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/dac_restore_10bit_offset.va"
+    },
+    {
+      "id": "neg_002_missing_code_offset",
+      "description": "Omits the -32 code offset.",
+      "path": "negative_variants/neg_002_missing_code_offset/dac_restore_10bit_offset.va"
+    },
+    {
+      "id": "neg_003_missing_duplicate_d6",
+      "description": "Omits the duplicated D6 64-LSB contribution.",
+      "path": "negative_variants/neg_003_missing_duplicate_d6/dac_restore_10bit_offset.va"
+    },
+    {
+      "id": "neg_004_wrong_lsb",
+      "description": "Uses twice the intended LSB size.",
+      "path": "negative_variants/neg_004_wrong_lsb/dac_restore_10bit_offset.va"
     }
   ]
 }

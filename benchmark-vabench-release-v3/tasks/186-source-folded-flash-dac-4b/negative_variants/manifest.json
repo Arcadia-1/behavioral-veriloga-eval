@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/folded_flash_dac_4b.va"
+    },
+    {
+      "id": "neg_002_no_fold_mirror",
+      "description": "Uses direct unsigned code without folding.",
+      "path": "negative_variants/neg_002_no_fold_mirror/folded_flash_dac_4b.va"
+    },
+    {
+      "id": "neg_003_wrong_denominator",
+      "description": "Divides by 8 instead of 16.",
+      "path": "negative_variants/neg_003_wrong_denominator/folded_flash_dac_4b.va"
+    },
+    {
+      "id": "neg_004_inverted_msb_fold",
+      "description": "Uses the opposite fold branch for vd4.",
+      "path": "negative_variants/neg_004_inverted_msb_fold/folded_flash_dac_4b.va"
     }
   ]
 }

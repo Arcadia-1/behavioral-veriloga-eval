@@ -4,6 +4,21 @@
       "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
       "path": "negative_variants/neg_001_zero/differential_dac_calc_6b.va"
+    },
+    {
+      "id": "neg_002_inverted_differential_outputs",
+      "description": "Swaps positive and negative DAC output calculations.",
+      "path": "negative_variants/neg_002_inverted_differential_outputs/differential_dac_calc_6b.va"
+    },
+    {
+      "id": "neg_003_wrong_msb_weight",
+      "description": "Uses quarter weight for din0 instead of half.",
+      "path": "negative_variants/neg_003_wrong_msb_weight/differential_dac_calc_6b.va"
+    },
+    {
+      "id": "neg_004_half_output_swing",
+      "description": "Drives half of the computed DAC output swing.",
+      "path": "negative_variants/neg_004_half_output_swing/differential_dac_calc_6b.va"
     }
   ]
 }
