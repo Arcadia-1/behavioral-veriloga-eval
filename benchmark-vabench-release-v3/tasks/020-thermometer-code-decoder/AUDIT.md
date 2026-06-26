@@ -6,7 +6,7 @@ Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/
 
 ## Four Standards
 
-- Useful scenario: pass. A guarded thermometer-code decoder is a common data-converter utility block.
+- Useful scenario: pass as a support utility. A guarded thermometer-code decoder is a common data-converter helper block, but this two-bit version is intentionally classified as utility/support rather than as a core analog-circuit benchmark task.
 - Reasonable task: pass. The public prompt fixes the module artifact, decoder behavior, guarded invalid-code handling, voltage-domain outputs, and voltage-only implementation constraints.
 - Complete tests: pass for EVAS. Hidden stimulus checks the expected guarded output sequence over valid and invalid thermometer patterns. Five concrete negatives cover off-by-one decoding, missing guarded behavior, reversed mapping, stuck outputs, and incomplete decode width.
 - Fair evaluation: pass for EVAS. Hidden scoring follows the public guarded decoder contract; exact stimulus timing remains private.
@@ -18,6 +18,12 @@ Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/
 - EVAS/Python-engine hidden gold smoke: `PASS`
 - Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS`
 - Visible compile/sim smoke: `COMPILE_SIM_OK`
+
+## Release Classification
+
+This task remains useful and should not be dropped, but it is classified as
+`testbench_utility_modules` / `support-formal-candidate` so it is not presented
+as a representative core analog/mixed-signal circuit-function task.
 
 ## Remaining Risk
 
