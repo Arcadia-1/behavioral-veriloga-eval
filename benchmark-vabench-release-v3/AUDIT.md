@@ -236,6 +236,27 @@ EVAS 0.4.5 local verification:
 - 44/44 concrete negative variants fail behavioral correctness;
 - no negative variant passed unexpectedly.
 
+## Completed Single: 079
+
+Task `079-jittered-clock-source-deterministic` was normalized as the final
+source-series task.
+
+Changes made:
+
+- the existing five concrete negative variants were preserved because all of
+  them compile and fail behavioral correctness;
+- `negative_variants/manifest.json` was converted from the old `cases/artifact`
+  shape to the v3-standard `variants/path` shape used by the rest of the
+  release;
+- stale planned-negative metadata files were removed from the public task
+  directory.
+
+EVAS 0.4.5 local verification:
+
+- 1/1 gold solution PASS;
+- 5/5 concrete negative variants fail behavioral correctness;
+- no negative variant passed unexpectedly.
+
 ## Completed Batch: 160-175
 
 Tasks `160-voltage-controlled-gain-amplifier` through
