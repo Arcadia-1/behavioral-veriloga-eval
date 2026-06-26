@@ -5,11 +5,19 @@ Implement `prbs_generator_32b.va` in Verilog-A.
 ## Interface
 
 ```verilog
-module prbs_generator_32b(clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31, out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31);
+module prbs_generator_32b(
+    input electrical clk,
+    input electrical rst,
+    input electrical load_seed,
+    input electrical [0:31] seed,
+    output electrical [0:31] out
+);
 ```
 
-Inputs: `clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31`.
-Outputs: `out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31`.
+Inputs: `clk`, `rst`, `load_seed`, and `seed[0:31]`.
+Outputs: `out[0:31]`.
+
+The evaluator's Spectre testbench connects the 32 seed nodes and 32 output nodes positionally. Keep the `[0:31]` index direction so `seed0` maps to `seed[0]` and `out0` maps to `out[0]`.
 
 ## Required Behavior
 

@@ -1,54 +1,48 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-module prbs_generator_32b(clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31, out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31);
-    input clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31;
-    output out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31;
-    electrical clk, rst, load_seed, seed0, seed1, seed2, seed3, seed4, seed5, seed6, seed7, seed8, seed9, seed10, seed11, seed12, seed13, seed14, seed15, seed16, seed17, seed18, seed19, seed20, seed21, seed22, seed23, seed24, seed25, seed26, seed27, seed28, seed29, seed30, seed31, out0, out1, out2, out3, out4, out5, out6, out7, out8, out9, out10, out11, out12, out13, out14, out15, out16, out17, out18, out19, out20, out21, out22, out23, out24, out25, out26, out27, out28, out29, out30, out31;
-
+module prbs_generator_32b(
+    input electrical clk,
+    input electrical rst,
+    input electrical load_seed,
+    input electrical [0:31] seed,
+    output electrical [0:31] out
+);
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    integer state; integer seed_val; integer feedback;
+    integer state[0:31];
+    integer feedback;
+    integer any_seed;
+    integer i;
+    genvar bit;
+
     analog begin
-        seed_val = (V(seed0)>vth ? 1:0) + (V(seed1)>vth ? 2:0) + (V(seed2)>vth ? 4:0) + (V(seed3)>vth ? 8:0) + (V(seed4)>vth ? 16:0) + (V(seed5)>vth ? 32:0) + (V(seed6)>vth ? 64:0) + (V(seed7)>vth ? 128:0) + (V(seed8)>vth ? 256:0) + (V(seed9)>vth ? 512:0) + (V(seed10)>vth ? 1024:0) + (V(seed11)>vth ? 2048:0) + (V(seed12)>vth ? 4096:0) + (V(seed13)>vth ? 8192:0) + (V(seed14)>vth ? 16384:0) + (V(seed15)>vth ? 32768:0) + (V(seed16)>vth ? 65536:0) + (V(seed17)>vth ? 131072:0) + (V(seed18)>vth ? 262144:0) + (V(seed19)>vth ? 524288:0) + (V(seed20)>vth ? 1048576:0) + (V(seed21)>vth ? 2097152:0) + (V(seed22)>vth ? 4194304:0) + (V(seed23)>vth ? 8388608:0) + (V(seed24)>vth ? 16777216:0) + (V(seed25)>vth ? 33554432:0) + (V(seed26)>vth ? 67108864:0) + (V(seed27)>vth ? 134217728:0) + (V(seed28)>vth ? 268435456:0) + (V(seed29)>vth ? 536870912:0) + (V(seed30)>vth ? 1073741824:0);
-        @(initial_step) begin state=1; end
-        @(cross(V(clk)-vth,+1)) begin
-            if (V(rst)>vth) state=1;
-            else begin feedback=((state>>30)^(state>>20)^(state>>1)^state)&1; state=((state<<1)&2147483647)|feedback; end
+        @(initial_step) begin
+            state[0] = 1;
+            for (i = 1; i < 32; i = i + 1) begin
+                state[i] = 0;
+            end
         end
-        V(out0) <+ transition((((state) >> 0) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out1) <+ transition((((state) >> 1) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out2) <+ transition((((state) >> 2) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out3) <+ transition((((state) >> 3) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out4) <+ transition((((state) >> 4) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out5) <+ transition((((state) >> 5) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out6) <+ transition((((state) >> 6) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out7) <+ transition((((state) >> 7) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out8) <+ transition((((state) >> 8) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out9) <+ transition((((state) >> 9) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out10) <+ transition((((state) >> 10) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out11) <+ transition((((state) >> 11) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out12) <+ transition((((state) >> 12) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out13) <+ transition((((state) >> 13) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out14) <+ transition((((state) >> 14) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out15) <+ transition((((state) >> 15) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out16) <+ transition((((state) >> 16) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out17) <+ transition((((state) >> 17) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out18) <+ transition((((state) >> 18) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out19) <+ transition((((state) >> 19) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out20) <+ transition((((state) >> 20) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out21) <+ transition((((state) >> 21) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out22) <+ transition((((state) >> 22) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out23) <+ transition((((state) >> 23) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out24) <+ transition((((state) >> 24) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out25) <+ transition((((state) >> 25) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out26) <+ transition((((state) >> 26) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out27) <+ transition((((state) >> 27) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out28) <+ transition((((state) >> 28) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out29) <+ transition((((state) >> 29) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out30) <+ transition((((state) >> 30) & 1) ? vdd : 0.0, 0, tr, tr);
-        V(out31) <+ transition((((state) >> 31) & 1) ? vdd : 0.0, 0, tr, tr);
+
+        @(cross(V(clk) - vth, +1)) begin
+            if (V(rst) > vth) begin
+                state[0] = 1;
+                for (i = 1; i < 32; i = i + 1) begin
+                    state[i] = 0;
+                end
+            end else begin
+                feedback = (state[31] ^ state[21] ^ state[1] ^ state[0]) & 1;
+                for (i = 31; i > 0; i = i - 1) begin
+                    state[i] = state[i - 1];
+                end
+                state[0] = feedback;
+            end
+        end
+
+        for (bit = 0; bit < 32; bit = bit + 1) begin
+            V(out[bit]) <+ transition(state[bit] ? vdd : 0.0, 0, tr, tr);
+        end
     end
 endmodule
