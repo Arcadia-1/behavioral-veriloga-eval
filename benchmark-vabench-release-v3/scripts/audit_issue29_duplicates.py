@@ -86,6 +86,22 @@ ISSUE_GROUPS: list[dict[str, Any]] = [
 ]
 
 MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
+    "lowpass_original_vs_bugfix": {
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.",
+        "decision": (
+            "Keep 007 as the independent L1 first-order-lowpass DUT construction task. "
+            "Keep 286 as a bugfix-form repair variant for the same lowpass function, "
+            "but do not count it as additional independent lowpass circuit-function coverage."
+        ),
+        "evidence": (
+            "Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; "
+            "its prompt no longer exposes hidden-evaluator or source-provenance wording. "
+            "Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; "
+            "its visible smoke bench is now distinct from the full hidden 160 ns settling bench. "
+            "Spectre was not rerun in this local audit."
+        ),
+    },
     "timer_reacquire_pair": {
         "classification": "manually_split_pending_spectre",
         "status": "EVAS-only review refreshed; Spectre was not rerun by request.",

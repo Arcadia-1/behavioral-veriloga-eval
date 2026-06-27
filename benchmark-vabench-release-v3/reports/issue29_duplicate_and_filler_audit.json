@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-27T08:55:21+00:00",
+  "generated_at_utc": "2026-06-27T13:24:20+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -71,7 +71,12 @@
       "missing_tasks": [],
       "classification": "valid_variant_needs_counting_policy",
       "auto_classification": "valid_variant_needs_counting_policy",
-      "manual_adjudication": null,
+      "manual_adjudication": {
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.",
+        "decision": "Keep 007 as the independent L1 first-order-lowpass DUT construction task. Keep 286 as a bugfix-form repair variant for the same lowpass function, but do not count it as additional independent lowpass circuit-function coverage.",
+        "evidence": "Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; its visible smoke bench is now distinct from the full hidden 160 ns settling bench. Spectre was not rerun in this local audit."
+      },
       "members": [
         {
           "name": "007-first-order-lowpass",
@@ -103,9 +108,8 @@
             "dut_fixed.va"
           ],
           "solution_loc": 6,
-          "negative_count": 1,
+          "negative_count": 4,
           "risks": [
-            "low_negative_variant_count",
             "short_solution_leq_20_loc"
           ],
           "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
@@ -118,18 +122,18 @@
           "classification": "valid_variant_needs_counting_policy",
           "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
           "metrics": {
-            "prompt_token_jaccard": 0.1456,
+            "prompt_token_jaccard": 0.2917,
             "solution_token_jaccard": 0.913,
             "checker_token_jaccard": 0.1965,
-            "prompt_sequence_similarity": 0.1963,
+            "prompt_sequence_similarity": 0.3878,
             "solution_sequence_similarity": 1.0,
             "checker_sequence_similarity": 0.4465
           }
         }
       ],
       "prompt_excerpts": {
-        "007-first-order-lowpass": "# First Order Lowpass\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Baseband Signal Conditioning\n- Base function: First-order lowpass\n- Domain: `voltage`\n- Target artifact(s): `first_order_lowpass.va`\n- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.\n## Public Testbench And Observabl…",
-        "286-first-order-lowpass-bugfix": "# First Order Lowpass Bugfix\nOne-shot bugfix task for a voltage-domain first-order low-pass filter.\n## Agent-Visible Inputs\n- `dut_buggy.va`\n- `tb_first_order_lowpass_buggy.scs`\n- `tb_first_order_lowpass_ref.scs`\n## Required Output\n- `dut_fixed.va`\n## Public Interface\nPreserve module `first_order_lowpass(vin, vout)` with electrical\nvoltage-domain ports.\n## Public Scenario\nThe harness drives `vin` from about `0 V` to about `0.8 V` near `21 ns` and\nobserves a `160 ns` transient.\n## Functional Contract\n- `vout` should be a stable finite-bandwidth low-pass response with an\n  effective time constant on the order of tens of nanoseconds.\n- After the step, `vout` should move smoothly and monotonically toward `0.8 V`."
+        "007-first-order-lowpass": "# First Order Lowpass\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Baseband Signal Conditioning\n- Base function: First-order lowpass\n- Domain: `voltage`\n- Target artifact(s): `first_order_lowpass.va`\n- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.\n## Public Scenario And Observable Contract\nThe supplied testbenches provide the exact stimulus and transient analysis\nsettings. The intended public scenario…",
+        "286-first-order-lowpass-bugfix": "# First Order Lowpass Bugfix\nOne-shot bugfix task for a voltage-domain first-order low-pass filter.\n## Agent-Visible Inputs\n- `dut_buggy.va`\n- `tb_first_order_lowpass_buggy.scs`\n- `tb_first_order_lowpass_ref.scs`\n## Required Output\n- `dut_fixed.va`\n## Public Interface\nPreserve module `first_order_lowpass(vin, vout)` with electrical\nvoltage-domain ports.\n## Public Scenario\nThe supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and\nobserve the transient response through the settling window.\n## Functional Contract\n- `vout` should be a stable finite-bandwidth low-pass response with an\n  effective time constant on the order of tens of nanoseconds.\n- After the step, `vout` should move smoothly and monotonically toward `0.8 V`."
       }
     },
     {
@@ -2405,25 +2409,6 @@
         "solution_sha256_normalized": "sha256:4ba2578dd19ba574e48f19da5db273ea043eb2eeb9fc6ed431bef5e7e331eae1"
       },
       {
-        "name": "286-first-order-lowpass-bugfix",
-        "id": "v3_286_first_order_lowpass_bugfix",
-        "title": "First Order Lowpass Bugfix",
-        "form": "bugfix",
-        "level": "L1",
-        "difficulty": "D1",
-        "category": "baseband_signal_conditioning",
-        "targets": [
-          "dut_fixed.va"
-        ],
-        "solution_loc": 6,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count",
-          "short_solution_leq_20_loc"
-        ],
-        "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
-      },
-      {
         "name": "284-window-comparator-testbench",
         "id": "v3_284_window_comparator_testbench",
         "title": "Window Comparator Testbench",
@@ -3928,6 +3913,24 @@
         "solution_sha256_normalized": "sha256:43a1061890dc9676eff4792587378671e0a4528da565f1970b55fbbb633f9bf4"
       },
       {
+        "name": "286-first-order-lowpass-bugfix",
+        "id": "v3_286_first_order_lowpass_bugfix",
+        "title": "First Order Lowpass Bugfix",
+        "form": "bugfix",
+        "level": "L1",
+        "difficulty": "D1",
+        "category": "baseband_signal_conditioning",
+        "targets": [
+          "dut_fixed.va"
+        ],
+        "solution_loc": 6,
+        "negative_count": 4,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2"
+      },
+      {
         "name": "285-aperture-delay-sample-hold",
         "id": "v3_285_aperture_delay_sample_hold",
         "title": "Aperture Delay Sample Hold",
@@ -5153,7 +5156,6 @@
       "low_negative_variant_count"
     ],
     "286-first-order-lowpass-bugfix": [
-      "low_negative_variant_count",
       "short_solution_leq_20_loc"
     ],
     "288-absolute-value": [

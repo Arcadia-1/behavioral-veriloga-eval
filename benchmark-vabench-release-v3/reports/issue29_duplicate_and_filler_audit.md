@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-27T08:55:21+00:00`
+- Generated UTC: `2026-06-27T13:24:20+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
@@ -21,7 +21,7 @@
 
 | Group | Classification | Members | Why flagged | Recommendation signal |
 | --- | --- | --- | --- | --- |
-| `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy` |
+| `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy; manual=Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.` |
 | `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy` |
 | `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
 | `timer_reacquire_pair` | `manually_split_pending_spectre` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=EVAS-only review refreshed; Spectre was not rerun by request.` |
@@ -37,10 +37,14 @@
 
 - Why flagged: Same low-pass kernel appears once as a DUT construction task and once as a bugfix task.
 - Group classification: `valid_variant_needs_counting_policy`
+- Automatic classification before manual review: `valid_variant_needs_counting_policy`
+- Manual status: Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.
+- Manual decision: Keep 007 as the independent L1 first-order-lowpass DUT construction task. Keep 286 as a bugfix-form repair variant for the same lowpass function, but do not count it as additional independent lowpass circuit-function coverage.
+- Manual evidence: Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; its visible smoke bench is now distinct from the full hidden 160 ns settling bench. Spectre was not rerun in this local audit.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `007-first-order-lowpass` ↔ `286-first-order-lowpass-bugfix` | `valid_variant_needs_counting_policy` | 0.1963 | 1.0 | 0.4465 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `007-first-order-lowpass` ↔ `286-first-order-lowpass-bugfix` | `valid_variant_needs_counting_policy` | 0.3878 | 1.0 | 0.4465 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -57,13 +61,14 @@
 - Target artifact(s): `first_order_lowpass.va`
 - Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 ## Form-Specific Requirements
 - Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
 - Preserve the public module names, port order, parameters, and waveform observable names.
 ## Public Verilog-A Interface
 - `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.
-## Public Testbench And Observabl…
+## Public Scenario And Observable Contract
+The supplied testbenches provide the exact stimulus and transient analysis
+settings. The intended public scenario…
 ~~~
 
 #### `286-first-order-lowpass-bugfix`
@@ -81,8 +86,8 @@ One-shot bugfix task for a voltage-domain first-order low-pass filter.
 Preserve module `first_order_lowpass(vin, vout)` with electrical
 voltage-domain ports.
 ## Public Scenario
-The harness drives `vin` from about `0 V` to about `0.8 V` near `21 ns` and
-observes a `160 ns` transient.
+The supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and
+observe the transient response through the settling window.
 ## Functional Contract
 - `vout` should be a stable finite-bandwidth low-pass response with an
   effective time constant on the order of tens of nanoseconds.
@@ -597,7 +602,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `291-limiting-diffamp` | `dut` | `L1` | `baseband_signal_conditioning` | 16 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `289-deadband-voltage` | `dut` | `L1` | `baseband_signal_conditioning` | 16 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `288-absolute-value` | `dut` | `L1` | `analog_primitive` | 9 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
-| `286-first-order-lowpass-bugfix` | `bugfix` | `L1` | `baseband_signal_conditioning` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `284-window-comparator-testbench` | `tb` | `L1` | `comparator_decision` | 10 | 2 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `281-programmable-divider-by-n` | `dut` | `L2` | `clock_timing` | 20 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `280-vargain-diffamp-clip` | `dut` | `L1` | `filter_amp` | 17 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
@@ -677,6 +681,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `086-dither-noise-like-deterministic-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `084-peak-detector` | `dut` | `L1` | `measurement_instrumentation_flows` | 11 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `083-crossing-metric-writer` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
+| `286-first-order-lowpass-bugfix` | `bugfix` | `L1` | `baseband_signal_conditioning` | 6 | 4 | `short_solution_leq_20_loc` |
 | `285-aperture-delay-sample-hold` | `dut` | `L1` | `sampling_analog_memory` | 38 | 1 | `low_negative_variant_count` |
 | `109-sample-hold-droop-front-end` | `dut` | `L2` | `sampling_analog_memory` | 64 | 1 | `low_negative_variant_count` |
 | `108-reference-startup-enable-flow` | `dut` | `L2` | `bias_reference_power_management` | 53 | 1 | `low_negative_variant_count` |

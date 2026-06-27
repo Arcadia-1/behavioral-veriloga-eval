@@ -2,14 +2,23 @@
 
 Task: `007-first-order-lowpass`
 
-Status: core formal candidate for EVAS-based evaluation.
+Status: independent L1 EVAS formal candidate. Count this row as the
+first-order lowpass circuit-function coverage; do not also count
+`286-first-order-lowpass-bugfix` as a second independent lowpass function.
 
 ## Four-Standard Review
 
 - Useful scenario: pass. A timer-discretized first-order lowpass is a common behavioral primitive for analog baseband filtering, settling envelopes, and stable state update examples.
-- Reasonable task: pass. The public prompt fixes the module name, scalar voltage ports, timer period, recurrence coefficient, forbidden continuous operators, and transition-driven voltage output.
+- Reasonable task: pass. The public prompt fixes the module name, scalar
+  voltage ports, finite-bandwidth timer-discretized lowpass behavior, forbidden
+  continuous operators, and transition-driven voltage output without leaking the
+  gold recurrence coefficient.
 - Complete tests: pass for EVAS formal-candidate scope. The visible `.scs` is a single public step smoke with `vin` and `vout` saved. The hidden `.scs` exercises a long rising step so the checker can verify lag, monotonic movement, boundedness, and late-level settling.
-- Fair evaluation: pass. Every hidden scoring requirement follows from `instruction.md`; hidden stimulus points and tolerances are private, but no hidden-only behavior is required.
+- Fair evaluation: pass. Every hidden scoring requirement follows from the
+  public prompt plus supplied testbench assets; hidden stimulus points and
+  tolerances are private, but no hidden-only behavior is required.
+- Prompt hygiene: pass after review. The public prompt no longer references
+  hidden evaluator internals or source/provenance labels.
 
 ## Checker Contract
 

@@ -19,8 +19,8 @@ voltage-domain ports.
 
 ## Public Scenario
 
-The harness drives `vin` from about `0 V` to about `0.8 V` near `21 ns` and
-observes a `160 ns` transient.
+The supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and
+observe the transient response through the settling window.
 
 ## Functional Contract
 
@@ -29,8 +29,8 @@ observes a `160 ns` transient.
 - After the step, `vout` should move smoothly and monotonically toward `0.8 V`.
 - `vout` should lag the input transition, not behave as a direct passthrough.
 - Within several tens of nanoseconds, `vout` should cross a substantial
-  fraction of the final level; by the end of the `160 ns` transient it should
-  be close to `0.8 V`.
+  fraction of the final level; by the end of the supplied transient it should
+  be close to the final input level.
 - The output should remain bounded and should not overshoot the input rail.
 
 ## Modeling Constraints

@@ -51,6 +51,44 @@ actually evaluate that boundary.
 - EVAS-only evidence must be labeled as such. Paper-facing final certification
   still needs Spectre/Spectre-AX parity or an explicit EVAS-only scope label.
 
+## Public Contract Alignment Page
+
+Use this page whenever a review turns on whether a prompt leaks too much, or
+whether the prompt still contains enough information after cleanup.
+
+Ideal solver-facing split:
+
+- Prompt: task role/form, target artifact, public interface, observable output
+  contract, behavior goal, and modeling constraints.
+- Public/visible testbench: exact stimulus values, transient length, analysis
+  settings, saved signals, instance wiring, and support artifact syntax.
+- Checker: verifies behavior implied by the prompt plus public/visible assets.
+  It should not require hidden-only semantics, hidden sample points, gold
+  implementation constants, or private checker thresholds.
+- Hidden testbench: may vary parameters, extend observation windows, add edge
+  cases, or stress robustness, but must not redefine the task's public
+  function.
+
+Review questions:
+
+- Can a solver using only the prompt and public/visible assets write a plausible
+  implementation without seeing the hidden checker?
+- Are exact numeric values in the prompt truly part of the public behavior
+  contract, or do they belong in the visible testbench?
+- Does the checker require an exact value, timing point, or threshold that is
+  absent from both the prompt and public/visible testbench?
+- Are hidden-only values just robustness variations, or do they define the
+  behavior needed to pass?
+- If a prompt says "by the end of the transient window" or similar, is that
+  window discoverable from the public/visible testbench rather than a hidden
+  leak?
+
+Decision rule: if prompt plus public/visible assets are insufficient, promote
+the missing requirement into the public prompt or visible asset. If the checker
+requires information that should remain hidden, repair the checker or mark the
+task non-admitted. Do not keep exact implementation constants in the prompt only
+because the hidden checker happens to use them.
+
 ### 3. EVAS Compatibility Triage
 
 When review or repair exposes an EVAS frontend/backend issue, handle it before
