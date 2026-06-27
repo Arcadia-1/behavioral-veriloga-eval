@@ -1,10 +1,9 @@
 {
-  "cases": [
+  "variants": [
     {
       "id": "neg_001_unity_gain",
-      "artifacts": "neg_001_unity_gain/",
-      "expected_status": "FAIL_SIM_CORRECTNESS",
-      "mutation": "Amplifier passes the dithered input through at unity gain."
+      "description": "Amplifier passes the dithered input through at unity gain, so the measured output differential variation is not separated from input variation.",
+      "path": "negative_variants/neg_001_unity_gain/"
     }
   ]
 }

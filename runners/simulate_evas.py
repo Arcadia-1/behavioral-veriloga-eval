@@ -5502,6 +5502,112 @@ def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return ok, f"diff_gain={gain:.2f}"
 
 
+def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vres_p", "vres_n", "dpn", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vres_p/vres_n/dpn/vout_p/vout_n"
+
+    pos_delta: list[float] = []
+    neg_delta: list[float] = []
+    common_errors: list[float] = []
+    base_diff_values: list[float] = []
+
+    for row in rows:
+        base_diff = row["vres_p"] - row["vres_n"]
+        out_diff = row["vout_p"] - row["vout_n"]
+        delta = out_diff - base_diff
+        common_errors.append(abs((row["vout_p"] + row["vout_n"]) - (row["vres_p"] + row["vres_n"])))
+        base_diff_values.append(base_diff)
+        if row["dpn"] > 0.55:
+            pos_delta.append(delta)
+        elif row["dpn"] < 0.35:
+            neg_delta.append(delta)
+
+    if len(pos_delta) < 5 or len(neg_delta) < 5:
+        return False, f"insufficient_polarity_samples pos={len(pos_delta)} neg={len(neg_delta)}"
+
+    pos_avg = sum(pos_delta) / len(pos_delta)
+    neg_avg = sum(neg_delta) / len(neg_delta)
+    pos_sign_frac = sum(1 for value in pos_delta if value > 0.0) / len(pos_delta)
+    neg_sign_frac = sum(1 for value in neg_delta if value < 0.0) / len(neg_delta)
+    cm_max = max(common_errors)
+    base_span = max(base_diff_values) - min(base_diff_values)
+    amp_ratio = abs(pos_avg) / max(abs(neg_avg), 1e-12)
+
+    ok = (
+        base_span >= 0.08
+        and pos_avg >= 0.015
+        and neg_avg <= -0.015
+        and 0.70 <= amp_ratio <= 1.30
+        and pos_sign_frac >= 0.95
+        and neg_sign_frac >= 0.95
+        and cm_max <= 2e-3
+    )
+    return ok, (
+        f"base_span={base_span:.4f} pos_avg={pos_avg:.4f} "
+        f"neg_avg={neg_avg:.4f} amp_ratio={amp_ratio:.3f} "
+        f"pos_sign={pos_sign_frac:.3f} neg_sign={neg_sign_frac:.3f} "
+        f"cm_max={cm_max:.4e}"
+    )
+
+
+def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vin_p", "vin_n", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vin_p/vin_n/vout_p/vout_n"
+
+    samples = []
+    in_values: list[float] = []
+    out_values: list[float] = []
+    cm_errors: list[float] = []
+    for row in rows:
+        vin_diff = row["vin_p"] - row["vin_n"]
+        vout_diff = row["vout_p"] - row["vout_n"]
+        in_values.append(vin_diff)
+        out_values.append(vout_diff)
+        cm_errors.append(abs((row["vout_p"] + row["vout_n"]) * 0.5 - 0.45))
+        if abs(vin_diff) > 5e-3:
+            samples.append((vin_diff, vout_diff))
+
+    if len(samples) < 5:
+        return False, f"insufficient_nonzero_input_samples={len(samples)}"
+
+    in_span = max(in_values) - min(in_values)
+    out_span = max(out_values) - min(out_values)
+    if in_span <= 1e-9:
+        return False, f"input_span_too_small={in_span:.4e}"
+
+    mean_in = sum(x for x, _ in samples) / len(samples)
+    mean_out = sum(y for _, y in samples) / len(samples)
+    denom = sum((x - mean_in) ** 2 for x, _ in samples)
+    if denom <= 1e-18:
+        return False, "input_variation_too_small_for_gain_fit"
+    slope = sum((x - mean_in) * (y - mean_out) for x, y in samples) / denom
+    residual_rms = (
+        sum((y - slope * x) ** 2 for x, y in samples) / len(samples)
+    ) ** 0.5
+    span_gain = out_span / in_span
+    polarity_frac = sum(1 for x, y in samples if x * y > 0.0) / len(samples)
+    cm_avg = sum(cm_errors) / len(cm_errors)
+    cm_max = max(cm_errors)
+
+    ok = (
+        in_span >= 0.08
+        and 4.40 <= slope <= 5.80
+        and 4.40 <= span_gain <= 5.80
+        and residual_rms <= 0.02
+        and polarity_frac >= 0.95
+        and cm_avg <= 0.01
+        and cm_max <= 0.04
+    )
+    return ok, (
+        f"in_span={in_span:.4f} out_span={out_span:.4f} "
+        f"slope={slope:.3f} span_gain={span_gain:.3f} "
+        f"residual_rms={residual_rms:.4f} polarity={polarity_frac:.3f} "
+        f"cm_avg={cm_avg:.4f} cm_max={cm_max:.4f}"
+    )
+
+
 def check_gain_estimator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "voutp", "voutn", "gain_out", "valid"}
     if not rows or not required.issubset(rows[0]):
@@ -14974,6 +15080,10 @@ CHECKS["v3_285_aperture_delay_sample_hold"] = check_vbm1_track_hold_aperture
 CHECKS["285-aperture-delay-sample-hold"] = check_vbm1_track_hold_aperture
 CHECKS["v3_286_first_order_lowpass_bugfix"] = check_vbm1_first_order_lowpass
 CHECKS["286-first-order-lowpass-bugfix"] = check_vbm1_first_order_lowpass
+CHECKS["v3_099_dither_adder"] = check_v3_dither_adder
+CHECKS["099-dither-adder"] = check_v3_dither_adder
+CHECKS["v3_101_fixed_gain_amplifier"] = check_v3_fixed_gain_amplifier
+CHECKS["101-fixed-gain-amplifier"] = check_v3_fixed_gain_amplifier
 CHECKS["v3_287_gain_extraction_flow"] = check_gain_extraction
 CHECKS["287-gain-extraction-flow"] = check_gain_extraction
 
@@ -15049,12 +15159,12 @@ V3_CANDIDATE_090_111_CHECK_ALIASES = {
     "097-cppll-tracking-reacquire-timer": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
     "v3_098_edge_crossing_interval_timer": "vbr1_l1_edge_interval_timer_tb",
     "098-edge-crossing-interval-timer": "vbr1_l1_edge_interval_timer_tb",
-    "v3_099_dither_adder": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
-    "099-dither-adder": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "v3_099_dither_adder": "v3_099_dither_adder",
+    "099-dither-adder": "v3_099_dither_adder",
     "v3_100_final_step_file_metric": "vbr1_l2_measurement_flow_tb",
     "100-final-step-file-metric": "vbr1_l2_measurement_flow_tb",
-    "v3_101_fixed_gain_amplifier": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
-    "101-fixed-gain-amplifier": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+    "v3_101_fixed_gain_amplifier": "v3_101_fixed_gain_amplifier",
+    "101-fixed-gain-amplifier": "v3_101_fixed_gain_amplifier",
     "v3_102_gain_estimator": "vbr1_l1_gain_estimator_tb",
     "102-gain-estimator": "vbr1_l1_gain_estimator_tb",
     "v3_103_iq_downconversion_chain": "vbr1_l2_iq_downconversion_chain_tb",

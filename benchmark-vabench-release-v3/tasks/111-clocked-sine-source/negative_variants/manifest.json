@@ -1,10 +1,9 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "vin_src.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Drives both stimulus outputs to zero; should not satisfy a task-specific source checker or the composed flow checker.",
+      "path": "negative_variants/neg_001_zero/vin_src.va"
     }
   ]
 }

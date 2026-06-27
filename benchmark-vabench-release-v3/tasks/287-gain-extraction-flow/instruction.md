@@ -1,9 +1,9 @@
 # Gain Extraction Flow
 
-One-shot L2 support flow: build a voltage-domain dithered differential input
-path, fixed-gain differential output path, and Spectre transient testbench. This
-is a support flow and should be reported separately from core analog/mixed-signal
-circuit-function score claims.
+Measurement L2 flow: build a voltage-domain dithered differential input path,
+fixed-gain differential output path, and Spectre transient testbench. This is a
+composed measurement/instrumentation flow for checking gain separation from a
+small dithered input stimulus.
 
 ## Required Output
 
@@ -32,7 +32,7 @@ The Spectre testbench must:
   with literal `ahdl_include` lines;
 - use instance-first/module-last AHDL syntax;
 - define `vdd=0.9`, `ACTUAL_GAIN=8.64`, `DITHER_AMP=0.014063`, `fs=50e6`,
-  `fin=300e3`, and a small input perturbation/noise setting;
+  `fin=300e3`, and a small deterministic input perturbation setting;
 - provide a 50 MHz clock, active-low reset, and enable;
 - connect `vin_src -> dither_adder -> gain_amp_fixed`, with `lfsr` driving
   dither sign `dpn`;

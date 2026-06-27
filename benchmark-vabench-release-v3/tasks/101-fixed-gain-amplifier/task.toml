@@ -5,8 +5,8 @@ version = "v3"
 form = "dut"
 language = "verilog-a"
 simulator = "evas"
-category = "measurement_instrumentation_flows"
-level = "L2"
+category = "baseband_signal_conditioning"
+level = "L1"
 difficulty = "D2"
 instruction = "instruction.md"
 starter_dir = "starter"
@@ -17,4 +17,4 @@ solution_dir = "solution"
 negative_variants_dir = "negative_variants"
 
 [artifacts]
-target = ["gain_amp_fixed.va", "vin_src.va", "lfsr.va", "dither_adder.va"]
+target = ["gain_amp_fixed.va"]

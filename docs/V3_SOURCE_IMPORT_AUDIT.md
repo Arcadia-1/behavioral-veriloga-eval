@@ -15,7 +15,9 @@ Verilog-A corpus into `benchmark-vabench-release-v3`.
 
 ## Import SOP
 
-Each imported task must satisfy four gates before it is considered submit-ready:
+Each imported task must satisfy four admission gates before it is considered
+submit-ready. For final scored admission, apply the fuller v3 task review SOP in
+`benchmark-vabench-release-v3/REVIEW_SOP.md` after these import gates:
 
 - Useful scenario: the primitive is reusable in converter, timing, or
   mixed-signal behavioral flows.
@@ -25,6 +27,12 @@ Each imported task must satisfy four gates before it is considered submit-ready:
   deterministic testbench.
 - Fair evaluation: stable-window or event-level behavior checks; no raw
   simulator timestep equality requirement.
+
+During any gate, if a valid voltage-domain/event-driven Verilog-A construct
+exposes an EVAS parse, compile, or simulation bug, pause benchmark promotion and
+follow the EVAS Compatibility Triage in `benchmark-vabench-release-v3/REVIEW_SOP.md`.
+Do not silently rewrite the benchmark to bypass the EVAS issue and then count
+the original check as resolved.
 
 ## Certified Pilot Batch
 

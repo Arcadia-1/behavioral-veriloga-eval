@@ -27,4 +27,7 @@ The agent-facing surface is intentionally small: `instruction.md`, `starter/`,
 and `test_visible/`. Hidden tests, checker configs, golden solutions, and
 negative variants are evaluator-side material.
 
+Use [REVIEW_SOP.md](REVIEW_SOP.md) for manual admission review before counting a
+task as independent benchmark coverage.
+
 Task names describe the circuit/helper being built instead of preserving legacy migration ids. Private submission records, image tags, model ids, and other orchestration state remain outside this public benchmark tree.

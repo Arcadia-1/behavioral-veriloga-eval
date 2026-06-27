@@ -5,13 +5,13 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-26T20:13:59+00:00`
+- Generated UTC: `2026-06-27T08:55:21+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
-- Levels: `{'L1': 261, 'L2': 36, 'L3': 3}`
+- Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
 - Source-family heuristic rows: **185**
 - Negative variants per task: min `1`, median `4.0`, max `10`
-- Solution LOC: min `6`, median `25.0`, max `252`
+- Solution LOC: min `6`, median `24.5`, max `252`
 
 ## Release Wording Recommendation
 
@@ -25,7 +25,7 @@
 | `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy` |
 | `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
 | `timer_reacquire_pair` | `manually_split_pending_spectre` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=EVAS-only review refreshed; Spectre was not rerun by request.` |
-| `signal_chain_vs_components` | `hard_duplicate` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `hard_duplicate, valid_variant_needs_counting_policy` |
+| `signal_chain_vs_components` | `manually_split_pending_spectre` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review, valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.` |
 | `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
 | `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
 | `pfd_active_low_reset_pair` | `high_overlap` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `high_overlap` |
@@ -258,16 +258,20 @@ generated `CLK` waveform.
 ### `signal_chain_vs_components`
 
 - Why flagged: An L2 flow may package kernels that also appear as standalone source/gain/source tasks.
-- Group classification: `hard_duplicate`
+- Group classification: `manually_split_pending_spectre`
+- Automatic classification before manual review: `valid_variant_needs_counting_policy`
+- Manual status: Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.
+- Manual decision: Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.
+- Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. Spectre was not rerun in this local audit.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `hard_duplicate` | 0.9847 | 1.0 | 1.0 | Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit. |
-| `099-dither-adder` ↔ `111-clocked-sine-source` | `hard_duplicate` | 0.986 | 1.0 | 1.0 | Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit. |
-| `099-dither-adder` ↔ `287-gain-extraction-flow` | `valid_variant_needs_counting_policy` | 0.1875 | 0.8701 | 0.2672 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
-| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `hard_duplicate` | 0.9849 | 1.0 | 1.0 | Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit. |
-| `101-fixed-gain-amplifier` ↔ `287-gain-extraction-flow` | `valid_variant_needs_counting_policy` | 0.1874 | 0.8701 | 0.2672 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
-| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `valid_variant_needs_counting_policy` | 0.1876 | 0.8701 | 0.2672 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `needs_human_review` | 0.5357 | 0.7305 | 0.7425 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `099-dither-adder` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4393 | 0.3454 | 0.4101 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `099-dither-adder` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.2661 | 0.277 | 0.1816 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4675 | 0.3051 | 0.4368 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `101-fixed-gain-amplifier` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.1668 | 0.2435 | 0.2328 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `valid_variant_needs_counting_policy` | 0.2169 | 0.8701 | 0.2691 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -287,11 +291,11 @@ module dither_adder(
 );
 ```
 ## Required Behavior
-This task asks for the `dither_adder` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-Gold-source design notes carried into the public contract:
-```text
-// Differential dither adder — benchmark gold style.
-// Keeps a direct contribution instead of the original transition(V(VRES_P)+...)
+Implement a standalone differential dither injection block. The module receives
+a differential residual signal on `VRES_P/VRES_N` and a voltage-coded dither
+polarity input `DPN`. When `DPN` is above the threshold, inject a positive
+differential dither; when it is below the threshold, inject a negative
+differential dither.
 ~~~
 
 #### `101-fixed-gain-amplifier`
@@ -309,12 +313,12 @@ module gain_amp_fixed(
 );
 ```
 ## Required Behavior
-This task asks for the `gain_amp_fixed` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-Gold-source design notes carried into the public contract:
+Implement a standalone fixed-gain differential amplifier. The module receives
+`VIN_P/VIN_N`, computes the input differential voltage, multiplies it by the
+`ACTUAL_GAIN` parameter, and produces a differential output centered around
+`vdd/2`:
 ```text
-// Fixed-gain differential amplifier (no programmable CTRL).
-//
-//   VOUT_P = vdd/2 + ACTUAL_GAIN * (VIN_P - VIN_N) / 2
+vout_diff = ACTUAL_GAIN * (VIN_P - VIN_N)
 ~~~
 
 #### `111-clocked-sine-source`
@@ -332,22 +336,22 @@ module vin_src(
 );
 ```
 ## Required Behavior
-This task asks for the `vin_src` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-Gold-source design notes carried into the public contract:
-```text
-// Clocked noisy sine source (sample-and-hold at CLK rising edge).
-//
-// VOUT_P = vdd/2 + ampl*sin(2*pi*freq*t) + N(0, sigma)
+This is an L2 support-component task for measurement-flow stimulus generation,
+not a core circuit-function task. Implement `vin_src.va`, a clocked differential
+sine stimulus source that can support composed measurement flows such as
+gain-extraction benches.
+On each rising crossing of `CLK`, if `RST_N` is high, update `VOUT_P` to a
+sampled sine value around `vdd/2`. Keep `VOUT_N` at `vdd/2` as the reference
 ~~~
 
 #### `287-gain-extraction-flow`
 
 ~~~markdown
 # Gain Extraction Flow
-One-shot L2 support flow: build a voltage-domain dithered differential input
-path, fixed-gain differential output path, and Spectre transient testbench. This
-is a support flow and should be reported separately from core analog/mixed-signal
-circuit-function score claims.
+Measurement L2 flow: build a voltage-domain dithered differential input path,
+fixed-gain differential output path, and Spectre transient testbench. This is a
+composed measurement/instrumentation flow for checking gain separation from a
+small dithered input stimulus.
 ## Required Output
 - `dither_adder.va`
 - `gain_amp_fixed.va`
@@ -487,7 +491,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 ### Exact Normalized Solution Duplicates
 
 - `sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6`: `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold`
-- `sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14`: `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`
 - `sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2`: `007-first-order-lowpass`, `286-first-order-lowpass-bugfix`
 
 ### Top Near-Solution Overlap Pairs
@@ -495,9 +498,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | Pair | Issue named | Class | Solution sim | Checker sim | Forms | Titles |
 | --- | --- | --- | ---: | ---: | --- | --- |
 | `081-aperture-delay-track-and-hold` ↔ `285-aperture-delay-sample-hold` | `True` | `high_overlap` | 1.0 | 0.3811 | `['dut', 'dut']` | ['Aperture Delay Track And Hold', 'Aperture Delay Sample Hold'] |
-| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Dither Adder', 'Fixed Gain Amplifier'] |
-| `099-dither-adder` ↔ `111-clocked-sine-source` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Dither Adder', 'Clocked Sine Source'] |
-| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `True` | `hard_duplicate` | 1.0 | 1.0 | `['dut', 'dut']` | ['Fixed Gain Amplifier', 'Clocked Sine Source'] |
 | `007-first-order-lowpass` ↔ `286-first-order-lowpass-bugfix` | `True` | `valid_variant_needs_counting_policy` | 1.0 | 0.4465 | `['dut', 'bugfix']` | ['First Order Lowpass', 'First Order Lowpass Bugfix'] |
 | `128-two-input-and-gate` ↔ `137-two-input-nand-gate` | `False` | `high_overlap` | 0.9975 | 0.996 | `['dut', 'dut']` | ['Two Input AND Gate', 'Two Input NAND Gate'] |
 | `135-two-input-or-gate` ↔ `138-two-input-nor-gate` | `False` | `high_overlap` | 0.9975 | 0.996 | `['dut', 'dut']` | ['Two Input OR Gate', 'Two Input NOR Gate'] |
@@ -534,28 +534,22 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `116-clocked-comparator-reset-low` ↔ `257-comparator-reset-low-1p8` | `False` | `needs_human_review` | 0.8369 | 0.291 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Comparator Reset Low 1p8'] |
 | `122-offset-search-comparator` ↔ `208-offset-bisection-driver` | `False` | `high_overlap` | 0.8274 | 0.9042 | `['dut', 'dut']` | ['Offset Search Comparator', 'Offset Bisection Driver'] |
 | `240-cdac-monodown-7b` ↔ `241-cdac-6b-stage1-up` | `False` | `high_overlap` | 0.8258 | 0.915 | `['dut', 'dut']` | ['CDAC Monodown 7b', 'CDAC 6b Stage1 Up'] |
+| `241-cdac-6b-stage1-up` ↔ `245-cdac-8b-monodown` | `False` | `high_overlap` | 0.8258 | 0.9231 | `['dut', 'dut']` | ['CDAC 6b Stage1 Up', 'CDAC 8b Monodown'] |
+| `112-clocked-sar-comparator` ↔ `202-l2-cmp-ideal-clocked` | `False` | `needs_human_review` | 0.8214 | 0.2454 | `['dut', 'dut']` | ['Clocked SAR Comparator', 'L2 CMP Ideal Clocked'] |
+| `184-divide-by-two-toggle` ↔ `275-divide-by-two-toggle` | `False` | `high_overlap` | 0.774 | 0.9883 | `['dut', 'dut']` | ['Divide By Two Toggle', 'Divide By Two Toggle'] |
 
 ### Top Prompt-Overlap Pairs
 
 | Pair | Issue named | Prompt sim | Forms | Titles |
 | --- | --- | ---: | --- | --- |
-| `099-dither-adder` ↔ `111-clocked-sine-source` | `True` | 0.986 | `['dut', 'dut']` | ['Dither Adder', 'Clocked Sine Source'] |
-| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `True` | 0.9849 | `['dut', 'dut']` | ['Fixed Gain Amplifier', 'Clocked Sine Source'] |
-| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `True` | 0.9847 | `['dut', 'dut']` | ['Dither Adder', 'Fixed Gain Amplifier'] |
 | `070-active-low-reset-synchronizer` ↔ `071-active-high-reset-synchronizer` | `False` | 0.9827 | `['dut', 'dut']` | ['Active Low Reset Synchronizer', 'Active High Reset Synchronizer'] |
 | `113-clocked-dac-restore-4b` ↔ `118-clocked-dac-restore-7b` | `False` | 0.9518 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Clocked DAC Restore 7b'] |
 | `098-edge-crossing-interval-timer` ↔ `100-final-step-file-metric` | `False` | 0.9505 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Final Step File Metric'] |
 | `114-sample-and-hold-ideal` ↔ `115-single-shot-pulse` | `False` | 0.9416 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Single Shot Pulse'] |
 | `140-three-input-or-gate` ↔ `141-three-input-xor-gate` | `False` | 0.9387 | `['dut', 'dut']` | ['Three Input OR Gate', 'Three Input XOR Gate'] |
-| `100-final-step-file-metric` ↔ `101-fixed-gain-amplifier` | `False` | 0.935 | `['dut', 'dut']` | ['Final Step File Metric', 'Fixed Gain Amplifier'] |
-| `100-final-step-file-metric` ↔ `111-clocked-sine-source` | `False` | 0.9344 | `['dut', 'dut']` | ['Final Step File Metric', 'Clocked Sine Source'] |
 | `120-not-gate-voltage` ↔ `121-dff-reset-voltage` | `False` | 0.9337 | `['dut', 'dut']` | ['Not Gate Voltage', 'DFF Reset Voltage'] |
-| `099-dither-adder` ↔ `100-final-step-file-metric` | `False` | 0.9331 | `['dut', 'dut']` | ['Dither Adder', 'Final Step File Metric'] |
-| `098-edge-crossing-interval-timer` ↔ `099-dither-adder` | `False` | 0.9246 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Dither Adder'] |
 | `112-clocked-sar-comparator` ↔ `116-clocked-comparator-reset-low` | `False` | 0.9243 | `['dut', 'dut']` | ['Clocked SAR Comparator', 'Clocked Comparator Reset Low'] |
-| `098-edge-crossing-interval-timer` ↔ `111-clocked-sine-source` | `False` | 0.922 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Clocked Sine Source'] |
 | `118-clocked-dac-restore-7b` ↔ `121-dff-reset-voltage` | `False` | 0.9214 | `['dut', 'dut']` | ['Clocked DAC Restore 7b', 'DFF Reset Voltage'] |
-| `098-edge-crossing-interval-timer` ↔ `101-fixed-gain-amplifier` | `False` | 0.9193 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Fixed Gain Amplifier'] |
 | `139-three-input-and-gate` ↔ `140-three-input-or-gate` | `False` | 0.9169 | `['dut', 'dut']` | ['Three Input AND Gate', 'Three Input OR Gate'] |
 | `054-onehot-to-binary-encoder-16b` ↔ `056-decimal-digit-to-bcd-encoder` | `False` | 0.9166 | `['dut', 'dut']` | ['Onehot To Binary Encoder 16b', 'Decimal Digit To BCD Encoder'] |
 | `116-clocked-comparator-reset-low` ↔ `118-clocked-dac-restore-7b` | `False` | 0.9145 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Clocked DAC Restore 7b'] |
@@ -579,6 +573,15 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `115-single-shot-pulse` ↔ `119-crossing-pulse-detector` | `False` | 0.8883 | `['dut', 'dut']` | ['Single Shot Pulse', 'Crossing Pulse Detector'] |
 | `115-single-shot-pulse` ↔ `121-dff-reset-voltage` | `False` | 0.8883 | `['dut', 'dut']` | ['Single Shot Pulse', 'DFF Reset Voltage'] |
 | `114-sample-and-hold-ideal` ↔ `120-not-gate-voltage` | `False` | 0.8881 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Not Gate Voltage'] |
+| `113-clocked-dac-restore-4b` ↔ `115-single-shot-pulse` | `False` | 0.8873 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Single Shot Pulse'] |
+| `061-bus-splitter-256-to-16x16` ↔ `062-bus-combiner-16x16-to-256` | `False` | 0.885 | `['dut', 'dut']` | ['Bus Splitter 256 To 16x16', 'Bus Combiner 16x16 To 256'] |
+| `116-clocked-comparator-reset-low` ↔ `117-bipolar-dac-4b-continuous` | `False` | 0.8811 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Bipolar DAC 4b Continuous'] |
+| `113-clocked-dac-restore-4b` ↔ `121-dff-reset-voltage` | `False` | 0.8801 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'DFF Reset Voltage'] |
+| `117-bipolar-dac-4b-continuous` ↔ `119-crossing-pulse-detector` | `False` | 0.8795 | `['dut', 'dut']` | ['Bipolar DAC 4b Continuous', 'Crossing Pulse Detector'] |
+| `114-sample-and-hold-ideal` ↔ `119-crossing-pulse-detector` | `False` | 0.8772 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Crossing Pulse Detector'] |
+| `240-cdac-monodown-7b` ↔ `241-cdac-6b-stage1-up` | `False` | 0.8768 | `['dut', 'dut']` | ['CDAC Monodown 7b', 'CDAC 6b Stage1 Up'] |
+| `116-clocked-comparator-reset-low` ↔ `119-crossing-pulse-detector` | `False` | 0.8747 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Crossing Pulse Detector'] |
+| `113-clocked-dac-restore-4b` ↔ `116-clocked-comparator-reset-low` | `False` | 0.8746 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Clocked Comparator Reset Low'] |
 
 ### Task-Level Risk Flags
 
@@ -668,13 +671,13 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `125-clocked-dac-4b-binary` | `dut` | `L1` | `data_converter` | 20 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `124-comp-os-detect` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `114-sample-and-hold-ideal` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
+| `111-clocked-sine-source` | `dut` | `L2` | `stimulus_source_generators` | 118 | 1 | `low_negative_variant_count`, `zero_only_negative` |
 | `110-settling-time-measurement` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `089-sine-periodic-voltage-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `086-dither-noise-like-deterministic-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `084-peak-detector` | `dut` | `L1` | `measurement_instrumentation_flows` | 11 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `083-crossing-metric-writer` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `285-aperture-delay-sample-hold` | `dut` | `L1` | `sampling_analog_memory` | 38 | 1 | `low_negative_variant_count` |
-| `111-clocked-sine-source` | `dut` | `L2` | `measurement_instrumentation_flows` | 118 | 1 | `low_negative_variant_count` |
 | `109-sample-hold-droop-front-end` | `dut` | `L2` | `sampling_analog_memory` | 64 | 1 | `low_negative_variant_count` |
 | `108-reference-startup-enable-flow` | `dut` | `L2` | `bias_reference_power_management` | 53 | 1 | `low_negative_variant_count` |
 | `106-programmable-stimulus-sequencer` | `dut` | `L2` | `stimulus_source_generators` | 55 | 1 | `low_negative_variant_count` |
@@ -682,9 +685,8 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `104-ldo-load-step-recovery` | `dut` | `L2` | `bias_reference_power_management` | 60 | 1 | `low_negative_variant_count` |
 | `103-iq-downconversion-chain` | `dut` | `L2` | `rf_afe_behavioral_macromodels` | 69 | 1 | `low_negative_variant_count` |
 | `102-gain-estimator` | `dut` | `L1` | `measurement_instrumentation_flows` | 94 | 1 | `low_negative_variant_count` |
-| `101-fixed-gain-amplifier` | `dut` | `L2` | `measurement_instrumentation_flows` | 118 | 1 | `low_negative_variant_count` |
+| `101-fixed-gain-amplifier` | `dut` | `L1` | `baseband_signal_conditioning` | 20 | 4 | `short_solution_leq_20_loc` |
 | `100-final-step-file-metric` | `dut` | `L2` | `measurement_instrumentation_flows` | 60 | 1 | `low_negative_variant_count` |
-| `099-dither-adder` | `dut` | `L2` | `measurement_instrumentation_flows` | 118 | 1 | `low_negative_variant_count` |
 | `098-edge-crossing-interval-timer` | `dut` | `L1` | `measurement_instrumentation_flows` | 94 | 1 | `low_negative_variant_count` |
 | `096-converter-static-linearity-measurement` | `dut` | `L2` | `data_converter_models` | 84 | 1 | `low_negative_variant_count` |
 | `095-complete-calibration-loop` | `dut` | `L2` | `calibration_dem_control` | 54 | 1 | `low_negative_variant_count` |
@@ -704,6 +706,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `071-active-high-reset-synchronizer` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 | `070-active-low-reset-synchronizer` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 | `063-masked-config-update-32b` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
+| `059-config-latch-128b-static-enable` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 
 ## Interpretation Notes
 

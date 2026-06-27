@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-26T20:13:59+00:00",
+  "generated_at_utc": "2026-06-27T08:55:21+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -12,8 +12,8 @@
       "tb": 1
     },
     "levels": {
-      "L1": 261,
-      "L2": 36,
+      "L1": 263,
+      "L2": 34,
       "L3": 3
     },
     "difficulties": {
@@ -23,10 +23,10 @@
     },
     "categories": {
       "analog_primitive": 3,
-      "baseband_signal_conditioning": 12,
+      "baseband_signal_conditioning": 13,
       "bias_reference_power_management": 8,
       "calibration": 7,
-      "calibration_control": 7,
+      "calibration_control": 8,
       "calibration_dem_control": 1,
       "clock_timing": 17,
       "clocking": 2,
@@ -40,7 +40,7 @@
       "filter_amp": 1,
       "logic": 8,
       "measurement": 1,
-      "measurement_instrumentation_flows": 10,
+      "measurement_instrumentation_flows": 7,
       "mixed_signal": 33,
       "pll_clock_timing": 8,
       "pll_clock_timing_systems": 3,
@@ -51,7 +51,7 @@
       "sar_logic": 3,
       "signal_processing": 1,
       "stimulus": 1,
-      "stimulus_source_generators": 6,
+      "stimulus_source_generators": 7,
       "testbench_utility_modules": 31,
       "timing": 3,
       "timing_primitive": 2
@@ -60,7 +60,7 @@
     "negative_count_median": 4.0,
     "negative_count_max": 10,
     "solution_loc_min": 6,
-    "solution_loc_median": 25.0,
+    "solution_loc_median": 24.5,
     "solution_loc_max": 252
   },
   "release_wording_recommendation": "Until duplicate/high-overlap groups are manually resolved, describe v3 as \"300 candidate task directories\" rather than \"300 high-quality independent tasks\".",
@@ -335,51 +335,48 @@
       "id": "signal_chain_vs_components",
       "why_flagged": "An L2 flow may package kernels that also appear as standalone source/gain/source tasks.",
       "missing_tasks": [],
-      "classification": "hard_duplicate",
-      "auto_classification": "hard_duplicate",
-      "manual_adjudication": null,
+      "classification": "manually_split_pending_spectre",
+      "auto_classification": "valid_variant_needs_counting_policy",
+      "manual_adjudication": {
+        "classification": "manually_split_pending_spectre",
+        "status": "Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.",
+        "decision": "Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.",
+        "evidence": "Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. Spectre was not rerun in this local audit."
+      },
       "members": [
         {
           "name": "099-dither-adder",
           "id": "v3_099_dither_adder",
           "title": "Dither Adder",
           "form": "dut",
-          "level": "L2",
+          "level": "L1",
           "difficulty": "D2",
-          "category": "measurement_instrumentation_flows",
+          "category": "calibration_control",
           "targets": [
-            "dither_adder.va",
-            "vin_src.va",
-            "lfsr.va",
-            "gain_amp_fixed.va"
+            "dither_adder.va"
           ],
-          "solution_loc": 118,
-          "negative_count": 1,
-          "risks": [
-            "low_negative_variant_count"
-          ],
-          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+          "solution_loc": 22,
+          "negative_count": 4,
+          "risks": [],
+          "solution_sha256_normalized": "sha256:5a9499b49671e74728d348393b4085ab18b80a55d460cb4bd1b67754f817faa2"
         },
         {
           "name": "101-fixed-gain-amplifier",
           "id": "v3_101_fixed_gain_amplifier",
           "title": "Fixed Gain Amplifier",
           "form": "dut",
-          "level": "L2",
+          "level": "L1",
           "difficulty": "D2",
-          "category": "measurement_instrumentation_flows",
+          "category": "baseband_signal_conditioning",
           "targets": [
-            "gain_amp_fixed.va",
-            "vin_src.va",
-            "lfsr.va",
-            "dither_adder.va"
+            "gain_amp_fixed.va"
           ],
-          "solution_loc": 118,
-          "negative_count": 1,
+          "solution_loc": 20,
+          "negative_count": 4,
           "risks": [
-            "low_negative_variant_count"
+            "short_solution_leq_20_loc"
           ],
-          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+          "solution_sha256_normalized": "sha256:0f33689a11ef7982dd75f8499044a232f3832f7b3d943dc91e8dfa60b307a042"
         },
         {
           "name": "111-clocked-sine-source",
@@ -388,7 +385,7 @@
           "form": "dut",
           "level": "L2",
           "difficulty": "D2",
-          "category": "measurement_instrumentation_flows",
+          "category": "stimulus_source_generators",
           "targets": [
             "vin_src.va",
             "lfsr.va",
@@ -398,7 +395,8 @@
           "solution_loc": 118,
           "negative_count": 1,
           "risks": [
-            "low_negative_variant_count"
+            "low_negative_variant_count",
+            "zero_only_negative"
           ],
           "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
         },
@@ -427,71 +425,71 @@
         {
           "task_a": "099-dither-adder",
           "task_b": "101-fixed-gain-amplifier",
-          "classification": "hard_duplicate",
-          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.9273,
-            "solution_token_jaccard": 1.0,
-            "checker_token_jaccard": 1.0,
-            "prompt_sequence_similarity": 0.9847,
-            "solution_sequence_similarity": 1.0,
-            "checker_sequence_similarity": 1.0
+            "prompt_token_jaccard": 0.3371,
+            "solution_token_jaccard": 0.3,
+            "checker_token_jaccard": 0.6,
+            "prompt_sequence_similarity": 0.5357,
+            "solution_sequence_similarity": 0.7305,
+            "checker_sequence_similarity": 0.7425
           }
         },
         {
           "task_a": "099-dither-adder",
           "task_b": "111-clocked-sine-source",
-          "classification": "hard_duplicate",
-          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.9189,
-            "solution_token_jaccard": 1.0,
-            "checker_token_jaccard": 1.0,
-            "prompt_sequence_similarity": 0.986,
-            "solution_sequence_similarity": 1.0,
-            "checker_sequence_similarity": 1.0
+            "prompt_token_jaccard": 0.1942,
+            "solution_token_jaccard": 0.3893,
+            "checker_token_jaccard": 0.1875,
+            "prompt_sequence_similarity": 0.4393,
+            "solution_sequence_similarity": 0.3454,
+            "checker_sequence_similarity": 0.4101
           }
         },
         {
           "task_a": "099-dither-adder",
           "task_b": "287-gain-extraction-flow",
-          "classification": "valid_variant_needs_counting_policy",
-          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1348,
-            "solution_token_jaccard": 0.4051,
-            "checker_token_jaccard": 0.1237,
-            "prompt_sequence_similarity": 0.1875,
-            "solution_sequence_similarity": 0.8701,
-            "checker_sequence_similarity": 0.2672
+            "prompt_token_jaccard": 0.099,
+            "solution_token_jaccard": 0.2282,
+            "checker_token_jaccard": 0.0495,
+            "prompt_sequence_similarity": 0.2661,
+            "solution_sequence_similarity": 0.277,
+            "checker_sequence_similarity": 0.1816
           }
         },
         {
           "task_a": "101-fixed-gain-amplifier",
           "task_b": "111-clocked-sine-source",
-          "classification": "hard_duplicate",
-          "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.9189,
-            "solution_token_jaccard": 1.0,
-            "checker_token_jaccard": 1.0,
-            "prompt_sequence_similarity": 0.9849,
-            "solution_sequence_similarity": 1.0,
-            "checker_sequence_similarity": 1.0
+            "prompt_token_jaccard": 0.1885,
+            "solution_token_jaccard": 0.2215,
+            "checker_token_jaccard": 0.1875,
+            "prompt_sequence_similarity": 0.4675,
+            "solution_sequence_similarity": 0.3051,
+            "checker_sequence_similarity": 0.4368
           }
         },
         {
           "task_a": "101-fixed-gain-amplifier",
           "task_b": "287-gain-extraction-flow",
-          "classification": "valid_variant_needs_counting_policy",
-          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1299,
-            "solution_token_jaccard": 0.4051,
-            "checker_token_jaccard": 0.1237,
-            "prompt_sequence_similarity": 0.1874,
-            "solution_sequence_similarity": 0.8701,
-            "checker_sequence_similarity": 0.2672
+            "prompt_token_jaccard": 0.1105,
+            "solution_token_jaccard": 0.2154,
+            "checker_token_jaccard": 0.0495,
+            "prompt_sequence_similarity": 0.1668,
+            "solution_sequence_similarity": 0.2435,
+            "checker_sequence_similarity": 0.2328
           }
         },
         {
@@ -500,20 +498,20 @@
           "classification": "valid_variant_needs_counting_policy",
           "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
           "metrics": {
-            "prompt_token_jaccard": 0.1342,
+            "prompt_token_jaccard": 0.1022,
             "solution_token_jaccard": 0.4051,
-            "checker_token_jaccard": 0.1237,
-            "prompt_sequence_similarity": 0.1876,
+            "checker_token_jaccard": 0.0696,
+            "prompt_sequence_similarity": 0.2169,
             "solution_sequence_similarity": 0.8701,
-            "checker_sequence_similarity": 0.2672
+            "checker_sequence_similarity": 0.2691
           }
         }
       ],
       "prompt_excerpts": {
-        "099-dither-adder": "# Dither Adder\nImplement `dither_adder.va` in Verilog-A.\n## Interface\n```verilog\nmodule dither_adder(\n    input  electrical VRES_P,\n    input  electrical VRES_N,\n    input  electrical DPN,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `dither_adder` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Differential dither adder — benchmark gold style.\n// Keeps a direct contribution instead of the original transition(V(VRES_P)+...)",
-        "101-fixed-gain-amplifier": "# Fixed Gain Amplifier\nImplement `gain_amp_fixed.va` in Verilog-A.\n## Interface\n```verilog\nmodule gain_amp_fixed(\n    input  electrical VIN_P,\n    input  electrical VIN_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `gain_amp_fixed` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Fixed-gain differential amplifier (no programmable CTRL).\n//\n//   VOUT_P = vdd/2 + ACTUAL_GAIN * (VIN_P - VIN_N) / 2",
-        "111-clocked-sine-source": "# Clocked Sine Source\nImplement `vin_src.va` in Verilog-A.\n## Interface\n```verilog\nmodule vin_src(\n    input  electrical CLK,\n    input  electrical RST_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis task asks for the `vin_src` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.\nGold-source design notes carried into the public contract:\n```text\n// Clocked noisy sine source (sample-and-hold at CLK rising edge).\n//\n// VOUT_P = vdd/2 + ampl*sin(2*pi*freq*t) + N(0, sigma)",
-        "287-gain-extraction-flow": "# Gain Extraction Flow\nOne-shot L2 support flow: build a voltage-domain dithered differential input\npath, fixed-gain differential output path, and Spectre transient testbench. This\nis a support flow and should be reported separately from core analog/mixed-signal\ncircuit-function score claims.\n## Required Output\n- `dither_adder.va`\n- `gain_amp_fixed.va`\n- `lfsr.va`\n- `tb_gain_extraction_ref.scs`\n- `vin_src.va`\nDo not return `gain_estimator.va` or waveform files.\n## Public Interfaces\n- `vin_src(CLK, RST_N, VOUT_P, VOUT_N)`\n- `lfsr(DPN, VDD, VSS, CLK, EN, RSTB)`\n- `dither_adder(VRES_P, VRES_N, DPN, VOUT_P, VOUT_N)`\n- `gain_amp_fixed(VIN_P, VIN_N, VOUT_P, VOUT_N)`\nAll ports are scalar voltage-domain electrical nodes."
+        "099-dither-adder": "# Dither Adder\nImplement `dither_adder.va` in Verilog-A.\n## Interface\n```verilog\nmodule dither_adder(\n    input  electrical VRES_P,\n    input  electrical VRES_N,\n    input  electrical DPN,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nImplement a standalone differential dither injection block. The module receives\na differential residual signal on `VRES_P/VRES_N` and a voltage-coded dither\npolarity input `DPN`. When `DPN` is above the threshold, inject a positive\ndifferential dither; when it is below the threshold, inject a negative\ndifferential dither.",
+        "101-fixed-gain-amplifier": "# Fixed Gain Amplifier\nImplement `gain_amp_fixed.va` in Verilog-A.\n## Interface\n```verilog\nmodule gain_amp_fixed(\n    input  electrical VIN_P,\n    input  electrical VIN_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nImplement a standalone fixed-gain differential amplifier. The module receives\n`VIN_P/VIN_N`, computes the input differential voltage, multiplies it by the\n`ACTUAL_GAIN` parameter, and produces a differential output centered around\n`vdd/2`:\n```text\nvout_diff = ACTUAL_GAIN * (VIN_P - VIN_N)",
+        "111-clocked-sine-source": "# Clocked Sine Source\nImplement `vin_src.va` in Verilog-A.\n## Interface\n```verilog\nmodule vin_src(\n    input  electrical CLK,\n    input  electrical RST_N,\n    output electrical VOUT_P,\n    output electrical VOUT_N\n);\n```\n## Required Behavior\nThis is an L2 support-component task for measurement-flow stimulus generation,\nnot a core circuit-function task. Implement `vin_src.va`, a clocked differential\nsine stimulus source that can support composed measurement flows such as\ngain-extraction benches.\nOn each rising crossing of `CLK`, if `RST_N` is high, update `VOUT_P` to a\nsampled sine value around `vdd/2`. Keep `VOUT_N` at `vdd/2` as the reference",
+        "287-gain-extraction-flow": "# Gain Extraction Flow\nMeasurement L2 flow: build a voltage-domain dithered differential input path,\nfixed-gain differential output path, and Spectre transient testbench. This is a\ncomposed measurement/instrumentation flow for checking gain separation from a\nsmall dithered input stimulus.\n## Required Output\n- `dither_adder.va`\n- `gain_amp_fixed.va`\n- `lfsr.va`\n- `tb_gain_extraction_ref.scs`\n- `vin_src.va`\nDo not return `gain_estimator.va` or waveform files.\n## Public Interfaces\n- `vin_src(CLK, RST_N, VOUT_P, VOUT_N)`\n- `lfsr(DPN, VDD, VSS, CLK, EN, RSTB)`\n- `dither_adder(VRES_P, VRES_N, DPN, VOUT_P, VOUT_N)`\n- `gain_amp_fixed(VIN_P, VIN_N, VOUT_P, VOUT_N)`\nAll ports are scalar voltage-domain electrical nodes."
       }
     },
     {
@@ -796,11 +794,6 @@
         "081-aperture-delay-track-and-hold",
         "285-aperture-delay-sample-hold"
       ],
-      "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14": [
-        "099-dither-adder",
-        "101-fixed-gain-amplifier",
-        "111-clocked-sine-source"
-      ],
       "sha256:e29951d3983029d8a6aa043e24c6510a8cc4d12b38ef5e15636075ffa313f4c2": [
         "007-first-order-lowpass",
         "286-first-order-lowpass-bugfix"
@@ -824,60 +817,6 @@
           "Aperture Delay Sample Hold"
         ],
         "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task."
-      },
-      {
-        "task_a": "099-dither-adder",
-        "task_b": "101-fixed-gain-amplifier",
-        "issue_named_pair": true,
-        "classification": "hard_duplicate",
-        "solution_similarity": 1.0,
-        "solution_token_jaccard": 1.0,
-        "checker_similarity": 1.0,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Dither Adder",
-          "Fixed Gain Amplifier"
-        ],
-        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
-      },
-      {
-        "task_a": "099-dither-adder",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": true,
-        "classification": "hard_duplicate",
-        "solution_similarity": 1.0,
-        "solution_token_jaccard": 1.0,
-        "checker_similarity": 1.0,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Dither Adder",
-          "Clocked Sine Source"
-        ],
-        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
-      },
-      {
-        "task_a": "101-fixed-gain-amplifier",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": true,
-        "classification": "hard_duplicate",
-        "solution_similarity": 1.0,
-        "solution_token_jaccard": 1.0,
-        "checker_similarity": 1.0,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Fixed Gain Amplifier",
-          "Clocked Sine Source"
-        ],
-        "recommendation": "Solution, target artifact set, and checker contracts are all highly similar; likely duplicate benchmark credit."
       },
       {
         "task_a": "007-first-order-lowpass",
@@ -1584,51 +1523,6 @@
     ],
     "prompt_overlap_pairs": [
       {
-        "task_a": "099-dither-adder",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": true,
-        "prompt_similarity": 0.986,
-        "prompt_token_jaccard": 0.9189,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Dither Adder",
-          "Clocked Sine Source"
-        ]
-      },
-      {
-        "task_a": "101-fixed-gain-amplifier",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": true,
-        "prompt_similarity": 0.9849,
-        "prompt_token_jaccard": 0.9189,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Fixed Gain Amplifier",
-          "Clocked Sine Source"
-        ]
-      },
-      {
-        "task_a": "099-dither-adder",
-        "task_b": "101-fixed-gain-amplifier",
-        "issue_named_pair": true,
-        "prompt_similarity": 0.9847,
-        "prompt_token_jaccard": 0.9273,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Dither Adder",
-          "Fixed Gain Amplifier"
-        ]
-      },
-      {
         "task_a": "070-active-low-reset-synchronizer",
         "task_b": "071-active-high-reset-synchronizer",
         "issue_named_pair": false,
@@ -1704,36 +1598,6 @@
         ]
       },
       {
-        "task_a": "100-final-step-file-metric",
-        "task_b": "101-fixed-gain-amplifier",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.935,
-        "prompt_token_jaccard": 0.8125,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Final Step File Metric",
-          "Fixed Gain Amplifier"
-        ]
-      },
-      {
-        "task_a": "100-final-step-file-metric",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.9344,
-        "prompt_token_jaccard": 0.8053,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Final Step File Metric",
-          "Clocked Sine Source"
-        ]
-      },
-      {
         "task_a": "120-not-gate-voltage",
         "task_b": "121-dff-reset-voltage",
         "issue_named_pair": false,
@@ -1746,36 +1610,6 @@
         "titles": [
           "Not Gate Voltage",
           "DFF Reset Voltage"
-        ]
-      },
-      {
-        "task_a": "099-dither-adder",
-        "task_b": "100-final-step-file-metric",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.9331,
-        "prompt_token_jaccard": 0.8125,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Dither Adder",
-          "Final Step File Metric"
-        ]
-      },
-      {
-        "task_a": "098-edge-crossing-interval-timer",
-        "task_b": "099-dither-adder",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.9246,
-        "prompt_token_jaccard": 0.7965,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Edge Crossing Interval Timer",
-          "Dither Adder"
         ]
       },
       {
@@ -1794,21 +1628,6 @@
         ]
       },
       {
-        "task_a": "098-edge-crossing-interval-timer",
-        "task_b": "111-clocked-sine-source",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.922,
-        "prompt_token_jaccard": 0.7895,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Edge Crossing Interval Timer",
-          "Clocked Sine Source"
-        ]
-      },
-      {
         "task_a": "118-clocked-dac-restore-7b",
         "task_b": "121-dff-reset-voltage",
         "issue_named_pair": false,
@@ -1821,21 +1640,6 @@
         "titles": [
           "Clocked DAC Restore 7b",
           "DFF Reset Voltage"
-        ]
-      },
-      {
-        "task_a": "098-edge-crossing-interval-timer",
-        "task_b": "101-fixed-gain-amplifier",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.9193,
-        "prompt_token_jaccard": 0.7965,
-        "forms": [
-          "dut",
-          "dut"
-        ],
-        "titles": [
-          "Edge Crossing Interval Timer",
-          "Fixed Gain Amplifier"
         ]
       },
       {
@@ -4007,6 +3811,28 @@
         "solution_sha256_normalized": "sha256:4e53c12600ed460c53e02d8b7bcb6a975297d4cb65b3c036bb9391ec57bd51b1"
       },
       {
+        "name": "111-clocked-sine-source",
+        "id": "v3_111_clocked_sine_source",
+        "title": "Clocked Sine Source",
+        "form": "dut",
+        "level": "L2",
+        "difficulty": "D2",
+        "category": "stimulus_source_generators",
+        "targets": [
+          "vin_src.va",
+          "lfsr.va",
+          "dither_adder.va",
+          "gain_amp_fixed.va"
+        ],
+        "solution_loc": 118,
+        "negative_count": 1,
+        "risks": [
+          "low_negative_variant_count",
+          "zero_only_negative"
+        ],
+        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+      },
+      {
         "name": "110-settling-time-measurement",
         "id": "v3_110_settling_time_measurement",
         "title": "Settling Time Measurement",
@@ -4118,27 +3944,6 @@
           "low_negative_variant_count"
         ],
         "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
-      },
-      {
-        "name": "111-clocked-sine-source",
-        "id": "v3_111_clocked_sine_source",
-        "title": "Clocked Sine Source",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "measurement_instrumentation_flows",
-        "targets": [
-          "vin_src.va",
-          "lfsr.va",
-          "dither_adder.va",
-          "gain_amp_fixed.va"
-        ],
-        "solution_loc": 118,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
       },
       {
         "name": "109-sample-hold-droop-front-end",
@@ -4272,21 +4077,18 @@
         "id": "v3_101_fixed_gain_amplifier",
         "title": "Fixed Gain Amplifier",
         "form": "dut",
-        "level": "L2",
+        "level": "L1",
         "difficulty": "D2",
-        "category": "measurement_instrumentation_flows",
+        "category": "baseband_signal_conditioning",
         "targets": [
-          "gain_amp_fixed.va",
-          "vin_src.va",
-          "lfsr.va",
-          "dither_adder.va"
+          "gain_amp_fixed.va"
         ],
-        "solution_loc": 118,
-        "negative_count": 1,
+        "solution_loc": 20,
+        "negative_count": 4,
         "risks": [
-          "low_negative_variant_count"
+          "short_solution_leq_20_loc"
         ],
-        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+        "solution_sha256_normalized": "sha256:0f33689a11ef7982dd75f8499044a232f3832f7b3d943dc91e8dfa60b307a042"
       },
       {
         "name": "100-final-step-file-metric",
@@ -4306,27 +4108,6 @@
           "low_negative_variant_count"
         ],
         "solution_sha256_normalized": "sha256:665037f2ad1841df84815d6cf48d0d0b2c430e3f388ab80795add62d1d210a03"
-      },
-      {
-        "name": "099-dither-adder",
-        "id": "v3_099_dither_adder",
-        "title": "Dither Adder",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "measurement_instrumentation_flows",
-        "targets": [
-          "dither_adder.va",
-          "vin_src.va",
-          "lfsr.va",
-          "gain_amp_fixed.va"
-        ],
-        "solution_loc": 118,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
       },
       {
         "name": "098-edge-crossing-interval-timer",
@@ -5041,14 +4822,11 @@
     "098-edge-crossing-interval-timer": [
       "low_negative_variant_count"
     ],
-    "099-dither-adder": [
-      "low_negative_variant_count"
-    ],
     "100-final-step-file-metric": [
       "low_negative_variant_count"
     ],
     "101-fixed-gain-amplifier": [
-      "low_negative_variant_count"
+      "short_solution_leq_20_loc"
     ],
     "102-gain-estimator": [
       "low_negative_variant_count"
@@ -5076,7 +4854,8 @@
       "short_solution_leq_20_loc"
     ],
     "111-clocked-sine-source": [
-      "low_negative_variant_count"
+      "low_negative_variant_count",
+      "zero_only_negative"
     ],
     "114-sample-and-hold-ideal": [
       "short_solution_leq_20_loc",

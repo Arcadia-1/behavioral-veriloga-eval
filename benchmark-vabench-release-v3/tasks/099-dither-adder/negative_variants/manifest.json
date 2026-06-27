@@ -1,10 +1,24 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "dither_adder.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Drives both outputs to zero instead of passing residual plus dither.",
+      "path": "negative_variants/neg_001_zero/dither_adder.va"
+    },
+    {
+      "id": "neg_002_wrong_polarity",
+      "description": "Reverses the DPN polarity and injects the opposite differential sign.",
+      "path": "negative_variants/neg_002_wrong_polarity/dither_adder.va"
+    },
+    {
+      "id": "neg_003_common_mode_shift",
+      "description": "Adds the dither to both outputs and shifts common-mode instead of differential output.",
+      "path": "negative_variants/neg_003_common_mode_shift/dither_adder.va"
+    },
+    {
+      "id": "neg_004_fixed_positive_dither",
+      "description": "Always injects positive differential dither and ignores DPN.",
+      "path": "negative_variants/neg_004_fixed_positive_dither/dither_adder.va"
     }
   ]
 }

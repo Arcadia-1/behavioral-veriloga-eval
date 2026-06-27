@@ -101,6 +101,26 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "hidden parameters different from visible smoke parameters."
         ),
     },
+    "signal_chain_vs_components": {
+        "classification": "manually_split_pending_spectre",
+        "status": "Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.",
+        "decision": (
+            "Keep 099 and 101 as standalone L1 component tasks after boundary repair; "
+            "keep 111 only as an L2 support component for measurement-flow stimulus; "
+            "keep 287 as a Measurement L2 composed flow. The 287/component overlap is "
+            "component-in-flow overlap, not a duplicate-function merge condition."
+        ),
+        "evidence": (
+            "Task 099 now targets only dither_adder.va with task-specific dither/common-mode "
+            "checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. "
+            "Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode "
+            "checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. "
+            "Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative "
+            "FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains "
+            "Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. "
+            "Spectre was not rerun in this local audit."
+        ),
+    },
 }
 
 COMMON_WORDS = {
