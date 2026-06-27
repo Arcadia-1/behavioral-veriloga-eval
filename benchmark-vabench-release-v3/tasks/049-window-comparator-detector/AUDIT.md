@@ -27,11 +27,15 @@ Task boundary is one Verilog-A DUT, `window_comparator_ref.va`, plus EVAS/Spectr
 - Checker id: `v3_049_window_comparator_detector`
 - Runner mapping: `CHECKS["v3_049_window_comparator_detector"] = check_true_window_comparator`
 - EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 4/4 structured negatives expected to fail
-  as `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`.
+- Concrete negative recertification: 4/4 structured negatives fail as
+  simulation-correctness negatives.
 - Visible compile/sim smoke: `COMPILE_SIM_OK` with public `vin/out`
   observables saved.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Spectre/Spectre-AX correlation has not been rerun from this working tree; use EVAS-only wording unless fresh dual-simulator evidence is attached.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

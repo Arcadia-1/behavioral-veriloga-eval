@@ -2,7 +2,8 @@
 
 Task: `006-element-shuffler`
 
-Status: EVAS formal candidate with reset-restart checker coverage.
+Status: Gate 1 accepted formal candidate with reset-restart checker coverage.
+Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Four-Standard Review
 
@@ -31,9 +32,12 @@ At each sample time listed in `test_harness/checks.yaml`, classify an output as 
 - File-level release-v3 structure prepared in this task directory only.
 - Gold EVAS certification PASS under `v3_006_element_shuffler` with active sequence `2,0,3,1,2,0,2,0,3,1`.
 - Concrete negative variants: 6/6 compile and fail with `FAIL_SIM_CORRECTNESS`.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 6/6 hidden negative variants `NEGATIVE_REJECTED`.
 
 ## Remaining Risk
 
-- Paper-facing certification still needs fresh EVAS/Spectre correlation or an explicit EVAS-only label.
+- AHDL lint evidence is not attached yet; do not mark
+  `cadence_modeling_ready` until lint/triage is recorded.
 
 Certification status: certified as an EVAS formal candidate on 2026-06-26.

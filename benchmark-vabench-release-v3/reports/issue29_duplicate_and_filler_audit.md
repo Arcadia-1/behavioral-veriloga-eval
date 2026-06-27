@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-27T18:56:12+00:00`
+- Generated UTC: `2026-06-27T19:10:56+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
@@ -37,7 +37,7 @@
 | `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy; manual=Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
 | `timer_reacquire_pair` | `manual_split_distinct_rows` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.` |
-| `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review, valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
 | `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
 | `pfd_active_low_reset_pair` | `high_overlap` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `high_overlap` |
@@ -56,7 +56,7 @@
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `007-first-order-lowpass` ↔ `286-first-order-lowpass-bugfix` | `valid_variant_needs_counting_policy` | 0.3878 | 1.0 | 0.4465 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `007-first-order-lowpass` ↔ `286-first-order-lowpass-bugfix` | `valid_variant_needs_counting_policy` | 0.4113 | 1.0 | 0.4465 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -78,9 +78,9 @@
 - Preserve the public module names, port order, parameters, and waveform observable names.
 ## Public Verilog-A Interface
 - `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.
-## Public Scenario And Observable Contract
-The supplied testbenches provide the exact stimulus and transient analysis
-settings. The intended public scenario…
+## Public Parameter Contract
+The starter exposes public parameters `alpha` and `tr`:
+- `alpha`: dimensionless recurrence coefficient, default `0.025`. If the
 ~~~
 
 #### `286-first-order-lowpass-bugfix`
@@ -97,13 +97,13 @@ One-shot bugfix task for a voltage-domain first-order low-pass filter.
 ## Public Interface
 Preserve module `first_order_lowpass(vin, vout)` with electrical
 voltage-domain ports.
-## Public Scenario
-The supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and
-observe the transient response through the settling window.
-## Functional Contract
-- `vout` should be a stable finite-bandwidth low-pass response with an
-  effective time constant on the order of tens of nanoseconds.
-- After the step, `vout` should move smoothly and monotonically toward `0.8 V`.
+## Public Parameter And Bugfix Contract
+The supplied buggy DUT exposes public parameters `alpha` and `tr`:
+- `alpha = 0.010` in the buggy input: dimensionless recurrence coefficient.
+  This value makes the supplied discrete-time response too slow for the public
+  settling envelope and is the bug to repair if retaining the starter-style
+  recurrence.
+- `tr = 200 ps`: output transition smoothing time.
 ~~~
 
 </details>
@@ -119,7 +119,7 @@ observe the transient response through the settling window.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `049-window-comparator-detector` ↔ `284-window-comparator-testbench` | `valid_variant_needs_counting_policy` | 0.1841 | 0.1099 | 0.3799 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `049-window-comparator-detector` ↔ `284-window-comparator-testbench` | `valid_variant_needs_counting_policy` | 0.2438 | 0.1099 | 0.3799 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -154,9 +154,13 @@ Generate only `tb_window_comparator_ref.scs` for the supplied `window_comparator
 This is a testbench-generation task: the exact stimulus, supply, save, and
 transient settings below are part of the requested testbench artifact contract.
 Do not modify or regenerate the supplied comparator DUT.
-The DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.
-The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.
-Return onl…
+The supplied DUT declares `window_comparator_ref(VDD, VSS, vin, out)`. It uses
+public parameters `vlow = 0.3 V`, `vhigh = 0.6 V`, and `tedge = 200 ps`, and
+drives `out` high only for the strict window condition
+`vlow < V(vin,VSS) < vhigh`. Equality at either threshold is outside the
+window. The output is a rail-derived voltage decision smoothed by
+`transition(...)`.
+The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or…
 ~~~
 
 </details>
@@ -229,7 +233,7 @@ voltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `needs_human_review` | 0.4547 | 0.3392 | 0.5722 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `097-cppll-tracking-reacquire-timer` ↔ `107-reference-step-clock` | `needs_human_review` | 0.4165 | 0.3392 | 0.5722 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -285,19 +289,19 @@ generated `CLK` waveform.
 
 - Why flagged: An L2 flow may package kernels that also appear as standalone source/gain/source tasks.
 - Group classification: `valid_variant_needs_counting_policy`
-- Automatic classification before manual review: `valid_variant_needs_counting_policy`
+- Automatic classification before manual review: `needs_human_review`
 - Manual status: Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.
 - Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `needs_human_review` | 0.5357 | 0.7305 | 0.7425 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `099-dither-adder` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4393 | 0.3454 | 0.4101 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `099-dither-adder` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.2661 | 0.277 | 0.1816 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4675 | 0.3051 | 0.4368 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `101-fixed-gain-amplifier` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.1668 | 0.2435 | 0.2328 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `valid_variant_needs_counting_policy` | 0.2169 | 0.8701 | 0.2691 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `needs_human_review` | 0.5442 | 0.7305 | 0.7425 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `099-dither-adder` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.3823 | 0.6138 | 0.4101 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `099-dither-adder` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.2101 | 0.277 | 0.1816 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4296 | 0.5686 | 0.4368 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `101-fixed-gain-amplifier` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.156 | 0.2435 | 0.2328 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.1882 | 0.3454 | 0.2691 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -695,7 +699,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `125-clocked-dac-4b-binary` | `dut` | `L1` | `data_converter` | 20 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `124-comp-os-detect` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `114-sample-and-hold-ideal` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
-| `111-clocked-sine-source` | `dut` | `L2` | `stimulus_source_generators` | 118 | 1 | `low_negative_variant_count`, `zero_only_negative` |
+| `111-clocked-sine-source` | `dut` | `L2` | `stimulus_source_generators` | 34 | 1 | `low_negative_variant_count`, `zero_only_negative` |
 | `110-settling-time-measurement` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `089-sine-periodic-voltage-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `086-dither-noise-like-deterministic-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |

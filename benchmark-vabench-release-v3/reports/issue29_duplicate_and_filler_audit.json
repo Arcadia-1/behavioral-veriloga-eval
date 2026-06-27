@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-27T18:56:12+00:00",
+  "generated_at_utc": "2026-06-27T19:10:56+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -158,18 +158,18 @@
           "classification": "valid_variant_needs_counting_policy",
           "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
           "metrics": {
-            "prompt_token_jaccard": 0.2917,
+            "prompt_token_jaccard": 0.312,
             "solution_token_jaccard": 0.913,
             "checker_token_jaccard": 0.1965,
-            "prompt_sequence_similarity": 0.3878,
+            "prompt_sequence_similarity": 0.4113,
             "solution_sequence_similarity": 1.0,
             "checker_sequence_similarity": 0.4465
           }
         }
       ],
       "prompt_excerpts": {
-        "007-first-order-lowpass": "# First Order Lowpass\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Baseband Signal Conditioning\n- Base function: First-order lowpass\n- Domain: `voltage`\n- Target artifact(s): `first_order_lowpass.va`\n- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.\n## Public Scenario And Observable Contract\nThe supplied testbenches provide the exact stimulus and transient analysis\nsettings. The intended public scenario…",
-        "286-first-order-lowpass-bugfix": "# First Order Lowpass Bugfix\nOne-shot bugfix task for a voltage-domain first-order low-pass filter.\n## Agent-Visible Inputs\n- `dut_buggy.va`\n- `tb_first_order_lowpass_buggy.scs`\n- `tb_first_order_lowpass_ref.scs`\n## Required Output\n- `dut_fixed.va`\n## Public Interface\nPreserve module `first_order_lowpass(vin, vout)` with electrical\nvoltage-domain ports.\n## Public Scenario\nThe supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and\nobserve the transient response through the settling window.\n## Functional Contract\n- `vout` should be a stable finite-bandwidth low-pass response with an\n  effective time constant on the order of tens of nanoseconds.\n- After the step, `vout` should move smoothly and monotonically toward `0.8 V`."
+        "007-first-order-lowpass": "# First Order Lowpass\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Baseband Signal Conditioning\n- Base function: First-order lowpass\n- Domain: `voltage`\n- Target artifact(s): `first_order_lowpass.va`\n- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.\n## Public Parameter Contract\nThe starter exposes public parameters `alpha` and `tr`:\n- `alpha`: dimensionless recurrence coefficient, default `0.025`. If the",
+        "286-first-order-lowpass-bugfix": "# First Order Lowpass Bugfix\nOne-shot bugfix task for a voltage-domain first-order low-pass filter.\n## Agent-Visible Inputs\n- `dut_buggy.va`\n- `tb_first_order_lowpass_buggy.scs`\n- `tb_first_order_lowpass_ref.scs`\n## Required Output\n- `dut_fixed.va`\n## Public Interface\nPreserve module `first_order_lowpass(vin, vout)` with electrical\nvoltage-domain ports.\n## Public Parameter And Bugfix Contract\nThe supplied buggy DUT exposes public parameters `alpha` and `tr`:\n- `alpha = 0.010` in the buggy input: dimensionless recurrence coefficient.\n  This value makes the supplied discrete-time response too slow for the public\n  settling envelope and is the bug to repair if retaining the starter-style\n  recurrence.\n- `tr = 200 ps`: output transition smoothing time."
       }
     },
     {
@@ -227,10 +227,10 @@
           "classification": "valid_variant_needs_counting_policy",
           "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
           "metrics": {
-            "prompt_token_jaccard": 0.1793,
+            "prompt_token_jaccard": 0.2239,
             "solution_token_jaccard": 0.125,
             "checker_token_jaccard": 0.1852,
-            "prompt_sequence_similarity": 0.1841,
+            "prompt_sequence_similarity": 0.2438,
             "solution_sequence_similarity": 0.1099,
             "checker_sequence_similarity": 0.3799
           }
@@ -238,7 +238,7 @@
       ],
       "prompt_excerpts": {
         "049-window-comparator-detector": "# Window Comparator Detector\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Comparator and Decision Circuits\n- Base function: Window comparator/detector\n- Domain: `voltage`\n- Target artifact(s): `window_comparator_ref.va`\n- Supplied/reference support artifact(s): `tb_window_comparator_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.\n## Public Testbench And Observable Contract\nThe supplied testbenches define the exact supply rails, input stimulus,\ntransi…",
-        "284-window-comparator-testbench": "# Window Comparator Testbench\nGenerate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.\nThis is a testbench-generation task: the exact stimulus, supply, save, and\ntransient settings below are part of the requested testbench artifact contract.\nDo not modify or regenerate the supplied comparator DUT.\nThe DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.\nThe testbench must include `ahdl_include \"window_comparator_ref.va\"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.\nReturn onl…"
+        "284-window-comparator-testbench": "# Window Comparator Testbench\nGenerate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.\nThis is a testbench-generation task: the exact stimulus, supply, save, and\ntransient settings below are part of the requested testbench artifact contract.\nDo not modify or regenerate the supplied comparator DUT.\nThe supplied DUT declares `window_comparator_ref(VDD, VSS, vin, out)`. It uses\npublic parameters `vlow = 0.3 V`, `vhigh = 0.6 V`, and `tedge = 200 ps`, and\ndrives `out` high only for the strict window condition\n`vlow < V(vin,VSS) < vhigh`. Equality at either threshold is outside the\nwindow. The output is a rail-derived voltage decision smoothed by\n`transition(...)`.\nThe testbench must include `ahdl_include \"window_comparator_ref.va\"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or…"
       }
     },
     {
@@ -361,10 +361,10 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.2963,
+            "prompt_token_jaccard": 0.3219,
             "solution_token_jaccard": 0.4066,
             "checker_token_jaccard": 0.3226,
-            "prompt_sequence_similarity": 0.4547,
+            "prompt_sequence_similarity": 0.4165,
             "solution_sequence_similarity": 0.3392,
             "checker_sequence_similarity": 0.5722
           }
@@ -380,7 +380,7 @@
       "why_flagged": "An L2 flow may package kernels that also appear as standalone source/gain/source tasks.",
       "missing_tasks": [],
       "classification": "valid_variant_needs_counting_policy",
-      "auto_classification": "valid_variant_needs_counting_policy",
+      "auto_classification": "needs_human_review",
       "manual_adjudication": {
         "classification": "valid_variant_needs_counting_policy",
         "status": "Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.",
@@ -431,18 +431,15 @@
           "difficulty": "D2",
           "category": "stimulus_source_generators",
           "targets": [
-            "vin_src.va",
-            "lfsr.va",
-            "dither_adder.va",
-            "gain_amp_fixed.va"
+            "vin_src.va"
           ],
-          "solution_loc": 118,
+          "solution_loc": 34,
           "negative_count": 1,
           "risks": [
             "low_negative_variant_count",
             "zero_only_negative"
           ],
-          "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+          "solution_sha256_normalized": "sha256:22d4701148ee0150f3cbda84f9cf0a5a797619d688e260a465c99ae24bbd4180"
         },
         {
           "name": "287-gain-extraction-flow",
@@ -472,10 +469,10 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.3371,
-            "solution_token_jaccard": 0.3,
+            "prompt_token_jaccard": 0.3276,
+            "solution_token_jaccard": 0.42,
             "checker_token_jaccard": 0.6,
-            "prompt_sequence_similarity": 0.5357,
+            "prompt_sequence_similarity": 0.5442,
             "solution_sequence_similarity": 0.7305,
             "checker_sequence_similarity": 0.7425
           }
@@ -486,11 +483,11 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1942,
-            "solution_token_jaccard": 0.3893,
+            "prompt_token_jaccard": 0.1702,
+            "solution_token_jaccard": 0.2683,
             "checker_token_jaccard": 0.1875,
-            "prompt_sequence_similarity": 0.4393,
-            "solution_sequence_similarity": 0.3454,
+            "prompt_sequence_similarity": 0.3823,
+            "solution_sequence_similarity": 0.6138,
             "checker_sequence_similarity": 0.4101
           }
         },
@@ -500,10 +497,10 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.099,
-            "solution_token_jaccard": 0.2282,
+            "prompt_token_jaccard": 0.114,
+            "solution_token_jaccard": 0.2538,
             "checker_token_jaccard": 0.0495,
-            "prompt_sequence_similarity": 0.2661,
+            "prompt_sequence_similarity": 0.2101,
             "solution_sequence_similarity": 0.277,
             "checker_sequence_similarity": 0.1816
           }
@@ -514,11 +511,11 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1885,
-            "solution_token_jaccard": 0.2215,
+            "prompt_token_jaccard": 0.1975,
+            "solution_token_jaccard": 0.2375,
             "checker_token_jaccard": 0.1875,
-            "prompt_sequence_similarity": 0.4675,
-            "solution_sequence_similarity": 0.3051,
+            "prompt_sequence_similarity": 0.4296,
+            "solution_sequence_similarity": 0.5686,
             "checker_sequence_similarity": 0.4368
           }
         },
@@ -528,10 +525,10 @@
           "classification": "needs_human_review",
           "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1105,
+            "prompt_token_jaccard": 0.1124,
             "solution_token_jaccard": 0.2154,
             "checker_token_jaccard": 0.0495,
-            "prompt_sequence_similarity": 0.1668,
+            "prompt_sequence_similarity": 0.156,
             "solution_sequence_similarity": 0.2435,
             "checker_sequence_similarity": 0.2328
           }
@@ -539,14 +536,14 @@
         {
           "task_a": "111-clocked-sine-source",
           "task_b": "287-gain-extraction-flow",
-          "classification": "valid_variant_needs_counting_policy",
-          "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
+          "classification": "needs_human_review",
+          "recommendation": "Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually.",
           "metrics": {
-            "prompt_token_jaccard": 0.1022,
-            "solution_token_jaccard": 0.4051,
+            "prompt_token_jaccard": 0.1869,
+            "solution_token_jaccard": 0.3082,
             "checker_token_jaccard": 0.0696,
-            "prompt_sequence_similarity": 0.2169,
-            "solution_sequence_similarity": 0.8701,
+            "prompt_sequence_similarity": 0.1882,
+            "solution_sequence_similarity": 0.3454,
             "checker_sequence_similarity": 0.2691
           }
         }
@@ -3825,18 +3822,15 @@
         "difficulty": "D2",
         "category": "stimulus_source_generators",
         "targets": [
-          "vin_src.va",
-          "lfsr.va",
-          "dither_adder.va",
-          "gain_amp_fixed.va"
+          "vin_src.va"
         ],
-        "solution_loc": 118,
+        "solution_loc": 34,
         "negative_count": 1,
         "risks": [
           "low_negative_variant_count",
           "zero_only_negative"
         ],
-        "solution_sha256_normalized": "sha256:cd3c88a2d493a6fcb836eb4e35a246211db3ada73f96f7f256781faafc833b14"
+        "solution_sha256_normalized": "sha256:22d4701148ee0150f3cbda84f9cf0a5a797619d688e260a465c99ae24bbd4180"
       },
       {
         "name": "110-settling-time-measurement",

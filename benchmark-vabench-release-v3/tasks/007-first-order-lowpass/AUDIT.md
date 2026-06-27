@@ -2,9 +2,10 @@
 
 Task: `007-first-order-lowpass`
 
-Status: independent L1 EVAS formal candidate. Count this row as the
+Status: independent L1 Gate 1 formal candidate. Count this row as the
 first-order lowpass circuit-function coverage; do not also count
 `286-first-order-lowpass-bugfix` as a second independent lowpass function.
+Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Four-Standard Review
 
@@ -18,7 +19,7 @@ first-order lowpass circuit-function coverage; do not also count
   public prompt plus supplied testbench assets; hidden stimulus points and
   tolerances are private, but no hidden-only behavior is required.
 - Prompt hygiene: pass after review. The public prompt no longer references
-  hidden evaluator internals or source/provenance labels.
+  private evaluator internals or source/provenance labels.
 
 ## Checker Contract
 
@@ -30,16 +31,18 @@ first-order lowpass circuit-function coverage; do not also count
 
 - Hidden gold: PASS under EVAS with `v3_007_first_order_lowpass`.
 - Static structure: JSON manifests parse, no `meta.json` exists in this task, and solution/negative Verilog-A files preserve the `first_order_lowpass(vin,vout)` interface.
-- Concrete negative variants: 5 prepared for recertification:
+- Concrete negative variants:
   - `neg_001_too_slow_alpha`: wrong recurrence coefficient.
   - `neg_002_passthrough_timer`: timer-sampled passthrough.
   - `neg_003_inverted_input`: wrong input polarity/final value.
   - `neg_004_output_clamped`: clips the filtered state.
   - `neg_005_stuck_zero`: never follows the input.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 5/5 hidden negative variants `NEGATIVE_REJECTED`.
 
 ## Remaining Risk
 
-- Concrete negative variants: 5/5 compile and fail with `FAIL_SIM_CORRECTNESS`.
-- Per SOP, paper-facing final certification still needs Spectre/Spectre-AX correlation or an explicit EVAS-only label.
+- AHDL lint evidence is not attached yet; do not mark
+  `cadence_modeling_ready` until lint/triage is recorded.
 
 Certification status: certified as an EVAS formal candidate on 2026-06-24.

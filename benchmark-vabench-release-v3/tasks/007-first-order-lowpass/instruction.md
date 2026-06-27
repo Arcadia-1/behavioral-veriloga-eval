@@ -20,6 +20,21 @@
 
 - `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.
 
+## Public Parameter Contract
+
+The starter exposes public parameters `alpha` and `tr`:
+
+- `alpha`: dimensionless recurrence coefficient, default `0.025`. If the
+  implementation uses the starter-style discrete recurrence, this parameter
+  controls the per-update movement toward `vin`.
+- `tr`: output transition smoothing time, default `200 ps`.
+
+Use a timer-updated internal state or an equivalent event-driven discretization
+that produces the same public first-order settling behavior. The exact timer
+update interval, internal variable names, and recurrence algebra are not
+checker-facing API, but parameter overrides should remain meaningful when the
+testbench supplies legal nearby values.
+
 ## Public Scenario And Observable Contract
 
 The supplied testbenches provide the exact stimulus and transient analysis

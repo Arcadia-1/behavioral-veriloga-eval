@@ -11,7 +11,9 @@ dither injection block that can be used inside measurement flows such as
 
 - Useful scenario: accepted. Differential dither injection is a recognizable AMS support function for decorrelation, calibration, and measurement excitation.
 - Reasonable task: accepted. The public prompt names only the target module, interface, polarity rule, dither amplitude parameter, and common-mode invariant.
-- Complete tests: pending fresh local recertification after the boundary split. Hidden and visible decks are no longer byte-identical and exercise different `DITHER_AMP`/input trajectories.
+- Complete tests: pass for the current reviewed slice. Hidden and visible decks
+  are no longer byte-identical and exercise different `DITHER_AMP`/input
+  trajectories.
 - Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks dither sign plus common-mode preservation, not the enclosing gain-extraction flow.
 
 ## Checker And Evidence
@@ -19,10 +21,11 @@ dither injection block that can be used inside measurement flows such as
 - Checker id: `v3_099_dither_adder`
 - Hidden bench: `test_hidden/tests/tb_dither_adder_ref.scs`
 - Concrete negatives: `neg_001_zero`, `neg_002_wrong_polarity`, `neg_003_common_mode_shift`, `neg_004_fixed_positive_dither`
-- Fresh EVAS/Spectre recertification: pending after this manual boundary repair
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Do not mark final release certified until the updated gold and negative variants
-have fresh EVAS evidence, and Spectre evidence if this task enters a paper-facing
-dual-certified slice.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

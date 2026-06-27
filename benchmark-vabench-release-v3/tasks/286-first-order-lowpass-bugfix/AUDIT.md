@@ -15,9 +15,9 @@ preserves a bugfix-form repair workflow for the same lowpass function.
 - Reasonable task: pass. The buggy symptom, interface, and expected step
   response are public, and the prompt now states that this is a repair task
   rather than a new lowpass design task.
-- Complete tests: pass for EVAS-only review. The visible smoke uses a shorter
-  public transient, while the hidden bench keeps the full 160 ns settling
-  scenario required by the lowpass checker.
+- Complete tests: pass for the current reviewed slice. The visible smoke uses a
+  shorter public transient, while the hidden bench keeps the full 160 ns
+  settling scenario required by the lowpass checker.
 - Fair evaluation: pass. The checker enforces only the public finite-bandwidth
   step behavior: input step exercised, non-instantaneous lag, monotonic first
   order movement, late settling near 0.8 V, and bounded output.
@@ -31,10 +31,13 @@ preserves a bugfix-form repair workflow for the same lowpass function.
   - `neg_002_passthrough_timer`: timer-delayed passthrough.
   - `neg_003_inverted_input`: wrong input polarity/final value.
   - `neg_004_output_clamped`: clips the repaired output below the late level.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-- Paper-facing final certification still needs Spectre/Spectre-AX correlation
-  or an explicit EVAS-only label.
+- AHDL lint evidence is not attached yet; do not mark
+  `cadence_modeling_ready` until lint/triage is recorded.
 - Counting reports must not claim this row as independent lowpass circuit
   coverage in addition to task 007.

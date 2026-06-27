@@ -16,9 +16,9 @@ system checker as task 097.
   interface, public parameters, parameterized pre/post cadence semantics,
   switching behavior, rails, and duty-cycle expectation without exposing the
   hidden numeric scenario.
-- Complete tests: accepted for EVAS smoke. Gold passes and five concrete
-  behavior negatives fail by simulation correctness; Spectre rerun is still
-  pending.
+- Complete tests: accepted for the current reviewed slice. Gold passes and five
+  concrete behavior negatives fail by simulation correctness under the Spectre
+  evidence runner.
 - Fair evaluation: improved. The checker now evaluates the local `CLK`
   waveform rather than downstream CPPLL reacquisition behavior.
 
@@ -26,12 +26,14 @@ system checker as task 097.
 
 - Checker id: `v3_reference_step_clock`
 - EVAS hidden gold smoke: PASS
-- Spectre hidden gold smoke: not rerun in this audit by request
 - Concrete negatives: 5/5 `FAIL_SIM_CORRECTNESS`
 - Hidden test parameters intentionally differ from the visible smoke parameters
   to reduce fixed-waveform overfitting risk.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 5/5 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Do not count this task in a final release surface until the standalone checker
-also has fresh Spectre certification.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

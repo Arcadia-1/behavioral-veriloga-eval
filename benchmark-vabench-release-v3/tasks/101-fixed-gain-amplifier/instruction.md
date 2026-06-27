@@ -30,6 +30,15 @@ The amplifier must preserve output common-mode at `vdd/2`, keep positive
 polarity from input differential to output differential, and honor different
 `ACTUAL_GAIN` and `vdd` values supplied by the testbench.
 
+Public parameters:
+
+- `ACTUAL_GAIN = 8.64`: positive dimensionless differential voltage gain.
+- `vdd = 0.9 V`: positive output common-mode supply parameter; the nominal
+  output common-mode is `vdd/2`.
+
+Honor legal testbench overrides of both parameters while preserving positive
+differential polarity and common-mode behavior.
+
 Keep the model pure behavioral Verilog-A. Do not use transistor-level devices,
 AC/noise analysis, private test hooks, or simulator-private side channels.
 

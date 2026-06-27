@@ -56,6 +56,10 @@ Domain: pure voltage-domain behavioral Verilog-A.
 ## Module Contract
 
 - Declaration: `window_comparator_ref(VDD, VSS, vin, out)`
+- Public parameters:
+  - `vlow = 0.3 V`: lower window threshold.
+  - `vhigh = 0.6 V`: upper window threshold.
+  - `tedge = 200 ps`: positive output transition rise/fall smoothing time.
 
 Ports:
 
@@ -65,15 +69,16 @@ Ports:
 
 ## Behavioral Contract
 
-- Use two public function thresholds: lower threshold `vlow = 0.3 V` and upper threshold `vhigh = 0.6 V`.
+- Use the two public function thresholds `vlow` and `vhigh`.
 - Drive `out` HIGH only when `vlow < V(vin,VSS) < vhigh`.
 - Drive `out` LOW when `V(vin,VSS) <= vlow` or `V(vin,VSS) >= vhigh`.
+- Treat equality at either threshold as outside the window.
 - Initialize the decision from the initial input voltage using `@(initial_step)`.
 - Use directional `@(cross(...))` events on both thresholds so the release transient resolves the lower-entry, upper-exit, upper-entry, and lower-exit crossings.
 - Drive the discrete decision to the output rail with `transition(...)`; keep
-  the rail voltage outside the first argument of `transition(...)` and derive
-  the HIGH/LOW levels from the `VDD`/`VSS` ports rather than hard-coding the
-  testbench supply value.
+  the rail voltage outside the first argument of `transition(...)`, use `tedge`
+  for output smoothing, and derive the HIGH/LOW levels from the `VDD`/`VSS`
+  ports rather than hard-coding the testbench supply value.
 
 ## Public Evaluation Observables
 

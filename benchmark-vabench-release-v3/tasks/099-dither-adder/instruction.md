@@ -36,8 +36,17 @@ This keeps the output common-mode equal to the input common-mode while adding
 only the requested differential dither. Keep the block usable with different
 `DITHER_AMP` values selected by the testbench.
 
-Use parameter `vth` with a default near 0.45 V to interpret the voltage-coded
-`DPN` polarity input, and keep the model pure behavioral Verilog-A. Do not use
+Public parameters:
+
+- `DITHER_AMP = 0.014063 V`: nonnegative differential dither magnitude.
+- `vth = 0.45 V`: voltage threshold for the `DPN` polarity input.
+- `vdd = 0.9 V`: compatibility/supply-domain parameter retained by the module
+  interface. The standalone dither operation preserves input common-mode and
+  does not add a `vdd/2` output offset.
+
+Honor legal testbench overrides of these parameters. Use `vth` to interpret the
+voltage-coded `DPN` polarity input, and keep the model pure behavioral
+Verilog-A. Do not use
 transistor-level devices, AC/noise analysis, private test hooks, or
 simulator-private side channels.
 

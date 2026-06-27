@@ -27,9 +27,11 @@ reference-frequency step source, not the graded candidate target.
 - Concrete negatives: 5/5 `FAIL_SIM_CORRECTNESS`
 - Additional checker hardening: `vctrl_span >= 0.02` in both streaming and
   in-memory CPPLL reacquire checkers.
-- Spectre hidden gold smoke: not rerun in this audit by request.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 5/5 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Spectre parity is still pending after this audit refresh. Do not count this
-task in a final release surface until fresh Spectre certification is attached.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

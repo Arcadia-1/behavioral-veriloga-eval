@@ -27,6 +27,15 @@ generated `CLK` waveform.
 - Preserve the public parameters `period_pre`, `period_post`, `t_switch`, and
   `tedge`.
 
+Public parameters and legal overrides:
+
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `period_pre` | `20 ns` | time, `(0:inf)` | Full clock period before the frequency step. |
+| `period_post` | `19.5 ns` | time, `(0:inf)` | Full clock period after the frequency step. |
+| `t_switch` | `2 us` | time, `[0:inf)` | Time at which subsequent clock periods use `period_post`. |
+| `tedge` | `100 ps` | time, `(0:inf)` | Rise/fall smoothing for the voltage-coded clock output. |
+
 A correct implementation should be parameterized by those public parameters
 rather than hard-coding a fixed waveform. The observable behavior should remain
 consistent when the evaluator instantiates nearby legal parameter values, and
@@ -36,6 +45,6 @@ template.
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
 model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
-analysis, hidden checker logic, or simulator-private side channels.
+analysis, checker logic, private test hooks, or simulator-private side channels.
 
 Only `ref_step_clk.va` is graded as the candidate implementation.

@@ -52,6 +52,26 @@ The Spectre testbench must:
   clearly larger than input differential variation and remain bounded in the
   `0 V` to `0.9 V` domain.
 
+## Public Component Parameter And State Contracts
+
+- `vin_src` defaults: `vdd = 0.9 V`, `vth = 0.45 V`, `ampl = 0.15 V`,
+  `freq = 300 kHz`, `sigma = 0.01 V`, and `SEED = 0`. The testbench overrides
+  `ampl`, `freq`, and `sigma` through its public parameters. On each rising
+  `CLK` crossing after reset release, sample
+  `vdd/2 + ampl*sin(2*pi*freq*t) + sigma*$rdist_normal(SEED, 0, 1)` onto
+  `VOUT_P`; hold `VOUT_N` at `vdd/2`.
+- `lfsr` default: `seed = 42`. On `initial_step` and on an active-low reset
+  crossing of `RSTB`, initialize a 32-bit state from `seed`, force every fifth
+  bit starting at bit 0 high for a nonzero startup pattern, and drive `DPN`
+  from bit 31. On rising `CLK` while reset is released, shift toward higher bit
+  indices with feedback `bit31 ^ bit21 ^ bit1 ^ bit0` into bit 0. Smooth `DPN`
+  to the `VDD`/`VSS` rails with a `50 ps` transition.
+- `dither_adder` defaults: `vdd = 0.9 V`, `vth = 0.45 V`, and
+  `DITHER_AMP = 0.014063 V`. Split the selected differential dither equally
+  around the input common-mode.
+- `gain_amp_fixed` defaults: `vdd = 0.9 V` and `ACTUAL_GAIN = 8.64`. Center
+  the differential output around `vdd/2`.
+
 ## Modeling Constraints
 
 Use pure voltage-domain, event-driven Verilog-A. Use `@(cross(...))` for
