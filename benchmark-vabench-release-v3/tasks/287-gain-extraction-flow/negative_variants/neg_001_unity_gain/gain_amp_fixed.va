@@ -1,3 +1,16 @@
 `include "constants.vams"
 `include "disciplines.vams"
-module gain_amp_fixed(VIN_P,VIN_N,VOUT_P,VOUT_N); input electrical VIN_P,VIN_N; output electrical VOUT_P,VOUT_N; analog begin V(VOUT_P)<+V(VIN_P); V(VOUT_N)<+V(VIN_N); end endmodule
+
+module gain_amp_fixed(
+    input  electrical VIN_P,
+    input  electrical VIN_N,
+    output electrical VOUT_P,
+    output electrical VOUT_N
+);
+
+analog begin
+    V(VOUT_P) <+ V(VIN_P);
+    V(VOUT_N) <+ V(VIN_N);
+end
+
+endmodule

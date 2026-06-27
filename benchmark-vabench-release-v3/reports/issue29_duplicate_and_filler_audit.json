@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-27T13:24:20+00:00",
+  "generated_at_utc": "2026-06-27T18:56:12+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -64,6 +64,42 @@
     "solution_loc_max": 252
   },
   "release_wording_recommendation": "Until duplicate/high-overlap groups are manually resolved, describe v3 as \"300 candidate task directories\" rather than \"300 high-quality independent tasks\".",
+  "cadence_spectre_audit": {
+    "status": "passed_for_reviewed_issue29_slice",
+    "runner": "scripts/run_v3_spectre_audit.py",
+    "reviewed_tasks": [
+      "006-element-shuffler",
+      "007-first-order-lowpass",
+      "049-window-comparator-detector",
+      "097-cppll-tracking-reacquire-timer",
+      "099-dither-adder",
+      "101-fixed-gain-amplifier",
+      "107-reference-step-clock",
+      "111-clocked-sine-source",
+      "284-window-comparator-testbench",
+      "286-first-order-lowpass-bugfix",
+      "287-gain-extraction-flow"
+    ],
+    "hidden_gold": {
+      "command": "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden --timeout-s 300 --work-root results/v3_spectre_audit_reviewed_hidden --out /private/tmp/v3_spectre_reviewed_hidden.json",
+      "rows": 11,
+      "pass": 11,
+      "fail": 0
+    },
+    "hidden_negatives_after_fixture_repair": {
+      "command": "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden --all-negative-variants --timeout-s 300 --work-root results/v3_spectre_audit_reviewed_negatives_after_fix --out /private/tmp/v3_spectre_reviewed_negatives_after_fix.json",
+      "rows": 43,
+      "negative_rejected": 43,
+      "fail": 0,
+      "negative_unexpected_pass": 0,
+      "fail_spectre": 0
+    },
+    "fixture_repairs_before_final_negative_rerun": [
+      "049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.",
+      "284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.",
+      "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports."
+    ]
+  },
   "issue29_named_groups": [
     {
       "id": "lowpass_original_vs_bugfix",
@@ -73,9 +109,9 @@
       "auto_classification": "valid_variant_needs_counting_policy",
       "manual_adjudication": {
         "classification": "valid_variant_needs_counting_policy",
-        "status": "Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.",
+        "status": "Manual review completed for 007/286; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": "Keep 007 as the independent L1 first-order-lowpass DUT construction task. Keep 286 as a bugfix-form repair variant for the same lowpass function, but do not count it as additional independent lowpass circuit-function coverage.",
-        "evidence": "Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; its visible smoke bench is now distinct from the full hidden 160 ns settling bench. Spectre was not rerun in this local audit."
+        "evidence": "Task 007 hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives NEGATIVE_REJECTED under Spectre; its visible smoke bench is now distinct from the full hidden 160 ns settling bench."
       },
       "members": [
         {
@@ -142,7 +178,12 @@
       "missing_tasks": [],
       "classification": "valid_variant_needs_counting_policy",
       "auto_classification": "valid_variant_needs_counting_policy",
-      "manual_adjudication": null,
+      "manual_adjudication": {
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.",
+        "decision": "Keep 049 as the independent L1 window-comparator DUT task. Keep 284 as a testbench-generation verification variant for the same window-comparator function, but do not count it as additional independent circuit-function coverage.",
+        "evidence": "Task 049 hidden gold PASS and 4/4 structured concrete negatives NEGATIVE_REJECTED under Spectre; its prompt now treats visible testbenches as verification scenarios rather than DUT implementation templates. Task 284 hidden gold PASS and 4/4 concrete testbench negatives NEGATIVE_REJECTED under Spectre; its visible smoke bench is no longer byte-identical to the full hidden/gold target testbench. The local audit repaired Spectre-illegal negative fixture port declarations before the final negative rerun."
+      },
       "members": [
         {
           "name": "049-window-comparator-detector",
@@ -156,7 +197,7 @@
             "window_comparator_ref.va"
           ],
           "solution_loc": 31,
-          "negative_count": 5,
+          "negative_count": 9,
           "risks": [],
           "solution_sha256_normalized": "sha256:37ef63f12b4df588297d65099c1214260ebbe906d3f9fd082573e293010eaae7"
         },
@@ -172,9 +213,8 @@
             "tb_window_comparator_ref.scs"
           ],
           "solution_loc": 10,
-          "negative_count": 2,
+          "negative_count": 8,
           "risks": [
-            "low_negative_variant_count",
             "short_solution_leq_20_loc"
           ],
           "solution_sha256_normalized": "sha256:4bf85ae6ea01401a7abd0366bde96d96961af63ba7be4b215471a6103099c337"
@@ -187,18 +227,18 @@
           "classification": "valid_variant_needs_counting_policy",
           "recommendation": "Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function.",
           "metrics": {
-            "prompt_token_jaccard": 0.1512,
+            "prompt_token_jaccard": 0.1793,
             "solution_token_jaccard": 0.125,
             "checker_token_jaccard": 0.1852,
-            "prompt_sequence_similarity": 0.1493,
+            "prompt_sequence_similarity": 0.1841,
             "solution_sequence_similarity": 0.1099,
             "checker_sequence_similarity": 0.3799
           }
         }
       ],
       "prompt_excerpts": {
-        "049-window-comparator-detector": "# Window Comparator Detector\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Comparator and Decision Circuits\n- Base function: Window comparator/detector\n- Domain: `voltage`\n- Target artifact(s): `window_comparator_ref.va`\n- Supplied/reference support artifact(s): `tb_window_comparator_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`…",
-        "284-window-comparator-testbench": "# Window Comparator Testbench\nGenerate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.\nThe DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.\nThe testbench must include `ahdl_include \"window_comparator_ref.va\"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.\nReturn only `tb_window_comparator_ref.scs`. Do not modify the support DUT."
+        "049-window-comparator-detector": "# Window Comparator Detector\n## Task Contract\n- Form: `dut`\n- Level: `L1`\n- Category: Comparator and Decision Circuits\n- Base function: Window comparator/detector\n- Domain: `voltage`\n- Target artifact(s): `window_comparator_ref.va`\n- Supplied/reference support artifact(s): `tb_window_comparator_ref.scs`\n- Visible context: public task, interface, artifact, stimulus, and observable contract only.\n## Form-Specific Requirements\n- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.\n- Preserve the public module names, port order, parameters, and waveform observable names.\n## Public Verilog-A Interface\n- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.\n## Public Testbench And Observable Contract\nThe supplied testbenches define the exact supply rails, input stimulus,\ntransi…",
+        "284-window-comparator-testbench": "# Window Comparator Testbench\nGenerate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.\nThis is a testbench-generation task: the exact stimulus, supply, save, and\ntransient settings below are part of the requested testbench artifact contract.\nDo not modify or regenerate the supplied comparator DUT.\nThe DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.\nThe testbench must include `ahdl_include \"window_comparator_ref.va\"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.\nReturn onl…"
       }
     },
     {
@@ -271,13 +311,13 @@
       "id": "timer_reacquire_pair",
       "why_flagged": "Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels.",
       "missing_tasks": [],
-      "classification": "manually_split_pending_spectre",
+      "classification": "manual_split_distinct_rows",
       "auto_classification": "needs_human_review",
       "manual_adjudication": {
-        "classification": "manually_split_pending_spectre",
-        "status": "EVAS-only review refreshed; Spectre was not rerun by request.",
+        "classification": "manual_split_distinct_rows",
+        "status": "Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": "Keep as distinct candidate rows after manual split: task 097 grades the CPPLL reacquire DUT with a supplied reference-step-clock support artifact, while task 107 grades the standalone reference-step-clock DUT.",
-        "evidence": "Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with hidden parameters different from visible smoke parameters."
+        "evidence": "Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre with hidden parameters different from visible smoke parameters."
       },
       "members": [
         {
@@ -339,13 +379,13 @@
       "id": "signal_chain_vs_components",
       "why_flagged": "An L2 flow may package kernels that also appear as standalone source/gain/source tasks.",
       "missing_tasks": [],
-      "classification": "manually_split_pending_spectre",
+      "classification": "valid_variant_needs_counting_policy",
       "auto_classification": "valid_variant_needs_counting_policy",
       "manual_adjudication": {
-        "classification": "manually_split_pending_spectre",
-        "status": "Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.",
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": "Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.",
-        "evidence": "Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. Spectre was not rerun in this local audit."
+        "evidence": "Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun."
       },
       "members": [
         {
@@ -2409,25 +2449,6 @@
         "solution_sha256_normalized": "sha256:4ba2578dd19ba574e48f19da5db273ea043eb2eeb9fc6ed431bef5e7e331eae1"
       },
       {
-        "name": "284-window-comparator-testbench",
-        "id": "v3_284_window_comparator_testbench",
-        "title": "Window Comparator Testbench",
-        "form": "tb",
-        "level": "L1",
-        "difficulty": "D2",
-        "category": "comparator_decision",
-        "targets": [
-          "tb_window_comparator_ref.scs"
-        ],
-        "solution_loc": 10,
-        "negative_count": 2,
-        "risks": [
-          "low_negative_variant_count",
-          "short_solution_leq_20_loc"
-        ],
-        "solution_sha256_normalized": "sha256:4bf85ae6ea01401a7abd0366bde96d96961af63ba7be4b215471a6103099c337"
-      },
-      {
         "name": "281-programmable-divider-by-n",
         "id": "v3_281_source_programmable_divider_by_n",
         "title": "Programmable Divider By N",
@@ -3949,6 +3970,24 @@
         "solution_sha256_normalized": "sha256:1d0e90414331476424f228a156a201caeb60ef749fcb8242c36d3885129a19c6"
       },
       {
+        "name": "284-window-comparator-testbench",
+        "id": "v3_284_window_comparator_testbench",
+        "title": "Window Comparator Testbench",
+        "form": "tb",
+        "level": "L1",
+        "difficulty": "D2",
+        "category": "comparator_decision",
+        "targets": [
+          "tb_window_comparator_ref.scs"
+        ],
+        "solution_loc": 10,
+        "negative_count": 8,
+        "risks": [
+          "short_solution_leq_20_loc"
+        ],
+        "solution_sha256_normalized": "sha256:4bf85ae6ea01401a7abd0366bde96d96961af63ba7be4b215471a6103099c337"
+      },
+      {
         "name": "109-sample-hold-droop-front-end",
         "id": "v3_109_sample_hold_droop_front_end",
         "title": "Sample Hold Droop Front End",
@@ -5149,7 +5188,6 @@
       "source_family_short_solution"
     ],
     "284-window-comparator-testbench": [
-      "low_negative_variant_count",
       "short_solution_leq_20_loc"
     ],
     "285-aperture-delay-sample-hold": [

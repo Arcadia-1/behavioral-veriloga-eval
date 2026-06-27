@@ -1,16 +1,33 @@
 {
   "task": "284-window-comparator-testbench",
   "form": "tb",
+  "status": "valid_variant_needs_counting_policy",
   "source": "v2/vbr1_l1_window_comparator_detector:tb",
-  "visible": [
-    "instruction.md",
-    "starter/",
-    "test_visible/"
-  ],
-  "hidden": [
-    "solution/",
-    "test_hidden/",
-    "test_harness/",
-    "negative_variants/"
-  ]
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/window_comparator_ref.va",
+      "starter/tb_window_comparator_ref.scs"
+    ],
+    "public_smoke": {
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false,
+      "note": "Shorter public smoke example; not byte-identical to the full hidden/gold target testbench."
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_window_comparator_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/tb_window_comparator_ref.scs",
+      "solution/window_comparator_ref.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "certification": {
+    "status": "evas_only_recertified",
+    "scope": "Testbench-generation variant for the task 049 window-comparator function; not independent circuit-function coverage."
+  }
 }

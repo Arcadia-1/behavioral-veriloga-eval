@@ -88,23 +88,41 @@ ISSUE_GROUPS: list[dict[str, Any]] = [
 MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
     "lowpass_original_vs_bugfix": {
         "classification": "valid_variant_needs_counting_policy",
-        "status": "Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.",
+        "status": "Manual review completed for 007/286; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": (
             "Keep 007 as the independent L1 first-order-lowpass DUT construction task. "
             "Keep 286 as a bugfix-form repair variant for the same lowpass function, "
             "but do not count it as additional independent lowpass circuit-function coverage."
         ),
         "evidence": (
-            "Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; "
+            "Task 007 hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre; "
             "its prompt no longer exposes hidden-evaluator or source-provenance wording. "
-            "Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; "
-            "its visible smoke bench is now distinct from the full hidden 160 ns settling bench. "
-            "Spectre was not rerun in this local audit."
+            "Task 286 hidden gold PASS and 4/4 concrete bugfix negatives NEGATIVE_REJECTED under Spectre; "
+            "its visible smoke bench is now distinct from the full hidden 160 ns settling bench."
+        ),
+    },
+    "window_comparator_dut_vs_tb": {
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep 049 as the independent L1 window-comparator DUT task. Keep "
+            "284 as a testbench-generation verification variant for the same "
+            "window-comparator function, but do not count it as additional "
+            "independent circuit-function coverage."
+        ),
+        "evidence": (
+            "Task 049 hidden gold PASS and 4/4 structured concrete negatives "
+            "NEGATIVE_REJECTED under Spectre; its prompt now treats visible testbenches as "
+            "verification scenarios rather than DUT implementation templates. "
+            "Task 284 hidden gold PASS and 4/4 concrete testbench negatives "
+            "NEGATIVE_REJECTED under Spectre; its visible smoke bench is no longer "
+            "byte-identical to the full hidden/gold target testbench. The local audit repaired "
+            "Spectre-illegal negative fixture port declarations before the final negative rerun."
         ),
     },
     "timer_reacquire_pair": {
-        "classification": "manually_split_pending_spectre",
-        "status": "EVAS-only review refreshed; Spectre was not rerun by request.",
+        "classification": "manual_split_distinct_rows",
+        "status": "Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": (
             "Keep as distinct candidate rows after manual split: task 097 grades the "
             "CPPLL reacquire DUT with a supplied reference-step-clock support artifact, "
@@ -112,14 +130,14 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
         ),
         "evidence": (
             "Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives "
-            "FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 "
-            "hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with "
+            "NEGATIVE_REJECTED under Spectre after adding a vctrl_span dynamic check. Task 107 "
+            "hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre with "
             "hidden parameters different from visible smoke parameters."
         ),
     },
     "signal_chain_vs_components": {
-        "classification": "manually_split_pending_spectre",
-        "status": "Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.",
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": (
             "Keep 099 and 101 as standalone L1 component tasks after boundary repair; "
             "keep 111 only as an L2 support component for measurement-flow stimulus; "
@@ -128,15 +146,62 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
         ),
         "evidence": (
             "Task 099 now targets only dither_adder.va with task-specific dither/common-mode "
-            "checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. "
+            "checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. "
             "Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode "
-            "checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. "
+            "checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. "
             "Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative "
-            "FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains "
-            "Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. "
-            "Spectre was not rerun in this local audit."
+            "NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains "
+            "Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. "
+            "The local audit repaired the Spectre-illegal 287 negative fixture port declaration before "
+            "the final negative rerun."
         ),
     },
+}
+
+CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
+    "status": "passed_for_reviewed_issue29_slice",
+    "runner": "scripts/run_v3_spectre_audit.py",
+    "reviewed_tasks": [
+        "006-element-shuffler",
+        "007-first-order-lowpass",
+        "049-window-comparator-detector",
+        "097-cppll-tracking-reacquire-timer",
+        "099-dither-adder",
+        "101-fixed-gain-amplifier",
+        "107-reference-step-clock",
+        "111-clocked-sine-source",
+        "284-window-comparator-testbench",
+        "286-first-order-lowpass-bugfix",
+        "287-gain-extraction-flow",
+    ],
+    "hidden_gold": {
+        "command": (
+            "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden "
+            "--timeout-s 300 --work-root results/v3_spectre_audit_reviewed_hidden "
+            "--out /private/tmp/v3_spectre_reviewed_hidden.json"
+        ),
+        "rows": 11,
+        "pass": 11,
+        "fail": 0,
+    },
+    "hidden_negatives_after_fixture_repair": {
+        "command": (
+            "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden "
+            "--all-negative-variants --timeout-s 300 "
+            "--work-root results/v3_spectre_audit_reviewed_negatives_after_fix "
+            "--out /private/tmp/v3_spectre_reviewed_negatives_after_fix.json"
+        ),
+        "rows": 43,
+        "negative_rejected": 43,
+        "fail": 0,
+        "negative_unexpected_pass": 0,
+        "fail_spectre": 0,
+    },
+    "fixture_repairs_before_final_negative_rerun": [
+        "049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.",
+        "284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.",
+        "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
+    ],
 }
 
 COMMON_WORDS = {
@@ -743,6 +808,7 @@ def build_report() -> dict[str, Any]:
             "Until duplicate/high-overlap groups are manually resolved, describe v3 as "
             "\"300 candidate task directories\" rather than \"300 high-quality independent tasks\"."
         ),
+        "cadence_spectre_audit": CADENCE_SPECTRE_AUDIT,
         "issue29_named_groups": build_issue_group_reports(tasks_by_name),
         "coarse_scan": build_coarse_scan(tasks, issue_pair_key_set()),
         "risks_by_task": risks_by_task,
@@ -802,6 +868,25 @@ def render_markdown(report: dict[str, Any]) -> str:
         "## Release Wording Recommendation",
         "",
         f"- {report['release_wording_recommendation']}",
+        "",
+        "## Cadence/Spectre Evidence For Reviewed Slice",
+        "",
+        f"- Status: `{report['cadence_spectre_audit']['status']}`",
+        f"- Runner: `{report['cadence_spectre_audit']['runner']}`",
+        f"- Reviewed tasks: **{len(report['cadence_spectre_audit']['reviewed_tasks'])}**",
+        f"- Hidden gold: **{report['cadence_spectre_audit']['hidden_gold']['pass']}**/"
+        f"**{report['cadence_spectre_audit']['hidden_gold']['rows']}** PASS, "
+        f"fail `{report['cadence_spectre_audit']['hidden_gold']['fail']}`",
+        f"- Hidden negatives after fixture repair: **{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['negative_rejected']}**/"
+        f"**{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['rows']}** NEGATIVE_REJECTED, "
+        f"fail `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['fail']}`, "
+        f"unexpected pass `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['negative_unexpected_pass']}`, "
+        f"FAIL_SPECTRE `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['fail_spectre']}`",
+        "- Fixture repairs before final negative rerun:",
+        *[
+            f"  - {item}"
+            for item in report["cadence_spectre_audit"]["fixture_repairs_before_final_negative_rerun"]
+        ],
         "",
         "## Issue #29 Named Groups",
         "",

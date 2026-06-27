@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-27T13:24:20+00:00`
+- Generated UTC: `2026-06-27T18:56:12+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
@@ -17,15 +17,27 @@
 
 - Until duplicate/high-overlap groups are manually resolved, describe v3 as "300 candidate task directories" rather than "300 high-quality independent tasks".
 
+## Cadence/Spectre Evidence For Reviewed Slice
+
+- Status: `passed_for_reviewed_issue29_slice`
+- Runner: `scripts/run_v3_spectre_audit.py`
+- Reviewed tasks: **11**
+- Hidden gold: **11**/**11** PASS, fail `0`
+- Hidden negatives after fixture repair: **43**/**43** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0`
+- Fixture repairs before final negative rerun:
+  - 049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.
+  - 284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.
+  - 287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.
+
 ## Issue #29 Named Groups
 
 | Group | Classification | Members | Why flagged | Recommendation signal |
 | --- | --- | --- | --- | --- |
-| `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy; manual=Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.` |
-| `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy` |
+| `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy; manual=Manual review completed for 007/286; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy; manual=Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
-| `timer_reacquire_pair` | `manually_split_pending_spectre` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=EVAS-only review refreshed; Spectre was not rerun by request.` |
-| `signal_chain_vs_components` | `manually_split_pending_spectre` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review, valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.` |
+| `timer_reacquire_pair` | `manual_split_distinct_rows` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review, valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
 | `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
 | `pfd_active_low_reset_pair` | `high_overlap` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `high_overlap` |
@@ -38,9 +50,9 @@
 - Why flagged: Same low-pass kernel appears once as a DUT construction task and once as a bugfix task.
 - Group classification: `valid_variant_needs_counting_policy`
 - Automatic classification before manual review: `valid_variant_needs_counting_policy`
-- Manual status: Manual review completed for 007/286; EVAS recertification refreshed for the repaired boundary slice.
+- Manual status: Manual review completed for 007/286; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep 007 as the independent L1 first-order-lowpass DUT construction task. Keep 286 as a bugfix-form repair variant for the same lowpass function, but do not count it as additional independent lowpass circuit-function coverage.
-- Manual evidence: Task 007 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives FAIL_SIM_CORRECTNESS; its visible smoke bench is now distinct from the full hidden 160 ns settling bench. Spectre was not rerun in this local audit.
+- Manual evidence: Task 007 hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre; its prompt no longer exposes hidden-evaluator or source-provenance wording. Task 286 hidden gold PASS and 4/4 concrete bugfix negatives NEGATIVE_REJECTED under Spectre; its visible smoke bench is now distinct from the full hidden 160 ns settling bench.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -100,10 +112,14 @@ observe the transient response through the settling window.
 
 - Why flagged: Same window-comparator function appears as DUT and testbench-generation variants.
 - Group classification: `valid_variant_needs_counting_policy`
+- Automatic classification before manual review: `valid_variant_needs_counting_policy`
+- Manual status: Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.
+- Manual decision: Keep 049 as the independent L1 window-comparator DUT task. Keep 284 as a testbench-generation verification variant for the same window-comparator function, but do not count it as additional independent circuit-function coverage.
+- Manual evidence: Task 049 hidden gold PASS and 4/4 structured concrete negatives NEGATIVE_REJECTED under Spectre; its prompt now treats visible testbenches as verification scenarios rather than DUT implementation templates. Task 284 hidden gold PASS and 4/4 concrete testbench negatives NEGATIVE_REJECTED under Spectre; its visible smoke bench is no longer byte-identical to the full hidden/gold target testbench. The local audit repaired Spectre-illegal negative fixture port declarations before the final negative rerun.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `049-window-comparator-detector` ↔ `284-window-comparator-testbench` | `valid_variant_needs_counting_policy` | 0.1493 | 0.1099 | 0.3799 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
+| `049-window-comparator-detector` ↔ `284-window-comparator-testbench` | `valid_variant_needs_counting_policy` | 0.1841 | 0.1099 | 0.3799 | Overlapping function appears in different artifact roles; can be kept as a separate skill only if scoring/counting labels avoid claiming an independent circuit function. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -120,12 +136,14 @@ observe the transient response through the settling window.
 - Target artifact(s): `window_comparator_ref.va`
 - Supplied/reference support artifact(s): `tb_window_comparator_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 ## Form-Specific Requirements
 - Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
 - Preserve the public module names, port order, parameters, and waveform observable names.
 ## Public Verilog-A Interface
-- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`…
+- `window_comparator_ref.va` declares module `window_comparator_ref` with positional ports: `VDD`, `VSS`, `vin`, `out`.
+## Public Testbench And Observable Contract
+The supplied testbenches define the exact supply rails, input stimulus,
+transi…
 ~~~
 
 #### `284-window-comparator-testbench`
@@ -133,9 +151,12 @@ observe the transient response through the settling window.
 ~~~markdown
 # Window Comparator Testbench
 Generate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.
+This is a testbench-generation task: the exact stimulus, supply, save, and
+transient settings below are part of the requested testbench artifact contract.
+Do not modify or regenerate the supplied comparator DUT.
 The DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.
 The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `VDD = 0.9 V` and `VSS = 0 V`, instantiate the DUT with instance-first/module-last syntax, drive `vin` with a PWL or triangular waveform that visits below the window, inside the window on the rising ramp, above the window, and inside the window again on the falling ramp, run `tran tran stop=90n maxstep=20p errpreset=conservative`, and save `vin` and `out`.
-Return only `tb_window_comparator_ref.scs`. Do not modify the support DUT.
+Return onl…
 ~~~
 
 </details>
@@ -200,11 +221,11 @@ voltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.
 ### `timer_reacquire_pair`
 
 - Why flagged: Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels.
-- Group classification: `manually_split_pending_spectre`
+- Group classification: `manual_split_distinct_rows`
 - Automatic classification before manual review: `needs_human_review`
-- Manual status: EVAS-only review refreshed; Spectre was not rerun by request.
+- Manual status: Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep as distinct candidate rows after manual split: task 097 grades the CPPLL reacquire DUT with a supplied reference-step-clock support artifact, while task 107 grades the standalone reference-step-clock DUT.
-- Manual evidence: Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives FAIL_SIM_CORRECTNESS after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives FAIL_SIM_CORRECTNESS with hidden parameters different from visible smoke parameters.
+- Manual evidence: Task 097 hidden gold PASS, visible smoke PASS, and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre after adding a vctrl_span dynamic check. Task 107 hidden gold PASS and 5/5 concrete negatives NEGATIVE_REJECTED under Spectre with hidden parameters different from visible smoke parameters.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -263,11 +284,11 @@ generated `CLK` waveform.
 ### `signal_chain_vs_components`
 
 - Why flagged: An L2 flow may package kernels that also appear as standalone source/gain/source tasks.
-- Group classification: `manually_split_pending_spectre`
+- Group classification: `valid_variant_needs_counting_policy`
 - Automatic classification before manual review: `valid_variant_needs_counting_policy`
-- Manual status: Manual review completed for 099/101/111/287; EVAS recertification refreshed for the edited boundary slice.
+- Manual status: Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.
-- Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives FAIL_SIM_CORRECTNESS. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative FAIL_SIM_CORRECTNESS under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative FAIL_SIM_CORRECTNESS. Spectre was not rerun in this local audit.
+- Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
@@ -602,7 +623,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `291-limiting-diffamp` | `dut` | `L1` | `baseband_signal_conditioning` | 16 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `289-deadband-voltage` | `dut` | `L1` | `baseband_signal_conditioning` | 16 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `288-absolute-value` | `dut` | `L1` | `analog_primitive` | 9 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
-| `284-window-comparator-testbench` | `tb` | `L1` | `comparator_decision` | 10 | 2 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `281-programmable-divider-by-n` | `dut` | `L2` | `clock_timing` | 20 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `280-vargain-diffamp-clip` | `dut` | `L1` | `filter_amp` | 17 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `279-safe-analog-divider` | `dut` | `L1` | `analog_primitive` | 15 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
@@ -683,6 +703,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `083-crossing-metric-writer` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `286-first-order-lowpass-bugfix` | `bugfix` | `L1` | `baseband_signal_conditioning` | 6 | 4 | `short_solution_leq_20_loc` |
 | `285-aperture-delay-sample-hold` | `dut` | `L1` | `sampling_analog_memory` | 38 | 1 | `low_negative_variant_count` |
+| `284-window-comparator-testbench` | `tb` | `L1` | `comparator_decision` | 10 | 8 | `short_solution_leq_20_loc` |
 | `109-sample-hold-droop-front-end` | `dut` | `L2` | `sampling_analog_memory` | 64 | 1 | `low_negative_variant_count` |
 | `108-reference-startup-enable-flow` | `dut` | `L2` | `bias_reference_power_management` | 53 | 1 | `low_negative_variant_count` |
 | `106-programmable-stimulus-sequencer` | `dut` | `L2` | `stimulus_source_generators` | 55 | 1 | `low_negative_variant_count` |

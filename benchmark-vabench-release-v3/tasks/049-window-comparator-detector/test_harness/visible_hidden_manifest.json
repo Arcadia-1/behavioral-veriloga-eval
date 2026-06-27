@@ -1,7 +1,7 @@
 {
   "task": "049-window-comparator-detector",
   "form": "dut",
-  "status": "v3_candidate",
+  "status": "independent_l1_ready_evas_only",
   "visible": {
     "instruction": "instruction.md",
     "starter_files": [
@@ -10,7 +10,8 @@
     "public_smoke": {
       "runner": "test_visible/tests/run_visible_smoke.py",
       "testbench": "test_visible/tests/tb_visible_smoke.scs",
-      "hidden_dependency": false
+      "hidden_dependency": false,
+      "note": "Public verification scenario; DUT should implement the port-based window-comparator function rather than hard-code smoke timing or supply constants."
     }
   },
   "hidden": {
@@ -25,6 +26,6 @@
   },
   "certification": {
     "status": "evas_certified",
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+    "scope": "Independent L1 window-comparator DUT under EVAS hidden gold, structured negative recertification, and visible smoke evidence tracked in AUDIT.md"
   }
 }

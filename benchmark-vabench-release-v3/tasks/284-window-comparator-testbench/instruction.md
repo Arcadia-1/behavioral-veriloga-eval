@@ -1,6 +1,9 @@
 # Window Comparator Testbench
 
 Generate only `tb_window_comparator_ref.scs` for the supplied `window_comparator_ref.va` DUT.
+This is a testbench-generation task: the exact stimulus, supply, save, and
+transient settings below are part of the requested testbench artifact contract.
+Do not modify or regenerate the supplied comparator DUT.
 
 The DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives `out` high only when `0.3 V < vin < 0.6 V`.
 

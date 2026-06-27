@@ -1,0 +1,10 @@
+simulator lang=spectre
+global 0
+ahdl_include "window_comparator_ref.va"
+
+Vvdd (VDD 0) vsource dc=0.9
+Vvss (VSS 0) vsource dc=0
+Vvin (vin 0) vsource type=pwl wave=[0 0 45n 0.5 90n 0]
+IDUT (VDD VSS vin out) window_comparator_ref
+tran tran stop=90n maxstep=20p errpreset=conservative
+save vin out

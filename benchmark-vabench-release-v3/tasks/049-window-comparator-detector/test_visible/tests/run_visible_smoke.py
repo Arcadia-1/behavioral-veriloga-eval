@@ -48,7 +48,13 @@ def main() -> int:
             return 1
 
         output_dir = run_dir / "out"
-        result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+        result = run_evas(
+            run_dir,
+            tb_dst,
+            output_dir,
+            timeout_s=30,
+            required_trace_signals={"vin", "out"},
+        )
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
         if result.returncode != 0:
             print("VISIBLE_SMOKE_EVAS_FAIL")
