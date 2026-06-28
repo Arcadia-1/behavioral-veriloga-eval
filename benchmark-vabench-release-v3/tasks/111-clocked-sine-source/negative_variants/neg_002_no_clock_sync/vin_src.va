@@ -1,0 +1,16 @@
+`include "constants.vams"
+`include "disciplines.vams"
+`default_transition 30p
+
+module vin_src(CLK, RST_N, VOUT_P, VOUT_N);
+    input electrical CLK, RST_N;
+    output electrical VOUT_P, VOUT_N;
+    parameter real vdd = 0.9;
+    parameter real ampl = 0.15;
+    parameter real freq = 300e3;
+
+    analog begin
+        V(VOUT_P) <+ vdd/2 + ampl * sin(2.0 * `M_PI * freq * $abstime);  // continuous, no clock
+        V(VOUT_N) <+ vdd/2;
+    end
+endmodule

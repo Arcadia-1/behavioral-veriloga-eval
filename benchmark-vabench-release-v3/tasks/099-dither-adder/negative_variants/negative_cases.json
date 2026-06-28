@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "dither_adder.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_wrong_amplitude",
+    "target": "dither_adder.va",
+    "intent": "dither amplitude 1/10th of correct value — checker should detect insufficient dither depth"
+  },
+  {
+    "id": "neg_003_no_dither",
+    "target": "dither_adder.va",
+    "intent": "passes VRES directly without dither modulation — checker should detect missing dither"
+  },
+  {
+    "id": "neg_004_dc_bias",
+    "target": "dither_adder.va",
+    "intent": "adds DC bias instead of dither — checker should detect wrong injection type"
   }
 ]

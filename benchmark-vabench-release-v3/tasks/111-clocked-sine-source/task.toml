@@ -17,4 +17,4 @@ solution_dir = "solution"
 negative_variants_dir = "negative_variants"
 
 [artifacts]
-target = ["vin_src.va", "lfsr.va", "dither_adder.va", "gain_amp_fixed.va"]
+target = ["vin_src.va"]

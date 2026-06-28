@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
+  "status": "differentiated",
   "negative_cases": [
     {
       "id": "neg_001_zero",
       "target": "gain_amp_fixed.va",
       "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    },
+    {
+      "id": "neg_002_wrong_gain",
+      "target": "gain_amp_fixed.va",
+      "intent": "gain factor is half of correct value — checker should detect insufficient amplification"
+    },
+    {
+      "id": "neg_003_inverted_polarity",
+      "target": "gain_amp_fixed.va",
+      "intent": "VOUT_P and VOUT_N swapped — checker should detect polarity inversion"
+    },
+    {
+      "id": "neg_004_offset_error",
+      "target": "gain_amp_fixed.va",
+      "intent": "50mV DC offset added to both outputs — checker should detect common-mode shift"
     }
   ]
 }

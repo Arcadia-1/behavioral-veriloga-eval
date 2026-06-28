@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "vin_src.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_no_clock_sync",
+    "target": "vin_src.va",
+    "intent": "outputs continuous sine wave without clock synchronization — checker should detect missing sample-and-hold"
+  },
+  {
+    "id": "neg_003_wrong_amplitude",
+    "target": "vin_src.va",
+    "intent": "amplitude is 1/10th of correct value — checker should detect insufficient signal swing"
+  },
+  {
+    "id": "neg_004_dc_only",
+    "target": "vin_src.va",
+    "intent": "outputs constant DC voltage — checker should detect no signal activity"
   }
 ]

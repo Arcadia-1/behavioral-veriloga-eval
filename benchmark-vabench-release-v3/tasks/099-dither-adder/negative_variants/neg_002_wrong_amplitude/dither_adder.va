@@ -1,0 +1,15 @@
+`include "constants.vams"
+`include "disciplines.vams"
+`default_transition 30p
+
+module dither_adder(VRES_P, VRES_N, DPN, VOUT_P, VOUT_N);
+    input electrical VRES_P, VRES_N, DPN;
+    output electrical VOUT_P, VOUT_N;
+    parameter real vth = 0.45;
+    parameter real DITHER_AMP = 0.001406;  // 1/10th of correct
+
+    analog begin
+        V(VOUT_P) <+ V(VRES_P) + ((V(DPN) > vth) ? DITHER_AMP : -DITHER_AMP) * 0.5;
+        V(VOUT_N) <+ V(VRES_N) - ((V(DPN) > vth) ? DITHER_AMP : -DITHER_AMP) * 0.5;
+    end
+endmodule
