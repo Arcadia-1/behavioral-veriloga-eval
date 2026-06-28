@@ -1,0 +1,11 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module sample_hold_aperture_ref(VDD, VSS, clk, vin, vout);
+    inout electrical VDD, VSS;
+    input electrical clk, vin;
+    output electrical vout;
+    parameter real tedge = 50p;
+    analog begin
+        V(vout) <+ transition(V(vin), 0, tedge, tedge);
+    end
+endmodule

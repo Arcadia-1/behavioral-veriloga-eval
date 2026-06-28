@@ -18,7 +18,7 @@ voltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.
 
 ## Functional Contract
 
-- On each rising `clk` transition, schedule a sample after a `200 ps` aperture
+- On each rising `clk` transition, schedule a sample after a `400 ps` aperture
   delay.
 - At the delayed aperture instant, capture the current value of `vin`; do not
   capture the value present exactly at the clock edge.

@@ -5,6 +5,24 @@
       "artifact": "neg_001_no_aperture_delay/sample_hold_aperture_ref.va",
       "expected_status": "FAIL_SIM_CORRECTNESS",
       "mutation": "Samples at the clock edge instead of after the 200 ps aperture delay."
+    },
+    {
+      "id": "neg_002_wrong_aperture_400",
+      "artifact": "neg_002_wrong_aperture_400/sample_hold_aperture_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Aperture delay is 100ps instead of 400ps — checker should detect incorrect timing."
+    },
+    {
+      "id": "neg_003_edge_triggered_no_hold",
+      "artifact": "neg_003_edge_triggered_no_hold/sample_hold_aperture_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Captures input on clock edge but does not hold between samples."
+    },
+    {
+      "id": "neg_004_always_track_285",
+      "artifact": "neg_004_always_track_285/sample_hold_aperture_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Output continuously tracks input without sample-and-hold behavior."
     }
   ]
 }

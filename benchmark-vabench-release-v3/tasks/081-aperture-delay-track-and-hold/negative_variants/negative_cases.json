@@ -2,6 +2,21 @@
   {
     "id": "neg_001_zero",
     "target": "sample_hold_aperture_ref.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero/stub output implementation must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_no_aperture_delay",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "samples immediately on clock edge instead of after aperture delay"
+  },
+  {
+    "id": "neg_003_always_tracking",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "output continuously tracks input without sample-and-hold behavior"
+  },
+  {
+    "id": "neg_004_wrong_aperture",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "aperture delay is 50ps instead of 200ps — checker should detect incorrect timing"
   }
 ]
