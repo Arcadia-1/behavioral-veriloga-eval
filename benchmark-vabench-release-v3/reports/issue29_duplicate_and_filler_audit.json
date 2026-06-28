@@ -1,0 +1,217 @@
+{
+  "report_id": "issue29_duplicate_and_filler_audit",
+  "release": "benchmark-vabench-release-v3",
+  "task_count": 300,
+  "forms": {
+    "dut": 296,
+    "e2e": 2,
+    "tb": 1,
+    "bugfix": 1
+  },
+  "difficulties": {
+    "D2": 235,
+    "D3": 8,
+    "D1": 57
+  },
+  "categories": {
+    "pll_clock_timing": 8,
+    "data_converter": 79,
+    "calibration_control": 7,
+    "comparator_decision": 8,
+    "baseband_signal_conditioning": 12,
+    "testbench_utility_modules": 31,
+    "bias_reference_power_management": 8,
+    "sampling_analog_memory": 6,
+    "rf_afe_behavioral_macromodels": 7,
+    "measurement_instrumentation_flows": 10,
+    "stimulus_source_generators": 6,
+    "pll_clock_timing_systems": 4,
+    "comparator_decision_circuits": 1,
+    "calibration_dem_control": 1,
+    "data_converter_models": 2,
+    "timing_primitive": 2,
+    "logic": 8,
+    "mixed_signal": 33,
+    "digital_logic": 19,
+    "clocking": 2,
+    "timing": 3,
+    "comparator": 7,
+    "measurement": 1,
+    "calibration": 7,
+    "stimulus": 1,
+    "clock_timing": 16,
+    "dac": 1,
+    "sar_logic": 3,
+    "signal_processing": 1,
+    "quantizer": 1,
+    "sampling_memory": 1,
+    "analog_primitive": 3,
+    "filter_amp": 1
+  },
+  "negative_count_stats": {
+    "min": 0,
+    "median": 4,
+    "max": 6,
+    "count_leq_1": 76
+  },
+  "solution_loc_stats": {
+    "min": 6,
+    "median": 25,
+    "max": 231
+  },
+  "identical_solution_groups": [
+    {
+      "members": [
+        "099-dither-adder",
+        "101-fixed-gain-amplifier",
+        "111-clocked-sine-source"
+      ],
+      "sha256": "sha256:c670fb277645a002e59c5d78abd45ada594c740a9ddb9a135a71706c3db88916"
+    }
+  ],
+  "duplicate_or_variant_pairs": [
+    {
+      "classification": "valid_variant_needs_counting_policy",
+      "pair": [
+        "007-first-order-lowpass",
+        "286-first-order-lowpass-bugfix"
+      ],
+      "recommendation": "Same solution in different artifact forms. Keep as separate skills but adjust counting labels.",
+      "metrics": {
+        "task_a": "007-first-order-lowpass",
+        "task_b": "286-first-order-lowpass-bugfix",
+        "same_form": false,
+        "same_category": true,
+        "same_level": true,
+        "same_solution_sha256": true
+      }
+    },
+    {
+      "classification": "valid_variant_needs_counting_policy",
+      "pair": [
+        "049-window-comparator-detector",
+        "284-window-comparator-testbench"
+      ],
+      "recommendation": "Same solution in different artifact forms. Keep as separate skills but adjust counting labels.",
+      "metrics": {
+        "task_a": "049-window-comparator-detector",
+        "task_b": "284-window-comparator-testbench",
+        "same_form": false,
+        "same_category": true,
+        "same_level": true,
+        "same_solution_sha256": true
+      }
+    },
+    {
+      "classification": "exact_duplicate_needs_merge",
+      "pair": [
+        "081-aperture-delay-track-and-hold",
+        "285-aperture-delay-sample-hold"
+      ],
+      "recommendation": "Identical solution in same form. Differentiate instruction/checker/negatives or merge.",
+      "metrics": {
+        "task_a": "081-aperture-delay-track-and-hold",
+        "task_b": "285-aperture-delay-sample-hold",
+        "same_form": true,
+        "same_category": true,
+        "same_level": true,
+        "same_solution_sha256": true
+      }
+    },
+    {
+      "classification": "exact_duplicate_needs_merge",
+      "pair": [
+        "097-cppll-tracking-reacquire-timer",
+        "107-reference-step-clock"
+      ],
+      "recommendation": "Identical solution in same form. Differentiate instruction/checker/negatives or merge.",
+      "metrics": {
+        "task_a": "097-cppll-tracking-reacquire-timer",
+        "task_b": "107-reference-step-clock",
+        "same_form": true,
+        "same_category": true,
+        "same_level": true,
+        "same_solution_sha256": true
+      }
+    }
+  ],
+  "weak_negative_tasks": [
+    "011-pfd-up-dn-logic",
+    "012-clock-divider",
+    "013-resettable-integrator",
+    "014-sar-logic",
+    "015-segmented-dac",
+    "016-binary-weighted-voltage-dac",
+    "017-slew-rate-limiter",
+    "018-strongarm-style-latch-comparator",
+    "019-unit-element-thermometer-dac",
+    "020-thermometer-code-decoder",
+    "021-vco-phase-integrator",
+    "022-bandgap-reference-macro-model",
+    "023-calibration-deadband-controller",
+    "024-charge-pump-abstraction",
+    "025-clocked-adc-quantizer",
+    "026-clocked-sample-and-hold",
+    "027-dac-mismatch-unit-weighting-model",
+    "028-digital-phase-accumulator-with-modulo-wrap",
+    "029-dwa-dem-encoder",
+    "030-higher-order-filter",
+    "031-hysteresis-comparator",
+    "032-ldo-regulator-macro-model",
+    "033-limiting-amplifier-frontend",
+    "034-lna-gain-compression-macro",
+    "035-log-rssi-power-detector",
+    "036-loop-filter-abstraction",
+    "037-pa-compression-macro",
+    "038-power-on-reset-detector",
+    "039-precision-rectifier-envelope-detector",
+    "040-programmable-gain-amplifier",
+    "041-propagation-delay-comparator",
+    "042-ptat-ctat-reference-generator",
+    "043-rf-mixer-downconverter-macro",
+    "044-sample-and-hold-with-droop-leakage",
+    "045-soft-hysteretic-limiter",
+    "046-successive-approximation-calibration-search-fsm",
+    "047-threshold-comparator",
+    "048-uvlo-brownout-detector",
+    "049-window-comparator-detector",
+    "080-acquisition-limited-sample-and-hold",
+    "081-aperture-delay-track-and-hold",
+    "082-bias-voltage-generator-with-enable-trim",
+    "083-crossing-metric-writer",
+    "084-peak-detector",
+    "085-burst-clock-source",
+    "086-dither-noise-like-deterministic-source",
+    "087-lfsr-prbs-generator",
+    "088-ramp-step-source",
+    "089-sine-periodic-voltage-source",
+    "090-adpll-ratio-hop-timer",
+    "091-agc-receiver-leveling-loop",
+    "092-amplifier-filter-chain",
+    "093-bbpd-data-edge-alignment",
+    "094-comparator-offset-search",
+    "095-complete-calibration-loop",
+    "096-converter-static-linearity-measurement",
+    "097-cppll-tracking-reacquire-timer",
+    "098-edge-crossing-interval-timer",
+    "099-dither-adder",
+    "100-final-step-file-metric",
+    "101-fixed-gain-amplifier",
+    "102-gain-estimator",
+    "103-iq-downconversion-chain",
+    "104-ldo-load-step-recovery",
+    "105-pipeline-adc-chain-4b",
+    "106-programmable-stimulus-sequencer",
+    "107-reference-step-clock",
+    "108-reference-startup-enable-flow",
+    "109-sample-hold-droop-front-end",
+    "110-settling-time-measurement",
+    "111-clocked-sine-source",
+    "283-weighted-sar-adc-dac-loop",
+    "284-window-comparator-testbench",
+    "285-aperture-delay-sample-hold",
+    "286-first-order-lowpass-bugfix",
+    "287-gain-extraction-flow"
+  ],
+  "release_wording_recommendation": "Until duplicate/high-overlap groups are resolved, describe v3 as \"300 candidate task directories\" rather than \"300 high-quality independent tasks\"."
+}
