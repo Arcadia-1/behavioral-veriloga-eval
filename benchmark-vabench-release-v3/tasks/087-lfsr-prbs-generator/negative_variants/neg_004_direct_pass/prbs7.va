@@ -1,10 +1,25 @@
 `include "constants.vams"
 `include "disciplines.vams"
-module prbs7 (VDD, VSS, vin, vout);
-    inout electrical VDD, VSS;
-    input electrical vin;
-    output electrical vout;
+module prbs7(CLK, RSTB, PRBS_OUT, S0, S1, S2, S3, S4, S5, S6);
+    input electrical CLK;
+    input electrical RSTB;
+    output electrical PRBS_OUT;
+    output electrical S0;
+    output electrical S1;
+    output electrical S2;
+    output electrical S3;
+    output electrical S4;
+    output electrical S5;
+    output electrical S6;
     analog begin
-        V(vout) <+ V(vin);
+        V(PRBS_OUT) <+ 0;
+        V(S0) <+ 0;
+        V(S1) <+ 0;
+        V(S2) <+ 0;
+        V(S3) <+ 0;
+        V(S4) <+ 0;
+        V(S5) <+ 0;
+        V(S6) <+ 0;
     end
 endmodule
+

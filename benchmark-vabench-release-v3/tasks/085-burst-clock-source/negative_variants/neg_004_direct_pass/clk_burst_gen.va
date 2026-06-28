@@ -1,10 +1,11 @@
 `include "constants.vams"
 `include "disciplines.vams"
-module clk_burst_gen (VDD, VSS, vin, vout);
-    inout electrical VDD, VSS;
-    input electrical vin;
-    output electrical vout;
+module clk_burst_gen(CLK, RST_N, CLK_OUT);
+    input electrical CLK;
+    input electrical RST_N;
+    output electrical CLK_OUT;
     analog begin
-        V(vout) <+ V(vin);
+        V(CLK_OUT) <+ 0;
     end
 endmodule
+

@@ -1,10 +1,11 @@
 `include "constants.vams"
 `include "disciplines.vams"
-module peak_detector (VDD, VSS, vin, vout);
-    inout electrical VDD, VSS;
+module peak_detector(vin, rst, vout);
     input electrical vin;
+    input electrical rst;
     output electrical vout;
     analog begin
         V(vout) <+ 0;
     end
 endmodule
+

@@ -1,10 +1,10 @@
 `include "constants.vams"
 `include "disciplines.vams"
-module file_metric_writer (VDD, VSS, vin, vout);
-    inout electrical VDD, VSS;
+module file_metric_writer(vin, done);
     input electrical vin;
-    output electrical vout;
+    output electrical done;
     analog begin
-        V(vout) <+ V(vin);
+        V(done) <+ V(vin);
     end
 endmodule
+
