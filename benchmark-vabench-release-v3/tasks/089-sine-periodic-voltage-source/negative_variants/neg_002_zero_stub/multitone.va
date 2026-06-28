@@ -1,0 +1,10 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module multitone (VDD, VSS, vin, vout);
+    inout electrical VDD, VSS;
+    input electrical vin;
+    output electrical vout;
+    analog begin
+        V(vout) <+ 0;
+    end
+endmodule

@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "bound_step_period_guard_ref.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_zero_stub",
+    "target": "*.va",
+    "intent": "zero/stub output implementation"
+  },
+  {
+    "id": "neg_003_constant_output",
+    "target": "*.va",
+    "intent": "constant DC output"
+  },
+  {
+    "id": "neg_004_direct_pass",
+    "target": "*.va",
+    "intent": "passes input directly to output"
   }
 ]

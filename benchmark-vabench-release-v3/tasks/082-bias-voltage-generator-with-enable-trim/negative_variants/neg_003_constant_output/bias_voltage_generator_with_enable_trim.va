@@ -1,0 +1,10 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module bias_voltage_generator_with_enable_trim (VDD, VSS, vin, vout);
+    inout electrical VDD, VSS;
+    input electrical vin;
+    output electrical vout;
+    analog begin
+        V(vout) <+ V(VDD)/2;
+    end
+endmodule
