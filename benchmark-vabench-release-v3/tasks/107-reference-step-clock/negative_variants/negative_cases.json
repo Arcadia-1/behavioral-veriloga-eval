@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "ref_step_clk.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_no_frequency_step",
+    "target": "ref_step_clk.va",
+    "intent": "clock period stays constant at period_pre — checker should detect missing frequency transition at t_switch"
+  },
+  {
+    "id": "neg_003_wrong_post_period",
+    "target": "ref_step_clk.va",
+    "intent": "post-switch period is 25ns instead of 19.5ns — checker should detect incorrect frequency after step"
+  },
+  {
+    "id": "neg_004_bad_duty_cycle",
+    "target": "ref_step_clk.va",
+    "intent": "output has 75% duty cycle instead of 50% — checker should detect asymmetric clock"
   }
 ]

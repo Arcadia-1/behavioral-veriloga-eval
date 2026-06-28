@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "cppll_timer_ref.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_wrong_kvco",
+    "target": "cppll_timer_ref.va",
+    "intent": "VCO gain is half of correct value — checker should detect insufficient frequency tracking range"
+  },
+  {
+    "id": "neg_003_no_lock",
+    "target": "cppll_timer_ref.va",
+    "intent": "lock signal always driven to 0 — checker should detect missing lock acquisition"
+  },
+  {
+    "id": "neg_004_no_vco_tracking",
+    "target": "cppll_timer_ref.va",
+    "intent": "VCO frequency does not respond to vctrl changes — checker should detect open-loop behavior"
   }
 ]

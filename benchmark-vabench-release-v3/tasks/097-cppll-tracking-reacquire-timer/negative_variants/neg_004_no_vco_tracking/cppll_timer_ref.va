@@ -1,0 +1,25 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module cppll_timer_ref(VDD, VSS, ref_clk, fb_clk, dco_clk, vctrl_mon, lock);
+    inout electrical VDD, VSS;
+    input electrical ref_clk;
+    output electrical fb_clk, dco_clk, vctrl_mon, lock;
+    parameter integer div_ratio = 8;
+    parameter real kvco_hz_per_v = 0;  // VCO doesn't respond to vctrl
+    parameter real f_center = 800.0e6, f_min = 300.0e6, f_max = 1.6e9;
+    parameter real tedge = 20p;
+    real vctrl, dco_freq, dco_half_period, t_next_toggle;
+    integer dco_state;
+    analog begin
+        @(initial_step) begin
+            vctrl = 0.45; dco_freq = f_center; dco_half_period = 0.5/dco_freq;
+            t_next_toggle = $abstime + dco_half_period;
+        end
+        @(timer(t_next_toggle)) begin
+            dco_state = 1-dco_state;
+            t_next_toggle = t_next_toggle + dco_half_period;
+        end
+        V(dco_clk) <+ transition(dco_state,0,tedge,tedge);
+        V(vctrl_mon) <+ transition(vctrl,0,tedge,tedge);
+    end
+endmodule

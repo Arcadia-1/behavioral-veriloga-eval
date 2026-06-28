@@ -1,0 +1,31 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module cppll_timer_ref(VDD, VSS, ref_clk, fb_clk, dco_clk, vctrl_mon, lock);
+    inout electrical VDD, VSS;
+    input electrical ref_clk;
+    output electrical fb_clk, dco_clk, vctrl_mon, lock;
+    parameter integer div_ratio = 8;
+    parameter real kvco_hz_per_v = 350.0e6;
+    parameter real f_center = 800.0e6, f_min = 300.0e6, f_max = 1.6e9;
+    parameter real kp = 8.0e6, ki = 1.2e5;
+    parameter real integ_min = -0.45, integ_max = 0.45, vctrl_init = 0.45;
+    parameter real tedge = 20p;
+    real vh, vl, vcm, vctrl, dco_freq, dco_half_period, t_next_toggle;
+    integer dco_state, fb_state, div_cnt;
+    analog begin
+        vh = V(VDD); vl = V(VSS); vcm = 0.5*(vh+vl);
+        @(initial_step) begin
+            vctrl = vctrl_init; dco_freq = f_center + kvco_hz_per_v*(vctrl-vcm);
+            if(dco_freq<f_min) dco_freq=f_min; if(dco_freq>f_max) dco_freq=f_max;
+            dco_half_period = 0.5/dco_freq; t_next_toggle = $abstime + dco_half_period;
+        end
+        @(timer(t_next_toggle)) begin
+            dco_state = 1-dco_state;
+            if(dco_state==1) begin div_cnt=div_cnt+1; if(div_cnt>=div_ratio) begin div_cnt=0; fb_state=1-fb_state; end end
+        end
+        V(lock) <+ 0;  // always unlocked
+        V(dco_clk) <+ vl + (vh-vl)*transition(dco_state,0,tedge,tedge);
+        V(fb_clk) <+ vl + (vh-vl)*transition(fb_state,0,tedge,tedge);
+        V(vctrl_mon) <+ vctrl;
+    end
+endmodule
