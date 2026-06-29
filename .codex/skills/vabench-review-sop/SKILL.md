@@ -23,6 +23,39 @@ enough to audit and repair tasks on its own.
 - When a public prompt is under review, paste the exact prompt for human review
   if requested; for Chinese collaboration, include a concise Chinese
   translation and mark the core clauses that need judgment.
+- Do not silently decide benchmark counting policy, L1/L2 status, duplicate
+  status, or prompt contract ambiguity from agent judgment alone. Surface the
+  evidence and ask for human confirmation at the checkpoints below.
+
+## Required Human Checkpoints
+
+Use these checkpoints unless the user has explicitly authorized a bounded batch
+repair. Even in batch mode, record every uncertain decision for follow-up review
+and do not silently change counting policy.
+
+1. **Admission checkpoint before repairs.** For each task or duplicate group,
+   present the task ids, exact public prompt text, a concise Chinese translation
+   when collaborating in Chinese, the proposed Gate 1 label, the proposed Gate 2
+   status, key evidence, and uncertainties. Wait for confirmation before
+   changing public prompts, gold, checker thresholds, target artifacts, or
+   counted/non-counted/L2/variant decisions.
+2. **Ambiguity checkpoint for Gate 1.** Ask for human judgment when classifying
+   duplicate vs independent, L1 vs L2, support component vs standalone function,
+   parameter variant vs new function, testbench/source as circuit function, or
+   numeric contract vs testbench-only value. Different names, default values, or
+   small timing deltas are not enough to prove independent function by
+   themselves.
+3. **Prompt-edit checkpoint.** Before editing a public prompt, show the original
+   excerpt, proposed public contract, and the leakage or underspecification it
+   fixes. For numeric values, explicitly separate circuit contract values from
+   visible-testbench artifacts and hidden-only details.
+4. **EVAS/Spectre mismatch checkpoint.** Before applying a benchmark workaround,
+   present the minimal mismatch and classify it as an EVAS bug, benchmark
+   invalidity, checker issue, or unresolved parity issue. EVAS fixes still take
+   priority for valid Verilog-A constructs.
+5. **PR-ready checkpoint.** Before claiming a benchmark PR is ready, summarize
+   human-confirmed decisions, prompts changed, gold/checker changes, EVAS and
+   Spectre evidence, AHDL lint status, and unresolved risks.
 
 ## Workflow
 
@@ -39,6 +72,8 @@ For each task under review, inspect:
 - existing `AUDIT.md` or report entries.
 
 Record whether evidence is EVAS-only, Spectre-only, or dual/parity evidence.
+Run the admission checkpoint before repairing assets or changing counting
+labels.
 
 ### 2. Gate 1: Admission And Counting
 
@@ -66,6 +101,9 @@ Rules:
   external testbench waveform.
 - Local helper modules split from a larger flow are not automatically
   independent functions.
+- A single component DUT is normally L1, not L2. Mark L2 only for a composed
+  measurement flow or integrated subsystem whose prompt and checker evaluate
+  integration behavior.
 
 Then check evaluation alignment:
 
@@ -93,6 +131,9 @@ Use these Gate 1 labels:
 | `valid_variant_needs_counting_policy` | Same function appears in another form or parameter family; count only with explicit policy. |
 | `hard_duplicate_rewrite_or_remove` | Same function and artifact behavior; keep at most one scored row unless rewritten. |
 | `candidate_evas_only` | EVAS evidence exists, but final paper-facing certification lacks Spectre parity. |
+
+Run the ambiguity checkpoint for any duplicate, L1/L2, support, source,
+stimulus, parameter-family, or counting-policy decision.
 
 ### 3. Gate 2: Cadence/Spectre Modeling Quality
 
@@ -214,6 +255,8 @@ not as descriptions of hidden evaluator internals.
 
 ### 6. Repair Policy
 
+- Run the prompt-edit checkpoint before public prompt edits unless the user has
+  already approved the exact change.
 - Repair the public prompt/visible contract before changing gold or checkers
   unless the issue is solely a private fixture bug.
 - Do not leak gold implementation details merely because the hidden checker
@@ -239,6 +282,8 @@ For each reviewed task or group, record:
 - EVAS evidence and Spectre evidence with commands/output paths;
 - AHDL lint status or why it is pending;
 - EVAS bugs found, linked EVAS issue/PR, and rerun evidence;
+- human confirmation status, including which decisions were confirmed and which
+  remain pending;
 - uncertainties for human review and suggested rewrite paths.
 
 When presenting prompts to the user for manual review, show each task
