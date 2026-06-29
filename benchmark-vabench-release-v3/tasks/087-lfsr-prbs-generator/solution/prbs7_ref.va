@@ -22,7 +22,6 @@ parameter real vdd = 0.9;
 parameter real vth = 0.45;
 parameter real trf = 10p;
 parameter real td  = 0p;
-// Use a plain decimal integer so EVAS and Spectre agree on the seed value.
 parameter integer seed = 127;
 
 integer state_0_i;

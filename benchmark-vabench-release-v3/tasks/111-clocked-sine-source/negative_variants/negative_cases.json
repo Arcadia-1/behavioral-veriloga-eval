@@ -1,0 +1,22 @@
+[
+  {
+    "id": "neg_001_zero",
+    "target": "vin_src.va",
+    "intent": "zero output source"
+  },
+  {
+    "id": "neg_002_static_common_mode",
+    "target": "vin_src.va",
+    "intent": "no sampled input signal"
+  },
+  {
+    "id": "neg_003_common_mode_sine",
+    "target": "vin_src.va",
+    "intent": "wrong common-mode-only output with no differential input"
+  },
+  {
+    "id": "neg_004_reset_stuck",
+    "target": "vin_src.va",
+    "intent": "source never updates after reset release"
+  }
+]

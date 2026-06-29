@@ -1,86 +1,35 @@
-# Task: vbr1_l1_dither_or_noise_like_deterministic_source:dut
+# Dither Noise Like Deterministic Source
 
-## Release Task Contract
+Implement `noise_gen_ref.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Stimulus and Source Generators
-- Base function: Dither or noise-like deterministic source
-- Domain: `voltage`
-- Target artifact(s): `noise_gen.va`, `noise_gen_ref.va`
-- Supplied/reference support artifact(s): `tb_noise_gen_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
+Declare module `noise_gen` with positional ports `vin_i, vout_o`. Both ports
+are electrical.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `sigma = 0.01 V`: perturbation standard-deviation scale before any testbench
+  override.
+- `dt = 0.5 ns`: sample interval before any testbench override.
 
-- `noise_gen.va` declares module `noise_gen` with positional ports: `vin_i`, `vout_o`.
-- `noise_gen_ref.va` declares module `noise_gen` with positional ports: `vin_i`, `vout_o`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+Generate a sampled, zero-mean, noise-like deterministic perturbation and add it
+to `V(vin_i)`. The output is piecewise constant between sample events:
 
-Public transient setting used by the release harness:
-
-```spectre
-tran tran stop=500n maxstep=1n
+```text
+vout_o = V(vin_i) + sigma * sample
 ```
 
-The release harness expects these exact public scalar observables:
+Use a periodic timer-driven sample-and-hold style, such as `@(timer(0, dt))`,
+so the perturbation is updated once per sample interval rather than recomputed
+at every analog evaluation point or sampled only once. The task models a
+bounded dither/noise-like stimulus source for transient behavioral benches; it
+does not require physical noise analysis.
 
-- `vin_i`
-- `vout_o`
+## Modeling Constraints
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `noise_is_nontrivial`
-- `noise_std_in_range`
-
-## Output Contract
-
-Return exactly these source artifacts:
-
-- `noise_gen.va`
-- `noise_gen_ref.va`
-
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Public Description
-
-# Dither or noise-like deterministic source DUT
-
-Write the Verilog-A DUT artifact(s) for `Dither or noise-like deterministic source`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `noise_gen(vin_i, vout_o)`
-
-Ports:
-
-- `vin_i`: input electrical baseline voltage
-- `vout_o`: output electrical baseline plus sampled dither/noise-like perturbation
-
-## Behavioral Contract
-
-- add zero-mean sampled perturbation to `V(vin_i)`
-- the public task checks non-trivial variation and bounded standard deviation; it does not claim physical noise analysis
-- drive the output with pure voltage-domain `transition(...)` behavior
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns:
-
-- `vin_i`
-- `vout_o`
+Return only `noise_gen_ref.va`. Do not generate a Spectre testbench or checker
+logic. Do not use current contributions, `ddt()`, `idt()`, transistor-level
+devices, AC/noise analysis, or simulator-private side channels.

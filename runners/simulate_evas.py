@@ -195,12 +195,12 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
     return failures
 
 
-def read_task_artifact_targets(task_dir: Path) -> list[str]:
+def _read_task_artifact_list(task_dir: Path, key: str) -> list[str]:
     task_toml = task_dir / "task.toml"
     if not task_toml.exists():
         return []
     text = task_toml.read_text(encoding="utf-8", errors="ignore")
-    match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
+    match = re.search(rf"(?m)^\s*{re.escape(key)}\s*=\s*(\[[^\n]*\])", text)
     if not match:
         return []
     try:
@@ -215,6 +215,14 @@ def read_task_artifact_targets(task_dir: Path) -> list[str]:
         if name and "/" not in name and "\\" not in name:
             targets.append(name)
     return targets
+
+
+def read_task_artifact_targets(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "target")
+
+
+def read_task_artifact_supports(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "support")
 
 
 def copy_inputs(
@@ -5480,12 +5488,21 @@ def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
 def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not {"vin_i", "vout_o"}.issubset(rows[0]):
         return False, "missing vin_i/vout_o"
-    noises = [r["vout_o"] - r["vin_i"] for r in rows]
+    t_end = rows[-1].get("time", 0.0)
+    analysis_rows = [r for r in rows if r.get("time", 0.0) >= max(2e-9, 0.05 * t_end)]
+    if len(analysis_rows) < 20:
+        return False, f"too_few_noise_samples={len(analysis_rows)}"
+    noises = [r["vout_o"] - r["vin_i"] for r in analysis_rows]
     mean = sum(noises) / len(noises)
     var = sum((x - mean) ** 2 for x in noises) / len(noises)
     std = var ** 0.5
-    ok = std > 0.01 and max(abs(x) for x in noises) > 0.05
-    return ok, f"noise_std={std:.4f}"
+    max_abs = max(abs(x) for x in noises)
+    ok = (
+        abs(mean) <= 0.06
+        and 0.025 <= std <= 0.18
+        and 0.06 <= max_abs <= 0.55
+    )
+    return ok, f"noise_mean={mean:.4f} noise_std={std:.4f} max_abs={max_abs:.4f}"
 
 
 def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9983,61 +10000,102 @@ def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if missing:
         return False, f"missing_columns={','.join(sorted(missing))}"
 
-    def logic(row: dict[str, float], name: str) -> int | None:
-        value = row[name]
-        if value >= 0.7:
+    vth = 0.45
+
+    def logic_value(value: float) -> int | None:
+        if value >= 0.65:
             return 1
-        if value <= 0.2:
+        if value <= 0.25:
             return 0
         return None
 
     def state_code(row: dict[str, float]) -> int | None:
         code = 0
         for idx in range(7):
-            bit = logic(row, f"state_{idx}")
+            bit = logic_value(row[f"state_{idx}"])
             if bit is None:
                 return None
             code |= bit << idx
         return code
 
-    post = [row for row in rows if row["time"] > 2e-9 and row["rst_n"] > 0.7 and row["en"] > 0.7]
-    if len(post) < 20:
-        return False, "too_few_post_init_samples"
+    edge_indices = [
+        idx
+        for idx in range(1, len(rows))
+        if rows[idx - 1]["clk"] <= vth < rows[idx]["clk"]
+    ]
+    if len(edge_indices) < 20:
+        return False, f"not_enough_clk_edges={len(edge_indices)}"
 
-    stable_codes: list[int] = []
-    serial_bits: list[int] = []
-    for row in post:
-        code = state_code(row)
-        serial = logic(row, "serial_out")
-        if code is None or serial is None:
-            continue
-        if serial != ((code >> 6) & 1):
-            return False, f"serial_state_mismatch code={code}"
-        if not stable_codes or stable_codes[-1] != code:
-            stable_codes.append(code)
-            serial_bits.append(serial)
+    def sample_after(edge_pos: int) -> dict[str, float] | None:
+        edge_idx = edge_indices[edge_pos]
+        edge_t = rows[edge_idx]["time"]
+        next_t = rows[edge_indices[edge_pos + 1]]["time"] if edge_pos + 1 < len(edge_indices) else None
+        settle_t = edge_t + 80e-12
+        for row in rows[edge_idx:]:
+            t = row["time"]
+            if next_t is not None and t >= next_t:
+                break
+            if t >= settle_t:
+                return row
+        fallback_idx = min(edge_idx + 4, len(rows) - 1)
+        if next_t is not None and rows[fallback_idx]["time"] >= next_t:
+            fallback_idx = max(edge_idx, edge_indices[edge_pos + 1] - 1)
+        return rows[fallback_idx] if fallback_idx < len(rows) else None
 
-    if len(stable_codes) < 10:
-        return False, f"unique_state_steps={len(stable_codes)}"
-    if 0 in stable_codes:
-        return False, "entered_zero_state"
-
-    mismatches = 0
+    expected = 127
     checked = 0
-    for current, observed_next in zip(stable_codes, stable_codes[1:]):
-        # Public reference recurrence used by the release gold:
-        # new state_0 = old state_6 XOR old state_5; higher bits shift up.
-        feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
-        expected_next = ((current & 0x3F) << 1) | feedback
-        checked += 1
-        if observed_next != expected_next:
-            mismatches += 1
+    advanced_edges = 0
+    hold_edges = 0
+    code_mismatches = 0
+    serial_mismatches = 0
+    observed_codes: list[int] = []
+    serial_bits: list[int] = []
 
-    serial_transitions = sum(1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1])
-    ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
+    for edge_pos, edge_idx in enumerate(edge_indices):
+        edge_row = rows[edge_idx]
+        if edge_row["rst_n"] <= vth:
+            expected = 127
+        elif edge_row["en"] > vth:
+            feedback = ((expected >> 6) & 1) ^ ((expected >> 5) & 1)
+            expected = ((expected & 0x3F) << 1) | feedback
+            advanced_edges += 1
+        else:
+            hold_edges += 1
+
+        sample = sample_after(edge_pos)
+        if sample is None:
+            continue
+        code = state_code(sample)
+        serial = logic_value(sample["serial_out"])
+        if code is None or serial is None:
+            code_mismatches += 1
+            continue
+        checked += 1
+        observed_codes.append(code)
+        serial_bits.append(serial)
+        if code == 0:
+            return False, "entered_zero_state"
+        if code != expected:
+            code_mismatches += 1
+        if serial != ((code >> 6) & 1):
+            serial_mismatches += 1
+
+    serial_transitions = sum(
+        1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1]
+    )
+    unique_codes = len(set(observed_codes))
+    ok = (
+        checked >= 20
+        and advanced_edges >= 16
+        and code_mismatches == 0
+        and serial_mismatches == 0
+        and serial_transitions >= 3
+        and unique_codes >= 12
+    )
     return ok, (
-        f"state_steps={len(stable_codes)} checked_transitions={checked} "
-        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+        f"edges={len(edge_indices)} checked={checked} advanced={advanced_edges} hold={hold_edges} "
+        f"unique_codes={unique_codes} code_mismatches={code_mismatches} "
+        f"serial_mismatches={serial_mismatches} serial_transitions={serial_transitions}"
     )
 
 
@@ -10698,10 +10756,16 @@ def check_multitone(rows: list[dict[str, float]]) -> tuple[bool, str]:
         a = (t - t0) / (t1 - t0)
         return vals[lo] + a * (vals[hi] - vals[lo])
 
+    sample_times = [0.073e-6, 0.111e-6, 0.157e-6, 0.203e-6, 0.247e-6,
+                    0.293e-6, 0.337e-6, 0.389e-6, 0.431e-6, 0.477e-6]
     samples = [
-        (0.125e-6, 0.2 * math.sin(2 * math.pi * 1e6 * 0.125e-6) + 0.1 * math.sin(2 * math.pi * 2e6 * 0.125e-6) + 0.05 * math.sin(2 * math.pi * 3e6 * 0.125e-6)),
-        (0.275e-6, 0.2 * math.sin(2 * math.pi * 1e6 * 0.275e-6) + 0.1 * math.sin(2 * math.pi * 2e6 * 0.275e-6) + 0.05 * math.sin(2 * math.pi * 3e6 * 0.275e-6)),
-        (0.410e-6, 0.2 * math.sin(2 * math.pi * 1e6 * 0.410e-6) + 0.1 * math.sin(2 * math.pi * 2e6 * 0.410e-6) + 0.05 * math.sin(2 * math.pi * 3e6 * 0.410e-6)),
+        (
+            t,
+            0.2 * math.sin(2 * math.pi * 1e6 * t)
+            + 0.1 * math.sin(2 * math.pi * 2e6 * t)
+            + 0.05 * math.sin(2 * math.pi * 3e6 * t),
+        )
+        for t in sample_times
     ]
     errs = []
     for t_check, expected in samples:
@@ -10711,8 +10775,10 @@ def check_multitone(rows: list[dict[str, float]]) -> tuple[bool, str]:
             continue
         errs.append(abs(measured - expected))
     max_err = max(errs)
-    ok = max_err < 0.03
-    return ok, f"max_err={max_err:.4f}"
+    mean_err = sum(errs) / len(errs)
+    span = max(vals) - min(vals)
+    ok = max_err < 0.025 and mean_err < 0.012 and span > 0.22
+    return ok, f"max_err={max_err:.4f} mean_err={mean_err:.4f} span={span:.4f}"
 
 
 def check_nrz_prbs(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15669,13 +15735,21 @@ def run_case(
         timing_split["output_setup_s"] = time.perf_counter() - t0
 
         t0 = time.perf_counter()
-        task_artifact_targets = read_task_artifact_targets(task_dir)
+        primary_artifact_targets = read_task_artifact_targets(task_dir)
+        task_artifact_targets = [
+            *primary_artifact_targets,
+            *[
+                name
+                for name in read_task_artifact_supports(task_dir)
+                if name not in primary_artifact_targets
+            ],
+        ]
         dut_dst, tb_dst = copy_inputs(
             run_dir,
             dut_path,
             tb_path,
             target_filenames=task_artifact_targets,
-            primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
+            primary_target_filename=primary_artifact_targets[0] if primary_artifact_targets else None,
             companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
         )
         timing_split["copy_inputs_s"] = time.perf_counter() - t0

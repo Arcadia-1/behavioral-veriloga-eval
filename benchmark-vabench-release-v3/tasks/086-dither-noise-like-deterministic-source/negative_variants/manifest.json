@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "noise_gen.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output stub; fails the baseline-plus-noise source contract.",
+      "path": "negative_variants/neg_001_zero/noise_gen_ref.va"
+    },
+    {
+      "id": "neg_002_passthrough",
+      "description": "Passes the input through with no sampled perturbation.",
+      "path": "negative_variants/neg_002_passthrough/noise_gen_ref.va"
+    },
+    {
+      "id": "neg_003_too_large_noise",
+      "description": "Adds sampled perturbation with far too much variance.",
+      "path": "negative_variants/neg_003_too_large_noise/noise_gen_ref.va"
+    },
+    {
+      "id": "neg_004_biased_noise",
+      "description": "Adds sampled perturbation with a DC bias instead of zero mean.",
+      "path": "negative_variants/neg_004_biased_noise/noise_gen_ref.va"
     }
   ]
 }

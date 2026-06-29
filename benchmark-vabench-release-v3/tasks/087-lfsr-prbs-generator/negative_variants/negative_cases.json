@@ -1,7 +1,22 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "prbs7.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "target": "prbs7_ref.va",
+    "intent": "zero output/state stub"
+  },
+  {
+    "id": "neg_002_wrong_taps",
+    "target": "prbs7_ref.va",
+    "intent": "wrong feedback taps"
+  },
+  {
+    "id": "neg_003_ignore_enable",
+    "target": "prbs7_ref.va",
+    "intent": "ignores enable hold"
+  },
+  {
+    "id": "neg_004_wrong_serial_bit",
+    "target": "prbs7_ref.va",
+    "intent": "wrong serial output bit"
   }
 ]

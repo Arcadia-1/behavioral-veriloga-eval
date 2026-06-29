@@ -15,11 +15,13 @@ sim_correct:
   checks:
     - "noise_is_nontrivial"
     - "noise_std_in_range"
+    - "noise_mean_near_zero"
+    - "noise_amplitude_bounded"
   public_observables:
     - "vin_i"
     - "vout_o"
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_fresh_recertification_after_manual_audit"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Prompt, target artifact, checker strength, hidden coverage, and negative variants were changed during manual audit."

@@ -1,54 +1,32 @@
-# Task: vbr1_l1_sine_periodic_voltage_source:dut
+# Sine Periodic Voltage Source
 
-## Release Task Contract
+Implement `multitone.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Stimulus and Source Generators
-- Base function: Sine/periodic voltage source
-- Domain: `voltage`
-- Target artifact(s): `multitone.va`
-- Supplied/reference support artifact(s): `tb_multitone_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
+Declare module `multitone` with positional port `OUT`. The port is an
+electrical output.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable real parameters:
 
-- `multitone.va` declares module `multitone` with positional ports: `OUT`.
+- `f1 = 1.0e6 Hz`, `f2 = 2.0e6 Hz`, `f3 = 3.0e6 Hz`
+- `a1 = 0.2 V`, `a2 = 0.1 V`, `a3 = 0.05 V`
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the release harness:
+Drive `OUT` with a three-tone voltage source:
 
-```spectre
-tran tran stop=500n maxstep=500p
+```text
+V(OUT) = a1*sin(2*pi*f1*t) + a2*sin(2*pi*f2*t) + a3*sin(2*pi*f3*t)
 ```
 
-The release harness expects these exact public scalar observables:
+Use `$bound_step(...)` or equivalent timestep guidance based on the highest
+tone frequency so the waveform is well resolved in transient simulation.
 
-- `OUT`
+## Modeling Constraints
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `multitone_waveform_matches_public_samples`
-
-## Output Contract
-
-Return exactly one source artifact named `multitone.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Public Description
-
-Write a Verilog-A module named `multitone`.
-
-Create a signal source that outputs the sum of N sinusoids. Parameters: an array of frequencies and amplitudes (up to 8 tones). Include $bound_step for the highest frequency component.
-
-Ports:
-- `OUT`: output electrical
+Return only `multitone.va`. Do not generate a Spectre testbench or checker
+logic. Do not use current contributions, `ddt()`, transistor-level devices,
+AC/noise analysis, or simulator-private side channels.

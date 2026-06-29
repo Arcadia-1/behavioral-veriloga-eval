@@ -5,13 +5,13 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-29T14:51:28+00:00`
+- Generated UTC: `2026-06-29T17:59:22+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
-- Levels: `{'L1': 265, 'L2': 32, 'L3': 3}`
+- Levels: `{'L1': 266, 'L2': 31, 'L3': 3}`
 - Source-family heuristic rows: **185**
 - Negative variants per task: min `1`, median `4.0`, max `10`
-- Solution LOC: min `6`, median `24.5`, max `252`
+- Solution LOC: min `6`, median `25.0`, max `252`
 
 ## Release Wording Recommendation
 
@@ -19,7 +19,7 @@
 
 ## Cadence/Spectre Evidence For Reviewed Slice
 
-- Status: `passed_for_reviewed_issue29_slice_and_phase1_to_5_batch`
+- Status: `passed_for_reviewed_issue29_slice_phase1_to_5_and_batch1`
 - Runner: `scripts/run_v3_spectre_audit.py`
 - Reviewed tasks: **21**
 - Hidden gold: **21**/**21** PASS, fail `0`
@@ -33,6 +33,17 @@
 - Phase1-to-phase5 visible/hidden contract: All 8 tasks now have visible smoke decks distinct from hidden decks. Hidden decks vary PWL patterns, reference values, edge ordering, stop times, or reset-event coverage while staying within the public prompt contract.
 - Phase1-to-phase5 AHDL lint status: cadence_modeling_ready for the audited artifacts: Spectre visible/hidden/negative logs were inspected for AHDLLINT-* messages and none were present. The remaining warnings are shared VACOMP-2435 environment notices and SPECTRE-592 setup notices, not task-specific AHDL lint failures. No separate standalone lint runner exists in the repo.
 - Phase1-to-phase5 AHDL lint summary: `/private/tmp/v3_spectre_phase1_5_ahdl_lint_summary.json`
+- Batch1 source/support tasks: `085-burst-clock-source`, `086-dither-noise-like-deterministic-source`, `087-lfsr-prbs-generator`, `088-ramp-step-source`, `089-sine-periodic-voltage-source`, `106-programmable-stimulus-sequencer`, `111-clocked-sine-source`
+- Batch1 human-confirmed Gate 1 labels: `085-burst-clock-source` = independent_l1_ready; `086-dither-noise-like-deterministic-source` = independent_l1_ready; `087-lfsr-prbs-generator` = independent_l1_ready; `088-ramp-step-source` = independent_l1_ready; `089-sine-periodic-voltage-source` = independent_l1_ready; `106-programmable-stimulus-sequencer` = independent_l1_ready; reclassified from L2 to L1 because it is a single DUT source/control component; `111-clocked-sine-source` = l2_support_component; keep as gain-extraction-flow support rather than standalone L1 credit
+- Batch1 EVAS hidden gold: **7**/**7** PASS, fail `0` (/private/tmp/v3_batch1_gold_085_089.json; /private/tmp/v3_batch1_gold_106.json; /private/tmp/v3_batch1_gold_111_after_support_staging.json)
+- Batch1 EVAS hidden negatives: **28**/**28** behavioral rejections, syntax/setup rejects `0`, unexpected pass `0` (/private/tmp/v3_batch1_negatives_evas.json)
+- Batch1 Spectre visible gold: **7**/**7** PASS, fail `0` (`/private/tmp/v3_batch1_spectre_visible_gold.json`)
+- Batch1 Spectre hidden gold: **7**/**7** PASS, fail `0` (`/private/tmp/v3_batch1_spectre_hidden_gold.json`)
+- Batch1 Spectre hidden negatives: **28**/**28** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0` (`/private/tmp/v3_batch1_spectre_hidden_negatives.json`)
+- Batch1 visible/hidden contract: All 7 batch1 tasks now have visible smoke decks distinct from hidden decks. Hidden decks vary reset windows, enable-hold coverage, source timing, stop windows, or staged flow conditions while staying within the public prompt contract.
+- Batch1 artifact boundary repairs: Tasks 086 and 087 now target only their *_ref.va artifacts and stale legacy target files were removed; task 106 is L1 rather than L2; task 111 remains target-only vin_src.va with support artifacts staged from task.toml support entries.
+- Batch1 checker-strength repairs: Task 086 now checks deterministic dither statistics and bounds; task 087 now checks edge-by-edge PRBS recurrence, enable hold, state bit order, and serial bit behavior; task 089 now checks the multi-tone formula across samples instead of a shallow span.
+- Batch1 AHDL lint status: cadence_modeling_ready for the audited artifacts: Spectre visible, hidden, and negative runs completed for all 7 tasks, and the audited result logs contain no task-level AHDLLINT failure. No separate standalone lint runner exists in the repo.
 - Fixture repairs before final negative rerun:
   - 049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.
   - 081-aperture-delay-track-and-hold hidden stimulus was made aperture-sensitive and concrete negatives were expanded from one zero stub to four behavior variants.
@@ -40,6 +51,11 @@
   - 285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.
   - 287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.
   - 146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.
+  - 085/086/087/088/089/106/111 hidden decks were made distinct from public visible smoke decks before the batch1 EVAS/Spectre rerun.
+  - 086-dither-noise-like-deterministic-source and 087-lfsr-prbs-generator target artifacts were narrowed to their *_ref.va files and stale legacy starter/solution/negative target files were removed.
+  - 086-dither-noise-like-deterministic-source gold/starter behavior was repaired from one-shot/random-style output to deterministic periodic sampled pseudo-noise so EVAS and Spectre exercise the same public contract.
+  - 106-programmable-stimulus-sequencer metadata was corrected from L2 to L1 because the row is a single DUT source/control component rather than a composed flow.
+  - 111-clocked-sine-source negative-variant execution now stages task.toml support artifacts so the support-L2 flow checker can run against vin_src.va variants.
   - 282-pfd-timer-reset and 300-pfd-active-low-reset metadata levels were corrected from L2 to L1 because a single PFD DUT is not an L2 flow.
   - 282-pfd-timer-reset and 300-pfd-active-low-reset prompts/golds now expose the public output transition-time parameter `tr`.
 
@@ -313,16 +329,16 @@ generated `CLK` waveform.
 - Automatic classification before manual review: `needs_human_review`
 - Manual status: Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.
-- Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun.
+- Manual evidence: Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: visible/hidden gold PASS and 4/4 concrete flow-staged negatives NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
 | `099-dither-adder` ↔ `101-fixed-gain-amplifier` | `needs_human_review` | 0.5442 | 0.7305 | 0.7425 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `099-dither-adder` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.3823 | 0.6138 | 0.4101 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `099-dither-adder` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.3823 | 0.6138 | 0.4047 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 | `099-dither-adder` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.2101 | 0.277 | 0.1816 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4296 | 0.5686 | 0.4368 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `101-fixed-gain-amplifier` ↔ `111-clocked-sine-source` | `needs_human_review` | 0.4296 | 0.5686 | 0.4357 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 | `101-fixed-gain-amplifier` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.156 | 0.2435 | 0.2328 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
-| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.1882 | 0.3454 | 0.2691 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
+| `111-clocked-sine-source` ↔ `287-gain-extraction-flow` | `needs_human_review` | 0.1882 | 0.3454 | 0.2592 | Automatic similarity is not decisive; inspect behavior, hidden checks, and negative variants manually. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
@@ -905,10 +921,7 @@ Return only `divide_by_two_toggle.va`. Use voltage contributions only. Do not
 | `125-clocked-dac-4b-binary` | `dut` | `L1` | `data_converter` | 20 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `124-comp-os-detect` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
 | `114-sample-and-hold-ideal` | `dut` | `L1` | `data_converter` | 19 | 4 | `short_solution_leq_20_loc`, `source_family_short_solution` |
-| `111-clocked-sine-source` | `dut` | `L2` | `stimulus_source_generators` | 34 | 1 | `low_negative_variant_count`, `zero_only_negative` |
 | `110-settling-time-measurement` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
-| `089-sine-periodic-voltage-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
-| `086-dither-noise-like-deterministic-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `084-peak-detector` | `dut` | `L1` | `measurement_instrumentation_flows` | 11 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `083-crossing-metric-writer` | `dut` | `L1` | `measurement_instrumentation_flows` | 6 | 1 | `low_negative_variant_count`, `short_solution_leq_20_loc` |
 | `286-first-order-lowpass-bugfix` | `bugfix` | `L1` | `baseband_signal_conditioning` | 6 | 4 | `short_solution_leq_20_loc` |
@@ -916,7 +929,6 @@ Return only `divide_by_two_toggle.va`. Use voltage contributions only. Do not
 | `284-window-comparator-testbench` | `tb` | `L1` | `comparator_decision` | 10 | 8 | `short_solution_leq_20_loc` |
 | `109-sample-hold-droop-front-end` | `dut` | `L2` | `sampling_analog_memory` | 64 | 1 | `low_negative_variant_count` |
 | `108-reference-startup-enable-flow` | `dut` | `L2` | `bias_reference_power_management` | 53 | 1 | `low_negative_variant_count` |
-| `106-programmable-stimulus-sequencer` | `dut` | `L2` | `stimulus_source_generators` | 55 | 1 | `low_negative_variant_count` |
 | `105-pipeline-adc-chain-4b` | `dut` | `L2` | `data_converter_models` | 107 | 1 | `low_negative_variant_count` |
 | `104-ldo-load-step-recovery` | `dut` | `L2` | `bias_reference_power_management` | 60 | 1 | `low_negative_variant_count` |
 | `103-iq-downconversion-chain` | `dut` | `L2` | `rf_afe_behavioral_macromodels` | 69 | 1 | `low_negative_variant_count` |
@@ -931,9 +943,7 @@ Return only `divide_by_two_toggle.va`. Use voltage contributions only. Do not
 | `092-amplifier-filter-chain` | `dut` | `L2` | `baseband_signal_conditioning` | 47 | 1 | `low_negative_variant_count` |
 | `091-agc-receiver-leveling-loop` | `dut` | `L2` | `rf_afe_behavioral_macromodels` | 57 | 1 | `low_negative_variant_count` |
 | `090-adpll-ratio-hop-timer` | `dut` | `L2` | `pll_clock_timing_systems` | 177 | 1 | `low_negative_variant_count` |
-| `088-ramp-step-source` | `dut` | `L1` | `stimulus_source_generators` | 42 | 1 | `low_negative_variant_count` |
-| `087-lfsr-prbs-generator` | `dut` | `L1` | `stimulus_source_generators` | 58 | 1 | `low_negative_variant_count` |
-| `085-burst-clock-source` | `dut` | `L1` | `stimulus_source_generators` | 38 | 1 | `low_negative_variant_count` |
+| `089-sine-periodic-voltage-source` | `dut` | `L1` | `stimulus_source_generators` | 18 | 4 | `short_solution_leq_20_loc` |
 | `082-bias-voltage-generator-with-enable-trim` | `dut` | `L1` | `bias_reference_power_management` | 31 | 1 | `low_negative_variant_count` |
 | `080-acquisition-limited-sample-and-hold` | `dut` | `L1` | `sampling_analog_memory` | 41 | 1 | `low_negative_variant_count` |
 | `074-configurable-polarity-edge-detector` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
@@ -943,6 +953,12 @@ Return only `divide_by_two_toggle.va`. Use voltage contributions only. Do not
 | `063-masked-config-update-32b` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
 | `059-config-latch-128b-static-enable` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 | `058-config-latch-32b-clocked` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
+| `027-dac-mismatch-unit-weighting-model` | `dut` | `L1` | `data_converter` | 18 | 5 | `short_solution_leq_20_loc` |
+| `021-vco-phase-integrator` | `dut` | `L1` | `pll_clock_timing` | 6 | 5 | `short_solution_leq_20_loc` |
+| `020-thermometer-code-decoder` | `dut` | `L1` | `testbench_utility_modules` | 11 | 5 | `short_solution_leq_20_loc` |
+| `017-slew-rate-limiter` | `dut` | `L1` | `baseband_signal_conditioning` | 6 | 5 | `short_solution_leq_20_loc` |
+| `016-binary-weighted-voltage-dac` | `dut` | `L1` | `data_converter` | 16 | 5 | `short_solution_leq_20_loc` |
+| `015-segmented-dac` | `dut` | `L1` | `data_converter` | 11 | 5 | `short_solution_leq_20_loc` |
 
 ## Interpretation Notes
 

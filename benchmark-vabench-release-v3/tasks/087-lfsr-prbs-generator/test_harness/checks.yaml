@@ -14,12 +14,13 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "prbs7_sequence_advances"
-    - "serial_output_has_transitions"
-    - "parallel_state_bus_updates"
+    - "prbs7_sequence_matches_public_taps"
+    - "enable_low_holds_state"
+    - "serial_output_matches_state_6"
+    - "parallel_state_bus_bit_order_matches_prompt"
 
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_fresh_recertification_after_manual_audit"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Prompt, target artifact, checker strength, hidden coverage, and negative variants were changed during manual audit."

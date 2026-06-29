@@ -1,22 +1,23 @@
-# Honest SOP Audit: Task 088 Ramp Step Source
+# Two-Gate Audit: Task 088 Ramp Step Source
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one Verilog-A DUT migrated from `vbr1_l1_ramp_or_step_source:dut`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready` after repair.
+- Human-confirmed judgment: a periodic bounded ramp/step source with a guard output is a reusable source component, not merely a simulator syntax row, when the checker evaluates the ramp and guard behavior.
+- Public contract: `bound_step_period_guard_ref.va` emits a repeating bounded ramp-like source and a guard indicator with public period, transition, and guard-window semantics.
+- Artifact boundary: `task.toml`, prompt, manifests, starter, solution, and negatives agree on `bound_step_period_guard_ref.va`.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready` for the audited L1 row.
+- Prompt hygiene: removed migration/private-checker wording and kept the prompt focused on the source behavior.
+- Visible/hidden coverage: visible and hidden decks differ in timing/stop coverage and are not byte-identical.
+- Checker strength: the checker verifies wrap behavior, ramp span, guard rising events, and guard high fraction, rejecting zero, no-wrap, always-low guard, and wrong guard-width variants.
+- Negatives: 4/4 concrete variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
+- EVAS evidence: hidden gold PASS in `/private/tmp/v3_batch1_gold_085_089.json`; hidden negatives 4/4 behavioral rejections in `/private/tmp/v3_batch1_negatives_evas.json`.
+- Spectre evidence: visible gold PASS in `/private/tmp/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `/private/tmp/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `/private/tmp/v3_batch1_spectre_hidden_negatives.json`.
+- AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l1_ramp_or_step_source`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-This is an initial migration artifact. Do not count this task in a release denominator until gold and negative evidence are attached.
+No local blocker remains after current review. The row should still be counted under the global source-component policy rather than as a composed L2 flow.

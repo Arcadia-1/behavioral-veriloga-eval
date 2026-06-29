@@ -2,6 +2,21 @@
   {
     "id": "neg_001_zero",
     "target": "bound_step_period_guard_ref.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero output stub"
+  },
+  {
+    "id": "neg_002_no_wrap",
+    "target": "bound_step_period_guard_ref.va",
+    "intent": "missing periodic wrap"
+  },
+  {
+    "id": "neg_003_guard_always_low",
+    "target": "bound_step_period_guard_ref.va",
+    "intent": "missing guard pulse"
+  },
+  {
+    "id": "neg_004_wrong_guard_width",
+    "target": "bound_step_period_guard_ref.va",
+    "intent": "wrong guard pulse width"
   }
 ]

@@ -1,7 +1,7 @@
 {
   "task_id": "v3_106_programmable_stimulus_sequencer",
   "source_task": "vbr1_l2_programmable_stimulus_sequencer",
-  "source_form": "tb",
+  "source_form": "dut",
   "source_checker_id": "vbr1_l2_programmable_stimulus_sequencer_tb",
   "primary_target": "programmable_stimulus_sequencer.va",
   "artifact_targets": [
@@ -9,5 +9,6 @@
   ],
   "hidden_testbench": "tb_programmable_stimulus_sequencer.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "gate1_label": "independent_l1_rework",
+  "status": "batch1_source_l1_rework_pending_recertification"
 }

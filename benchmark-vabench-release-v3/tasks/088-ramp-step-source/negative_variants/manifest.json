@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "bound_step_period_guard_ref.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output stub.",
+      "path": "negative_variants/neg_001_zero/bound_step_period_guard_ref.va"
+    },
+    {
+      "id": "neg_002_no_wrap",
+      "description": "Generates a one-shot ramp that does not wrap every period.",
+      "path": "negative_variants/neg_002_no_wrap/bound_step_period_guard_ref.va"
+    },
+    {
+      "id": "neg_003_guard_always_low",
+      "description": "Keeps the phase ramp but never asserts the guard pulse.",
+      "path": "negative_variants/neg_003_guard_always_low/bound_step_period_guard_ref.va"
+    },
+    {
+      "id": "neg_004_wrong_guard_width",
+      "description": "Uses a guard pulse that is too wide for the public pulse_w contract.",
+      "path": "negative_variants/neg_004_wrong_guard_width/bound_step_period_guard_ref.va"
     }
   ]
 }

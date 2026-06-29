@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-29T14:51:28+00:00",
+  "generated_at_utc": "2026-06-29T17:59:22+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -12,8 +12,8 @@
       "tb": 1
     },
     "levels": {
-      "L1": 265,
-      "L2": 32,
+      "L1": 266,
+      "L2": 31,
       "L3": 3
     },
     "difficulties": {
@@ -60,12 +60,12 @@
     "negative_count_median": 4.0,
     "negative_count_max": 10,
     "solution_loc_min": 6,
-    "solution_loc_median": 24.5,
+    "solution_loc_median": 25.0,
     "solution_loc_max": 252
   },
   "release_wording_recommendation": "Until duplicate/high-overlap groups are manually resolved, describe v3 as \"300 candidate task directories\" rather than \"300 high-quality independent tasks\".",
   "cadence_spectre_audit": {
-    "status": "passed_for_reviewed_issue29_slice_and_phase1_to_5_batch",
+    "status": "passed_for_reviewed_issue29_slice_phase1_to_5_and_batch1",
     "runner": "scripts/run_v3_spectre_audit.py",
     "reviewed_tasks": [
       "006-element-shuffler",
@@ -155,6 +155,67 @@
       "ahdl_lint_status": "cadence_modeling_ready for the audited artifacts: Spectre visible/hidden/negative logs were inspected for AHDLLINT-* messages and none were present. The remaining warnings are shared VACOMP-2435 environment notices and SPECTRE-592 setup notices, not task-specific AHDL lint failures. No separate standalone lint runner exists in the repo.",
       "ahdl_lint_summary": "/private/tmp/v3_spectre_phase1_5_ahdl_lint_summary.json"
     },
+    "batch1_source_support_repair": {
+      "tasks": [
+        "085-burst-clock-source",
+        "086-dither-noise-like-deterministic-source",
+        "087-lfsr-prbs-generator",
+        "088-ramp-step-source",
+        "089-sine-periodic-voltage-source",
+        "106-programmable-stimulus-sequencer",
+        "111-clocked-sine-source"
+      ],
+      "human_confirmed_gate1": {
+        "085-burst-clock-source": "independent_l1_ready",
+        "086-dither-noise-like-deterministic-source": "independent_l1_ready",
+        "087-lfsr-prbs-generator": "independent_l1_ready",
+        "088-ramp-step-source": "independent_l1_ready",
+        "089-sine-periodic-voltage-source": "independent_l1_ready",
+        "106-programmable-stimulus-sequencer": "independent_l1_ready; reclassified from L2 to L1 because it is a single DUT source/control component",
+        "111-clocked-sine-source": "l2_support_component; keep as gain-extraction-flow support rather than standalone L1 credit"
+      },
+      "evas_gold": {
+        "runner": "runners/simulate_evas.py",
+        "hidden_085_089_summary": "/private/tmp/v3_batch1_gold_085_089.json",
+        "hidden_106_summary": "/private/tmp/v3_batch1_gold_106.json",
+        "hidden_111_summary": "/private/tmp/v3_batch1_gold_111_after_support_staging.json",
+        "hidden_rows": 7,
+        "hidden_pass": 7,
+        "fail": 0
+      },
+      "evas_hidden_negatives": {
+        "runner": "runners/simulate_evas.py",
+        "summary": "/private/tmp/v3_batch1_negatives_evas.json",
+        "rows": 28,
+        "behavioral_rejected": 28,
+        "syntax_or_setup_rejected": 0,
+        "unexpected_pass": 0
+      },
+      "spectre_visible_gold": {
+        "command": "python3 scripts/run_v3_spectre_audit.py --task 085-burst-clock-source --task 086-dither-noise-like-deterministic-source --task 087-lfsr-prbs-generator --task 088-ramp-step-source --task 089-sine-periodic-voltage-source --task 106-programmable-stimulus-sequencer --task 111-clocked-sine-source --split visible --timeout-s 300 --work-root /private/tmp/v3_batch1_spectre_visible --out /private/tmp/v3_batch1_spectre_visible_gold.json",
+        "rows": 7,
+        "pass": 7,
+        "fail": 0
+      },
+      "spectre_hidden_gold": {
+        "command": "python3 scripts/run_v3_spectre_audit.py --task 085-burst-clock-source --task 086-dither-noise-like-deterministic-source --task 087-lfsr-prbs-generator --task 088-ramp-step-source --task 089-sine-periodic-voltage-source --task 106-programmable-stimulus-sequencer --task 111-clocked-sine-source --split hidden --timeout-s 300 --work-root /private/tmp/v3_batch1_spectre_hidden --out /private/tmp/v3_batch1_spectre_hidden_gold.json",
+        "rows": 7,
+        "pass": 7,
+        "fail": 0
+      },
+      "spectre_hidden_negatives": {
+        "command": "python3 scripts/run_v3_spectre_audit.py --task 085-burst-clock-source --task 086-dither-noise-like-deterministic-source --task 087-lfsr-prbs-generator --task 088-ramp-step-source --task 089-sine-periodic-voltage-source --task 106-programmable-stimulus-sequencer --task 111-clocked-sine-source --split hidden --all-negative-variants --timeout-s 300 --work-root /private/tmp/v3_batch1_spectre_negatives --out /private/tmp/v3_batch1_spectre_hidden_negatives.json",
+        "rows": 28,
+        "negative_rejected": 28,
+        "fail": 0,
+        "negative_unexpected_pass": 0,
+        "fail_spectre": 0
+      },
+      "visible_hidden_contract": "All 7 batch1 tasks now have visible smoke decks distinct from hidden decks. Hidden decks vary reset windows, enable-hold coverage, source timing, stop windows, or staged flow conditions while staying within the public prompt contract.",
+      "artifact_boundary_repairs": "Tasks 086 and 087 now target only their *_ref.va artifacts and stale legacy target files were removed; task 106 is L1 rather than L2; task 111 remains target-only vin_src.va with support artifacts staged from task.toml support entries.",
+      "checker_strength_repairs": "Task 086 now checks deterministic dither statistics and bounds; task 087 now checks edge-by-edge PRBS recurrence, enable hold, state bit order, and serial bit behavior; task 089 now checks the multi-tone formula across samples instead of a shallow span.",
+      "ahdl_lint_status": "cadence_modeling_ready for the audited artifacts: Spectre visible, hidden, and negative runs completed for all 7 tasks, and the audited result logs contain no task-level AHDLLINT failure. No separate standalone lint runner exists in the repo."
+    },
     "normalization_repair_274_294": {
       "tasks": [
         "274-weighted-decoder-6bit",
@@ -215,6 +276,11 @@
       "285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.",
       "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
       "146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.",
+      "085/086/087/088/089/106/111 hidden decks were made distinct from public visible smoke decks before the batch1 EVAS/Spectre rerun.",
+      "086-dither-noise-like-deterministic-source and 087-lfsr-prbs-generator target artifacts were narrowed to their *_ref.va files and stale legacy starter/solution/negative target files were removed.",
+      "086-dither-noise-like-deterministic-source gold/starter behavior was repaired from one-shot/random-style output to deterministic periodic sampled pseudo-noise so EVAS and Spectre exercise the same public contract.",
+      "106-programmable-stimulus-sequencer metadata was corrected from L2 to L1 because the row is a single DUT source/control component rather than a composed flow.",
+      "111-clocked-sine-source negative-variant execution now stages task.toml support artifacts so the support-L2 flow checker can run against vin_src.va variants.",
       "282-pfd-timer-reset and 300-pfd-active-low-reset metadata levels were corrected from L2 to L1 because a single PFD DUT is not an L2 flow.",
       "282-pfd-timer-reset and 300-pfd-active-low-reset prompts/golds now expose the public output transition-time parameter `tr`."
     ]
@@ -508,7 +574,7 @@
         "classification": "valid_variant_needs_counting_policy",
         "status": "Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.",
         "decision": "Keep 099 and 101 as standalone L1 component tasks after boundary repair; keep 111 only as an L2 support component for measurement-flow stimulus; keep 287 as a Measurement L2 composed flow. The 287/component overlap is component-in-flow overlap, not a duplicate-function merge condition.",
-        "evidence": "Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun."
+        "evidence": "Task 099 now targets only dither_adder.va with task-specific dither/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. Task 111 remains flow-staged support L2: visible/hidden gold PASS and 4/4 concrete flow-staged negatives NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. The local audit repaired the Spectre-illegal 287 negative fixture port declaration before the final negative rerun."
       },
       "members": [
         {
@@ -557,11 +623,8 @@
             "vin_src.va"
           ],
           "solution_loc": 34,
-          "negative_count": 1,
-          "risks": [
-            "low_negative_variant_count",
-            "zero_only_negative"
-          ],
+          "negative_count": 4,
+          "risks": [],
           "solution_sha256_normalized": "sha256:22d4701148ee0150f3cbda84f9cf0a5a797619d688e260a465c99ae24bbd4180"
         },
         {
@@ -608,10 +671,10 @@
           "metrics": {
             "prompt_token_jaccard": 0.1702,
             "solution_token_jaccard": 0.2683,
-            "checker_token_jaccard": 0.1875,
+            "checker_token_jaccard": 0.2,
             "prompt_sequence_similarity": 0.3823,
             "solution_sequence_similarity": 0.6138,
-            "checker_sequence_similarity": 0.4101
+            "checker_sequence_similarity": 0.4047
           }
         },
         {
@@ -636,10 +699,10 @@
           "metrics": {
             "prompt_token_jaccard": 0.1975,
             "solution_token_jaccard": 0.2375,
-            "checker_token_jaccard": 0.1875,
+            "checker_token_jaccard": 0.2,
             "prompt_sequence_similarity": 0.4296,
             "solution_sequence_similarity": 0.5686,
-            "checker_sequence_similarity": 0.4368
+            "checker_sequence_similarity": 0.4357
           }
         },
         {
@@ -664,10 +727,10 @@
           "metrics": {
             "prompt_token_jaccard": 0.1869,
             "solution_token_jaccard": 0.3082,
-            "checker_token_jaccard": 0.0696,
+            "checker_token_jaccard": 0.0619,
             "prompt_sequence_similarity": 0.1882,
             "solution_sequence_similarity": 0.3454,
-            "checker_sequence_similarity": 0.2691
+            "checker_sequence_similarity": 0.2592
           }
         }
       ],
@@ -4064,25 +4127,6 @@
         "solution_sha256_normalized": "sha256:4e53c12600ed460c53e02d8b7bcb6a975297d4cb65b3c036bb9391ec57bd51b1"
       },
       {
-        "name": "111-clocked-sine-source",
-        "id": "v3_111_clocked_sine_source",
-        "title": "Clocked Sine Source",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "vin_src.va"
-        ],
-        "solution_loc": 34,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count",
-          "zero_only_negative"
-        ],
-        "solution_sha256_normalized": "sha256:22d4701148ee0150f3cbda84f9cf0a5a797619d688e260a465c99ae24bbd4180"
-      },
-      {
         "name": "110-settling-time-measurement",
         "id": "v3_110_settling_time_measurement",
         "title": "Settling Time Measurement",
@@ -4100,44 +4144,6 @@
           "short_solution_leq_20_loc"
         ],
         "solution_sha256_normalized": "sha256:228485557614d82b610b785a5313d3e73dadeb3042d31e00e747254392c1b040"
-      },
-      {
-        "name": "089-sine-periodic-voltage-source",
-        "id": "v3_089_sine_periodic_voltage_source",
-        "title": "Sine Periodic Voltage Source",
-        "form": "dut",
-        "level": "L1",
-        "difficulty": "D1",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "multitone.va"
-        ],
-        "solution_loc": 18,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count",
-          "short_solution_leq_20_loc"
-        ],
-        "solution_sha256_normalized": "sha256:6f8285cf4923363c9187a0c36fbe242f19647aa843064c9a0f70dc69c38a6578"
-      },
-      {
-        "name": "086-dither-noise-like-deterministic-source",
-        "id": "v3_086_dither_noise_like_deterministic_source",
-        "title": "Dither Noise Like Deterministic Source",
-        "form": "dut",
-        "level": "L1",
-        "difficulty": "D2",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "noise_gen.va"
-        ],
-        "solution_loc": 18,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count",
-          "short_solution_leq_20_loc"
-        ],
-        "solution_sha256_normalized": "sha256:09ae31939d1d056c3ee9504183594b2444590f636adb96726c11a1bf5f68f63a"
       },
       {
         "name": "084-peak-detector",
@@ -4266,24 +4272,6 @@
           "low_negative_variant_count"
         ],
         "solution_sha256_normalized": "sha256:89083f600ef814ba809a9f4a38940ff7671f8d8b5b8d6a4a6c38f6aa092248c0"
-      },
-      {
-        "name": "106-programmable-stimulus-sequencer",
-        "id": "v3_106_programmable_stimulus_sequencer",
-        "title": "Programmable Stimulus Sequencer",
-        "form": "dut",
-        "level": "L2",
-        "difficulty": "D2",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "programmable_stimulus_sequencer.va"
-        ],
-        "solution_loc": 55,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:8e71b896f25a3eeb7f87ad6a1d1cffda4491de3690c9119a73f84fc0a6774b27"
       },
       {
         "name": "105-pipeline-adc-chain-4b",
@@ -4541,58 +4529,22 @@
         "solution_sha256_normalized": "sha256:7a13f77cfc581926bf7c4ee389dab2855865aebea9c105517d5f1f4cbee51ff5"
       },
       {
-        "name": "088-ramp-step-source",
-        "id": "v3_088_ramp_step_source",
-        "title": "Ramp Step Source",
+        "name": "089-sine-periodic-voltage-source",
+        "id": "v3_089_sine_periodic_voltage_source",
+        "title": "Sine Periodic Voltage Source",
         "form": "dut",
         "level": "L1",
-        "difficulty": "D2",
+        "difficulty": "D1",
         "category": "stimulus_source_generators",
         "targets": [
-          "bound_step_period_guard_ref.va"
+          "multitone.va"
         ],
-        "solution_loc": 42,
-        "negative_count": 1,
+        "solution_loc": 18,
+        "negative_count": 4,
         "risks": [
-          "low_negative_variant_count"
+          "short_solution_leq_20_loc"
         ],
-        "solution_sha256_normalized": "sha256:e16127dada694a3021d4fa57be07593b1f85d6ce584770d77ab0304f26dd41ca"
-      },
-      {
-        "name": "087-lfsr-prbs-generator",
-        "id": "v3_087_lfsr_prbs_generator",
-        "title": "LFSR PRBS Generator",
-        "form": "dut",
-        "level": "L1",
-        "difficulty": "D2",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "prbs7.va"
-        ],
-        "solution_loc": 58,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:27af2cfe6696469e3c070188022d7fff2d473662dd0831b9e8c314cd389f9dcd"
-      },
-      {
-        "name": "085-burst-clock-source",
-        "id": "v3_085_burst_clock_source",
-        "title": "Burst Clock Source",
-        "form": "dut",
-        "level": "L1",
-        "difficulty": "D2",
-        "category": "stimulus_source_generators",
-        "targets": [
-          "clk_burst_gen.va"
-        ],
-        "solution_loc": 38,
-        "negative_count": 1,
-        "risks": [
-          "low_negative_variant_count"
-        ],
-        "solution_sha256_normalized": "sha256:c0e9126b77ab2d4984a685e51cf0635282f9bc371ccef8ec9e5028009ce1b36e"
+        "solution_sha256_normalized": "sha256:6f8285cf4923363c9187a0c36fbe242f19647aa843064c9a0f70dc69c38a6578"
       },
       {
         "name": "082-bias-voltage-generator-with-enable-trim",
@@ -5046,21 +4998,7 @@
       "low_negative_variant_count",
       "short_solution_leq_20_loc"
     ],
-    "085-burst-clock-source": [
-      "low_negative_variant_count"
-    ],
-    "086-dither-noise-like-deterministic-source": [
-      "low_negative_variant_count",
-      "short_solution_leq_20_loc"
-    ],
-    "087-lfsr-prbs-generator": [
-      "low_negative_variant_count"
-    ],
-    "088-ramp-step-source": [
-      "low_negative_variant_count"
-    ],
     "089-sine-periodic-voltage-source": [
-      "low_negative_variant_count",
       "short_solution_leq_20_loc"
     ],
     "090-adpll-ratio-hop-timer": [
@@ -5105,9 +5043,6 @@
     "105-pipeline-adc-chain-4b": [
       "low_negative_variant_count"
     ],
-    "106-programmable-stimulus-sequencer": [
-      "low_negative_variant_count"
-    ],
     "108-reference-startup-enable-flow": [
       "low_negative_variant_count"
     ],
@@ -5117,10 +5052,6 @@
     "110-settling-time-measurement": [
       "low_negative_variant_count",
       "short_solution_leq_20_loc"
-    ],
-    "111-clocked-sine-source": [
-      "low_negative_variant_count",
-      "zero_only_negative"
     ],
     "114-sample-and-hold-ideal": [
       "short_solution_leq_20_loc",

@@ -2,6 +2,21 @@
   {
     "id": "neg_001_zero",
     "target": "clk_burst_gen.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero output stub"
+  },
+  {
+    "id": "neg_002_pass_all_cycles",
+    "target": "clk_burst_gen.va",
+    "intent": "passes every clock cycle"
+  },
+  {
+    "id": "neg_003_one_cycle_burst",
+    "target": "clk_burst_gen.va",
+    "intent": "passes only one cycle per frame"
+  },
+  {
+    "id": "neg_004_wrong_div4",
+    "target": "clk_burst_gen.va",
+    "intent": "uses the wrong repeat frame"
   }
 ]

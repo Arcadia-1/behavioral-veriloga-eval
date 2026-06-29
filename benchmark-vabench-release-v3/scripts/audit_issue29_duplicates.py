@@ -184,8 +184,9 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. "
             "Task 101 now targets only gain_amp_fixed.va with task-specific gain/polarity/common-mode "
             "checker evidence: hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre. "
-            "Task 111 remains flow-staged support L2: hidden gold PASS and zero-source negative "
-            "NEGATIVE_REJECTED under the existing gain-extraction flow checker. Task 287 remains "
+            "Task 111 remains flow-staged support L2: visible/hidden gold PASS and 4/4 concrete "
+            "flow-staged negatives NEGATIVE_REJECTED under the existing gain-extraction flow checker. "
+            "Task 287 remains "
             "Measurement L2: hidden gold PASS and unity-gain negative NEGATIVE_REJECTED under Spectre. "
             "The local audit repaired the Spectre-illegal 287 negative fixture port declaration before "
             "the final negative rerun."
@@ -322,8 +323,18 @@ PHASE1_TO_5_TASKS = [
     "300-pfd-active-low-reset",
 ]
 
+BATCH1_SOURCE_SUPPORT_TASKS = [
+    "085-burst-clock-source",
+    "086-dither-noise-like-deterministic-source",
+    "087-lfsr-prbs-generator",
+    "088-ramp-step-source",
+    "089-sine-periodic-voltage-source",
+    "106-programmable-stimulus-sequencer",
+    "111-clocked-sine-source",
+]
+
 CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
-    "status": "passed_for_reviewed_issue29_slice_and_phase1_to_5_batch",
+    "status": "passed_for_reviewed_issue29_slice_phase1_to_5_and_batch1",
     "runner": "scripts/run_v3_spectre_audit.py",
     "reviewed_tasks": [
         "006-element-shuffler",
@@ -442,6 +453,93 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         ),
         "ahdl_lint_summary": "/private/tmp/v3_spectre_phase1_5_ahdl_lint_summary.json",
     },
+    "batch1_source_support_repair": {
+        "tasks": BATCH1_SOURCE_SUPPORT_TASKS,
+        "human_confirmed_gate1": {
+            "085-burst-clock-source": "independent_l1_ready",
+            "086-dither-noise-like-deterministic-source": "independent_l1_ready",
+            "087-lfsr-prbs-generator": "independent_l1_ready",
+            "088-ramp-step-source": "independent_l1_ready",
+            "089-sine-periodic-voltage-source": "independent_l1_ready",
+            "106-programmable-stimulus-sequencer": "independent_l1_ready; reclassified from L2 to L1 because it is a single DUT source/control component",
+            "111-clocked-sine-source": "l2_support_component; keep as gain-extraction-flow support rather than standalone L1 credit",
+        },
+        "evas_gold": {
+            "runner": "runners/simulate_evas.py",
+            "hidden_085_089_summary": "/private/tmp/v3_batch1_gold_085_089.json",
+            "hidden_106_summary": "/private/tmp/v3_batch1_gold_106.json",
+            "hidden_111_summary": "/private/tmp/v3_batch1_gold_111_after_support_staging.json",
+            "hidden_rows": 7,
+            "hidden_pass": 7,
+            "fail": 0,
+        },
+        "evas_hidden_negatives": {
+            "runner": "runners/simulate_evas.py",
+            "summary": "/private/tmp/v3_batch1_negatives_evas.json",
+            "rows": 28,
+            "behavioral_rejected": 28,
+            "syntax_or_setup_rejected": 0,
+            "unexpected_pass": 0,
+        },
+        "spectre_visible_gold": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in BATCH1_SOURCE_SUPPORT_TASKS)
+                + " --split visible --timeout-s 300 --work-root "
+                "/private/tmp/v3_batch1_spectre_visible "
+                "--out /private/tmp/v3_batch1_spectre_visible_gold.json"
+            ),
+            "rows": 7,
+            "pass": 7,
+            "fail": 0,
+        },
+        "spectre_hidden_gold": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in BATCH1_SOURCE_SUPPORT_TASKS)
+                + " --split hidden --timeout-s 300 --work-root "
+                "/private/tmp/v3_batch1_spectre_hidden "
+                "--out /private/tmp/v3_batch1_spectre_hidden_gold.json"
+            ),
+            "rows": 7,
+            "pass": 7,
+            "fail": 0,
+        },
+        "spectre_hidden_negatives": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in BATCH1_SOURCE_SUPPORT_TASKS)
+                + " --split hidden --all-negative-variants --timeout-s 300 --work-root "
+                "/private/tmp/v3_batch1_spectre_negatives "
+                "--out /private/tmp/v3_batch1_spectre_hidden_negatives.json"
+            ),
+            "rows": 28,
+            "negative_rejected": 28,
+            "fail": 0,
+            "negative_unexpected_pass": 0,
+            "fail_spectre": 0,
+        },
+        "visible_hidden_contract": (
+            "All 7 batch1 tasks now have visible smoke decks distinct from hidden decks. "
+            "Hidden decks vary reset windows, enable-hold coverage, source timing, stop windows, "
+            "or staged flow conditions while staying within the public prompt contract."
+        ),
+        "artifact_boundary_repairs": (
+            "Tasks 086 and 087 now target only their *_ref.va artifacts and stale legacy target "
+            "files were removed; task 106 is L1 rather than L2; task 111 remains target-only "
+            "vin_src.va with support artifacts staged from task.toml support entries."
+        ),
+        "checker_strength_repairs": (
+            "Task 086 now checks deterministic dither statistics and bounds; task 087 now checks "
+            "edge-by-edge PRBS recurrence, enable hold, state bit order, and serial bit behavior; "
+            "task 089 now checks the multi-tone formula across samples instead of a shallow span."
+        ),
+        "ahdl_lint_status": (
+            "cadence_modeling_ready for the audited artifacts: Spectre visible, hidden, and "
+            "negative runs completed for all 7 tasks, and the audited result logs contain no "
+            "task-level AHDLLINT failure. No separate standalone lint runner exists in the repo."
+        ),
+    },
     "normalization_repair_274_294": {
         "tasks": ["274-weighted-decoder-6bit", "294-subradix-dac10"],
         "reason": (
@@ -518,6 +616,11 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.",
         "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
         "146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.",
+        "085/086/087/088/089/106/111 hidden decks were made distinct from public visible smoke decks before the batch1 EVAS/Spectre rerun.",
+        "086-dither-noise-like-deterministic-source and 087-lfsr-prbs-generator target artifacts were narrowed to their *_ref.va files and stale legacy starter/solution/negative target files were removed.",
+        "086-dither-noise-like-deterministic-source gold/starter behavior was repaired from one-shot/random-style output to deterministic periodic sampled pseudo-noise so EVAS and Spectre exercise the same public contract.",
+        "106-programmable-stimulus-sequencer metadata was corrected from L2 to L1 because the row is a single DUT source/control component rather than a composed flow.",
+        "111-clocked-sine-source negative-variant execution now stages task.toml support artifacts so the support-L2 flow checker can run against vin_src.va variants.",
         "282-pfd-timer-reset and 300-pfd-active-low-reset metadata levels were corrected from L2 to L1 because a single PFD DUT is not an L2 flow.",
         "282-pfd-timer-reset and 300-pfd-active-low-reset prompts/golds now expose the public output transition-time parameter `tr`.",
     ],
@@ -1168,6 +1271,7 @@ def md_escape(text: str) -> str:
 def render_markdown(report: dict[str, Any]) -> str:
     scope = report["scope"]
     phase_batch = report["cadence_spectre_audit"].get("phase1_to_5_batch")
+    batch1 = report["cadence_spectre_audit"].get("batch1_source_support_repair")
     lines = [
         "# Issue #29 Duplicate and Filler Audit",
         "",
@@ -1231,6 +1335,45 @@ def render_markdown(report: dict[str, Any]) -> str:
                 f"- Phase1-to-phase5 AHDL lint summary: `{phase_batch['ahdl_lint_summary']}`",
             ]
             if phase_batch
+            else []
+        ),
+        *(
+            [
+                "- Batch1 source/support tasks: "
+                + ", ".join(f"`{task}`" for task in batch1["tasks"]),
+                "- Batch1 human-confirmed Gate 1 labels: "
+                + "; ".join(
+                    f"`{task}` = {label}"
+                    for task, label in batch1["human_confirmed_gate1"].items()
+                ),
+                f"- Batch1 EVAS hidden gold: **{batch1['evas_gold']['hidden_pass']}**/"
+                f"**{batch1['evas_gold']['hidden_rows']}** PASS, fail `{batch1['evas_gold']['fail']}` "
+                f"({batch1['evas_gold']['hidden_085_089_summary']}; "
+                f"{batch1['evas_gold']['hidden_106_summary']}; "
+                f"{batch1['evas_gold']['hidden_111_summary']})",
+                f"- Batch1 EVAS hidden negatives: **{batch1['evas_hidden_negatives']['behavioral_rejected']}**/"
+                f"**{batch1['evas_hidden_negatives']['rows']}** behavioral rejections, "
+                f"syntax/setup rejects `{batch1['evas_hidden_negatives']['syntax_or_setup_rejected']}`, "
+                f"unexpected pass `{batch1['evas_hidden_negatives']['unexpected_pass']}` "
+                f"({batch1['evas_hidden_negatives']['summary']})",
+                f"- Batch1 Spectre visible gold: **{batch1['spectre_visible_gold']['pass']}**/"
+                f"**{batch1['spectre_visible_gold']['rows']}** PASS, fail `{batch1['spectre_visible_gold']['fail']}` "
+                "(`/private/tmp/v3_batch1_spectre_visible_gold.json`)",
+                f"- Batch1 Spectre hidden gold: **{batch1['spectre_hidden_gold']['pass']}**/"
+                f"**{batch1['spectre_hidden_gold']['rows']}** PASS, fail `{batch1['spectre_hidden_gold']['fail']}` "
+                "(`/private/tmp/v3_batch1_spectre_hidden_gold.json`)",
+                f"- Batch1 Spectre hidden negatives: **{batch1['spectre_hidden_negatives']['negative_rejected']}**/"
+                f"**{batch1['spectre_hidden_negatives']['rows']}** NEGATIVE_REJECTED, "
+                f"fail `{batch1['spectre_hidden_negatives']['fail']}`, "
+                f"unexpected pass `{batch1['spectre_hidden_negatives']['negative_unexpected_pass']}`, "
+                f"FAIL_SPECTRE `{batch1['spectre_hidden_negatives']['fail_spectre']}` "
+                "(`/private/tmp/v3_batch1_spectre_hidden_negatives.json`)",
+                f"- Batch1 visible/hidden contract: {batch1['visible_hidden_contract']}",
+                f"- Batch1 artifact boundary repairs: {batch1['artifact_boundary_repairs']}",
+                f"- Batch1 checker-strength repairs: {batch1['checker_strength_repairs']}",
+                f"- Batch1 AHDL lint status: {batch1['ahdl_lint_status']}",
+            ]
+            if batch1
             else []
         ),
         "- Fixture repairs before final negative rerun:",

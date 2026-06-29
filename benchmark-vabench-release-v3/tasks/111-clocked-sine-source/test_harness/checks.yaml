@@ -2,10 +2,10 @@ checker:
   task_id: vbr1_l2_gain_extraction_convergence_measurement_flow_tb
   metric: flow_gain_separation
 support_classification:
-  status: support_l2_flow_staged
+  status: l2_support_component_pending_fresh_recertification
   notes:
     - "This support component is currently evaluated inside the gain-extraction flow harness."
-    - "It should not be claimed as a standalone L1 circuit function until it has a task-specific checker and non-identical hidden deck."
+    - "It should not be claimed as a standalone L1 circuit function without a task-specific checker."
 sim_correct:
   checks:
     - "flow_gain_amplification_present"
