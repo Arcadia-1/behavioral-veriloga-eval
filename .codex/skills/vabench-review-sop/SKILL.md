@@ -53,7 +53,20 @@ and do not silently change counting policy.
    present the minimal mismatch and classify it as an EVAS bug, benchmark
    invalidity, checker issue, or unresolved parity issue. EVAS fixes still take
    priority for valid Verilog-A constructs.
-5. **PR-ready checkpoint.** Before claiming a benchmark PR is ready, summarize
+5. **Functional-math checkpoint.** When a task has a numeric transfer contract
+   such as gain, weighting, normalization, threshold, timing, probability,
+   table lookup, or another numeric mapping, show the prompt-level observable
+   invariant, the gold expression, the checker expectation, and at least one
+   endpoint or sanity vector before changing gold/checker logic. Do not rely on
+   simulation pass/fail alone to validate the intended math.
+6. **Cadence-reference checkpoint.** When a modeling convention is uncertain,
+   or when gold/checker math is being changed, consult the available Cadence
+   Verilog-A/Verilog-AMS course material, manuals, or other authoritative
+   references for a concrete corresponding example. Record the correspondence:
+   what in the reference maps to this benchmark, what does not map, and what
+   contract decision follows. If no close reference exists, say that explicitly
+   instead of forcing an analogy.
+7. **PR-ready checkpoint.** Before claiming a benchmark PR is ready, summarize
    human-confirmed decisions, prompts changed, gold/checker changes, EVAS and
    Spectre evidence, AHDL lint status, and unresolved risks.
 
@@ -67,9 +80,13 @@ For each task under review, inspect:
 - `instruction.md`: public agent prompt;
 - `starter/`, `solution/`, support files, and target artifact boundaries;
 - visible and hidden testbenches;
-- `test_harness/checks.yaml` and checker id;
+- `test_harness/checks.yaml`, checker id, and the actual checker
+  implementation that computes expected behavior;
 - concrete `negative_variants/`;
-- existing `AUDIT.md` or report entries.
+- existing `AUDIT.md` or report entries;
+- When Gate 2 semantics are uncertain or gold/checker logic is being repaired,
+  the most relevant available Cadence/Verilog-A reference example for that
+  modeling convention.
 
 Record whether evidence is EVAS-only, Spectre-only, or dual/parity evidence.
 Run the admission checkpoint before repairing assets or changing counting
@@ -170,6 +187,26 @@ Public boundary principle:
   circuit-function row.
 - Checker must not require hidden-only semantics that are absent from both the
   prompt and visible assets.
+
+Contract-to-gold-to-checker consistency:
+
+- Before relying on EVAS/Spectre pass results, derive the public observable
+  invariant in words, then compare it against the gold Verilog-A expression and
+  the checker expectation. Record any mismatch as `cadence_modeling_rework`,
+  even if the current gold passes the current checker.
+- Check units, sign conventions, branch orientation, endpoint behavior,
+  monotonicity, clipping/saturation, common-mode handling, and scale
+  conventions where relevant.
+- When the intended convention is not obvious from the public prompt and visible
+  assets, consult a concrete Cadence/Verilog-A reference example before changing
+  gold or checker math. The audit should state the specific corresponding
+  pattern, such as code normalization, transition smoothing, event scheduling,
+  state initialization, clipping, or measurement extraction, and state where the
+  benchmark intentionally differs.
+- Choose sanity vectors and negative variants from the actual public invariant
+  and the referenced modeling pattern. Their error should be large enough to
+  exceed checker tolerance and behavioral enough to prove the checker, not just
+  syntax/setup rejection.
 
 Gold Verilog-A review:
 
@@ -278,6 +315,10 @@ For each reviewed task or group, record:
 - target artifact boundary and whether support files are solver targets;
 - visible/hidden test relationship;
 - checker id and what behavior it proves;
+- functional-math invariant, gold expression, checker expectation, and endpoint
+  sanity vectors for numeric transfer tasks;
+- Cadence/Verilog-A reference correspondence used for non-obvious modeling
+  conventions, or an explicit note that no close reference was found;
 - negative variant count and whether failures are behavioral;
 - EVAS evidence and Spectre evidence with commands/output paths;
 - AHDL lint status or why it is pending;
