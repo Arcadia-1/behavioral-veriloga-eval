@@ -7113,6 +7113,37 @@ def _rising_edge_times(rows: list[dict[str, float]], signal: str, threshold: flo
     return edges
 
 
+def _check_divide_by_two_toggle(
+    rows: list[dict[str, float]],
+    *,
+    input_signal: str,
+    output_signal: str,
+    threshold: float,
+    high: float,
+    tol: float,
+    settle: float = 80e-12,
+) -> tuple[bool, str]:
+    required = {"time", input_signal, output_signal}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    edges = _rising_edge_times(rows, input_signal, threshold)
+    if len(edges) < 3:
+        return False, f"too_few_rising_edges={len(edges)}"
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        t = float(row["time"])
+        if any(abs(t - edge) < settle for edge in edges):
+            continue
+        edge_count = sum(1 for edge in edges if edge <= t)
+        expected = high if edge_count % 2 else 0.0
+        max_err = max(max_err, abs(float(row[output_signal]) - expected))
+        checked += 1
+    if checked < 12:
+        return False, f"too_few_toggle_rows_checked={checked} edges={len(edges)}"
+    return max_err <= tol, f"checked={checked} edges={len(edges)} max_error={max_err:.5f}"
+
+
 def _pfd_events(ref_edges: list[float], fb_edges: list[float], reset_delay: float) -> list[tuple[float, str]]:
     pending: list[tuple[float, str]] = [(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges]
     pending.sort()
@@ -7773,12 +7804,12 @@ def check_v3_source_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tu
 
 
 def check_v3_source_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clkin", "clkout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clkin/clkout"
-    return _sample_many(
+    return _check_divide_by_two_toggle(
         rows,
-        {"clkout": [(2.0, 0.9), (5.0, 0.0), (8.0, 0.9), (11.0, 0.0), (14.0, 0.9), (17.0, 0.0), (20.0, 0.9), (23.0, 0.0)]},
+        input_signal="clkin",
+        output_signal="clkout",
+        threshold=0.5,
+        high=0.9,
         tol=0.08,
     )
 
@@ -9197,14 +9228,12 @@ def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple
 
 
 def check_v3_source_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing divide by two toggle signals"
-    return _sample_many(
+    return _check_divide_by_two_toggle(
         rows,
-        {
-            "out": [(0.2, 0.0), (0.8, 0.9), (1.6, 0.0), (2.4, 0.9), (3.2, 0.0), (3.9, 0.9)],
-        },
+        input_signal="clk",
+        output_signal="out",
+        threshold=0.45,
+        high=0.9,
         tol=0.06,
     )
 

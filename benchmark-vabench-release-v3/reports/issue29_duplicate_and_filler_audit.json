@@ -1,6 +1,6 @@
 {
   "report_id": "issue29_duplicate_and_filler_audit",
-  "generated_at_utc": "2026-06-29T14:23:51+00:00",
+  "generated_at_utc": "2026-06-29T14:51:28+00:00",
   "release": "benchmark-vabench-release-v3",
   "scope": {
     "task_count": 300,
@@ -180,6 +180,33 @@
         "fail": 0
       },
       "ahdl_lint_status": "No AHDLLINT-* messages were found in the normfix visible, hidden, or negative Spectre work roots."
+    },
+    "divide_by_two_toggle_repair_184_275": {
+      "tasks": [
+        "184-divide-by-two-toggle",
+        "275-divide-by-two-toggle"
+      ],
+      "reason": "Manual review found an unadjudicated duplicate-title pair with the same divide-by-two rising-edge toggle function. Task 275 is kept as canonical; task 184 is retained only as a non-counted duplicate/migration artifact.",
+      "cadence_course_reference": "Local Cadence Verilog-AMS lesson examples show initial_step initialization, crossing-event state updates, and transition-driven discrete-state outputs; this is the corresponding modeling pattern used by the canonical row.",
+      "evas": {
+        "gold_184": "/private/tmp/v3_smoke_184_div2_after.json",
+        "gold_275": "/private/tmp/v3_smoke_275_div2_after.json",
+        "negative_summary": "/private/tmp/v3_evas_div2_negatives_after.json",
+        "gold_pass": 2,
+        "negative_rows": 8,
+        "behavioral_rejected": 8,
+        "fail": 0
+      },
+      "spectre": {
+        "visible_gold": "/private/tmp/v3_spectre_div2_visible_after.json",
+        "hidden_gold": "/private/tmp/v3_spectre_div2_hidden_after.json",
+        "hidden_negatives": "/private/tmp/v3_spectre_div2_negatives_after.json",
+        "visible_gold_pass": 2,
+        "hidden_gold_pass": 2,
+        "negative_rejected": 8,
+        "fail": 0
+      },
+      "ahdl_lint_status": "No AHDLLINT-* messages were found in the visible, hidden, or negative Spectre work roots for the divide-by-two repair."
     },
     "fixture_repairs_before_final_negative_rerun": [
       "049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.",
@@ -936,6 +963,80 @@
         "294-subradix-dac10": "# Subradix DAC10\nImplement a 10-bit voltage-coded sub-radix weighted DAC.\n## Public Interface\nDeclare module `subradix_dac10` with positional ports `vd9, vd8, vd7, vd6,\nvd5, vd4, vd3, vd2, vd1, vd0, vout`. All ports are electrical.\n## Public Parameter Contract\nProvide these overrideable public parameters:\n- `vth = 0.45 V`: digital decision threshold for each input bit.\n- `vref = 1.0 V`: output full-scale/reference voltage.\n## Functional Contract\nTreat each input as logic `1` when its voltage is greater than `vth`, otherwise\nlogic `0`. Interpret `vd9` through `vd0` as a sub-radix word with `vd9` as the\nmost significant bit and `vd0` as the least significant bit. Adjacent bit\nweights follow radix `1.8`. The output voltage should represent that decoded\nsub-radix value scaled by `vref`, with the all-ones input code corresponding to\nfull scale.\n## Modeling Constraints\nReturn only `subradix_d…",
         "274-weighted-decoder-6bit": "# Weighted Decoder 6bit\nImplement a six-input voltage-coded weighted decoder.\n## Public Interface\nDeclare module `weighted_decoder_6bit` with positional ports `vd1, vd2, vd3,\nvd4, vd5, vd6, vout`. All ports are electrical.\n## Public Parameter Contract\nProvide these overrideable public parameters:\n- `vth = 0.45 V`: digital decision threshold for each input bit.\n- `vref = 1.0 V`: output full-scale/reference voltage.\n## Functional Contract\nTreat each input as logic `1` when its voltage is greater than `vth`, otherwise\nlogic `0`. Interpret `vd1` through `vd6` as an unsigned binary word with `vd1`\nas the most significant bit and `vd6` as the least significant bit. The output\nvoltage should represent that decoded binary value scaled by `vref`, with the\nall-ones input code corresponding to full scale.\n## Modeling Constraints\nReturn only `weighted_decoder_6bit.va`. Use voltage contributions onl…"
       }
+    },
+    {
+      "id": "divide_by_two_toggle_duplicate",
+      "why_flagged": "Two rows share the same public title and divide-by-two edge-toggle function.",
+      "missing_tasks": [],
+      "classification": "hard_duplicate_rewrite_or_remove",
+      "auto_classification": "high_overlap",
+      "manual_adjudication": {
+        "classification": "hard_duplicate_rewrite_or_remove",
+        "status": "Manual review completed for 184/275; task 275 retained as canonical after dynamic checker and hidden-stimulus repair.",
+        "decision": "Keep 275 as the canonical independent L1 divide-by-two edge-toggle row. Keep 184 only as a non-counted duplicate/migration artifact because it implements the same initial-low rising-edge toggle function with a legacy `clkin, clkout` interface.",
+        "rewrite_path": "To make 184 independent, rewrite it into a distinct clock-divider function such as an asynchronous resettable divider, clock-enable divider, duty-cycle constrained divider, programmable-ratio divider, or a Measurement L2 duty-cycle/jitter characterization row.",
+        "evidence": "Task 275 prompt now exposes the public interface, initial state, rising-edge threshold, output level, delay, and transition-time contract without historical source-provenance wording. The checker now derives expected output state from detected rising edges rather than fixed sample tables. Task 275 hidden stimulus is distinct from visible smoke. Tasks 184 and 275 visible/hidden gold PASS under EVAS and Spectre, and their 8 total concrete negatives reject behaviorally under EVAS and as NEGATIVE_REJECTED under Spectre. Cadence course material provides the corresponding event/state modeling pattern: initial_step initialization, crossing events, and transition-driven state outputs."
+      },
+      "members": [
+        {
+          "name": "184-divide-by-two-toggle",
+          "id": "v3_184_source_divide_by_two_toggle",
+          "title": "Divide By Two Toggle",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "clocking",
+          "targets": [
+            "divide_by_two_toggle.va"
+          ],
+          "solution_loc": 12,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:b17c28505ac5724a3593d74f1b7f46ba99674fb01c9216852c22f910b2f80e9b"
+        },
+        {
+          "name": "275-divide-by-two-toggle",
+          "id": "v3_275_source_divide_by_two_toggle",
+          "title": "Divide By Two Toggle",
+          "form": "dut",
+          "level": "L1",
+          "difficulty": "D2",
+          "category": "clock_timing",
+          "targets": [
+            "divide_by_two_toggle.va"
+          ],
+          "solution_loc": 16,
+          "negative_count": 4,
+          "risks": [
+            "short_solution_leq_20_loc",
+            "source_family_short_solution"
+          ],
+          "solution_sha256_normalized": "sha256:bd434725cbf185757f79030e83022d1cf5beb9c8cfd1f98bf4e5078670ffc4be"
+        }
+      ],
+      "pairs": [
+        {
+          "task_a": "184-divide-by-two-toggle",
+          "task_b": "275-divide-by-two-toggle",
+          "classification": "high_overlap",
+          "recommendation": "High prompt/solution/checker overlap; needs manual review before counting as an independent task.",
+          "metrics": {
+            "prompt_token_jaccard": 0.0652,
+            "solution_token_jaccard": 0.6071,
+            "checker_token_jaccard": 0.8182,
+            "prompt_sequence_similarity": 0.1791,
+            "solution_sequence_similarity": 0.774,
+            "checker_sequence_similarity": 0.9883
+          }
+        }
+      ],
+      "prompt_excerpts": {
+        "184-divide-by-two-toggle": "Implement `divide_by_two_toggle` with port order `clkin, clkout`. Toggle the output state on every rising input edge.",
+        "275-divide-by-two-toggle": "# Divide By Two Toggle\nImplement a voltage-domain divide-by-two edge toggle.\n## Public Interface\nDeclare module `divide_by_two_toggle` with positional ports `clk, out`. Both\nports are electrical.\n## Public Parameter Contract\nProvide these overrideable public parameters:\n- `vth = 0.45 V`: rising-edge decision threshold for `clk`.\n- `vdd = 0.9 V`: high output level.\n- `tdel = 10 ps`: output transition delay.\n- `tr = 10 ps`: output rise/fall transition time.\n## Functional Contract\nThe internal divider state starts low. On every rising crossing of `clk`\nthrough `vth`, toggle the state. Drive `out` low when the state is low and to\n`vdd` when the state is high, using the public delay and transition-time\nparameters. The first valid rising edge therefore drives `out` high.\n## Modeling Constraints\nReturn only `divide_by_two_toggle.va`. Use voltage contributions only. Do not"
+      }
     }
   ],
   "coarse_scan": {
@@ -1665,7 +1766,7 @@
       {
         "task_a": "184-divide-by-two-toggle",
         "task_b": "275-divide-by-two-toggle",
-        "issue_named_pair": false,
+        "issue_named_pair": true,
         "classification": "high_overlap",
         "solution_similarity": 0.774,
         "solution_token_jaccard": 0.6071,
@@ -2390,9 +2491,9 @@
       {
         "task_a": "184-divide-by-two-toggle",
         "task_b": "275-divide-by-two-toggle",
-        "issue_named_pair": false,
-        "prompt_similarity": 0.2278,
-        "prompt_token_jaccard": 0.1538,
+        "issue_named_pair": true,
+        "prompt_similarity": 0.1791,
+        "prompt_token_jaccard": 0.0652,
         "forms": [
           "dut",
           "dut"

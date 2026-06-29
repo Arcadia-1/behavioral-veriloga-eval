@@ -83,6 +83,11 @@ ISSUE_GROUPS: list[dict[str, Any]] = [
         "issue_tasks": ["294-subradix-dac10", "274-weighted-decoder-6bit"],
         "why_flagged": "Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel.",
     },
+    {
+        "id": "divide_by_two_toggle_duplicate",
+        "issue_tasks": ["184-divide-by-two-toggle", "275-divide-by-two-toggle"],
+        "why_flagged": "Two rows share the same public title and divide-by-two edge-toggle function.",
+    },
 ]
 
 MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
@@ -277,6 +282,33 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "radix contracts, and bit-order behavior."
         ),
     },
+    "divide_by_two_toggle_duplicate": {
+        "classification": "hard_duplicate_rewrite_or_remove",
+        "status": "Manual review completed for 184/275; task 275 retained as canonical after dynamic checker and hidden-stimulus repair.",
+        "decision": (
+            "Keep 275 as the canonical independent L1 divide-by-two edge-toggle row. "
+            "Keep 184 only as a non-counted duplicate/migration artifact because it "
+            "implements the same initial-low rising-edge toggle function with a legacy "
+            "`clkin, clkout` interface."
+        ),
+        "rewrite_path": (
+            "To make 184 independent, rewrite it into a distinct clock-divider function "
+            "such as an asynchronous resettable divider, clock-enable divider, "
+            "duty-cycle constrained divider, programmable-ratio divider, or a Measurement "
+            "L2 duty-cycle/jitter characterization row."
+        ),
+        "evidence": (
+            "Task 275 prompt now exposes the public interface, initial state, rising-edge "
+            "threshold, output level, delay, and transition-time contract without historical "
+            "source-provenance wording. The checker now derives expected output state from "
+            "detected rising edges rather than fixed sample tables. Task 275 hidden stimulus "
+            "is distinct from visible smoke. Tasks 184 and 275 visible/hidden gold PASS under "
+            "EVAS and Spectre, and their 8 total concrete negatives reject behaviorally under "
+            "EVAS and as NEGATIVE_REJECTED under Spectre. Cadence course material provides "
+            "the corresponding event/state modeling pattern: initial_step initialization, "
+            "crossing events, and transition-driven state outputs."
+        ),
+    },
 }
 
 PHASE1_TO_5_TASKS = [
@@ -442,6 +474,41 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "ahdl_lint_status": (
             "No AHDLLINT-* messages were found in the normfix visible, hidden, or negative "
             "Spectre work roots."
+        ),
+    },
+    "divide_by_two_toggle_repair_184_275": {
+        "tasks": ["184-divide-by-two-toggle", "275-divide-by-two-toggle"],
+        "reason": (
+            "Manual review found an unadjudicated duplicate-title pair with the same "
+            "divide-by-two rising-edge toggle function. Task 275 is kept as canonical; "
+            "task 184 is retained only as a non-counted duplicate/migration artifact."
+        ),
+        "cadence_course_reference": (
+            "Local Cadence Verilog-AMS lesson examples show initial_step initialization, "
+            "crossing-event state updates, and transition-driven discrete-state outputs; "
+            "this is the corresponding modeling pattern used by the canonical row."
+        ),
+        "evas": {
+            "gold_184": "/private/tmp/v3_smoke_184_div2_after.json",
+            "gold_275": "/private/tmp/v3_smoke_275_div2_after.json",
+            "negative_summary": "/private/tmp/v3_evas_div2_negatives_after.json",
+            "gold_pass": 2,
+            "negative_rows": 8,
+            "behavioral_rejected": 8,
+            "fail": 0,
+        },
+        "spectre": {
+            "visible_gold": "/private/tmp/v3_spectre_div2_visible_after.json",
+            "hidden_gold": "/private/tmp/v3_spectre_div2_hidden_after.json",
+            "hidden_negatives": "/private/tmp/v3_spectre_div2_negatives_after.json",
+            "visible_gold_pass": 2,
+            "hidden_gold_pass": 2,
+            "negative_rejected": 8,
+            "fail": 0,
+        },
+        "ahdl_lint_status": (
+            "No AHDLLINT-* messages were found in the visible, hidden, or negative "
+            "Spectre work roots for the divide-by-two repair."
         ),
     },
     "fixture_repairs_before_final_negative_rerun": [

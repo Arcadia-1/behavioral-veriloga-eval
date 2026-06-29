@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-29T14:23:51+00:00`
+- Generated UTC: `2026-06-29T14:51:28+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 265, 'L2': 32, 'L3': 3}`
@@ -56,6 +56,7 @@
 | `smooth_tanh_comparator_duplicate` | `valid_variant_needs_counting_policy` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `valid_variant_needs_counting_policy; manual=Manual review completed for 146/292; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
 | `pfd_active_low_reset_pair` | `hard_duplicate_rewrite_or_remove` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 282/300; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
 | `subradix_vs_weighted_decoder` | `manual_split_distinct_rows` | `294-subradix-dac10`, `274-weighted-decoder-6bit` | Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel. | `manual_split_distinct_rows; manual=Manual split retained for 274/294; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
+| `divide_by_two_toggle_duplicate` | `hard_duplicate_rewrite_or_remove` | `184-divide-by-two-toggle`, `275-divide-by-two-toggle` | Two rows share the same public title and divide-by-two edge-toggle function. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 184/275; task 275 retained as canonical after dynamic checker and hidden-stimulus repair.` |
 
 ## Named Group Pair Evidence
 
@@ -669,6 +670,53 @@ Return only `weighted_decoder_6bit.va`. Use voltage contributions onl…
 
 </details>
 
+### `divide_by_two_toggle_duplicate`
+
+- Why flagged: Two rows share the same public title and divide-by-two edge-toggle function.
+- Group classification: `hard_duplicate_rewrite_or_remove`
+- Automatic classification before manual review: `high_overlap`
+- Manual status: Manual review completed for 184/275; task 275 retained as canonical after dynamic checker and hidden-stimulus repair.
+- Manual decision: Keep 275 as the canonical independent L1 divide-by-two edge-toggle row. Keep 184 only as a non-counted duplicate/migration artifact because it implements the same initial-low rising-edge toggle function with a legacy `clkin, clkout` interface.
+- Rewrite path: To make 184 independent, rewrite it into a distinct clock-divider function such as an asynchronous resettable divider, clock-enable divider, duty-cycle constrained divider, programmable-ratio divider, or a Measurement L2 duty-cycle/jitter characterization row.
+- Manual evidence: Task 275 prompt now exposes the public interface, initial state, rising-edge threshold, output level, delay, and transition-time contract without historical source-provenance wording. The checker now derives expected output state from detected rising edges rather than fixed sample tables. Task 275 hidden stimulus is distinct from visible smoke. Tasks 184 and 275 visible/hidden gold PASS under EVAS and Spectre, and their 8 total concrete negatives reject behaviorally under EVAS and as NEGATIVE_REJECTED under Spectre. Cadence course material provides the corresponding event/state modeling pattern: initial_step initialization, crossing events, and transition-driven state outputs.
+
+| Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
+| --- | --- | ---: | ---: | ---: | --- |
+| `184-divide-by-two-toggle` ↔ `275-divide-by-two-toggle` | `high_overlap` | 0.1791 | 0.774 | 0.9883 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
+
+<details><summary>Prompt excerpts used for human review</summary>
+
+#### `184-divide-by-two-toggle`
+
+~~~markdown
+Implement `divide_by_two_toggle` with port order `clkin, clkout`. Toggle the output state on every rising input edge.
+~~~
+
+#### `275-divide-by-two-toggle`
+
+~~~markdown
+# Divide By Two Toggle
+Implement a voltage-domain divide-by-two edge toggle.
+## Public Interface
+Declare module `divide_by_two_toggle` with positional ports `clk, out`. Both
+ports are electrical.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `vth = 0.45 V`: rising-edge decision threshold for `clk`.
+- `vdd = 0.9 V`: high output level.
+- `tdel = 10 ps`: output transition delay.
+- `tr = 10 ps`: output rise/fall transition time.
+## Functional Contract
+The internal divider state starts low. On every rising crossing of `clk`
+through `vth`, toggle the state. Drive `out` low when the state is low and to
+`vdd` when the state is high, using the public delay and transition-time
+parameters. The first valid rising edge therefore drives `out` high.
+## Modeling Constraints
+Return only `divide_by_two_toggle.va`. Use voltage contributions only. Do not
+~~~
+
+</details>
+
 ## Full 300-Task Coarse Scan
 
 ### Duplicate Titles
@@ -724,7 +772,7 @@ Return only `weighted_decoder_6bit.va`. Use voltage contributions onl…
 | `240-cdac-monodown-7b` ↔ `241-cdac-6b-stage1-up` | `False` | `high_overlap` | 0.8258 | 0.915 | `['dut', 'dut']` | ['CDAC Monodown 7b', 'CDAC 6b Stage1 Up'] |
 | `241-cdac-6b-stage1-up` ↔ `245-cdac-8b-monodown` | `False` | `high_overlap` | 0.8258 | 0.9231 | `['dut', 'dut']` | ['CDAC 6b Stage1 Up', 'CDAC 8b Monodown'] |
 | `112-clocked-sar-comparator` ↔ `202-l2-cmp-ideal-clocked` | `False` | `needs_human_review` | 0.8214 | 0.2454 | `['dut', 'dut']` | ['Clocked SAR Comparator', 'L2 CMP Ideal Clocked'] |
-| `184-divide-by-two-toggle` ↔ `275-divide-by-two-toggle` | `False` | `high_overlap` | 0.774 | 0.9883 | `['dut', 'dut']` | ['Divide By Two Toggle', 'Divide By Two Toggle'] |
+| `184-divide-by-two-toggle` ↔ `275-divide-by-two-toggle` | `True` | `high_overlap` | 0.774 | 0.9883 | `['dut', 'dut']` | ['Divide By Two Toggle', 'Divide By Two Toggle'] |
 
 ### Top Prompt-Overlap Pairs
 
