@@ -27,6 +27,22 @@ enough to audit and repair tasks on its own.
   status, or prompt contract ambiguity from agent judgment alone. Surface the
   evidence and ask for human confirmation at the checkpoints below.
 
+## Retrospective Loop
+
+After each audited batch, update the review process before moving to the next
+large batch:
+
+- Classify each newly exposed problem as a general SOP rule, a task-specific
+  audit note, or a one-off issue that should not be added to the skill.
+- Generalize only cross-cutting failures. Examples include target/support
+  artifact disagreement, hidden decks that are not materially distinct from
+  visible smoke decks, weak checkers that only reject zero/stub candidates,
+  and simulator evidence that was recorded without AHDL-lint triage.
+- When the agent missed a problem that human review caught, add or sharpen a
+  human checkpoint instead of adding a narrow circuit-family rule.
+- Preserve the reason for each skill update in the PR summary so reviewers can
+  judge whether the skill is becoming more reliable or merely longer.
+
 ## Required Human Checkpoints
 
 Use these checkpoints unless the user has explicitly authorized a bounded batch
@@ -76,7 +92,9 @@ and do not silently change counting policy.
 
 For each task under review, inspect:
 
-- `task.toml` or manifest metadata: form, level, category, target artifacts;
+- `task.toml` or manifest metadata: form, level, category, target artifacts,
+  and whether target/support artifacts agree with the public prompt and any
+  visible/hidden manifest;
 - `instruction.md`: public agent prompt;
 - `starter/`, `solution/`, support files, and target artifact boundaries;
 - visible and hidden testbenches, including a content diff or structural
@@ -138,6 +156,11 @@ Then check evaluation alignment:
   needing hidden-coverage repair before it can be counted as robustly audited.
 - Checker measures the claimed function. Flow-level metrics can certify L2
   rows but should not be the only evidence for an L1 component.
+- Checker strength must match the benchmark claim. Fixed sample tables, one or
+  two scalar statistics, range-only checks, or a checker that only rejects a
+  zero/stub implementation are not enough for a strong counted claim unless the
+  public contract is truly that narrow. Record weak checker coverage as
+  rework even when gold currently passes.
 - Negatives must compile and fail behavioral correctness. Syntax/setup failures
   do not prove checker strength.
 
@@ -232,6 +255,9 @@ Checker, metadata, and linter review:
   levels, transition windows, final reports, and all conditional regions.
 - Check bus order, generated section counts, endpoint mapping, random/table/file
   dependencies, and oscillator/source frequency when relevant.
+- Check that checker logic exercises the public invariant, not only a few
+  fixed waveform samples, broad range/statistical properties, or the ability to
+  reject an all-zero stub.
 - Record AHDL linter status separately from Spectre pass/fail. If no linter
   evidence was run, use `cadence_lint_pending`, not `cadence_modeling_ready`.
 
@@ -317,10 +343,12 @@ For each reviewed task or group, record:
 - Gate 1 label and reasoning;
 - Gate 2 status and reasoning;
 - public prompt changes and hygiene issues removed;
-- target artifact boundary and whether support files are solver targets;
+- target artifact boundary, whether support files are solver targets, and
+  whether `task.toml`, prompt text, and visible/hidden manifests agree;
 - visible/hidden test relationship, including whether a content diff confirmed
   non-identical coverage or exposed byte-identical/near-identical decks;
-- checker id and what behavior it proves;
+- checker id, what behavior it proves, and whether its coverage is strong
+  enough for the claimed L1/L2/counting status;
 - functional-math invariant, gold expression, checker expectation, and endpoint
   sanity vectors for numeric transfer tasks;
 - Cadence/Verilog-A reference correspondence used for non-obvious modeling
