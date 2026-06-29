@@ -13,6 +13,6 @@ analog begin
         ((V(vd4) > vth) ? 4.0 : 0.0) +
         ((V(vd5) > vth) ? 2.0 : 0.0) +
         ((V(vd6) > vth) ? 1.0 : 0.0)
-    ) / 32.0;
+    ) / 63.0;
 end
 endmodule

@@ -5,10 +5,10 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-29T09:07:45+00:00`
+- Generated UTC: `2026-06-29T14:23:51+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
-- Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
+- Levels: `{'L1': 265, 'L2': 32, 'L3': 3}`
 - Source-family heuristic rows: **185**
 - Negative variants per task: min `1`, median `4.0`, max `10`
 - Solution LOC: min `6`, median `24.5`, max `252`
@@ -19,17 +19,29 @@
 
 ## Cadence/Spectre Evidence For Reviewed Slice
 
-- Status: `passed_for_reviewed_issue29_slice`
+- Status: `passed_for_reviewed_issue29_slice_and_phase1_to_5_batch`
 - Runner: `scripts/run_v3_spectre_audit.py`
-- Reviewed tasks: **13**
-- Hidden gold: **13**/**13** PASS, fail `0`
-- Hidden negatives after fixture repair: **48**/**48** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0`
+- Reviewed tasks: **21**
+- Hidden gold: **21**/**21** PASS, fail `0`
+- Hidden negatives after fixture repair: **80**/**80** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0`
+- Phase1-to-phase5 batch tasks: `146-smooth-comparator-tanh`, `148-absolute-value`, `274-weighted-decoder-6bit`, `282-pfd-timer-reset`, `288-absolute-value`, `292-smooth-tanh-comparator`, `294-subradix-dac10`, `300-pfd-active-low-reset`
+- Phase1-to-phase5 EVAS gold: **8** visible PASS + **8** hidden PASS, fail `0` (/private/tmp/v3_evas_phase1_5/gold_summary.json)
+- Phase1-to-phase5 EVAS hidden negatives: **32**/**32** behavioral rejections, syntax/setup rejects `0`, unexpected pass `0` (/private/tmp/v3_evas_phase1_5/negative_summary.json)
+- Phase1-to-phase5 Spectre visible gold: **8**/**8** PASS, fail `0` (`/private/tmp/v3_spectre_phase1_5_visible.json`)
+- Phase1-to-phase5 Spectre hidden gold: **8**/**8** PASS, fail `0` (`/private/tmp/v3_spectre_phase1_5_hidden.json`)
+- Phase1-to-phase5 Spectre hidden negatives: **32**/**32** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0` (`/private/tmp/v3_spectre_phase1_5_negatives.json`)
+- Phase1-to-phase5 visible/hidden contract: All 8 tasks now have visible smoke decks distinct from hidden decks. Hidden decks vary PWL patterns, reference values, edge ordering, stop times, or reset-event coverage while staying within the public prompt contract.
+- Phase1-to-phase5 AHDL lint status: cadence_modeling_ready for the audited artifacts: Spectre visible/hidden/negative logs were inspected for AHDLLINT-* messages and none were present. The remaining warnings are shared VACOMP-2435 environment notices and SPECTRE-592 setup notices, not task-specific AHDL lint failures. No separate standalone lint runner exists in the repo.
+- Phase1-to-phase5 AHDL lint summary: `/private/tmp/v3_spectre_phase1_5_ahdl_lint_summary.json`
 - Fixture repairs before final negative rerun:
   - 049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.
   - 081-aperture-delay-track-and-hold hidden stimulus was made aperture-sensitive and concrete negatives were expanded from one zero stub to four behavior variants.
   - 284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.
   - 285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.
   - 287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.
+  - 146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.
+  - 282-pfd-timer-reset and 300-pfd-active-low-reset metadata levels were corrected from L2 to L1 because a single PFD DUT is not an L2 flow.
+  - 282-pfd-timer-reset and 300-pfd-active-low-reset prompts/golds now expose the public output transition-time parameter `tr`.
 
 ## Issue #29 Named Groups
 
@@ -40,10 +52,10 @@
 | `aperture_delay_pair` | `hard_duplicate_rewrite_or_remove` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 081/285; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `timer_reacquire_pair` | `manual_split_distinct_rows` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `manual_split_distinct_rows; manual=Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
-| `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
-| `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
-| `pfd_active_low_reset_pair` | `high_overlap` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `high_overlap` |
-| `subradix_vs_weighted_decoder` | `high_overlap` | `294-subradix-dac10`, `274-weighted-decoder-6bit` | Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel. | `high_overlap` |
+| `absolute_value_duplicate` | `hard_duplicate_rewrite_or_remove` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 148/288; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
+| `smooth_tanh_comparator_duplicate` | `valid_variant_needs_counting_policy` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `valid_variant_needs_counting_policy; manual=Manual review completed for 146/292; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
+| `pfd_active_low_reset_pair` | `hard_duplicate_rewrite_or_remove` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 282/300; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
+| `subradix_vs_weighted_decoder` | `manual_split_distinct_rows` | `294-subradix-dac10`, `274-weighted-decoder-6bit` | Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel. | `manual_split_distinct_rows; manual=Manual split retained for 274/294; EVAS/Spectre visible-hidden gold and negative evidence passed.` |
 
 ## Named Group Pair Evidence
 
@@ -410,26 +422,59 @@ All ports are scalar voltage-domain electrical nodes.
 ### `absolute_value_duplicate`
 
 - Why flagged: Two tasks share the same public title and likely the same absolute-value transfer function.
-- Group classification: `hard_duplicate`
+- Group classification: `hard_duplicate_rewrite_or_remove`
+- Automatic classification before manual review: `hard_duplicate`
+- Manual status: Manual review completed for 148/288; EVAS/Spectre visible-hidden gold and negative evidence passed.
+- Manual decision: Keep 288 as the canonical independent L1 absolute-value primitive. Keep 148 only as a non-counted duplicate/migration artifact because it implements the same memoryless absolute-value transfer with a legacy module name.
+- Rewrite path: To make 148 independent, rewrite it to cover a distinct absolute-value-related function such as a differential absolute-value front end, rail-clamped magnitude detector, signed-magnitude splitter, or precision rectifier model with explicit common-mode or rail behavior.
+- Manual evidence: Tasks 148 and 288 visible/hidden gold both PASS under EVAS and Spectre, and both have 4/4 concrete hidden negatives rejected behaviorally under EVAS and NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. They share the same absolute-value checker and the same `sigout = abs(sigin)` behavior, so only one should be counted as independent coverage.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `288-absolute-value` ↔ `148-absolute-value` | `hard_duplicate` | 0.1244 | 0.972 | 1.0 | Same public title and near-identical solution in the same artifact form; keep at most one scored row unless tests prove distinct behavior. |
+| `288-absolute-value` ↔ `148-absolute-value` | `hard_duplicate` | 0.9516 | 0.972 | 1.0 | Same public title and near-identical solution in the same artifact form; keep at most one scored row unless tests prove distinct behavior. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
 #### `288-absolute-value`
 
 ~~~markdown
-# Source Absolute Value
-Implement an absolute-value voltage primitive. OUT must track abs(IN) for positive and negative inputs.
-The module name and port list must match `absolute_value.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/absolute_value.va`.
+# Absolute Value
+Implement a pure voltage-domain absolute-value primitive.
+## Public Interface
+Declare module `absolute_value` with positional ports `sigin, sigout`. Both
+ports are electrical.
+## Functional Contract
+- Drive `sigout` to `abs(V(sigin))`.
+- Preserve positive input voltages unchanged.
+- Reflect negative input voltages to positive output voltages with the same
+  magnitude.
+- The model is memoryless and deterministic.
+## Modeling Constraints
+Return only `absolute_value.va`. Use voltage contributions only. Do not modify
+or emit the support testbench, add checker logic, hard-code private waveform
+sample points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`.
 ~~~
 
 #### `148-absolute-value`
 
 ~~~markdown
-Implement `absolute_value_behavior` with port order `sigin, sigout`. Drive `sigout` to the absolute value of `sigin`.
+# Absolute Value Behavior
+Implement a pure voltage-domain absolute-value DUT.
+## Public Interface
+Declare module `absolute_value_behavior` with positional ports `sigin, sigout`.
+Both ports are electrical.
+## Functional Contract
+- Drive `sigout` to the absolute value of the voltage at `sigin`.
+- Preserve positive input voltages unchanged.
+- Reflect negative input voltages to positive output voltages with the same
+  magnitude.
+- The model is memoryless and deterministic.
+## Modeling Constraints
+Return only `absolute_value_behavior.va`. Use voltage contributions only. Do not
+modify or emit the support testbench, add checker logic, hard-code private
+waveform sample points, add simulator-private side channels, use current
+contributions, `ddt()`, or `idt()`.
 ~~~
 
 </details>
@@ -437,26 +482,63 @@ Implement `absolute_value_behavior` with port order `sigin, sigout`. Drive `sigo
 ### `smooth_tanh_comparator_duplicate`
 
 - Why flagged: Two tasks appear to name the same smooth tanh comparator transfer behavior.
-- Group classification: `high_overlap`
+- Group classification: `valid_variant_needs_counting_policy`
+- Automatic classification before manual review: `high_overlap`
+- Manual status: Manual review completed for 146/292; EVAS/Spectre visible-hidden gold and negative evidence passed.
+- Manual decision: Keep 146 as the canonical generic smooth-tanh-comparator L1 row with public high/low/offset/slope parameters. Keep 292 as a non-counted transfer-curve variant unless the benchmark counting policy explicitly admits multiple tanh comparator parameterizations as separate coverage.
+- Rewrite path: To make 292 independent, rewrite it to add a distinct comparator function such as hysteresis, rail-derived output levels, differential common-mode handling, offset calibration, noise-aware decision behavior, or a measurement flow for extracting comparator smoothness.
+- Manual evidence: Tasks 146 and 292 visible/hidden gold both PASS under EVAS and Spectre, and both have 4/4 concrete hidden negatives rejected behaviorally under EVAS and NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. Their checker ids and default transfer parameters differ, but both remain smooth tanh comparators from `sigin/sigref` to `sigout`; the current difference is a valid regression variant rather than a clearly independent function.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `292-smooth-tanh-comparator` ↔ `146-smooth-comparator-tanh` | `high_overlap` | 0.312 | 0.8846 | 0.9612 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
+| `292-smooth-tanh-comparator` ↔ `146-smooth-comparator-tanh` | `high_overlap` | 0.8847 | 0.8846 | 0.9612 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
 #### `292-smooth-tanh-comparator`
 
 ~~~markdown
-# Source Smooth Tanh Comparator
-Implement a smooth comparator macro. OUT follows tanh(4*(IN-REF-0.05)) and ranges from -1 V to +1 V.
-The module name and port list must match `smooth_tanh_comparator.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/comparator.va`.
+# Smooth Tanh Comparator
+Implement a pure voltage-domain smooth comparator macro with a fixed default
+tanh transfer.
+## Public Interface
+Declare module `smooth_tanh_comparator` with positional ports `sigin, sigref,
+sigout`. All ports are electrical.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `sigout_high = 1.0 V`: upper output level; use a finite real voltage.
+- `sigout_low = -1.0 V`: lower output level; use a finite real voltage.
+- `sigin_offset = 0.05 V`: input-referred offset applied to `V(sigin,sigref)`.
+- `comp_slope = 4.0 1/V`: nonnegative tanh slope coefficient.
+## Functional Contract
+Drive `sigout` according to:
+```text
+0.5 * (sigout_high - sigout_low)
+    * tanh(comp_slope * (V(sigin,sigref) - sigin_offset))
+    + 0.5 * (sigout_high + sigout_low)
 ~~~
 
 #### `146-smooth-comparator-tanh`
 
 ~~~markdown
-Implement a smooth comparator named `smooth_comparator_tanh` with port order `sigin, sigref, sigout`. Use `0.5*(high-low)*tanh(comp_slope*(V(sigin,sigref)-offset)) + 0.5*(high+low)`.
+# Smooth Comparator Tanh
+Implement a pure voltage-domain smooth comparator based on a tanh transfer.
+## Public Interface
+Declare module `smooth_comparator_tanh` with positional ports `sigin, sigref,
+sigout`. All ports are electrical.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `high = 1.0 V`: upper output level; use a finite real voltage.
+- `low = -1.0 V`: lower output level; use a finite real voltage.
+- `offset = 0.0 V`: input-referred offset applied to `V(sigin,sigref)`.
+- `comp_slope = 1000.0 1/V`: nonnegative tanh slope coefficient.
+## Functional Contract
+Drive `sigout` according to:
+```text
+0.5 * (high - low) * tanh(comp_slope * (V(sigin,sigref) - offset))
+    + 0.5 * (high + low)
+```
+The output should move smoothly between `low` and `high` as `sigin` crosses
 ~~~
 
 </details>
@@ -464,28 +546,63 @@ Implement a smooth comparator named `smooth_comparator_tanh` with port order `si
 ### `pfd_active_low_reset_pair`
 
 - Why flagged: Two PFD reset tasks may share state/timer reset semantics.
-- Group classification: `high_overlap`
+- Group classification: `hard_duplicate_rewrite_or_remove`
+- Automatic classification before manual review: `high_overlap`
+- Manual status: Manual review completed for 282/300; EVAS/Spectre visible-hidden gold and negative evidence passed.
+- Manual decision: Keep 300 as the canonical PFD active-low-UP delayed mutual-reset row. Keep 282 only as a non-counted duplicate/migration artifact because it evaluates the same two-edge PFD timer-reset function with different signal names and a different default reset delay.
+- Rewrite path: To make 282 independent, rewrite it to cover a distinct PFD behavior such as reset-pulse width measurement, dead-zone behavior, no-overlap race handling, tri-state charge-pump interface behavior, or a composed PLL timing/reacquisition flow.
+- Manual evidence: Tasks 282 and 300 visible/hidden gold both PASS under EVAS and Spectre, and both have 4/4 concrete hidden negatives rejected behaviorally under EVAS and NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct, and both task metadata levels were corrected to L1. Both are active-low-UP/active-high-DOWN PFDs with timer-based mutual reset after both sides have occurred, so they should not both count as independent PFD coverage in the current release.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `300-pfd-active-low-reset` ↔ `282-pfd-timer-reset` | `high_overlap` | 0.7585 | 0.8803 | 0.9639 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
+| `300-pfd-active-low-reset` ↔ `282-pfd-timer-reset` | `high_overlap` | 0.9741 | 0.8882 | 0.9639 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
 #### `300-pfd-active-low-reset`
 
 ~~~markdown
-# Source PFD Active Low Reset
-Implement a PFD with active-low UPB and active-high DOWN. A rising REF asserts UPB low; a rising FB asserts DOWN high; both reset after both edges arrive.
-The module name and port list must match `pfd_active_low_reset.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `taoy/v_PFD.va`.
+# PFD Active Low Reset
+Implement a voltage-domain phase-frequency detector with active-low UP and
+delayed mutual reset.
+## Public Interface
+Declare module `pfd_active_low_reset` with positional ports `ref, fb, upb,
+down`. All ports are electrical. Inputs `ref` and `fb` use voltage-coded logic.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `vth = 0.45 V`: rising-edge threshold for inputs `ref` and `fb`.
+- `vh = 0.9 V`: logic-high output level.
+- `reset_delay = 80 ps from [0:inf)`: delay from the moment both detector
+  sides have occurred to the mutual reset event.
+- `tr = 10 ps from [0:inf)`: output transition time used for smooth
+  voltage-domain output edges.
+## Functional Contract
+- A rising crossing of `ref` through `vth` asserts the UP state.
+- A rising crossing of `fb` through `vth` asserts the DOWN state.
+- Output `upb` is active-low: drive it near `…
 ~~~
 
 #### `282-pfd-timer-reset`
 
 ~~~markdown
-# Source PFD Timer Reset
-Implement a phase-frequency detector with delayed reset. A rising A edge asserts active-low UB; a rising B edge asserts D; when both have occurred, both reset after 100 ps.
-The module name and port list must match `pfd_timer_reset.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `zhangz/L2_PFD.va`.
+# PFD Timer Reset
+Implement a voltage-domain phase-frequency detector with delayed mutual reset.
+## Public Interface
+Declare module `pfd_timer_reset` with positional ports `a, b, ub, d`. All ports
+are electrical. Inputs `a` and `b` use voltage-coded logic.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `vth = 0.45 V`: rising-edge threshold for inputs `a` and `b`.
+- `vh = 0.9 V`: logic-high output level.
+- `reset_delay = 100 ps from [0:inf)`: delay from the moment both detector
+  sides have occurred to the mutual reset event.
+- `tr = 10 ps from [0:inf)`: output transition time used for smooth
+  voltage-domain output edges.
+## Functional Contract
+- A rising crossing of `a` through `vth` asserts the UP state.
+- A rising crossing of `b` through `vth` asserts the DOWN state.
+- Output `ub` is active-low: drive it near `0 V` while the UP state is asserted
+  and ne…
 ~~~
 
 </details>
@@ -493,28 +610,61 @@ The module name and port list must match `pfd_timer_reset.va`. Keep the implemen
 ### `subradix_vs_weighted_decoder`
 
 - Why flagged: Two weighted decoder/DAC tasks may overlap at the bit-weight decoding kernel.
-- Group classification: `high_overlap`
+- Group classification: `manual_split_distinct_rows`
+- Automatic classification before manual review: `high_overlap`
+- Manual status: Manual split retained for 274/294; EVAS/Spectre visible-hidden gold and negative evidence passed.
+- Manual decision: Keep both rows as independent L1 data-converter weighting tasks: task 274 is a 6-bit binary weighted decoder whose all-ones code maps to full scale, while task 294 is a 10-bit radix-1.8 sub-radix DAC whose all-ones sub-radix code maps to full scale.
+- Manual evidence: Tasks 274 and 294 visible/hidden gold both PASS under EVAS and Spectre, and both have 4/4 concrete hidden negatives rejected behaviorally under EVAS and NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. The normalization repair rerun fixed the old prompt/gold ambiguity: task 274 uses binary all-ones full-scale normalization, and task 294 uses the radix-1.8 all-ones weight sum rather than a binary denominator. Task 274 negatives target denominator, scale, and threshold errors; task 294 negatives target binary weights, normalization, and MSB/LSB reversal. The two tasks share the broad weighted-DAC theme but validate different bit widths, radix contracts, and bit-order behavior.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `294-subradix-dac10` ↔ `274-weighted-decoder-6bit` | `high_overlap` | 0.7201 | 0.6361 | 0.8916 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
+| `294-subradix-dac10` ↔ `274-weighted-decoder-6bit` | `high_overlap` | 0.8999 | 0.6294 | 0.8916 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
 #### `294-subradix-dac10`
 
 ~~~markdown
-# Source Subradix DAC10
-Implement a 10-bit sub-radix weighted DAC using radix 1.8 weights and normalization by 1024.
-The module name and port list must match `subradix_dac10.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `zhangad/dac_10bit_ideal.va`.
+# Subradix DAC10
+Implement a 10-bit voltage-coded sub-radix weighted DAC.
+## Public Interface
+Declare module `subradix_dac10` with positional ports `vd9, vd8, vd7, vd6,
+vd5, vd4, vd3, vd2, vd1, vd0, vout`. All ports are electrical.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `vth = 0.45 V`: digital decision threshold for each input bit.
+- `vref = 1.0 V`: output full-scale/reference voltage.
+## Functional Contract
+Treat each input as logic `1` when its voltage is greater than `vth`, otherwise
+logic `0`. Interpret `vd9` through `vd0` as a sub-radix word with `vd9` as the
+most significant bit and `vd0` as the least significant bit. Adjacent bit
+weights follow radix `1.8`. The output voltage should represent that decoded
+sub-radix value scaled by `vref`, with the all-ones input code corresponding to
+full scale.
+## Modeling Constraints
+Return only `subradix_d…
 ~~~
 
 #### `274-weighted-decoder-6bit`
 
 ~~~markdown
-# Source Weighted Decoder 6bit
-Implement a six-input weighted decoder. Inputs vd1..vd6 have weights 32,16,8,4,2,1 and VOUT equals VREF times the weighted sum divided by 32.
-The module name and port list must match `weighted_decoder_6bit.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `lis/DEC_6bit.va`.
+# Weighted Decoder 6bit
+Implement a six-input voltage-coded weighted decoder.
+## Public Interface
+Declare module `weighted_decoder_6bit` with positional ports `vd1, vd2, vd3,
+vd4, vd5, vd6, vout`. All ports are electrical.
+## Public Parameter Contract
+Provide these overrideable public parameters:
+- `vth = 0.45 V`: digital decision threshold for each input bit.
+- `vref = 1.0 V`: output full-scale/reference voltage.
+## Functional Contract
+Treat each input as logic `1` when its voltage is greater than `vth`, otherwise
+logic `0`. Interpret `vd1` through `vd6` as an unsigned binary word with `vd1`
+as the most significant bit and `vd6` as the least significant bit. The output
+voltage should represent that decoded binary value scaled by `vref`, with the
+all-ones input code corresponding to full scale.
+## Modeling Constraints
+Return only `weighted_decoder_6bit.va`. Use voltage contributions onl…
 ~~~
 
 </details>
@@ -581,7 +731,9 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | Pair | Issue named | Prompt sim | Forms | Titles |
 | --- | --- | ---: | --- | --- |
 | `070-active-low-reset-synchronizer` ↔ `071-active-high-reset-synchronizer` | `False` | 0.9827 | `['dut', 'dut']` | ['Active Low Reset Synchronizer', 'Active High Reset Synchronizer'] |
+| `282-pfd-timer-reset` ↔ `300-pfd-active-low-reset` | `True` | 0.9741 | `['dut', 'dut']` | ['PFD Timer Reset', 'PFD Active Low Reset'] |
 | `113-clocked-dac-restore-4b` ↔ `118-clocked-dac-restore-7b` | `False` | 0.9518 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Clocked DAC Restore 7b'] |
+| `148-absolute-value` ↔ `288-absolute-value` | `True` | 0.9516 | `['dut', 'dut']` | ['Absolute Value', 'Absolute Value'] |
 | `098-edge-crossing-interval-timer` ↔ `100-final-step-file-metric` | `False` | 0.9505 | `['dut', 'dut']` | ['Edge Crossing Interval Timer', 'Final Step File Metric'] |
 | `114-sample-and-hold-ideal` ↔ `115-single-shot-pulse` | `False` | 0.9416 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Single Shot Pulse'] |
 | `140-three-input-or-gate` ↔ `141-three-input-xor-gate` | `False` | 0.9387 | `['dut', 'dut']` | ['Three Input OR Gate', 'Three Input XOR Gate'] |
@@ -605,6 +757,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `113-clocked-dac-restore-4b` ↔ `114-sample-and-hold-ideal` | `False` | 0.8939 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Ideal Sample And Hold'] |
 | `115-single-shot-pulse` ↔ `120-not-gate-voltage` | `False` | 0.8935 | `['dut', 'dut']` | ['Single Shot Pulse', 'Not Gate Voltage'] |
 | `114-sample-and-hold-ideal` ↔ `121-dff-reset-voltage` | `False` | 0.8932 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'DFF Reset Voltage'] |
+| `274-weighted-decoder-6bit` ↔ `294-subradix-dac10` | `True` | 0.8923 | `['dut', 'dut']` | ['Weighted Decoder 6bit', 'Subradix DAC10'] |
 | `118-clocked-dac-restore-7b` ↔ `119-crossing-pulse-detector` | `False` | 0.89 | `['dut', 'dut']` | ['Clocked DAC Restore 7b', 'Crossing Pulse Detector'] |
 | `052-gray-to-binary-converter-8b` ↔ `053-binary-to-gray-converter-8b` | `False` | 0.8899 | `['dut', 'dut']` | ['Gray To Binary Converter 8b', 'Binary To Gray Converter 8b'] |
 | `117-bipolar-dac-4b-continuous` ↔ `120-not-gate-voltage` | `False` | 0.8884 | `['dut', 'dut']` | ['Bipolar DAC 4b Continuous', 'Not Gate Voltage'] |
@@ -617,9 +770,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `113-clocked-dac-restore-4b` ↔ `121-dff-reset-voltage` | `False` | 0.8801 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'DFF Reset Voltage'] |
 | `117-bipolar-dac-4b-continuous` ↔ `119-crossing-pulse-detector` | `False` | 0.8795 | `['dut', 'dut']` | ['Bipolar DAC 4b Continuous', 'Crossing Pulse Detector'] |
 | `114-sample-and-hold-ideal` ↔ `119-crossing-pulse-detector` | `False` | 0.8772 | `['dut', 'dut']` | ['Ideal Sample And Hold', 'Crossing Pulse Detector'] |
-| `240-cdac-monodown-7b` ↔ `241-cdac-6b-stage1-up` | `False` | 0.8768 | `['dut', 'dut']` | ['CDAC Monodown 7b', 'CDAC 6b Stage1 Up'] |
-| `116-clocked-comparator-reset-low` ↔ `119-crossing-pulse-detector` | `False` | 0.8747 | `['dut', 'dut']` | ['Clocked Comparator Reset Low', 'Crossing Pulse Detector'] |
-| `113-clocked-dac-restore-4b` ↔ `116-clocked-comparator-reset-low` | `False` | 0.8746 | `['dut', 'dut']` | ['Clocked DAC Restore 4b', 'Clocked Comparator Reset Low'] |
 
 ### Task-Level Risk Flags
 

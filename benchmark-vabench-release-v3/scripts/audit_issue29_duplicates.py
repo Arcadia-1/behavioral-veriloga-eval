@@ -186,10 +186,112 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "the final negative rerun."
         ),
     },
+    "absolute_value_duplicate": {
+        "classification": "hard_duplicate_rewrite_or_remove",
+        "status": "Manual review completed for 148/288; EVAS/Spectre visible-hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep 288 as the canonical independent L1 absolute-value primitive. "
+            "Keep 148 only as a non-counted duplicate/migration artifact because it "
+            "implements the same memoryless absolute-value transfer with a legacy module name."
+        ),
+        "rewrite_path": (
+            "To make 148 independent, rewrite it to cover a distinct absolute-value-related "
+            "function such as a differential absolute-value front end, rail-clamped magnitude "
+            "detector, signed-magnitude splitter, or precision rectifier model with explicit "
+            "common-mode or rail behavior."
+        ),
+        "evidence": (
+            "Tasks 148 and 288 visible/hidden gold both PASS under EVAS and Spectre, and both "
+            "have 4/4 concrete hidden negatives rejected behaviorally under EVAS and "
+            "NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. "
+            "They share the same absolute-value checker and the same `sigout = abs(sigin)` "
+            "behavior, so only one should be counted as independent coverage."
+        ),
+    },
+    "smooth_tanh_comparator_duplicate": {
+        "classification": "valid_variant_needs_counting_policy",
+        "status": "Manual review completed for 146/292; EVAS/Spectre visible-hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep 146 as the canonical generic smooth-tanh-comparator L1 row with public "
+            "high/low/offset/slope parameters. Keep 292 as a non-counted transfer-curve "
+            "variant unless the benchmark counting policy explicitly admits multiple tanh "
+            "comparator parameterizations as separate coverage."
+        ),
+        "rewrite_path": (
+            "To make 292 independent, rewrite it to add a distinct comparator function such as "
+            "hysteresis, rail-derived output levels, differential common-mode handling, offset "
+            "calibration, noise-aware decision behavior, or a measurement flow for extracting "
+            "comparator smoothness."
+        ),
+        "evidence": (
+            "Tasks 146 and 292 visible/hidden gold both PASS under EVAS and Spectre, and both "
+            "have 4/4 concrete hidden negatives rejected behaviorally under EVAS and "
+            "NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. "
+            "Their checker ids and default transfer parameters differ, but both remain smooth "
+            "tanh comparators from `sigin/sigref` to `sigout`; the current difference is a "
+            "valid regression variant rather than a clearly independent function."
+        ),
+    },
+    "pfd_active_low_reset_pair": {
+        "classification": "hard_duplicate_rewrite_or_remove",
+        "status": "Manual review completed for 282/300; EVAS/Spectre visible-hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep 300 as the canonical PFD active-low-UP delayed mutual-reset row. "
+            "Keep 282 only as a non-counted duplicate/migration artifact because it "
+            "evaluates the same two-edge PFD timer-reset function with different signal "
+            "names and a different default reset delay."
+        ),
+        "rewrite_path": (
+            "To make 282 independent, rewrite it to cover a distinct PFD behavior such as "
+            "reset-pulse width measurement, dead-zone behavior, no-overlap race handling, "
+            "tri-state charge-pump interface behavior, or a composed PLL timing/reacquisition flow."
+        ),
+        "evidence": (
+            "Tasks 282 and 300 visible/hidden gold both PASS under EVAS and Spectre, and both "
+            "have 4/4 concrete hidden negatives rejected behaviorally under EVAS and "
+            "NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct, "
+            "and both task metadata levels were corrected to L1. Both are active-low-UP/"
+            "active-high-DOWN PFDs with timer-based mutual reset after both sides have occurred, "
+            "so they should not both count as independent PFD coverage in the current release."
+        ),
+    },
+    "subradix_vs_weighted_decoder": {
+        "classification": "manual_split_distinct_rows",
+        "status": "Manual split retained for 274/294; EVAS/Spectre visible-hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep both rows as independent L1 data-converter weighting tasks: task 274 is a "
+            "6-bit binary weighted decoder whose all-ones code maps to full scale, while "
+            "task 294 is a 10-bit radix-1.8 sub-radix DAC whose all-ones sub-radix code "
+            "maps to full scale."
+        ),
+        "evidence": (
+            "Tasks 274 and 294 visible/hidden gold both PASS under EVAS and Spectre, and both "
+            "have 4/4 concrete hidden negatives rejected behaviorally under EVAS and "
+            "NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. "
+            "The normalization repair rerun fixed the old prompt/gold ambiguity: task 274 "
+            "uses binary all-ones full-scale normalization, and task 294 uses the radix-1.8 "
+            "all-ones weight sum rather than a binary denominator. Task 274 negatives target "
+            "denominator, scale, and threshold errors; task 294 negatives target binary weights, "
+            "normalization, and MSB/LSB reversal. The two "
+            "tasks share the broad weighted-DAC theme but validate different bit widths, "
+            "radix contracts, and bit-order behavior."
+        ),
+    },
 }
 
+PHASE1_TO_5_TASKS = [
+    "146-smooth-comparator-tanh",
+    "148-absolute-value",
+    "274-weighted-decoder-6bit",
+    "282-pfd-timer-reset",
+    "288-absolute-value",
+    "292-smooth-tanh-comparator",
+    "294-subradix-dac10",
+    "300-pfd-active-low-reset",
+]
+
 CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
-    "status": "passed_for_reviewed_issue29_slice",
+    "status": "passed_for_reviewed_issue29_slice_and_phase1_to_5_batch",
     "runner": "scripts/run_v3_spectre_audit.py",
     "reviewed_tasks": [
         "006-element-shuffler",
@@ -201,33 +303,146 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "101-fixed-gain-amplifier",
         "107-reference-step-clock",
         "111-clocked-sine-source",
+        "146-smooth-comparator-tanh",
+        "148-absolute-value",
+        "274-weighted-decoder-6bit",
+        "282-pfd-timer-reset",
         "284-window-comparator-testbench",
         "285-aperture-delay-sample-hold",
         "286-first-order-lowpass-bugfix",
         "287-gain-extraction-flow",
+        "288-absolute-value",
+        "292-smooth-tanh-comparator",
+        "294-subradix-dac10",
+        "300-pfd-active-low-reset",
     ],
     "hidden_gold": {
         "command": (
             "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden "
-            "--timeout-s 300 --work-root results/v3_spectre_audit_reviewed_hidden "
-            "--out /private/tmp/v3_spectre_reviewed_hidden.json"
+            "--timeout-s 300 --work-root "
+            "/private/tmp/v3_spectre_reviewed_hidden_remaining_batch "
+            "--out /private/tmp/v3_spectre_reviewed_hidden_remaining_batch.json"
         ),
-        "rows": 13,
-        "pass": 13,
+        "rows": 21,
+        "pass": 21,
         "fail": 0,
     },
     "hidden_negatives_after_fixture_repair": {
         "command": (
             "python3 scripts/run_v3_spectre_audit.py --reviewed --split hidden "
             "--all-negative-variants --timeout-s 300 "
-            "--work-root results/v3_spectre_audit_reviewed_negatives_after_fix "
-            "--out /private/tmp/v3_spectre_reviewed_negatives_after_fix.json"
+            "--work-root /private/tmp/v3_spectre_reviewed_negatives_remaining_batch "
+            "--out /private/tmp/v3_spectre_reviewed_negatives_remaining_batch.json"
         ),
-        "rows": 48,
-        "negative_rejected": 48,
+        "rows": 80,
+        "negative_rejected": 80,
         "fail": 0,
         "negative_unexpected_pass": 0,
         "fail_spectre": 0,
+    },
+    "phase1_to_5_batch": {
+        "tasks": PHASE1_TO_5_TASKS,
+        "evas_gold": {
+            "runner": "runners/simulate_evas.py",
+            "summary": "/private/tmp/v3_evas_phase1_5/gold_summary.json",
+            "rows": 16,
+            "visible_pass": 8,
+            "hidden_pass": 8,
+            "fail": 0,
+        },
+        "evas_hidden_negatives": {
+            "runner": "runners/simulate_evas.py",
+            "summary": "/private/tmp/v3_evas_phase1_5/negative_summary.json",
+            "rows": 32,
+            "behavioral_rejected": 32,
+            "syntax_or_setup_rejected": 0,
+            "unexpected_pass": 0,
+        },
+        "spectre_visible_gold": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in PHASE1_TO_5_TASKS)
+                + " --split visible --timeout-s 300 --work-root "
+                "/private/tmp/v3_spectre_phase1_5_visible "
+                "--out /private/tmp/v3_spectre_phase1_5_visible.json"
+            ),
+            "rows": 8,
+            "pass": 8,
+            "fail": 0,
+        },
+        "spectre_hidden_gold": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in PHASE1_TO_5_TASKS)
+                + " --split hidden --timeout-s 300 --work-root "
+                "/private/tmp/v3_spectre_phase1_5_hidden "
+                "--out /private/tmp/v3_spectre_phase1_5_hidden.json"
+            ),
+            "rows": 8,
+            "pass": 8,
+            "fail": 0,
+        },
+        "spectre_hidden_negatives": {
+            "command": (
+                "python3 scripts/run_v3_spectre_audit.py "
+                + " ".join(f"--task {task}" for task in PHASE1_TO_5_TASKS)
+                + " --split hidden --all-negative-variants --timeout-s 300 --work-root "
+                "/private/tmp/v3_spectre_phase1_5_negatives "
+                "--out /private/tmp/v3_spectre_phase1_5_negatives.json"
+            ),
+            "rows": 32,
+            "negative_rejected": 32,
+            "fail": 0,
+            "negative_unexpected_pass": 0,
+            "fail_spectre": 0,
+        },
+        "visible_hidden_contract": (
+            "All 8 tasks now have visible smoke decks distinct from hidden decks. "
+            "Hidden decks vary PWL patterns, reference values, edge ordering, stop times, "
+            "or reset-event coverage while staying within the public prompt contract."
+        ),
+        "ahdl_lint_status": (
+            "cadence_modeling_ready for the audited artifacts: Spectre visible/hidden/negative "
+            "logs were inspected for AHDLLINT-* messages and none were present. The remaining "
+            "warnings are shared VACOMP-2435 environment notices and SPECTRE-592 setup notices, "
+            "not task-specific AHDL lint failures. No separate standalone lint runner exists in "
+            "the repo."
+        ),
+        "ahdl_lint_summary": "/private/tmp/v3_spectre_phase1_5_ahdl_lint_summary.json",
+    },
+    "normalization_repair_274_294": {
+        "tasks": ["274-weighted-decoder-6bit", "294-subradix-dac10"],
+        "reason": (
+            "Manual review found that the previous public/gold wording used MSB-style or "
+            "binary-code denominators for converter normalization. The repaired contract "
+            "uses all-ones full-scale output for both converter rows while keeping concrete "
+            "formula details out of the public prompt."
+        ),
+        "cadence_course_reference": (
+            "Local Cadence Verilog-AMS lesson examples normalize digital converter code "
+            "against a full-scale code range before mapping to analog output voltage."
+        ),
+        "evas": {
+            "summary": "/private/tmp/v3_evas_phase1_5_normfix_r2_summary.json",
+            "gold_rows": 4,
+            "gold_pass": 4,
+            "negative_rows": 8,
+            "behavioral_rejected": 8,
+            "fail": 0,
+        },
+        "spectre": {
+            "visible_gold": "/private/tmp/v3_spectre_normfix_visible.json",
+            "hidden_gold": "/private/tmp/v3_spectre_normfix_hidden.json",
+            "hidden_negatives": "/private/tmp/v3_spectre_normfix_negatives.json",
+            "visible_gold_pass": 2,
+            "hidden_gold_pass": 2,
+            "negative_rejected": 8,
+            "fail": 0,
+        },
+        "ahdl_lint_status": (
+            "No AHDLLINT-* messages were found in the normfix visible, hidden, or negative "
+            "Spectre work roots."
+        ),
     },
     "fixture_repairs_before_final_negative_rerun": [
         "049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.",
@@ -235,6 +450,9 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.",
         "285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.",
         "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
+        "146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.",
+        "282-pfd-timer-reset and 300-pfd-active-low-reset metadata levels were corrected from L2 to L1 because a single PFD DUT is not an L2 flow.",
+        "282-pfd-timer-reset and 300-pfd-active-low-reset prompts/golds now expose the public output transition-time parameter `tr`.",
     ],
 }
 
@@ -882,6 +1100,7 @@ def md_escape(text: str) -> str:
 
 def render_markdown(report: dict[str, Any]) -> str:
     scope = report["scope"]
+    phase_batch = report["cadence_spectre_audit"].get("phase1_to_5_batch")
     lines = [
         "# Issue #29 Duplicate and Filler Audit",
         "",
@@ -916,6 +1135,37 @@ def render_markdown(report: dict[str, Any]) -> str:
         f"fail `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['fail']}`, "
         f"unexpected pass `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['negative_unexpected_pass']}`, "
         f"FAIL_SPECTRE `{report['cadence_spectre_audit']['hidden_negatives_after_fixture_repair']['fail_spectre']}`",
+        *(
+            [
+                "- Phase1-to-phase5 batch tasks: "
+                + ", ".join(f"`{task}`" for task in phase_batch["tasks"]),
+                f"- Phase1-to-phase5 EVAS gold: **{phase_batch['evas_gold']['visible_pass']}** visible PASS + "
+                f"**{phase_batch['evas_gold']['hidden_pass']}** hidden PASS, fail `{phase_batch['evas_gold']['fail']}` "
+                f"({phase_batch['evas_gold']['summary']})",
+                f"- Phase1-to-phase5 EVAS hidden negatives: **{phase_batch['evas_hidden_negatives']['behavioral_rejected']}**/"
+                f"**{phase_batch['evas_hidden_negatives']['rows']}** behavioral rejections, "
+                f"syntax/setup rejects `{phase_batch['evas_hidden_negatives']['syntax_or_setup_rejected']}`, "
+                f"unexpected pass `{phase_batch['evas_hidden_negatives']['unexpected_pass']}` "
+                f"({phase_batch['evas_hidden_negatives']['summary']})",
+                f"- Phase1-to-phase5 Spectre visible gold: **{phase_batch['spectre_visible_gold']['pass']}**/"
+                f"**{phase_batch['spectre_visible_gold']['rows']}** PASS, fail `{phase_batch['spectre_visible_gold']['fail']}` "
+                "(`/private/tmp/v3_spectre_phase1_5_visible.json`)",
+                f"- Phase1-to-phase5 Spectre hidden gold: **{phase_batch['spectre_hidden_gold']['pass']}**/"
+                f"**{phase_batch['spectre_hidden_gold']['rows']}** PASS, fail `{phase_batch['spectre_hidden_gold']['fail']}` "
+                "(`/private/tmp/v3_spectre_phase1_5_hidden.json`)",
+                f"- Phase1-to-phase5 Spectre hidden negatives: **{phase_batch['spectre_hidden_negatives']['negative_rejected']}**/"
+                f"**{phase_batch['spectre_hidden_negatives']['rows']}** NEGATIVE_REJECTED, "
+                f"fail `{phase_batch['spectre_hidden_negatives']['fail']}`, "
+                f"unexpected pass `{phase_batch['spectre_hidden_negatives']['negative_unexpected_pass']}`, "
+                f"FAIL_SPECTRE `{phase_batch['spectre_hidden_negatives']['fail_spectre']}` "
+                "(`/private/tmp/v3_spectre_phase1_5_negatives.json`)",
+                f"- Phase1-to-phase5 visible/hidden contract: {phase_batch['visible_hidden_contract']}",
+                f"- Phase1-to-phase5 AHDL lint status: {phase_batch['ahdl_lint_status']}",
+                f"- Phase1-to-phase5 AHDL lint summary: `{phase_batch['ahdl_lint_summary']}`",
+            ]
+            if phase_batch
+            else []
+        ),
         "- Fixture repairs before final negative rerun:",
         *[
             f"  - {item}"

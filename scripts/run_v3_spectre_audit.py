@@ -45,10 +45,18 @@ REVIEWED_TASKS = (
     "101-fixed-gain-amplifier",
     "107-reference-step-clock",
     "111-clocked-sine-source",
+    "146-smooth-comparator-tanh",
+    "148-absolute-value",
+    "274-weighted-decoder-6bit",
+    "282-pfd-timer-reset",
     "284-window-comparator-testbench",
     "285-aperture-delay-sample-hold",
     "286-first-order-lowpass-bugfix",
     "287-gain-extraction-flow",
+    "288-absolute-value",
+    "292-smooth-tanh-comparator",
+    "294-subradix-dac10",
+    "300-pfd-active-low-reset",
 )
 
 

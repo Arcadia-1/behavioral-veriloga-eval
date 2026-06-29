@@ -7065,14 +7065,147 @@ def check_v3_source_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
+def _check_memoryless_output(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    expected,
+    tol: float,
+    min_checked: int = 8,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        value = expected(row)
+        if value is None:
+            continue
+        err = abs(float(row[output]) - value)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < min_checked:
+        return False, f"too_few_transfer_rows_checked={checked}"
+    return max_err <= tol, f"checked={checked} max_error={max_err:.5f}"
+
+
+def _stable_logic_value(value: float, low: float = 0.2, high: float = 0.7) -> int | None:
+    if value < low:
+        return 0
+    if value > high:
+        return 1
+    return None
+
+
+def _rising_edge_times(rows: list[dict[str, float]], signal: str, threshold: float) -> list[float]:
+    edges: list[float] = []
+    prev_t = float(rows[0]["time"])
+    prev_v = float(rows[0][signal])
+    for row in rows[1:]:
+        t = float(row["time"])
+        v = float(row[signal])
+        if prev_v < threshold <= v and t > prev_t:
+            frac = (threshold - prev_v) / (v - prev_v) if v != prev_v else 0.0
+            edges.append(prev_t + frac * (t - prev_t))
+        prev_t = t
+        prev_v = v
+    return edges
+
+
+def _pfd_events(ref_edges: list[float], fb_edges: list[float], reset_delay: float) -> list[tuple[float, str]]:
+    pending: list[tuple[float, str]] = [(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges]
+    pending.sort()
+    events: list[tuple[float, str]] = []
+    up = 0
+    down = 0
+    while pending:
+        t, kind = pending.pop(0)
+        events.append((t, kind))
+        if kind == "reset":
+            up = 0
+            down = 0
+            continue
+        if kind == "ref":
+            up = 1
+            if down == 1:
+                pending.append((t + reset_delay, "reset"))
+                pending.sort()
+            continue
+        if kind == "fb":
+            down = 1
+            if up == 1:
+                pending.append((t + reset_delay, "reset"))
+                pending.sort()
+    return events
+
+
+def _pfd_state_at(events: list[tuple[float, str]], t: float) -> tuple[int, int]:
+    up = 0
+    down = 0
+    for event_t, kind in events:
+        if event_t > t:
+            break
+        if kind == "reset":
+            up = 0
+            down = 0
+        elif kind == "ref":
+            up = 1
+        elif kind == "fb":
+            down = 1
+    return up, down
+
+
+def _check_pfd_delayed_reset(
+    rows: list[dict[str, float]],
+    *,
+    ref_signal: str,
+    fb_signal: str,
+    upb_signal: str,
+    down_signal: str,
+    reset_delay: float,
+    vh: float = 0.9,
+) -> tuple[bool, str]:
+    required = {"time", ref_signal, fb_signal, upb_signal, down_signal}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing pfd delayed reset signals"
+    ref_edges = _rising_edge_times(rows, ref_signal, 0.45)
+    fb_edges = _rising_edge_times(rows, fb_signal, 0.45)
+    if not ref_edges or not fb_edges:
+        return False, f"missing_edges ref={len(ref_edges)} fb={len(fb_edges)}"
+    events = _pfd_events(ref_edges, fb_edges, reset_delay)
+    event_times = [t for t, _ in events]
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        t = float(row["time"])
+        if t < 0.05e-9:
+            continue
+        if any(abs(t - event_t) < 35e-12 for event_t in event_times):
+            continue
+        if _stable_logic_value(float(row[ref_signal])) is None or _stable_logic_value(float(row[fb_signal])) is None:
+            continue
+        up, down = _pfd_state_at(events, t)
+        expected_upb = 0.0 if up else vh
+        expected_down = vh if down else 0.0
+        max_err = max(max_err, abs(float(row[upb_signal]) - expected_upb), abs(float(row[down_signal]) - expected_down))
+        checked += 1
+    if checked < 12:
+        return False, f"too_few_pfd_rows_checked={checked}"
+    return max_err <= 0.10, (
+        f"checked={checked} max_error={max_err:.5f} "
+        f"ref_edges={len(ref_edges)} fb_edges={len(fb_edges)} resets={sum(1 for _, kind in events if kind == 'reset')}"
+    )
+
+
 def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigref", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin/sigref/sigout"
-    return _sample_many(
+    return _check_memoryless_output(
         rows,
-        {"sigout": [(5.0, 0.00004), (15.0, 0.45), (25.0, 0.89996), (35.0, 0.01619)]},
-        tol=0.02,
+        required=required,
+        output="sigout",
+        expected=lambda row: 0.45 * (math.tanh(20.0 * (float(row["sigin"]) - float(row["sigref"]))) + 1.0),
+        tol=0.025,
     )
 
 
@@ -9043,13 +9176,22 @@ def check_v3_source_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[
 
 def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd1", "vd2", "vd3", "vd4", "vd5", "vd6", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing weighted decoder 6bit signals"
-    return _sample_many(
+    weights = (("vd1", 32.0), ("vd2", 16.0), ("vd3", 8.0), ("vd4", 4.0), ("vd5", 2.0), ("vd6", 1.0))
+
+    def expected(row: dict[str, float]) -> float | None:
+        code = 0.0
+        for signal, weight in weights:
+            bit = _stable_logic_value(float(row[signal]))
+            if bit is None:
+                return None
+            code += weight * bit
+        return code / 63.0
+
+    return _check_memoryless_output(
         rows,
-        {
-            "vout": [(0.4, 0.0), (1.2, 33.0 / 32.0), (2.0, 18.0 / 32.0), (2.8, 63.0 / 32.0)],
-        },
+        required=required,
+        output="vout",
+        expected=expected,
         tol=0.03,
     )
 
@@ -9151,16 +9293,13 @@ def check_v3_source_programmable_divider_by_n(rows: list[dict[str, float]]) -> t
 
 
 def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "ub", "d"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing pfd timer reset signals"
-    return _sample_many(
+    return _check_pfd_delayed_reset(
         rows,
-        {
-            "ub": [(0.2, 0.9), (0.6, 0.0), (1.22, 0.0), (1.4, 0.9), (2.3, 0.9), (2.72, 0.0), (2.9, 0.9)],
-            "d": [(0.2, 0.0), (0.6, 0.0), (1.22, 0.9), (1.4, 0.0), (2.3, 0.9), (2.72, 0.9), (2.9, 0.0)],
-        },
-        tol=0.08,
+        ref_signal="a",
+        fb_signal="b",
+        upb_signal="ub",
+        down_signal="d",
+        reset_delay=100e-12,
     )
 
 
@@ -9216,11 +9355,11 @@ def check_v3_source_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool
 
 def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigref", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing smooth tanh comparator signals"
-    return _sample_many(
+    return _check_memoryless_output(
         rows,
-        {"sigout": [(0.4, -0.975743), (1.2, -0.197375), (2.0, 0.197375), (2.8, 0.995055)]},
+        required=required,
+        output="sigout",
+        expected=lambda row: math.tanh(4.0 * (float(row["sigin"]) - float(row["sigref"]) - 0.05)),
         tol=0.03,
     )
 
@@ -9238,11 +9377,33 @@ def check_v3_source_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[boo
 
 def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing subradix dac10 signals"
-    return _sample_many(
+    weights = (
+        ("vd9", 198.359290368),
+        ("vd8", 110.19960576),
+        ("vd7", 61.2220032),
+        ("vd6", 34.012224),
+        ("vd5", 18.89568),
+        ("vd4", 10.4976),
+        ("vd3", 5.832),
+        ("vd2", 3.24),
+        ("vd1", 1.8),
+        ("vd0", 1.0),
+    )
+
+    def expected(row: dict[str, float]) -> float | None:
+        code = 0.0
+        for signal, weight in weights:
+            bit = _stable_logic_value(float(row[signal]))
+            if bit is None:
+                return None
+            code += weight * bit
+        return code / 445.058403328
+
+    return _check_memoryless_output(
         rows,
-        {"vout": [(0.4, 0.0), (1.2, 0.194687), (2.0, 0.118845), (2.8, 0.314313)]},
+        required=required,
+        output="vout",
+        expected=expected,
         tol=0.02,
     )
 
@@ -9315,16 +9476,13 @@ def check_v3_source_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bo
 
 
 def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ref", "fb", "upb", "down"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing pfd active low reset signals"
-    return _sample_many(
+    return _check_pfd_delayed_reset(
         rows,
-        {
-            "upb": [(0.2, 0.9), (0.7, 0.0), (1.1, 0.0), (1.25, 0.9), (2.1, 0.9), (2.5, 0.0), (2.7, 0.9)],
-            "down": [(0.2, 0.0), (0.7, 0.0), (1.1, 0.9), (1.25, 0.0), (2.1, 0.9), (2.5, 0.9), (2.7, 0.0)],
-        },
-        tol=0.08,
+        ref_signal="ref",
+        fb_signal="fb",
+        upb_signal="upb",
+        down_signal="down",
+        reset_delay=80e-12,
     )
 
 
@@ -15467,11 +15625,12 @@ def run_case(
     evas_engine_used = effective_evas_engine()
 
     t0 = time.perf_counter()
-    temp_ctx = tempfile.TemporaryDirectory(prefix=f"{task_id}_")
+    temp_root = Path(tempfile.gettempdir()).resolve()
+    temp_ctx = tempfile.TemporaryDirectory(prefix=f"{task_id}_", dir=str(temp_root))
     timing_split["tempdir_create_s"] = time.perf_counter() - t0
     try:
         t0 = time.perf_counter()
-        run_dir = Path(temp_ctx.name)
+        run_dir = Path(temp_ctx.name).resolve()
         out_dir = output_root.resolve() if output_root else run_dir / "output"
         out_dir.mkdir(parents=True, exist_ok=True)
         for stale_name in ("tran.csv", "strobe.txt", "tran.png"):
