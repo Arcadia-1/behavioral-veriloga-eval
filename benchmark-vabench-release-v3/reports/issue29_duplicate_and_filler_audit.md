@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-29T07:28:32+00:00`
+- Generated UTC: `2026-06-29T09:07:45+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
@@ -174,6 +174,7 @@ The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `V
 - Automatic classification before manual review: `high_overlap`
 - Manual status: Manual review completed for 081/285; Cadence/Spectre hidden gold and negative evidence passed.
 - Manual decision: Keep 081 as the canonical independent L1 aperture-delay sample/track-and-hold DUT row after prompt cleanup, aperture-sensitive hidden stimulus repair, and targeted negative expansion. Keep 285 only as a non-counted duplicate/migration artifact unless it is rewritten into a distinct function or artifact role.
+- Rewrite path: To make 285 independent, rewrite it away from deterministic fixed-delay sampling of the same `sample_hold_aperture_ref.va` DUT. Plausible directions include a full track/hold cell with explicit track/hold/enable/reset behavior, aperture uncertainty or jitter/droop/leakage modeling, finite aperture-window averaging or integration, multi-phase/interleaved sample-and-hold timing, or a Measurement L2 row that estimates aperture delay or sampling error from a composed testbench artifact. The rewrite must change the target artifact contract, checker behavior, and negative variants enough that 285 no longer shares task 081's gold behavior and aperture checker.
 - Manual evidence: Task 081 hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre after strengthening the hidden stimulus to distinguish edge-time sampling from delayed aperture sampling. Task 285 hidden gold PASS and its no-aperture-delay negative NEGATIVE_REJECTED under Spectre after repairing the Spectre-illegal negative fixture declaration. Both rows still share the same target artifact, gold behavior, and aperture checker, so they must not be counted as independent circuit-function coverage.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |

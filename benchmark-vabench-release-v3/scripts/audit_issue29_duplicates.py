@@ -129,6 +129,17 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "targeted negative expansion. Keep 285 only as a non-counted duplicate/migration "
             "artifact unless it is rewritten into a distinct function or artifact role."
         ),
+        "rewrite_path": (
+            "To make 285 independent, rewrite it away from deterministic fixed-delay sampling "
+            "of the same `sample_hold_aperture_ref.va` DUT. Plausible directions include a "
+            "full track/hold cell with explicit track/hold/enable/reset behavior, aperture "
+            "uncertainty or jitter/droop/leakage modeling, finite aperture-window averaging "
+            "or integration, multi-phase/interleaved sample-and-hold timing, or a Measurement "
+            "L2 row that estimates aperture delay or sampling error from a composed testbench "
+            "artifact. The rewrite must change the target artifact contract, checker behavior, "
+            "and negative variants enough that 285 no longer shares task 081's gold behavior "
+            "and aperture checker."
+        ),
         "evidence": (
             "Task 081 hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under "
             "Spectre after strengthening the hidden stimulus to distinguish edge-time sampling "
@@ -942,6 +953,8 @@ def render_markdown(report: dict[str, Any]) -> str:
             lines.append(f"- Automatic classification before manual review: `{group['auto_classification']}`")
             lines.append(f"- Manual status: {manual['status']}")
             lines.append(f"- Manual decision: {manual['decision']}")
+            if manual.get("rewrite_path"):
+                lines.append(f"- Rewrite path: {manual['rewrite_path']}")
             lines.append(f"- Manual evidence: {manual['evidence']}")
         if group["pairs"]:
             lines.extend(

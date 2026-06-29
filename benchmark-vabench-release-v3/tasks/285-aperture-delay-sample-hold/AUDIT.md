@@ -18,6 +18,26 @@ overlap with 081.
 - Independent value: current 285 assets are useful as a regression/migration
   fixture, but not as a second independent L1 circuit-function benchmark.
 
+## Rewrite Path For Independent Coverage
+
+Task 285 should stay non-counted unless it is rewritten to cover a function that
+is not already represented by task 081. Plausible independent rewrites include:
+
+- a full track/hold cell with an explicit track mode, hold mode, enable/reset
+  behavior, and acquisition/hold boundary checks;
+- aperture uncertainty, jitter, droop, leakage, or hold-step error modeling
+  instead of deterministic fixed-delay sampling only;
+- aperture-window averaging or integration over a finite sampling window rather
+  than point sampling at `clk` crossing plus `taperture`;
+- a multi-phase or interleaved sample-and-hold with phase ordering, bit/order
+  mapping, or channel-to-channel timing checks;
+- a Measurement L2 row that estimates aperture delay or sampling error from a
+  composed testbench artifact, rather than generating the same DUT.
+
+Any rewrite should change the target artifact contract, checker behavior, and
+negative variants enough that task 285 no longer shares the same
+`sample_hold_aperture_ref.va` gold behavior and aperture checker as task 081.
+
 ## Gate 2: Cadence Modeling Quality
 
 - Modeling status: `cadence_lint_pending` for the artifact itself;
