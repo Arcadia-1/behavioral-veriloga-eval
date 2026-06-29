@@ -79,7 +79,8 @@ For each task under review, inspect:
 - `task.toml` or manifest metadata: form, level, category, target artifacts;
 - `instruction.md`: public agent prompt;
 - `starter/`, `solution/`, support files, and target artifact boundaries;
-- visible and hidden testbenches;
+- visible and hidden testbenches, including a content diff or structural
+  comparison that proves whether hidden coverage is actually distinct;
 - `test_harness/checks.yaml`, checker id, and the actual checker
   implementation that computes expected behavior;
 - concrete `negative_variants/`;
@@ -131,6 +132,10 @@ Then check evaluation alignment:
 - Visible tests are public smoke coverage. Hidden tests should add non-identical
   private challenge: changed parameters, edge cases, reset/reacquisition,
   longer windows, or robustness variations.
+- Do not accept hidden coverage as distinct from visible coverage by filename
+  alone. If visible and hidden decks are byte-identical, differ only in comments,
+  or exercise the same stimulus/stop-time/checker vectors, record the row as
+  needing hidden-coverage repair before it can be counted as robustly audited.
 - Checker measures the claimed function. Flow-level metrics can certify L2
   rows but should not be the only evidence for an L1 component.
 - Negatives must compile and fail behavioral correctness. Syntax/setup failures
@@ -313,7 +318,8 @@ For each reviewed task or group, record:
 - Gate 2 status and reasoning;
 - public prompt changes and hygiene issues removed;
 - target artifact boundary and whether support files are solver targets;
-- visible/hidden test relationship;
+- visible/hidden test relationship, including whether a content diff confirmed
+  non-identical coverage or exposed byte-identical/near-identical decks;
 - checker id and what behavior it proves;
 - functional-math invariant, gold expression, checker expectation, and endpoint
   sanity vectors for numeric transfer tasks;
