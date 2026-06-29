@@ -120,6 +120,25 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "Spectre-illegal negative fixture port declarations before the final negative rerun."
         ),
     },
+    "aperture_delay_pair": {
+        "classification": "hard_duplicate_rewrite_or_remove",
+        "status": "Manual review completed for 081/285; Cadence/Spectre hidden gold and negative evidence passed.",
+        "decision": (
+            "Keep 081 as the canonical independent L1 aperture-delay sample/track-and-hold "
+            "DUT row after prompt cleanup, aperture-sensitive hidden stimulus repair, and "
+            "targeted negative expansion. Keep 285 only as a non-counted duplicate/migration "
+            "artifact unless it is rewritten into a distinct function or artifact role."
+        ),
+        "evidence": (
+            "Task 081 hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under "
+            "Spectre after strengthening the hidden stimulus to distinguish edge-time sampling "
+            "from delayed aperture sampling. Task 285 hidden gold PASS and its no-aperture-delay "
+            "negative NEGATIVE_REJECTED under Spectre after repairing the Spectre-illegal "
+            "negative fixture declaration. Both rows still share the same target artifact, "
+            "gold behavior, and aperture checker, so they must not be counted as independent "
+            "circuit-function coverage."
+        ),
+    },
     "timer_reacquire_pair": {
         "classification": "manual_split_distinct_rows",
         "status": "Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.",
@@ -165,12 +184,14 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "006-element-shuffler",
         "007-first-order-lowpass",
         "049-window-comparator-detector",
+        "081-aperture-delay-track-and-hold",
         "097-cppll-tracking-reacquire-timer",
         "099-dither-adder",
         "101-fixed-gain-amplifier",
         "107-reference-step-clock",
         "111-clocked-sine-source",
         "284-window-comparator-testbench",
+        "285-aperture-delay-sample-hold",
         "286-first-order-lowpass-bugfix",
         "287-gain-extraction-flow",
     ],
@@ -180,8 +201,8 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
             "--timeout-s 300 --work-root results/v3_spectre_audit_reviewed_hidden "
             "--out /private/tmp/v3_spectre_reviewed_hidden.json"
         ),
-        "rows": 11,
-        "pass": 11,
+        "rows": 13,
+        "pass": 13,
         "fail": 0,
     },
     "hidden_negatives_after_fixture_repair": {
@@ -191,15 +212,17 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
             "--work-root results/v3_spectre_audit_reviewed_negatives_after_fix "
             "--out /private/tmp/v3_spectre_reviewed_negatives_after_fix.json"
         ),
-        "rows": 43,
-        "negative_rejected": 43,
+        "rows": 48,
+        "negative_rejected": 48,
         "fail": 0,
         "negative_unexpected_pass": 0,
         "fail_spectre": 0,
     },
     "fixture_repairs_before_final_negative_rerun": [
         "049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.",
+        "081-aperture-delay-track-and-hold hidden stimulus was made aperture-sensitive and concrete negatives were expanded from one zero stub to four behavior variants.",
         "284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.",
+        "285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.",
         "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
     ],
 }
@@ -897,7 +920,10 @@ def render_markdown(report: dict[str, Any]) -> str:
         pair_labels = sorted({pair["classification"] for pair in group["pairs"]})
         signal = ", ".join(pair_labels) if pair_labels else "missing_or_singleton"
         if group.get("manual_adjudication"):
-            signal = f"{signal}; manual={group['manual_adjudication']['status']}"
+            signal = (
+                f"{group['manual_adjudication']['classification']}; "
+                f"manual={group['manual_adjudication']['status']}"
+            )
         members = ", ".join(f"`{member['name']}`" for member in group["members"])
         lines.append(
             f"| `{group['id']}` | `{group['classification']}` | {members} | "

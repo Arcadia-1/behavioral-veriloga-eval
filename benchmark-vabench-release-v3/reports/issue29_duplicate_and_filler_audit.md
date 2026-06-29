@@ -5,7 +5,7 @@
 ## Scope
 
 - Release: `benchmark-vabench-release-v3`
-- Generated UTC: `2026-06-27T19:10:56+00:00`
+- Generated UTC: `2026-06-29T07:28:32+00:00`
 - Task directories scanned: **300**
 - Forms: `{'bugfix': 1, 'dut': 296, 'e2e': 2, 'tb': 1}`
 - Levels: `{'L1': 263, 'L2': 34, 'L3': 3}`
@@ -21,12 +21,14 @@
 
 - Status: `passed_for_reviewed_issue29_slice`
 - Runner: `scripts/run_v3_spectre_audit.py`
-- Reviewed tasks: **11**
-- Hidden gold: **11**/**11** PASS, fail `0`
-- Hidden negatives after fixture repair: **43**/**43** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0`
+- Reviewed tasks: **13**
+- Hidden gold: **13**/**13** PASS, fail `0`
+- Hidden negatives after fixture repair: **48**/**48** NEGATIVE_REJECTED, fail `0`, unexpected pass `0`, FAIL_SPECTRE `0`
 - Fixture repairs before final negative rerun:
   - 049-window-comparator-detector negative fixture port declarations were expanded to Spectre-legal ANSI-style ports.
+  - 081-aperture-delay-track-and-hold hidden stimulus was made aperture-sensitive and concrete negatives were expanded from one zero stub to four behavior variants.
   - 284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.
+  - 285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.
   - 287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.
 
 ## Issue #29 Named Groups
@@ -35,9 +37,9 @@
 | --- | --- | --- | --- | --- |
 | `lowpass_original_vs_bugfix` | `valid_variant_needs_counting_policy` | `007-first-order-lowpass`, `286-first-order-lowpass-bugfix` | Same low-pass kernel appears once as a DUT construction task and once as a bugfix task. | `valid_variant_needs_counting_policy; manual=Manual review completed for 007/286; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `window_comparator_dut_vs_tb` | `valid_variant_needs_counting_policy` | `049-window-comparator-detector`, `284-window-comparator-testbench` | Same window-comparator function appears as DUT and testbench-generation variants. | `valid_variant_needs_counting_policy; manual=Manual review completed for 049/284; Cadence/Spectre hidden gold and negative evidence passed.` |
-| `aperture_delay_pair` | `high_overlap` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `high_overlap` |
-| `timer_reacquire_pair` | `manual_split_distinct_rows` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `needs_human_review; manual=Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.` |
-| `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `needs_human_review; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `aperture_delay_pair` | `hard_duplicate_rewrite_or_remove` | `081-aperture-delay-track-and-hold`, `285-aperture-delay-sample-hold` | Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording. | `hard_duplicate_rewrite_or_remove; manual=Manual review completed for 081/285; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `timer_reacquire_pair` | `manual_split_distinct_rows` | `097-cppll-tracking-reacquire-timer`, `107-reference-step-clock` | Both tasks exercise timer/clock-step timing behavior and may overlap as control-flow kernels. | `manual_split_distinct_rows; manual=Manual split retained for 097/107; Cadence/Spectre hidden gold and negative evidence passed.` |
+| `signal_chain_vs_components` | `valid_variant_needs_counting_policy` | `099-dither-adder`, `101-fixed-gain-amplifier`, `111-clocked-sine-source`, `287-gain-extraction-flow` | An L2 flow may package kernels that also appear as standalone source/gain/source tasks. | `valid_variant_needs_counting_policy; manual=Manual review completed for 099/101/111/287; Cadence/Spectre hidden gold and negative evidence passed.` |
 | `absolute_value_duplicate` | `hard_duplicate` | `288-absolute-value`, `148-absolute-value` | Two tasks share the same public title and likely the same absolute-value transfer function. | `hard_duplicate` |
 | `smooth_tanh_comparator_duplicate` | `high_overlap` | `292-smooth-tanh-comparator`, `146-smooth-comparator-tanh` | Two tasks appear to name the same smooth tanh comparator transfer behavior. | `high_overlap` |
 | `pfd_active_low_reset_pair` | `high_overlap` | `300-pfd-active-low-reset`, `282-pfd-timer-reset` | Two PFD reset tasks may share state/timer reset semantics. | `high_overlap` |
@@ -168,18 +170,22 @@ The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `V
 ### `aperture_delay_pair`
 
 - Why flagged: Two aperture-delay sample/track-and-hold tasks may differ mainly by wrapper wording.
-- Group classification: `high_overlap`
+- Group classification: `hard_duplicate_rewrite_or_remove`
+- Automatic classification before manual review: `high_overlap`
+- Manual status: Manual review completed for 081/285; Cadence/Spectre hidden gold and negative evidence passed.
+- Manual decision: Keep 081 as the canonical independent L1 aperture-delay sample/track-and-hold DUT row after prompt cleanup, aperture-sensitive hidden stimulus repair, and targeted negative expansion. Keep 285 only as a non-counted duplicate/migration artifact unless it is rewritten into a distinct function or artifact role.
+- Manual evidence: Task 081 hidden gold PASS and 4/4 concrete negatives NEGATIVE_REJECTED under Spectre after strengthening the hidden stimulus to distinguish edge-time sampling from delayed aperture sampling. Task 285 hidden gold PASS and its no-aperture-delay negative NEGATIVE_REJECTED under Spectre after repairing the Spectre-illegal negative fixture declaration. Both rows still share the same target artifact, gold behavior, and aperture checker, so they must not be counted as independent circuit-function coverage.
 
 | Pair | Class | Prompt sim | Solution sim | Checker sim | Recommendation |
 | --- | --- | ---: | ---: | ---: | --- |
-| `081-aperture-delay-track-and-hold` ↔ `285-aperture-delay-sample-hold` | `high_overlap` | 0.3333 | 1.0 | 0.3811 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
+| `081-aperture-delay-track-and-hold` ↔ `285-aperture-delay-sample-hold` | `high_overlap` | 0.4406 | 1.0 | 0.3811 | High prompt/solution/checker overlap; needs manual review before counting as an independent task. |
 
 <details><summary>Prompt excerpts used for human review</summary>
 
 #### `081-aperture-delay-track-and-hold`
 
 ~~~markdown
-# Task: vbr1_l1_aperture_delay_track_and_hold:dut
+# Aperture Delay Track And Hold
 ## Release Task Contract
 - Form: `dut`
 - Level: `L1`
@@ -189,18 +195,19 @@ The testbench must include `ahdl_include "window_comparator_ref.va"`, provide `V
 - Target artifact(s): `sample_hold_aperture_ref.va`
 - Supplied/reference support artifact(s): `tb_sample_hold_aperture_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 ## Form-Specific Requirements
 - Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
 - Preserve the public module names, port order, parameters, and waveform observable names.
 ## Public Verilog-A Interface
-- `sample_hold_aperture_ref.va` declares module `sample_hold_aperture_ref` with positi…
+- `sample_hold_aperture_ref.va` declares module `sample_hold_aperture_ref` with positional ports: `VDD`, `VSS`, `clk`, `vin`, `vout`.
+- All ports are electrical. `clk` uses voltage-coded logic levels.
+## Public Parameter Contrac…
 ~~~
 
 #### `285-aperture-delay-sample-hold`
 
 ~~~markdown
-# Aperture Delay Track And Hold
+# Aperture Delay Sample Hold
 One-shot DUT-generation task for a voltage-domain aperture-delay
 track-and-hold.
 ## Agent-Visible Input
@@ -210,14 +217,14 @@ track-and-hold.
 ## Public Interface
 Declare `sample_hold_aperture_ref(VDD, VSS, clk, vin, vout)` with electrical
 voltage-domain ports. `clk` uses public `0 V` to `0.9 V` logic levels.
+## Public Parameter Contract
+Preserve these public parameters when using the supplied starter interface:
+- `vth = 0.45 V`: rising-clock threshold.
+- `taperture = 200 ps from [0:inf)`: delay from the rising `clk` crossing to
+  the sampled aperture instant.
+- `tedge = 50 ps from (0:inf)`: output transition smoothing time.
 ## Functional Contract
-- On each rising `clk` transition, schedule a sample after a `200 ps` aperture
-  delay.
-- At the delayed aperture instant, capture the current value of `vin`; do not
-  capture the value present exactly at the clock edge.
-- After a short settling interval, `vout` should be close to the delayed
-  sampled value and should hold until the next delayed sample.
-- The harness exercises a broad voltage range, so the held output sequence
+- On each rising `clk` transition through `vth`, schedule a sample after
 ~~~
 
 </details>
@@ -729,7 +736,6 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `087-lfsr-prbs-generator` | `dut` | `L1` | `stimulus_source_generators` | 58 | 1 | `low_negative_variant_count` |
 | `085-burst-clock-source` | `dut` | `L1` | `stimulus_source_generators` | 38 | 1 | `low_negative_variant_count` |
 | `082-bias-voltage-generator-with-enable-trim` | `dut` | `L1` | `bias_reference_power_management` | 31 | 1 | `low_negative_variant_count` |
-| `081-aperture-delay-track-and-hold` | `dut` | `L1` | `sampling_analog_memory` | 38 | 1 | `low_negative_variant_count` |
 | `080-acquisition-limited-sample-and-hold` | `dut` | `L1` | `sampling_analog_memory` | 41 | 1 | `low_negative_variant_count` |
 | `074-configurable-polarity-edge-detector` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
 | `072-enable-gated-clock-pulse` | `dut` | `L1` | `testbench_utility_modules` | 13 | 5 | `short_solution_leq_20_loc` |
@@ -737,6 +743,7 @@ The module name and port list must match `weighted_decoder_6bit.va`. Keep the im
 | `070-active-low-reset-synchronizer` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 | `063-masked-config-update-32b` | `dut` | `L1` | `testbench_utility_modules` | 18 | 5 | `short_solution_leq_20_loc` |
 | `059-config-latch-128b-static-enable` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
+| `058-config-latch-32b-clocked` | `dut` | `L1` | `testbench_utility_modules` | 17 | 5 | `short_solution_leq_20_loc` |
 
 ## Interpretation Notes
 
