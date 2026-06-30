@@ -14,7 +14,7 @@ Status: EVAS formal candidate.
 ## Agent/Evaluator Boundary
 
 - Agent-visible files: `instruction.md`, `starter/gain_trim_controller.va`, and `test_visible/visible.scs`.
-- Evaluator-only files: `solution/gain_trim_controller.va`, `test_hidden/hidden.scs`, `CHECKS.json`, and `negative_variants/`.
+- Evaluator-only files: `solution/gain_trim_controller.va`, `test_hidden/hidden.scs`, `CHECKS.yaml`, and `negative_variants/`.
 - No `meta.json` is present or required.
 
 ## Checker Contract

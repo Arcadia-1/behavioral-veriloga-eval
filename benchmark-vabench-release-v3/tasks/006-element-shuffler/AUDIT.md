@@ -15,7 +15,7 @@ Status: EVAS formal candidate with reset-restart checker coverage.
 
 Trace signals: `clk`, `rst_n`, `out0`, `out1`, `out2`, `out3`.
 
-At each sample time listed in `CHECKS.json`, classify an output as high when its voltage is greater than `0.45 V`. A passing waveform has exactly one high output and the active output name must match the expected sequence. Hidden samples additionally verify that `rst_n` is released at sample points and that asserting `rst_n` low between the two windows restarts the sequence.
+At each sample time listed in `CHECKS.yaml`, classify an output as high when its voltage is greater than `0.45 V`. A passing waveform has exactly one high output and the active output name must match the expected sequence. Hidden samples additionally verify that `rst_n` is released at sample points and that asserting `rst_n` low between the two windows restarts the sequence.
 
 ## Negative Coverage
 

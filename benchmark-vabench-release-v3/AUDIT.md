@@ -28,7 +28,7 @@ Current-state checks:
 
 - 185/185 migrated tasks have the required public assets:
   `instruction.md`, `starter/`, `solution/`, `test_visible/`, `test_hidden/`,
-  top-level `CHECKS.json` entries, and `negative_variants/manifest.json`;
+  top-level `CHECKS.yaml` entries, and `negative_variants/manifest.json`;
 - 185/185 migrated tasks use the v3-standard `variants/path` negative
   manifest shape;
 - 185/185 migrated tasks have at least four concrete negative variants;

@@ -1,0 +1,4765 @@
+# Canonical v3 checker contracts. Each task key maps to the original
+# checker configuration text used by the EVAS runner.
+001-bang-bang-phase-detector: |
+  version: 1
+  task_id: v3_001_bang_bang_phase_detector
+  backend: evas
+  status: formal-candidate
+  checker: v3_001_bang_bang_phase_detector
+  required_columns:
+    - time
+    - data
+    - clk
+    - retimed_data
+    - up
+    - down
+  checks:
+    hidden:
+      - up_on_data_edge_when_clk_high_retimed_low
+      - down_on_data_edge_when_clk_low_retimed_high
+      - no_output_for_non_direction_cases
+      - clear_on_next_clk_transition
+      - never_overlap_up_down
+002-capacitive-sar-feedback-dac: |
+  version: 1
+  task_id: v3_002_capacitive_weighted_sar_feedback_dac
+  backend: evas
+  status: formal-candidate
+  checker: v3_002_capacitive_weighted_sar_feedback_dac
+  required_columns:
+    - time
+    - clk
+    - d9
+    - d8
+    - d7
+    - d6
+    - d5
+    - d4
+    - d3
+    - d2
+    - d1
+    - d0
+    - cal0
+    - cal1
+    - vdac_p
+    - vdac_n
+  logic_threshold_v: 0.45
+  output_tolerance_v: 0.003
+  settle_after_rising_clk_s: 8.0e-10
+  formula:
+    main_code: "512*d9 + 256*d8 + 128*d7 + 64*d6 + 32*d5 + 16*d4 + 8*d3 + 4*d2 + 2*d1 + d0"
+    cal_code: "cal0 + 2*cal1"
+    effective_code: "main_code + 32*cal_code"
+    vdiff: "0.6*((effective_code/1023.0)-0.5)"
+    vdac_p: "0.45 + 0.5*vdiff"
+    vdac_n: "0.45 - 0.5*vdiff"
+  checks:
+    hidden:
+      - binary_code_sets_nominal_dac_level
+      - calibration_bits_shift_feedback_level
+      - differential_outputs_move_complementarily
+      - common_mode_remains_0p45
+      - full_hidden_sequence_matches_formula
+003-pipeline-adc-stage: |
+  version: 2
+  task_id: pipeline_stage
+  backend: evas
+  status: formal_candidate
+  checker: pipeline_stage
+  required_columns:
+    - time
+    - phi1
+    - phi2
+    - vin
+    - vres
+    - d1
+    - d0
+  checks:
+    hidden:
+      - upper_middle_lower_regions_exercised
+      - sub_adc_decisions_match_thresholds
+      - residue_follows_gain_two_mdac_formula
+      - residue_output_bounded
+004-trim-calibration-controller: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    trace_signals:
+      time: "time"
+      clk: "clk"
+      rst: "rst"
+      err: "err"
+      trim: "trim"
+    logic:
+      threshold_v: 0.45
+      reset_value_v: 0.45
+      step_v: 0.06
+      min_trim_v: 0.05
+      max_trim_v: 0.85
+      sample_offset_after_clk_rise_ns: 2.0
+      tolerance_v: 0.015
+    checks:
+      - "reset_trim_near_0p45"
+      - "trim_increments_decrements_and_recovers"
+      - "trim_clamped_to_0p05_0p85"
+      - "updates_only_on_rising_clk_edges"
+      - "err_high_increases_err_low_decreases"
+  parity:
+    reference: "spectre"
+    status: "pending_until_release_v3_dual_rerun"
+    notes:
+      - "Release-v3 source is concrete; final paper-facing claim still needs fresh EVAS/Spectre dual validation."
+005-debounce-latch: |
+  version: 1
+  task_id: v3_005_debounce_latch
+  backend: evas
+  status: formal_candidate
+  checker: debounce_latch_trace
+  required_columns:
+    - time
+    - sig
+    - rst_n
+    - out
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "reset_low_forces_output_low"
+      - "reset_cancels_pending_qualification"
+      - "short_glitch_rejected"
+      - "stable_high_qualified_after_12ns"
+      - "falling_sig_clears_output"
+    public_observables:
+      - "sig"
+      - "rst_n"
+      - "out"
+    sample_points_ns:
+      low:
+        reset_held_high_input_ignored: 20
+        reset_cancel_window: 60
+        short_glitch_after_reset: 40
+        before_qualification_timer: 82
+        after_falling_sig: 138
+      high:
+        qualified_high_1: 100
+        qualified_high_2: 130
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    tolerance_notes: "Sample away from transition edges; judge voltage-coded low below 0.45 V and high above 0.45 V."
+006-element-shuffler: |
+  version: 2
+  task_id: element_shuffler
+  backend: evas
+  status: formal_candidate
+  checker: fixed_time_onehot_sequence
+  required_columns:
+    - time
+    - clk
+    - rst_n
+    - out0
+    - out1
+    - out2
+    - out3
+  logic_threshold_v: 0.45
+  visible:
+    testbench: test_visible/visible.scs
+    sample_times_ns: [20, 40, 60, 80, 100, 120]
+    expected_active_outputs: [out2, out0, out3, out1, out2, out0]
+  hidden:
+    testbench: test_hidden/hidden.scs
+    sample_times_ns: [20, 40, 60, 80, 100, 120, 160, 180, 200, 220]
+    expected_active_outputs: [out2, out0, out3, out1, out2, out0, out2, out0, out3, out1]
+  checks:
+    formal:
+      - exactly_one_output_high_at_each_sample
+      - visible_sequence_matches_out2_out0_out3_out1_repeat
+      - hidden_sequence_matches_long_repeat
+      - reset_restarts_sequence_before_second_window
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  notes:
+    - "Trace signals are clk, rst_n, out0, out1, out2, out3."
+    - "At each listed sample time, classify each output as high when V(out*) > 0.45 V and low otherwise."
+    - "A passing waveform has exactly one high output per sample and the active output name equals expected_active_outputs."
+    - "The hidden bench asserts rst_n low between the first and second windows; the second window must restart at out2."
+    - "The release checker must enforce both the first window and the post-reset second window."
+007-first-order-lowpass: |
+  version: 2
+  task_id: first_order_lowpass
+  backend: evas
+  status: formal_candidate
+  checker: first_order_lowpass_step_response
+  required_columns:
+    - time
+    - vin
+    - vout
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "input_step_exercised"
+      - "monotone_first_order_step_response"
+      - "lagged_response_not_passthrough"
+      - "vout_reaches_expected_late_level"
+      - "bounded_without_overshoot"
+    public_observables:
+      - "vin"
+      - "vout"
+    scoring_logic: "Sample vin/vout away from PWL edges; compute expected y[n+1] = y[n] + 0.025*(vin[n]-y[n]) on the 500 ps timer grid; allow transition/safe-time tolerance while rejecting passthrough, wrong alpha, wrong polarity, clamp, stuck, overshoot, and nonmonotone trajectories."
+  parity:
+    required: true
+    tolerance_notes: "Use safe-time level windows to avoid judging the exact discrete update row."
+008-gain-trim-controller: |
+  version: 2
+  task_id: v3_008_gain_trim_controller
+  backend: evas
+  status: formal_candidate
+  checker: main120_stable_checks.check_gain_trim_controller
+  checker_name: check_vbm1_gain_trim_controller
+  required_columns:
+    - time
+    - gain_ctrl
+  visible:
+    testbench: test_visible/visible.scs
+    hidden_dependency: false
+  hidden:
+    testbench: test_hidden/hidden.scs
+    sample_times_ns: [20, 70, 150, 250, 310, 470, 590, 610]
+    expected:
+      reset_gain_control_near_0p30: true
+      low_measured_value_increases_control: true
+      high_measured_value_decreases_control: true
+      gain_control_reaches_high_and_low_clamps: true
+  checks:
+    formal:
+      - reset_gain_control_near_0p30
+      - low_measured_value_increases_control
+      - high_measured_value_decreases_control
+      - gain_control_reaches_high_and_low_clamps
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  runner_mapping_required:
+    checker_id: v3_008_gain_trim_controller
+    checker_name: check_vbm1_gain_trim_controller
+    check_mapping: "CHECKS[\"v3_008_gain_trim_controller\"] = check_vbm1_gain_trim_controller"
+  parity:
+    reference: spectre
+    status: pending_until_evas_spectre_rerun
+    notes:
+      - "Requires fresh EVAS/Spectre dual validation for v3 candidate promotion."
+009-lock-detector: |
+  version: 1
+  task_id: v3_009_lock_detector
+  backend: evas
+  status: formal-candidate
+  checker: v3_009_lock_detector
+  required_columns:
+    - time
+    - ref_clk
+    - fb_clk
+    - rst_n
+    - lock
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  checks:
+    visible:
+      - reset_holds_lock_low
+      - no_lock_before_third_aligned_reference_edge
+      - lock_after_three_aligned_reference_edges
+    hidden:
+      - active_low_reset_clears_lock_and_counter
+      - lock_low_before_three_good_edges
+      - lock_high_after_three_consecutive_ref_fb_rising_edges_within_2ns
+      - mismatched_feedback_edge_breaks_streak
+      - no_early_lock_after_high_low_or_timing_mismatch
+  trace_logic:
+    aligned_reference_event: "At each ref_clk rising threshold crossing while rst_n is high, the latest fb_clk rising threshold crossing must be within 2 ns."
+    score: "Pass only if lock is low during reset and before the third consecutive aligned reference event, high after the third aligned event, low after an out-of-window reference event, and high again only after three new consecutive aligned events."
+010-offset-comparator: |
+  version: 1
+  task_id: v3_010_offset_comparator
+  backend: evas
+  status: formal-candidate
+  checker: v3_010_offset_comparator
+  required_columns:
+    - time
+    - clk
+    - vinp
+    - vinn
+    - out_p
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    traces:
+      clock: "CLK"
+      input_positive: "VINP"
+      input_negative: "VINN"
+      output: "OUT_P"
+      supply_high: 0.9
+      supply_low: 0.0
+    decision_samples:
+      # Samples are 350 ps after each rising clock edge, after the output transition
+      # has settled but before the next input step. H/L thresholds leave analog margin.
+      - {time: "1.35n", diff_mv: -10, expected: "L"}
+      - {time: "5.35n", diff_mv: 0, expected: "L"}
+      - {time: "9.35n", diff_mv: 3, expected: "L"}
+      - {time: "13.35n", diff_mv: 7, expected: "H"}
+      - {time: "17.35n", diff_mv: 20, expected: "H"}
+      - {time: "21.35n", diff_mv: 0, expected: "L"}
+      - {time: "25.35n", diff_mv: -10, expected: "L"}
+    async_hold_samples:
+      # Inputs cross the threshold between clock edges at these times; OUT_P must
+      # retain the previous sampled decision until the next rising CLK edge.
+      - {time: "12.60n", expected: "L", reason: "+7mV applied after the 9n edge"}
+      - {time: "20.60n", expected: "H", reason: "0mV applied after the 17n edge"}
+      - {time: "24.60n", expected: "L", reason: "-10mV applied after the 21n edge"}
+    output_thresholds:
+      low_max: 0.09
+      high_min: 0.81
+    checks:
+      - "clocked_output_sequence_LLLHHLL"
+      - "negative_diff_latches_low"
+      - "positive_diff_below_5mV_offset_latches_low"
+      - "positive_diff_above_5mV_offset_latches_high"
+      - "decisions_sampled_after_rising_clk_edges"
+      - "does_not_asynchronously_respond_between_edges"
+      - "output_levels_track_VSS_and_VDD"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    tolerance_notes: "Judge settled post-clock decisions and async-hold points, not continuous-time comparator behavior. The strict v3 checker must reject asynchronous output updates between rising clock edges."
+011-pfd-up-dn-logic: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checker_id: "v3_011_pfd_up_dn_logic"
+    check_name: "check_pfd_reset_race"
+    required_csv_signals:
+      - "time"
+      - "ref"
+      - "div"
+      - "up"
+      - "dn"
+    checks:
+      - "up_and_dn_pulses_exist"
+      - "overlap_window_is_bounded"
+      - "outputs_clear_after_race"
+  parity:
+    required: true
+    tolerance_notes: "Bound overlap and pulse windows instead of requiring a single raw event ordering."
+012-clock-divider: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "ratio_code_decodes_to_5"
+      - "output_period_matches_five_input_edges"
+      - "lock_asserts_after_first_complete_output_period"
+  parity:
+    required: true
+    tolerance_notes: "Measure edge intervals after startup on scalar clk_in, clk_out, lock, and div_code_0..div_code_7 waveforms."
+  semantic_review:
+    risk: "Hidden stimulus is deterministic but not solver-visible; all scored behavior is stated in instruction.md."
+    release_decision: "Release the normal divider task against the single target artifact `clk_divider_ref.va`."
+    checker_boundary: "Measure ratio-code decode, output period, high/low activity, reset/lock acquisition, and forbidden analog operators."
+013-resettable-integrator: |
+  checker_id: "v3_013_resettable_integrator"
+  check_name: "check_resettable_integrator"
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "input_drive_present"
+      - "reset_pulse_exercised"
+      - "pre_reset_output_integrates_up"
+      - "reset_clears_integrator"
+      - "post_reset_integration_restarts"
+    public_observables:
+      - "vin"
+      - "rst"
+      - "vout"
+  parity:
+    required: true
+    tolerance_notes: "Use post-reset safe windows rather than exact reset-edge samples."
+014-sar-logic: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "rdy_low_high_low_sequence"
+      - "dac_code_1010_at_conversion_done_window"
+  parity:
+    required: true
+    tolerance_notes: "Judge state at conversion windows, not transient trial-bit rows."
+015-segmented-dac: |
+  syntax:
+    must_include:
+      - "transition("
+      - "vref"
+      - "vss"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "safe_time_output_levels_match_expected_segmented_codes"
+      - "output_is_monotonic_across_programmed_codes"
+      - "thermometer_segment_weight_is_four_lsb_steps"
+  parity:
+    required: true
+    tolerance_notes: "DAC levels use safe-time samples away from PWL code transitions with 20 mV absolute tolerance."
+016-binary-weighted-voltage-dac: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "all_16_binary_codes_match_ideal_levels"
+      - "code_bits_match_expected_sampled_sequence"
+      - "monotonic_output"
+      - "zero_and_full_scale_codes_reach_references"
+  parity:
+    required: true
+    tolerance_notes: "Check the mathematical binary code-to-voltage mapping; structural DAC variants live in separate tasks."
+017-slew-rate-limiter: |
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "input_up_down_steps_exercised"
+      - "rising_slew_is_limited"
+      - "high_level_eventually_reached"
+      - "falling_slew_is_limited"
+      - "low_level_eventually_reached"
+      - "lagged_response_not_passthrough"
+    public_observables:
+      - "vin"
+      - "vout"
+  parity:
+    required: true
+    tolerance_notes: "Use level windows; do not require exact per-row step size at transition boundaries."
+018-strongarm-style-latch-comparator: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "outputs_toggle_nontrivially"
+      - "rising_clk_edge_latches_positive_decision"
+      - "rising_clk_edge_latches_negative_decision"
+      - "falling_clk_resets_both_outputs_low"
+      - "latched_decision_holds_through_input_swap"
+  parity:
+    required: true
+    status: "pending"
+    tolerance_notes: "Fresh dual evidence required after latch-hold/reset stimulus and checker tightening."
+019-unit-element-thermometer-dac: |
+  syntax:
+    must_include:
+      - "seg14"
+      - "transition("
+      - "vref"
+      - "vss"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "safe_time_output_levels_match_15_segment_thermometer_count"
+      - "full_scale_counts_all_15_segments"
+      - "output_is_monotonic_across_programmed_segment_counts"
+  parity:
+    required: true
+    tolerance_notes: "DAC levels use safe-time samples away from PWL segment transitions with 20 mV absolute tolerance."
+020-thermometer-code-decoder: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "enable_low_forces_all_low"
+      - "cumulative_sequence_for_codes_1_2_3"
+      - "guarded_th3_remains_low"
+  parity:
+    required: true
+    tolerance_notes: "Check fixed code windows rather than transition rows."
+021-vco-phase-integrator: |
+  syntax:
+    must_include:
+      - "@(initial_step"
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "phase_span_covers_nearly_full_wrap"
+      - "clock_toggles_on_phase_wrap"
+      - "late_edge_rate_exceeds_early_edge_rate"
+  parity:
+    required: true
+    tolerance_notes: "Score phase-span and edge-rate behavior across stable control-voltage intervals."
+022-bandgap-reference-macro-model: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "startup_threshold_blocks_reference"
+      - "reference_settles_near_nominal"
+      - "line_regulation_is_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+023-calibration-deadband-controller: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "trim_holds_inside_deadband"
+      - "trim_moves_for_large_error"
+      - "trim_clamped_to_range"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+024-charge-pump-abstraction: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "up_pulse_increases_control"
+      - "down_pulse_decreases_control"
+      - "control_voltage_clamped"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+025-clocked-adc-quantizer: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "flash_adc_all_8_codes_present"
+      - "flash_adc_monotonic_with_ramp"
+    public_observables:
+      - "vin"
+      - "clk"
+      - "dout2"
+      - "dout1"
+      - "dout0"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+026-clocked-sample-and-hold: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "sh_output_tracks_input_at_edges"
+      - "sh_output_held_between_edges"
+    public_observables:
+      - "in"
+      - "clk"
+      - "out"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+027-dac-mismatch-unit-weighting-model: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "weighted_code_response"
+      - "explicit_mismatch_terms"
+      - "bounded_reconstruction_voltage"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+028-digital-phase-accumulator-with-modulo-wrap: |
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "phase_accumulator_timer_wrap"
+    public_observables:
+      - "time"
+      - "clk_out"
+      - "phase_out"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+029-dwa-dem-encoder: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "pointer_advances_by_sampled_input_code"
+      - "cell_enable_window_matches_effective_code_plus_lsb_boundary"
+      - "pointer_output_is_one_hot"
+      - "wraparound_and_multi_code_coverage"
+    public_observables:
+      - "clk_i"
+      - "rst_ni"
+      - "code_3..code_0"
+      - "cell_en_15..cell_en_0"
+      - "ptr_15..ptr_0"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Requires fresh EVAS/Spectre dual validation after CT06 content repair."
+030-higher-order-filter: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "two_filter_states"
+      - "step_response_is_smoothed"
+      - "reset_clears_states"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+031-hysteresis-comparator: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "output_shows_hysteresis_window"
+      - "upward_and_downward_trip_points_are_separated"
+    public_observables:
+      - "time"
+      - "out_p"
+      - "out_n"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+032-ldo-regulator-macro-model: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "regulated_output_bounded"
+      - "load_step_causes_droop"
+      - "output_recovers_after_load_reduction"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+033-limiting-amplifier-frontend: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "small_input_gain_preserved"
+      - "large_input_limited_high_low"
+      - "limiting_metric_asserted"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+034-lna-gain-compression-macro: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "small_signal_gain_present"
+      - "large_signal_compression_visible"
+      - "compressed_output_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+035-log-rssi-power-detector: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "rssi_monotonic_with_envelope"
+      - "log_spacing_compresses_large_steps"
+      - "low_input_floor_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+036-loop-filter-abstraction: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "proportional_step_decays"
+      - "integral_residual_accumulates"
+      - "metric_asserts_after_valid_updates"
+      - "reset_clears_integrator"
+      - "filtered_output_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+037-pa-compression-macro: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "pa_gain_above_unity"
+      - "pa_large_signal_compression"
+      - "pa_output_limit_metric"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+038-power-on-reset-detector: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "reset_asserted_below_supply_threshold"
+      - "release_delay_after_power_good"
+      - "brownout_reasserts_reset"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+039-precision-rectifier-envelope-detector: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+      - "abs("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "full_wave_rectification_around_common_mode"
+      - "envelope_peak_hold_and_decay"
+      - "negative_half_cycle_rectifies"
+      - "hold_metric_marks_envelope_memory"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "rect"
+      - "env"
+      - "metric"
+  parity:
+    reference: "spectre"
+    status: "pending"
+    notes:
+      - "Fresh EVAS/Spectre dual validation is required after the ahdlLib-guided quality refinement."
+040-programmable-gain-amplifier: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "gain_select_changes_slope"
+      - "sampled_gain_holds_between_clock_edges"
+      - "common_mode_is_preserved"
+      - "rail_clamps_with_clip_metric"
+      - "reset_returns_to_unity_gain"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "gain_sel"
+      - "vin"
+      - "out"
+      - "metric"
+  parity:
+    reference: "spectre"
+    status: "pending"
+    notes:
+      - "Fresh EVAS/Spectre dual validation is required after adding this release entry."
+041-propagation-delay-comparator: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "output_goes_high_in_each_phase"
+      - "clk_to_output_delay_increases_as_diff_shrinks"
+    public_observables:
+      - "time"
+      - "clk"
+      - "vinp"
+      - "vinn"
+      - "out_p"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+042-ptat-ctat-reference-generator: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "ptat_branch_monotonic_with_temperature"
+      - "ctat_compensation_flattens_reference"
+      - "reference_common_mode_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+043-rf-mixer-downconverter-macro: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "lo_polarity_controls_conversion_sign"
+      - "conversion_gain_visible"
+      - "baseband_output_bounded"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+044-sample-and-hold-with-droop-leakage: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "rising_sample_edge_captures_vin"
+      - "multiple_input_levels_are_preserved"
+      - "held_output_droops_over_time"
+      - "reset_clears_output"
+      - "post_reset_sample_recovers_to_vin"
+  parity:
+    required: true
+    tolerance_notes: "Check sampled vin levels after settling, droop across wide windows, and reset recovery."
+045-soft-hysteretic-limiter: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "smooth_limiting"
+      - "hysteresis_state_memory"
+      - "bounded_output"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+046-successive-approximation-calibration-search-fsm: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "step_size_halves"
+      - "trim_direction_follows_error"
+      - "done_after_search_window"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+047-threshold-comparator: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "low_for_negative_diff"
+      - "high_for_positive_diff"
+      - "rising_trip_near_zero_diff"
+      - "falling_trip_near_zero_diff"
+      - "rail_referenced_output_levels"
+    public_observables:
+      - "vinp"
+      - "vinn"
+      - "out_p"
+  parity:
+    reference: "spectre"
+    status: "pending"
+    notes:
+      - "Fresh dual evidence required after bidirectional threshold stimulus/checker tightening."
+048-uvlo-brownout-detector: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "power_good_has_hysteresis"
+      - "brownout_clears_power_good"
+      - "recovery_requires_upper_threshold"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+049-window-comparator-detector: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "true_window_comparator"
+    public_observables:
+      - "time"
+      - "vin"
+      - "out"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+050-bin-to-thermometer-decoder-8b: |
+  version: 2
+  task_id: bin_to_thermometer_decoder_8b
+  backend: evas
+  status: formal_candidate
+  checker: bin_to_thermometer_decoder_8b
+  required_columns:
+    - time
+    - en
+    - b7
+    - b6
+    - b5
+    - b4
+    - b3
+    - b2
+    - b1
+    - b0
+  checks:
+    formal:
+      - enable_low_forces_all_outputs_low
+      - high_count_matches_binary_code
+      - outputs_are_cumulative_from_th0
+      - boundary_codes_0_1_255
+051-thermometer-to-binary-encoder-8b: |
+  version: 2
+  task_id: thermometer_to_binary_encoder_8b
+  backend: evas
+  status: formal_candidate
+  checker: thermometer_to_binary_encoder_8b
+  checks:
+    formal:
+      - valid_for_cumulative_inputs
+      - binary_count_matches_population
+      - invalid_for_bubble_patterns
+052-gray-to-binary-converter-8b: |
+  version: 2
+  task_id: gray_to_binary_converter_8b
+  backend: evas
+  status: formal_candidate
+  checker: gray_to_binary_converter_8b
+  checks:
+    formal:
+      - gray_sequence_maps_to_binary_count
+      - boundary_codes_decode_correctly
+053-binary-to-gray-converter-8b: |
+  version: 2
+  task_id: binary_to_gray_converter_8b
+  backend: evas
+  status: formal_candidate
+  checker: binary_to_gray_converter_8b
+  checks:
+    formal:
+      - binary_count_maps_to_gray
+      - adjacent_counts_have_one_bit_gray_change
+054-onehot-to-binary-encoder-16b: |
+  version: 2
+  task_id: onehot_to_binary_encoder_16b
+  backend: evas
+  status: formal_candidate
+  checker: onehot_to_binary_encoder_16b
+  checks:
+    formal:
+      - onehot_index_matches_binary_output
+      - zero_hot_invalid
+      - multi_hot_invalid
+055-binary-to-onehot-decoder-16b: |
+  version: 2
+  task_id: binary_to_onehot_decoder_16b
+  backend: evas
+  status: formal_candidate
+  checker: binary_to_onehot_decoder_16b
+  checks:
+    formal:
+      - exactly_one_output_high_when_enabled
+      - selected_output_matches_code
+      - enable_low_forces_all_low
+056-decimal-digit-to-bcd-encoder: |
+  version: 2
+  task_id: decimal_digit_to_bcd_encoder
+  backend: evas
+  status: formal_candidate
+  checker: decimal_digit_to_bcd_encoder
+  checks:
+    formal:
+      - decimal_onehot_maps_to_bcd
+      - invalid_multi_digit_rejected
+      - invalid_zero_digit_rejected
+057-signed-magnitude-to-twos-complement-8b: |
+  version: 2
+  task_id: signed_magnitude_to_twos_complement_8b
+  backend: evas
+  status: formal_candidate
+  checker: signed_magnitude_to_twos_complement_8b
+  checks:
+    formal:
+      - positive_values_preserved
+      - negative_values_twos_complemented
+      - negative_zero_maps_to_zero
+058-config-latch-32b-clocked: |
+  version: 2
+  task_id: config_latch_32b_clocked
+  backend: evas
+  status: formal_candidate
+  checker: config_latch_32b_clocked
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+059-config-latch-128b-static-enable: |
+  version: 2
+  task_id: config_latch_128b_static_enable
+  backend: evas
+  status: formal_candidate
+  checker: config_latch_128b_static_enable
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+060-config-shift-register-64b: |
+  version: 2
+  task_id: config_shift_register_64b
+  backend: evas
+  status: formal_candidate
+  checker: config_shift_register_64b
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+061-bus-splitter-256-to-16x16: |
+  version: 2
+  task_id: bus_splitter_256_to_16x16
+  backend: evas
+  status: formal_candidate
+  checker: bus_splitter_256_to_16x16
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+062-bus-combiner-16x16-to-256: |
+  version: 2
+  task_id: bus_combiner_16x16_to_256
+  backend: evas
+  status: formal_candidate
+  checker: bus_combiner_16x16_to_256
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+063-masked-config-update-32b: |
+  version: 2
+  task_id: masked_config_update_32b
+  backend: evas
+  status: formal_candidate
+  checker: masked_config_update_32b
+  checks:
+    formal:
+      - gold_passes
+      - concrete_negatives_fail
+064-edge-interval-tdc-8b: |
+  version: 1
+  task_id: v3_064_edge_interval_tdc_8b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_064_edge_interval_tdc_8b
+  required_columns:
+    - time
+    - start
+    - stop
+    - valid
+    - code0
+    - code1
+    - code2
+    - code3
+    - code4
+    - code5
+    - code6
+    - code7
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+065-period-meter-16b: |
+  version: 1
+  task_id: v3_065_period_meter_16b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_065_period_meter_16b
+  required_columns:
+    - time
+    - clk_in
+    - valid
+    - period0
+    - period1
+    - period2
+    - period3
+    - period4
+    - period5
+    - period6
+    - period7
+    - period8
+    - period9
+    - period10
+    - period11
+    - period12
+    - period13
+    - period14
+    - period15
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+066-duty-cycle-meter-8b: |
+  version: 1
+  task_id: v3_066_duty_cycle_meter_8b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_066_duty_cycle_meter_8b
+  required_columns:
+    - time
+    - clk_in
+    - valid
+    - duty0
+    - duty1
+    - duty2
+    - duty3
+    - duty4
+    - duty5
+    - duty6
+    - duty7
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+067-event-counter-windowed-16b: |
+  version: 1
+  task_id: v3_067_event_counter_windowed_16b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_067_event_counter_windowed_16b
+  required_columns:
+    - time
+    - gate
+    - event
+    - done
+    - count0
+    - count1
+    - count2
+    - count3
+    - count4
+    - count5
+    - count6
+    - count7
+    - count8
+    - count9
+    - count10
+    - count11
+    - count12
+    - count13
+    - count14
+    - count15
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+068-latency-counter-ready-valid-12b: |
+  version: 1
+  task_id: v3_068_latency_counter_ready_valid_12b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_068_latency_counter_ready_valid_12b
+  required_columns:
+    - time
+    - clk
+    - valid_i
+    - ready_i
+    - done
+    - lat0
+    - lat1
+    - lat2
+    - lat3
+    - lat4
+    - lat5
+    - lat6
+    - lat7
+    - lat8
+    - lat9
+    - lat10
+    - lat11
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+069-settling-window-detector: |
+  version: 1
+  task_id: v3_069_settling_window_detector
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_069_settling_window_detector
+  required_columns:
+    - time
+    - vin
+    - target
+    - tol
+    - settled
+    - t_code0
+    - t_code1
+    - t_code2
+    - t_code3
+    - t_code4
+    - t_code5
+    - t_code6
+    - t_code7
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+070-active-low-reset-synchronizer: |
+  version: 1
+  task_id: v3_070_active_low_reset_synchronizer
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_070_active_low_reset_synchronizer
+  required_columns:
+    - time
+    - clk
+    - rst_n
+    - sync_rst_n
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+071-active-high-reset-synchronizer: |
+  version: 1
+  task_id: v3_071_active_high_reset_synchronizer
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_071_active_high_reset_synchronizer
+  required_columns:
+    - time
+    - clk
+    - rst
+    - sync_rst
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+072-enable-gated-clock-pulse: |
+  version: 1
+  task_id: v3_072_enable_gated_clock_pulse
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_072_enable_gated_clock_pulse
+  required_columns:
+    - time
+    - clk
+    - en
+    - pulse
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+073-low-active-enable-decoder-4b: |
+  version: 1
+  task_id: v3_073_low_active_enable_decoder_4b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_073_low_active_enable_decoder_4b
+  required_columns:
+    - time
+    - en_n
+    - a0
+    - a1
+    - a2
+    - a3
+    - y0_n
+    - y1_n
+    - y2_n
+    - y3_n
+    - y4_n
+    - y5_n
+    - y6_n
+    - y7_n
+    - y8_n
+    - y9_n
+    - y10_n
+    - y11_n
+    - y12_n
+    - y13_n
+    - y14_n
+    - y15_n
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+074-configurable-polarity-edge-detector: |
+  version: 1
+  task_id: v3_074_configurable_polarity_edge_detector
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_074_configurable_polarity_edge_detector
+  required_columns:
+    - time
+    - sig
+    - rise_en
+    - pulse
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+075-prbs-generator-32b-seeded: |
+  version: 1
+  task_id: v3_075_prbs_generator_32b_seeded
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_075_prbs_generator_32b_seeded
+  required_columns:
+    - time
+    - clk
+    - rst
+    - load_seed
+    - seed0
+    - seed1
+    - seed2
+    - seed3
+    - seed4
+    - seed5
+    - seed6
+    - seed7
+    - seed8
+    - seed9
+    - seed10
+    - seed11
+    - seed12
+    - seed13
+    - seed14
+    - seed15
+    - seed16
+    - seed17
+    - seed18
+    - seed19
+    - seed20
+    - seed21
+    - seed22
+    - seed23
+    - seed24
+    - seed25
+    - seed26
+    - seed27
+    - seed28
+    - seed29
+    - seed30
+    - seed31
+    - out0
+    - out1
+    - out2
+    - out3
+    - out4
+    - out5
+    - out6
+    - out7
+    - out8
+    - out9
+    - out10
+    - out11
+    - out12
+    - out13
+    - out14
+    - out15
+    - out16
+    - out17
+    - out18
+    - out19
+    - out20
+    - out21
+    - out22
+    - out23
+    - out24
+    - out25
+    - out26
+    - out27
+    - out28
+    - out29
+    - out30
+    - out31
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+076-multiphase-clock-generator-4ph: |
+  version: 1
+  task_id: v3_076_multiphase_clock_generator_4ph
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_076_multiphase_clock_generator_4ph
+  required_columns:
+    - time
+    - clk0
+    - clk90
+    - clk180
+    - clk270
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+077-configurable-pulse-train-generator: |
+  version: 1
+  task_id: v3_077_configurable_pulse_train_generator
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_077_configurable_pulse_train_generator
+  required_columns:
+    - time
+    - clk
+    - start
+    - period0
+    - period1
+    - period2
+    - period3
+    - width0
+    - width1
+    - width2
+    - width3
+    - count0
+    - count1
+    - count2
+    - count3
+    - pulse
+    - done
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+078-staircase-dac-stimulus-8b: |
+  version: 1
+  task_id: v3_078_staircase_dac_stimulus_8b
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_078_staircase_dac_stimulus_8b
+  required_columns:
+    - time
+    - clk
+    - rst
+    - vout
+    - code0
+    - code1
+    - code2
+    - code3
+    - code4
+    - code5
+    - code6
+    - code7
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+079-jittered-clock-source-deterministic: |
+  version: 1
+  task_id: v3_079_jittered_clock_source_deterministic
+  backend: evas
+  status: support-formal-candidate
+  checker: v3_079_jittered_clock_source_deterministic
+  required_columns:
+    - time
+    - jitter_en
+    - seed0
+    - seed1
+    - seed2
+    - seed3
+    - seed4
+    - seed5
+    - seed6
+    - seed7
+    - clk_out
+  checks:
+    hidden:
+      - gold_reference_passes
+      - concrete_negative_variants_fail
+080-acquisition-limited-sample-and-hold: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "finite_acquisition_does_not_jump_to_vin"
+      - "longer_sample_window_settles_closer_to_vin"
+      - "falling_sample_edge_holds_last_acquired_value"
+      - "reset_returns_to_initial_level"
+      - "metric_marks_tracking_window"
+    public_observables:
+      - "sample"
+      - "rst"
+      - "vin"
+      - "vout"
+      - "metric"
+  parity:
+    reference: "spectre"
+    status: "pending"
+    notes:
+      - "Fresh EVAS/Spectre dual validation is required after adding this release entry."
+081-aperture-delay-track-and-hold: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "sampled_values_match_aperture_delayed_input"
+      - "held_output_remains_between_samples"
+  parity:
+    required: true
+    tolerance_notes: "Use post-aperture settled sample windows."
+082-bias-voltage-generator-with-enable-trim: |
+  syntax:
+    must_include:
+      - "transition("
+      - "@(cross("
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_companion_role: "function_checked_dut"
+  strong_benchmark_claim: true
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "disable_forces_bias_low"
+      - "trim_code_moves_bias_voltage"
+      - "metric_marks_enabled_bias"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+083-crossing-metric-writer: |
+  syntax:
+    must_include:
+      - "@(initial_step"
+      - "@(cross("
+      - "$fopen"
+      - "$fwrite"
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "done_low_before_crossing"
+      - "done_high_after_first_crossing"
+      - "metric_file_records_first_crossing_time"
+  parity:
+    required: true
+    tolerance_notes: "Waveform checks are primary; file contents are checked as bounded side-effect evidence."
+  semantic_review:
+    risk: "File I/O can be mistaken for repair evidence or for a broad simulator capability claim."
+    release_decision: "Release as normal measurement behavior only; keep file-output timing as conformance coverage."
+    checker_boundary: "Validate `done` waveform and first-crossing file content without counting the historical bugfix row."
+084-peak-detector: |
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "first_peak_is_held"
+      - "reset_clears_peak"
+      - "second_peak_updates_to_larger_value"
+  parity:
+    required: true
+    tolerance_notes: "Use broad windows around peaks; do not depend on exact timer alignment."
+085-burst-clock-source: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "clk_out_present"
+      - "clk_out_duty_cycle_is_burst"
+    public_observables:
+      - "CLK"
+      - "RST_N"
+      - "CLK_OUT"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+086-dither-noise-like-deterministic-source: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "noise_is_nontrivial"
+      - "noise_std_in_range"
+    public_observables:
+      - "vin_i"
+      - "vout_o"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+087-lfsr-prbs-generator: |
+  syntax:
+    must_include:
+      - "electrical"
+      - "@(cross("
+      - "transition("
+      - "serial_out"
+      - "state_0"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "prbs7_sequence_advances"
+      - "serial_output_has_transitions"
+      - "parallel_state_bus_updates"
+  
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+088-ramp-step-source: |
+  syntax:
+    must_include:
+      - "@(timer("
+      - "$bound_step("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "periodic_phase_ramp_wraps"
+      - "guard_pulse_repeats_each_period"
+      - "guard_pulse_width_fraction"
+    public_observables:
+      - "time"
+      - "guard_out"
+      - "phase_out"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+089-sine-periodic-voltage-source: |
+  syntax:
+    must_include:
+      - "electrical"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "multitone_waveform_matches_public_samples"
+  
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+090-adpll-ratio-hop-timer: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "adpll_ratio_hop_pre_ratio"
+      - "adpll_ratio_hop_post_ratio"
+      - "adpll_ratio_hop_feedback_divider_relation"
+      - "adpll_ratio_hop_feedback_tracks_reference"
+      - "adpll_ratio_hop_lock_reacquired"
+    public_observables:
+      - "ref_clk"
+      - "ratio_ctrl"
+      - "fb_clk"
+      - "vout"
+      - "vctrl_mon"
+      - "lock"
+  parity:
+    reference: "spectre"
+    status: "pending_fresh_dual_rerun"
+    notes:
+      - "Gold/checker were strengthened on 2026-05-31 to require feedback-divider and feedback/reference tracking evidence."
+      - "Targeted EVAS passes after the update; fresh Spectre rerun is required before restoring certified status."
+091-agc-receiver-leveling-loop: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "agc_reduces_gain_on_large_input"
+      - "leveled_output_amplitude"
+      - "lock_metric_after_settling"
+      - "rssi_monitor_rises_on_overload"
+      - "gain_monitor_decreases_after_high_rssi"
+  parity:
+    reference: "spectre"
+    status: "pending_fresh_dual_rerun"
+    notes:
+      - "Fresh dual rerun required after adding gain_mon/rssi_mon intermediate observability."
+092-amplifier-filter-chain: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "amplified_input"
+      - "preamp_monitor_matches_metric"
+      - "two_pole_internal_lag_visible"
+      - "filtered_output_lags_input"
+      - "metric_tracks_settling"
+      - "settle_status_asserts_after_output_recovery"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+093-bbpd-data-edge-alignment: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "up_pulses_dominate_in_lead_window"
+      - "dn_pulses_dominate_in_lag_window"
+      - "up_dn_overlap_fraction_low"
+    public_observables:
+      - "clk"
+      - "data"
+      - "up"
+      - "dn"
+      - "retimed_data"
+  parity:
+    reference: "spectre"
+    status: "pending_until_evas_spectre_rerun"
+    notes:
+      - "Fresh EVAS/Spectre dual validation is required after strengthening this testbench checker contract."
+094-comparator-offset-search: |
+  syntax:
+    must_include:
+      - "ahdl_include"
+      - "comparator_offset_search_ref.va"
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "comparator_output_low_before_trip"
+      - "comparator_output_high_after_trip"
+      - "outp_first_trip_near_static_offset"
+      - "measurement_valid_latches_after_trip"
+      - "valid_first_assertion_near_trip"
+      - "trip_voltage_near_inn_plus_offset"
+      - "offset_estimate_near_static_offset"
+      - "measurement_outputs_hold_after_valid"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+095-complete-calibration-loop: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "raw_error_is_corrected"
+      - "bounded_negative_feedback_response"
+      - "metric_tracks_convergence"
+      - "trim_moves_opposite_to_error"
+      - "residual_monitor_tracks_correction"
+  parity:
+    reference: "spectre"
+    status: "pending_fresh_dual_rerun"
+    notes:
+      - "Fresh dual rerun required after adding trim_mon/residual_mon intermediate observability."
+096-converter-static-linearity-measurement: |
+  syntax:
+    must_include:
+      - "ahdl_include"
+      - "converter_static_linearity_measurement_flow.va"
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "ramp_code_coverage"
+      - "monotonic_reconstruction"
+      - "nonuniform_dnl_metric"
+      - "inl_metric_matches_reconstruction_error"
+      - "dnl_metric_matches_step_error"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "code"
+      - "recon"
+      - "dnl"
+      - "inl"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+097-cppll-tracking-reacquire-timer: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "cppll_reacquires_after_reference_step"
+      - "late_window_tracks_new_reference"
+      - "vctrl_stays_bounded"
+    public_observables:
+      - "ref_clk"
+      - "fb_clk"
+      - "dco_clk"
+      - "vctrl_mon"
+      - "lock"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+098-edge-crossing-interval-timer: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "cross_interval_163p333"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+099-dither-adder: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "gain_amplification_present"
+      - "differential_gain_above_threshold"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+100-final-step-file-metric: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "ref_edges_counted_on_expected_grid"
+      - "metric_out_normalizes_final_edge_count"
+      - "final_step_writes_candidate_metric_file"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+101-fixed-gain-amplifier: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "gain_amplification_present"
+      - "differential_gain_above_threshold"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+102-gain-estimator: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "valid_asserts_after_observation_window"
+      - "waveform_gain_is_about_six"
+      - "gain_out_matches_waveform_derived_gain"
+  parity:
+    reference: "spectre"
+    status: "pending"
+    notes:
+      - "Fresh EVAS/Spectre validation is required after replacing the old gain_extraction_smoke duplicate."
+103-iq-downconversion-chain: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "quadrature_iq_phase_sequence"
+      - "lo_iq_phase_monitors_are_visible"
+      - "mixer_outputs_track_lo_polarity_and_input"
+      - "i_and_q_outputs_are_distinct"
+      - "baseband_outputs_follow_mixer_paths"
+      - "common_mode_hold_when_input_centered"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+104-ldo-load-step-recovery: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "load_step_transient_droop_visible"
+      - "closed_loop_recovery_after_step"
+      - "metric_marks_recovered_regulation"
+      - "load_monitor_tracks_step"
+      - "control_monitor_responds_to_droop"
+  parity:
+    reference: "spectre"
+    status: "pending_fresh_dual_rerun"
+    notes:
+      - "Fresh dual rerun required after adding load_mon/ctrl_mon intermediate observability."
+105-pipeline-adc-chain-4b: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+      - "pipeline_adc_chain_4b.va"
+      - "res1"
+      - "dout3"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "all_16_pipeline_codes_present"
+      - "stage1_residue_matches_coarse_decision"
+      - "stage2_residue_matches_backend_decision"
+      - "final_code_matches_stage_concatenation"
+      - "final_code_monotonic_with_vin"
+  parity:
+    required: true
+    status: "certified"
+    tolerance_notes: "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+106-programmable-stimulus-sequencer: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "ramp_segment_monotonic"
+      - "swept_chirp_segment_frequency_increases"
+      - "burst_prbs_gate_schedule"
+      - "mode_switch_continuity"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+107-reference-step-clock: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "cppll_reacquires_after_reference_step"
+      - "late_window_tracks_new_reference"
+      - "vctrl_stays_bounded"
+    public_observables:
+      - "ref_clk"
+      - "fb_clk"
+      - "dco_clk"
+      - "vctrl_mon"
+      - "lock"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+108-reference-startup-enable-flow: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "supply_good_and_enable_monitors_are_visible"
+      - "pre_enable_reference_is_held_low"
+      - "enabled_reference_startup_settles"
+      - "startup_progress_and_state_transition_visible"
+      - "supply_dip_resets_valid_status"
+      - "state_and_valid_status_recover_after_supply_return"
+  parity:
+    reference: "spectre"
+    status: "certified"
+    notes:
+      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+109-sample-hold-droop-front-end: |
+  syntax:
+    must_include:
+      - "ahdl_include"
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "aperture_delayed_sample_tracks_vin"
+      - "hold_windows_show_bounded_droop"
+      - "coarse_decision_matches_held_sample"
+      - "valid_pulses_mark_completed_samples"
+  parity:
+    required: true
+    tolerance_notes: "L2 chain checks sample aperture, bounded droop, coarse decision, and valid pulse timing."
+110-settling-time-measurement: |
+  syntax:
+    must_include:
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "vout_rises_monotonically_toward_step"
+      - "done_low_before_boundary"
+      - "done_high_in_late_settled_window"
+  parity:
+    required: true
+    tolerance_notes: "Use late settled windows after 120 ns; exact boundary semantics live in the conformance set."
+  semantic_review:
+    risk: "The `done` threshold can be over-interpreted as exact-boundary simulator conformance or repair evidence."
+    release_decision: "Release as normal measurement-helper behavior; keep strict boundary behavior in EVAS/Spectre conformance."
+    checker_boundary: "Use safe pre-boundary and late settled windows, not the exact 120 ns row."
+111-clocked-sine-source: |
+  syntax:
+    must_include:
+      - "tran"
+      - "save"
+    must_not_include: []
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "gain_amplification_present"
+      - "differential_gain_above_threshold"
+  parity:
+    reference: "spectre"
+    status: "pass"
+    notes:
+      - "Certified by release dual evidence for this form."
+112-clocked-sar-comparator: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - reset_both_high_when_clock_low
+      - positive_and_negative_decisions_after_rising_edges
+  checker:
+    task_id: "v3_clocked_sar_comparator"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+113-clocked-dac-restore-4b: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - codes_0_5_10_15_sampled_after_clock_edges
+      - restored_midrise_levels_match_lsb_formula
+  checker:
+    task_id: "v3_clocked_dac_restore_4b"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+114-sample-and-hold-ideal: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - samples_input_on_rising_edges
+      - holds_between_edges
+  checker:
+    task_id: "v3_sample_hold"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+115-single-shot-pulse: |
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - one_output_pulse_per_input_rising_edge
+      - pulse_width_matches_10ns_with_delay
+  checker:
+    task_id: "v3_single_shot"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+116-clocked-comparator-reset-low: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - reset_low_when_clock_falls
+      - positive_and_negative_decisions_after_rising_edges
+  checker:
+    task_id: "v3_clocked_comparator_reset_low"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+117-bipolar-dac-4b-continuous: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - continuous_code_to_bipolar_level
+      - monotonic_output_across_codes
+  checker:
+    task_id: "v3_bipolar_dac_4b_continuous"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+118-clocked-dac-restore-7b: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - codes_0_42_85_127_sampled_after_clock_edges
+      - restored_midrise_levels_match_7b_formula
+  checker:
+    task_id: "v3_clocked_dac_restore_7b"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+119-crossing-pulse-detector: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - pulse_after_each_input_crossing
+      - output_returns_low_after_fixed_width
+  checker:
+    task_id: "v3_crossing_pulse_detector"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+120-not-gate-voltage: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - inverts_voltage_logic
+      - stable_after_propagation_delay
+  checker:
+    task_id: "v3_not_gate"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+121-dff-reset-voltage: |
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - samples_d_on_rising_clock
+      - reset_forces_both_outputs_low
+  checker:
+    task_id: "v3_dff_reset"
+  parity:
+    required: true
+    tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
+122-offset-search-comparator: |
+  checker:
+    task_id: v3_offset_search_comparator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+123-start-gated-offset-search: |
+  checker:
+    task_id: v3_start_gated_offset_search
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+124-comp-os-detect: |
+  checker:
+    task_id: v3_comp_os_detect
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+125-clocked-dac-4b-binary: |
+  checker:
+    task_id: v3_clocked_dac_4b_binary
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+126-latched-comparator-delay: |
+  checker:
+    task_id: v3_latched_comparator_delay
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+127-sar-weighted-sum: |
+  checker:
+    task_id: v3_sar_weighted_sum
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+128-two-input-and-gate: |
+  checker:
+    task_id: v3_two_input_and_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+129-two-input-xor-gate: |
+  checker:
+    task_id: v3_two_input_xor_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+130-analog-mux-threshold: |
+  checker:
+    task_id: v3_analog_mux_threshold
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+131-two-bit-counter-marker: |
+  checker:
+    task_id: v3_two_bit_counter_marker
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+132-max-detector-hold: |
+  checker:
+    task_id: v3_max_detector_hold
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+133-time-diff-detector: |
+  checker:
+    task_id: v3_time_diff_detector
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+134-differential-buffer: |
+  checker:
+    task_id: v3_differential_buffer
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+135-two-input-or-gate: |
+  checker:
+    task_id: v3_two_input_or_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+136-sar-cdac-residue: |
+  checker:
+    task_id: v3_sar_cdac_residue
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+137-two-input-nand-gate: |
+  checker:
+    task_id: v3_two_input_nand_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+138-two-input-nor-gate: |
+  checker:
+    task_id: v3_two_input_nor_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+139-three-input-and-gate: |
+  checker:
+    task_id: v3_three_input_and_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+140-three-input-or-gate: |
+  checker:
+    task_id: v3_three_input_or_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+141-three-input-xor-gate: |
+  checker:
+    task_id: v3_three_input_xor_gate
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+142-attenuator-gain: |
+  checker:
+    task_id: v3_attenuator_gain
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+143-deadband-window: |
+  checker:
+    task_id: v3_deadband_window
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+144-differential-deadband: |
+  checker:
+    task_id: v3_differential_deadband
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+145-hard-voltage-clamp: |
+  checker:
+    task_id: v3_hard_voltage_clamp
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+146-smooth-comparator-tanh: |
+  checker:
+    task_id: v3_smooth_comparator_tanh
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+147-limiter-rails: |
+  checker:
+    task_id: v3_limiter_rails
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+148-absolute-value: |
+  checker:
+    task_id: v3_absolute_value
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+149-offset-gain-amplifier: |
+  checker:
+    task_id: v3_offset_gain_amplifier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+150-safe-voltage-divider: |
+  checker:
+    task_id: v3_safe_voltage_divider
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+151-polynomial-differential-vcvs: |
+  checker:
+    task_id: v3_polynomial_differential_vcvs
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+152-differential-gain-driver: |
+  checker:
+    task_id: v3_differential_gain_driver
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+153-limiting-differential-amplifier: |
+  checker:
+    task_id: v3_limiting_differential_amplifier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+154-analog-multiplier: |
+  checker:
+    task_id: v3_analog_multiplier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+155-three-way-threshold-mux: |
+  checker:
+    task_id: v3_three_way_threshold_mux
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+156-differential-amplifier-core: |
+  checker:
+    task_id: v3_differential_amplifier_core
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+157-logarithmic-amplifier: |
+  checker:
+    task_id: v3_logarithmic_amplifier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+158-soft-voltage-clamp: |
+  checker:
+    task_id: v3_soft_voltage_clamp
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+159-variable-gain-differential-amplifier: |
+  checker:
+    task_id: v3_variable_gain_differential_amplifier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+160-voltage-controlled-gain-amplifier: |
+  checker:
+    task_id: v3_voltage_controlled_gain_amplifier
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+161-ideal-differential-opamp: |
+  checker:
+    task_id: v3_ideal_differential_opamp
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+162-half-adder-logic: |
+  checker:
+    task_id: v3_half_adder_logic
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+163-full-adder-logic: |
+  checker:
+    task_id: v3_full_adder_logic
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+164-half-subtractor-logic: |
+  checker:
+    task_id: v3_half_subtractor_logic
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+165-full-subtractor-logic: |
+  checker:
+    task_id: v3_full_subtractor_logic
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+166-rs-latch-voltage: |
+  checker:
+    task_id: v3_rs_latch_voltage
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+167-ideal-adc-4bit-quantizer: |
+  checker:
+    task_id: v3_ideal_adc_4bit_quantizer
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+168-ideal-dac-4bit-differential: |
+  checker:
+    task_id: v3_ideal_dac_4bit_differential
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+169-two-period-sample-delay: |
+  checker:
+    task_id: v3_two_period_sample_delay
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+170-clocked-four-input-mux: |
+  checker:
+    task_id: v3_clocked_four_input_mux
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+171-divide-by-eight-clock: |
+  checker:
+    task_id: v3_divide_by_eight_clock
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+172-flash-thermometer-centered-sum: |
+  checker:
+    task_id: v3_flash_thermometer_centered_sum
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+173-weighted-sar-decoder-9b: |
+  checker:
+    task_id: v3_weighted_sar_decoder_9b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+174-control-word-encoder-7b: |
+  checker:
+    task_id: v3_control_word_encoder_7b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+175-four-channel-edge-sampler: |
+  checker:
+    task_id: v3_four_channel_edge_sampler
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+176-dual-modulus-divider-16-17: |
+  checker:
+    task_id: v3_dual_modulus_divider_16_17
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+177-sar-5bit-serial-decoder: |
+  checker:
+    task_id: v3_sar_5bit_serial_decoder
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+178-cyclic-decoder-12bit: |
+  checker:
+    task_id: v3_cyclic_decoder_12bit
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+179-flash-8level-sum-delay: |
+  checker:
+    task_id: v3_flash_8level_sum_delay
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+180-flash-sum8-fraction: |
+  checker:
+    task_id: v3_flash_sum8_fraction
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+181-two-channel-sample-demux: |
+  checker:
+    task_id: v3_two_channel_sample_demux
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+182-differential-dac-calc-6b: |
+  checker:
+    task_id: v3_differential_dac_calc_6b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+183-flash-adc-threshold-taps: |
+  checker:
+    task_id: v3_flash_adc_threshold_taps
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+184-divide-by-two-toggle: |
+  checker:
+    task_id: v3_divide_by_two_toggle
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+185-dac-5v-weighted-7b: |
+  checker:
+    task_id: v3_dac_5v_weighted_7b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+186-folded-flash-dac-4b: |
+  checker:
+    task_id: v3_folded_flash_dac_4b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+187-ref-flash-8level-decoder: |
+  checker:
+    task_id: v3_ref_flash_8level_decoder
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+188-ref-flash-15level-decoder: |
+  checker:
+    task_id: v3_ref_flash_15level_decoder
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+189-divide-by-8-9-switch: |
+  checker:
+    task_id: v3_divide_by_8_9_switch
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+190-dac-restore-10bit-offset: |
+  checker:
+    task_id: v3_dac_restore_10bit_offset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+191-dac-8bit-ideal-scalar: |
+  checker:
+    task_id: v3_dac_8bit_ideal_scalar
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+192-flash-data-align-pipeline: |
+  checker:
+    task_id: v3_flash_data_align_pipeline
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+193-cyclic-decoder-10b: |
+  checker:
+    task_id: v3_cyclic_decoder_10b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+194-ideal-adc-out-7bits: |
+  checker:
+    task_id: v3_ideal_adc_out_7bits
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+195-va-lx-adc-ideal-4b: |
+  checker:
+    task_id: v3_va_lx_adc_ideal_4b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+196-va-lx-dac-ideal-4b: |
+  checker:
+    task_id: v3_va_lx_dac_ideal_4b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+197-l1-dac-4b-bipolar: |
+  checker:
+    task_id: v3_l1_dac_4b_bipolar
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+198-l2-cdac-4b-residue: |
+  checker:
+    task_id: v3_l2_cdac_4b_residue
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+199-ideal-clkmux-8channel: |
+  checker:
+    task_id: v3_ideal_clkmux_8channel
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+200-dac-ideal-4b-offset: |
+  checker:
+    task_id: v3_dac_ideal_4b_offset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+201-linear-pfd-gain: |
+  checker:
+    task_id: v3_linear_pfd_gain
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+202-l2-cmp-ideal-clocked: |
+  checker:
+    task_id: v3_l2_cmp_ideal_clocked
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+203-comparator-offset-driver: |
+  checker:
+    task_id: v3_comparator_offset_driver
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+204-pipe-2lane-edge-align: |
+  checker:
+    task_id: v3_pipe_2lane_edge_align
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+205-dac-serial-accumulator: |
+  checker:
+    task_id: v3_dac_serial_accumulator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+206-sar-sum-weighted-11b: |
+  checker:
+    task_id: v3_sar_sum_weighted_11b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+207-iterative-isar-dac: |
+  checker:
+    task_id: v3_iterative_isar_dac
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+208-offset-bisection-driver: |
+  checker:
+    task_id: v3_offset_bisection_driver
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+209-weighted-decoder-7b5: |
+  checker:
+    task_id: v3_weighted_decoder_7b5
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+210-toggle-flip-flop: |
+  checker:
+    task_id: v3_toggle_flip_flop
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+211-sync-8b-dffs-v2: |
+  checker:
+    task_id: v3_sync_8b_dffs_v2
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+212-onehot-progress-encoder: |
+  checker:
+    task_id: v3_onehot_progress_encoder
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+213-tdc-ideal-edge-delta: |
+  checker:
+    task_id: v3_tdc_ideal_edge_delta
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+214-foreground-cload-calibrator: |
+  checker:
+    task_id: v3_foreground_cload_calibrator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+215-pipe15-data-align: |
+  checker:
+    task_id: v3_pipe15_data_align
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+216-clocked-mux4-sampler: |
+  checker:
+    task_id: v3_clocked_mux4_sampler
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+217-dac7-code-generator: |
+  checker:
+    task_id: v3_dac7_code_generator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+218-foreground-rdac-calibrator: |
+  checker:
+    task_id: v3_foreground_rdac_calibrator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+219-offset-rdac-search-flow: |
+  checker:
+    task_id: v3_offset_rdac_search_flow
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+220-spi-shift-mux: |
+  checker:
+    task_id: v3_spi_shift_mux
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+221-dff-set-reset-hold: |
+  checker:
+    task_id: v3_dff_set_reset_hold
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+222-sarfend-logic-4b: |
+  checker:
+    task_id: v3_sarfend_logic_4b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+223-adc-sample-clock-sequencer: |
+  checker:
+    task_id: v3_adc_sample_clock_sequencer
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+224-pipeline-counter-onehot: |
+  checker:
+    task_id: v3_pipeline_counter_onehot
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+225-cdac-bidirect-residue: |
+  checker:
+    task_id: v3_cdac_bidirect_residue
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+226-pfd-reset-pulse: |
+  checker:
+    task_id: v3_pfd_reset_pulse
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+227-trim-ctrl-4bit: |
+  checker:
+    task_id: v3_trim_ctrl_4bit
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+228-linearity-rdac-offset-sweep: |
+  checker:
+    task_id: v3_linearity_rdac_offset_sweep
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+229-sar-das-logic-6b: |
+  checker:
+    task_id: v3_sar_das_logic_6b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+230-sar-logic-4b-self-timed: |
+  checker:
+    task_id: v3_sar_logic_4b_self_timed
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+231-pfd-tdomain-reset-window: |
+  checker:
+    task_id: v3_pfd_tdomain_reset_window
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+232-pipe-adc-gain-control-loop: |
+  checker:
+    task_id: v3_pipe_adc_gain_control_loop
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+233-clock-sample-1600n-sequencer: |
+  checker:
+    task_id: v3_clock_sample_1600n_sequencer
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+234-l2-sar-logic-4b: |
+  checker:
+    task_id: v3_l2_sar_logic_4b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+235-phase-detector-chopper: |
+  checker:
+    task_id: v3_phase_detector_chopper
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+236-single-adc-7b-weighted: |
+  checker:
+    task_id: v3_single_adc_7b_weighted
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+237-qtz-differential-2level: |
+  checker:
+    task_id: v3_qtz_differential_2level
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+238-l2-7b-dac-ready: |
+  checker:
+    task_id: v3_l2_7b_dac_ready
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+239-l2-cdac-4b-switch: |
+  checker:
+    task_id: v3_l2_cdac_4b_switch
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+240-cdac-monodown-7b: |
+  checker:
+    task_id: v3_cdac_monodown_7b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+241-cdac-6b-stage1-up: |
+  checker:
+    task_id: v3_cdac_6b_stage1_up
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+242-adc-zoom-timing-sequencer: |
+  checker:
+    task_id: v3_adc_zoom_timing_sequencer
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+243-l2-sar-logic-7b: |
+  checker:
+    task_id: v3_l2_sar_logic_7b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+244-l3-sar2-logic-7b: |
+  checker:
+    task_id: v3_l3_sar2_logic_7b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+245-cdac-8b-monodown: |
+  checker:
+    task_id: v3_cdac_8b_monodown
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+246-va-dac-6b-se: |
+  checker:
+    task_id: v3_va_dac_6b_se
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+247-offset-halving-search: |
+  checker:
+    task_id: v3_offset_halving_search
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+248-sar-comparator-reset-high: |
+  checker:
+    task_id: v3_sar_comparator_reset_high
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+249-dac-restore-4bit-clocked: |
+  checker:
+    task_id: v3_dac_restore_4bit_clocked
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+250-dac-restore-7bit-clocked: |
+  checker:
+    task_id: v3_dac_restore_7bit_clocked
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+251-dac-restore-6bit-1p8: |
+  checker:
+    task_id: v3_dac_restore_6bit_1p8
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+252-sample-hold-5v-clock: |
+  checker:
+    task_id: v3_sample_hold_5v_clock
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+253-sum5-signed-sar-weight: |
+  checker:
+    task_id: v3_sum5_signed_sar_weight
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+254-lt-readout-sar4: |
+  checker:
+    task_id: v3_lt_readout_sar4
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+255-tool-4bit-sar-signed-dac: |
+  checker:
+    task_id: v3_tool_4bit_sar_signed_dac
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+256-dac4bit-small-swing: |
+  checker:
+    task_id: v3_dac4bit_small_swing
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+257-comparator-reset-low-1p8: |
+  checker:
+    task_id: v3_comparator_reset_low_1p8
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+258-lt-read-sar6b-weighted: |
+  checker:
+    task_id: v3_lt_read_sar6b_weighted
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+259-lt-read-sar7b-weighted: |
+  checker:
+    task_id: v3_lt_read_sar7b_weighted
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+260-dac-serial-16b-nobridge: |
+  checker:
+    task_id: v3_dac_serial_16b_nobridge
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+261-sar-13bit-serial-decoder: |
+  checker:
+    task_id: v3_sar_13bit_serial_decoder
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+262-single-shot-timer-pulse: |
+  checker:
+    task_id: v3_single_shot_timer_pulse
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+263-clocked-comparator-dual-output: |
+  checker:
+    task_id: v3_clocked_comparator_dual_output
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+264-dac4bit-bipolar-252m: |
+  checker:
+    task_id: v3_dac4bit_bipolar_252m
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+265-bin2ther-2b: |
+  checker:
+    task_id: v3_bin2ther_2b
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+266-dff-set-reset: |
+  checker:
+    task_id: v3_dff_set_reset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+267-pfd-up-down-state: |
+  checker:
+    task_id: v3_pfd_up_down_state
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+268-samplehold-rising-edge: |
+  checker:
+    task_id: v3_samplehold_rising_edge
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+269-trim-ctrl-5bit: |
+  checker:
+    task_id: v3_trim_ctrl_5bit
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+270-therm8-to-bin4-count: |
+  checker:
+    task_id: v3_therm8_to_bin4_count
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+271-coarse-qtz-3bit-residue: |
+  checker:
+    task_id: v3_coarse_qtz_3bit_residue
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+272-rs-phase-detector: |
+  checker:
+    task_id: v3_rs_phase_detector
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+273-level-shifter-offset: |
+  checker:
+    task_id: v3_level_shifter_offset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+274-weighted-decoder-6bit: |
+  checker:
+    task_id: v3_weighted_decoder_6bit
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+275-divide-by-two-toggle: |
+  checker:
+    task_id: v3_divide_by_two_toggle_v2
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+276-accum3-pulse: |
+  checker:
+    task_id: v3_accum3_pulse
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+277-xor-phase-detector: |
+  checker:
+    task_id: v3_xor_phase_detector
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+278-decision-router-logic: |
+  checker:
+    task_id: v3_decision_router_logic
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+279-safe-analog-divider: |
+  checker:
+    task_id: v3_safe_analog_divider
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+280-vargain-diffamp-clip: |
+  checker:
+    task_id: v3_vargain_diffamp_clip
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+281-programmable-divider-by-n: |
+  checker:
+    task_id: v3_programmable_divider_by_n
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+282-pfd-timer-reset: |
+  checker:
+    task_id: v3_pfd_timer_reset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+283-weighted-sar-adc-dac-loop: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "vbr1_l2_weighted_sar_adc_dac_loop:e2e"
+  checker:
+    task_id: "vbr1_l2_weighted_sar_adc_dac_loop"
+    function: "check_sar_adc_dac_weighted_8b"
+    source: "runners/simulate_evas.py"
+  syntax:
+    policy: "behavior_first"
+    must_include: []
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+    notes: "Do not require private variable names, exact state-machine structure, or a fixed implementation template. Compile and behavior checks decide correctness."
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "composed_flow_e2e"
+    strong_benchmark_claim: true
+    checks:
+      - "sar_bit_trial_sequence_visible"
+      - "trial_dac_matches_trial_code_monitor"
+      - "comparator_decision_matches_sample_and_trial"
+      - "sar_adc_code_range_sufficient"
+      - "sar_adc_unique_code_count"
+      - "sar_code_matches_sampled_input"
+      - "dac_output_matches_weighted_code"
+      - "code_monotonic_with_sampled_input"
+      - "dac_output_in_range"
+    public_observables:
+      - "vin"
+      - "vin_sh"
+      - "clks"
+      - "rst_n"
+      - "vout"
+      - "dout_7"
+      - "dout_6"
+      - "dout_5"
+      - "dout_4"
+      - "dout_3"
+      - "dout_2"
+      - "dout_1"
+      - "dout_0"
+      - "bit_index"
+      - "trial_code_mon"
+      - "trial_vdac"
+      - "cmp_decision"
+      - "conv_done"
+      - "vin_sample"
+    public_behavior_envelope: "The public spec specifies a 20 us full-swing sine transient, visible sample/hold output, MSB-to-LSB SAR trial monitors, comparator/trial-DAC consistency, broad 8-bit code coverage, monotonic code relation to sampled input, and weighted DAC reconstruction in the 0 V to 0.9 V range."
+    private_threshold_policy: "Internal checker uses broad coverage, quantization, DAC reconstruction, comparator agreement, and monotonicity thresholds; exact numeric thresholds are not agent-visible."
+  parity:
+    required: true
+    tolerance_notes: "Use completed-conversion rows and public monitor consistency checks."
+284-window-comparator-testbench: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "vbr1_l1_window_comparator_detector:tb"
+  checker:
+    task_id: "vbr1_l1_window_comparator_detector"
+    function: "check_true_window_comparator"
+    source: "runners/simulate_evas.py"
+  syntax:
+    policy: "behavior_first"
+    must_include:
+      - "ahdl_include"
+      - "window_comparator_ref.va"
+      - "tran"
+      - "save"
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+    notes: "Do not require exact waveform breakpoints or a fixed PWL template. Multiline PWL wave arrays must use Spectre line continuation. Compile and behavior checks decide correctness."
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    tb_companion_role: "function_checked_testbench"
+    strong_benchmark_claim: true
+    checks:
+      - "true_window_comparator"
+    public_observables:
+      - "time"
+      - "vin"
+      - "out"
+    public_behavior_envelope: "The public spec requires a triangular or PWL vin stimulus that covers below-window, inside-window on the rising ramp, above-window, and inside-window on the falling ramp, saving plain scalar vin/out waveforms."
+    private_threshold_policy: "Internal checker resamples the waveform on a common time grid and applies private coverage and high/low fraction thresholds."
+  parity:
+    required: true
+    tolerance_notes: "Use waveform resampling so EVAS dense CSV and Spectre adaptive breakpoints are judged on the same behavior."
+285-aperture-delay-sample-hold: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "vbr1_l1_aperture_delay_track_and_hold:dut"
+  checker:
+    task_id: "vbr1_l1_aperture_delay_track_and_hold"
+    function: "check_vbm1_track_hold_aperture"
+    source: "runners/simulate_evas.py"
+  syntax:
+    policy: "behavior_first"
+    must_include: []
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+    notes: "Do not require private variable names, timer variable names, or a fixed implementation template. Compile and behavior checks decide correctness."
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "sampled_values_match_aperture_delayed_input"
+      - "held_output_remains_between_samples"
+    public_observables:
+      - "vin"
+      - "clk"
+      - "vout"
+    public_behavior_envelope: "The public spec specifies a 200 ps aperture delay after each rising clock transition, delayed capture of vin rather than edge-time capture, held vout between delayed samples, broad held-level coverage, and smooth voltage-domain output transitions."
+    private_sample_policy: "Internal checker samples vin at the aperture point and vout after a safe post-aperture settling window."
+  parity:
+    required: true
+    tolerance_notes: "Use post-aperture settled sample windows away from transition edges."
+286-first-order-lowpass-bugfix: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "vbr1_l1_first_order_lowpass:bugfix"
+  checker:
+    task_id: "vbr1_l1_first_order_lowpass"
+    function: "check_v2_configured_first_order_lowpass"
+    source: "runners/simulate_evas.py"
+  checker_parameters:
+    vin_pre_sample_ns: 10.0
+    vin_post_sample_ns: 30.0
+    vin_late_sample_ns: 150.0
+    vin_pre_max_v: 0.10
+    vin_post_min_v: 0.72
+    vin_late_min_v: 0.72
+    monotonic_tail_slack_v: 0.03
+    response_sample_1_min_v: 0.55
+    response_sample_2_min_v: 0.70
+    response_sample_3_min_v: 0.76
+    not_instant_sample_0_max_v: 0.45
+    bounded_start_ns: 22.0
+    bounded_min_v: -0.03
+    bounded_max_v: 0.88
+    sample_times_ns:
+      - 30
+      - 50
+      - 90
+      - 150
+  syntax:
+    policy: "behavior_first"
+    must_include: []
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+      - "last_crossing("
+    notes: "Do not require private variable names, fixed coefficients, timer cadence, or a specific implementation template. Compile and behavior checks decide correctness."
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
+    checks:
+      - "input_step_exercised"
+      - "monotone_first_order_step_response"
+      - "lagged_response_not_passthrough"
+      - "late_output_settles_near_0p8v"
+      - "bounded_without_overshoot"
+    public_observables:
+      - "vin"
+      - "vout"
+    public_behavior_envelope: "The public spec specifies a 0 V to about 0.8 V step near 21 ns, a finite-bandwidth first-order response on the order of tens of nanoseconds, substantial progress within several tens of nanoseconds after the step, and settling close to 0.8 V by the end of the 160 ns transient."
+  bugfix:
+    buggy_expected: "FAIL_SIM_CORRECTNESS"
+    fixed_expected: "PASS"
+    reconstruction_note: "Single-root-cause badcase: the low-pass update alpha is too small, making the step response too slow."
+    reconstruction_visibility: "private_provenance_only"
+  parity:
+    required: true
+    tolerance_notes: "Samples are taken at safe windows away from the 21 ns input transition and timer boundaries."
+287-gain-extraction-flow: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "vbr1_l2_gain_extraction_convergence_measurement_flow:e2e"
+  checker:
+    task_id: "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e"
+    function: "check_gain_extraction"
+    source: "runners/simulate_evas.py"
+  syntax:
+    policy: "behavior_first"
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+    notes: "Do not require a gain-estimator module, exact random sequence, or exact implementation template. Compile and behavior checks decide correctness."
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "support_flow_e2e"
+    strong_benchmark_claim: false
+    checks:
+      - "gain_amplification_present"
+      - "differential_gain_above_threshold"
+    public_observables:
+      - "vinp"
+      - "vinn"
+      - "vamp_p"
+      - "vamp_n"
+    public_behavior_envelope: "The public spec requires a dithered differential input path and saved amplified output pair whose differential variation is clearly larger over many post-reset samples."
+    private_threshold_policy: "Internal checker estimates the input/output differential variation from saved waveforms and applies private gain-separation thresholds."
+  parity:
+    required: true
+    tolerance_notes: "Use saved differential input/output waveforms and broad statistical separation, not an internal estimator code."
+288-absolute-value: |
+  checker:
+    task_id: v3_absolute_value
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+289-deadband-voltage: |
+  checker:
+    task_id: v3_deadband_voltage
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+290-deadband-diffamp: |
+  checker:
+    task_id: v3_deadband_diffamp
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+291-limiting-diffamp: |
+  checker:
+    task_id: v3_limiting_diffamp
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+292-smooth-tanh-comparator: |
+  checker:
+    task_id: v3_smooth_tanh_comparator
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+293-flash-folded-dac4: |
+  checker:
+    task_id: v3_flash_folded_dac4
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+294-subradix-dac10: |
+  checker:
+    task_id: v3_subradix_dac10
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+295-clocked-adc3bit: |
+  checker:
+    task_id: v3_clocked_adc3bit
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+296-cal4bit-modulo: |
+  checker:
+    task_id: v3_cal4bit_modulo
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+297-mux4-priority: |
+  checker:
+    task_id: v3_mux4_priority
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+298-xnor-gate-voltage: |
+  checker:
+    task_id: v3_xnor_gate_voltage
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+299-bipolar-dff-sample: |
+  checker:
+    task_id: v3_bipolar_dff_sample
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct
+300-pfd-active-low-reset: |
+  checker:
+    task_id: v3_pfd_active_low_reset
+    metric: stable_samples
+  scoring:
+    axes:
+      - dut_compile
+      - tb_compile
+      - sim_correct

@@ -141,7 +141,7 @@ def _extract_yaml_mapping_after_parent(text: str, parent: str) -> dict[str, str]
 
 
 _V3_TASKS_INDEX_CACHE: dict[Path, dict[str, object]] = {}
-_V3_CHECKS_INDEX_CACHE: dict[Path, dict[str, object]] = {}
+_V3_CHECKS_INDEX_CACHE: dict[Path, dict[str, str]] = {}
 
 
 def _v3_release_root_for_task(task_dir: Path) -> Path | None:
@@ -169,22 +169,64 @@ def _load_v3_tasks_index(root: Path) -> dict[str, object]:
     tasks = data.get("tasks", {}) if isinstance(data, dict) else {}
     if not isinstance(tasks, dict):
         tasks = {}
+    defaults = data.get("defaults", {}) if isinstance(data, dict) else {}
+    if isinstance(defaults, dict):
+        merged_tasks: dict[str, object] = {}
+        for slug, entry in tasks.items():
+            if isinstance(entry, dict):
+                merged = {**defaults, **entry}
+                merged_tasks[str(slug)] = merged
+            else:
+                merged_tasks[str(slug)] = entry
+        tasks = merged_tasks
     _V3_TASKS_INDEX_CACHE[root] = tasks
     return tasks
 
 
-def _load_v3_checks_index(root: Path) -> dict[str, object]:
+def _load_v3_checks_index(root: Path) -> dict[str, str]:
     cached = _V3_CHECKS_INDEX_CACHE.get(root)
     if cached is not None:
         return cached
-    index_path = root / "CHECKS.json"
-    if not index_path.exists():
+    yaml_index_path = root / "CHECKS.yaml"
+    if yaml_index_path.exists():
+        checks = _parse_v3_checks_yaml_index(yaml_index_path.read_text(encoding="utf-8"))
+        _V3_CHECKS_INDEX_CACHE[root] = checks
+        return checks
+    json_index_path = root / "CHECKS.json"
+    if not json_index_path.exists():
         return {}
-    data = json.loads(index_path.read_text(encoding="utf-8"))
-    checks = data.get("checks", {}) if isinstance(data, dict) else {}
-    if not isinstance(checks, dict):
-        checks = {}
+    data = json.loads(json_index_path.read_text(encoding="utf-8"))
+    json_checks = data.get("checks", {}) if isinstance(data, dict) else {}
+    checks = {}
+    if isinstance(json_checks, dict):
+        for slug, entry in json_checks.items():
+            if isinstance(entry, dict) and isinstance(entry.get("checks_yaml"), str):
+                checks[str(slug)] = str(entry["checks_yaml"])
     _V3_CHECKS_INDEX_CACHE[root] = checks
+    return checks
+
+
+def _parse_v3_checks_yaml_index(text: str) -> dict[str, str]:
+    checks: dict[str, str] = {}
+    current_slug: str | None = None
+    current_lines: list[str] = []
+    for line in text.splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(": |"):
+            if current_slug is not None:
+                checks[current_slug] = "\n".join(current_lines).rstrip() + "\n"
+            current_slug = line[:-3]
+            current_lines = []
+            continue
+        if current_slug is None:
+            continue
+        if line.startswith("  "):
+            current_lines.append(line[2:])
+        elif line == "":
+            current_lines.append("")
+        else:
+            current_lines.append(line)
+    if current_slug is not None:
+        checks[current_slug] = "\n".join(current_lines).rstrip() + "\n"
     return checks
 
 
@@ -197,13 +239,12 @@ def _v3_task_index_entry(task_dir: Path) -> dict[str, object]:
     return entry if isinstance(entry, dict) else {}
 
 
-def _v3_checks_index_entry(task_dir: Path) -> dict[str, object]:
+def _v3_checks_index_entry(task_dir: Path) -> str | None:
     root = _v3_release_root_for_task(task_dir)
     slug = _v3_task_slug(task_dir)
     if root is None or slug is None:
-        return {}
-    entry = _load_v3_checks_index(root).get(slug, {})
-    return entry if isinstance(entry, dict) else {}
+        return None
+    return _load_v3_checks_index(root).get(slug)
 
 
 def _float_values(values: list[str]) -> list[float]:
@@ -227,10 +268,10 @@ def load_v2_checks_config(task_dir: Path) -> dict[str, object]:
         if not checks_path.exists():
             continue
         checks_sources.append((checks_path, checks_path.read_text(encoding="utf-8")))
-    indexed_checks = _v3_checks_index_entry(task_dir)
-    indexed_checks_text = indexed_checks.get("checks_yaml")
+    indexed_checks_text = _v3_checks_index_entry(task_dir)
     if isinstance(indexed_checks_text, str):
-        index_ref = f"{_v3_release_root_for_task(task_dir) / 'CHECKS.json'}:{task_dir.name}"
+        index_name = "CHECKS.yaml" if (_v3_release_root_for_task(task_dir) / "CHECKS.yaml").exists() else "CHECKS.json"
+        index_ref = f"{_v3_release_root_for_task(task_dir) / index_name}:{task_dir.name}"
         checks_sources.append((index_ref, indexed_checks_text))
     for checks_path, checks_text in checks_sources:
         if "vabench-release-v2-checks" not in checks_text:
@@ -281,8 +322,12 @@ def read_task_artifact_targets(task_dir: Path) -> list[str]:
         except (SyntaxError, ValueError):
             return []
     else:
-        artifacts = _v3_task_index_entry(task_dir).get("artifacts", {})
-        parsed = artifacts.get("target", []) if isinstance(artifacts, dict) else []
+        task_entry = _v3_task_index_entry(task_dir)
+        artifacts = task_entry.get("artifacts", {})
+        if isinstance(artifacts, dict) and "target" in artifacts:
+            parsed = artifacts.get("target", [])
+        else:
+            parsed = task_entry.get("target", [])
     if not isinstance(parsed, list):
         return []
     targets: list[str] = []

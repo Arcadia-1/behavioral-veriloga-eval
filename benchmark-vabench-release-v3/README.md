@@ -7,7 +7,7 @@ Top-level indexes:
 
 - `TASKS.json`: canonical task ids, titles, forms, directories, and target
   Verilog-A artifacts for all tasks.
-- `CHECKS.json`: canonical checker configuration for all tasks, replacing
+- `CHECKS.yaml`: canonical checker configuration for all tasks, replacing
   per-task `test_harness/checks.yaml` files.
 
 Partitions:
@@ -30,7 +30,7 @@ Each task is self-contained under `tasks/NNN-name/`:
 - `negative_variants/`: intentionally wrong implementations used to audit checker strength.
 
 The agent-facing surface is intentionally small: `instruction.md`, `starter/`,
-and `test_visible/`. Hidden tests, checker configs in `CHECKS.json`, golden
+and `test_visible/`. Hidden tests, checker configs in `CHECKS.yaml`, golden
 solutions, and negative variants are evaluator-side material.
 
 Task names describe the circuit/helper being built instead of preserving legacy migration ids. Private submission records, image tags, model ids, and other orchestration state remain outside this public benchmark tree.
