@@ -1,0 +1,6 @@
+simulator lang=spectre
+global 0
+// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
+// Drive vin/clk/mode/rst with deterministic voltage-domain sources and save vin clk mode rst out metric.
+tran tran stop=80n
+save vin clk mode rst out metric

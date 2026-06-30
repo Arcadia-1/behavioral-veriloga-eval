@@ -3373,6 +3373,566 @@
         "pfd_active_low_reset.va"
       ],
       "title": "PFD Active Low Reset"
+    },
+    "301-function-clamp-window": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_301_function_clamp_window",
+      "level": "SX",
+      "target": [
+        "function_clamp_window.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Function Clamp Window",
+      "syntax_focus": "Use a user-defined function to clamp an input window.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "302-function-deadband-map": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_302_function_deadband_map",
+      "level": "SX",
+      "target": [
+        "function_deadband_map.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Function Deadband Map",
+      "syntax_focus": "Use a user-defined function to implement deadband mapping.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "303-function-piecewise-gain": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_303_function_piecewise_gain",
+      "level": "SX",
+      "target": [
+        "function_piecewise_gain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Function Piecewise Gain",
+      "syntax_focus": "Use a user-defined function for piecewise gain.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "304-function-code-normalizer": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_304_function_code_normalizer",
+      "level": "SX",
+      "target": [
+        "function_code_normalizer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Function Code Normalizer",
+      "syntax_focus": "Use a user-defined function for code normalization.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "305-function-soft-threshold": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_305_function_soft_threshold",
+      "level": "SX",
+      "target": [
+        "function_soft_threshold.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Function Soft Threshold",
+      "syntax_focus": "Use a user-defined function for a soft threshold curve.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "306-case-mode-gain-selector": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D1",
+      "form": "dut",
+      "id": "v3_306_case_mode_gain_selector",
+      "level": "SX",
+      "target": [
+        "case_mode_gain_selector.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Case Mode Gain Selector",
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "307-case-priority-status-decoder": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D1",
+      "form": "dut",
+      "id": "v3_307_case_priority_status_decoder",
+      "level": "SX",
+      "target": [
+        "case_priority_status_decoder.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Case Priority Status Decoder",
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "308-case-quantized-output-level": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D1",
+      "form": "dut",
+      "id": "v3_308_case_quantized_output_level",
+      "level": "SX",
+      "target": [
+        "case_quantized_output_level.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Case Quantized Output Level",
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "309-case-clocked-range-bucket": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D1",
+      "form": "dut",
+      "id": "v3_309_case_clocked_range_bucket",
+      "level": "SX",
+      "target": [
+        "case_clocked_range_bucket.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Case Clocked Range Bucket",
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "310-case-resettable-state-decoder": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D1",
+      "form": "dut",
+      "id": "v3_310_case_resettable_state_decoder",
+      "level": "SX",
+      "target": [
+        "case_resettable_state_decoder.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Case Resettable State Decoder",
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "311-for-loop-running-average": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_311_for_loop_running_average",
+      "level": "SX",
+      "target": [
+        "for_loop_running_average.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Running Average",
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "312-for-loop-thermometer-count": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_312_for_loop_thermometer_count",
+      "level": "SX",
+      "target": [
+        "for_loop_thermometer_count.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Thermometer Count",
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "313-for-loop-weighted-accumulator": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_313_for_loop_weighted_accumulator",
+      "level": "SX",
+      "target": [
+        "for_loop_weighted_accumulator.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Weighted Accumulator",
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "314-for-loop-windowed-peak": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_314_for_loop_windowed_peak",
+      "level": "SX",
+      "target": [
+        "for_loop_windowed_peak.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Windowed Peak",
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "315-for-loop-code-popcount": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_315_for_loop_code_popcount",
+      "level": "SX",
+      "target": [
+        "for_loop_code_popcount.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Code Popcount",
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "316-final-step-edge-counter-file": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_316_final_step_edge_counter_file",
+      "level": "SX",
+      "target": [
+        "final_step_edge_counter_file.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Edge Counter File",
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "317-final-step-average-metric-file": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_317_final_step_average_metric_file",
+      "level": "SX",
+      "target": [
+        "final_step_average_metric_file.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Average Metric File",
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "318-final-step-max-observer-file": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_318_final_step_max_observer_file",
+      "level": "SX",
+      "target": [
+        "final_step_max_observer_file.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Max Observer File",
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "319-display-strobe-event-logger": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_319_display_strobe_event_logger",
+      "level": "SX",
+      "target": [
+        "display_strobe_event_logger.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Display Strobe Event Logger",
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "320-file-io-sampled-metric-writer": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_320_file_io_sampled_metric_writer",
+      "level": "SX",
+      "target": [
+        "file_io_sampled_metric_writer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Io Sampled Metric Writer",
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "321-slew-limited-voltage-follower": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_321_slew_limited_voltage_follower",
+      "level": "SX",
+      "target": [
+        "slew_limited_voltage_follower.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Voltage Follower",
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "322-slew-limited-mode-stepper": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_322_slew_limited_mode_stepper",
+      "level": "SX",
+      "target": [
+        "slew_limited_mode_stepper.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Mode Stepper",
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "323-slew-output-reset-recovery": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_323_slew_output_reset_recovery",
+      "level": "SX",
+      "target": [
+        "slew_output_reset_recovery.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Output Reset Recovery",
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "324-slew-limited-envelope": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_324_slew_limited_envelope",
+      "level": "SX",
+      "target": [
+        "slew_limited_envelope.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Envelope",
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "325-slew-asymmetric-rise-fall": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_325_slew_asymmetric_rise_fall",
+      "level": "SX",
+      "target": [
+        "slew_asymmetric_rise_fall.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Asymmetric Rise Fall",
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "326-idtmod-phase-accumulator": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_326_idtmod_phase_accumulator",
+      "level": "SX",
+      "target": [
+        "idtmod_phase_accumulator.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Phase Accumulator",
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "327-idtmod-wrapped-ramp-source": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_327_idtmod_wrapped_ramp_source",
+      "level": "SX",
+      "target": [
+        "idtmod_wrapped_ramp_source.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Wrapped Ramp Source",
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "328-idtmod-frequency-control": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_328_idtmod_frequency_control",
+      "level": "SX",
+      "target": [
+        "idtmod_frequency_control.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Frequency Control",
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "329-idtmod-modulo-phase-marker": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_329_idtmod_modulo_phase_marker",
+      "level": "SX",
+      "target": [
+        "idtmod_modulo_phase_marker.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Modulo Phase Marker",
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "330-idtmod-clock-phase-meter": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_330_idtmod_clock_phase_meter",
+      "level": "SX",
+      "target": [
+        "idtmod_clock_phase_meter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Clock Phase Meter",
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "331-above-threshold-latch": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_331_above_threshold_latch",
+      "level": "SX",
+      "target": [
+        "above_threshold_latch.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Above Threshold Latch",
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "332-above-window-qualifier": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_332_above_window_qualifier",
+      "level": "SX",
+      "target": [
+        "above_window_qualifier.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Above Window Qualifier",
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "333-last-crossing-period-meter": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_333_last_crossing_period_meter",
+      "level": "SX",
+      "target": [
+        "last_crossing_period_meter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Last Crossing Period Meter",
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "334-last-crossing-edge-age": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_334_last_crossing_edge_age",
+      "level": "SX",
+      "target": [
+        "last_crossing_edge_age.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Last Crossing Edge Age",
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "335-above-resettable-peak-marker": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_335_above_resettable_peak_marker",
+      "level": "SX",
+      "target": [
+        "above_resettable_peak_marker.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Above Resettable Peak Marker",
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "336-directive-configurable-threshold": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_336_directive_configurable_threshold",
+      "level": "SX",
+      "target": [
+        "directive_configurable_threshold.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Directive Configurable Threshold",
+      "syntax_focus": "Use compiler directives for mode-specific threshold.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "337-parameter-range-limited-gain": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_337_parameter_range_limited_gain",
+      "level": "SX",
+      "target": [
+        "parameter_range_limited_gain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Parameter Range Limited Gain",
+      "syntax_focus": "Use parameter range constraints.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "338-math-trig-envelope-detector": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_338_math_trig_envelope_detector",
+      "level": "SX",
+      "target": [
+        "math_trig_envelope_detector.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Math Trig Envelope Detector",
+      "syntax_focus": "Use trigonometric/math functions.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "339-random-seeded-dither-source": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_339_random_seeded_dither_source",
+      "level": "SX",
+      "target": [
+        "random_seeded_dither_source.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Random Seeded Dither Source",
+      "syntax_focus": "Use deterministic random/distribution function call.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "340-bound-step-clock-guard": {
+      "category": "veriloga_language_semantics",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_340_bound_step_clock_guard",
+      "level": "SX",
+      "target": [
+        "bound_step_clock_guard.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Bound Step Clock Guard",
+      "syntax_focus": "Use $bound_step for time-step control.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim"
     }
   }
 }

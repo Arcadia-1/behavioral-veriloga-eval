@@ -1,0 +1,35 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module bound_step_clock_guard (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+integer state_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        count_q = 0;
+        state_q = 0;
+    end
+    $bound_step(0.5n);
+    @(timer(0, 2n)) begin
+        state_q = 1 - state_q;
+        out_v = state_q ? vhi : 0.0;
+        metric_v = V(vin);
+    end
+    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

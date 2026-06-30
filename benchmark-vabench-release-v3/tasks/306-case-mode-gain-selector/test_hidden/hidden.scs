@@ -1,0 +1,5 @@
+simulator lang=spectre
+global 0
+// Hidden behavior skeleton for the language-semantics extension task.
+tran tran stop=200n
+save vin clk mode rst out metric

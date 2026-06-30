@@ -1,0 +1,37 @@
+[
+  {
+    "id": "neg_001_drive_out_zero",
+    "files": [
+      "neg_001_drive_out_zero/bound_step_clock_guard.va"
+    ],
+    "expected": "compile_but_fail_full_behavior"
+  },
+  {
+    "id": "neg_002_drive_metric_zero",
+    "files": [
+      "neg_002_drive_metric_zero/bound_step_clock_guard.va"
+    ],
+    "expected": "compile_but_fail_full_behavior"
+  },
+  {
+    "id": "neg_003_reset_polarity_wrong",
+    "files": [
+      "neg_003_reset_polarity_wrong/bound_step_clock_guard.va"
+    ],
+    "expected": "compile_but_fail_full_behavior"
+  },
+  {
+    "id": "neg_004_logic_threshold_shifted",
+    "files": [
+      "neg_004_logic_threshold_shifted/bound_step_clock_guard.va"
+    ],
+    "expected": "compile_but_fail_full_behavior"
+  },
+  {
+    "id": "neg_005_output_scale_low",
+    "files": [
+      "neg_005_output_scale_low/bound_step_clock_guard.va"
+    ],
+    "expected": "compile_but_fail_full_behavior"
+  }
+]

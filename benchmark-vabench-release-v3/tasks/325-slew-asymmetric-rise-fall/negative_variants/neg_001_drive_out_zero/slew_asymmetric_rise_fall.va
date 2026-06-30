@@ -1,0 +1,37 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module slew_asymmetric_rise_fall (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+parameter real rise_rate = 8.0e8;
+parameter real fall_rate = 3.0e8;
+real out_v;
+real metric_v;
+integer count_q;
+integer state_q;
+analog begin
+    @(initial_step) begin out_v = 0.0; metric_v = 0.5 * 0.0; count_q = 0; state_q = 0; end
+    @(cross(V(clk) - vth, +1) or cross(V(rst) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            out_v = V(mode) > vth ? vhi - V(vin) : V(vin);
+            if (out_v < 0.0) out_v = 0.0;
+            if (out_v > vhi) out_v = vhi;
+            metric_v = out_v / vhi;
+        end
+    end
+    V(out) <+ slew(out_v, rise_rate, fall_rate);
+    V(metric) <+ slew(metric_v, rise_rate, fall_rate);
+end
+endmodule

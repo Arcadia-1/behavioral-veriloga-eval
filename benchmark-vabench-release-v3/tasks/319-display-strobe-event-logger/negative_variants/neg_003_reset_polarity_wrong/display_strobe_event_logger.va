@@ -1,0 +1,47 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module display_strobe_event_logger (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+integer state_q;
+integer fd;
+real sum_q;
+real max_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.5 * 0.0;
+        count_q = 0;
+        state_q = 0;
+        sum_q = 0.0;
+        max_q = 0.0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        count_q = count_q + 1;
+        sum_q = sum_q + V(vin);
+        if (V(vin) > max_q) max_q = V(vin);
+        out_v = V(vin);
+        metric_v = count_q > 0 ? sum_q / count_q : 0.0;
+        $strobe("sample count=%0d vin=%g", count_q, V(vin));
+    end
+    @(final_step) begin
+        fd = $fopen("syntax_extension_metric.out", "w");
+        $fwrite(fd, "count=%0d avg=%.6g max=%.6g", count_q, metric_v, max_q);
+        $fclose(fd);
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule
