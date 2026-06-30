@@ -10,7 +10,6 @@
 - Target artifact(s): `first_order_lowpass.va`
 - Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
 
 ## Form-Specific Requirements
 
@@ -21,20 +20,32 @@
 
 - `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.
 
-## Public Testbench And Observable Contract
+## Public Parameter Contract
 
-Public transient setting used by the evaluator:
+The starter exposes public parameters `alpha` and `tr`:
 
-```spectre
-tran tran stop=160n maxstep=500p
-```
+- `alpha`: dimensionless recurrence coefficient, default `0.025`. If the
+  implementation uses the starter-style discrete recurrence, this parameter
+  controls the per-update movement toward `vin`.
+- `tr`: output transition smoothing time, default `200 ps`.
+
+Use a timer-updated internal state or an equivalent event-driven discretization
+that produces the same public first-order settling behavior. The exact timer
+update interval, internal variable names, and recurrence algebra are not
+checker-facing API, but parameter overrides should remain meaningful when the
+testbench supplies legal nearby values.
+
+## Public Scenario And Observable Contract
+
+The supplied testbenches provide the exact stimulus and transient analysis
+settings. The intended public scenario is a rising input step from about `0 V`
+to about `0.8 V`, followed by a transient window long enough to observe
+first-order settling.
 
 The evaluator expects these exact public scalar observables:
 
 - `vin`
 - `vout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
 
 ## Public Behavior Checks
 
@@ -51,13 +62,20 @@ Do not include explanatory prose outside the source artifact contents.
 
 ## Task-Specific Description
 
-Write a pure voltage-domain Verilog-A module for a timer-discretized first-order lowpass. This is the CT04 easy-anchor dynamic primitive: a single internal state, a step input, and a measurable settling trajectory.
+Write a pure voltage-domain Verilog-A module for a timer-discretized first-order
+lowpass: a single internal state, a step input, and a measurable settling
+trajectory.
 
 The DUT module is `first_order_lowpass` with ports `vin, vout`. Both ports are electrical voltage nodes.
 
 Required behavior:
-- Use a 500 ps timer update with state `y += 0.025 * (V(vin) - y)`.
+- Use a timer-updated internal real state to implement a stable finite-bandwidth
+  first-order response with an effective time constant on the order of tens of
+  nanoseconds for the supplied step stimulus.
 - Drive `vout` from the internal state with `transition()`.
-- The response must be monotone and visibly slower than an instantaneous copy.
+- The response must be monotone, bounded, and visibly slower than an
+  instantaneous copy. Within several tens of nanoseconds after the step, `vout`
+  should have crossed a substantial fraction of the final level; by the end of
+  the transient window it should be close to the final input level.
 
 Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.

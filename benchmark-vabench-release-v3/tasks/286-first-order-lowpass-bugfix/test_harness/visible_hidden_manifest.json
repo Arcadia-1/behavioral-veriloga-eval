@@ -1,16 +1,32 @@
 {
   "task": "286-first-order-lowpass-bugfix",
   "form": "bugfix",
-  "source": "v2/vbr1_l1_first_order_lowpass:bugfix",
-  "visible": [
-    "instruction.md",
-    "starter/",
-    "test_visible/"
-  ],
-  "hidden": [
-    "solution/",
-    "test_hidden/",
-    "test_harness/",
-    "negative_variants/"
-  ]
+  "status": "valid_variant_needs_counting_policy",
+  "visible": {
+    "instruction": "instruction.md",
+    "starter_files": [
+      "starter/dut_buggy.va",
+      "starter/dut_fixed.va",
+      "starter/tb_first_order_lowpass_buggy.scs",
+      "starter/tb_first_order_lowpass_ref.scs"
+    ],
+    "public_smoke": {
+      "testbench": "test_visible/tests/tb_visible_smoke.scs",
+      "hidden_dependency": false
+    }
+  },
+  "hidden": {
+    "testbenches": [
+      "test_hidden/tests/tb_first_order_lowpass_ref.scs"
+    ],
+    "checker": "test_harness/checks.yaml",
+    "gold": [
+      "solution/dut_fixed.va"
+    ],
+    "negative_variants": "negative_variants"
+  },
+  "certification": {
+    "status": "evas_only_recertified",
+    "scope": "Bugfix-form EVAS hidden gold and concrete negative variants; task 007 remains the independent lowpass circuit-function row."
+  }
 }
