@@ -1,0 +1,16 @@
+checker:
+  task_id: v3_101_fixed_gain_amplifier
+  metric: fixed_differential_gain
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct
+sim_correct:
+  checks:
+    - "differential_output_has_requested_gain"
+    - "output_common_mode_tracks_vdd_half"
+    - "input_output_polarity_is_positive"
+parity:
+  reference: "spectre"
+  status: "pending_fresh_spectre_rerun_after_boundary_split"

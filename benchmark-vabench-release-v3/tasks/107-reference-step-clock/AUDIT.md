@@ -2,21 +2,38 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `ref_step_clk.va`, migrated from `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+Task boundary is one primary Verilog-A DUT artifact, `ref_step_clk.va`. This
+row was split from the original
+`vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb` scenario after
+duplicate-counting audit found that the previous v3 row reused the same CPPLL
+system checker as task 097.
 
 ## Four Standards
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Useful scenario: accepted. A reference clock with a deterministic frequency
+  step is a reusable stimulus/support block for PLL and timing-flow tests.
+- Reasonable task: accepted. The public prompt names the target artifact,
+  interface, public parameters, parameterized pre/post cadence semantics,
+  switching behavior, rails, and duty-cycle expectation without exposing the
+  hidden numeric scenario.
+- Complete tests: accepted for the current reviewed slice. Gold passes and five
+  concrete behavior negatives fail by simulation correctness under the Spectre
+  evidence runner.
+- Fair evaluation: improved. The checker now evaluates the local `CLK`
+  waveform rather than downstream CPPLL reacquisition behavior.
 
 ## Checker And Evidence
 
-- Source checker id: `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- Checker id: `v3_reference_step_clock`
+- EVAS hidden gold smoke: PASS
+- Concrete negatives: 5/5 `FAIL_SIM_CORRECTNESS`
+- Hidden test parameters intentionally differ from the visible smoke parameters
+  to reduce fixed-waveform overfitting risk.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 5/5 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

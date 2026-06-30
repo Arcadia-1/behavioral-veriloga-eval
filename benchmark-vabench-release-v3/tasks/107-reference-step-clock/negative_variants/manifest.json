@@ -1,10 +1,29 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "ref_step_clk.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Keeps CLK at the low rail and therefore has no reference-clock edges.",
+      "path": "negative_variants/neg_001_zero/ref_step_clk.va"
+    },
+    {
+      "id": "neg_002_no_frequency_step",
+      "description": "Generates a square wave but keeps using period_pre after t_switch.",
+      "path": "negative_variants/neg_002_no_frequency_step/ref_step_clk.va"
+    },
+    {
+      "id": "neg_003_wrong_post_period",
+      "description": "Switches after t_switch but uses the wrong post-step period.",
+      "path": "negative_variants/neg_003_wrong_post_period/ref_step_clk.va"
+    },
+    {
+      "id": "neg_004_late_switch",
+      "description": "Uses the right pre/post periods but delays the frequency step well past t_switch.",
+      "path": "negative_variants/neg_004_late_switch/ref_step_clk.va"
+    },
+    {
+      "id": "neg_005_bad_duty_cycle",
+      "description": "Uses the right nominal rising-edge periods but holds CLK high for an imbalanced duty cycle.",
+      "path": "negative_variants/neg_005_bad_duty_cycle/ref_step_clk.va"
     }
   ]
 }

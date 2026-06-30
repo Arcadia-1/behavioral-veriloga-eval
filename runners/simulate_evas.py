@@ -1441,17 +1441,20 @@ def _stream_cppll_freq_step_reacquire_csv(csv_path: Path) -> tuple[float, list[s
     relock_time = post_lock_edges[0] if post_lock_edges else float("nan")
     lock_high_frac = lock_window_high_dt / max(lock_window_total_dt, 1e-18)
     disturb_low_frac = 1.0 - lock_high_frac
+    vctrl_span = vctrl_max - vctrl_min
     ok = (
         bool(pre_lock_edges)
         and disturb_low_frac >= 0.25
         and bool(post_lock_edges)
         and 0.97 <= freq_ratio <= 1.03
         and vctrl_in_range
+        and vctrl_span >= 0.02
     )
     return (1.0 if ok else 0.0), [
         f"freq_ratio={freq_ratio:.4f} relock_time={relock_time:.3e} "
         f"disturb_low_frac={disturb_low_frac:.3f} "
-        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f}"
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} "
+        f"vctrl_span={vctrl_span:.3f}"
     ]
 
 
@@ -5701,6 +5704,106 @@ def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
     gain = std_out / std_in if std_in > 1e-12 else 0.0
     ok = gain > 4.0 and std_out > std_in
     return ok, f"diff_gain={gain:.2f}"
+
+
+def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vres_p", "vres_n", "dpn", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vres_p/vres_n/dpn/vout_p/vout_n"
+
+    high: list[float] = []
+    low: list[float] = []
+    cm_errors: list[float] = []
+    for row in rows:
+        vin_diff = row["vres_p"] - row["vres_n"]
+        out_diff = row["vout_p"] - row["vout_n"]
+        dither_diff = out_diff - vin_diff
+        if row["dpn"] > 0.45:
+            high.append(dither_diff)
+        else:
+            low.append(dither_diff)
+        in_cm = 0.5 * (row["vres_p"] + row["vres_n"])
+        out_cm = 0.5 * (row["vout_p"] + row["vout_n"])
+        cm_errors.append(abs(out_cm - in_cm))
+
+    if len(high) < 20 or len(low) < 20:
+        return False, f"insufficient_dpn_states high={len(high)} low={len(low)}"
+    high_mean = sum(high) / len(high)
+    low_mean = sum(low) / len(low)
+    high_err = sum(abs(value - high_mean) for value in high) / len(high)
+    low_err = sum(abs(value - low_mean) for value in low) / len(low)
+    cm_max = max(cm_errors) if cm_errors else float("inf")
+    ok = (
+        0.025 <= high_mean <= 0.040
+        and -0.040 <= low_mean <= -0.025
+        and high_err <= 0.003
+        and low_err <= 0.003
+        and cm_max <= 0.003
+    )
+    return ok, (
+        f"dither_high={high_mean:.4f} dither_low={low_mean:.4f} "
+        f"high_err={high_err:.4f} low_err={low_err:.4f} cm_max={cm_max:.4f}"
+    )
+
+
+def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vin_p", "vin_n", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vin_p/vin_n/vout_p/vout_n"
+
+    gains: list[float] = []
+    cm_errors: list[float] = []
+    for row in rows:
+        vin_diff = row["vin_p"] - row["vin_n"]
+        if abs(vin_diff) < 0.015:
+            continue
+        out_diff = row["vout_p"] - row["vout_n"]
+        gains.append(out_diff / vin_diff)
+        cm_errors.append(abs(0.5 * (row["vout_p"] + row["vout_n"]) - 0.45))
+
+    if len(gains) < 20:
+        return False, f"insufficient_nonzero_input_samples={len(gains)}"
+    gain_mean = sum(gains) / len(gains)
+    gain_err = sum(abs(value - gain_mean) for value in gains) / len(gains)
+    cm_max = max(cm_errors) if cm_errors else float("inf")
+    ok = 5.0 <= gain_mean <= 5.5 and gain_err <= 0.08 and cm_max <= 0.006
+    return ok, f"gain={gain_mean:.3f} gain_err={gain_err:.4f} cm_max={cm_max:.4f}"
+
+
+def check_v3_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows or not {"time", "CLK"}.issubset(rows[0]):
+        return False, "missing time/CLK"
+
+    times = [row["time"] for row in rows]
+    clk = [row["CLK"] for row in rows]
+    vmin = min(clk)
+    vmax = max(clk)
+    if vmax - vmin < 0.75:
+        return False, f"insufficient_clock_swing={vmax - vmin:.3f}"
+    vth = 0.5 * (vmin + vmax)
+    rises = rising_edges(clk, times, vth)
+    if len(rises) < 80:
+        return False, f"too_few_rising_edges={len(rises)}"
+
+    early_periods = [b - a for a, b in zip(rises, rises[1:]) if 0.15e-6 <= a <= 1.05e-6]
+    late_periods = [b - a for a, b in zip(rises, rises[1:]) if 1.55e-6 <= a <= 2.25e-6]
+    if len(early_periods) < 10 or len(late_periods) < 10:
+        return False, f"insufficient_period_windows early={len(early_periods)} late={len(late_periods)}"
+    early = sum(early_periods) / len(early_periods)
+    late = sum(late_periods) / len(late_periods)
+
+    high_frac_early = weighted_logic_high_fraction_window(rows, "CLK", vth, 0.2e-6, 1.0e-6)
+    high_frac_late = weighted_logic_high_fraction_window(rows, "CLK", vth, 1.55e-6, 2.25e-6)
+    ok = (
+        17.0e-9 <= early <= 19.0e-9
+        and 21.0e-9 <= late <= 23.0e-9
+        and 0.43 <= high_frac_early <= 0.57
+        and 0.43 <= high_frac_late <= 0.57
+    )
+    return ok, (
+        f"period_pre={early:.3e} period_post={late:.3e} "
+        f"duty_pre={high_frac_early:.3f} duty_post={high_frac_late:.3f}"
+    )
 
 
 def check_gain_estimator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15233,6 +15336,19 @@ for _alias, _source_checker_id in V3_CANDIDATE_090_111_CHECK_ALIASES.items():
     CHECKS[_alias] = CHECKS[_source_checker_id]
     if _source_checker_id in STREAMING_BEHAVIOR_CHECKS:
         STREAMING_BEHAVIOR_CHECKS[_alias] = STREAMING_BEHAVIOR_CHECKS[_source_checker_id]
+
+V3_STANDALONE_SPLIT_CHECKS = {
+    "v3_099_dither_adder": check_v3_dither_adder,
+    "099-dither-adder": check_v3_dither_adder,
+    "v3_101_fixed_gain_amplifier": check_v3_fixed_gain_amplifier,
+    "101-fixed-gain-amplifier": check_v3_fixed_gain_amplifier,
+    "v3_107_reference_step_clock": check_v3_reference_step_clock,
+    "107-reference-step-clock": check_v3_reference_step_clock,
+}
+
+for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
+    CHECKS[_alias] = _checker
+    STREAMING_BEHAVIOR_CHECKS.pop(_alias, None)
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 

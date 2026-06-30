@@ -2,21 +2,29 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `gain_amp_fixed.va`, migrated from `vbr1_l2_gain_extraction_convergence_measurement_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+Task boundary is one standalone Verilog-A DUT artifact, `gain_amp_fixed.va`.
+It is admitted as an L1 baseband signal-conditioning component: a fixed-gain
+differential amplifier that can support composed measurement flows such as
+`287-gain-extraction-flow`, but is evaluated independently from that flow.
 
 ## Four Standards
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Useful scenario: accepted. Fixed-gain differential amplification is a recognizable reusable AMS behavioral block.
+- Reasonable task: accepted. The public prompt names only the target module, interface, gain parameter, positive polarity, and output common-mode invariant.
+- Complete tests: pass for the current reviewed slice. Hidden and visible decks
+  are no longer byte-identical and use different `ACTUAL_GAIN` values.
+- Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks requested gain, polarity, and common-mode rather than the enclosing gain-extraction flow.
 
 ## Checker And Evidence
 
-- Source checker id: `vbr1_l2_gain_extraction_convergence_measurement_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- Checker id: `v3_101_fixed_gain_amplifier`
+- Hidden bench: `test_hidden/tests/tb_gain_amp_fixed_ref.scs`
+- Concrete negatives: `neg_001_zero`, `neg_002_unity_gain`, `neg_003_inverted_polarity`, `neg_004_ignores_gain_parameter`
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
+  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
+until lint/triage is recorded.

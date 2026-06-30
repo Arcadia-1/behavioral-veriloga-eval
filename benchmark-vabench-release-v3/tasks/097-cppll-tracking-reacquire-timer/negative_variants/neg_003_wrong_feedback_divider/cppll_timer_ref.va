@@ -112,7 +112,7 @@ module cppll_timer_ref (
 
             if (dco_state == 1) begin
                 div_cnt = div_cnt + 1;
-                if (div_cnt >= div_ratio) begin
+                if (div_cnt >= div_ratio + 1) begin
                     div_cnt = 0;
                     fb_state = 1 - fb_state;
                 end

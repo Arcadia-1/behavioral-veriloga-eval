@@ -1,0 +1,16 @@
+checker:
+  task_id: v3_099_dither_adder
+  metric: differential_dither_injection
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct
+sim_correct:
+  checks:
+    - "dpn_high_injects_positive_differential_dither"
+    - "dpn_low_injects_negative_differential_dither"
+    - "output_common_mode_matches_input_common_mode"
+parity:
+  reference: "spectre"
+  status: "pending_fresh_spectre_rerun_after_boundary_split"
