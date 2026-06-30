@@ -2828,10 +2828,6 @@ def _auto_row_checker_trace_contracts_enabled() -> bool:
     return not _env_truthy("VAEVAS_DISABLE_ROW_CHECKER_TRACE_CONTRACTS")
 
 
-def _row_checker_trace_fallback_enabled() -> bool:
-    return not _env_truthy("VAEVAS_DISABLE_ROW_CHECKER_TRACE_FALLBACK")
-
-
 def _split_trace_signal_list(text: str | None) -> frozenset[str]:
     if not text:
         return frozenset()
@@ -3085,9 +3081,9 @@ def _checker_required_set_from_source(checker) -> frozenset[str]:
     This intentionally only trusts literal assignments like
     `required = {"time", "clk", ...}`.  Many checkers use helper calls and
     diagnostic strings, but mining arbitrary string literals is too risky: a
-    false sparse contract can hide columns the original row checker needs.  The
-    fallback rerun in `run_case()` protects correctness, but keeping inference
-    conservative avoids unnecessary reruns.
+    false sparse contract can hide columns the original row checker needs.
+    Keep inference conservative and add explicit trace contracts for dynamic
+    checkers that need generated column names.
     """
     try:
         source = inspect.getsource(checker)
@@ -15517,67 +15513,6 @@ def run_case(
                 notes.append(metric_note)
                 if not metric_ok:
                     sim_correct = 0.0
-            if (
-                sim_correct < 1.0
-                and required_trace_signals
-                and trace_contract_kind == "row_required_set"
-                and _row_checker_trace_fallback_enabled()
-            ):
-                notes.append("auto_sparse_trace_fallback_full_trace")
-                timing_split["sparse_trace_evas_subprocess_wall_s"] = timing_split.get(
-                    "evas_subprocess_wall_s", 0.0
-                )
-                for stale_name in ("tran.csv", "strobe.txt", "tran.png"):
-                    stale_path = out_dir / stale_name
-                    if stale_path.exists():
-                        stale_path.unlink()
-                _remove_stale_metric_file(checker_task_id, run_dir)
-
-                t0 = time.perf_counter()
-                full_proc = run_evas(
-                    run_dir,
-                    tb_dst,
-                    out_dir,
-                    timeout_s,
-                    required_trace_signals=frozenset(),
-                )
-                fallback_wall = time.perf_counter() - t0
-                timing_split["fallback_full_trace_evas_subprocess_wall_s"] = fallback_wall
-                timing_split["evas_subprocess_wall_s"] = (
-                    timing_split.get("sparse_trace_evas_subprocess_wall_s", 0.0)
-                    + fallback_wall
-                )
-                full_combined = (full_proc.stdout or "") + "\n" + (full_proc.stderr or "")
-                notes.append(f"fallback_returncode={full_proc.returncode}")
-                if full_proc.returncode == 0 and csv_path.exists():
-                    t0 = time.perf_counter()
-                    fallback_score, fallback_notes = evaluate_behavior_with_timeout(
-                        checker_task_id,
-                        csv_path,
-                        timeout_s=timeout_s,
-                        checks_config=v2_checks_config,
-                    )
-                    timing_split["fallback_full_trace_behavior_checker_s"] = (
-                        time.perf_counter() - t0
-                    )
-                    notes.extend(f"fallback:{note}" for note in fallback_notes)
-                    t0 = time.perf_counter()
-                    metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
-                    timing_split["fallback_full_trace_side_output_validation_s"] = (
-                        time.perf_counter() - t0
-                    )
-                    if metric_result is not None:
-                        metric_ok, metric_note = metric_result
-                        notes.append(f"fallback:{metric_note}")
-                        if not metric_ok:
-                            fallback_score = 0.0
-                    if fallback_score >= sim_correct:
-                        sim_correct = fallback_score
-                        proc = full_proc
-                        combined = full_combined
-                        evas_timing = parse_evas_timing(combined)
-                else:
-                    notes.append("fallback_tran.csv missing")
         elif "sim_correct" in scoring:
             sim_correct = 0.0
             notes.append("tran.csv missing")

@@ -333,10 +333,9 @@ def test_required_trace_signals_allow_extra_debug_columns(monkeypatch) -> None:
     assert policy["extra_trace_signal_count"] == 4
 
 
-def test_auto_sparse_row_checker_falls_back_to_full_trace(monkeypatch, tmp_path: Path) -> None:
+def test_sparse_row_checker_failure_does_not_rerun_full_trace(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.delenv("VAEVAS_DISABLE_REQUIRED_TRACE", raising=False)
     monkeypatch.delenv("VAEVAS_DISABLE_ROW_CHECKER_TRACE_CONTRACTS", raising=False)
-    monkeypatch.delenv("VAEVAS_DISABLE_ROW_CHECKER_TRACE_FALLBACK", raising=False)
 
     task_id = "vbr1_l1_log_rssi_power_detector_tb"
     task_dir = tmp_path / "task"
@@ -361,8 +360,7 @@ def test_auto_sparse_row_checker_falls_back_to_full_trace(monkeypatch, tmp_path:
         timeout_s: int,
         required_trace_signals=None,
     ):
-        sparse = bool(required_trace_signals)
-        calls.append(sparse)
+        calls.append(bool(required_trace_signals))
         (output_dir / "tran.csv").write_text("time,out\n0,1\n", encoding="utf-8")
         return subprocess.CompletedProcess(
             ["evas"],
@@ -384,7 +382,7 @@ def test_auto_sparse_row_checker_falls_back_to_full_trace(monkeypatch, tmp_path:
         checks_config=None,
     ):
         assert task_id_arg == task_id
-        return (0.0, ["missing inferred column"]) if calls[-1] else (1.0, ["full_trace_ok"])
+        return 0.0, ["missing inferred column"]
 
     monkeypatch.setattr(simulate_evas, "run_evas", fake_run_evas)
     monkeypatch.setattr(
@@ -395,11 +393,11 @@ def test_auto_sparse_row_checker_falls_back_to_full_trace(monkeypatch, tmp_path:
 
     result = simulate_evas.run_case(task_dir, dut, tb, output_root=tmp_path / "out", timeout_s=5)
 
-    assert calls == [True, False]
-    assert result["status"] == "PASS"
-    assert result["scores"]["sim_correct"] == 1.0
-    assert "auto_sparse_trace_fallback_full_trace" in result["notes"]
-    assert result["timing_split"]["fallback_full_trace_evas_subprocess_wall_s"] >= 0.0
+    assert calls == [True]
+    assert result["status"] == "FAIL_SIM_CORRECTNESS"
+    assert result["scores"]["sim_correct"] == 0.0
+    assert "missing inferred column" in result["notes"]
+    assert "sparse_trace_evas_subprocess_wall_s" not in result["timing_split"]
 
 
 def test_parse_evas_performance_counters_includes_trace_contract() -> None:

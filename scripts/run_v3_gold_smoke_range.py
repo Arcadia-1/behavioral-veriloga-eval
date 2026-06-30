@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import os
 import re
 import time
 from pathlib import Path
@@ -49,15 +48,7 @@ def main() -> int:
         "--variant",
         help="Optional candidate subdirectory under negative_variants to run instead of solution.",
     )
-    parser.add_argument(
-        "--allow-fallback",
-        action="store_true",
-        help="Allow row-checker sparse-trace fallback. Official v3 sweeps should leave this off.",
-    )
     args = parser.parse_args()
-
-    if not args.allow_fallback:
-        os.environ["VAEVAS_DISABLE_ROW_CHECKER_TRACE_FALLBACK"] = "1"
 
     root = Path(args.root)
     rows = []
@@ -131,15 +122,6 @@ def main() -> int:
             {
                 "tasks": len(rows),
                 "pass": sum(1 for row in rows if row.get("status") == "PASS"),
-                "allow_fallback": args.allow_fallback,
-                "fallback": sum(
-                    1
-                    for row in rows
-                    if any(
-                        "auto_sparse_trace_fallback_full_trace" in str(note)
-                        for note in row.get("notes", [])
-                    )
-                ),
                 "rows": rows,
             },
             indent=2,

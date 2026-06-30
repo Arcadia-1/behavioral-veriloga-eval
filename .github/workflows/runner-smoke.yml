@@ -25,6 +25,15 @@ jobs:
       - name: Syntax check runner modules
         run: python -m py_compile runners/bridge_preflight.py runners/run_gold_dual_suite.py runners/gen_manifest.py runners/gen_weekly_summary.py runners/gen_paper_stats.py runners/_result_table_utils.py
 
+      - name: Guard against automatic full-trace fallback
+        run: |
+          ! grep -RIn \
+            -e 'VAEVAS_DISABLE_ROW_CHECKER_TRACE_FALLBACK' \
+            -e 'auto_sparse_trace_fallback_full_trace' \
+            -e 'fallback_full_trace' \
+            -e '--allow-fallback' \
+            runners scripts tests
+
       - name: Check result paths exist when coordination docs are present
         run: |
           python - <<'EOF'
