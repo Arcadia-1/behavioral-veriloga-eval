@@ -1,4 +1,4 @@
-// gain_extraction smoke testbench
+// gain_extraction gold smoke testbench
 // 50 MHz clock, ACTUAL_GAIN=8.64, DITHER_AMP=0.014063. Run 2us.
 // Check: std(vamp_diff) / std(vin_diff) > 4.0.
 simulator lang=spectre

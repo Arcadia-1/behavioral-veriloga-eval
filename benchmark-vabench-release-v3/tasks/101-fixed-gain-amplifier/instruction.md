@@ -2,31 +2,54 @@
 
 Implement `gain_amp_fixed.va` in Verilog-A.
 
-## Public Interface
+## Interface
 
-Declare module `gain_amp_fixed(VIN_P, VIN_N, VOUT_P, VOUT_N)` with scalar
-electrical voltage-domain ports. `VIN_P` and `VIN_N` are the differential
-input, and `VOUT_P` and `VOUT_N` are the fixed-gain differential outputs.
+```verilog
+module gain_amp_fixed(
+    input  electrical VIN_P,
+    input  electrical VIN_N,
+    output electrical VOUT_P,
+    output electrical VOUT_N
+);
+```
 
-## Public Parameter Contract
+## Required Behavior
 
-- `vdd`: output common-mode supply parameter, default `0.9`.
-- `ACTUAL_GAIN`: differential voltage gain, default `8.64`.
+This task asks for the `gain_amp_fixed` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
 
-## Functional Contract
+Gold-source design notes carried into the public contract:
 
-- Compute the input differential voltage as `V(VIN_P, VIN_N)`.
-- Drive the output differential voltage as
-  `ACTUAL_GAIN * V(VIN_P, VIN_N)`.
-- Center the output pair around `vdd / 2`:
-  `VOUT_P = vdd / 2 + output_diff / 2` and
-  `VOUT_N = vdd / 2 - output_diff / 2`.
-- Keep the behavior deterministic and purely voltage-domain.
+```text
+// Fixed-gain differential amplifier (no programmable CTRL).
+//
+//   VOUT_P = vdd/2 + ACTUAL_GAIN * (VIN_P - VIN_N) / 2
+//   VOUT_N = vdd/2 - ACTUAL_GAIN * (VIN_P - VIN_N) / 2
+```
 
-## Modeling Constraints
+Original public behavior context:
 
-Return only `gain_amp_fixed.va`; companion files used by the validation
-scenario are supplied separately. Do not emit a Spectre testbench, checker
-logic, private test hooks, or simulator-private side channels. Use
-voltage-domain Verilog-A voltage contributions only; do not use transistor-level
-devices, current contributions, `ddt()`, or `idt()`.
+# Dithered differential gain extraction flow Testbench Companion
+
+Write a Spectre transient testbench for the `Dithered differential gain extraction flow` behavioral
+Verilog-A release task. This is the testbench-generation companion for an
+already materialized end-to-end task.
+
+The testbench should instantiate the same behavioral DUT or system module used
+by the corresponding end-to-end form, drive the public transient scenario, save
+the observable waveform or metric signals, and preserve the EVAS/Spectre
+validation contract.
+
+Domain: pure voltage-domain behavioral Verilog-A.
+
+Public requirements:
+
+- include a transient `tran` analysis
+- save the public observables needed by the public behavior checks
+- include or instantiate the Verilog-A behavioral module under test
+- satisfy the named behavior checks using only public waveforms and side outputs
+- avoid transistor-level devices, AC/noise analysis, and current-domain
+  solver assumptions
+
+Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
+
+Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.

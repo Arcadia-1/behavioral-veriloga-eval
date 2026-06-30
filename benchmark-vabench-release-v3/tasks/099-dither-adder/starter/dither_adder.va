@@ -1,5 +1,7 @@
-// Starter scaffold for a differential dither adder.
-// The completed model should add a signed differential dither term based on DPN.
+// Differential dither adder — benchmark gold style.
+// Keeps a direct contribution instead of the original transition(V(VRES_P)+...)
+// form. This is no longer required for EVAS acceptance; the gold keeps the
+// lower-warning, simpler output style for benchmark stability.
 //
 //   dither_diff = +DITHER_AMP  when DPN > vth
 //   dither_diff = -DITHER_AMP  when DPN < vth
