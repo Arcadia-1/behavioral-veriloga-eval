@@ -1,8 +1,5 @@
 {
   "task_id": "v3_101_fixed_gain_amplifier",
-  "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
   "primary_target": "gain_amp_fixed.va",
   "artifact_targets": [
     "gain_amp_fixed.va",
@@ -12,5 +9,5 @@
   ],
   "hidden_testbench": "tb_gain_extraction_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "status": "v3_smoke_with_negative_pending_recertification"
 }

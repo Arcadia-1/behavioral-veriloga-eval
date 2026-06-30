@@ -2,40 +2,49 @@
 
 Implement `cppll_timer_ref.va` in Verilog-A.
 
-## Interface
+## Public Interface
 
-```verilog
-module cppll_timer_ref (
-    inout  electrical VDD,
-    inout  electrical VSS,
-    input  electrical ref_clk,
-    output electrical fb_clk,
-    output electrical dco_clk,
-    output electrical vctrl_mon,
-    output electrical lock
-);
-```
+Declare module `cppll_timer_ref(VDD, VSS, ref_clk, fb_clk, dco_clk,
+vctrl_mon, lock)` with scalar electrical voltage-domain ports. `VDD` and `VSS`
+are supply rails, `ref_clk` is the reference clock input, and `fb_clk`,
+`dco_clk`, `vctrl_mon`, and `lock` are outputs.
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `cppll_timer_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+- `div_ratio`: feedback divider ratio, default `8`, positive integer.
+- `f_center`: nominal DCO center frequency in Hz, default `800.0e6`.
+- `kvco_hz_per_v`: DCO gain in Hz/V, default `350.0e6`.
+- `f_min`, `f_max`: DCO frequency clamp limits, defaults `300.0e6` and
+  `1.6e9`.
+- `kp`, `ki`: proportional and integral phase-control gains, defaults `8.0e6`
+  and `1.2e5`.
+- `integ_min`, `integ_max`: integral clamp limits, defaults `-0.45` and
+  `0.45`.
+- `vctrl_init`: initial control voltage, default `0.45`.
+- `tedge`: output transition smoothing time, default `20p`.
+- `lock_tol`: phase-error tolerance for lock detection, default `0.4e-9`.
+- `lock_count_target`: consecutive in-tolerance reference edges required for
+  lock, default `6`.
 
-Original public behavior context:
+## Functional Contract
 
-This row is a CPPLL frequency-step reacquire flow. The testbench must expose a
-reference step and enough time for the supplied loop to settle again:
+- Initialize the DCO, feedback divider, loop state, and lock state
+  deterministically.
+- Measure reference-edge timing against feedback-edge timing and wrap phase
+  error into the current reference period when possible.
+- Update a bounded PI-like control voltage and clamp it to the supply range.
+- Generate a DCO clock whose frequency follows the bounded control voltage and
+  stays within `f_min` and `f_max`.
+- Toggle `fb_clk` from the divided DCO clock according to `div_ratio`.
+- Assert `lock` only after enough consecutive reference edges have phase error
+  within `lock_tol`.
+- Drive digital-like outputs relative to `VDD` and `VSS`; drive `vctrl_mon` as
+  the analog control monitor.
 
-1. Include both public support files `cppll_timer_ref.va` and `ref_step_clk.va`.
-2. Instantiate the reference-step source and the CPPLL DUT with the public port
-   order.
-3. Run a transient long enough to include pre-step tracking, post-step
-   disturbance, and late-window reacquisition.
-4. Save `ref_clk fb_clk dco_clk vctrl_mon lock` exactly.
+## Modeling Constraints
 
-The expected public relation is: `ref_clk` changes cadence, `fb_clk` and
-`dco_clk` temporarily deviate, `vctrl_mon` remains bounded, and `lock` is high
-again in the late window. Do not generate checker logic.
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `cppll_timer_ref.va`; companion files used by the validation
+scenario are supplied separately. Do not emit a Spectre testbench, checker
+logic, private test hooks, or simulator-private side channels. Use
+voltage-domain, event-driven Verilog-A; do not use transistor-level devices,
+current contributions, `ddt()`, or `idt()`.

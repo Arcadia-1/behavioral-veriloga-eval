@@ -2,36 +2,34 @@
 
 Implement `ref_step_clk.va` in Verilog-A.
 
-## Interface
+## Public Interface
 
-```verilog
-module ref_step_clk (
-    inout  electrical VDD,
-    inout  electrical VSS,
-    output electrical CLK
-);
-```
+Declare module `ref_step_clk(VDD, VSS, CLK)` with scalar electrical
+voltage-domain ports. `VDD` and `VSS` are supply rails and `CLK` is a
+voltage-coded clock output.
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `ref_step_clk` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+- `period_pre`: output clock period before the frequency step, default `20n`.
+- `period_post`: output clock period after the frequency step, default `19.5n`.
+- `t_switch`: time at which subsequent half-period scheduling uses
+  `period_post`, default `2u`.
+- `tedge`: output transition smoothing time, default `100p`.
 
-Original public behavior context:
+## Functional Contract
 
-This row is a CPPLL frequency-step reacquire flow. The testbench must expose a
-reference step and enough time for the supplied loop to settle again:
+- Initialize `CLK` low and schedule the first toggle after half of
+  `period_pre`.
+- Toggle `CLK` on timer events.
+- Before `t_switch`, schedule toggles using `period_pre / 2`.
+- At and after `t_switch`, schedule toggles using `period_post / 2`.
+- Drive `CLK` rail-to-rail relative to `VDD` and `VSS` with smoothed
+  transitions.
 
-1. Include both public support files `cppll_timer_ref.va` and `ref_step_clk.va`.
-2. Instantiate the reference-step source and the CPPLL DUT with the public port
-   order.
-3. Run a transient long enough to include pre-step tracking, post-step
-   disturbance, and late-window reacquisition.
-4. Save `ref_clk fb_clk dco_clk vctrl_mon lock` exactly.
+## Modeling Constraints
 
-The expected public relation is: `ref_clk` changes cadence, `fb_clk` and
-`dco_clk` temporarily deviate, `vctrl_mon` remains bounded, and `lock` is high
-again in the late window. Do not generate checker logic.
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `ref_step_clk.va`; companion files used by the validation scenario
+are supplied separately. Do not emit a Spectre testbench, checker logic,
+private test hooks, or simulator-private side channels. Use voltage-domain,
+event-driven Verilog-A; do not use transistor-level devices, current
+contributions, `ddt()`, or `idt()`.
