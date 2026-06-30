@@ -1,29 +1,29 @@
 {
-  "task": "006-element-shuffler",
-  "form": "dut",
-  "status": "formal_candidate",
-  "visible": {
-    "instruction": "instruction.md",
-    "starter_files": [
-      "starter/element_shuffler.va"
-    ],
-    "public_smoke": {
-      "testbench": "test_visible/visible.scs",
-      "hidden_dependency": false
-    }
+  "certification": {
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md",
+    "status": "evas_certified"
   },
+  "form": "dut",
   "hidden": {
-    "testbenches": [
-      "test_hidden/hidden.scs"
-    ],
-    "checker": "test_harness/checks.yaml",
+    "checker": "../../../CHECKS.json",
     "gold": [
       "solution/element_shuffler.va"
     ],
-    "negative_variants": "negative_variants"
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/hidden.scs"
+    ]
   },
-  "certification": {
-    "status": "evas_certified",
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  "status": "formal_candidate",
+  "task": "006-element-shuffler",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "testbench": "test_visible/visible.scs"
+    },
+    "starter_files": [
+      "starter/element_shuffler.va"
+    ]
   }
 }

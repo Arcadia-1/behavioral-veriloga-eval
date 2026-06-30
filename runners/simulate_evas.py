@@ -140,6 +140,72 @@ def _extract_yaml_mapping_after_parent(text: str, parent: str) -> dict[str, str]
     return {}
 
 
+_V3_TASKS_INDEX_CACHE: dict[Path, dict[str, object]] = {}
+_V3_CHECKS_INDEX_CACHE: dict[Path, dict[str, object]] = {}
+
+
+def _v3_release_root_for_task(task_dir: Path) -> Path | None:
+    task_dir = task_dir.resolve()
+    if task_dir.parent.name == "tasks" and task_dir.parent.parent.name == "benchmark-vabench-release-v3":
+        return task_dir.parent.parent
+    return None
+
+
+def _v3_task_slug(task_dir: Path) -> str | None:
+    root = _v3_release_root_for_task(task_dir)
+    if root is None:
+        return None
+    return task_dir.resolve().name
+
+
+def _load_v3_tasks_index(root: Path) -> dict[str, object]:
+    cached = _V3_TASKS_INDEX_CACHE.get(root)
+    if cached is not None:
+        return cached
+    index_path = root / "TASKS.json"
+    if not index_path.exists():
+        return {}
+    data = json.loads(index_path.read_text(encoding="utf-8"))
+    tasks = data.get("tasks", {}) if isinstance(data, dict) else {}
+    if not isinstance(tasks, dict):
+        tasks = {}
+    _V3_TASKS_INDEX_CACHE[root] = tasks
+    return tasks
+
+
+def _load_v3_checks_index(root: Path) -> dict[str, object]:
+    cached = _V3_CHECKS_INDEX_CACHE.get(root)
+    if cached is not None:
+        return cached
+    index_path = root / "CHECKS.json"
+    if not index_path.exists():
+        return {}
+    data = json.loads(index_path.read_text(encoding="utf-8"))
+    checks = data.get("checks", {}) if isinstance(data, dict) else {}
+    if not isinstance(checks, dict):
+        checks = {}
+    _V3_CHECKS_INDEX_CACHE[root] = checks
+    return checks
+
+
+def _v3_task_index_entry(task_dir: Path) -> dict[str, object]:
+    root = _v3_release_root_for_task(task_dir)
+    slug = _v3_task_slug(task_dir)
+    if root is None or slug is None:
+        return {}
+    entry = _load_v3_tasks_index(root).get(slug, {})
+    return entry if isinstance(entry, dict) else {}
+
+
+def _v3_checks_index_entry(task_dir: Path) -> dict[str, object]:
+    root = _v3_release_root_for_task(task_dir)
+    slug = _v3_task_slug(task_dir)
+    if root is None or slug is None:
+        return {}
+    entry = _load_v3_checks_index(root).get(slug, {})
+    return entry if isinstance(entry, dict) else {}
+
+
 def _float_values(values: list[str]) -> list[float]:
     parsed: list[float] = []
     for value in values:
@@ -151,14 +217,22 @@ def _float_values(values: list[str]) -> list[float]:
 
 
 def load_v2_checks_config(task_dir: Path) -> dict[str, object]:
+    checks_sources: list[tuple[Path | str, str]] = []
     for checks_path in (
         task_dir / "private" / "invisible_checker_config.yaml",
         task_dir / "checks.yaml",
         task_dir / "private" / "checks.yaml",
+        task_dir / "test_harness" / "checks.yaml",
     ):
         if not checks_path.exists():
             continue
-        checks_text = checks_path.read_text(encoding="utf-8")
+        checks_sources.append((checks_path, checks_path.read_text(encoding="utf-8")))
+    indexed_checks = _v3_checks_index_entry(task_dir)
+    indexed_checks_text = indexed_checks.get("checks_yaml")
+    if isinstance(indexed_checks_text, str):
+        index_ref = f"{_v3_release_root_for_task(task_dir) / 'CHECKS.json'}:{task_dir.name}"
+        checks_sources.append((index_ref, indexed_checks_text))
+    for checks_path, checks_text in checks_sources:
         if "vabench-release-v2-checks" not in checks_text:
             continue
         checker_parameters: dict[str, object] = _extract_yaml_mapping_after_parent(
@@ -197,16 +271,18 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
 
 def read_task_artifact_targets(task_dir: Path) -> list[str]:
     task_toml = task_dir / "task.toml"
-    if not task_toml.exists():
-        return []
-    text = task_toml.read_text(encoding="utf-8", errors="ignore")
-    match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
-    if not match:
-        return []
-    try:
-        parsed = ast.literal_eval(match.group(1))
-    except (SyntaxError, ValueError):
-        return []
+    if task_toml.exists():
+        text = task_toml.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
+        if not match:
+            return []
+        try:
+            parsed = ast.literal_eval(match.group(1))
+        except (SyntaxError, ValueError):
+            return []
+    else:
+        artifacts = _v3_task_index_entry(task_dir).get("artifacts", {})
+        parsed = artifacts.get("target", []) if isinstance(artifacts, dict) else []
     if not isinstance(parsed, list):
         return []
     targets: list[str] = []
@@ -215,6 +291,24 @@ def read_task_artifact_targets(task_dir: Path) -> list[str]:
         if name and "/" not in name and "\\" not in name:
             targets.append(name)
     return targets
+
+
+def read_task_index_id(task_dir: Path) -> str | None:
+    task_toml = task_dir / "task.toml"
+    if task_toml.exists():
+        match = re.search(
+            r'(?m)^\s*id\s*=\s*(".*?"|\'.*?\')\s*$',
+            task_toml.read_text(encoding="utf-8", errors="ignore"),
+        )
+        if match:
+            try:
+                value = ast.literal_eval(match.group(1))
+            except (SyntaxError, ValueError):
+                value = None
+            if value:
+                return str(value)
+    entry_id = _v3_task_index_entry(task_dir).get("id")
+    return str(entry_id) if entry_id else None
 
 
 def copy_inputs(
@@ -243,9 +337,9 @@ def copy_inputs(
         shutil.copy2(dut_path, run_dir / dut_path.name)
 
     # Negative variants often keep their own filenames, while the Spectre deck
-    # includes the canonical artifact name from task.toml. Stage the selected
-    # DUT under that canonical name too so failures are behavioral, not a stale
-    # include-name mismatch.
+    # includes the canonical artifact name from task metadata. Stage the
+    # selected DUT under that canonical name too so failures are behavioral,
+    # not a stale include-name mismatch.
     for target_name in target_filenames:
         target_path = run_dir / target_name
         if target_path.exists() or target_path.name == dut_path.name:
@@ -14100,11 +14194,13 @@ def check_reset_sync_active_low(rows: list[dict[str, float]]) -> tuple[bool, str
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
     sr = [0, 0]
-    errors = 0
+    violations = 0
     saw_assert = False
     saw_release = False
     times = [row["time"] for row in rows]
-    for t in _rising_times(rows, "clk"):
+    clk_rises = _rising_times(rows, "clk")
+    reset_edges = _rising_times(rows, "rst_n") + _falling_times(rows, "rst_n")
+    for t in clk_rises:
         edge_row = rows[min(range(len(times)), key=lambda idx: abs(times[idx] - t))]
         out_row = _sample_after(rows, t, 1e-9)
         if edge_row["rst_n"] <= 0.45:
@@ -14115,15 +14211,17 @@ def check_reset_sync_active_low(rows: list[dict[str, float]]) -> tuple[bool, str
         expected = sr[1] == 1
         actual = out_row["sync_rst_n"] > 0.45
         if actual != expected:
-            errors += 1
+            violations += 1
         saw_release = saw_release or actual
     for row in rows[:: max(1, len(rows) // 300)]:
+        if any(abs(row["time"] - t) < 0.5e-9 for t in reset_edges + clk_rises):
+            continue
         if row["time"] < 1e-9 or 0.1 < row["rst_n"] < 0.8 or 0.1 < row["sync_rst_n"] < 0.8:
             continue
         if row["rst_n"] <= 0.45 and row["sync_rst_n"] > 0.45:
-            errors += 1
+            violations += 1
             saw_assert = True
-    return errors <= 1 and saw_assert and saw_release, f"checked={len(_rising_times(rows, 'clk'))} errors={errors}"
+    return violations == 0 and saw_assert and saw_release, f"checked={len(clk_rises)} violations={violations}"
 
 
 def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -14132,11 +14230,13 @@ def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, st
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
     sr = [1, 1]
-    errors = 0
+    violations = 0
     saw_assert = False
     saw_release = False
     times = [row["time"] for row in rows]
-    for t in _rising_times(rows, "clk"):
+    clk_rises = _rising_times(rows, "clk")
+    reset_edges = _rising_times(rows, "rst") + _falling_times(rows, "rst")
+    for t in clk_rises:
         edge_row = rows[min(range(len(times)), key=lambda idx: abs(times[idx] - t))]
         out_row = _sample_after(rows, t, 1e-9)
         if edge_row["rst"] > 0.45:
@@ -14147,15 +14247,17 @@ def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, st
         expected = sr[1] == 1
         actual = out_row["sync_rst"] > 0.45
         if actual != expected:
-            errors += 1
+            violations += 1
         saw_release = saw_release or not actual
     for row in rows[:: max(1, len(rows) // 300)]:
+        if any(abs(row["time"] - t) < 0.5e-9 for t in reset_edges + clk_rises):
+            continue
         if row["time"] < 1e-9 or 0.1 < row["rst"] < 0.8 or 0.1 < row["sync_rst"] < 0.8:
             continue
         if row["rst"] > 0.45 and row["sync_rst"] <= 0.45:
-            errors += 1
+            violations += 1
             saw_assert = True
-    return errors <= 1 and saw_assert and saw_release, f"checked={len(_rising_times(rows, 'clk'))} errors={errors}"
+    return violations == 0 and saw_assert and saw_release, f"checked={len(clk_rises)} violations={violations}"
 
 
 def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -14780,7 +14882,7 @@ CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
 CHECKS["299-bipolar-dff-sample"] = check_v3_bipolar_dff_sample
 CHECKS["300-pfd-active-low-reset"] = check_v3_pfd_active_low_reset
-# V3 task.toml id aliases generated from task metadata.
+# V3 task id aliases generated from task metadata.
 V3_TASK_ID_ALIASES = {
     "v3_112_clocked_sar_comparator": "v3_clocked_sar_comparator",
     "v3_113_clocked_dac_restore_4b": "v3_clocked_dac_restore_4b",
@@ -14970,7 +15072,7 @@ V3_TASK_ID_ALIASES = {
 for _task_id_alias, _checker_id in V3_TASK_ID_ALIASES.items():
     if _checker_id in CHECKS:
         CHECKS[_task_id_alias] = CHECKS[_checker_id]
-# End v3 task.toml id aliases.
+# End v3 task id aliases.
 CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator

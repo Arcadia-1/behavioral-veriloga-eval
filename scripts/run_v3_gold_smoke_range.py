@@ -4,13 +4,11 @@
 from __future__ import annotations
 
 import argparse
-import ast
 import json
-import re
 import time
 from pathlib import Path
 
-from simulate_evas import read_task_artifact_targets, run_case
+from simulate_evas import read_task_artifact_targets, read_task_index_id, run_case
 
 
 def task_number(task_dir: Path) -> int | None:
@@ -20,21 +18,8 @@ def task_number(task_dir: Path) -> int | None:
         return None
 
 
-def task_toml_id(task_dir: Path) -> str | None:
-    task_toml = task_dir / "task.toml"
-    if not task_toml.exists():
-        return None
-    match = re.search(
-        r'(?m)^\s*id\s*=\s*(".*?"|\'.*?\')\s*$',
-        task_toml.read_text(encoding="utf-8", errors="ignore"),
-    )
-    if not match:
-        return None
-    try:
-        value = ast.literal_eval(match.group(1))
-    except (SyntaxError, ValueError):
-        return None
-    return str(value) if value else None
+def task_index_id(task_dir: Path) -> str | None:
+    return read_task_index_id(task_dir)
 
 
 def main() -> int:
@@ -61,7 +46,7 @@ def main() -> int:
             row = {
                 "task_id": task.name,
                 "status": "FAIL_NO_TARGET",
-                "notes": ["missing task.toml artifacts.target"],
+                "notes": ["missing task artifact target in TASKS.json"],
             }
             rows.append(row)
             print(task.name, row["status"], flush=True)
@@ -74,7 +59,7 @@ def main() -> int:
                 dut = fallback_candidates[0]
             else:
                 row = {
-                    "task_id": task_toml_id(task) or task.name,
+                    "task_id": task_index_id(task) or task.name,
                     "status": "FAIL_NO_DUT",
                     "notes": [f"missing candidate artifact {dut}"],
                 }
@@ -88,7 +73,7 @@ def main() -> int:
                 tb = tb_candidates[0]
             else:
                 row = {
-                    "task_id": task_toml_id(task) or task.name,
+                    "task_id": task_index_id(task) or task.name,
                     "status": "FAIL_NO_TB",
                     "notes": [f"missing hidden.scs and unique test_hidden/tests/*.scs in {task}"],
                 }
@@ -102,7 +87,7 @@ def main() -> int:
             tb,
             timeout_s=args.timeout,
             keep_run_dir=False,
-            task_id_override=task_toml_id(task),
+            task_id_override=task_index_id(task),
         )
         result["wall_s"] = time.perf_counter() - start
         rows.append(result)

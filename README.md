@@ -13,15 +13,19 @@ benchmark-vabench-release-v3/
 ```
 
 Use `benchmark-vabench-release-v3/tasks/` as the authoritative public task
-root for new evaluation work. Each v3 task is self-contained under
-`tasks/NNN-name/` with:
+root for new evaluation work. The release-level indexes are:
+
+- `benchmark-vabench-release-v3/TASKS.json`: canonical task metadata and target
+  artifacts.
+- `benchmark-vabench-release-v3/CHECKS.json`: canonical checker configuration.
+
+Each v3 task is self-contained under `tasks/NNN-name/` with:
 
 - `instruction.md`: agent-facing problem statement.
 - `starter/`: files the agent edits.
 - `test_visible/`: public smoke material.
 - `test_hidden/`, `test_harness/`, `solution/`, `negative_variants/`:
   evaluator-side material.
-- `task.toml`: tooling index; not part of the agent prompt.
 
 Do not use old release roots as current evaluation inputs.
 

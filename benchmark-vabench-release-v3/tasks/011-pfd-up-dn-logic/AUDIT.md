@@ -37,7 +37,7 @@ EVAS formal candidate.
 
 - EVAS/Python-engine hidden gold smoke: `PASS`.
 - Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS`.
-- The runner stages negative DUT files under the canonical artifact name from `task.toml`, so the negative variants are scored by behavior rather than failing on include-file names.
+- The runner stages negative DUT files under the canonical artifact name from the top-level `TASKS.json` index, so the negative variants are scored by behavior rather than failing on include-file names.
 
 ## Remaining Risk
 

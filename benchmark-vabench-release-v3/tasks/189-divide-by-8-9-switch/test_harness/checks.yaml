@@ -1,8 +1,0 @@
-checker:
-  task_id: v3_divide_by_8_9_switch
-  metric: stable_samples
-scoring:
-  axes:
-    - dut_compile
-    - tb_compile
-    - sim_correct

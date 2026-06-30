@@ -24,7 +24,7 @@ Certification status: EVAS formal candidate. Gold passes under strict checker id
 
 ## Runner Hookup Note
 
-`test_harness/checks.yaml` declares checker id `v3_010_offset_comparator`. The runner maps that id to `check_v3_offset_comparator`, which first checks the seven-edge `LLLHHLL` decision sequence and then checks between-edge async-hold samples plus rail-level output thresholds.
+`CHECKS.json` declares checker id `v3_010_offset_comparator`. The runner maps that id to `check_v3_offset_comparator`, which first checks the seven-edge `LLLHHLL` decision sequence and then checks between-edge async-hold samples plus rail-level output thresholds.
 
 ## Certification Evidence
 

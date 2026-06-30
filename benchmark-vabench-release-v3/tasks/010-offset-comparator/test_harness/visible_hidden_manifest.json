@@ -1,17 +1,4 @@
 {
-  "visible": [
-    "instruction.md",
-    "starter/cmp_offset_ref.va",
-    "test_visible/visible.scs",
-    "test_visible/tests/tb_visible_smoke.scs",
-    "test_visible/tests/run_visible_smoke.py"
-  ],
-  "hidden": [
-    "solution/cmp_offset_ref.va",
-    "test_hidden/hidden.scs",
-    "test_harness/checks.yaml",
-    "negative_variants/manifest.json"
-  ],
   "agent_visible": [
     "instruction.md",
     "starter/cmp_offset_ref.va",
@@ -20,7 +7,20 @@
     "test_visible/tests/run_visible_smoke.py"
   ],
   "certification": {
-    "status": "evas_certified",
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
-  }
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md",
+    "status": "evas_certified"
+  },
+  "hidden": [
+    "solution/cmp_offset_ref.va",
+    "test_hidden/hidden.scs",
+    "../../../CHECKS.json",
+    "negative_variants/manifest.json"
+  ],
+  "visible": [
+    "instruction.md",
+    "starter/cmp_offset_ref.va",
+    "test_visible/visible.scs",
+    "test_visible/tests/tb_visible_smoke.scs",
+    "test_visible/tests/run_visible_smoke.py"
+  ]
 }

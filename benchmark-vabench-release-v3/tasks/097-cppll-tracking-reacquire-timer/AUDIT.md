@@ -2,7 +2,7 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `cppll_timer_ref.va`, migrated from `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in `task.toml` are supplied by the harness when needed by the original system testbench.
+Task boundary is one primary Verilog-A DUT artifact, `cppll_timer_ref.va`, migrated from `vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
 
 ## Four Standards
 

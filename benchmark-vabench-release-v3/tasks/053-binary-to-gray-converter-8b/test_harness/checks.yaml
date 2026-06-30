@@ -1,9 +1,0 @@
-version: 2
-task_id: binary_to_gray_converter_8b
-backend: evas
-status: formal_candidate
-checker: binary_to_gray_converter_8b
-checks:
-  formal:
-    - binary_count_maps_to_gray
-    - adjacent_counts_have_one_bit_gray_change

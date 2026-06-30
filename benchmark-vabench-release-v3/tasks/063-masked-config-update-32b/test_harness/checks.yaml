@@ -1,9 +1,0 @@
-version: 2
-task_id: masked_config_update_32b
-backend: evas
-status: formal_candidate
-checker: masked_config_update_32b
-checks:
-  formal:
-    - gold_passes
-    - concrete_negatives_fail

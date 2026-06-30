@@ -1,37 +1,37 @@
 {
-  "task": "117-bipolar-dac-4b-continuous",
-  "form": "dut",
-  "status": "source_import_certified",
-  "provenance": "shigao/DAC4bit_1.va",
-  "visible": {
-    "instruction": "instruction.md",
-    "starter_files": [
-      "starter/bipolar_dac_4b_continuous.va"
-    ],
-    "public_smoke": {
-      "runner": "test_visible/tests/run_visible_smoke.py",
-      "testbench": "test_visible/tests/tb_visible_smoke.scs",
-      "hidden_dependency": false
-    }
+  "certification": {
+    "evidence": {
+      "evas_summary": "WORK/source-import-batch2-evas/summary.json",
+      "spectre_backend": "sui-direct zhangz@101.6.68.147",
+      "spectre_mode": "ax",
+      "spectre_summary": "WORK/source-import-batch2-spectre/summary.json"
+    },
+    "scope": "Visible smoke passed; EVAS hidden gold passed; Spectre AX hidden gold passed; EVAS/Spectre parity passed on stable-window checker.",
+    "status": "certified"
   },
+  "form": "dut",
   "hidden": {
-    "testbenches": [
-      "test_hidden/tests/tb_source_ref.scs"
-    ],
-    "checker": "test_harness/checks.yaml",
+    "checker": "../../../CHECKS.json",
     "gold": [
       "solution/bipolar_dac_4b_continuous.va"
     ],
-    "negative_variants": "negative_variants"
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/tests/tb_source_ref.scs"
+    ]
   },
-  "certification": {
-    "status": "certified",
-    "scope": "Visible smoke passed; EVAS hidden gold passed; Spectre AX hidden gold passed; EVAS/Spectre parity passed on stable-window checker.",
-    "evidence": {
-      "evas_summary": "WORK/source-import-batch2-evas/summary.json",
-      "spectre_summary": "WORK/source-import-batch2-spectre/summary.json",
-      "spectre_backend": "sui-direct zhangz@101.6.68.147",
-      "spectre_mode": "ax"
-    }
+  "provenance": "shigao/DAC4bit_1.va",
+  "status": "source_import_certified",
+  "task": "117-bipolar-dac-4b-continuous",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/bipolar_dac_4b_continuous.va"
+    ]
   }
 }

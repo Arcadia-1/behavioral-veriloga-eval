@@ -1,8 +1,0 @@
-checker:
-  task_id: v3_programmable_divider_by_n
-  metric: stable_samples
-scoring:
-  axes:
-    - dut_compile
-    - tb_compile
-    - sim_correct
