@@ -1,8 +1,8 @@
 simulator lang=spectre
 global 0
 ahdl_include "smooth_tanh_comparator.va"
-Vin (sigin 0) vsource type=pwl wave=[0 -0.5 0.8n -0.5 0.85n 0.0 1.6n 0.0 1.65n 0.1 2.4n 0.1 2.45n 0.8 3.2n 0.8]
-Vref (sigref 0) vsource dc=0
+Vin (sigin 0) vsource type=pwl wave=[0 -0.25 0.7n -0.25 0.75n 0.04 1.4n 0.04 1.45n 0.09 2.1n 0.09 2.15n 0.25 2.8n 0.25 2.85n 0.65 3.6n 0.65]
+Vref (sigref 0) vsource dc=0.02
 XDUT (sigin sigref sigout) smooth_tanh_comparator
-tran tran stop=3.0n maxstep=5p
+tran tran stop=3.4n maxstep=5p
 save sigin sigref sigout

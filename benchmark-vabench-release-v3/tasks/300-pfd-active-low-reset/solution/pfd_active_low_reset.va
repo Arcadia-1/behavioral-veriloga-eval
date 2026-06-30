@@ -5,7 +5,8 @@ output upb, down;
 electrical ref, fb, upb, down;
 parameter real vth = 0.45;
 parameter real vh = 0.9;
-parameter real reset_delay = 80p;
+parameter real reset_delay = 80p from [0:inf);
+parameter real tr = 10p from [0:inf);
 integer up_state, down_state;
 real trst;
 analog begin
@@ -27,7 +28,7 @@ analog begin
         down_state = 0;
         trst = -1.0;
     end
-    V(upb) <+ transition(up_state ? 0.0 : vh, 0, 10p);
-    V(down) <+ transition(down_state ? vh : 0.0, 0, 10p);
+    V(upb) <+ transition(up_state ? 0.0 : vh, 0, tr);
+    V(down) <+ transition(down_state ? vh : 0.0, 0, tr);
 end
 endmodule

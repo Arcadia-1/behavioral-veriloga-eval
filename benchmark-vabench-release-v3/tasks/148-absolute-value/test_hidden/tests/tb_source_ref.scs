@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "absolute_value_behavior.va"
 
-Vin (sigin 0) vsource type=pwl wave=[0 -0.4 10n -0.4 10.1n 0.3 20n 0.3 20.1n -0.1 35n -0.1]
+Vin (sigin 0) vsource type=pwl wave=[0 0.6 0.7n 0.6 0.75n -0.75 1.4n -0.75 1.45n -0.03 2.1n -0.03 2.15n 0.0 2.8n 0.0 2.85n 0.45 3.6n 0.45]
 
 XDUT (sigin sigout) absolute_value_behavior
 
-tran tran stop=30n maxstep=25p
+tran tran stop=3.4n maxstep=5p
 save sigin sigout

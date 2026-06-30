@@ -5,7 +5,8 @@ output ub, d;
 electrical a, b, ub, d;
 parameter real vth = 0.45;
 parameter real vh = 0.9;
-parameter real reset_delay = 100p;
+parameter real reset_delay = 100p from [0:inf);
+parameter real tr = 10p from [0:inf);
 integer up, down;
 real trst;
 analog begin
@@ -27,7 +28,7 @@ analog begin
         down = 0;
         trst = -1.0;
     end
-    V(ub) <+ transition((1 - up) * vh, 0, 10p);
-    V(d) <+ transition(down * vh, 0, 10p);
+    V(ub) <+ transition((1 - up) * vh, 0, tr);
+    V(d) <+ transition(down * vh, 0, tr);
 end
 endmodule
