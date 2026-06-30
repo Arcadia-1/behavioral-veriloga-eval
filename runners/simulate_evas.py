@@ -3201,7 +3201,7 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         "config_latch_128b_static_enable": frozenset({"time", "en"})
         | frozenset({f"d{idx}" for idx in range(128)})
         | frozenset({f"q{idx}" for idx in range(128)}),
-        "config_shift_register_64b": frozenset({"time"})
+        "config_shift_register_64b": frozenset({"time", "serial_in"})
         | frozenset({f"q{idx}" for idx in range(64)}),
         "bus_splitter_256_to_16x16": frozenset({"time"})
         | frozenset({f"in{idx}" for idx in range(256)})
@@ -3247,6 +3247,36 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         | frozenset({f"seed{idx}" for idx in range(8)}),
     }
     formal_utility_trace_signals.update({
+        "v3_054_onehot_to_binary_encoder_16b": formal_utility_trace_signals[
+            "onehot_to_binary_encoder_16b"
+        ],
+        "v3_055_binary_to_onehot_decoder_16b": formal_utility_trace_signals[
+            "binary_to_onehot_decoder_16b"
+        ],
+        "v3_056_decimal_digit_to_bcd_encoder": formal_utility_trace_signals[
+            "decimal_digit_to_bcd_encoder"
+        ],
+        "v3_057_signed_magnitude_to_twos_complement_8b": formal_utility_trace_signals[
+            "signed_magnitude_to_twos_complement_8b"
+        ],
+        "v3_058_config_latch_32b_clocked": formal_utility_trace_signals[
+            "config_latch_32b_clocked"
+        ],
+        "v3_059_config_latch_128b_static_enable": formal_utility_trace_signals[
+            "config_latch_128b_static_enable"
+        ],
+        "v3_060_config_shift_register_64b": formal_utility_trace_signals[
+            "config_shift_register_64b"
+        ],
+        "v3_061_bus_splitter_256_to_16x16": formal_utility_trace_signals[
+            "bus_splitter_256_to_16x16"
+        ],
+        "v3_062_bus_combiner_16x16_to_256": formal_utility_trace_signals[
+            "bus_combiner_16x16_to_256"
+        ],
+        "v3_063_masked_config_update_32b": formal_utility_trace_signals[
+            "masked_config_update_32b"
+        ],
         "v3_064_edge_interval_tdc_8b": formal_utility_trace_signals["edge_interval_tdc_8b"],
         "v3_065_period_meter_16b": formal_utility_trace_signals["period_meter_16b"],
         "v3_066_duty_cycle_meter_8b": formal_utility_trace_signals["duty_cycle_meter_8b"],
