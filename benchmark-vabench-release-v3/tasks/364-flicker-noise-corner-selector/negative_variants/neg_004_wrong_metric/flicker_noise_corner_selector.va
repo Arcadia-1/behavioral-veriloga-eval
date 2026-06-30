@@ -1,0 +1,28 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module flicker_noise_corner_selector (
+    input  electrical ctrl,
+    input  electrical clk,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+parameter real kf_lo = 1.0e-13;
+parameter real kf_hi = 2.0e-12;
+real out_v;
+real metric_v;
+integer count_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0 * 0.0;
+        count_q = 0;
+    end
+V(out) <+ flicker_noise(V(ctrl) > vth ? kf_hi : kf_lo, 1.0, "corner_select");
+    @(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

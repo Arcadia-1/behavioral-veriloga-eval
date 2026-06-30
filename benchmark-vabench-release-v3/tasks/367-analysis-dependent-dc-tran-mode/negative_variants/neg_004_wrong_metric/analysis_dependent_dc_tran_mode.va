@@ -1,0 +1,28 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module analysis_dependent_dc_tran_mode (
+    input  electrical ctrl,
+    input  electrical clk,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0 * 0.0;
+        count_q = 0;
+    end
+if (analysis("dc")) V(out) <+ 0.25;
+    else if (analysis("tran")) V(out) <+ transition(V(ctrl), 0.0, tr, tr);
+    else V(out) <+ 0.0;
+    @(cross(V(clk)-vth,+1)) metric_v = analysis("tran") ? vhi : 0.0;
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

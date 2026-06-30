@@ -1,0 +1,41 @@
+{
+  "task": "370-ac-stim-phase-selector",
+  "negative_count": 5,
+  "cases": [
+    {
+      "id": "neg_001_zero_noise",
+      "files": [
+        "neg_001_zero_noise/ac_stim_phase_selector.va"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    },
+    {
+      "id": "neg_002_wrong_label",
+      "files": [
+        "neg_002_wrong_label/ac_stim_phase_selector.va"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    },
+    {
+      "id": "neg_003_disable_analysis",
+      "files": [
+        "neg_003_disable_analysis/ac_stim_phase_selector.va"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    },
+    {
+      "id": "neg_004_wrong_metric",
+      "files": [
+        "neg_004_wrong_metric/ac_stim_phase_selector.va"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    },
+    {
+      "id": "neg_005_scale_output",
+      "files": [
+        "neg_005_scale_output/ac_stim_phase_selector.va"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    }
+  ]
+}

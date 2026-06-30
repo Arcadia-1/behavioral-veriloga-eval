@@ -4213,6 +4213,174 @@
       "title": "Mixed Wreal Logic Select Driver",
       "syntax_focus": "Use logic select over wreal values and drive electrical output.",
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "361-white-noise-voltage-source": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_361_white_noise_voltage_source",
+      "level": "NA",
+      "target": [
+        "white_noise_voltage_source.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "White Noise Voltage Source",
+      "syntax_focus": "Use white_noise() as a voltage-domain behavioral noise source.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "362-white-noise-gated-source": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_362_white_noise_gated_source",
+      "level": "NA",
+      "target": [
+        "white_noise_gated_source.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "White Noise Gated Source",
+      "syntax_focus": "Gate white_noise() with a behavioral control voltage.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "363-flicker-noise-voltage-source": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_363_flicker_noise_voltage_source",
+      "level": "NA",
+      "target": [
+        "flicker_noise_voltage_source.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Flicker Noise Voltage Source",
+      "syntax_focus": "Use flicker_noise() as a behavioral 1/f noise contribution.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "364-flicker-noise-corner-selector": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_364_flicker_noise_corner_selector",
+      "level": "NA",
+      "target": [
+        "flicker_noise_corner_selector.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Flicker Noise Corner Selector",
+      "syntax_focus": "Select flicker_noise() strength with a voltage-domain control.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "365-noise-table-voltage-shaper": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_365_noise_table_voltage_shaper",
+      "level": "NA",
+      "target": [
+        "noise_table_voltage_shaper.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Noise Table Voltage Shaper",
+      "syntax_focus": "Use noise_table() as a table-defined behavioral noise source.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "366-noise-table-gated-shaper": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_366_noise_table_gated_shaper",
+      "level": "NA",
+      "target": [
+        "noise_table_gated_shaper.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Noise Table Gated Shaper",
+      "syntax_focus": "Gate a noise_table() contribution.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "367-analysis-dependent-dc-tran-mode": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_367_analysis_dependent_dc_tran_mode",
+      "level": "NA",
+      "target": [
+        "analysis_dependent_dc_tran_mode.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Dependent Dc Tran Mode",
+      "syntax_focus": "Use analysis() to choose DC versus transient behavior.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "368-analysis-dependent-noise-enable": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_368_analysis_dependent_noise_enable",
+      "level": "NA",
+      "target": [
+        "analysis_dependent_noise_enable.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Dependent Noise Enable",
+      "syntax_focus": "Use analysis() to enable noise contribution only in noise analysis.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "369-ac-stim-small-signal-source": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_369_ac_stim_small_signal_source",
+      "level": "NA",
+      "target": [
+        "ac_stim_small_signal_source.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Ac Stim Small Signal Source",
+      "syntax_focus": "Use ac_stim() for small-signal AC stimulus while retaining transient behavior.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "370-ac-stim-phase-selector": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_370_ac_stim_phase_selector",
+      "level": "NA",
+      "target": [
+        "ac_stim_phase_selector.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Ac Stim Phase Selector",
+      "syntax_focus": "Select ac_stim() phase from a behavioral control voltage.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "371-combined-white-flicker-noise": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_371_combined_white_flicker_noise",
+      "level": "NA",
+      "target": [
+        "combined_white_flicker_noise.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Combined White Flicker Noise",
+      "syntax_focus": "Combine white_noise() and flicker_noise() in one behavioral source.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "372-analysis-aware-noise-metric": {
+      "category": "veriloga_noise_analysis_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_372_analysis_aware_noise_metric",
+      "level": "NA",
+      "target": [
+        "analysis_aware_noise_metric.va"
+      ],
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Aware Noise Metric",
+      "syntax_focus": "Use analysis() and noise contribution while maintaining a transient metric output.",
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
     }
   }
 }

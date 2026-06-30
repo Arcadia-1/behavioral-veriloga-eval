@@ -5904,3 +5904,164 @@
       - "I("
   notes:
     - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+361-white-noise-voltage-source: |
+  version: 1
+  task_id: v3_361_white_noise_voltage_source
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "white_noise"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+362-white-noise-gated-source: |
+  version: 1
+  task_id: v3_362_white_noise_gated_source
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "white_noise"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+363-flicker-noise-voltage-source: |
+  version: 1
+  task_id: v3_363_flicker_noise_voltage_source
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "flicker_noise"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+364-flicker-noise-corner-selector: |
+  version: 1
+  task_id: v3_364_flicker_noise_corner_selector
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "flicker_noise"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+365-noise-table-voltage-shaper: |
+  version: 1
+  task_id: v3_365_noise_table_voltage_shaper
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "noise_table"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+366-noise-table-gated-shaper: |
+  version: 1
+  task_id: v3_366_noise_table_gated_shaper
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "noise_table"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+367-analysis-dependent-dc-tran-mode: |
+  version: 1
+  task_id: v3_367_analysis_dependent_dc_tran_mode
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "analysis("
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+368-analysis-dependent-noise-enable: |
+  version: 1
+  task_id: v3_368_analysis_dependent_noise_enable
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "white_noise"
+      - "analysis("
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+369-ac-stim-small-signal-source: |
+  version: 1
+  task_id: v3_369_ac_stim_small_signal_source
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "analysis("
+      - "ac_stim"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+370-ac-stim-phase-selector: |
+  version: 1
+  task_id: v3_370_ac_stim_phase_selector
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "analysis("
+      - "ac_stim"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+371-combined-white-flicker-noise: |
+  version: 1
+  task_id: v3_371_combined_white_flicker_noise
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "white_noise"
+      - "flicker_noise"
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+372-analysis-aware-noise-metric: |
+  version: 1
+  task_id: v3_372_analysis_aware_noise_metric
+  backend: noise_analysis_capable
+  status: noise-analysis-candidate
+  checker: noise_analysis_language_feature_contract
+  syntax:
+    must_include:
+      - "white_noise"
+      - "analysis("
+    must_not_include:
+      - "I("
+  notes:
+    - "Noise/analysis extension task; not part of original full-300 transient certification claim."

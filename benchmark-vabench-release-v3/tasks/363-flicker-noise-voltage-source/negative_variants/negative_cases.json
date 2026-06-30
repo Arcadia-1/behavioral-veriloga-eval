@@ -1,0 +1,37 @@
+[
+  {
+    "id": "neg_001_zero_noise",
+    "files": [
+      "neg_001_zero_noise/flicker_noise_voltage_source.va"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+  },
+  {
+    "id": "neg_002_wrong_label",
+    "files": [
+      "neg_002_wrong_label/flicker_noise_voltage_source.va"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+  },
+  {
+    "id": "neg_003_disable_analysis",
+    "files": [
+      "neg_003_disable_analysis/flicker_noise_voltage_source.va"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+  },
+  {
+    "id": "neg_004_wrong_metric",
+    "files": [
+      "neg_004_wrong_metric/flicker_noise_voltage_source.va"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+  },
+  {
+    "id": "neg_005_scale_output",
+    "files": [
+      "neg_005_scale_output/flicker_noise_voltage_source.va"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+  }
+]

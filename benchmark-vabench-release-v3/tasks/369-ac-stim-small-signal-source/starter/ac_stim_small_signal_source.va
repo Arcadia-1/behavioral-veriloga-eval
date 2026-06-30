@@ -1,0 +1,18 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module ac_stim_small_signal_source (
+    input  electrical ctrl,
+    input  electrical clk,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real metric_v;
+analog begin
+    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(metric) <+ transition(0.0, 0.0, tr, tr);
+end
+endmodule

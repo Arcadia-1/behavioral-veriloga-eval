@@ -61,3 +61,19 @@ These rows are marked `ams-mixed-signal-candidate`. EVAS currently parses and
 compiles some old-style `wreal`/`logic` declaration plus `assign` forms, but does
 not support `always` blocks and does not accept ANSI-style typed digital ports.
 Track EVAS support before promoting these rows into any certified suite.
+
+## Noise And Analysis Extension
+
+Tasks `361` through `372` add Verilog-A noise and analysis-dependent source
+functions from the Cadence language reference:
+
+- `white_noise()`
+- `flicker_noise()`
+- `noise_table()`
+- `analysis()`
+- `ac_stim()`
+
+These rows are marked `noise-analysis-candidate`. They are behavioral and
+voltage-domain, but they may require AC/noise-capable simulator certification.
+EVAS currently parses these functions but rejects them during backend compile;
+track EVAS issue #23 before EVAS promotion.
