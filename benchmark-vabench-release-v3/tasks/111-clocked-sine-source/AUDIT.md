@@ -14,8 +14,10 @@
 - Visible/hidden coverage: visible and hidden flow decks are distinct and both exercise the staged gain-extraction flow around `vin_src.va`.
 - Checker strength: the current checker is a flow-level gain-extraction checker. It can reject source failures that break the differential measurement flow, but it is not a complete standalone `vin_src.va` functional checker.
 - Negatives: 4/4 concrete flow-staged variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
-- EVAS evidence: hidden gold PASS in `external-evidence/v3_batch1_gold_111_after_support_staging.json`; hidden negatives 4/4 behavioral rejections in `external-evidence/v3_batch1_negatives_evas.json`.
-- Spectre evidence: visible gold PASS in `external-evidence/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `external-evidence/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `external-evidence/v3_batch1_spectre_hidden_negatives.json`.
+- EVAS evidence: private reference PASS; private negatives 4/4 behavioral
+  rejections.
+- Spectre evidence: visible reference PASS; private reference PASS; private
+  negatives 4/4 `NEGATIVE_REJECTED`.
 - AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
 ## Residual Risk

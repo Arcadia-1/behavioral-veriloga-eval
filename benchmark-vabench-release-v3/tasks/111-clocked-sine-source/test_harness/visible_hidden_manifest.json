@@ -1,8 +1,6 @@
 {
   "task_id": "v3_111_clocked_sine_source",
-  "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
-  "source_form": "support_component",
-  "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+  "checker_id": "v3_111_clocked_sine_source",
   "primary_target": "vin_src.va",
   "artifact_targets": [
     "vin_src.va"
@@ -15,5 +13,5 @@
   "hidden_testbench": "tb_gain_extraction_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
   "gate1_label": "l2_support_component",
-  "status": "support_l2_flow_hidden_coverage_repair_pending_recertification"
+  "status": "support_l2_flow_private_coverage_repair_pending_recertification"
 }
