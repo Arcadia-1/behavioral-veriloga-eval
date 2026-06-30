@@ -1,4 +1,4 @@
-# Honest SOP Audit: Task 099 Dither Adder
+# Task 099 Audit
 
 ## Scope
 
@@ -11,7 +11,7 @@ dither injection block that can be used inside measurement flows such as
 
 - Useful scenario: accepted. Differential dither injection is a recognizable AMS support function for decorrelation, calibration, and measurement excitation.
 - Reasonable task: accepted. The public prompt names only the target module, interface, polarity rule, dither amplitude parameter, and common-mode invariant.
-- Complete tests: pass for the current reviewed slice. Hidden and visible decks
+- Complete tests: pass for the current reviewed slice. Private and visible decks
   are no longer byte-identical and exercise different `DITHER_AMP`/input
   trajectories.
 - Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks dither sign plus common-mode preservation, not the enclosing gain-extraction flow.
@@ -19,10 +19,10 @@ dither injection block that can be used inside measurement flows such as
 ## Checker And Evidence
 
 - Checker id: `v3_099_dither_adder`
-- Hidden bench: `test_hidden/tests/tb_dither_adder_ref.scs`
+- Private bench: `test_hidden/tests/tb_dither_adder_ref.scs`
 - Concrete negatives: `neg_001_zero`, `neg_002_wrong_polarity`, `neg_003_common_mode_shift`, `neg_004_fixed_positive_dither`
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: private
+  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
 - Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk

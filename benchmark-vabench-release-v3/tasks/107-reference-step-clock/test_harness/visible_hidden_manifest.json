@@ -1,13 +1,11 @@
 {
   "task_id": "v3_107_reference_step_clock",
-  "source_task": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
-  "source_form": "tb",
-  "source_checker_id": "v3_reference_step_clock",
+  "checker_id": "v3_reference_step_clock",
   "primary_target": "ref_step_clk.va",
   "artifact_targets": [
     "ref_step_clk.va"
   ],
   "hidden_testbench": "hidden.scs",
   "visible_smoke": "visible.scs",
-  "status": "standalone_checker_evas_gold_and_negatives_pass_spectre_pending"
+  "status": "standalone_checker_evas_reference_and_negatives_pass_spectre_pending"
 }

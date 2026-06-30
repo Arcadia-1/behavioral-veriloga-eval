@@ -1,4 +1,4 @@
-# Honest SOP Audit: Task 101 Fixed Gain Amplifier
+# Task 101 Audit
 
 ## Scope
 
@@ -11,17 +11,17 @@ differential amplifier that can support composed measurement flows such as
 
 - Useful scenario: accepted. Fixed-gain differential amplification is a recognizable reusable AMS behavioral block.
 - Reasonable task: accepted. The public prompt names only the target module, interface, gain parameter, positive polarity, and output common-mode invariant.
-- Complete tests: pass for the current reviewed slice. Hidden and visible decks
+- Complete tests: pass for the current reviewed slice. Private and visible decks
   are no longer byte-identical and use different `ACTUAL_GAIN` values.
 - Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks requested gain, polarity, and common-mode rather than the enclosing gain-extraction flow.
 
 ## Checker And Evidence
 
 - Checker id: `v3_101_fixed_gain_amplifier`
-- Hidden bench: `test_hidden/tests/tb_gain_amp_fixed_ref.scs`
+- Private bench: `test_hidden/tests/tb_gain_amp_fixed_ref.scs`
 - Concrete negatives: `neg_001_zero`, `neg_002_unity_gain`, `neg_003_inverted_polarity`, `neg_004_ignores_gain_parameter`
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: private
+  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
 - Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk

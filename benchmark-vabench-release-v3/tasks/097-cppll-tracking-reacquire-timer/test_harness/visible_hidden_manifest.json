@@ -1,8 +1,6 @@
 {
   "task_id": "v3_097_cppll_tracking_reacquire_timer",
-  "source_task": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_cppll_tracking_and_frequency_step_reacquire_flow_tb",
+  "checker_id": "v3_097_cppll_tracking_reacquire_timer",
   "primary_target": "cppll_timer_ref.va",
   "graded_targets": [
     "cppll_timer_ref.va"
@@ -16,5 +14,5 @@
   ],
   "hidden_testbench": "tb_cppll_freq_step_reacquire_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "primary_dut_with_support_artifact_evas_gold_visible_and_negatives_pass_spectre_pending"
+  "status": "primary_dut_with_support_artifact_evas_reference_visible_and_negatives_pass_spectre_pending"
 }

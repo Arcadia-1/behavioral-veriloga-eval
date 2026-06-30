@@ -1,8 +1,6 @@
 {
   "task_id": "v3_101_fixed_gain_amplifier",
-  "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
-  "source_form": "component",
-  "source_checker_id": "v3_101_fixed_gain_amplifier",
+  "checker_id": "v3_101_fixed_gain_amplifier",
   "primary_target": "gain_amp_fixed.va",
   "artifact_targets": [
     "gain_amp_fixed.va"

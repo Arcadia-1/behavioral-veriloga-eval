@@ -1,8 +1,6 @@
 {
   "task_id": "v3_099_dither_adder",
-  "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
-  "source_form": "component",
-  "source_checker_id": "v3_099_dither_adder",
+  "checker_id": "v3_099_dither_adder",
   "primary_target": "dither_adder.va",
   "artifact_targets": [
     "dither_adder.va"
