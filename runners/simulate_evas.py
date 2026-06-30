@@ -3294,6 +3294,46 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         "v3_077_configurable_pulse_train_generator": formal_utility_trace_signals["configurable_pulse_train"],
         "v3_078_staircase_dac_stimulus_8b": formal_utility_trace_signals["staircase_dac_stimulus_8b"],
         "v3_079_jittered_clock_source_deterministic": formal_utility_trace_signals["deterministic_jittered_clock"],
+        "v3_002_capacitive_weighted_sar_feedback_dac": frozenset(
+            {"time", "clk", "cal0", "cal1", "vdac_p", "vdac_n"}
+        )
+        | frozenset({f"d{idx}" for idx in range(10)}),
+        "v3_051_thermometer_to_binary_encoder_8b": formal_utility_trace_signals[
+            "thermometer_to_binary_encoder_8b"
+        ],
+        "v3_087_lfsr_prbs_generator": frozenset({"time", "clk", "rst_n", "en", "serial_out"})
+        | frozenset({f"state_{idx}" for idx in range(7)}),
+        "v3_108_reference_startup_enable_flow": frozenset(
+            {"time", "clk", "rst", "out", "metric", "vdd_in", "en"}
+        ),
+        "v3_243_l2_sar_logic_7b": frozenset({"time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck"})
+        | frozenset({f"do{idx}" for idx in range(7)})
+        | frozenset({f"dctrlp{idx}" for idx in range(1, 7)})
+        | frozenset({f"dctrln{idx}" for idx in range(1, 7)}),
+        "v3_244_l3_sar2_logic_7b": frozenset({"time", "clk", "dp", "dn", "cmpck"})
+        | frozenset({f"do{idx}" for idx in range(7)})
+        | frozenset({f"sp{idx}" for idx in range(1, 7)})
+        | frozenset({f"sn{idx}" for idx in range(1, 7)}),
+        "v3_245_cdac_8b_monodown": frozenset({"time", "vin", "clks", "vres"})
+        | frozenset({f"dctrl{idx}" for idx in range(1, 8)}),
+        "v3_246_va_dac_6b_se": frozenset({"time", "rdy", "aout"})
+        | frozenset({f"din{idx}" for idx in range(6)}),
+        "v3_250_dac_restore_7bit_clocked": frozenset({"time", "clk", "vout"})
+        | frozenset({f"d{idx}" for idx in range(7)}),
+        "v3_251_dac_restore_6bit_1p8": frozenset({"time", "clk", "vout"})
+        | frozenset({f"d{idx}" for idx in range(1, 7)}),
+        "v3_253_sum5_signed_sar_weight": frozenset({"time", "out"})
+        | frozenset({f"d{idx}" for idx in range(1, 6)}),
+        "v3_254_lt_readout_sar4": frozenset({"time", "vout", "gnd"})
+        | frozenset({f"d{idx}" for idx in range(4)}),
+        "v3_255_tool_4bit_sar_signed_dac": frozenset({"time", "sh", "aout"})
+        | frozenset({f"d{idx}" for idx in range(4)}),
+        "v3_258_lt_read_sar6b_weighted": frozenset({"time", "vout", "gnd"})
+        | frozenset({f"d{idx}" for idx in range(6)}),
+        "v3_259_lt_read_sar7b_weighted": frozenset({"time", "vout", "gnd"})
+        | frozenset({f"d{idx}" for idx in range(8)}),
+        "v3_270_therm8_to_bin4_count": frozenset({"time", "b0", "b1", "b2", "b3"})
+        | frozenset({f"th{idx}" for idx in range(8)}),
     })
     if task_id in formal_utility_trace_signals:
         return formal_utility_trace_signals[task_id] | _extra_trace_signals_for_checker(task_id)
