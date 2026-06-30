@@ -1,81 +1,28 @@
 # First Order Lowpass
 
-## Task Contract
+Implement `first_order_lowpass.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband Signal Conditioning
-- Base function: First-order lowpass
-- Domain: `voltage`
-- Target artifact(s): `first_order_lowpass.va`
-- Supplied/reference support artifact(s): `tb_first_order_lowpass_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
+## Public Interface
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
-
-## Public Verilog-A Interface
-
-- `first_order_lowpass.va` declares module `first_order_lowpass` with positional ports: `vin`, `vout`.
+Declare module `first_order_lowpass(vin, vout)` with scalar electrical
+voltage-domain ports.
 
 ## Public Parameter Contract
 
-The starter exposes public parameters `alpha` and `tr`:
+- `alpha`: low-pass update coefficient, default `0.025`.
+- `tr`: output transition smoothing time, default `200p`.
 
-- `alpha`: dimensionless recurrence coefficient, default `0.025`. If the
-  implementation uses the starter-style discrete recurrence, this parameter
-  controls the per-update movement toward `vin`.
-- `tr`: output transition smoothing time, default `200 ps`.
+## Functional Contract
 
-Use a timer-updated internal state or an equivalent event-driven discretization
-that produces the same public first-order settling behavior. The exact timer
-update interval, internal variable names, and recurrence algebra are not
-checker-facing API, but parameter overrides should remain meaningful when the
-testbench supplies legal nearby values.
+- Initialize the internal output state at `0 V`.
+- Update the state on a `500 ps` timer as
+  `y = y + alpha * (V(vin) - y)`.
+- Drive `vout` from the internal state with a smoothed voltage contribution.
+- The step response should be monotone, bounded by the input level, and visibly
+  slower than an instantaneous copy of `vin`.
 
-## Public Scenario And Observable Contract
+## Modeling Constraints
 
-The supplied testbenches provide the exact stimulus and transient analysis
-settings. The intended public scenario is a rising input step from about `0 V`
-to about `0.8 V`, followed by a transient window long enough to observe
-first-order settling.
-
-The evaluator expects these exact public scalar observables:
-
-- `vin`
-- `vout`
-
-## Public Behavior Checks
-
-- `input_step_exercised`
-- `monotone_first_order_step_response`
-- `lagged_response_not_passthrough`
-- `vout_reaches_expected_late_level`
-- `bounded_without_overshoot`
-
-## Output Contract
-
-Return exactly one source artifact named `first_order_lowpass.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Write a pure voltage-domain Verilog-A module for a timer-discretized first-order
-lowpass: a single internal state, a step input, and a measurable settling
-trajectory.
-
-The DUT module is `first_order_lowpass` with ports `vin, vout`. Both ports are electrical voltage nodes.
-
-Required behavior:
-- Use a timer-updated internal real state to implement a stable finite-bandwidth
-  first-order response with an effective time constant on the order of tens of
-  nanoseconds for the supplied step stimulus.
-- Drive `vout` from the internal state with `transition()`.
-- The response must be monotone, bounded, and visibly slower than an
-  instantaneous copy. Within several tens of nanoseconds after the step, `vout`
-  should have crossed a substantial fraction of the final level; by the end of
-  the transient window it should be close to the final input level.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `first_order_lowpass.va`. Do not emit a Spectre testbench, checker
+logic, private test hooks, or simulator-private side channels. Use voltage
+contributions only; do not use current contributions, `ddt()`, or `idt()`.

@@ -2,7 +2,6 @@
   "task": "284-window-comparator-testbench",
   "form": "tb",
   "status": "valid_variant_needs_counting_policy",
-  "source": "v2/vbr1_l1_window_comparator_detector:tb",
   "visible": {
     "instruction": "instruction.md",
     "starter_files": [
@@ -12,7 +11,7 @@
     "public_smoke": {
       "testbench": "test_visible/tests/tb_visible_smoke.scs",
       "hidden_dependency": false,
-      "note": "Shorter public smoke example; not byte-identical to the full hidden/gold target testbench."
+      "note": "Shorter public smoke example; not byte-identical to the full private reference testbench."
     }
   },
   "hidden": {
@@ -20,7 +19,7 @@
       "test_hidden/tests/tb_window_comparator_ref.scs"
     ],
     "checker": "test_harness/checks.yaml",
-    "gold": [
+    "reference": [
       "solution/tb_window_comparator_ref.scs",
       "solution/window_comparator_ref.va"
     ],

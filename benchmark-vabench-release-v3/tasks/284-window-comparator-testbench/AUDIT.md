@@ -1,6 +1,6 @@
 # Task 284 Audit
 
-Absorbs v2 `vbr1_l1_window_comparator_detector:tb` into v3.
+Task 284 is a testbench-generation task for the window-comparator detector.
 
 ## SOP Review
 
@@ -16,14 +16,15 @@ Absorbs v2 `vbr1_l1_window_comparator_detector:tb` into v3.
 - Complete tests: pass for the current reviewed slice after adding targeted
   negatives and repairing Spectre-legal negative fixtures.
   The visible smoke bench is now a shorter public example rather than a byte
-  copy of the full hidden/gold testbench.
+  copy of the full private reference testbench.
 - Fair evaluation: pass. The checker evaluates only public `vin/out` behavior:
   below-window low, above-window low, rising-side inside-window high, and
   falling-side inside-window high.
 
 ## Evidence
 
-- Hidden gold: PASS under EVAS with `v3_284_window_comparator_testbench`.
+- Reference implementation: PASS under EVAS with
+  `v3_284_window_comparator_testbench`.
 - Concrete negative variants: 4/4 compile and fail with
   `FAIL_SIM_CORRECTNESS`:
   - `neg_001_no_window_sweep`: input never visits the comparator window.
@@ -31,7 +32,7 @@ Absorbs v2 `vbr1_l1_window_comparator_detector:tb` into v3.
   - `neg_003_no_falling_window`: no falling-side in-window region.
   - `neg_004_no_below_window`: no below-window region.
 - Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
 - Gate 2 Cadence status: `cadence_lint_pending`.
 
 ## Remaining Risk
