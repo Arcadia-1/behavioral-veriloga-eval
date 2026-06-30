@@ -1,0 +1,7 @@
+module wreal_two_input_summer(a, b, sel, y);
+    input a, b, sel;
+    output y;
+    wreal a, b, sel, y;
+    // TODO: implement the requested Verilog-AMS mixed-signal behavior.
+    assign y = 0.0;
+endmodule

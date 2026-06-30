@@ -1,0 +1,7 @@
+module always_counter_two_bit(clk, rst, d, en, q);
+    input clk, rst, d, en;
+    output q;
+    logic clk, rst, d, en, q;
+    logic [1:0] count;
+    always @(posedge clk) begin if (rst) count = 2'b00; else count = count + 1; end assign q = count[1];
+endmodule

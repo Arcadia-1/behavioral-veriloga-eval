@@ -3933,6 +3933,286 @@
       "title": "Bound Step Clock Guard",
       "syntax_focus": "Use $bound_step for time-step control.",
       "certification_scope": "extension_not_part_of_original_full_300_claim"
+    },
+    "341-wreal-gain-pass-through": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_341_wreal_gain_pass_through",
+      "level": "AMS",
+      "target": [
+        "wreal_gain_pass_through.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Gain Pass Through",
+      "syntax_focus": "Use wreal nets and continuous assign for real-valued pass-through gain.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "342-wreal-two-input-summer": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_342_wreal_two_input_summer",
+      "level": "AMS",
+      "target": [
+        "wreal_two_input_summer.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Two Input Summer",
+      "syntax_focus": "Use wreal nets and continuous assign for a real-valued two-input summer.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "343-wreal-threshold-flag": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_343_wreal_threshold_flag",
+      "level": "AMS",
+      "target": [
+        "wreal_threshold_flag.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Threshold Flag",
+      "syntax_focus": "Use wreal threshold logic with continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "344-wreal-clamped-mux": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_344_wreal_clamped_mux",
+      "level": "AMS",
+      "target": [
+        "wreal_clamped_mux.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Clamped Mux",
+      "syntax_focus": "Use wreal select behavior with continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "345-wreal-scale-offset": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_345_wreal_scale_offset",
+      "level": "AMS",
+      "target": [
+        "wreal_scale_offset.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Scale Offset",
+      "syntax_focus": "Use wreal affine scaling with continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "346-logic-assign-inverter": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_346_logic_assign_inverter",
+      "level": "AMS",
+      "target": [
+        "logic_assign_inverter.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Inverter",
+      "syntax_focus": "Use logic nets and continuous assign for inversion.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "347-logic-assign-and-or": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_347_logic_assign_and_or",
+      "level": "AMS",
+      "target": [
+        "logic_assign_and_or.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign And Or",
+      "syntax_focus": "Use logic nets and bitwise continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "348-logic-assign-xor-flag": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_348_logic_assign_xor_flag",
+      "level": "AMS",
+      "target": [
+        "logic_assign_xor_flag.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Xor Flag",
+      "syntax_focus": "Use logic XOR with continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "349-logic-assign-priority-mux": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_349_logic_assign_priority_mux",
+      "level": "AMS",
+      "target": [
+        "logic_assign_priority_mux.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Priority Mux",
+      "syntax_focus": "Use logic ternary mux with continuous assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "350-logic-assign-reduction": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_350_logic_assign_reduction",
+      "level": "AMS",
+      "target": [
+        "logic_assign_reduction.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Reduction",
+      "syntax_focus": "Use logic reduction-like combinational assign.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "351-always-posedged-dff": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_351_always_posedged_dff",
+      "level": "AMS",
+      "target": [
+        "always_posedged_dff.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Posedged Dff",
+      "syntax_focus": "Use always @(posedge clk) for a logic DFF.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "352-always-negedge-sampler": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_352_always_negedge_sampler",
+      "level": "AMS",
+      "target": [
+        "always_negedge_sampler.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Negedge Sampler",
+      "syntax_focus": "Use always @(negedge clk) for a logic sampler.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "353-always-resettable-toggle": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_353_always_resettable_toggle",
+      "level": "AMS",
+      "target": [
+        "always_resettable_toggle.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Resettable Toggle",
+      "syntax_focus": "Use edge-triggered always with async reset.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "354-always-counter-two-bit": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_354_always_counter_two_bit",
+      "level": "AMS",
+      "target": [
+        "always_counter_two_bit.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Counter Two Bit",
+      "syntax_focus": "Use always block with small digital counter state.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "355-always-enable-hold": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_355_always_enable_hold",
+      "level": "AMS",
+      "target": [
+        "always_enable_hold.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Enable Hold",
+      "syntax_focus": "Use always block with enable/hold semantics.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "356-mixed-logic-enable-voltage-driver": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_356_mixed_logic_enable_voltage_driver",
+      "level": "AMS",
+      "target": [
+        "mixed_logic_enable_voltage_driver.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Logic Enable Voltage Driver",
+      "syntax_focus": "Use logic control to gate an electrical voltage-domain output.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "357-mixed-wreal-to-electrical-buffer": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_357_mixed_wreal_to_electrical_buffer",
+      "level": "AMS",
+      "target": [
+        "mixed_wreal_to_electrical_buffer.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Wreal To Electrical Buffer",
+      "syntax_focus": "Bridge wreal value into an electrical voltage output.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "358-mixed-electrical-threshold-logic-flag": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_358_mixed_electrical_threshold_logic_flag",
+      "level": "AMS",
+      "target": [
+        "mixed_electrical_threshold_logic_flag.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Electrical Threshold Logic Flag",
+      "syntax_focus": "Use electrical thresholding to produce logic-like voltage behavior.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "359-mixed-logic-clocked-voltage-sampler": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_359_mixed_logic_clocked_voltage_sampler",
+      "level": "AMS",
+      "target": [
+        "mixed_logic_clocked_voltage_sampler.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Logic Clocked Voltage Sampler",
+      "syntax_focus": "Combine logic always sampling with analog voltage output.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
+    },
+    "360-mixed-wreal-logic-select-driver": {
+      "category": "verilog_ams_mixed_signal",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_360_mixed_wreal_logic_select_driver",
+      "level": "AMS",
+      "target": [
+        "mixed_wreal_logic_select_driver.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Wreal Logic Select Driver",
+      "syntax_focus": "Use logic select over wreal values and drive electrical output.",
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
     }
   }
 }

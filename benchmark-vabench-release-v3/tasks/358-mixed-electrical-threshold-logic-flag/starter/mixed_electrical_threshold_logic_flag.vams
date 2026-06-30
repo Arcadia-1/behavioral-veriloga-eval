@@ -1,0 +1,7 @@
+module mixed_electrical_threshold_logic_flag(a, b, sel, y);
+    input a, b, sel;
+    output y;
+    wreal a, b, sel, y;
+    // TODO: implement the requested Verilog-AMS mixed-signal behavior.
+    assign y = 0.0;
+endmodule

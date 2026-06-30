@@ -1,0 +1,7 @@
+module always_enable_hold(clk, rst, d, en, q);
+    input clk, rst, d, en;
+    output q;
+    logic clk, rst, d, en, q;
+
+    always @(negedge clk) begin if (rst) q = 1'b0; else if (en) q = d; end
+endmodule

@@ -14,7 +14,8 @@ benchmark-vabench-release-v3/
 
 Use `benchmark-vabench-release-v3/tasks/` as the authoritative public task
 root for new evaluation work. Tasks `001`-`300` are the original certified
-full-300 surface; tasks `301` and above are language-semantics extension
+full-300 surface; tasks `301`-`340` are Verilog-A language-semantics extension
+candidates and tasks `341` and above are Verilog-AMS mixed-signal extension
 candidates that must be certified separately before being included in full-suite
 claims. The release-level indexes are:
 

@@ -5619,3 +5619,288 @@
       - "I("
   notes:
     - "Extension task; not part of the original full-300 certification claim."
+341-wreal-gain-pass-through: |
+  version: 1
+  task_id: v3_341_wreal_gain_pass_through
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+342-wreal-two-input-summer: |
+  version: 1
+  task_id: v3_342_wreal_two_input_summer
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+343-wreal-threshold-flag: |
+  version: 1
+  task_id: v3_343_wreal_threshold_flag
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+344-wreal-clamped-mux: |
+  version: 1
+  task_id: v3_344_wreal_clamped_mux
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+345-wreal-scale-offset: |
+  version: 1
+  task_id: v3_345_wreal_scale_offset
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+346-logic-assign-inverter: |
+  version: 1
+  task_id: v3_346_logic_assign_inverter
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+347-logic-assign-and-or: |
+  version: 1
+  task_id: v3_347_logic_assign_and_or
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+348-logic-assign-xor-flag: |
+  version: 1
+  task_id: v3_348_logic_assign_xor_flag
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+349-logic-assign-priority-mux: |
+  version: 1
+  task_id: v3_349_logic_assign_priority_mux
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+350-logic-assign-reduction: |
+  version: 1
+  task_id: v3_350_logic_assign_reduction
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+351-always-posedged-dff: |
+  version: 1
+  task_id: v3_351_always_posedged_dff
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+352-always-negedge-sampler: |
+  version: 1
+  task_id: v3_352_always_negedge_sampler
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+353-always-resettable-toggle: |
+  version: 1
+  task_id: v3_353_always_resettable_toggle
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+354-always-counter-two-bit: |
+  version: 1
+  task_id: v3_354_always_counter_two_bit
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "assign"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+355-always-enable-hold: |
+  version: 1
+  task_id: v3_355_always_enable_hold
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "logic"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+356-mixed-logic-enable-voltage-driver: |
+  version: 1
+  task_id: v3_356_mixed_logic_enable_voltage_driver
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+357-mixed-wreal-to-electrical-buffer: |
+  version: 1
+  task_id: v3_357_mixed_wreal_to_electrical_buffer
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+358-mixed-electrical-threshold-logic-flag: |
+  version: 1
+  task_id: v3_358_mixed_electrical_threshold_logic_flag
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "logic"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+359-mixed-logic-clocked-voltage-sampler: |
+  version: 1
+  task_id: v3_359_mixed_logic_clocked_voltage_sampler
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "logic"
+      - "always"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+360-mixed-wreal-logic-select-driver: |
+  version: 1
+  task_id: v3_360_mixed_wreal_logic_select_driver
+  backend: ams_mixed_signal
+  status: ams-mixed-signal-candidate
+  checker: ams_language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+      - "logic"
+      - "assign"
+    must_not_include:
+      - "I("
+  notes:
+    - "AMS mixed-signal extension task; not part of original full-300 certification claim."

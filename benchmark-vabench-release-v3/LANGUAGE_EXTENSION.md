@@ -46,3 +46,18 @@ Current EVAS compile scan:
 Before these tasks are included in any paper-facing full-suite claim, run
 dedicated EVAS/Spectre behavior certification and promote only the rows whose
 gold solutions, hidden checks, and five negative variants are all certified.
+
+## AMS Mixed-Signal Extension
+
+Tasks `341` through `360` add Verilog-AMS digital/mixed-signal constructs that
+are outside pure Verilog-A but are important for practical behavioral modeling:
+
+- `341`-`345`: `wreal` nets with continuous `assign`.
+- `346`-`350`: `logic` nets with combinational continuous `assign`.
+- `351`-`355`: edge-triggered `always` blocks for digital sequential behavior.
+- `356`-`360`: mixed `logic`/`wreal`/`electrical` bridge-style behavioral tasks.
+
+These rows are marked `ams-mixed-signal-candidate`. EVAS currently parses and
+compiles some old-style `wreal`/`logic` declaration plus `assign` forms, but does
+not support `always` blocks and does not accept ANSI-style typed digital ports.
+Track EVAS support before promoting these rows into any certified suite.
