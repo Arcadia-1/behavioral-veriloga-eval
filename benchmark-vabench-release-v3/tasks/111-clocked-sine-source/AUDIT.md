@@ -1,22 +1,23 @@
-# Honest SOP Audit: Task 111 Clocked Sine Source
+# Two-Gate Audit: Task 111 Clocked Sine Source
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one primary Verilog-A DUT artifact, `vin_src.va`, migrated from `vbr1_l2_gain_extraction_convergence_measurement_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in `task.toml` are supplied by the harness when needed by the original system testbench.
+- Label: `l2_support_component`.
+- Human-confirmed judgment: keep this row as support for the gain-extraction measurement flow, not as standalone L1 credit. The clocked sine source has independent usefulness, but the current evaluation still relies on the larger gain-extraction harness rather than a task-specific source checker.
+- Public contract: only `vin_src.va` is the support component under review; supplied support artifacts are staged by the harness.
+- Artifact boundary: `task.toml` target remains `vin_src.va`, with `lfsr.va`, `dither_adder.va`, and `gain_amp_fixed.va` listed as support artifacts. The EVAS runner now stages these support artifacts for negative-variant runs instead of treating them as solver targets.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready` for the audited support-L2 staging claim, not for standalone L1 promotion.
+- Prompt hygiene: the prompt describes the clocked source support behavior without private checker or provenance wording.
+- Visible/hidden coverage: visible and hidden flow decks are distinct and both exercise the staged gain-extraction flow around `vin_src.va`.
+- Checker strength: the current checker is a flow-level gain-extraction checker. It can reject source failures that break the differential measurement flow, but it is not a complete standalone `vin_src.va` functional checker.
+- Negatives: 4/4 concrete flow-staged variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
+- EVAS evidence: hidden gold PASS in `external-evidence/v3_batch1_gold_111_after_support_staging.json`; hidden negatives 4/4 behavioral rejections in `external-evidence/v3_batch1_negatives_evas.json`.
+- Spectre evidence: visible gold PASS in `external-evidence/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `external-evidence/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `external-evidence/v3_batch1_spectre_hidden_negatives.json`.
+- AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l2_gain_extraction_convergence_measurement_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Do not promote this row to independent L1 without a task-specific visible/hidden deck, checker, and negatives for `vin_src.va` itself. It is currently valid as a support component inside the measurement-flow family.

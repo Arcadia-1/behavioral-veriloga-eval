@@ -5,7 +5,7 @@ version = "v3"
 form = "dut"
 language = "verilog-a"
 simulator = "evas"
-category = "measurement_instrumentation_flows"
+category = "stimulus_source_generators"
 level = "L2"
 difficulty = "D2"
 instruction = "instruction.md"
@@ -17,4 +17,5 @@ solution_dir = "solution"
 negative_variants_dir = "negative_variants"
 
 [artifacts]
-target = ["vin_src.va", "lfsr.va", "dither_adder.va", "gain_amp_fixed.va"]
+target = ["vin_src.va"]
+support = ["lfsr.va", "dither_adder.va", "gain_amp_fixed.va"]

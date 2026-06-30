@@ -2,6 +2,21 @@
   {
     "id": "neg_001_zero",
     "target": "programmable_stimulus_sequencer.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero output/metric stub"
+  },
+  {
+    "id": "neg_002_flat_ramp",
+    "target": "programmable_stimulus_sequencer.va",
+    "intent": "ramp segment is flat"
+  },
+  {
+    "id": "neg_003_fixed_sine_not_chirp",
+    "target": "programmable_stimulus_sequencer.va",
+    "intent": "chirp segment is stuck at center"
+  },
+  {
+    "id": "neg_004_ignore_gate",
+    "target": "programmable_stimulus_sequencer.va",
+    "intent": "burst segment ignores gate low interval"
   }
 ]

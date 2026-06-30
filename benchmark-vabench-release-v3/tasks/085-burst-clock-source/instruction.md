@@ -1,85 +1,32 @@
-# Task: vbr1_l1_burst_clock_source:dut
+# Burst Clock Source
 
-## Release Task Contract
+Implement `clk_burst_gen.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Stimulus and Source Generators
-- Base function: Burst clock source
-- Domain: `voltage`
-- Target artifact(s): `clk_burst_gen.va`
-- Supplied/reference support artifact(s): `tb_clk_burst_gen_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
+Declare module `clk_burst_gen` with positional ports `CLK, RST_N, CLK_OUT`.
+All ports are electrical.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `div = 8`: burst repeat period in input-clock cycles. Values below 3 are out
+  of contract.
+- `vdd = 0.9 V`: high output level.
+- `vth = 0.45 V`: clock and reset threshold.
 
-- `clk_burst_gen.va` declares module `clk_burst_gen` with positional ports: `CLK`, `RST_N`, `CLK_OUT`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+`RST_N` is an active-low reset. While reset is asserted, restart the burst
+cycle counter and drive `CLK_OUT` low. After reset is released, detect rising
+crossings of `CLK` through `vth`. In each `div`-cycle frame, pass the input
+clock waveform to `CLK_OUT` for frame positions 0 and 1, then hold `CLK_OUT`
+low for the remaining frame positions. Repeat this frame pattern indefinitely.
 
-Public transient setting used by the release harness:
+Use voltage-domain event logic such as `@(cross(...,+1))`/`@(cross(...,-1))`
+and drive the output with `transition(...)`.
 
-```spectre
-tran tran stop=3000n maxstep=5n
-```
+## Modeling Constraints
 
-The release harness expects these exact public scalar observables:
-
-- `CLK`
-- `RST_N`
-- `CLK_OUT`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `clk_out_present`
-- `clk_out_duty_cycle_is_burst`
-
-## Output Contract
-
-Return exactly one source artifact named `clk_burst_gen.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Public Description
-
-# Burst clock source DUT
-
-Write the Verilog-A DUT artifact(s) for `Burst clock source`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `clk_burst_gen(CLK, RST_N, CLK_OUT)`
-
-Ports:
-
-- `CLK`: input electrical clock, 0 V low and 0.9 V high
-- `RST_N`: input electrical active-low reset, deasserted high during checking
-- `CLK_OUT`: output electrical burst clock
-
-## Behavioral Contract
-
-- parameter `div` defaults to 8 and sets the burst repeat period in input-clock cycles
-- `CLK_OUT` mirrors `CLK` for the first two cycles of each `div`-cycle window
-- `CLK_OUT` stays low for the remaining cycles and while reset is asserted
-- use `@(cross(...))` edge detection and `transition(...)` output drive
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns:
-
-- `CLK`
-- `RST_N`
-- `CLK_OUT`
+Return only `clk_burst_gen.va`. Do not generate a Spectre testbench or checker
+logic. Do not use current contributions, `ddt()`, `idt()`, transistor-level
+devices, AC/noise analysis, or simulator-private side channels.

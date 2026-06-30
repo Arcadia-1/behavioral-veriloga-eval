@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "multitone.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output stub.",
+      "path": "negative_variants/neg_001_zero/multitone.va"
+    },
+    {
+      "id": "neg_002_missing_third_tone",
+      "description": "Omits the f3/a3 tone from the public three-tone source.",
+      "path": "negative_variants/neg_002_missing_third_tone/multitone.va"
+    },
+    {
+      "id": "neg_003_wrong_frequency",
+      "description": "Uses the wrong third-tone frequency.",
+      "path": "negative_variants/neg_003_wrong_frequency/multitone.va"
+    },
+    {
+      "id": "neg_004_half_amplitude",
+      "description": "Scales every tone amplitude by one half.",
+      "path": "negative_variants/neg_004_half_amplitude/multitone.va"
     }
   ]
 }

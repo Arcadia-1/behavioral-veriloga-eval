@@ -2,6 +2,21 @@
   {
     "id": "neg_001_zero",
     "target": "multitone.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero output stub"
+  },
+  {
+    "id": "neg_002_missing_third_tone",
+    "target": "multitone.va",
+    "intent": "missing third tone"
+  },
+  {
+    "id": "neg_003_wrong_frequency",
+    "target": "multitone.va",
+    "intent": "wrong tone frequency"
+  },
+  {
+    "id": "neg_004_half_amplitude",
+    "target": "multitone.va",
+    "intent": "wrong amplitude scale"
   }
 ]

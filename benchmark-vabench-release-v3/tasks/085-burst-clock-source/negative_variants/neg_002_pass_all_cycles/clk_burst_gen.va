@@ -1,0 +1,14 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module clk_burst_gen(CLK, RST_N, CLK_OUT);
+    input CLK, RST_N;
+    output CLK_OUT;
+    electrical CLK, RST_N, CLK_OUT;
+    parameter integer div = 8;
+    parameter real vdd = 0.9;
+    parameter real vth = 0.45;
+    analog begin
+        V(CLK_OUT) <+ transition((V(RST_N) > vth && V(CLK) > vth) ? vdd : 0.0);
+    end
+endmodule

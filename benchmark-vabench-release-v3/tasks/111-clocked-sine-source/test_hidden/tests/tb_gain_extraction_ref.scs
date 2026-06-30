@@ -1,6 +1,4 @@
-// gain_extraction gold smoke testbench
-// 50 MHz clock, ACTUAL_GAIN=8.64, DITHER_AMP=0.014063. Run 2us.
-// Check: std(vamp_diff) / std(vin_diff) > 4.0.
+// gain_extraction private coverage testbench for the vin_src support component.
 simulator lang=spectre
 global 0
 
@@ -9,7 +7,7 @@ ahdl_include "lfsr.va"
 ahdl_include "dither_adder.va"
 ahdl_include "gain_amp_fixed.va"
 
-parameters vdd=0.9 ACTUAL_GAIN=8.64 DITHER_AMP=0.014063 fs=50e6 fin=1e6 VIN_NOISE=0.01
+parameters vdd=0.9 ACTUAL_GAIN=7.2 DITHER_AMP=0.011 fs=50e6 fin=1.3e6 VIN_NOISE=0.006
 
 Vvdd (vdd 0) vsource dc=vdd
 Vvss (vss 0) vsource dc=0
@@ -17,8 +15,8 @@ Vvss (vss 0) vsource dc=0
 // 50 MHz clock
 Vclk (clk 0) vsource type=pulse val0=0 val1=vdd period=20n delay=5n rise=1n fall=1n width=9n
 
-// Reset deasserts at 40ns
-Vrst_n (rst_n 0) vsource type=pwl wave=[0 0  39.5n 0  40n vdd  2u vdd]
+// Reset deasserts at 32ns
+Vrst_n (rst_n 0) vsource type=pwl wave=[0 0  31.5n 0  32n vdd  1.8u vdd]
 Ven    (en    0) vsource dc=vdd
 
 // Clocked noisy sine input
@@ -33,5 +31,5 @@ IDITH (vinp vinn dpn vdin_p vdin_n) dither_adder vdd=vdd vth=0.45 DITHER_AMP=DIT
 // Fixed-gain amplifier
 IAMP  (vdin_p vdin_n vamp_p vamp_n) gain_amp_fixed vdd=vdd ACTUAL_GAIN=ACTUAL_GAIN
 
-tran tran stop=2u maxstep=8n
+tran tran stop=1.8u maxstep=6n
 save vinp vinn vamp_p vamp_n

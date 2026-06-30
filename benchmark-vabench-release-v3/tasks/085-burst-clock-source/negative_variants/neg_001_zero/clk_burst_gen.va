@@ -21,9 +21,19 @@ integer counter_q;  // 0 .. div-1
 integer gate_q;     // 1 = pass CLK through, 0 = hold low
 integer clk_hi;     // tracks current CLK level for continuous output
 
-
-    analog begin
-        V(CLK_OUT) <+ transition(0.0);
-        V(clk_hi) <+ transition(0.0);
+analog begin
+    @(initial_step) begin
+        counter_q = 0;
+        gate_q = 0;
+        clk_hi = 0;
     end
+
+    @(cross(V(CLK) - vth, +1)) begin
+        counter_q = 0;
+        gate_q = 0;
+        clk_hi = 0;
+    end
+
+    V(CLK_OUT) <+ transition(0.0);
+end
 endmodule

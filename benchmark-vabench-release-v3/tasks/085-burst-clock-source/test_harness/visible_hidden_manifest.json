@@ -1,4 +1,9 @@
 {
+  "task_id": "v3_085_burst_clock_source",
+  "primary_target": "clk_burst_gen.va",
+  "artifact_targets": [
+    "clk_burst_gen.va"
+  ],
   "visible": [
     "instruction.md",
     "starter/",
@@ -9,5 +14,9 @@
     "test_hidden/",
     "test_harness/",
     "negative_variants/"
-  ]
+  ],
+  "visible_smoke": "tb_visible_smoke.scs",
+  "hidden_testbench": "tb_clk_burst_gen_ref.scs",
+  "gate1_label": "independent_l1_rework",
+  "status": "hidden_coverage_and_negative_repair_pending_recertification"
 }

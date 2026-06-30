@@ -15,44 +15,43 @@ module vin_src(
 
 ## Required Behavior
 
-This task asks for the `vin_src` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+This is an L2 support-component task for measurement-flow stimulus generation,
+not a core circuit-function task. Implement `vin_src.va`, a clocked differential
+sine stimulus source that can support composed measurement flows such as
+gain-extraction benches.
 
-Gold-source design notes carried into the public contract:
+On each rising crossing of `CLK`, if `RST_N` is high, update `VOUT_P` to a
+sampled sine value around `vdd/2`. Keep `VOUT_N` at `vdd/2` as the reference
+side. While reset is low, hold both outputs near `vdd/2`.
 
 ```text
-// Clocked noisy sine source (sample-and-hold at CLK rising edge).
-//
-// VOUT_P = vdd/2 + ampl*sin(2*pi*freq*t) + N(0, sigma)
-// VOUT_N = vdd/2  (DC, single-ended noise on positive side)
-//
-// Output only changes at CLK rising edges, preventing continuous-time
-// random re-evaluation loops in event-driven simulators.
+VOUT_P = vdd/2 + ampl*sin(2*pi*freq*t) + optional deterministic perturbation
+VOUT_N = vdd/2
 ```
 
-Original public behavior context:
+Use the public parameters `vdd`, `vth`, `ampl`, `freq`, `sigma`, and `SEED`
+where applicable. The important behavioral boundary is that the source is
+clocked/sample-held rather than continuously recomputing random values at every
+analog evaluation point.
 
-# Dithered differential gain extraction flow Testbench Companion
+Public parameters:
 
-Write a Spectre transient testbench for the `Dithered differential gain extraction flow` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+- `vdd = 0.9 V`: positive output common-mode supply parameter.
+- `vth = 0.45 V`: voltage threshold for `CLK` and `RST_N`.
+- `ampl = 0.15 V`: sine amplitude before any testbench override.
+- `freq = 300 kHz`: sine frequency before any testbench override.
+- `sigma = 0.01 V`: deterministic random perturbation scale.
+- `SEED = 0`: seed passed to `$rdist_normal(SEED, 0, 1)`.
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+Sample the sine and random perturbation only on rising `CLK` crossings after
+reset release. `VOUT_N` should remain at `vdd/2`; the perturbation is applied
+to the positive side so the composed measurement flow sees a repeatable
+single-ended stimulus component.
 
-Domain: pure voltage-domain behavioral Verilog-A.
+Use `vth` with a default near 0.45 V to interpret the voltage-coded `CLK` and
+`RST_N` control inputs, and keep the model pure behavioral Verilog-A. Do not use
+transistor-level devices, AC/noise analysis, private test hooks, or
+simulator-private side channels.
 
-Public requirements:
-
-- include a transient `tran` analysis
-- save the public observables needed by the public behavior checks
-- include or instantiate the Verilog-A behavioral module under test
-- satisfy the named behavior checks using only public waveforms and side outputs
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Only `vin_src.va` is the support component under review; companion modules may
+be supplied by the harness for composed-flow evaluation.

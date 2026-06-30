@@ -1,7 +1,7 @@
 syntax:
   must_include:
-    - "tran"
-    - "save"
+    - "module programmable_stimulus_sequencer"
+    - "transition("
   must_not_include:
     - "I("
     - "ddt("
@@ -17,6 +17,6 @@ sim_correct:
     - "mode_switch_continuity"
 parity:
   reference: "spectre"
-  status: "certified"
+  status: "pending_fresh_recertification_after_manual_audit"
   notes:
-    - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+    - "Task was reclassified from L2 testbench residue to standalone L1 DUT source."

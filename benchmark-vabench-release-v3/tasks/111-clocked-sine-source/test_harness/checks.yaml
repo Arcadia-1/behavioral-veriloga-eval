@@ -1,16 +1,15 @@
-syntax:
-  must_include:
-    - "tran"
-    - "save"
-  must_not_include: []
-tb_compile:
-  backend: "evas"
+checker:
+  task_id: vbr1_l2_gain_extraction_convergence_measurement_flow_tb
+  metric: flow_gain_separation
+support_classification:
+  status: l2_support_component_pending_fresh_recertification
+  notes:
+    - "This support component is currently evaluated inside the gain-extraction flow harness."
+    - "It should not be claimed as a standalone L1 circuit function without a task-specific checker."
 sim_correct:
   checks:
-    - "gain_amplification_present"
-    - "differential_gain_above_threshold"
+    - "flow_gain_amplification_present"
+    - "component_supports_clocked_measurement_stimulus"
 parity:
   reference: "spectre"
-  status: "pass"
-  notes:
-    - "Certified by release dual evidence for this form."
+  status: "pending_fresh_recertification_after_manual_audit"

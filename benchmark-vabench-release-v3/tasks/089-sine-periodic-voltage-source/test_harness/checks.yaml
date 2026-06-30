@@ -10,10 +10,11 @@ tb_compile:
   backend: "evas"
 sim_correct:
   checks:
-    - "multitone_waveform_matches_public_samples"
+    - "multitone_waveform_matches_public_formula"
+    - "multitone_amplitude_span_present"
 
 parity:
   reference: "spectre"
-  status: "pass"
+  status: "pending_fresh_recertification_after_manual_audit"
   notes:
-    - "Certified by release dual evidence for this form."
+    - "Checker strength, hidden coverage, and negative variants were changed during manual audit."
