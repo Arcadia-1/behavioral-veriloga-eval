@@ -196,7 +196,7 @@ def infer_form(source_path: Path) -> str:
     except ValueError as exc:
         raise RuntimeError(f"source path outside tasks root: {source_path}") from exc
     if family not in FORM_BY_FAMILY:
-        raise RuntimeError(f"cannot infer release form from source family: {source_path}")
+        raise RuntimeError(f"cannot infer release form from input family: {source_path}")
     return FORM_BY_FAMILY[family]
 
 

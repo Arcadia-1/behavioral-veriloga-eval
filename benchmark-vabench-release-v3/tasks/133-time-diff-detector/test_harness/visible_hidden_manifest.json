@@ -5,7 +5,7 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_source_time_diff_detector",
+  "checker": "v3_time_diff_detector",
   "evidence": {
     "evas": "WORK/source-import-batch4-evas/133-time-diff-detector",
     "spectre": "WORK/source-import-batch4-spectre/133-time-diff-detector"

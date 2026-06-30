@@ -15,7 +15,7 @@ sim_correct:
     - reset_both_high_when_clock_low
     - positive_and_negative_decisions_after_rising_edges
 checker:
-  task_id: "v3_source_clocked_sar_comparator"
+  task_id: "v3_clocked_sar_comparator"
 parity:
   required: true
   tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

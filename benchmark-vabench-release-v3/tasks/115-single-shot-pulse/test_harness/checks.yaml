@@ -15,7 +15,7 @@ sim_correct:
     - one_output_pulse_per_input_rising_edge
     - pulse_width_matches_10ns_with_delay
 checker:
-  task_id: "v3_source_single_shot"
+  task_id: "v3_single_shot"
 parity:
   required: true
   tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

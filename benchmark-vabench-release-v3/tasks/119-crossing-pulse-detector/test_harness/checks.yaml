@@ -14,7 +14,7 @@ sim_correct:
     - pulse_after_each_input_crossing
     - output_returns_low_after_fixed_width
 checker:
-  task_id: "v3_source_crossing_pulse_detector"
+  task_id: "v3_crossing_pulse_detector"
 parity:
   required: true
   tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

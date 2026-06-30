@@ -14,7 +14,7 @@ sim_correct:
     - continuous_code_to_bipolar_level
     - monotonic_output_across_codes
 checker:
-  task_id: "v3_source_bipolar_dac_4b_continuous"
+  task_id: "v3_bipolar_dac_4b_continuous"
 parity:
   required: true
   tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."

@@ -6385,7 +6385,7 @@ def _sample_many(
     return True, " ".join(details)
 
 
-def check_v3_source_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/cmpck/vinp/vinn/dcmpn/dcmpp"
@@ -6399,7 +6399,7 @@ def check_v3_source_clocked_sar_comparator(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d3", "d2", "d1", "d0", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d3/d2/d1/d0/clk/vout"
@@ -6422,7 +6422,7 @@ def check_v3_source_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tupl
     return True, detail + " monotonic=True"
 
 
-def check_v3_source_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout", "vclk"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout/vclk"
@@ -6450,7 +6450,7 @@ def check_v3_source_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str
     return ok, f"max_sample_error={max_error:.4f} max_hold_span={max_hold_span:.4f}"
 
 
-def check_v3_source_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -6477,7 +6477,7 @@ def check_v3_source_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str
     return True, f"{detail} high_windows={high_samples} low_windows={low_samples}"
 
 
-def check_v3_source_clocked_comparator_reset_low(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_comparator_reset_low(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/cmpck/vinp/vinn/dcmpn/dcmpp"
@@ -6491,7 +6491,7 @@ def check_v3_source_clocked_comparator_reset_low(rows: list[dict[str, float]]) -
     )
 
 
-def check_v3_source_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vd3/vd2/vd1/vd0/vout"
@@ -6506,7 +6506,7 @@ def check_v3_source_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> t
     return True, detail + " monotonic=True"
 
 
-def check_v3_source_clocked_dac_restore_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_dac_restore_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d0", "d1", "d2", "d3", "d4", "d5", "d6", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d0/d1/d2/d3/d4/d5/d6/clk/vout"
@@ -6526,7 +6526,7 @@ def check_v3_source_clocked_dac_restore_7b(rows: list[dict[str, float]]) -> tupl
     return True, detail + " monotonic=True"
 
 
-def check_v3_source_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
@@ -6550,7 +6550,7 @@ def check_v3_source_crossing_pulse_detector(rows: list[dict[str, float]]) -> tup
     return ok, detail
 
 
-def check_v3_source_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -6561,7 +6561,7 @@ def check_v3_source_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
-def check_v3_source_dff_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dff_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin_d", "vclk", "rst", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin_d/vclk/rst/vout_q/vout_qbar"
@@ -6611,7 +6611,7 @@ def _sample_differential_sequence(
     return True, f"{pos}-{neg}={diff_detail} cm={cm_detail}"
 
 
-def check_v3_source_offset_search_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_offset_search_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vout/vinp/vinn"
@@ -6626,7 +6626,7 @@ def check_v3_source_offset_search_comparator(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "start", "vout", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/start/vout/vinp/vinn"
@@ -6641,7 +6641,7 @@ def check_v3_source_start_gated_offset_search(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "dcmpp", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/dcmpp/vinp/vinn"
@@ -6656,7 +6656,7 @@ def check_v3_source_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
-def check_v3_source_clocked_dac_4b_binary(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_dac_4b_binary(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d1", "d2", "d3", "d4", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d1/d2/d3/d4/clk/vout"
@@ -6671,7 +6671,7 @@ def check_v3_source_clocked_dac_4b_binary(rows: list[dict[str, float]]) -> tuple
     return True, detail + " monotonic=True"
 
 
-def check_v3_source_latched_comparator_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_latched_comparator_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vinp/vinn/dout"
@@ -6682,7 +6682,7 @@ def check_v3_source_latched_comparator_delay(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d10/d9/d8/d7/d6/d5/d4/d3/d2/d1/d0/vout"
@@ -6702,7 +6702,7 @@ def check_v3_source_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool
     return True, detail + " monotonic=True"
 
 
-def check_v3_source_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/in1/in2/out"
@@ -6713,7 +6713,7 @@ def check_v3_source_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/in1/in2/out"
@@ -6724,7 +6724,7 @@ def check_v3_source_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vsel", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vsel/vout"
@@ -6735,7 +6735,7 @@ def check_v3_source_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_two_bit_counter_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_bit_counter_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkin", "mc"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clkin/mc"
@@ -6746,7 +6746,7 @@ def check_v3_source_two_bit_counter_marker(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -6764,7 +6764,7 @@ def check_v3_source_max_detector_hold(rows: list[dict[str, float]]) -> tuple[boo
     return True, detail + " monotonic_hold=True"
 
 
-def check_v3_source_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vinp/vinn/vout"
@@ -6775,7 +6775,7 @@ def check_v3_source_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_differential_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_differential_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vinp/vinn/voutp/voutn"
@@ -6800,7 +6800,7 @@ def check_v3_source_differential_buffer(rows: list[dict[str, float]]) -> tuple[b
     return max_err <= 0.025, f"{detail} max_pair_error={max_err:.4f}"
 
 
-def check_v3_source_two_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/in1/in2/out"
@@ -6811,7 +6811,7 @@ def check_v3_source_two_input_or_gate(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "s6", "s5", "s4", "s3", "s2", "s1", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/clk/s6/s5/s4/s3/s2/s1/vres"
@@ -6834,7 +6834,7 @@ def check_v3_source_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool
     return True, detail + " sample_then_monotone_down=True"
 
 
-def check_v3_source_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/in1/in2/out"
@@ -6845,7 +6845,7 @@ def check_v3_source_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_two_input_nor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_input_nor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/in1/in2/out"
@@ -6856,7 +6856,7 @@ def check_v3_source_two_input_nor_gate(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_three_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_three_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vin3", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vin3/vout"
@@ -6867,7 +6867,7 @@ def check_v3_source_three_input_and_gate(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_three_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_three_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vin3", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vin3/vout"
@@ -6878,7 +6878,7 @@ def check_v3_source_three_input_or_gate(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vin3", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vin3/vout"
@@ -6889,7 +6889,7 @@ def check_v3_source_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -6910,7 +6910,7 @@ def check_v3_source_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool,
     return max_gain_error <= 0.015, f"{detail} max_gain_error={max_gain_error:.5f}"
 
 
-def check_v3_source_deadband_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_deadband_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
@@ -6921,7 +6921,7 @@ def check_v3_source_deadband_window(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_differential_deadband(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_differential_deadband(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigout"
@@ -6944,7 +6944,7 @@ def check_v3_source_differential_deadband(rows: list[dict[str, float]]) -> tuple
     return True, detail + " diff_sequence=" + ",".join(f"{value:.3f}" for value in diffs)
 
 
-def check_v3_source_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -6955,7 +6955,7 @@ def check_v3_source_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigref", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigref/sigout"
@@ -6966,7 +6966,7 @@ def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vdd", "vss", "vmax", "vmin", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vdd/vss/vmax/vmin/vin/vout"
@@ -6986,7 +6986,7 @@ def check_v3_source_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, s
     return True, f"{detail} rails=[{lower_base + lower_margin:.3f},{upper - margin:.3f}]"
 
 
-def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
@@ -7003,7 +7003,7 @@ def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, 
     return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 
-def check_v3_source_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
@@ -7014,7 +7014,7 @@ def check_v3_source_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_safe_voltage_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_safe_voltage_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "signumer", "sigdenom", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/signumer/sigdenom/sigout"
@@ -7031,7 +7031,7 @@ def check_v3_source_safe_voltage_divider(rows: list[dict[str, float]]) -> tuple[
     return True, f"{detail} denom=" + ",".join(f"{float(value):.3f}" for value in denominators if value is not None)
 
 
-def check_v3_source_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "inn", "outp", "outn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/inp/inn/outp/outn"
@@ -7055,7 +7055,7 @@ def check_v3_source_polynomial_differential_vcvs(rows: list[dict[str, float]]) -
     return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
 
 
-def check_v3_source_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout_p", "sigout_n", "sigref"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigout_p/sigout_n/sigref"
@@ -7072,7 +7072,7 @@ def check_v3_source_differential_gain_driver(rows: list[dict[str, float]]) -> tu
     return True, detail
 
 
-def check_v3_source_limiting_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_limiting_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigout"
@@ -7083,7 +7083,7 @@ def check_v3_source_limiting_differential_amplifier(rows: list[dict[str, float]]
     )
 
 
-def check_v3_source_analog_multiplier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_analog_multiplier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin1", "sigin2", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin1/sigin2/sigout"
@@ -7105,7 +7105,7 @@ def check_v3_source_analog_multiplier(rows: list[dict[str, float]]) -> tuple[boo
     return max_product_error <= 0.015, f"{detail} max_product_error={max_product_error:.5f}"
 
 
-def check_v3_source_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin1", "sigin2", "sigin3", "cntrlp", "cntrlm", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin1/sigin2/sigin3/cntrlp/cntrlm/sigout"
@@ -7116,7 +7116,7 @@ def check_v3_source_three_way_threshold_mux(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigout"
@@ -7127,7 +7127,7 @@ def check_v3_source_differential_amplifier_core(rows: list[dict[str, float]]) ->
     )
 
 
-def check_v3_source_logarithmic_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_logarithmic_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin/sigout"
@@ -7138,7 +7138,7 @@ def check_v3_source_logarithmic_amplifier(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_soft_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_soft_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -7149,7 +7149,7 @@ def check_v3_source_soft_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_variable_gain_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_variable_gain_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigctrl_p/sigctrl_n/sigout"
@@ -7160,7 +7160,7 @@ def check_v3_source_variable_gain_differential_amplifier(rows: list[dict[str, fl
     )
 
 
-def check_v3_source_voltage_controlled_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_voltage_controlled_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin_p", "vin_n", "vctrl_p", "vctrl_n", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin_p/vin_n/vctrl_p/vctrl_n/vout"
@@ -7171,7 +7171,7 @@ def check_v3_source_voltage_controlled_gain_amplifier(rows: list[dict[str, float
     )
 
 
-def check_v3_source_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vinp/vinn/voutp/voutn"
@@ -7195,7 +7195,7 @@ def check_v3_source_ideal_differential_opamp(rows: list[dict[str, float]]) -> tu
     return max_cm_error <= 0.02, f"{detail} max_cm_error={max_cm_error:.5f}"
 
 
-def check_v3_source_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vout_sum", "vout_carry"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vout_sum/vout_carry"
@@ -7209,7 +7209,7 @@ def check_v3_source_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_full_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_full_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vin_carry", "vout_sum", "vout_carry"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vin_carry/vout_sum/vout_carry"
@@ -7223,7 +7223,7 @@ def check_v3_source_full_adder_logic(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_half_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_half_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vout_diff", "vout_borrow"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vout_diff/vout_borrow"
@@ -7237,7 +7237,7 @@ def check_v3_source_half_subtractor_logic(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_full_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_full_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vin_borrow", "vout_diff", "vout_borrow"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin1/vin2/vin_borrow/vout_diff/vout_borrow"
@@ -7251,7 +7251,7 @@ def check_v3_source_full_subtractor_logic(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin_s", "vin_r", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin_s/vin_r/vout_q/vout_qbar"
@@ -7265,7 +7265,7 @@ def check_v3_source_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vclk", "vip", "vin", "digital"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vclk/vip/vin/digital"
@@ -7276,7 +7276,7 @@ def check_v3_source_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_ideal_dac_4bit_differential(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ideal_dac_4bit_differential(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "digital", "vcm", "vop", "von"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/digital/vcm/vop/von"
@@ -7300,7 +7300,7 @@ def check_v3_source_ideal_dac_4bit_differential(rows: list[dict[str, float]]) ->
     return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
 
 
-def check_v3_source_two_period_sample_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_period_sample_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "update", "ain", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/update/ain/aout"
@@ -7311,7 +7311,7 @@ def check_v3_source_two_period_sample_delay(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_clocked_four_input_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_four_input_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing mux input/output signals"
@@ -7322,7 +7322,7 @@ def check_v3_source_clocked_four_input_mux(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
@@ -7345,7 +7345,7 @@ def check_v3_source_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_flash_thermometer_centered_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_thermometer_centered_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing thermometer input/output signals"
@@ -7356,7 +7356,7 @@ def check_v3_source_flash_thermometer_centered_sum(rows: list[dict[str, float]])
     )
 
 
-def check_v3_source_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "aout7b", "aout7b5", "aout8b"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/aout7b/aout7b5/aout8b"
@@ -7371,7 +7371,7 @@ def check_v3_source_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_control_word_encoder_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_control_word_encoder_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d0", "d1", "d2", "d3", "d4", "d5", "d6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing encoder output signals"
@@ -7390,7 +7390,7 @@ def check_v3_source_control_word_encoder_7b(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_four_channel_edge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_four_channel_edge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vin0", "vin1", "vin2", "vin3", "vout0", "vout1", "vout2", "vout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sampler input/output signals"
@@ -7406,7 +7406,7 @@ def check_v3_source_four_channel_edge_sampler(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "fin", "mc", "fout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/fin/mc/fout"
@@ -7428,7 +7428,7 @@ def check_v3_source_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> 
     )
 
 
-def check_v3_source_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din", "clks", "ready", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/din/clks/ready/dout"
@@ -7439,7 +7439,7 @@ def check_v3_source_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/dout"
@@ -7450,7 +7450,7 @@ def check_v3_source_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vip", "vim", "clks", "doutsum", "doutsumdelay"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing flash8 sum/delay signals"
@@ -7464,7 +7464,7 @@ def check_v3_source_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/dout"
@@ -7475,7 +7475,7 @@ def check_v3_source_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_two_channel_sample_demux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_two_channel_sample_demux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "samp1", "samp2", "clks1", "clks2", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing demux input/output signals"
@@ -7486,7 +7486,7 @@ def check_v3_source_two_channel_sample_demux(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clks", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/voutp/voutn"
@@ -7510,7 +7510,7 @@ def check_v3_source_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tu
     return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
 
 
-def check_v3_source_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "dout0", "dout1", "dout2", "dout3", "dout4", "dout5", "dout6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing flash adc threshold tap signals"
@@ -7529,7 +7529,7 @@ def check_v3_source_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkin", "clkout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clkin/clkout"
@@ -7540,7 +7540,7 @@ def check_v3_source_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clks", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/vout"
@@ -7551,7 +7551,7 @@ def check_v3_source_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing folded flash dac signals"
@@ -7562,7 +7562,7 @@ def check_v3_source_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "dout", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing ref flash 8level signals"
@@ -7576,7 +7576,7 @@ def check_v3_source_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing ref flash 15level signals"
@@ -7587,7 +7587,7 @@ def check_v3_source_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkin", "mc", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing divide-by-8/9 signals"
@@ -7598,7 +7598,7 @@ def check_v3_source_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_dac_restore_10bit_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_restore_10bit_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vout"
@@ -7609,7 +7609,7 @@ def check_v3_source_dac_restore_10bit_offset(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_dac_8bit_ideal_scalar(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_8bit_ideal_scalar(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing scalar 8-bit dac signals"
@@ -7620,7 +7620,7 @@ def check_v3_source_dac_8bit_ideal_scalar(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_flash_data_align_pipeline(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_data_align_pipeline(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "dout0", "dout1", "dout2", "dout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing flash data align signals"
@@ -7636,7 +7636,7 @@ def check_v3_source_flash_data_align_pipeline(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dp", "dn", "ready", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cyclic decoder signals"
@@ -7647,7 +7647,7 @@ def check_v3_source_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing ideal adc out 7-bit signals"
@@ -7658,7 +7658,7 @@ def check_v3_source_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "d1", "d2", "d3", "d4"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing va_lx adc signals"
@@ -7674,7 +7674,7 @@ def check_v3_source_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing va_lx dac signals"
@@ -7685,7 +7685,7 @@ def check_v3_source_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_l1_dac_4b_bipolar(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l1_dac_4b_bipolar(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l1 dac bipolar signals"
@@ -7696,7 +7696,7 @@ def check_v3_source_l1_dac_4b_bipolar(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_l2_cdac_4b_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_cdac_4b_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "dctrl1", "dctrl2", "dctrl3", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 cdac residue signals"
@@ -7707,7 +7707,7 @@ def check_v3_source_l2_cdac_4b_residue(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_ideal_clkmux_8channel(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_ideal_clkmux_8channel(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "out", "count_x"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing ideal clkmux signals"
@@ -7721,7 +7721,7 @@ def check_v3_source_ideal_clkmux_8channel(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_dac_ideal_4b_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_ideal_4b_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din0", "din1", "din2", "din3", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac ideal 4b offset signals"
@@ -7732,7 +7732,7 @@ def check_v3_source_dac_ideal_4b_offset(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing linear pfd gain signals"
@@ -7743,7 +7743,7 @@ def check_v3_source_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_l2_cmp_ideal_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_cmp_ideal_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 cmp ideal clocked signals"
@@ -7757,7 +7757,7 @@ def check_v3_source_l2_cmp_ideal_clocked(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_comparator_offset_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_comparator_offset_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "dcmpp", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing comparator offset driver signals"
@@ -7771,7 +7771,7 @@ def check_v3_source_comparator_offset_driver(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din1", "din2", "clk_align", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe 2lane edge align signals"
@@ -7782,7 +7782,7 @@ def check_v3_source_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac serial accumulator signals"
@@ -7793,7 +7793,7 @@ def check_v3_source_dac_serial_accumulator(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_sar_sum_weighted_11b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_sum_weighted_11b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar sum weighted output"
@@ -7804,7 +7804,7 @@ def check_v3_source_sar_sum_weighted_11b(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dcmp", "rst", "clk", "vdac"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing iterative isar dac signals"
@@ -7815,7 +7815,7 @@ def check_v3_source_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", "vcm", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset bisection driver signals"
@@ -7829,7 +7829,7 @@ def check_v3_source_offset_bisection_driver(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "aout7b", "aout7b5", "aout8b"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing weighted decoder outputs"
@@ -7844,7 +7844,7 @@ def check_v3_source_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vtrig", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing toggle flip-flop signals"
@@ -7858,7 +7858,7 @@ def check_v3_source_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "do0", "do1", "do2", "do3", "do4", "do5", "do6", "do7", "do8"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sync 8b dffs outputs"
@@ -7879,7 +7879,7 @@ def check_v3_source_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d0", "d1", "d2", "d3", "d4", "d15", "sum"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing onehot progress encoder signals"
@@ -7896,7 +7896,7 @@ def check_v3_source_onehot_progress_encoder(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "inn", "samp", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tdc ideal edge delta signals"
@@ -7907,7 +7907,7 @@ def check_v3_source_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_foreground_cload_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_foreground_cload_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dcp0", "dcp1", "dcp2", "dcp3", "dcp4", "dcn1", "dcn3", "cvinp", "cvinn", "en", "enb"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing foreground cload calibrator signals"
@@ -7928,7 +7928,7 @@ def check_v3_source_foreground_cload_calibrator(rows: list[dict[str, float]]) ->
     )
 
 
-def check_v3_source_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "do0", "do3", "do7", "do11", "do14"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe15 data align outputs"
@@ -7945,7 +7945,7 @@ def check_v3_source_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked mux4 sampler signals"
@@ -7956,7 +7956,7 @@ def check_v3_source_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_dac7_code_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac7_code_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac7 code generator outputs"
@@ -7972,7 +7972,7 @@ def check_v3_source_dac7_code_generator(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6", "cvinp", "cvinn", "en", "enb"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing foreground rdac calibrator outputs"
@@ -7995,7 +7995,7 @@ def check_v3_source_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> 
     )
 
 
-def check_v3_source_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset rdac search outputs"
@@ -8018,7 +8018,7 @@ def check_v3_source_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing spi shift mux outputs"
@@ -8037,7 +8037,7 @@ def check_v3_source_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
-def check_v3_source_dff_set_reset_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dff_set_reset_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d", "rn", "sn", "qp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dff set/reset outputs"
@@ -8052,7 +8052,7 @@ def check_v3_source_dff_set_reset_hold(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
         "clkc",
@@ -8090,7 +8090,7 @@ def check_v3_source_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rst", "s", "ss", "nc_az", "nc", "conv"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing adc sample clock sequencer outputs"
@@ -8108,7 +8108,7 @@ def check_v3_source_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> 
     )
 
 
-def check_v3_source_pipeline_counter_onehot(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pipeline_counter_onehot(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dout0", "dout1", "dout2", "s0", "s1", "s2", "s3", "s4", "s5"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipeline counter outputs"
@@ -8129,7 +8129,7 @@ def check_v3_source_pipeline_counter_onehot(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac bidirect residue signals"
@@ -8146,7 +8146,7 @@ def check_v3_source_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_pfd_reset_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pfd_reset_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "a", "b", "ub", "d"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd reset pulse signals"
@@ -8160,7 +8160,7 @@ def check_v3_source_pfd_reset_pulse(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing trim ctrl 4bit signals"
@@ -8176,7 +8176,7 @@ def check_v3_source_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
-def check_v3_source_linearity_rdac_offset_sweep(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_linearity_rdac_offset_sweep(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ck", "d", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing linearity rdac offset sweep signals"
@@ -8199,7 +8199,7 @@ def check_v3_source_linearity_rdac_offset_sweep(rows: list[dict[str, float]]) ->
     return True, detail
 
 
-def check_v3_source_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
         "clk_sampling",
@@ -8244,7 +8244,7 @@ def check_v3_source_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkc", "rst", "dcmpp", "dcmpn", "cmpck", "dout1", "dout2", "dout3", "dout4", "dbotp1", "dbotp2", "dbotp3", "dbotn1", "dbotn2", "dbotn3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar logic 4b self timed signals"
@@ -8265,7 +8265,7 @@ def check_v3_source_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "in1", "in2", "up", "dn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd tdomain reset window signals"
@@ -8279,7 +8279,7 @@ def check_v3_source_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
         "clks",
@@ -8321,7 +8321,7 @@ def check_v3_source_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> 
     )
 
 
-def check_v3_source_clock_sample_1600n_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clock_sample_1600n_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rst", "s", "nc", "res", "conv"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clock sample 1600n sequencer signals"
@@ -8338,7 +8338,7 @@ def check_v3_source_clock_sample_1600n_sequencer(rows: list[dict[str, float]]) -
     )
 
 
-def check_v3_source_l2_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck", "do0", "do1", "do2", "do3", "dctrlp1", "dctrlp2", "dctrlp3", "dctrln1", "dctrln2", "dctrln3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 sar logic 4b signals"
@@ -8361,7 +8361,7 @@ def check_v3_source_l2_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_phase_detector_chopper(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_phase_detector_chopper(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vlocal_osc", "vin_rf", "vif"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing phase detector chopper signals"
@@ -8372,7 +8372,7 @@ def check_v3_source_phase_detector_chopper(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_single_adc_7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_single_adc_7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing single adc 7b weighted signals"
@@ -8383,7 +8383,7 @@ def check_v3_source_single_adc_7b_weighted(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "vrefp", "vrefn", "clk", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing qtz differential 2level signals"
@@ -8394,7 +8394,7 @@ def check_v3_source_qtz_differential_2level(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "din1", "din2", "din3", "din4", "din5", "din6", "din7", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 7b dac ready signals"
@@ -8405,7 +8405,7 @@ def check_v3_source_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "din1", "din2", "din3", "din4", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 cdac 4b switch signals"
@@ -8416,7 +8416,7 @@ def check_v3_source_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_cdac_monodown_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cdac_monodown_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "dctrl3", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac monodown 7b signals"
@@ -8434,7 +8434,7 @@ def check_v3_source_cdac_monodown_7b(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 6b stage1 up signals"
@@ -8451,7 +8451,7 @@ def check_v3_source_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rst", "s", "sar", "res", "intg", "clk_sar", "zoom", "clk_zoom", "rst_zoom"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing adc zoom timing sequencer signals"
@@ -8472,7 +8472,7 @@ def check_v3_source_adc_zoom_timing_sequencer(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_l2_sar_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l2_sar_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck",
         *{f"do{i}" for i in range(7)},
@@ -8505,7 +8505,7 @@ def check_v3_source_l2_sar_logic_7b(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time", "clk", "dp", "dn", "cmpck",
         *{f"do{i}" for i in range(7)},
@@ -8539,7 +8539,7 @@ def check_v3_source_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(1, 8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 8b monodown signals"
@@ -8559,7 +8559,7 @@ def check_v3_source_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "aout", *{f"din{i}" for i in range(6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing va dac 6b se signals"
@@ -8570,7 +8570,7 @@ def check_v3_source_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, st
     )
 
 
-def check_v3_source_offset_halving_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_offset_halving_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "dcmpp", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset halving search signals"
@@ -8584,7 +8584,7 @@ def check_v3_source_offset_halving_search(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar comparator reset high signals"
@@ -8598,7 +8598,7 @@ def check_v3_source_sar_comparator_reset_high(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac restore 4bit clocked signals"
@@ -8615,7 +8615,7 @@ def check_v3_source_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", *{f"d{i}" for i in range(7)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac restore 7bit clocked signals"
@@ -8626,7 +8626,7 @@ def check_v3_source_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", *{f"d{i}" for i in range(1, 7)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac restore 6bit 1p8 signals"
@@ -8637,7 +8637,7 @@ def check_v3_source_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vclk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sample hold 5v clock signals"
@@ -8651,7 +8651,7 @@ def check_v3_source_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_sum5_signed_sar_weight(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sum5_signed_sar_weight(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "out", *{f"d{i}" for i in range(1, 6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sum5 signed sar weight signals"
@@ -8662,7 +8662,7 @@ def check_v3_source_sum5_signed_sar_weight(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(4)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt readout sar4 signals"
@@ -8673,7 +8673,7 @@ def check_v3_source_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sh", "aout", *{f"d{i}" for i in range(4)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tool 4bit sar signed dac signals"
@@ -8684,7 +8684,7 @@ def check_v3_source_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac4bit small swing signals"
@@ -8695,7 +8695,7 @@ def check_v3_source_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing comparator reset low 1p8 signals"
@@ -8709,7 +8709,7 @@ def check_v3_source_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_lt_read_sar6b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_lt_read_sar6b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt read sar6b weighted signals"
@@ -8720,7 +8720,7 @@ def check_v3_source_lt_read_sar6b_weighted(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_lt_read_sar7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_lt_read_sar7b_weighted(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt read sar7b weighted signals"
@@ -8731,7 +8731,7 @@ def check_v3_source_lt_read_sar7b_weighted(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac serial 16b nobridge signals"
@@ -8745,7 +8745,7 @@ def check_v3_source_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din", "clks", "ready", "dout", "dnum"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar 13bit serial decoder signals"
@@ -8759,7 +8759,7 @@ def check_v3_source_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tu
     )
 
 
-def check_v3_source_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing single shot timer pulse signals"
@@ -8773,7 +8773,7 @@ def check_v3_source_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_clocked_comparator_dual_output(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_comparator_dual_output(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinn", "vinp", "outn", "outp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked comparator dual output signals"
@@ -8787,7 +8787,7 @@ def check_v3_source_clocked_comparator_dual_output(rows: list[dict[str, float]])
     )
 
 
-def check_v3_source_dac4bit_bipolar_252m(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dac4bit_bipolar_252m(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac4bit bipolar signals"
@@ -8798,7 +8798,7 @@ def check_v3_source_dac4bit_bipolar_252m(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vdd", "gnd", "b1", "b0", "t0", "t1", "t2"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing bin2ther 2b signals"
@@ -8813,7 +8813,7 @@ def check_v3_source_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str
     )
 
 
-def check_v3_source_dff_set_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_dff_set_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "setb", "rstb", "clk", "vdd", "gnd", "d", "q", "qb"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dff set reset signals"
@@ -8827,7 +8827,7 @@ def check_v3_source_dff_set_reset(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
-def check_v3_source_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd up down state signals"
@@ -8841,7 +8841,7 @@ def check_v3_source_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_samplehold_rising_edge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_samplehold_rising_edge(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "control", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing samplehold rising edge signals"
@@ -8855,7 +8855,7 @@ def check_v3_source_samplehold_rising_edge(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "dout0", "dout1", "dout2", "dout3", "dout4"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing trim ctrl 5bit signals"
@@ -8872,7 +8872,7 @@ def check_v3_source_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
-def check_v3_source_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "b0", "b1", "b2", "b3", *{f"th{i}" for i in range(8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing therm8 to bin4 count signals"
@@ -8888,7 +8888,7 @@ def check_v3_source_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "d0", "d1", "d2", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing coarse qtz 3bit residue signals"
@@ -8904,7 +8904,7 @@ def check_v3_source_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing rs phase detector signals"
@@ -8918,7 +8918,7 @@ def check_v3_source_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing level shifter offset signals"
@@ -8931,7 +8931,7 @@ def check_v3_source_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd1", "vd2", "vd3", "vd4", "vd5", "vd6", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing weighted decoder 6bit signals"
@@ -8944,7 +8944,7 @@ def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing divide by two toggle signals"
@@ -8957,7 +8957,7 @@ def check_v3_source_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tup
     )
 
 
-def check_v3_source_accum3_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_accum3_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing accum3 pulse signals"
@@ -8970,7 +8970,7 @@ def check_v3_source_accum3_pulse(rows: list[dict[str, float]]) -> tuple[bool, st
     )
 
 
-def check_v3_source_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing xor phase detector signals"
@@ -8984,7 +8984,7 @@ def check_v3_source_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "valid", "x", "y", "z", "dm", "dl"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing decision router logic signals"
@@ -9001,7 +9001,7 @@ def check_v3_source_decision_router_logic(rows: list[dict[str, float]]) -> tuple
     )
 
 
-def check_v3_source_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "signumer", "sigdenom", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing safe analog divider signals"
@@ -9014,7 +9014,7 @@ def check_v3_source_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_source_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing vargain diffamp clip signals"
@@ -9027,7 +9027,7 @@ def check_v3_source_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[
     )
 
 
-def check_v3_source_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "divctrl", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing programmable divider by n signals"
@@ -9040,7 +9040,7 @@ def check_v3_source_programmable_divider_by_n(rows: list[dict[str, float]]) -> t
     )
 
 
-def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "a", "b", "ub", "d"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd timer reset signals"
@@ -9054,7 +9054,7 @@ def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing absolute value signals"
@@ -9071,7 +9071,7 @@ def check_v3_source_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, 
     return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 
-def check_v3_source_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing deadband voltage signals"
@@ -9082,7 +9082,7 @@ def check_v3_source_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_deadband_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_deadband_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing deadband diffamp signals"
@@ -9093,7 +9093,7 @@ def check_v3_source_deadband_diffamp(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing limiting diffamp signals"
@@ -9104,7 +9104,7 @@ def check_v3_source_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
-def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigref", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing smooth tanh comparator signals"
@@ -9115,7 +9115,7 @@ def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tupl
     )
 
 
-def check_v3_source_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing flash folded dac4 signals"
@@ -9126,7 +9126,7 @@ def check_v3_source_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing subradix dac10 signals"
@@ -9137,7 +9137,7 @@ def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
-def check_v3_source_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vclk", "vd0", "vd1", "vd2"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked adc3bit signals"
@@ -9152,7 +9152,7 @@ def check_v3_source_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
-def check_v3_source_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cal4bit modulo signals"
@@ -9168,7 +9168,7 @@ def check_v3_source_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
-def check_v3_source_mux4_priority(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_mux4_priority(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sel0", "sel1", "in0", "in1", "in2", "in3", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing mux4 priority signals"
@@ -9179,7 +9179,7 @@ def check_v3_source_mux4_priority(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
-def check_v3_source_xnor_gate_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_xnor_gate_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing xnor gate voltage signals"
@@ -9190,7 +9190,7 @@ def check_v3_source_xnor_gate_voltage(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
-def check_v3_source_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin_d", "vclk", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing bipolar dff sample signals"
@@ -9204,7 +9204,7 @@ def check_v3_source_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "upb", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd active low reset signals"
@@ -13118,137 +13118,137 @@ CHECKS = {
     "mixed_domain_cdac_bug": check_mixed_domain_cdac_bug,
     "spectre_port_discipline": check_spectre_port_discipline,
     "strongarm_reset_priority_bug": check_strongarm_reset_priority_bug,
-    "v3_source_clocked_sar_comparator": check_v3_source_clocked_sar_comparator,
-    "v3_source_clocked_dac_restore_4b": check_v3_source_clocked_dac_restore_4b,
-    "v3_source_sample_hold": check_v3_source_sample_hold,
-    "v3_source_single_shot": check_v3_source_single_shot,
-    "v3_source_clocked_comparator_reset_low": check_v3_source_clocked_comparator_reset_low,
-    "v3_source_bipolar_dac_4b_continuous": check_v3_source_bipolar_dac_4b_continuous,
-    "v3_source_clocked_dac_restore_7b": check_v3_source_clocked_dac_restore_7b,
-    "v3_source_crossing_pulse_detector": check_v3_source_crossing_pulse_detector,
-    "v3_source_not_gate": check_v3_source_not_gate,
-    "v3_source_dff_reset": check_v3_source_dff_reset,
-    "v3_source_offset_search_comparator": check_v3_source_offset_search_comparator,
-    "v3_source_start_gated_offset_search": check_v3_source_start_gated_offset_search,
-    "v3_source_comp_os_detect": check_v3_source_comp_os_detect,
-    "v3_source_clocked_dac_4b_binary": check_v3_source_clocked_dac_4b_binary,
-    "v3_source_latched_comparator_delay": check_v3_source_latched_comparator_delay,
-    "v3_source_sar_weighted_sum": check_v3_source_sar_weighted_sum,
-    "v3_source_two_input_and_gate": check_v3_source_two_input_and_gate,
-    "v3_source_two_input_xor_gate": check_v3_source_two_input_xor_gate,
-    "v3_source_analog_mux_threshold": check_v3_source_analog_mux_threshold,
-    "v3_source_two_bit_counter_marker": check_v3_source_two_bit_counter_marker,
-    "v3_source_max_detector_hold": check_v3_source_max_detector_hold,
-    "v3_source_time_diff_detector": check_v3_source_time_diff_detector,
-    "v3_source_differential_buffer": check_v3_source_differential_buffer,
-    "v3_source_two_input_or_gate": check_v3_source_two_input_or_gate,
-    "v3_source_sar_cdac_residue": check_v3_source_sar_cdac_residue,
-    "v3_source_two_input_nand_gate": check_v3_source_two_input_nand_gate,
-    "v3_source_two_input_nor_gate": check_v3_source_two_input_nor_gate,
-    "v3_source_three_input_and_gate": check_v3_source_three_input_and_gate,
-    "v3_source_three_input_or_gate": check_v3_source_three_input_or_gate,
-    "v3_source_three_input_xor_gate": check_v3_source_three_input_xor_gate,
-    "v3_source_attenuator_gain": check_v3_source_attenuator_gain,
-    "v3_source_deadband_window": check_v3_source_deadband_window,
-    "v3_source_differential_deadband": check_v3_source_differential_deadband,
-    "v3_source_hard_voltage_clamp": check_v3_source_hard_voltage_clamp,
-    "v3_source_smooth_comparator_tanh": check_v3_source_smooth_comparator_tanh,
-    "v3_source_limiter_rails": check_v3_source_limiter_rails,
-    "v3_source_absolute_value": check_v3_source_absolute_value,
-    "v3_source_offset_gain_amplifier": check_v3_source_offset_gain_amplifier,
-    "v3_source_safe_voltage_divider": check_v3_source_safe_voltage_divider,
-    "v3_source_polynomial_differential_vcvs": check_v3_source_polynomial_differential_vcvs,
-    "v3_source_differential_gain_driver": check_v3_source_differential_gain_driver,
-    "v3_source_limiting_differential_amplifier": check_v3_source_limiting_differential_amplifier,
-    "v3_source_analog_multiplier": check_v3_source_analog_multiplier,
-    "v3_source_three_way_threshold_mux": check_v3_source_three_way_threshold_mux,
-    "v3_source_differential_amplifier_core": check_v3_source_differential_amplifier_core,
-    "v3_source_logarithmic_amplifier": check_v3_source_logarithmic_amplifier,
-    "v3_source_soft_voltage_clamp": check_v3_source_soft_voltage_clamp,
-    "v3_source_variable_gain_differential_amplifier": check_v3_source_variable_gain_differential_amplifier,
-    "v3_source_voltage_controlled_gain_amplifier": check_v3_source_voltage_controlled_gain_amplifier,
-    "v3_source_ideal_differential_opamp": check_v3_source_ideal_differential_opamp,
-    "v3_source_half_adder_logic": check_v3_source_half_adder_logic,
-    "v3_source_full_adder_logic": check_v3_source_full_adder_logic,
-    "v3_source_half_subtractor_logic": check_v3_source_half_subtractor_logic,
-    "v3_source_full_subtractor_logic": check_v3_source_full_subtractor_logic,
-    "v3_source_rs_latch_voltage": check_v3_source_rs_latch_voltage,
-    "v3_source_ideal_adc_4bit_quantizer": check_v3_source_ideal_adc_4bit_quantizer,
-    "v3_source_ideal_dac_4bit_differential": check_v3_source_ideal_dac_4bit_differential,
-    "v3_source_two_period_sample_delay": check_v3_source_two_period_sample_delay,
-    "v3_source_clocked_four_input_mux": check_v3_source_clocked_four_input_mux,
-    "v3_source_divide_by_eight_clock": check_v3_source_divide_by_eight_clock,
-    "v3_source_flash_thermometer_centered_sum": check_v3_source_flash_thermometer_centered_sum,
-    "v3_source_weighted_sar_decoder_9b": check_v3_source_weighted_sar_decoder_9b,
-    "v3_source_control_word_encoder_7b": check_v3_source_control_word_encoder_7b,
-    "v3_source_four_channel_edge_sampler": check_v3_source_four_channel_edge_sampler,
-    "v3_source_dual_modulus_divider_16_17": check_v3_source_dual_modulus_divider_16_17,
-    "v3_source_sar_5bit_serial_decoder": check_v3_source_sar_5bit_serial_decoder,
-    "v3_source_cyclic_decoder_12bit": check_v3_source_cyclic_decoder_12bit,
-    "v3_source_flash_8level_sum_delay": check_v3_source_flash_8level_sum_delay,
-    "v3_source_flash_sum8_fraction": check_v3_source_flash_sum8_fraction,
-    "v3_source_two_channel_sample_demux": check_v3_source_two_channel_sample_demux,
-    "v3_source_differential_dac_calc_6b": check_v3_source_differential_dac_calc_6b,
-    "v3_source_flash_adc_threshold_taps": check_v3_source_flash_adc_threshold_taps,
-    "v3_source_divide_by_two_toggle": check_v3_source_divide_by_two_toggle,
-    "v3_source_dac_5v_weighted_7b": check_v3_source_dac_5v_weighted_7b,
-    "v3_source_folded_flash_dac_4b": check_v3_source_folded_flash_dac_4b,
-    "v3_source_ref_flash_8level_decoder": check_v3_source_ref_flash_8level_decoder,
-    "v3_source_ref_flash_15level_decoder": check_v3_source_ref_flash_15level_decoder,
-    "v3_source_divide_by_8_9_switch": check_v3_source_divide_by_8_9_switch,
-    "v3_source_dac_restore_10bit_offset": check_v3_source_dac_restore_10bit_offset,
-    "v3_source_dac_8bit_ideal_scalar": check_v3_source_dac_8bit_ideal_scalar,
-    "v3_source_flash_data_align_pipeline": check_v3_source_flash_data_align_pipeline,
-    "v3_source_cyclic_decoder_10b": check_v3_source_cyclic_decoder_10b,
-    "v3_source_ideal_adc_out_7bits": check_v3_source_ideal_adc_out_7bits,
-    "v3_source_va_lx_adc_ideal_4b": check_v3_source_va_lx_adc_ideal_4b,
-    "v3_source_va_lx_dac_ideal_4b": check_v3_source_va_lx_dac_ideal_4b,
-    "v3_source_l1_dac_4b_bipolar": check_v3_source_l1_dac_4b_bipolar,
-    "v3_source_l2_cdac_4b_residue": check_v3_source_l2_cdac_4b_residue,
-    "v3_source_ideal_clkmux_8channel": check_v3_source_ideal_clkmux_8channel,
-    "v3_source_dac_ideal_4b_offset": check_v3_source_dac_ideal_4b_offset,
-    "v3_source_linear_pfd_gain": check_v3_source_linear_pfd_gain,
-    "v3_source_l2_cmp_ideal_clocked": check_v3_source_l2_cmp_ideal_clocked,
-    "v3_source_comparator_offset_driver": check_v3_source_comparator_offset_driver,
-    "v3_source_pipe_2lane_edge_align": check_v3_source_pipe_2lane_edge_align,
-    "v3_source_dac_serial_accumulator": check_v3_source_dac_serial_accumulator,
-    "v3_source_sar_sum_weighted_11b": check_v3_source_sar_sum_weighted_11b,
-    "v3_source_iterative_isar_dac": check_v3_source_iterative_isar_dac,
-    "v3_source_offset_bisection_driver": check_v3_source_offset_bisection_driver,
-    "v3_source_weighted_decoder_7b5": check_v3_source_weighted_decoder_7b5,
-    "v3_source_toggle_flip_flop": check_v3_source_toggle_flip_flop,
-    "v3_source_sync_8b_dffs_v2": check_v3_source_sync_8b_dffs_v2,
-    "v3_source_onehot_progress_encoder": check_v3_source_onehot_progress_encoder,
-    "v3_source_tdc_ideal_edge_delta": check_v3_source_tdc_ideal_edge_delta,
-    "v3_source_foreground_cload_calibrator": check_v3_source_foreground_cload_calibrator,
-    "v3_source_pipe15_data_align": check_v3_source_pipe15_data_align,
-    "v3_source_clocked_mux4_sampler": check_v3_source_clocked_mux4_sampler,
-    "v3_source_dac7_code_generator": check_v3_source_dac7_code_generator,
-    "v3_source_foreground_rdac_calibrator": check_v3_source_foreground_rdac_calibrator,
-    "v3_source_offset_rdac_search_flow": check_v3_source_offset_rdac_search_flow,
-    "v3_source_spi_shift_mux": check_v3_source_spi_shift_mux,
-    "v3_source_dff_set_reset_hold": check_v3_source_dff_set_reset_hold,
-    "v3_source_sarfend_logic_4b": check_v3_source_sarfend_logic_4b,
-    "v3_source_adc_sample_clock_sequencer": check_v3_source_adc_sample_clock_sequencer,
-    "v3_source_pipeline_counter_onehot": check_v3_source_pipeline_counter_onehot,
-    "v3_source_cdac_bidirect_residue": check_v3_source_cdac_bidirect_residue,
-    "v3_source_pfd_reset_pulse": check_v3_source_pfd_reset_pulse,
-    "v3_source_trim_ctrl_4bit": check_v3_source_trim_ctrl_4bit,
-    "v3_source_linearity_rdac_offset_sweep": check_v3_source_linearity_rdac_offset_sweep,
-    "v3_source_sar_das_logic_6b": check_v3_source_sar_das_logic_6b,
-    "v3_source_sar_logic_4b_self_timed": check_v3_source_sar_logic_4b_self_timed,
-    "v3_source_pfd_tdomain_reset_window": check_v3_source_pfd_tdomain_reset_window,
-    "v3_source_pipe_adc_gain_control_loop": check_v3_source_pipe_adc_gain_control_loop,
-    "v3_source_clock_sample_1600n_sequencer": check_v3_source_clock_sample_1600n_sequencer,
-    "v3_source_l2_sar_logic_4b": check_v3_source_l2_sar_logic_4b,
-    "v3_source_phase_detector_chopper": check_v3_source_phase_detector_chopper,
-    "v3_source_single_adc_7b_weighted": check_v3_source_single_adc_7b_weighted,
-    "v3_source_qtz_differential_2level": check_v3_source_qtz_differential_2level,
-    "v3_source_l2_7b_dac_ready": check_v3_source_l2_7b_dac_ready,
-    "v3_source_l2_cdac_4b_switch": check_v3_source_l2_cdac_4b_switch,
-    "v3_source_cdac_monodown_7b": check_v3_source_cdac_monodown_7b,
-    "v3_source_cdac_6b_stage1_up": check_v3_source_cdac_6b_stage1_up,
-    "v3_source_adc_zoom_timing_sequencer": check_v3_source_adc_zoom_timing_sequencer,
+    "v3_clocked_sar_comparator": check_v3_clocked_sar_comparator,
+    "v3_clocked_dac_restore_4b": check_v3_clocked_dac_restore_4b,
+    "v3_sample_hold": check_v3_sample_hold,
+    "v3_single_shot": check_v3_single_shot,
+    "v3_clocked_comparator_reset_low": check_v3_clocked_comparator_reset_low,
+    "v3_bipolar_dac_4b_continuous": check_v3_bipolar_dac_4b_continuous,
+    "v3_clocked_dac_restore_7b": check_v3_clocked_dac_restore_7b,
+    "v3_crossing_pulse_detector": check_v3_crossing_pulse_detector,
+    "v3_not_gate": check_v3_not_gate,
+    "v3_dff_reset": check_v3_dff_reset,
+    "v3_offset_search_comparator": check_v3_offset_search_comparator,
+    "v3_start_gated_offset_search": check_v3_start_gated_offset_search,
+    "v3_comp_os_detect": check_v3_comp_os_detect,
+    "v3_clocked_dac_4b_binary": check_v3_clocked_dac_4b_binary,
+    "v3_latched_comparator_delay": check_v3_latched_comparator_delay,
+    "v3_sar_weighted_sum": check_v3_sar_weighted_sum,
+    "v3_two_input_and_gate": check_v3_two_input_and_gate,
+    "v3_two_input_xor_gate": check_v3_two_input_xor_gate,
+    "v3_analog_mux_threshold": check_v3_analog_mux_threshold,
+    "v3_two_bit_counter_marker": check_v3_two_bit_counter_marker,
+    "v3_max_detector_hold": check_v3_max_detector_hold,
+    "v3_time_diff_detector": check_v3_time_diff_detector,
+    "v3_differential_buffer": check_v3_differential_buffer,
+    "v3_two_input_or_gate": check_v3_two_input_or_gate,
+    "v3_sar_cdac_residue": check_v3_sar_cdac_residue,
+    "v3_two_input_nand_gate": check_v3_two_input_nand_gate,
+    "v3_two_input_nor_gate": check_v3_two_input_nor_gate,
+    "v3_three_input_and_gate": check_v3_three_input_and_gate,
+    "v3_three_input_or_gate": check_v3_three_input_or_gate,
+    "v3_three_input_xor_gate": check_v3_three_input_xor_gate,
+    "v3_attenuator_gain": check_v3_attenuator_gain,
+    "v3_deadband_window": check_v3_deadband_window,
+    "v3_differential_deadband": check_v3_differential_deadband,
+    "v3_hard_voltage_clamp": check_v3_hard_voltage_clamp,
+    "v3_smooth_comparator_tanh": check_v3_smooth_comparator_tanh,
+    "v3_limiter_rails": check_v3_limiter_rails,
+    "v3_absolute_value": check_v3_absolute_value,
+    "v3_offset_gain_amplifier": check_v3_offset_gain_amplifier,
+    "v3_safe_voltage_divider": check_v3_safe_voltage_divider,
+    "v3_polynomial_differential_vcvs": check_v3_polynomial_differential_vcvs,
+    "v3_differential_gain_driver": check_v3_differential_gain_driver,
+    "v3_limiting_differential_amplifier": check_v3_limiting_differential_amplifier,
+    "v3_analog_multiplier": check_v3_analog_multiplier,
+    "v3_three_way_threshold_mux": check_v3_three_way_threshold_mux,
+    "v3_differential_amplifier_core": check_v3_differential_amplifier_core,
+    "v3_logarithmic_amplifier": check_v3_logarithmic_amplifier,
+    "v3_soft_voltage_clamp": check_v3_soft_voltage_clamp,
+    "v3_variable_gain_differential_amplifier": check_v3_variable_gain_differential_amplifier,
+    "v3_voltage_controlled_gain_amplifier": check_v3_voltage_controlled_gain_amplifier,
+    "v3_ideal_differential_opamp": check_v3_ideal_differential_opamp,
+    "v3_half_adder_logic": check_v3_half_adder_logic,
+    "v3_full_adder_logic": check_v3_full_adder_logic,
+    "v3_half_subtractor_logic": check_v3_half_subtractor_logic,
+    "v3_full_subtractor_logic": check_v3_full_subtractor_logic,
+    "v3_rs_latch_voltage": check_v3_rs_latch_voltage,
+    "v3_ideal_adc_4bit_quantizer": check_v3_ideal_adc_4bit_quantizer,
+    "v3_ideal_dac_4bit_differential": check_v3_ideal_dac_4bit_differential,
+    "v3_two_period_sample_delay": check_v3_two_period_sample_delay,
+    "v3_clocked_four_input_mux": check_v3_clocked_four_input_mux,
+    "v3_divide_by_eight_clock": check_v3_divide_by_eight_clock,
+    "v3_flash_thermometer_centered_sum": check_v3_flash_thermometer_centered_sum,
+    "v3_weighted_sar_decoder_9b": check_v3_weighted_sar_decoder_9b,
+    "v3_control_word_encoder_7b": check_v3_control_word_encoder_7b,
+    "v3_four_channel_edge_sampler": check_v3_four_channel_edge_sampler,
+    "v3_dual_modulus_divider_16_17": check_v3_dual_modulus_divider_16_17,
+    "v3_sar_5bit_serial_decoder": check_v3_sar_5bit_serial_decoder,
+    "v3_cyclic_decoder_12bit": check_v3_cyclic_decoder_12bit,
+    "v3_flash_8level_sum_delay": check_v3_flash_8level_sum_delay,
+    "v3_flash_sum8_fraction": check_v3_flash_sum8_fraction,
+    "v3_two_channel_sample_demux": check_v3_two_channel_sample_demux,
+    "v3_differential_dac_calc_6b": check_v3_differential_dac_calc_6b,
+    "v3_flash_adc_threshold_taps": check_v3_flash_adc_threshold_taps,
+    "v3_divide_by_two_toggle": check_v3_divide_by_two_toggle,
+    "v3_dac_5v_weighted_7b": check_v3_dac_5v_weighted_7b,
+    "v3_folded_flash_dac_4b": check_v3_folded_flash_dac_4b,
+    "v3_ref_flash_8level_decoder": check_v3_ref_flash_8level_decoder,
+    "v3_ref_flash_15level_decoder": check_v3_ref_flash_15level_decoder,
+    "v3_divide_by_8_9_switch": check_v3_divide_by_8_9_switch,
+    "v3_dac_restore_10bit_offset": check_v3_dac_restore_10bit_offset,
+    "v3_dac_8bit_ideal_scalar": check_v3_dac_8bit_ideal_scalar,
+    "v3_flash_data_align_pipeline": check_v3_flash_data_align_pipeline,
+    "v3_cyclic_decoder_10b": check_v3_cyclic_decoder_10b,
+    "v3_ideal_adc_out_7bits": check_v3_ideal_adc_out_7bits,
+    "v3_va_lx_adc_ideal_4b": check_v3_va_lx_adc_ideal_4b,
+    "v3_va_lx_dac_ideal_4b": check_v3_va_lx_dac_ideal_4b,
+    "v3_l1_dac_4b_bipolar": check_v3_l1_dac_4b_bipolar,
+    "v3_l2_cdac_4b_residue": check_v3_l2_cdac_4b_residue,
+    "v3_ideal_clkmux_8channel": check_v3_ideal_clkmux_8channel,
+    "v3_dac_ideal_4b_offset": check_v3_dac_ideal_4b_offset,
+    "v3_linear_pfd_gain": check_v3_linear_pfd_gain,
+    "v3_l2_cmp_ideal_clocked": check_v3_l2_cmp_ideal_clocked,
+    "v3_comparator_offset_driver": check_v3_comparator_offset_driver,
+    "v3_pipe_2lane_edge_align": check_v3_pipe_2lane_edge_align,
+    "v3_dac_serial_accumulator": check_v3_dac_serial_accumulator,
+    "v3_sar_sum_weighted_11b": check_v3_sar_sum_weighted_11b,
+    "v3_iterative_isar_dac": check_v3_iterative_isar_dac,
+    "v3_offset_bisection_driver": check_v3_offset_bisection_driver,
+    "v3_weighted_decoder_7b5": check_v3_weighted_decoder_7b5,
+    "v3_toggle_flip_flop": check_v3_toggle_flip_flop,
+    "v3_sync_8b_dffs_v2": check_v3_sync_8b_dffs_v2,
+    "v3_onehot_progress_encoder": check_v3_onehot_progress_encoder,
+    "v3_tdc_ideal_edge_delta": check_v3_tdc_ideal_edge_delta,
+    "v3_foreground_cload_calibrator": check_v3_foreground_cload_calibrator,
+    "v3_pipe15_data_align": check_v3_pipe15_data_align,
+    "v3_clocked_mux4_sampler": check_v3_clocked_mux4_sampler,
+    "v3_dac7_code_generator": check_v3_dac7_code_generator,
+    "v3_foreground_rdac_calibrator": check_v3_foreground_rdac_calibrator,
+    "v3_offset_rdac_search_flow": check_v3_offset_rdac_search_flow,
+    "v3_spi_shift_mux": check_v3_spi_shift_mux,
+    "v3_dff_set_reset_hold": check_v3_dff_set_reset_hold,
+    "v3_sarfend_logic_4b": check_v3_sarfend_logic_4b,
+    "v3_adc_sample_clock_sequencer": check_v3_adc_sample_clock_sequencer,
+    "v3_pipeline_counter_onehot": check_v3_pipeline_counter_onehot,
+    "v3_cdac_bidirect_residue": check_v3_cdac_bidirect_residue,
+    "v3_pfd_reset_pulse": check_v3_pfd_reset_pulse,
+    "v3_trim_ctrl_4bit": check_v3_trim_ctrl_4bit,
+    "v3_linearity_rdac_offset_sweep": check_v3_linearity_rdac_offset_sweep,
+    "v3_sar_das_logic_6b": check_v3_sar_das_logic_6b,
+    "v3_sar_logic_4b_self_timed": check_v3_sar_logic_4b_self_timed,
+    "v3_pfd_tdomain_reset_window": check_v3_pfd_tdomain_reset_window,
+    "v3_pipe_adc_gain_control_loop": check_v3_pipe_adc_gain_control_loop,
+    "v3_clock_sample_1600n_sequencer": check_v3_clock_sample_1600n_sequencer,
+    "v3_l2_sar_logic_4b": check_v3_l2_sar_logic_4b,
+    "v3_phase_detector_chopper": check_v3_phase_detector_chopper,
+    "v3_single_adc_7b_weighted": check_v3_single_adc_7b_weighted,
+    "v3_qtz_differential_2level": check_v3_qtz_differential_2level,
+    "v3_l2_7b_dac_ready": check_v3_l2_7b_dac_ready,
+    "v3_l2_cdac_4b_switch": check_v3_l2_cdac_4b_switch,
+    "v3_cdac_monodown_7b": check_v3_cdac_monodown_7b,
+    "v3_cdac_6b_stage1_up": check_v3_cdac_6b_stage1_up,
+    "v3_adc_zoom_timing_sequencer": check_v3_adc_zoom_timing_sequencer,
     "vbm1_background_calibration_accumulator_dut": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_tb": check_vbm1_background_calibration_accumulator,
     "vbm1_background_calibration_accumulator_bugfix": check_vbm1_background_calibration_accumulator,
@@ -14499,412 +14499,412 @@ CHECKS["086-dither-noise-like-deterministic-source"] = check_noise_gen
 CHECKS["087-lfsr-prbs-generator"] = check_prbs7
 CHECKS["088-ramp-step-source"] = check_bound_step_period_guard
 CHECKS["089-sine-periodic-voltage-source"] = check_multitone
-CHECKS["112-source-clocked-sar-comparator"] = check_v3_source_clocked_sar_comparator
-CHECKS["113-source-clocked-dac-restore-4b"] = check_v3_source_clocked_dac_restore_4b
-CHECKS["114-source-sample-and-hold-ideal"] = check_v3_source_sample_hold
-CHECKS["115-source-single-shot-pulse"] = check_v3_source_single_shot
-CHECKS["116-source-clocked-comparator-reset-low"] = check_v3_source_clocked_comparator_reset_low
-CHECKS["117-source-bipolar-dac-4b-continuous"] = check_v3_source_bipolar_dac_4b_continuous
-CHECKS["118-source-clocked-dac-restore-7b"] = check_v3_source_clocked_dac_restore_7b
-CHECKS["119-source-crossing-pulse-detector"] = check_v3_source_crossing_pulse_detector
-CHECKS["120-source-not-gate-voltage"] = check_v3_source_not_gate
-CHECKS["121-source-dff-reset-voltage"] = check_v3_source_dff_reset
-CHECKS["122-source-offset-search-comparator"] = check_v3_source_offset_search_comparator
-CHECKS["123-source-start-gated-offset-search"] = check_v3_source_start_gated_offset_search
-CHECKS["124-source-comp-os-detect"] = check_v3_source_comp_os_detect
-CHECKS["125-source-clocked-dac-4b-binary"] = check_v3_source_clocked_dac_4b_binary
-CHECKS["126-source-latched-comparator-delay"] = check_v3_source_latched_comparator_delay
-CHECKS["127-source-sar-weighted-sum"] = check_v3_source_sar_weighted_sum
-CHECKS["128-source-two-input-and-gate"] = check_v3_source_two_input_and_gate
-CHECKS["129-source-two-input-xor-gate"] = check_v3_source_two_input_xor_gate
-CHECKS["130-source-analog-mux-threshold"] = check_v3_source_analog_mux_threshold
-CHECKS["131-source-two-bit-counter-marker"] = check_v3_source_two_bit_counter_marker
-CHECKS["132-source-max-detector-hold"] = check_v3_source_max_detector_hold
-CHECKS["133-source-time-diff-detector"] = check_v3_source_time_diff_detector
-CHECKS["134-source-differential-buffer"] = check_v3_source_differential_buffer
-CHECKS["135-source-two-input-or-gate"] = check_v3_source_two_input_or_gate
-CHECKS["136-source-sar-cdac-residue"] = check_v3_source_sar_cdac_residue
-CHECKS["137-source-two-input-nand-gate"] = check_v3_source_two_input_nand_gate
-CHECKS["138-source-two-input-nor-gate"] = check_v3_source_two_input_nor_gate
-CHECKS["139-source-three-input-and-gate"] = check_v3_source_three_input_and_gate
-CHECKS["140-source-three-input-or-gate"] = check_v3_source_three_input_or_gate
-CHECKS["141-source-three-input-xor-gate"] = check_v3_source_three_input_xor_gate
-CHECKS["167-source-ideal-adc-4bit-quantizer"] = check_v3_source_ideal_adc_4bit_quantizer
-CHECKS["168-source-ideal-dac-4bit-differential"] = check_v3_source_ideal_dac_4bit_differential
-CHECKS["169-source-two-period-sample-delay"] = check_v3_source_two_period_sample_delay
-CHECKS["170-source-clocked-four-input-mux"] = check_v3_source_clocked_four_input_mux
-CHECKS["171-source-divide-by-eight-clock"] = check_v3_source_divide_by_eight_clock
-CHECKS["172-source-flash-thermometer-centered-sum"] = check_v3_source_flash_thermometer_centered_sum
-CHECKS["173-source-weighted-sar-decoder-9b"] = check_v3_source_weighted_sar_decoder_9b
-CHECKS["174-source-control-word-encoder-7b"] = check_v3_source_control_word_encoder_7b
-CHECKS["175-source-four-channel-edge-sampler"] = check_v3_source_four_channel_edge_sampler
-CHECKS["176-source-dual-modulus-divider-16-17"] = check_v3_source_dual_modulus_divider_16_17
-CHECKS["177-source-sar-5bit-serial-decoder"] = check_v3_source_sar_5bit_serial_decoder
-CHECKS["178-source-cyclic-decoder-12bit"] = check_v3_source_cyclic_decoder_12bit
-CHECKS["179-source-flash-8level-sum-delay"] = check_v3_source_flash_8level_sum_delay
-CHECKS["180-source-flash-sum8-fraction"] = check_v3_source_flash_sum8_fraction
-CHECKS["181-source-two-channel-sample-demux"] = check_v3_source_two_channel_sample_demux
-CHECKS["182-source-differential-dac-calc-6b"] = check_v3_source_differential_dac_calc_6b
-CHECKS["183-source-flash-adc-threshold-taps"] = check_v3_source_flash_adc_threshold_taps
-CHECKS["184-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle
-CHECKS["185-source-dac-5v-weighted-7b"] = check_v3_source_dac_5v_weighted_7b
-CHECKS["186-source-folded-flash-dac-4b"] = check_v3_source_folded_flash_dac_4b
-CHECKS["187-source-ref-flash-8level-decoder"] = check_v3_source_ref_flash_8level_decoder
-CHECKS["188-source-ref-flash-15level-decoder"] = check_v3_source_ref_flash_15level_decoder
-CHECKS["189-source-divide-by-8-9-switch"] = check_v3_source_divide_by_8_9_switch
-CHECKS["190-source-dac-restore-10bit-offset"] = check_v3_source_dac_restore_10bit_offset
-CHECKS["191-source-dac-8bit-ideal-scalar"] = check_v3_source_dac_8bit_ideal_scalar
-CHECKS["192-source-flash-data-align-pipeline"] = check_v3_source_flash_data_align_pipeline
-CHECKS["193-source-cyclic-decoder-10b"] = check_v3_source_cyclic_decoder_10b
-CHECKS["194-source-ideal-adc-out-7bits"] = check_v3_source_ideal_adc_out_7bits
-CHECKS["195-source-va-lx-adc-ideal-4b"] = check_v3_source_va_lx_adc_ideal_4b
-CHECKS["196-source-va-lx-dac-ideal-4b"] = check_v3_source_va_lx_dac_ideal_4b
-CHECKS["197-source-l1-dac-4b-bipolar"] = check_v3_source_l1_dac_4b_bipolar
-CHECKS["198-source-l2-cdac-4b-residue"] = check_v3_source_l2_cdac_4b_residue
-CHECKS["199-source-ideal-clkmux-8channel"] = check_v3_source_ideal_clkmux_8channel
-CHECKS["200-source-dac-ideal-4b-offset"] = check_v3_source_dac_ideal_4b_offset
-CHECKS["201-source-linear-pfd-gain"] = check_v3_source_linear_pfd_gain
-CHECKS["202-source-l2-cmp-ideal-clocked"] = check_v3_source_l2_cmp_ideal_clocked
-CHECKS["203-source-comparator-offset-driver"] = check_v3_source_comparator_offset_driver
-CHECKS["204-source-pipe-2lane-edge-align"] = check_v3_source_pipe_2lane_edge_align
-CHECKS["205-source-dac-serial-accumulator"] = check_v3_source_dac_serial_accumulator
-CHECKS["206-source-sar-sum-weighted-11b"] = check_v3_source_sar_sum_weighted_11b
-CHECKS["207-source-iterative-isar-dac"] = check_v3_source_iterative_isar_dac
-CHECKS["218-source-foreground-rdac-calibrator"] = check_v3_source_foreground_rdac_calibrator
-CHECKS["219-source-offset-rdac-search-flow"] = check_v3_source_offset_rdac_search_flow
-CHECKS["220-source-spi-shift-mux"] = check_v3_source_spi_shift_mux
-CHECKS["221-source-dff-set-reset-hold"] = check_v3_source_dff_set_reset_hold
-CHECKS["222-source-sarfend-logic-4b"] = check_v3_source_sarfend_logic_4b
-CHECKS["223-source-adc-sample-clock-sequencer"] = check_v3_source_adc_sample_clock_sequencer
-CHECKS["224-source-pipeline-counter-onehot"] = check_v3_source_pipeline_counter_onehot
-CHECKS["225-source-cdac-bidirect-residue"] = check_v3_source_cdac_bidirect_residue
-CHECKS["226-source-pfd-reset-pulse"] = check_v3_source_pfd_reset_pulse
-CHECKS["227-source-trim-ctrl-4bit"] = check_v3_source_trim_ctrl_4bit
-CHECKS["228-source-linearity-rdac-offset-sweep"] = check_v3_source_linearity_rdac_offset_sweep
-CHECKS["229-source-sar-das-logic-6b"] = check_v3_source_sar_das_logic_6b
-CHECKS["230-source-sar-logic-4b-self-timed"] = check_v3_source_sar_logic_4b_self_timed
-CHECKS["231-source-pfd-tdomain-reset-window"] = check_v3_source_pfd_tdomain_reset_window
-CHECKS["232-source-pipe-adc-gain-control-loop"] = check_v3_source_pipe_adc_gain_control_loop
-CHECKS["233-source-clock-sample-1600n-sequencer"] = check_v3_source_clock_sample_1600n_sequencer
-CHECKS["234-source-l2-sar-logic-4b"] = check_v3_source_l2_sar_logic_4b
-CHECKS["235-source-phase-detector-chopper"] = check_v3_source_phase_detector_chopper
-CHECKS["236-source-single-adc-7b-weighted"] = check_v3_source_single_adc_7b_weighted
-CHECKS["237-source-qtz-differential-2level"] = check_v3_source_qtz_differential_2level
-CHECKS["238-source-l2-7b-dac-ready"] = check_v3_source_l2_7b_dac_ready
-CHECKS["239-source-l2-cdac-4b-switch"] = check_v3_source_l2_cdac_4b_switch
-CHECKS["240-source-cdac-monodown-7b"] = check_v3_source_cdac_monodown_7b
-CHECKS["241-source-cdac-6b-stage1-up"] = check_v3_source_cdac_6b_stage1_up
-CHECKS["242-source-adc-zoom-timing-sequencer"] = check_v3_source_adc_zoom_timing_sequencer
-CHECKS["v3_source_l2_sar_logic_7b"] = check_v3_source_l2_sar_logic_7b
-CHECKS["v3_source_l3_sar2_logic_7b"] = check_v3_source_l3_sar2_logic_7b
-CHECKS["v3_source_cdac_8b_monodown"] = check_v3_source_cdac_8b_monodown
-CHECKS["v3_source_va_dac_6b_se"] = check_v3_source_va_dac_6b_se
-CHECKS["v3_source_offset_halving_search"] = check_v3_source_offset_halving_search
-CHECKS["243-source-l2-sar-logic-7b"] = check_v3_source_l2_sar_logic_7b
-CHECKS["244-source-l3-sar2-logic-7b"] = check_v3_source_l3_sar2_logic_7b
-CHECKS["245-source-cdac-8b-monodown"] = check_v3_source_cdac_8b_monodown
-CHECKS["246-source-va-dac-6b-se"] = check_v3_source_va_dac_6b_se
-CHECKS["247-source-offset-halving-search"] = check_v3_source_offset_halving_search
-CHECKS["v3_source_sar_comparator_reset_high"] = check_v3_source_sar_comparator_reset_high
-CHECKS["v3_source_dac_restore_4bit_clocked"] = check_v3_source_dac_restore_4bit_clocked
-CHECKS["v3_source_dac_restore_7bit_clocked"] = check_v3_source_dac_restore_7bit_clocked
-CHECKS["v3_source_dac_restore_6bit_1p8"] = check_v3_source_dac_restore_6bit_1p8
-CHECKS["v3_source_sample_hold_5v_clock"] = check_v3_source_sample_hold_5v_clock
-CHECKS["248-source-sar-comparator-reset-high"] = check_v3_source_sar_comparator_reset_high
-CHECKS["249-source-dac-restore-4bit-clocked"] = check_v3_source_dac_restore_4bit_clocked
-CHECKS["250-source-dac-restore-7bit-clocked"] = check_v3_source_dac_restore_7bit_clocked
-CHECKS["251-source-dac-restore-6bit-1p8"] = check_v3_source_dac_restore_6bit_1p8
-CHECKS["252-source-sample-hold-5v-clock"] = check_v3_source_sample_hold_5v_clock
-CHECKS["v3_source_sum5_signed_sar_weight"] = check_v3_source_sum5_signed_sar_weight
-CHECKS["v3_source_lt_readout_sar4"] = check_v3_source_lt_readout_sar4
-CHECKS["v3_source_tool_4bit_sar_signed_dac"] = check_v3_source_tool_4bit_sar_signed_dac
-CHECKS["v3_source_dac4bit_small_swing"] = check_v3_source_dac4bit_small_swing
-CHECKS["v3_source_comparator_reset_low_1p8"] = check_v3_source_comparator_reset_low_1p8
-CHECKS["253-source-sum5-signed-sar-weight"] = check_v3_source_sum5_signed_sar_weight
-CHECKS["254-source-lt-readout-sar4"] = check_v3_source_lt_readout_sar4
-CHECKS["255-source-tool-4bit-sar-signed-dac"] = check_v3_source_tool_4bit_sar_signed_dac
-CHECKS["256-source-dac4bit-small-swing"] = check_v3_source_dac4bit_small_swing
-CHECKS["257-source-comparator-reset-low-1p8"] = check_v3_source_comparator_reset_low_1p8
-CHECKS["v3_source_lt_read_sar6b_weighted"] = check_v3_source_lt_read_sar6b_weighted
-CHECKS["v3_source_lt_read_sar7b_weighted"] = check_v3_source_lt_read_sar7b_weighted
-CHECKS["v3_source_dac_serial_16b_nobridge"] = check_v3_source_dac_serial_16b_nobridge
-CHECKS["v3_source_sar_13bit_serial_decoder"] = check_v3_source_sar_13bit_serial_decoder
-CHECKS["v3_source_single_shot_timer_pulse"] = check_v3_source_single_shot_timer_pulse
-CHECKS["258-source-lt-read-sar6b-weighted"] = check_v3_source_lt_read_sar6b_weighted
-CHECKS["259-source-lt-read-sar7b-weighted"] = check_v3_source_lt_read_sar7b_weighted
-CHECKS["260-source-dac-serial-16b-nobridge"] = check_v3_source_dac_serial_16b_nobridge
-CHECKS["261-source-sar-13bit-serial-decoder"] = check_v3_source_sar_13bit_serial_decoder
-CHECKS["262-source-single-shot-timer-pulse"] = check_v3_source_single_shot_timer_pulse
-CHECKS["v3_source_clocked_comparator_dual_output"] = check_v3_source_clocked_comparator_dual_output
-CHECKS["v3_source_dac4bit_bipolar_252m"] = check_v3_source_dac4bit_bipolar_252m
-CHECKS["v3_source_bin2ther_2b"] = check_v3_source_bin2ther_2b
-CHECKS["v3_source_dff_set_reset"] = check_v3_source_dff_set_reset
-CHECKS["v3_source_pfd_up_down_state"] = check_v3_source_pfd_up_down_state
-CHECKS["263-source-clocked-comparator-dual-output"] = check_v3_source_clocked_comparator_dual_output
-CHECKS["264-source-dac4bit-bipolar-252m"] = check_v3_source_dac4bit_bipolar_252m
-CHECKS["265-source-bin2ther-2b"] = check_v3_source_bin2ther_2b
-CHECKS["266-source-dff-set-reset"] = check_v3_source_dff_set_reset
-CHECKS["267-source-pfd-up-down-state"] = check_v3_source_pfd_up_down_state
-CHECKS["v3_source_samplehold_rising_edge"] = check_v3_source_samplehold_rising_edge
-CHECKS["v3_source_trim_ctrl_5bit"] = check_v3_source_trim_ctrl_5bit
-CHECKS["v3_source_therm8_to_bin4_count"] = check_v3_source_therm8_to_bin4_count
-CHECKS["v3_source_coarse_qtz_3bit_residue"] = check_v3_source_coarse_qtz_3bit_residue
-CHECKS["v3_source_rs_phase_detector"] = check_v3_source_rs_phase_detector
-CHECKS["v3_source_level_shifter_offset"] = check_v3_source_level_shifter_offset
-CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bit
-CHECKS["v3_source_divide_by_two_toggle_v2"] = check_v3_source_divide_by_two_toggle_v2
-CHECKS["v3_source_accum3_pulse"] = check_v3_source_accum3_pulse
-CHECKS["v3_source_xor_phase_detector"] = check_v3_source_xor_phase_detector
-CHECKS["v3_source_decision_router_logic"] = check_v3_source_decision_router_logic
-CHECKS["v3_source_safe_analog_divider"] = check_v3_source_safe_analog_divider
-CHECKS["v3_source_vargain_diffamp_clip"] = check_v3_source_vargain_diffamp_clip
-CHECKS["v3_source_programmable_divider_by_n"] = check_v3_source_programmable_divider_by_n
-CHECKS["v3_source_pfd_timer_reset"] = check_v3_source_pfd_timer_reset
-CHECKS["268-source-samplehold-rising-edge"] = check_v3_source_samplehold_rising_edge
-CHECKS["269-source-trim-ctrl-5bit"] = check_v3_source_trim_ctrl_5bit
-CHECKS["270-source-therm8-to-bin4-count"] = check_v3_source_therm8_to_bin4_count
-CHECKS["271-source-coarse-qtz-3bit-residue"] = check_v3_source_coarse_qtz_3bit_residue
-CHECKS["272-source-rs-phase-detector"] = check_v3_source_rs_phase_detector
-CHECKS["273-source-level-shifter-offset"] = check_v3_source_level_shifter_offset
-CHECKS["274-source-weighted-decoder-6bit"] = check_v3_source_weighted_decoder_6bit
-CHECKS["275-source-divide-by-two-toggle"] = check_v3_source_divide_by_two_toggle_v2
-CHECKS["276-source-accum3-pulse"] = check_v3_source_accum3_pulse
-CHECKS["277-source-xor-phase-detector"] = check_v3_source_xor_phase_detector
-CHECKS["278-source-decision-router-logic"] = check_v3_source_decision_router_logic
-CHECKS["279-source-safe-analog-divider"] = check_v3_source_safe_analog_divider
-CHECKS["280-source-vargain-diffamp-clip"] = check_v3_source_vargain_diffamp_clip
-CHECKS["281-source-programmable-divider-by-n"] = check_v3_source_programmable_divider_by_n
-CHECKS["282-source-pfd-timer-reset"] = check_v3_source_pfd_timer_reset
-CHECKS["v3_source_absolute_value"] = check_v3_source_absolute_value
-CHECKS["v3_source_deadband_voltage"] = check_v3_source_deadband_voltage
-CHECKS["v3_source_deadband_diffamp"] = check_v3_source_deadband_diffamp
-CHECKS["v3_source_limiting_diffamp"] = check_v3_source_limiting_diffamp
-CHECKS["v3_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
-CHECKS["v3_source_flash_folded_dac4"] = check_v3_source_flash_folded_dac4
-CHECKS["v3_source_subradix_dac10"] = check_v3_source_subradix_dac10
-CHECKS["v3_source_clocked_adc3bit"] = check_v3_source_clocked_adc3bit
-CHECKS["v3_source_cal4bit_modulo"] = check_v3_source_cal4bit_modulo
-CHECKS["v3_source_mux4_priority"] = check_v3_source_mux4_priority
-CHECKS["v3_source_xnor_gate_voltage"] = check_v3_source_xnor_gate_voltage
-CHECKS["v3_source_bipolar_dff_sample"] = check_v3_source_bipolar_dff_sample
-CHECKS["v3_source_pfd_active_low_reset"] = check_v3_source_pfd_active_low_reset
-CHECKS["v3_288_source_absolute_value"] = check_v3_source_absolute_value
-CHECKS["v3_289_source_deadband_voltage"] = check_v3_source_deadband_voltage
-CHECKS["v3_290_source_deadband_diffamp"] = check_v3_source_deadband_diffamp
-CHECKS["v3_291_source_limiting_diffamp"] = check_v3_source_limiting_diffamp
-CHECKS["v3_292_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
-CHECKS["v3_293_source_flash_folded_dac4"] = check_v3_source_flash_folded_dac4
-CHECKS["v3_294_source_subradix_dac10"] = check_v3_source_subradix_dac10
-CHECKS["v3_295_source_clocked_adc3bit"] = check_v3_source_clocked_adc3bit
-CHECKS["v3_296_source_cal4bit_modulo"] = check_v3_source_cal4bit_modulo
-CHECKS["v3_297_source_mux4_priority"] = check_v3_source_mux4_priority
-CHECKS["v3_298_source_xnor_gate_voltage"] = check_v3_source_xnor_gate_voltage
-CHECKS["v3_299_source_bipolar_dff_sample"] = check_v3_source_bipolar_dff_sample
-CHECKS["v3_300_source_pfd_active_low_reset"] = check_v3_source_pfd_active_low_reset
-CHECKS["288-source-absolute-value"] = check_v3_source_absolute_value
-CHECKS["289-source-deadband-voltage"] = check_v3_source_deadband_voltage
-CHECKS["290-source-deadband-diffamp"] = check_v3_source_deadband_diffamp
-CHECKS["291-source-limiting-diffamp"] = check_v3_source_limiting_diffamp
-CHECKS["292-source-smooth-tanh-comparator"] = check_v3_source_smooth_tanh_comparator
-CHECKS["293-source-flash-folded-dac4"] = check_v3_source_flash_folded_dac4
-CHECKS["294-source-subradix-dac10"] = check_v3_source_subradix_dac10
-CHECKS["295-source-clocked-adc3bit"] = check_v3_source_clocked_adc3bit
-CHECKS["296-source-cal4bit-modulo"] = check_v3_source_cal4bit_modulo
-CHECKS["297-source-mux4-priority"] = check_v3_source_mux4_priority
-CHECKS["298-source-xnor-gate-voltage"] = check_v3_source_xnor_gate_voltage
-CHECKS["299-source-bipolar-dff-sample"] = check_v3_source_bipolar_dff_sample
-CHECKS["300-source-pfd-active-low-reset"] = check_v3_source_pfd_active_low_reset
-# Source task.toml id aliases generated from v3 task metadata.
-SOURCE_TASK_ID_ALIASES = {
-    "v3_112_source_clocked_sar_comparator": "v3_source_clocked_sar_comparator",
-    "v3_113_source_clocked_dac_restore_4b": "v3_source_clocked_dac_restore_4b",
-    "v3_114_source_sample_and_hold_ideal": "v3_source_sample_hold",
-    "v3_115_source_single_shot_pulse": "v3_source_single_shot",
-    "v3_116_source_clocked_comparator_reset_low": "v3_source_clocked_comparator_reset_low",
-    "v3_117_source_bipolar_dac_4b_continuous": "v3_source_bipolar_dac_4b_continuous",
-    "v3_118_source_clocked_dac_restore_7b": "v3_source_clocked_dac_restore_7b",
-    "v3_119_source_crossing_pulse_detector": "v3_source_crossing_pulse_detector",
-    "v3_120_source_not_gate_voltage": "v3_source_not_gate",
-    "v3_121_source_dff_reset_voltage": "v3_source_dff_reset",
-    "v3_122_source_offset_search_comparator": "v3_source_offset_search_comparator",
-    "v3_123_source_start_gated_offset_search": "v3_source_start_gated_offset_search",
-    "v3_124_source_comp_os_detect": "v3_source_comp_os_detect",
-    "v3_125_source_clocked_dac_4b_binary": "v3_source_clocked_dac_4b_binary",
-    "v3_126_source_latched_comparator_delay": "v3_source_latched_comparator_delay",
-    "v3_127_source_sar_weighted_sum": "v3_source_sar_weighted_sum",
-    "v3_128_source_two_input_and_gate": "v3_source_two_input_and_gate",
-    "v3_129_source_two_input_xor_gate": "v3_source_two_input_xor_gate",
-    "v3_130_source_analog_mux_threshold": "v3_source_analog_mux_threshold",
-    "v3_131_source_two_bit_counter_marker": "v3_source_two_bit_counter_marker",
-    "v3_132_source_max_detector_hold": "v3_source_max_detector_hold",
-    "v3_133_source_time_diff_detector": "v3_source_time_diff_detector",
-    "v3_134_source_differential_buffer": "v3_source_differential_buffer",
-    "v3_135_source_two_input_or_gate": "v3_source_two_input_or_gate",
-    "v3_136_source_sar_cdac_residue": "v3_source_sar_cdac_residue",
-    "v3_137_source_two_input_nand_gate": "v3_source_two_input_nand_gate",
-    "v3_138_source_two_input_nor_gate": "v3_source_two_input_nor_gate",
-    "v3_139_source_three_input_and_gate": "v3_source_three_input_and_gate",
-    "v3_140_source_three_input_or_gate": "v3_source_three_input_or_gate",
-    "v3_141_source_three_input_xor_gate": "v3_source_three_input_xor_gate",
-    "v3_142_source_attenuator_gain": "v3_source_attenuator_gain",
-    "v3_143_source_deadband_window": "v3_source_deadband_window",
-    "v3_144_source_differential_deadband": "v3_source_differential_deadband",
-    "v3_145_source_hard_voltage_clamp": "v3_source_hard_voltage_clamp",
-    "v3_146_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
-    "v3_147_source_limiter_rails": "v3_source_limiter_rails",
-    "v3_148_source_absolute_value": "v3_source_absolute_value",
-    "v3_149_source_offset_gain_amplifier": "v3_source_offset_gain_amplifier",
-    "v3_150_source_safe_voltage_divider": "v3_source_safe_voltage_divider",
-    "v3_151_source_polynomial_differential_vcvs": "v3_source_polynomial_differential_vcvs",
-    "v3_152_source_differential_gain_driver": "v3_source_differential_gain_driver",
-    "v3_153_source_limiting_differential_amplifier": "v3_source_limiting_differential_amplifier",
-    "v3_154_source_analog_multiplier": "v3_source_analog_multiplier",
-    "v3_155_source_three_way_threshold_mux": "v3_source_three_way_threshold_mux",
-    "v3_156_source_differential_amplifier_core": "v3_source_differential_amplifier_core",
-    "v3_157_source_logarithmic_amplifier": "v3_source_logarithmic_amplifier",
-    "v3_158_source_soft_voltage_clamp": "v3_source_soft_voltage_clamp",
-    "v3_159_source_variable_gain_differential_amplifier": "v3_source_variable_gain_differential_amplifier",
-    "v3_160_source_voltage_controlled_gain_amplifier": "v3_source_voltage_controlled_gain_amplifier",
-    "v3_161_source_ideal_differential_opamp": "v3_source_ideal_differential_opamp",
-    "v3_162_source_half_adder_logic": "v3_source_half_adder_logic",
-    "v3_163_source_full_adder_logic": "v3_source_full_adder_logic",
-    "v3_164_source_half_subtractor_logic": "v3_source_half_subtractor_logic",
-    "v3_165_source_full_subtractor_logic": "v3_source_full_subtractor_logic",
-    "v3_166_source_rs_latch_voltage": "v3_source_rs_latch_voltage",
-    "v3_167_source_ideal_adc_4bit_quantizer": "v3_source_ideal_adc_4bit_quantizer",
-    "v3_168_source_ideal_dac_4bit_differential": "v3_source_ideal_dac_4bit_differential",
-    "v3_169_source_two_period_sample_delay": "v3_source_two_period_sample_delay",
-    "v3_170_source_clocked_four_input_mux": "v3_source_clocked_four_input_mux",
-    "v3_171_source_divide_by_eight_clock": "v3_source_divide_by_eight_clock",
-    "v3_172_source_flash_thermometer_centered_sum": "v3_source_flash_thermometer_centered_sum",
-    "v3_173_source_weighted_sar_decoder_9b": "v3_source_weighted_sar_decoder_9b",
-    "v3_174_source_control_word_encoder_7b": "v3_source_control_word_encoder_7b",
-    "v3_175_source_four_channel_edge_sampler": "v3_source_four_channel_edge_sampler",
-    "v3_176_source_dual_modulus_divider_16_17": "v3_source_dual_modulus_divider_16_17",
-    "v3_177_source_sar_5bit_serial_decoder": "v3_source_sar_5bit_serial_decoder",
-    "v3_178_source_cyclic_decoder_12bit": "v3_source_cyclic_decoder_12bit",
-    "v3_179_source_flash_8level_sum_delay": "v3_source_flash_8level_sum_delay",
-    "v3_180_source_flash_sum8_fraction": "v3_source_flash_sum8_fraction",
-    "v3_181_source_two_channel_sample_demux": "v3_source_two_channel_sample_demux",
-    "v3_182_source_differential_dac_calc_6b": "v3_source_differential_dac_calc_6b",
-    "v3_183_source_flash_adc_threshold_taps": "v3_source_flash_adc_threshold_taps",
-    "v3_184_source_divide_by_two_toggle": "v3_source_divide_by_two_toggle",
-    "v3_185_source_dac_5v_weighted_7b": "v3_source_dac_5v_weighted_7b",
-    "v3_186_source_folded_flash_dac_4b": "v3_source_folded_flash_dac_4b",
-    "v3_187_source_ref_flash_8level_decoder": "v3_source_ref_flash_8level_decoder",
-    "v3_188_source_ref_flash_15level_decoder": "v3_source_ref_flash_15level_decoder",
-    "v3_189_source_divide_by_8_9_switch": "v3_source_divide_by_8_9_switch",
-    "v3_190_source_dac_restore_10bit_offset": "v3_source_dac_restore_10bit_offset",
-    "v3_191_source_dac_8bit_ideal_scalar": "v3_source_dac_8bit_ideal_scalar",
-    "v3_192_source_flash_data_align_pipeline": "v3_source_flash_data_align_pipeline",
-    "v3_193_source_cyclic_decoder_10b": "v3_source_cyclic_decoder_10b",
-    "v3_194_source_ideal_adc_out_7bits": "v3_source_ideal_adc_out_7bits",
-    "v3_195_source_va_lx_adc_ideal_4b": "v3_source_va_lx_adc_ideal_4b",
-    "v3_196_source_va_lx_dac_ideal_4b": "v3_source_va_lx_dac_ideal_4b",
-    "v3_197_source_l1_dac_4b_bipolar": "v3_source_l1_dac_4b_bipolar",
-    "v3_198_source_l2_cdac_4b_residue": "v3_source_l2_cdac_4b_residue",
-    "v3_199_source_ideal_clkmux_8channel": "v3_source_ideal_clkmux_8channel",
-    "v3_200_source_dac_ideal_4b_offset": "v3_source_dac_ideal_4b_offset",
-    "v3_201_source_linear_pfd_gain": "v3_source_linear_pfd_gain",
-    "v3_202_source_l2_cmp_ideal_clocked": "v3_source_l2_cmp_ideal_clocked",
-    "v3_203_source_comparator_offset_driver": "v3_source_comparator_offset_driver",
-    "v3_204_source_pipe_2lane_edge_align": "v3_source_pipe_2lane_edge_align",
-    "v3_205_source_dac_serial_accumulator": "v3_source_dac_serial_accumulator",
-    "v3_206_source_sar_sum_weighted_11b": "v3_source_sar_sum_weighted_11b",
-    "v3_207_source_iterative_isar_dac": "v3_source_iterative_isar_dac",
-    "v3_208_source_offset_bisection_driver": "v3_source_offset_bisection_driver",
-    "v3_209_source_weighted_decoder_7b5": "v3_source_weighted_decoder_7b5",
-    "v3_210_source_toggle_flip_flop": "v3_source_toggle_flip_flop",
-    "v3_211_source_sync_8b_dffs_v2": "v3_source_sync_8b_dffs_v2",
-    "v3_212_source_onehot_progress_encoder": "v3_source_onehot_progress_encoder",
-    "v3_213_source_tdc_ideal_edge_delta": "v3_source_tdc_ideal_edge_delta",
-    "v3_214_source_foreground_cload_calibrator": "v3_source_foreground_cload_calibrator",
-    "v3_215_source_pipe15_data_align": "v3_source_pipe15_data_align",
-    "v3_216_source_clocked_mux4_sampler": "v3_source_clocked_mux4_sampler",
-    "v3_217_source_dac7_code_generator": "v3_source_dac7_code_generator",
-    "v3_218_source_foreground_rdac_calibrator": "v3_source_foreground_rdac_calibrator",
-    "v3_219_source_offset_rdac_search_flow": "v3_source_offset_rdac_search_flow",
-    "v3_220_source_spi_shift_mux": "v3_source_spi_shift_mux",
-    "v3_221_source_dff_set_reset_hold": "v3_source_dff_set_reset_hold",
-    "v3_222_source_sarfend_logic_4b": "v3_source_sarfend_logic_4b",
-    "v3_223_source_adc_sample_clock_sequencer": "v3_source_adc_sample_clock_sequencer",
-    "v3_224_source_pipeline_counter_onehot": "v3_source_pipeline_counter_onehot",
-    "v3_225_source_cdac_bidirect_residue": "v3_source_cdac_bidirect_residue",
-    "v3_226_source_pfd_reset_pulse": "v3_source_pfd_reset_pulse",
-    "v3_227_source_trim_ctrl_4bit": "v3_source_trim_ctrl_4bit",
-    "v3_228_source_linearity_rdac_offset_sweep": "v3_source_linearity_rdac_offset_sweep",
-    "v3_229_source_sar_das_logic_6b": "v3_source_sar_das_logic_6b",
-    "v3_230_source_sar_logic_4b_self_timed": "v3_source_sar_logic_4b_self_timed",
-    "v3_231_source_pfd_tdomain_reset_window": "v3_source_pfd_tdomain_reset_window",
-    "v3_232_source_pipe_adc_gain_control_loop": "v3_source_pipe_adc_gain_control_loop",
-    "v3_233_source_clock_sample_1600n_sequencer": "v3_source_clock_sample_1600n_sequencer",
-    "v3_234_source_l2_sar_logic_4b": "v3_source_l2_sar_logic_4b",
-    "v3_235_source_phase_detector_chopper": "v3_source_phase_detector_chopper",
-    "v3_236_source_single_adc_7b_weighted": "v3_source_single_adc_7b_weighted",
-    "v3_237_source_qtz_differential_2level": "v3_source_qtz_differential_2level",
-    "v3_238_source_l2_7b_dac_ready": "v3_source_l2_7b_dac_ready",
-    "v3_239_source_l2_cdac_4b_switch": "v3_source_l2_cdac_4b_switch",
-    "v3_240_source_cdac_monodown_7b": "v3_source_cdac_monodown_7b",
-    "v3_241_source_cdac_6b_stage1_up": "v3_source_cdac_6b_stage1_up",
-    "v3_242_source_adc_zoom_timing_sequencer": "v3_source_adc_zoom_timing_sequencer",
-    "v3_243_source_l2_sar_logic_7b": "v3_source_l2_sar_logic_7b",
-    "v3_244_source_l3_sar2_logic_7b": "v3_source_l3_sar2_logic_7b",
-    "v3_245_source_cdac_8b_monodown": "v3_source_cdac_8b_monodown",
-    "v3_246_source_va_dac_6b_se": "v3_source_va_dac_6b_se",
-    "v3_247_source_offset_halving_search": "v3_source_offset_halving_search",
-    "v3_248_source_sar_comparator_reset_high": "v3_source_sar_comparator_reset_high",
-    "v3_249_source_dac_restore_4bit_clocked": "v3_source_dac_restore_4bit_clocked",
-    "v3_250_source_dac_restore_7bit_clocked": "v3_source_dac_restore_7bit_clocked",
-    "v3_251_source_dac_restore_6bit_1p8": "v3_source_dac_restore_6bit_1p8",
-    "v3_252_source_sample_hold_5v_clock": "v3_source_sample_hold_5v_clock",
-    "v3_253_source_sum5_signed_sar_weight": "v3_source_sum5_signed_sar_weight",
-    "v3_254_source_lt_readout_sar4": "v3_source_lt_readout_sar4",
-    "v3_255_source_tool_4bit_sar_signed_dac": "v3_source_tool_4bit_sar_signed_dac",
-    "v3_256_source_dac4bit_small_swing": "v3_source_dac4bit_small_swing",
-    "v3_257_source_comparator_reset_low_1p8": "v3_source_comparator_reset_low_1p8",
-    "v3_258_source_lt_read_sar6b_weighted": "v3_source_lt_read_sar6b_weighted",
-    "v3_259_source_lt_read_sar7b_weighted": "v3_source_lt_read_sar7b_weighted",
-    "v3_260_source_dac_serial_16b_nobridge": "v3_source_dac_serial_16b_nobridge",
-    "v3_261_source_sar_13bit_serial_decoder": "v3_source_sar_13bit_serial_decoder",
-    "v3_262_source_single_shot_timer_pulse": "v3_source_single_shot_timer_pulse",
-    "v3_263_source_clocked_comparator_dual_output": "v3_source_clocked_comparator_dual_output",
-    "v3_264_source_dac4bit_bipolar_252m": "v3_source_dac4bit_bipolar_252m",
-    "v3_265_source_bin2ther_2b": "v3_source_bin2ther_2b",
-    "v3_266_source_dff_set_reset": "v3_source_dff_set_reset",
-    "v3_267_source_pfd_up_down_state": "v3_source_pfd_up_down_state",
-    "v3_268_source_samplehold_rising_edge": "v3_source_samplehold_rising_edge",
-    "v3_269_source_trim_ctrl_5bit": "v3_source_trim_ctrl_5bit",
-    "v3_270_source_therm8_to_bin4_count": "v3_source_therm8_to_bin4_count",
-    "v3_271_source_coarse_qtz_3bit_residue": "v3_source_coarse_qtz_3bit_residue",
-    "v3_272_source_rs_phase_detector": "v3_source_rs_phase_detector",
-    "v3_273_source_level_shifter_offset": "v3_source_level_shifter_offset",
-    "v3_274_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
-    "v3_275_source_divide_by_two_toggle": "v3_source_divide_by_two_toggle_v2",
-    "v3_276_source_accum3_pulse": "v3_source_accum3_pulse",
-    "v3_277_source_xor_phase_detector": "v3_source_xor_phase_detector",
-    "v3_278_source_decision_router_logic": "v3_source_decision_router_logic",
-    "v3_279_source_safe_analog_divider": "v3_source_safe_analog_divider",
-    "v3_280_source_vargain_diffamp_clip": "v3_source_vargain_diffamp_clip",
-    "v3_281_source_programmable_divider_by_n": "v3_source_programmable_divider_by_n",
-    "v3_282_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
-    "v3_288_source_absolute_value": "v3_source_absolute_value",
-    "v3_289_source_deadband_voltage": "v3_source_deadband_voltage",
-    "v3_290_source_deadband_diffamp": "v3_source_deadband_diffamp",
-    "v3_291_source_limiting_diffamp": "v3_source_limiting_diffamp",
-    "v3_292_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
-    "v3_293_source_flash_folded_dac4": "v3_source_flash_folded_dac4",
-    "v3_294_source_subradix_dac10": "v3_source_subradix_dac10",
-    "v3_295_source_clocked_adc3bit": "v3_source_clocked_adc3bit",
-    "v3_296_source_cal4bit_modulo": "v3_source_cal4bit_modulo",
-    "v3_297_source_mux4_priority": "v3_source_mux4_priority",
-    "v3_298_source_xnor_gate_voltage": "v3_source_xnor_gate_voltage",
-    "v3_299_source_bipolar_dff_sample": "v3_source_bipolar_dff_sample",
-    "v3_300_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",
+CHECKS["112-clocked-sar-comparator"] = check_v3_clocked_sar_comparator
+CHECKS["113-clocked-dac-restore-4b"] = check_v3_clocked_dac_restore_4b
+CHECKS["114-sample-and-hold-ideal"] = check_v3_sample_hold
+CHECKS["115-single-shot-pulse"] = check_v3_single_shot
+CHECKS["116-clocked-comparator-reset-low"] = check_v3_clocked_comparator_reset_low
+CHECKS["117-bipolar-dac-4b-continuous"] = check_v3_bipolar_dac_4b_continuous
+CHECKS["118-clocked-dac-restore-7b"] = check_v3_clocked_dac_restore_7b
+CHECKS["119-crossing-pulse-detector"] = check_v3_crossing_pulse_detector
+CHECKS["120-not-gate-voltage"] = check_v3_not_gate
+CHECKS["121-dff-reset-voltage"] = check_v3_dff_reset
+CHECKS["122-offset-search-comparator"] = check_v3_offset_search_comparator
+CHECKS["123-start-gated-offset-search"] = check_v3_start_gated_offset_search
+CHECKS["124-comp-os-detect"] = check_v3_comp_os_detect
+CHECKS["125-clocked-dac-4b-binary"] = check_v3_clocked_dac_4b_binary
+CHECKS["126-latched-comparator-delay"] = check_v3_latched_comparator_delay
+CHECKS["127-sar-weighted-sum"] = check_v3_sar_weighted_sum
+CHECKS["128-two-input-and-gate"] = check_v3_two_input_and_gate
+CHECKS["129-two-input-xor-gate"] = check_v3_two_input_xor_gate
+CHECKS["130-analog-mux-threshold"] = check_v3_analog_mux_threshold
+CHECKS["131-two-bit-counter-marker"] = check_v3_two_bit_counter_marker
+CHECKS["132-max-detector-hold"] = check_v3_max_detector_hold
+CHECKS["133-time-diff-detector"] = check_v3_time_diff_detector
+CHECKS["134-differential-buffer"] = check_v3_differential_buffer
+CHECKS["135-two-input-or-gate"] = check_v3_two_input_or_gate
+CHECKS["136-sar-cdac-residue"] = check_v3_sar_cdac_residue
+CHECKS["137-two-input-nand-gate"] = check_v3_two_input_nand_gate
+CHECKS["138-two-input-nor-gate"] = check_v3_two_input_nor_gate
+CHECKS["139-three-input-and-gate"] = check_v3_three_input_and_gate
+CHECKS["140-three-input-or-gate"] = check_v3_three_input_or_gate
+CHECKS["141-three-input-xor-gate"] = check_v3_three_input_xor_gate
+CHECKS["167-ideal-adc-4bit-quantizer"] = check_v3_ideal_adc_4bit_quantizer
+CHECKS["168-ideal-dac-4bit-differential"] = check_v3_ideal_dac_4bit_differential
+CHECKS["169-two-period-sample-delay"] = check_v3_two_period_sample_delay
+CHECKS["170-clocked-four-input-mux"] = check_v3_clocked_four_input_mux
+CHECKS["171-divide-by-eight-clock"] = check_v3_divide_by_eight_clock
+CHECKS["172-flash-thermometer-centered-sum"] = check_v3_flash_thermometer_centered_sum
+CHECKS["173-weighted-sar-decoder-9b"] = check_v3_weighted_sar_decoder_9b
+CHECKS["174-control-word-encoder-7b"] = check_v3_control_word_encoder_7b
+CHECKS["175-four-channel-edge-sampler"] = check_v3_four_channel_edge_sampler
+CHECKS["176-dual-modulus-divider-16-17"] = check_v3_dual_modulus_divider_16_17
+CHECKS["177-sar-5bit-serial-decoder"] = check_v3_sar_5bit_serial_decoder
+CHECKS["178-cyclic-decoder-12bit"] = check_v3_cyclic_decoder_12bit
+CHECKS["179-flash-8level-sum-delay"] = check_v3_flash_8level_sum_delay
+CHECKS["180-flash-sum8-fraction"] = check_v3_flash_sum8_fraction
+CHECKS["181-two-channel-sample-demux"] = check_v3_two_channel_sample_demux
+CHECKS["182-differential-dac-calc-6b"] = check_v3_differential_dac_calc_6b
+CHECKS["183-flash-adc-threshold-taps"] = check_v3_flash_adc_threshold_taps
+CHECKS["184-divide-by-two-toggle"] = check_v3_divide_by_two_toggle
+CHECKS["185-dac-5v-weighted-7b"] = check_v3_dac_5v_weighted_7b
+CHECKS["186-folded-flash-dac-4b"] = check_v3_folded_flash_dac_4b
+CHECKS["187-ref-flash-8level-decoder"] = check_v3_ref_flash_8level_decoder
+CHECKS["188-ref-flash-15level-decoder"] = check_v3_ref_flash_15level_decoder
+CHECKS["189-divide-by-8-9-switch"] = check_v3_divide_by_8_9_switch
+CHECKS["190-dac-restore-10bit-offset"] = check_v3_dac_restore_10bit_offset
+CHECKS["191-dac-8bit-ideal-scalar"] = check_v3_dac_8bit_ideal_scalar
+CHECKS["192-flash-data-align-pipeline"] = check_v3_flash_data_align_pipeline
+CHECKS["193-cyclic-decoder-10b"] = check_v3_cyclic_decoder_10b
+CHECKS["194-ideal-adc-out-7bits"] = check_v3_ideal_adc_out_7bits
+CHECKS["195-va-lx-adc-ideal-4b"] = check_v3_va_lx_adc_ideal_4b
+CHECKS["196-va-lx-dac-ideal-4b"] = check_v3_va_lx_dac_ideal_4b
+CHECKS["197-l1-dac-4b-bipolar"] = check_v3_l1_dac_4b_bipolar
+CHECKS["198-l2-cdac-4b-residue"] = check_v3_l2_cdac_4b_residue
+CHECKS["199-ideal-clkmux-8channel"] = check_v3_ideal_clkmux_8channel
+CHECKS["200-dac-ideal-4b-offset"] = check_v3_dac_ideal_4b_offset
+CHECKS["201-linear-pfd-gain"] = check_v3_linear_pfd_gain
+CHECKS["202-l2-cmp-ideal-clocked"] = check_v3_l2_cmp_ideal_clocked
+CHECKS["203-comparator-offset-driver"] = check_v3_comparator_offset_driver
+CHECKS["204-pipe-2lane-edge-align"] = check_v3_pipe_2lane_edge_align
+CHECKS["205-dac-serial-accumulator"] = check_v3_dac_serial_accumulator
+CHECKS["206-sar-sum-weighted-11b"] = check_v3_sar_sum_weighted_11b
+CHECKS["207-iterative-isar-dac"] = check_v3_iterative_isar_dac
+CHECKS["218-foreground-rdac-calibrator"] = check_v3_foreground_rdac_calibrator
+CHECKS["219-offset-rdac-search-flow"] = check_v3_offset_rdac_search_flow
+CHECKS["220-spi-shift-mux"] = check_v3_spi_shift_mux
+CHECKS["221-dff-set-reset-hold"] = check_v3_dff_set_reset_hold
+CHECKS["222-sarfend-logic-4b"] = check_v3_sarfend_logic_4b
+CHECKS["223-adc-sample-clock-sequencer"] = check_v3_adc_sample_clock_sequencer
+CHECKS["224-pipeline-counter-onehot"] = check_v3_pipeline_counter_onehot
+CHECKS["225-cdac-bidirect-residue"] = check_v3_cdac_bidirect_residue
+CHECKS["226-pfd-reset-pulse"] = check_v3_pfd_reset_pulse
+CHECKS["227-trim-ctrl-4bit"] = check_v3_trim_ctrl_4bit
+CHECKS["228-linearity-rdac-offset-sweep"] = check_v3_linearity_rdac_offset_sweep
+CHECKS["229-sar-das-logic-6b"] = check_v3_sar_das_logic_6b
+CHECKS["230-sar-logic-4b-self-timed"] = check_v3_sar_logic_4b_self_timed
+CHECKS["231-pfd-tdomain-reset-window"] = check_v3_pfd_tdomain_reset_window
+CHECKS["232-pipe-adc-gain-control-loop"] = check_v3_pipe_adc_gain_control_loop
+CHECKS["233-clock-sample-1600n-sequencer"] = check_v3_clock_sample_1600n_sequencer
+CHECKS["234-l2-sar-logic-4b"] = check_v3_l2_sar_logic_4b
+CHECKS["235-phase-detector-chopper"] = check_v3_phase_detector_chopper
+CHECKS["236-single-adc-7b-weighted"] = check_v3_single_adc_7b_weighted
+CHECKS["237-qtz-differential-2level"] = check_v3_qtz_differential_2level
+CHECKS["238-l2-7b-dac-ready"] = check_v3_l2_7b_dac_ready
+CHECKS["239-l2-cdac-4b-switch"] = check_v3_l2_cdac_4b_switch
+CHECKS["240-cdac-monodown-7b"] = check_v3_cdac_monodown_7b
+CHECKS["241-cdac-6b-stage1-up"] = check_v3_cdac_6b_stage1_up
+CHECKS["242-adc-zoom-timing-sequencer"] = check_v3_adc_zoom_timing_sequencer
+CHECKS["v3_l2_sar_logic_7b"] = check_v3_l2_sar_logic_7b
+CHECKS["v3_l3_sar2_logic_7b"] = check_v3_l3_sar2_logic_7b
+CHECKS["v3_cdac_8b_monodown"] = check_v3_cdac_8b_monodown
+CHECKS["v3_va_dac_6b_se"] = check_v3_va_dac_6b_se
+CHECKS["v3_offset_halving_search"] = check_v3_offset_halving_search
+CHECKS["243-l2-sar-logic-7b"] = check_v3_l2_sar_logic_7b
+CHECKS["244-l3-sar2-logic-7b"] = check_v3_l3_sar2_logic_7b
+CHECKS["245-cdac-8b-monodown"] = check_v3_cdac_8b_monodown
+CHECKS["246-va-dac-6b-se"] = check_v3_va_dac_6b_se
+CHECKS["247-offset-halving-search"] = check_v3_offset_halving_search
+CHECKS["v3_sar_comparator_reset_high"] = check_v3_sar_comparator_reset_high
+CHECKS["v3_dac_restore_4bit_clocked"] = check_v3_dac_restore_4bit_clocked
+CHECKS["v3_dac_restore_7bit_clocked"] = check_v3_dac_restore_7bit_clocked
+CHECKS["v3_dac_restore_6bit_1p8"] = check_v3_dac_restore_6bit_1p8
+CHECKS["v3_sample_hold_5v_clock"] = check_v3_sample_hold_5v_clock
+CHECKS["248-sar-comparator-reset-high"] = check_v3_sar_comparator_reset_high
+CHECKS["249-dac-restore-4bit-clocked"] = check_v3_dac_restore_4bit_clocked
+CHECKS["250-dac-restore-7bit-clocked"] = check_v3_dac_restore_7bit_clocked
+CHECKS["251-dac-restore-6bit-1p8"] = check_v3_dac_restore_6bit_1p8
+CHECKS["252-sample-hold-5v-clock"] = check_v3_sample_hold_5v_clock
+CHECKS["v3_sum5_signed_sar_weight"] = check_v3_sum5_signed_sar_weight
+CHECKS["v3_lt_readout_sar4"] = check_v3_lt_readout_sar4
+CHECKS["v3_tool_4bit_sar_signed_dac"] = check_v3_tool_4bit_sar_signed_dac
+CHECKS["v3_dac4bit_small_swing"] = check_v3_dac4bit_small_swing
+CHECKS["v3_comparator_reset_low_1p8"] = check_v3_comparator_reset_low_1p8
+CHECKS["253-sum5-signed-sar-weight"] = check_v3_sum5_signed_sar_weight
+CHECKS["254-lt-readout-sar4"] = check_v3_lt_readout_sar4
+CHECKS["255-tool-4bit-sar-signed-dac"] = check_v3_tool_4bit_sar_signed_dac
+CHECKS["256-dac4bit-small-swing"] = check_v3_dac4bit_small_swing
+CHECKS["257-comparator-reset-low-1p8"] = check_v3_comparator_reset_low_1p8
+CHECKS["v3_lt_read_sar6b_weighted"] = check_v3_lt_read_sar6b_weighted
+CHECKS["v3_lt_read_sar7b_weighted"] = check_v3_lt_read_sar7b_weighted
+CHECKS["v3_dac_serial_16b_nobridge"] = check_v3_dac_serial_16b_nobridge
+CHECKS["v3_sar_13bit_serial_decoder"] = check_v3_sar_13bit_serial_decoder
+CHECKS["v3_single_shot_timer_pulse"] = check_v3_single_shot_timer_pulse
+CHECKS["258-lt-read-sar6b-weighted"] = check_v3_lt_read_sar6b_weighted
+CHECKS["259-lt-read-sar7b-weighted"] = check_v3_lt_read_sar7b_weighted
+CHECKS["260-dac-serial-16b-nobridge"] = check_v3_dac_serial_16b_nobridge
+CHECKS["261-sar-13bit-serial-decoder"] = check_v3_sar_13bit_serial_decoder
+CHECKS["262-single-shot-timer-pulse"] = check_v3_single_shot_timer_pulse
+CHECKS["v3_clocked_comparator_dual_output"] = check_v3_clocked_comparator_dual_output
+CHECKS["v3_dac4bit_bipolar_252m"] = check_v3_dac4bit_bipolar_252m
+CHECKS["v3_bin2ther_2b"] = check_v3_bin2ther_2b
+CHECKS["v3_dff_set_reset"] = check_v3_dff_set_reset
+CHECKS["v3_pfd_up_down_state"] = check_v3_pfd_up_down_state
+CHECKS["263-clocked-comparator-dual-output"] = check_v3_clocked_comparator_dual_output
+CHECKS["264-dac4bit-bipolar-252m"] = check_v3_dac4bit_bipolar_252m
+CHECKS["265-bin2ther-2b"] = check_v3_bin2ther_2b
+CHECKS["266-dff-set-reset"] = check_v3_dff_set_reset
+CHECKS["267-pfd-up-down-state"] = check_v3_pfd_up_down_state
+CHECKS["v3_samplehold_rising_edge"] = check_v3_samplehold_rising_edge
+CHECKS["v3_trim_ctrl_5bit"] = check_v3_trim_ctrl_5bit
+CHECKS["v3_therm8_to_bin4_count"] = check_v3_therm8_to_bin4_count
+CHECKS["v3_coarse_qtz_3bit_residue"] = check_v3_coarse_qtz_3bit_residue
+CHECKS["v3_rs_phase_detector"] = check_v3_rs_phase_detector
+CHECKS["v3_level_shifter_offset"] = check_v3_level_shifter_offset
+CHECKS["v3_weighted_decoder_6bit"] = check_v3_weighted_decoder_6bit
+CHECKS["v3_divide_by_two_toggle_v2"] = check_v3_divide_by_two_toggle_v2
+CHECKS["v3_accum3_pulse"] = check_v3_accum3_pulse
+CHECKS["v3_xor_phase_detector"] = check_v3_xor_phase_detector
+CHECKS["v3_decision_router_logic"] = check_v3_decision_router_logic
+CHECKS["v3_safe_analog_divider"] = check_v3_safe_analog_divider
+CHECKS["v3_vargain_diffamp_clip"] = check_v3_vargain_diffamp_clip
+CHECKS["v3_programmable_divider_by_n"] = check_v3_programmable_divider_by_n
+CHECKS["v3_pfd_timer_reset"] = check_v3_pfd_timer_reset
+CHECKS["268-samplehold-rising-edge"] = check_v3_samplehold_rising_edge
+CHECKS["269-trim-ctrl-5bit"] = check_v3_trim_ctrl_5bit
+CHECKS["270-therm8-to-bin4-count"] = check_v3_therm8_to_bin4_count
+CHECKS["271-coarse-qtz-3bit-residue"] = check_v3_coarse_qtz_3bit_residue
+CHECKS["272-rs-phase-detector"] = check_v3_rs_phase_detector
+CHECKS["273-level-shifter-offset"] = check_v3_level_shifter_offset
+CHECKS["274-weighted-decoder-6bit"] = check_v3_weighted_decoder_6bit
+CHECKS["275-divide-by-two-toggle"] = check_v3_divide_by_two_toggle_v2
+CHECKS["276-accum3-pulse"] = check_v3_accum3_pulse
+CHECKS["277-xor-phase-detector"] = check_v3_xor_phase_detector
+CHECKS["278-decision-router-logic"] = check_v3_decision_router_logic
+CHECKS["279-safe-analog-divider"] = check_v3_safe_analog_divider
+CHECKS["280-vargain-diffamp-clip"] = check_v3_vargain_diffamp_clip
+CHECKS["281-programmable-divider-by-n"] = check_v3_programmable_divider_by_n
+CHECKS["282-pfd-timer-reset"] = check_v3_pfd_timer_reset
+CHECKS["v3_absolute_value"] = check_v3_absolute_value
+CHECKS["v3_deadband_voltage"] = check_v3_deadband_voltage
+CHECKS["v3_deadband_diffamp"] = check_v3_deadband_diffamp
+CHECKS["v3_limiting_diffamp"] = check_v3_limiting_diffamp
+CHECKS["v3_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
+CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
+CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
+CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
+CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
+CHECKS["v3_bipolar_dff_sample"] = check_v3_bipolar_dff_sample
+CHECKS["v3_pfd_active_low_reset"] = check_v3_pfd_active_low_reset
+CHECKS["v3_288_absolute_value"] = check_v3_absolute_value
+CHECKS["v3_289_deadband_voltage"] = check_v3_deadband_voltage
+CHECKS["v3_290_deadband_diffamp"] = check_v3_deadband_diffamp
+CHECKS["v3_291_limiting_diffamp"] = check_v3_limiting_diffamp
+CHECKS["v3_292_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["v3_293_flash_folded_dac4"] = check_v3_flash_folded_dac4
+CHECKS["v3_294_subradix_dac10"] = check_v3_subradix_dac10
+CHECKS["v3_295_clocked_adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["v3_296_cal4bit_modulo"] = check_v3_cal4bit_modulo
+CHECKS["v3_297_mux4_priority"] = check_v3_mux4_priority
+CHECKS["v3_298_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
+CHECKS["v3_299_bipolar_dff_sample"] = check_v3_bipolar_dff_sample
+CHECKS["v3_300_pfd_active_low_reset"] = check_v3_pfd_active_low_reset
+CHECKS["288-absolute-value"] = check_v3_absolute_value
+CHECKS["289-deadband-voltage"] = check_v3_deadband_voltage
+CHECKS["290-deadband-diffamp"] = check_v3_deadband_diffamp
+CHECKS["291-limiting-diffamp"] = check_v3_limiting_diffamp
+CHECKS["292-smooth-tanh-comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
+CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
+CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
+CHECKS["297-mux4-priority"] = check_v3_mux4_priority
+CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
+CHECKS["299-bipolar-dff-sample"] = check_v3_bipolar_dff_sample
+CHECKS["300-pfd-active-low-reset"] = check_v3_pfd_active_low_reset
+# V3 task.toml id aliases generated from task metadata.
+V3_TASK_ID_ALIASES = {
+    "v3_112_clocked_sar_comparator": "v3_clocked_sar_comparator",
+    "v3_113_clocked_dac_restore_4b": "v3_clocked_dac_restore_4b",
+    "v3_114_sample_and_hold_ideal": "v3_sample_hold",
+    "v3_115_single_shot_pulse": "v3_single_shot",
+    "v3_116_clocked_comparator_reset_low": "v3_clocked_comparator_reset_low",
+    "v3_117_bipolar_dac_4b_continuous": "v3_bipolar_dac_4b_continuous",
+    "v3_118_clocked_dac_restore_7b": "v3_clocked_dac_restore_7b",
+    "v3_119_crossing_pulse_detector": "v3_crossing_pulse_detector",
+    "v3_120_not_gate_voltage": "v3_not_gate",
+    "v3_121_dff_reset_voltage": "v3_dff_reset",
+    "v3_122_offset_search_comparator": "v3_offset_search_comparator",
+    "v3_123_start_gated_offset_search": "v3_start_gated_offset_search",
+    "v3_124_comp_os_detect": "v3_comp_os_detect",
+    "v3_125_clocked_dac_4b_binary": "v3_clocked_dac_4b_binary",
+    "v3_126_latched_comparator_delay": "v3_latched_comparator_delay",
+    "v3_127_sar_weighted_sum": "v3_sar_weighted_sum",
+    "v3_128_two_input_and_gate": "v3_two_input_and_gate",
+    "v3_129_two_input_xor_gate": "v3_two_input_xor_gate",
+    "v3_130_analog_mux_threshold": "v3_analog_mux_threshold",
+    "v3_131_two_bit_counter_marker": "v3_two_bit_counter_marker",
+    "v3_132_max_detector_hold": "v3_max_detector_hold",
+    "v3_133_time_diff_detector": "v3_time_diff_detector",
+    "v3_134_differential_buffer": "v3_differential_buffer",
+    "v3_135_two_input_or_gate": "v3_two_input_or_gate",
+    "v3_136_sar_cdac_residue": "v3_sar_cdac_residue",
+    "v3_137_two_input_nand_gate": "v3_two_input_nand_gate",
+    "v3_138_two_input_nor_gate": "v3_two_input_nor_gate",
+    "v3_139_three_input_and_gate": "v3_three_input_and_gate",
+    "v3_140_three_input_or_gate": "v3_three_input_or_gate",
+    "v3_141_three_input_xor_gate": "v3_three_input_xor_gate",
+    "v3_142_attenuator_gain": "v3_attenuator_gain",
+    "v3_143_deadband_window": "v3_deadband_window",
+    "v3_144_differential_deadband": "v3_differential_deadband",
+    "v3_145_hard_voltage_clamp": "v3_hard_voltage_clamp",
+    "v3_146_smooth_comparator_tanh": "v3_smooth_comparator_tanh",
+    "v3_147_limiter_rails": "v3_limiter_rails",
+    "v3_148_absolute_value": "v3_absolute_value",
+    "v3_149_offset_gain_amplifier": "v3_offset_gain_amplifier",
+    "v3_150_safe_voltage_divider": "v3_safe_voltage_divider",
+    "v3_151_polynomial_differential_vcvs": "v3_polynomial_differential_vcvs",
+    "v3_152_differential_gain_driver": "v3_differential_gain_driver",
+    "v3_153_limiting_differential_amplifier": "v3_limiting_differential_amplifier",
+    "v3_154_analog_multiplier": "v3_analog_multiplier",
+    "v3_155_three_way_threshold_mux": "v3_three_way_threshold_mux",
+    "v3_156_differential_amplifier_core": "v3_differential_amplifier_core",
+    "v3_157_logarithmic_amplifier": "v3_logarithmic_amplifier",
+    "v3_158_soft_voltage_clamp": "v3_soft_voltage_clamp",
+    "v3_159_variable_gain_differential_amplifier": "v3_variable_gain_differential_amplifier",
+    "v3_160_voltage_controlled_gain_amplifier": "v3_voltage_controlled_gain_amplifier",
+    "v3_161_ideal_differential_opamp": "v3_ideal_differential_opamp",
+    "v3_162_half_adder_logic": "v3_half_adder_logic",
+    "v3_163_full_adder_logic": "v3_full_adder_logic",
+    "v3_164_half_subtractor_logic": "v3_half_subtractor_logic",
+    "v3_165_full_subtractor_logic": "v3_full_subtractor_logic",
+    "v3_166_rs_latch_voltage": "v3_rs_latch_voltage",
+    "v3_167_ideal_adc_4bit_quantizer": "v3_ideal_adc_4bit_quantizer",
+    "v3_168_ideal_dac_4bit_differential": "v3_ideal_dac_4bit_differential",
+    "v3_169_two_period_sample_delay": "v3_two_period_sample_delay",
+    "v3_170_clocked_four_input_mux": "v3_clocked_four_input_mux",
+    "v3_171_divide_by_eight_clock": "v3_divide_by_eight_clock",
+    "v3_172_flash_thermometer_centered_sum": "v3_flash_thermometer_centered_sum",
+    "v3_173_weighted_sar_decoder_9b": "v3_weighted_sar_decoder_9b",
+    "v3_174_control_word_encoder_7b": "v3_control_word_encoder_7b",
+    "v3_175_four_channel_edge_sampler": "v3_four_channel_edge_sampler",
+    "v3_176_dual_modulus_divider_16_17": "v3_dual_modulus_divider_16_17",
+    "v3_177_sar_5bit_serial_decoder": "v3_sar_5bit_serial_decoder",
+    "v3_178_cyclic_decoder_12bit": "v3_cyclic_decoder_12bit",
+    "v3_179_flash_8level_sum_delay": "v3_flash_8level_sum_delay",
+    "v3_180_flash_sum8_fraction": "v3_flash_sum8_fraction",
+    "v3_181_two_channel_sample_demux": "v3_two_channel_sample_demux",
+    "v3_182_differential_dac_calc_6b": "v3_differential_dac_calc_6b",
+    "v3_183_flash_adc_threshold_taps": "v3_flash_adc_threshold_taps",
+    "v3_184_divide_by_two_toggle": "v3_divide_by_two_toggle",
+    "v3_185_dac_5v_weighted_7b": "v3_dac_5v_weighted_7b",
+    "v3_186_folded_flash_dac_4b": "v3_folded_flash_dac_4b",
+    "v3_187_ref_flash_8level_decoder": "v3_ref_flash_8level_decoder",
+    "v3_188_ref_flash_15level_decoder": "v3_ref_flash_15level_decoder",
+    "v3_189_divide_by_8_9_switch": "v3_divide_by_8_9_switch",
+    "v3_190_dac_restore_10bit_offset": "v3_dac_restore_10bit_offset",
+    "v3_191_dac_8bit_ideal_scalar": "v3_dac_8bit_ideal_scalar",
+    "v3_192_flash_data_align_pipeline": "v3_flash_data_align_pipeline",
+    "v3_193_cyclic_decoder_10b": "v3_cyclic_decoder_10b",
+    "v3_194_ideal_adc_out_7bits": "v3_ideal_adc_out_7bits",
+    "v3_195_va_lx_adc_ideal_4b": "v3_va_lx_adc_ideal_4b",
+    "v3_196_va_lx_dac_ideal_4b": "v3_va_lx_dac_ideal_4b",
+    "v3_197_l1_dac_4b_bipolar": "v3_l1_dac_4b_bipolar",
+    "v3_198_l2_cdac_4b_residue": "v3_l2_cdac_4b_residue",
+    "v3_199_ideal_clkmux_8channel": "v3_ideal_clkmux_8channel",
+    "v3_200_dac_ideal_4b_offset": "v3_dac_ideal_4b_offset",
+    "v3_201_linear_pfd_gain": "v3_linear_pfd_gain",
+    "v3_202_l2_cmp_ideal_clocked": "v3_l2_cmp_ideal_clocked",
+    "v3_203_comparator_offset_driver": "v3_comparator_offset_driver",
+    "v3_204_pipe_2lane_edge_align": "v3_pipe_2lane_edge_align",
+    "v3_205_dac_serial_accumulator": "v3_dac_serial_accumulator",
+    "v3_206_sar_sum_weighted_11b": "v3_sar_sum_weighted_11b",
+    "v3_207_iterative_isar_dac": "v3_iterative_isar_dac",
+    "v3_208_offset_bisection_driver": "v3_offset_bisection_driver",
+    "v3_209_weighted_decoder_7b5": "v3_weighted_decoder_7b5",
+    "v3_210_toggle_flip_flop": "v3_toggle_flip_flop",
+    "v3_211_sync_8b_dffs_v2": "v3_sync_8b_dffs_v2",
+    "v3_212_onehot_progress_encoder": "v3_onehot_progress_encoder",
+    "v3_213_tdc_ideal_edge_delta": "v3_tdc_ideal_edge_delta",
+    "v3_214_foreground_cload_calibrator": "v3_foreground_cload_calibrator",
+    "v3_215_pipe15_data_align": "v3_pipe15_data_align",
+    "v3_216_clocked_mux4_sampler": "v3_clocked_mux4_sampler",
+    "v3_217_dac7_code_generator": "v3_dac7_code_generator",
+    "v3_218_foreground_rdac_calibrator": "v3_foreground_rdac_calibrator",
+    "v3_219_offset_rdac_search_flow": "v3_offset_rdac_search_flow",
+    "v3_220_spi_shift_mux": "v3_spi_shift_mux",
+    "v3_221_dff_set_reset_hold": "v3_dff_set_reset_hold",
+    "v3_222_sarfend_logic_4b": "v3_sarfend_logic_4b",
+    "v3_223_adc_sample_clock_sequencer": "v3_adc_sample_clock_sequencer",
+    "v3_224_pipeline_counter_onehot": "v3_pipeline_counter_onehot",
+    "v3_225_cdac_bidirect_residue": "v3_cdac_bidirect_residue",
+    "v3_226_pfd_reset_pulse": "v3_pfd_reset_pulse",
+    "v3_227_trim_ctrl_4bit": "v3_trim_ctrl_4bit",
+    "v3_228_linearity_rdac_offset_sweep": "v3_linearity_rdac_offset_sweep",
+    "v3_229_sar_das_logic_6b": "v3_sar_das_logic_6b",
+    "v3_230_sar_logic_4b_self_timed": "v3_sar_logic_4b_self_timed",
+    "v3_231_pfd_tdomain_reset_window": "v3_pfd_tdomain_reset_window",
+    "v3_232_pipe_adc_gain_control_loop": "v3_pipe_adc_gain_control_loop",
+    "v3_233_clock_sample_1600n_sequencer": "v3_clock_sample_1600n_sequencer",
+    "v3_234_l2_sar_logic_4b": "v3_l2_sar_logic_4b",
+    "v3_235_phase_detector_chopper": "v3_phase_detector_chopper",
+    "v3_236_single_adc_7b_weighted": "v3_single_adc_7b_weighted",
+    "v3_237_qtz_differential_2level": "v3_qtz_differential_2level",
+    "v3_238_l2_7b_dac_ready": "v3_l2_7b_dac_ready",
+    "v3_239_l2_cdac_4b_switch": "v3_l2_cdac_4b_switch",
+    "v3_240_cdac_monodown_7b": "v3_cdac_monodown_7b",
+    "v3_241_cdac_6b_stage1_up": "v3_cdac_6b_stage1_up",
+    "v3_242_adc_zoom_timing_sequencer": "v3_adc_zoom_timing_sequencer",
+    "v3_243_l2_sar_logic_7b": "v3_l2_sar_logic_7b",
+    "v3_244_l3_sar2_logic_7b": "v3_l3_sar2_logic_7b",
+    "v3_245_cdac_8b_monodown": "v3_cdac_8b_monodown",
+    "v3_246_va_dac_6b_se": "v3_va_dac_6b_se",
+    "v3_247_offset_halving_search": "v3_offset_halving_search",
+    "v3_248_sar_comparator_reset_high": "v3_sar_comparator_reset_high",
+    "v3_249_dac_restore_4bit_clocked": "v3_dac_restore_4bit_clocked",
+    "v3_250_dac_restore_7bit_clocked": "v3_dac_restore_7bit_clocked",
+    "v3_251_dac_restore_6bit_1p8": "v3_dac_restore_6bit_1p8",
+    "v3_252_sample_hold_5v_clock": "v3_sample_hold_5v_clock",
+    "v3_253_sum5_signed_sar_weight": "v3_sum5_signed_sar_weight",
+    "v3_254_lt_readout_sar4": "v3_lt_readout_sar4",
+    "v3_255_tool_4bit_sar_signed_dac": "v3_tool_4bit_sar_signed_dac",
+    "v3_256_dac4bit_small_swing": "v3_dac4bit_small_swing",
+    "v3_257_comparator_reset_low_1p8": "v3_comparator_reset_low_1p8",
+    "v3_258_lt_read_sar6b_weighted": "v3_lt_read_sar6b_weighted",
+    "v3_259_lt_read_sar7b_weighted": "v3_lt_read_sar7b_weighted",
+    "v3_260_dac_serial_16b_nobridge": "v3_dac_serial_16b_nobridge",
+    "v3_261_sar_13bit_serial_decoder": "v3_sar_13bit_serial_decoder",
+    "v3_262_single_shot_timer_pulse": "v3_single_shot_timer_pulse",
+    "v3_263_clocked_comparator_dual_output": "v3_clocked_comparator_dual_output",
+    "v3_264_dac4bit_bipolar_252m": "v3_dac4bit_bipolar_252m",
+    "v3_265_bin2ther_2b": "v3_bin2ther_2b",
+    "v3_266_dff_set_reset": "v3_dff_set_reset",
+    "v3_267_pfd_up_down_state": "v3_pfd_up_down_state",
+    "v3_268_samplehold_rising_edge": "v3_samplehold_rising_edge",
+    "v3_269_trim_ctrl_5bit": "v3_trim_ctrl_5bit",
+    "v3_270_therm8_to_bin4_count": "v3_therm8_to_bin4_count",
+    "v3_271_coarse_qtz_3bit_residue": "v3_coarse_qtz_3bit_residue",
+    "v3_272_rs_phase_detector": "v3_rs_phase_detector",
+    "v3_273_level_shifter_offset": "v3_level_shifter_offset",
+    "v3_274_weighted_decoder_6bit": "v3_weighted_decoder_6bit",
+    "v3_275_divide_by_two_toggle": "v3_divide_by_two_toggle_v2",
+    "v3_276_accum3_pulse": "v3_accum3_pulse",
+    "v3_277_xor_phase_detector": "v3_xor_phase_detector",
+    "v3_278_decision_router_logic": "v3_decision_router_logic",
+    "v3_279_safe_analog_divider": "v3_safe_analog_divider",
+    "v3_280_vargain_diffamp_clip": "v3_vargain_diffamp_clip",
+    "v3_281_programmable_divider_by_n": "v3_programmable_divider_by_n",
+    "v3_282_pfd_timer_reset": "v3_pfd_timer_reset",
+    "v3_288_absolute_value": "v3_absolute_value",
+    "v3_289_deadband_voltage": "v3_deadband_voltage",
+    "v3_290_deadband_diffamp": "v3_deadband_diffamp",
+    "v3_291_limiting_diffamp": "v3_limiting_diffamp",
+    "v3_292_smooth_tanh_comparator": "v3_smooth_tanh_comparator",
+    "v3_293_flash_folded_dac4": "v3_flash_folded_dac4",
+    "v3_294_subradix_dac10": "v3_subradix_dac10",
+    "v3_295_clocked_adc3bit": "v3_clocked_adc3bit",
+    "v3_296_cal4bit_modulo": "v3_cal4bit_modulo",
+    "v3_297_mux4_priority": "v3_mux4_priority",
+    "v3_298_xnor_gate_voltage": "v3_xnor_gate_voltage",
+    "v3_299_bipolar_dff_sample": "v3_bipolar_dff_sample",
+    "v3_300_pfd_active_low_reset": "v3_pfd_active_low_reset",
 }
-for _source_task_id, _source_checker_id in SOURCE_TASK_ID_ALIASES.items():
-    if _source_checker_id in CHECKS:
-        CHECKS[_source_task_id] = CHECKS[_source_checker_id]
-# End source task.toml id aliases.
+for _task_id_alias, _checker_id in V3_TASK_ID_ALIASES.items():
+    if _checker_id in CHECKS:
+        CHECKS[_task_id_alias] = CHECKS[_checker_id]
+# End v3 task.toml id aliases.
 CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator

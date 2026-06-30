@@ -3,14 +3,14 @@
 This file records durable public audit status for the v3 task set. It is not a
 private Vela run log.
 
-## Source-Series Audit
+## Migrated Task Audit
 
-As of 2026-06-26, v3 contains 185 `source-*` tasks. The initial source-series
-audit found that most imported source tasks had only one concrete negative
+As of 2026-06-26, v3 contains 185 migrated tasks. The initial migrated-task
+audit found that most imported tasks had only one concrete negative
 variant, usually `neg_001_zero`. That is not strong enough for the final
 benchmark standard because it proves little beyond "not all outputs are zero."
 
-The source-series repair is being done in batches. Each repaired batch should
+The migrated-task repair is being done in batches. Each repaired batch should
 meet these minimum conditions:
 
 - public task contract and implementation boundary are clear;
@@ -19,26 +19,25 @@ meet these minimum conditions:
 - every new negative compiles and fails behavioral correctness rather than
   failing by syntax or missing files.
 
-## Final Source-Series Audit
+## Final Migrated Task Audit
 
-As of 2026-06-26, the source-series repair covers all 185 source-family tasks
-identified by the current `task.toml` ids.
+As of 2026-06-26, the migrated-task repair covers all 185 migrated tasks
+identified before the internal ID migration.
 
 Current-state checks:
 
-- 185/185 source-family tasks have the required public assets:
+- 185/185 migrated tasks have the required public assets:
   `instruction.md`, `starter/`, `solution/`, `test_visible/`, `test_hidden/`,
   `test_harness/checks.yaml`, and `negative_variants/manifest.json`;
-- 185/185 source-family tasks use the v3-standard `variants/path` negative
+- 185/185 migrated tasks use the v3-standard `variants/path` negative
   manifest shape;
-- 185/185 source-family tasks have at least four concrete negative variants;
-- no source-family task directory still uses the historical `NNN-source-*`
-  public directory prefix;
-- no stale source-family `negative_cases.json` planned-negative file remains.
+- 185/185 migrated tasks have at least four concrete negative variants;
+- no migrated task directory still uses the historical prefixed public directory name;
+- no stale migrated-task `negative_cases.json` planned-negative file remains.
 
 EVAS 0.4.5 local verification using the repository `.venv`:
 
-- hidden/formal source sweep: 926/926 expected outcomes;
+- hidden/formal migrated-task sweep: 926/926 expected outcomes;
 - 185/185 gold solutions PASS;
 - 741/741 concrete negative variants fail behavioral correctness;
 - 0 negative variants fail by DUT compile, testbench compile, timeout, or
@@ -53,12 +52,12 @@ Follow-up fixes from the final sweep:
   structure as the gold solution with only the denominator changed, so it now
   compiles and fails behavioral correctness;
 - `079-jittered-clock-source-deterministic` visible smoke now forces the Python
-  EVAS engine, matching the rest of the source visible smoke scripts.
+  EVAS engine, matching the rest of the migrated-task visible smoke scripts.
 
 ## Completed Pilot: 288-300
 
 Tasks `288-absolute-value` through
-`300-pfd-active-low-reset` were used as the first source-series repair
+`300-pfd-active-low-reset` were used as the first migrated-task repair
 pilot.
 
 Changes made:
@@ -66,7 +65,7 @@ Changes made:
 - each task now has four negative variants: the original `neg_001_zero` plus
   three targeted behavior mutations;
 - `runners/simulate_evas.py` registers checker aliases for the task ids
-  `v3_288_source_*` through `v3_300_source_*`, so the normal `task.toml` id path
+  `v3_288_*` through `v3_300_*`, so the normal `task.toml` id path
   reaches the checker without requiring a manual `--checker-task-id` override.
 
 EVAS 0.4.5 local verification:
@@ -78,7 +77,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 112-127
 
 Tasks `112-clocked-sar-comparator` through
-`127-sar-weighted-sum` were repaired as the second source-series batch.
+`127-sar-weighted-sum` were repaired as the second repair batch.
 
 Changes made:
 
@@ -97,7 +96,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 176-191
 
 Tasks `176-dual-modulus-divider-16-17` through
-`191-dac-8bit-ideal-scalar` were repaired as the sixth source-series
+`191-dac-8bit-ideal-scalar` were repaired as the sixth repair
 batch.
 
 Changes made:
@@ -121,7 +120,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 192-207
 
 Tasks `192-flash-data-align-pipeline` through
-`207-iterative-isar-dac` were repaired as the seventh source-series
+`207-iterative-isar-dac` were repaired as the seventh repair
 batch.
 
 Changes made:
@@ -146,7 +145,7 @@ EVAS 0.4.5 local verification:
 
 Tasks `208-offset-bisection-driver` through
 `223-adc-sample-clock-sequencer` were repaired as the eighth
-source-series batch.
+repair batch.
 
 Changes made:
 
@@ -171,7 +170,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 224-239
 
 Tasks `224-pipeline-counter-onehot` through
-`239-l2-cdac-4b-switch` were repaired as the ninth source-series batch.
+`239-l2-cdac-4b-switch` were repaired as the ninth repair batch.
 
 Changes made:
 
@@ -196,7 +195,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 240-255
 
 Tasks `240-cdac-monodown-7b` through
-`255-tool-4bit-sar-signed-dac` were repaired as the tenth source-series
+`255-tool-4bit-sar-signed-dac` were repaired as the tenth repair
 batch.
 
 Changes made:
@@ -221,7 +220,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 256-271
 
 Tasks `256-dac4bit-small-swing` through
-`271-coarse-qtz-3bit-residue` were repaired as the eleventh source-series
+`271-coarse-qtz-3bit-residue` were repaired as the eleventh repair
 batch.
 
 Changes made:
@@ -247,7 +246,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 272-282
 
 Tasks `272-rs-phase-detector` through `282-pfd-timer-reset` were repaired as
-the twelfth source-series batch.
+the twelfth repair batch.
 
 Changes made:
 
@@ -275,7 +274,7 @@ EVAS 0.4.5 local verification:
 ## Completed Single: 079
 
 Task `079-jittered-clock-source-deterministic` was normalized as the final
-source-series task.
+migrated task.
 
 Changes made:
 
@@ -296,7 +295,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 160-175
 
 Tasks `160-voltage-controlled-gain-amplifier` through
-`175-four-channel-edge-sampler` were repaired as the fifth source-series
+`175-four-channel-edge-sampler` were repaired as the fifth repair
 batch.
 
 Changes made:
@@ -321,7 +320,7 @@ EVAS 0.4.5 local verification:
 
 Tasks `144-differential-deadband` through
 `159-variable-gain-differential-amplifier` were repaired as the fourth
-source-series batch.
+repair batch.
 
 Changes made:
 
@@ -343,7 +342,7 @@ EVAS 0.4.5 local verification:
 ## Completed Batch: 128-143
 
 Tasks `128-two-input-and-gate` through
-`143-deadband-window` were repaired as the third source-series batch.
+`143-deadband-window` were repaired as the third repair batch.
 
 Changes made:
 
