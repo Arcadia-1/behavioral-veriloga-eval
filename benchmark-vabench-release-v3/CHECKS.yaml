@@ -7975,16 +7975,49 @@
 384-file-fopen-mode-selector: |
   version: 1
   task_id: v3_384_file_fopen_mode_selector
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_fopen_mode_selector_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$fopen"
+      - '"r"'
+      - "$fgets"
+      - "$fclose"
+      - "config_lines.txt"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_fopen_mode_selector.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_fopen_mode_selector.va
+      - negative_variants/neg_002_wrong_threshold/file_fopen_mode_selector.va
+      - negative_variants/neg_003_reset_bias/file_fopen_mode_selector.va
+      - negative_variants/neg_004_metric_offset/file_fopen_mode_selector.va
+      - negative_variants/neg_005_scale_output/file_fopen_mode_selector.va
+    checks:
+      - config_file_staged_as_support_artifact
+      - fopen_uses_explicit_read_mode
+      - fgets_reads_first_config_line
+      - metric_reports_open_mode_hit
+      - output_gated_by_mode_hit_and_vin_threshold
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "File I/O language extension promoted to executable EVAS behavior candidate."
 385-table-model-linear-gain: |
   version: 1
   task_id: v3_385_table_model_linear_gain

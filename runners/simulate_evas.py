@@ -8581,6 +8581,31 @@ def check_v3_383_file_rewind_second_pass(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_384_file_fopen_mode_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.0),
+                (380.0, 0.9),
+            ],
+            "metric": [
+                (80.0, 0.9),
+                (180.0, 0.9),
+                (280.0, 0.9),
+                (380.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17642,6 +17667,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "382-file-ftell-position-meter": check_v3_382_file_ftell_position_meter,
     "v3_383_file_rewind_second_pass": check_v3_383_file_rewind_second_pass,
     "383-file-rewind-second-pass": check_v3_383_file_rewind_second_pass,
+    "v3_384_file_fopen_mode_selector": check_v3_384_file_fopen_mode_selector,
+    "384-file-fopen-mode-selector": check_v3_384_file_fopen_mode_selector,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
