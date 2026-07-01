@@ -1,6 +1,14 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
-// Drive vin/clk/mode/rst with deterministic voltage-domain sources and save vin clk mode rst out metric.
-tran tran stop=80n
+
+ahdl_include "for_loop_code_popcount.va"
+
+Vvin (vin 0) vsource type=pwl wave=[ 0n 0.10 9n 0.10 10n 0.70 19n 0.70 20n 0.70 35n 0.70 ]
+Vmode (mode 0) vsource type=pwl wave=[ 0n 0.10 19n 0.10 20n 0.70 35n 0.70 ]
+Vrst (rst 0) vsource type=pwl wave=[ 0n 0 35n 0 ]
+Vclk (clk 0) vsource type=pwl wave=[ 0n 0 4.9n 0 5.0n 0.9 5.5n 0.9 5.6n 0 14.9n 0 15.0n 0.9 15.5n 0.9 15.6n 0 24.9n 0 25.0n 0.9 25.5n 0.9 25.6n 0 35n 0 ]
+
+XDUT (vin clk mode rst out metric) for_loop_code_popcount
+
+tran tran stop=35n
 save vin clk mode rst out metric

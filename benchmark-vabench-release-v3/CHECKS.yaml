@@ -5240,11 +5240,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 315-for-loop-code-popcount: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_315_for_loop_code_popcount
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_315_for_loop_code_popcount
+    metric: sampled_for_loop_code_popcount
   required_columns:
     - time
     - vin
@@ -5258,8 +5261,18 @@
       - "for ("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_clears_bits
+      - for_loop_counts_four_derived_bits
+      - vin_thresholds_set_two_bits
+      - mode_thresholds_set_two_bits
+      - output_encodes_popcount_as_0p9_scaled_voltage
+      - metric_encodes_popcount_fraction
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 316-final-step-edge-counter-file: |
   version: 1
   task_id: v3_316_final_step_edge_counter_file
