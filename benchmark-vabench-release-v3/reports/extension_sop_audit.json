@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 28,
+      "complete_tests_count": 29,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 29,
+      "fair_eval_count": 30,
       "range": "373-434",
-      "sop_ready_count": 28,
+      "sop_ready_count": 29,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          34
+          33
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          33
+          32
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          33
+          32
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          33
+          32
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 100,
-    "fair_eval_count": 100,
+    "complete_tests_count": 101,
+    "fair_eval_count": 101,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 94,
-      "hidden_scs_not_executable:include,instance,source": 93,
-      "missing_required_behavior_section": 94,
-      "visible_scs_not_executable:include,instance,source": 93
+      "checker_syntax_only_no_behavior_score": 93,
+      "hidden_scs_not_executable:include,instance,source": 92,
+      "missing_required_behavior_section": 93,
+      "visible_scs_not_executable:include,instance,source": 92
     },
-    "sop_ready_count": 99,
+    "sop_ready_count": 100,
     "task_count": 194
   },
   "tasks": [
@@ -2482,21 +2482,16 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 402,
-      "reasonable_task": false,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
+      "reasonable_task": true,
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
       "syntax_focus": "Share a thresholding child module inside a parent behavioral DUT.",
       "target": "hierarchy_shared_threshold_child.va",
       "task": "402-hierarchy-shared-threshold-child",

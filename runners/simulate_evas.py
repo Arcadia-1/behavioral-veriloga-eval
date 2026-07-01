@@ -9021,6 +9021,29 @@ def check_v3_401_hierarchy_ordered_port_map(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_402_hierarchy_shared_threshold_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (20.0, 0.9),
+                (80.0, 0.9),
+                (140.0, 0.9),
+            ],
+            "metric": [
+                (20.0, 0.0),
+                (80.0, 0.0),
+                (140.0, 0.0),
+            ],
+        },
+        tol=0.03,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18118,6 +18141,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "400-hierarchy-named-port-map": check_v3_400_hierarchy_named_port_map,
     "v3_401_hierarchy_ordered_port_map": check_v3_401_hierarchy_ordered_port_map,
     "401-hierarchy-ordered-port-map": check_v3_401_hierarchy_ordered_port_map,
+    "v3_402_hierarchy_shared_threshold_child": check_v3_402_hierarchy_shared_threshold_child,
+    "402-hierarchy-shared-threshold-child": check_v3_402_hierarchy_shared_threshold_child,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
