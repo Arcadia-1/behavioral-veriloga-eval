@@ -60,3 +60,40 @@ def test_all_v3_extension_prompts_state_required_behavior() -> None:
             errors="ignore",
         )
         assert "Required Behavior" in instruction, f"{task_key} lacks Required Behavior section"
+
+
+def negative_variants(task_key: str) -> list[dict]:
+    manifest = json.loads(
+        (TASK_ROOT / task_key / "negative_variants" / "manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    for key in ("negative_variants", "cases", "variants"):
+        value = manifest.get(key)
+        if isinstance(value, list):
+            return value
+    return []
+
+
+def test_all_v3_extension_negative_variants_are_materialized_and_distinct() -> None:
+    for task_key in extension_tasks():
+        variants = negative_variants(task_key)
+        assert len(variants) == 5, f"{task_key} must have exactly five negative variants"
+        seen_ids: set[str] = set()
+        for variant in variants:
+            variant_id = str(variant.get("id") or "")
+            assert variant_id.startswith("neg_"), f"{task_key} malformed variant id {variant_id!r}"
+            assert variant_id not in seen_ids, f"{task_key} duplicate variant id {variant_id}"
+            seen_ids.add(variant_id)
+
+            files = variant.get("files")
+            assert isinstance(files, list) and files, f"{task_key} {variant_id} has no files"
+            for file_name in files:
+                negative_path = TASK_ROOT / task_key / "negative_variants" / file_name
+                solution_path = TASK_ROOT / task_key / "solution" / Path(file_name).name
+                assert negative_path.exists(), f"{task_key} {variant_id} missing {file_name}"
+                assert solution_path.exists(), f"{task_key} solution missing {solution_path.name}"
+                assert negative_path.read_text(encoding="utf-8", errors="ignore") != solution_path.read_text(
+                    encoding="utf-8",
+                    errors="ignore",
+                ), f"{task_key} {variant_id} is identical to solution"
