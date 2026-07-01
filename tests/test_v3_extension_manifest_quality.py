@@ -135,8 +135,8 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 177
-    assert len(identical_tasks) == 17
+    assert len(distinct_tasks) == 194
+    assert len(identical_tasks) == 0
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks
     assert "351-always-posedged-dff" in distinct_tasks
@@ -157,6 +157,11 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
     assert "335-above-resettable-peak-marker" in distinct_tasks
     assert "327-idtmod-wrapped-ramp-source" in distinct_tasks
     assert "330-idtmod-clock-phase-meter" in distinct_tasks
+    assert "353-always-resettable-toggle" in distinct_tasks
+    assert "415-logic-vector-assign-slice" in distinct_tasks
+    assert "431-hierarchy-support-artifact-staging" in distinct_tasks
+    assert "435-ddt-voltage-derivative-source" in distinct_tasks
+    assert "444-zi-zp-discrete-filter" in distinct_tasks
 
 
 def negative_variants(task_key: str) -> list[dict]:

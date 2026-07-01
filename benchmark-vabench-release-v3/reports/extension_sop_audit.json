@@ -24,7 +24,7 @@
           1
         ]
       ],
-      "visible_hidden_distinct_count": 19
+      "visible_hidden_distinct_count": 20
     },
     {
       "complete_tests_count": 12,
@@ -49,7 +49,7 @@
           7
         ]
       ],
-      "visible_hidden_distinct_count": 56
+      "visible_hidden_distinct_count": 62
     },
     {
       "complete_tests_count": 24,
@@ -64,7 +64,7 @@
           16
         ]
       ],
-      "visible_hidden_distinct_count": 14
+      "visible_hidden_distinct_count": 24
     },
     {
       "complete_tests_count": 12,
@@ -107,13 +107,12 @@
     },
     "sop_ready_count": 153,
     "sop_ready_visible_hidden_identical_count": 0,
-    "staged_visible_hidden_identical_count": 17,
+    "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
-    "visible_hidden_distinct_count": 177,
-    "visible_hidden_identical_count": 17,
+    "visible_hidden_distinct_count": 194,
+    "visible_hidden_identical_count": 0,
     "warning_counts": {
-      "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 17
+      "candidate_tier_not_score_ready": 194
     }
   },
   "tasks": [
@@ -1385,11 +1384,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Resettable Toggle",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2878,11 +2876,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Assign Slice",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2905,11 +2902,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Reduction Flag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2932,11 +2928,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Async Reset Counter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2959,11 +2954,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Saturating Counter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3274,11 +3268,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Support Artifact Staging",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3301,11 +3294,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Nested Parameter Chain",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3376,11 +3368,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Ddt Voltage Derivative Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3403,11 +3394,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Idt Voltage Integrator Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3430,11 +3420,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Nd Lowpass Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3457,11 +3446,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Np Pole Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3484,11 +3472,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Zd Zero Den Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3511,11 +3498,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Zp Zero Pole Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3538,11 +3524,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Nd Discrete Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3565,11 +3550,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Np Discrete Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3592,11 +3576,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Zd Discrete Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3619,11 +3602,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Zp Discrete Filter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

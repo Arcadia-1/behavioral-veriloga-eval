@@ -3,7 +3,7 @@ global 0
 
 ahdl_include "ddt_voltage_derivative_source.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.0 100n 0.0 200n 1.0 350n 1.0]
+Vvin (vin 0) vsource type=pwl wave=[0 0.2 80n 0.2 180n 0.9 260n 0.4 350n 0.4]
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 249n 0.0 250n 1.0 299n 1.0 300n 0.0]
 Vmode (mode 0) vsource dc=0.0
 Vrst (rst 0) vsource dc=0.0

@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "always_async_reset_counter.vams"
 
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 199n 0.0 200n 1.0 249n 1.0 250n 0.0 299n 0.0 300n 1.0 349n 1.0 350n 0.0 399n 0.0 400n 1.0 449n 1.0 450n 0.0 499n 0.0 500n 1.0 550n 1.0]
-Vrst (rst 0) vsource type=pwl wave=[0 1.0 59n 1.0 60n 0.0 329n 0.0 330n 1.0 369n 1.0 370n 0.0 550n 0.0]
-Ven (en 0) vsource type=pwl wave=[0 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 550n 1.0]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 79n 0.0 80n 1.0 119n 1.0 120n 0.0 179n 0.0 180n 1.0 219n 1.0 220n 0.0 279n 0.0 280n 1.0 319n 1.0 320n 0.0 379n 0.0 380n 1.0 419n 1.0 420n 0.0 479n 0.0 480n 1.0 550n 1.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 39n 1.0 40n 0.0 259n 0.0 260n 1.0 309n 1.0 310n 0.0 550n 0.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 139n 1.0 140n 0.0 259n 0.0 260n 1.0 419n 1.0 420n 0.0 459n 0.0 460n 1.0 550n 1.0]
 
 XDUT (clk rst en q) always_async_reset_counter
 
