@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 9,
+      "complete_tests_count": 10,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 10,
+      "fair_eval_count": 11,
       "range": "373-434",
-      "sop_ready_count": 9,
+      "sop_ready_count": 10,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          53
+          52
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          52
+          51
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          52
+          51
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          52
+          51
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 81,
-    "fair_eval_count": 81,
+    "complete_tests_count": 82,
+    "fair_eval_count": 82,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 113,
-      "hidden_scs_not_executable:include,instance,source": 112,
-      "missing_required_behavior_section": 113,
-      "visible_scs_not_executable:include,instance,source": 112
+      "checker_syntax_only_no_behavior_score": 112,
+      "hidden_scs_not_executable:include,instance,source": 111,
+      "missing_required_behavior_section": 112,
+      "visible_scs_not_executable:include,instance,source": 111
     },
-    "sop_ready_count": 80,
+    "sop_ready_count": 81,
     "task_count": 194
   },
   "tasks": [
@@ -2045,20 +2045,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 383,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $rewind() to perform a second pass over an opened file.",
       "target": "file_rewind_second_pass.va",

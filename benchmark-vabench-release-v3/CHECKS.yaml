@@ -7929,16 +7929,49 @@
 383-file-rewind-second-pass: |
   version: 1
   task_id: v3_383_file_rewind_second_pass
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_rewind_second_pass_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fopen"
+      - "$fgets"
       - "$rewind"
+      - "$fclose"
+      - "config_lines.txt"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_rewind_second_pass.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_rewind_second_pass.va
+      - negative_variants/neg_002_wrong_threshold/file_rewind_second_pass.va
+      - negative_variants/neg_003_reset_bias/file_rewind_second_pass.va
+      - negative_variants/neg_004_metric_offset/file_rewind_second_pass.va
+      - negative_variants/neg_005_scale_output/file_rewind_second_pass.va
+    checks:
+      - config_file_staged_as_support_artifact
+      - first_pass_reads_two_distinct_lines
+      - rewind_resets_file_position
+      - second_pass_reads_first_line_again
+      - output_gated_by_rewind_hit_and_vin_threshold
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "File I/O language extension promoted to executable EVAS behavior candidate."
 384-file-fopen-mode-selector: |
   version: 1
   task_id: v3_384_file_fopen_mode_selector

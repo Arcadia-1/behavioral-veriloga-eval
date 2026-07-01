@@ -4543,6 +4543,9 @@
       "target": [
         "file_rewind_second_pass.va"
       ],
+      "support": [
+        "config_lines.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Rewind Second Pass",
       "syntax_focus": "Use $rewind() to perform a second pass over an opened file.",
