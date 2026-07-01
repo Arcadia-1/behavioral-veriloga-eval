@@ -8736,6 +8736,35 @@ def check_v3_462_vt_temperature_argument(rows: list[dict[str, float]]) -> tuple[
     return True, " ".join(observed)
 
 
+def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.9),
+                (32.0, 0.0),
+                (52.0, 0.9),
+                (72.0, 0.0),
+                (92.0, 0.9),
+                (112.0, 0.0),
+            ],
+            "metric": [
+                (12.0, 0.0),
+                (32.0, 1.0),
+                (52.0, 2.0),
+                (72.0, 0.0),
+                (92.0, 0.0),
+                (112.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19214,6 +19243,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "461-vt-thermal-voltage-source": check_v3_461_vt_thermal_voltage_source,
     "v3_462_vt_temperature_argument": check_v3_462_vt_temperature_argument,
     "462-vt-temperature-argument": check_v3_462_vt_temperature_argument,
+    "v3_463_discontinuity_event_announcement": check_v3_463_discontinuity_event_announcement,
+    "463-discontinuity-event-announcement": check_v3_463_discontinuity_event_announcement,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
