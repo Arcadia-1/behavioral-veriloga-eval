@@ -5,16 +5,13 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **152**
-- Tasks with executable visible+hidden SCS evidence: **187**
+- SOP-ready tasks: **153**
+- Tasks with executable visible+hidden SCS evidence: **194**
 - Tasks with behavior checker evidence: **153**
 
 ## Issue Counts
 
 - `checker_syntax_only_no_behavior_score`: 41
-- `hidden_scs_not_executable:include,instance,source`: 6
-- `missing_required_behavior_section`: 1
-- `visible_scs_not_executable:include,instance,source`: 6
 
 ## Range Summary
 
@@ -23,8 +20,8 @@ Date: 2026-07-02
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
-| `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 55 | 62 | 55 | `checker_syntax_only_no_behavior_score`: 7 |
+| `435-458` | manual syntax-completion candidates | 24 | 8 | 24 | 8 | `checker_syntax_only_no_behavior_score`: 16 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | `checker_syntax_only_no_behavior_score`: 13 |
 
@@ -108,7 +105,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `370-ac-stim-phase-selector` | `noise-analysis-candidate` | True | - |
 | `371-combined-white-flicker-noise` | `noise-analysis-candidate` | True | - |
 | `372-analysis-aware-noise-metric` | `noise-analysis-candidate` | True | - |
-| `373-task-output-limiter` | `syntax-extension-candidate` | False | `missing_required_behavior_section` |
+| `373-task-output-limiter` | `syntax-extension-candidate` | True | - |
 | `374-task-dual-output-update` | `syntax-extension-candidate` | True | - |
 | `375-task-event-counter-service` | `syntax-extension-candidate` | True | - |
 | `376-task-reset-sequencer` | `syntax-extension-candidate` | True | - |
@@ -184,13 +181,13 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `446-fstrobe-file-line-writer` | `syntax-extension-candidate` | True | - |
 | `447-display-warning-debug-log` | `syntax-extension-candidate` | True | - |
 | `448-rdist-uniform-seeded-dither` | `syntax-extension-candidate` | True | - |
-| `449-generate-genvar-replicated-stage` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
+| `449-generate-genvar-replicated-stage` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `454-multidimensional-array-state` | `syntax-extension-candidate` | True | - |
-| `455-packed-logic-bus-slice` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
+| `455-packed-logic-bus-slice` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | True | - |
 | `457-nested-function-pipeline` | `syntax-extension-candidate` | True | - |
 | `458-recursive-function-candidate` | `syntax-extension-candidate` | True | - |

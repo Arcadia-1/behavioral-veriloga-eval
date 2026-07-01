@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
+ahdl_include "../solution/custom_nature_discipline_voltage.vams"
+
+Vin (a 0) vsource type=pwl wave=[0n 0.9 20n 0.1 45n 0.55 90n 0.25 125n 0.8]
+Xdut (a y) custom_nature_discipline_voltage
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save a y

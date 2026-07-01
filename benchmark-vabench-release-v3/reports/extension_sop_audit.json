@@ -34,25 +34,21 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 61,
+      "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
       "fair_eval_count": 55,
       "range": "373-434",
-      "sop_ready_count": 54,
+      "sop_ready_count": 55,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
           7
-        ],
-        [
-          "missing_required_behavior_section",
-          1
         ]
       ]
     },
     {
-      "complete_tests_count": 18,
+      "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
       "fair_eval_count": 8,
       "range": "435-458",
@@ -62,14 +58,6 @@
         [
           "checker_syntax_only_no_behavior_score",
           16
-        ],
-        [
-          "visible_scs_not_executable:include,instance,source",
-          6
-        ],
-        [
-          "hidden_scs_not_executable:include,instance,source",
-          6
         ]
       ]
     },
@@ -105,15 +93,12 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 187,
+    "complete_tests_count": 194,
     "fair_eval_count": 153,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 41,
-      "hidden_scs_not_executable:include,instance,source": 6,
-      "missing_required_behavior_section": 1,
-      "visible_scs_not_executable:include,instance,source": 6
+      "checker_syntax_only_no_behavior_score": 41
     },
-    "sop_ready_count": 152,
+    "sop_ready_count": 153,
     "task_count": 194
   },
   "tasks": [
@@ -1777,17 +1762,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "missing_required_behavior_section"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 373,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Declare and call a Verilog-A task that clamps an output sample.",
       "target": "task_output_limiter.va",
@@ -3561,12 +3544,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
@@ -3588,12 +3569,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
@@ -3615,12 +3594,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
@@ -3642,12 +3619,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
@@ -3669,12 +3644,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
@@ -3719,12 +3692,10 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,

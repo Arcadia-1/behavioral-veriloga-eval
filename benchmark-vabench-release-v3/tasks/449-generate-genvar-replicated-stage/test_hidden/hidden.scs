@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
+ahdl_include "../solution/generate_genvar_replicated_stage.vams"
+
+Va (a 0) vsource type=pwl wave=[0n 0.8 15n 0.8 30n 0.15 55n 0.95 90n 0.35 130n 0.65]
+Xdut (a y) generate_genvar_replicated_stage
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save a y

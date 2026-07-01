@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
+ahdl_include "../solution/connectrules_electrical_map.vams"
+
+Va (a 0) vsource type=pwl wave=[0n 0.4 22n 0.9 60n 0.15 105n 0.7 145n 0.3]
+Xdut (a y) connectrules_electrical_map_bridge
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save a y
