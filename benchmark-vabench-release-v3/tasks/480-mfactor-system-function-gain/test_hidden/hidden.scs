@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "mfactor_system_function_gain.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.15 60n 0.15 61n 0.35 100n 0.35 101n -0.10 160n -0.10]
+
+XDUT (inp out) mfactor_system_function_gain m=2.0
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save inp out

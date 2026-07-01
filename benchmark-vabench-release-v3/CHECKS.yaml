@@ -11134,14 +11134,16 @@
 480-mfactor-system-function-gain: |
   version: 1
   task_id: v3_480_mfactor_system_function_gain
-  backend: evas_rust_compile_capable
+  backend: evas_pending_mfactor_system_function
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
-      - "$mfactor"
+      - "$mfactor()"
+    must_not_include:
+      - "I("
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #53 because $mfactor() is unsupported."
 481-analog-primitive-resistor-instance: |
   version: 1
   task_id: v3_481_analog_primitive_resistor_instance

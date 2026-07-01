@@ -88,7 +88,7 @@
       ]
     },
     {
-      "complete_tests_count": 9,
+      "complete_tests_count": 10,
       "description": "LRM KCL/continuous-time gap-fill candidates",
       "fair_eval_count": 5,
       "range": "471-494",
@@ -101,15 +101,15 @@
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          15
+          14
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          15
+          14
         ],
         [
           "missing_required_behavior_section",
-          15
+          14
         ]
       ]
     }
@@ -117,13 +117,13 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 172,
+    "complete_tests_count": 173,
     "fair_eval_count": 147,
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 47,
-      "hidden_scs_not_executable:include,instance,source": 21,
-      "missing_required_behavior_section": 16,
-      "visible_scs_not_executable:include,instance,source": 21
+      "hidden_scs_not_executable:include,instance,source": 20,
+      "missing_required_behavior_section": 15,
+      "visible_scs_not_executable:include,instance,source": 20
     },
     "sop_ready_count": 146,
     "task_count": 194
@@ -4326,18 +4326,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 480,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,
