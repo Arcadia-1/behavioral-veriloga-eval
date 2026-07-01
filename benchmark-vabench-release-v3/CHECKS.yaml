@@ -11060,14 +11060,15 @@
 477-analog-node-alias-initial: |
   version: 1
   task_id: v3_477_analog_node_alias_initial
-  backend: evas_rust_compile_capable
+  backend: evas_pending_analog_node_alias_semantics
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "$analog_node_alias"
+      - "analog initial"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "LRM gap-fill task with executable tests; behavior promotion is blocked by EVAS issue #52 because $analog_node_alias currently leaves the alias node at 0."
 478-inherited-port-attribute-supply: |
   version: 1
   task_id: v3_478_inherited_port_attribute_supply

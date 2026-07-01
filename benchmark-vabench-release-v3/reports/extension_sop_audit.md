@@ -6,15 +6,15 @@ Date: 2026-07-02
 
 - Audited extension tasks: **194**
 - SOP-ready tasks: **144**
-- Tasks with executable visible+hidden SCS evidence: **169**
+- Tasks with executable visible+hidden SCS evidence: **170**
 - Tasks with behavior checker evidence: **145**
 
 ## Issue Counts
 
 - `checker_syntax_only_no_behavior_score`: 49
-- `hidden_scs_not_executable:include,instance,source`: 24
-- `missing_required_behavior_section`: 19
-- `visible_scs_not_executable:include,instance,source`: 24
+- `hidden_scs_not_executable:include,instance,source`: 23
+- `missing_required_behavior_section`: 18
+- `visible_scs_not_executable:include,instance,source`: 23
 
 ## Range Summary
 
@@ -26,7 +26,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 3 | 6 | 3 | `checker_syntax_only_no_behavior_score`: 21<br>`visible_scs_not_executable:include,instance,source`: 18<br>`hidden_scs_not_executable:include,instance,source`: 18<br>`missing_required_behavior_section`: 18 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 3 | 7 | 3 | `checker_syntax_only_no_behavior_score`: 21<br>`visible_scs_not_executable:include,instance,source`: 17<br>`hidden_scs_not_executable:include,instance,source`: 17<br>`missing_required_behavior_section`: 17 |
 
 ## Highest Severity Finding
 
@@ -212,7 +212,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `474-generic-potential-access-function` | `syntax-extension-candidate` | True | - |
 | `475-generic-potential-contribution` | `syntax-extension-candidate` | True | - |
 | `476-oomr-string-voltage-probe` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `477-analog-node-alias-initial` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `477-analog-node-alias-initial` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `478-inherited-port-attribute-supply` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `479-inherited-mfactor-parameter` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `480-mfactor-system-function-gain` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

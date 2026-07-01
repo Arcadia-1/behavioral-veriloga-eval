@@ -8926,6 +8926,25 @@ def check_v3_476_oomr_string_voltage_probe(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_477_analog_node_alias_initial(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.20),
+                (90.0, 0.50),
+                (130.0, -0.20),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19420,6 +19439,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "475-generic-potential-contribution": check_v3_475_generic_potential_contribution,
     "v3_476_oomr_string_voltage_probe": check_v3_476_oomr_string_voltage_probe,
     "476-oomr-string-voltage-probe": check_v3_476_oomr_string_voltage_probe,
+    "v3_477_analog_node_alias_initial": check_v3_477_analog_node_alias_initial,
+    "477-analog-node-alias-initial": check_v3_477_analog_node_alias_initial,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
