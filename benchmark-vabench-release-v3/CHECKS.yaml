@@ -5596,11 +5596,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 325-slew-asymmetric-rise-fall: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_325_slew_asymmetric_rise_fall
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_325_slew_asymmetric_rise_fall
+    metric: sampled_slew_asymmetric_rise_fall
   required_columns:
     - time
     - vin
@@ -5614,8 +5617,19 @@
       - "slew("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+      - "transition("
+  sim_correct:
+    checks:
+      - reset_clears_target
+      - low_mode_selects_high_target
+      - high_mode_selects_low_target
+      - rise_rate_is_faster_than_fall_rate
+      - fall_rate_is_slew_limited
+      - metric_tracks_normalized_asymmetric_output
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 326-idtmod-phase-accumulator: |
   version: 1
   task_id: v3_326_idtmod_phase_accumulator

@@ -19,9 +19,17 @@ module slew_asymmetric_rise_fall (
 
 ## Required Behavior
 
-Use slew() to limit voltage-domain output slope.
+Use `slew()` with intentionally asymmetric rise and fall rates.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+Use voltage-coded logic with `vth = 0.45` V, `rise_rate = 8.0e8` V/s, and `fall_rate = 2.0e8` V/s.
+
+On reset, clear target `out` and `metric` to zero. On each rising crossing of `clk` while reset is low:
+
+- if `mode` is low, set target `out = 0.80`
+- if `mode` is high, set target `out = 0.10`
+- set target `metric = target_out / 0.80`
+
+Drive both outputs using `slew(target, rise_rate, fall_rate)`. The hidden evaluator checks that the rise reaches its target quickly while the fall takes several nanoseconds, so using equal rise/fall rates or immediate transitions is incorrect. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 
