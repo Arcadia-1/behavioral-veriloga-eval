@@ -1,9 +1,9 @@
 simulator lang=spectre
 global 0
 ahdl_include "dac_serial_16b_nobridge.va"
-Vsample (clk_sample 0) vsource type=pulse val0=1.1 val1=0 delay=0.25n period=50n width=0.4n rise=20p fall=20p
-Vready (clk_sarready 0) vsource type=pwl wave=[0 1.1 0.95n 1.1 0.97n 0 1.25n 0 1.27n 1.1 1.95n 1.1 1.97n 0 2.25n 0 2.27n 1.1 2.95n 1.1 2.97n 0 3.25n 0 3.27n 1.1 3.95n 1.1 3.97n 0 4.25n 0 4.27n 1.1 5n 1.1]
-Vdata (data 0) vsource type=pwl wave=[0 1.1 1.4n 1.1 1.45n 0 2.4n 0 2.45n 1.1 4.1n 1.1 4.15n 0 5n 0]
+Vsample (clk_sample 0) vsource type=pulse val0=1.1 val1=0 delay=0.25n period=3.2n width=0.35n rise=20p fall=20p
+Vready (clk_sarready 0) vsource type=pwl wave=[0 1.1 0.85n 1.1 0.87n 0 1.05n 0 1.07n 1.1 1.35n 1.1 1.37n 0 1.55n 0 1.57n 1.1 1.85n 1.1 1.87n 0 2.05n 0 2.07n 1.1 2.35n 1.1 2.37n 0 2.55n 0 2.57n 1.1 2.85n 1.1 2.87n 0 3.05n 0 3.07n 1.1 4.05n 1.1 4.07n 0 4.25n 0 4.27n 1.1 4.55n 1.1 4.57n 0 4.75n 0 4.77n 1.1 5.05n 1.1 5.07n 0 5.25n 0 5.27n 1.1 5.6n 1.1]
+Vdata (data 0) vsource type=pwl wave=[0 1.1 1.15n 1.1 1.2n 0 1.65n 0 1.7n 1.1 2.65n 1.1 2.7n 0 4.35n 0 4.4n 1.1 5.6n 1.1]
 XDUT (clk_sample clk_sarready data out) dac_serial_16b_nobridge
-tran tran stop=4.8n maxstep=5p
+tran tran stop=5.6n maxstep=5p
 save clk_sample clk_sarready data out

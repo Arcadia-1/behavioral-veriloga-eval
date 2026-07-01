@@ -1,0 +1,20 @@
+id = "v3_260_dac_serial_16b_nobridge"
+name = "260-dac-serial-16b-nobridge"
+title = "DAC Serial 16b Nobridge"
+version = "v3"
+form = "dut"
+language = "verilog-a"
+simulator = "evas"
+category = "data_converter"
+level = "L3"
+difficulty = "D3"
+instruction = "instruction.md"
+starter_dir = "starter"
+visible_tests_dir = "test_visible"
+hidden_tests_dir = "test_hidden"
+harness_dir = "test_harness"
+solution_dir = "solution"
+negative_variants_dir = "negative_variants"
+
+[artifacts]
+target = ["dac_serial_16b_nobridge.va"]
