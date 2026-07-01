@@ -1,51 +1,34 @@
-# Source Clocked DAC Restore 4b
+# Clocked DAC Restore 4b
 
-## Task Contract
+Implement a clocked 4-bit mid-rise bipolar DAC reconstruction block.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter
-- Base function: source-derived `clocked_dac_restore_4b`
-- Domain: `voltage`
-- Target artifact(s): `clocked_dac_restore_4b.va`
-- Source provenance: `wangxy/DAC_restore_4bit.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `clocked_dac_restore_4b` with positional ports `D3, D2, D1,
+D0, CLK, VOUT`. All ports are electrical. `D3` is the most significant bit and
+`D0` is the least significant bit.
 
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-`clocked_dac_restore_4b.va` declares module `clocked_dac_restore_4b` with positional ports:
+- `vth = 0.45 V`: decision threshold for `CLK` and input bits.
+- `lsb = 1.8 / 16 V`: DAC least-significant-bit step.
+- `tr = 20 ps`: output transition smoothing time.
 
-```text
-D3, D2, D1, D0, CLK, VOUT
-```
+## Functional Contract
 
-## Public Testbench And Observable Contract
+On each rising `CLK` edge, latch the 4-bit input code. Drive `VOUT` as a
+mid-rise bipolar DAC level: the selected level is centered around zero, uses a
+half-LSB offset inside each code bin, and spans the nominal `-0.9 V` to `+0.9 V`
+range across the 16 codes.
 
-Public transient setting used by the evaluator:
+Hold the reconstructed output between clock edges.
 
-```spectre
-tran tran stop=50n maxstep=50p
-```
+## Modeling Constraints
 
-The evaluator samples stable windows after event edges and checks the intended source-derived behavior. It does not require pointwise equality at simulator timesteps.
-
-## Public Behavior Checks
-
-- codes_0_5_10_15_sampled_after_clock_edges
-- restored_midrise_levels_match_lsb_formula
-
-## Output Contract
-
-Return exactly one source artifact named `clocked_dac_restore_4b.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `clocked_dac_restore_4b`. This benchmark case is included because it captures a reusable mixed-signal behavioral primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
+Return only `clocked_dac_restore_4b.va`. Use deterministic voltage-domain
+Verilog-A and smooth output transitions. Do not modify or emit the support
+testbench, add checker logic, hard-code private waveform sample points, add
+simulator-private side channels, use current contributions, `ddt()`, or
+`idt()`.

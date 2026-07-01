@@ -1,4 +1,6 @@
 {
+  "task": "123-start-gated-offset-search",
+  "form": "dut",
   "visible": [
     "test_visible/tests/run_visible_smoke.py"
   ],
@@ -6,8 +8,5 @@
     "test_hidden/tests/tb_source_ref.scs"
   ],
   "checker": "v3_start_gated_offset_search",
-  "evidence": {
-    "evas": "WORK/source-import-batch3-evas/123-start-gated-offset-search",
-    "spectre": "WORK/source-import-batch3-spectre/123-start-gated-offset-search"
-  }
+  "coverage_note": "Hidden stimulus uses a different comparator decision sequence from visible smoke coverage."
 }

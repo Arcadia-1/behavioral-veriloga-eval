@@ -4,7 +4,7 @@ global 0
 ahdl_include "comp_os_detect.va"
 
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=2.5n period=10n width=5n rise=100p fall=100p
-Vdcmpp (dcmpp 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.1n 0.0 32n 0.0 32.1n 0.9 60n 0.9]
+Vdcmpp (dcmpp 0) vsource type=pwl wave=[0 0 12n 0 12.1n 0.9 32n 0.9 32.1n 0.0 42n 0.0 42.1n 0.9 60n 0.9]
 
 XDUT (clk dcmpp vinp vinn) comp_os_detect
 

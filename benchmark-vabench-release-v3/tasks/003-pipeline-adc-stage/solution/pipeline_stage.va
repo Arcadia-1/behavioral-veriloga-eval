@@ -1,4 +1,4 @@
-// 1.5-bit pipeline ADC MDAC stage, EVAS-compatible behavioral model.
+// 1.5-bit pipeline ADC MDAC stage behavioral model.
 // PHI1 samples VIN. PHI2 computes a 2-bit sub-ADC decision and the residue:
 // lower region:  VRES = Vcm + 2*(VIN - Vcm) + VREF/2
 // middle region: VRES = Vcm + 2*(VIN - Vcm)

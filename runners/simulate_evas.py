@@ -9437,10 +9437,10 @@ def check_v3_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool,
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d3/d2/d1/d0/clk/vout"
     expected = [
-        (6.0, -0.84375),
-        (16.0, -0.28125),
-        (26.0, 0.28125),
-        (36.0, 0.84375),
+        (6.0, -0.73125),
+        (16.0, -0.16875),
+        (26.0, 0.16875),
+        (36.0, 0.73125),
     ]
     ok, detail = _sample_many(rows, {"vout": expected}, tol=0.02)
     if not ok:
@@ -9667,7 +9667,7 @@ def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bo
         rows,
         "vinp",
         "vinn",
-        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.040), (38.5, 0.030), (48.5, 0.020)],
+        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.010), (38.5, 0.000), (48.5, 0.005)],
         common_mode=0.70,
         diff_tol=0.0030,
         common_tol=0.0030,
@@ -9682,7 +9682,7 @@ def check_v3_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
         rows,
         "vinp",
         "vinn",
-        [(8.5, -0.1000), (18.5, -0.0500), (28.5, -0.0250), (38.5, -0.0375), (48.5, -0.04375)],
+        [(8.5, 0.1000), (18.5, 0.0500), (28.5, 0.0250), (38.5, 0.0375), (48.5, 0.03125)],
         common_mode=0.45,
         diff_tol=0.0030,
         common_tol=0.0030,
