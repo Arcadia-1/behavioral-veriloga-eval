@@ -9556,16 +9556,46 @@
 424-file-fscanf-multi-column-profile: |
   version: 1
   task_id: v3_424_file_fscanf_multi_column_profile
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_fscanf_multi_column_profile_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fopen"
       - "$fscanf"
+      - "%f %f %f"
+      - "$fclose"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_fscanf_multi_column_profile.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_fscanf_multi_column_profile.va
+      - negative_variants/neg_002_wrong_threshold/file_fscanf_multi_column_profile.va
+      - negative_variants/neg_003_reset_bias/file_fscanf_multi_column_profile.va
+      - negative_variants/neg_004_metric_offset/file_fscanf_multi_column_profile.va
+      - negative_variants/neg_005_scale_output/file_fscanf_multi_column_profile.va
+    checks:
+      - file_open_parse
+      - fscanf_three_real_values
+      - support_artifact_staged
+      - initial_read_count_metric
+      - profile_value_drives_output
+      - third_column_contributes_to_metric
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "File fscanf multi-column profile behavior promoted to executable EVAS behavior candidate."
 425-string-swrite-label-builder: |
   version: 1
   task_id: v3_425_string_swrite_label_builder

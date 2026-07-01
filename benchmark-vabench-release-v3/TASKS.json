@@ -5165,6 +5165,9 @@
       "target": [
         "file_fscanf_multi_column_profile.va"
       ],
+      "support": [
+        "stimulus_profile.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Multi Column Profile",
       "syntax_focus": "Use $fscanf() to ingest a multi-column behavioral profile.",

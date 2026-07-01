@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 50,
+      "complete_tests_count": 51,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 46,
+      "fair_eval_count": 47,
       "range": "373-434",
-      "sop_ready_count": 45,
+      "sop_ready_count": 46,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          16
+          15
         ],
         [
           "missing_required_behavior_section",
-          12
+          11
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          11
+          10
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          11
+          10
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 122,
-    "fair_eval_count": 117,
+    "complete_tests_count": 123,
+    "fair_eval_count": 118,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 77,
-      "hidden_scs_not_executable:include,instance,source": 71,
-      "missing_required_behavior_section": 72,
-      "visible_scs_not_executable:include,instance,source": 71
+      "checker_syntax_only_no_behavior_score": 76,
+      "hidden_scs_not_executable:include,instance,source": 70,
+      "missing_required_behavior_section": 71,
+      "visible_scs_not_executable:include,instance,source": 70
     },
-    "sop_ready_count": 116,
+    "sop_ready_count": 117,
     "task_count": 194
   },
   "tasks": [
@@ -2998,20 +2998,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 424,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $fscanf() to ingest a multi-column behavioral profile.",
       "target": "file_fscanf_multi_column_profile.va",

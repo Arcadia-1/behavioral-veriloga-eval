@@ -8169,6 +8169,31 @@ def check_v3_423_file_profile_replay_controller(rows: list[dict[str, float]]) ->
     )
 
 
+def check_v3_424_file_fscanf_multi_column_profile(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.7),
+                (130.0, 0.7),
+                (330.0, 0.0),
+                (430.0, 0.7),
+            ],
+            "metric": [
+                (50.0, 3.0),
+                (130.0, 0.5),
+                (330.0, 0.0),
+                (430.0, 0.5),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18601,6 +18626,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "422-file-fscanf-table-stimulus": check_v3_422_file_fscanf_table_stimulus,
     "v3_423_file_profile_replay_controller": check_v3_423_file_profile_replay_controller,
     "423-file-profile-replay-controller": check_v3_423_file_profile_replay_controller,
+    "v3_424_file_fscanf_multi_column_profile": check_v3_424_file_fscanf_multi_column_profile,
+    "424-file-fscanf-multi-column-profile": check_v3_424_file_fscanf_multi_column_profile,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
