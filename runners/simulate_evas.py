@@ -9958,129 +9958,77 @@ def check_v3_408_vector_shift_and_mask_decoder(rows: list[dict[str, float]]) -> 
 
 
 def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.35),
-                (280.0, 0.9),
-                (380.0, 0.7),
-                (480.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.3889),
-                (280.0, 1.0),
-                (380.0, 0.7778),
-                (480.0, 0.0),
-            ],
-        },
-        tol=0.04,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        trim = 0.2 if row["mode"] > 0.45 else 0.1
+        return row["vin"] + trim, trim
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.4),
-                (180.0, 0.6),
-                (280.0, 0.7),
-                (380.0, 0.7),
-            ],
-            "metric": [
-                (80.0, 0.1),
-                (180.0, 0.2),
-                (280.0, 0.1),
-                (380.0, 0.2),
-            ],
-        },
-        tol=0.04,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_412_initial_final_step_lifecycle(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return row["vin"], metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.5),
-                (280.0, 0.7),
-                (380.0, 0.3),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 2.0),
-                (380.0, 3.0),
-            ],
-        },
-        tol=0.04,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
 
 
 def check_v3_413_while_loop_array_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 3 + 3 * int(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return (0.9 if acc > 3 else 0.0), float(acc)
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 3.0),
-                (180.0, 6.0),
-                (280.0, 9.0),
-                (380.0, 12.0),
-            ],
-        },
-        tol=0.04,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
 
 
 def check_v3_414_parameter_range_real_control(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        state["count"] = (int(state["count"]) + 1) % 8
+        return 0.8 * row["vin"], float(state["count"])
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.48),
-                (180.0, 0.20),
-                (280.0, 0.64),
-                (380.0, 0.32),
-            ],
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 2.0),
-                (280.0, 3.0),
-                (380.0, 4.0),
-            ],
-        },
-        tol=0.04,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
 
 

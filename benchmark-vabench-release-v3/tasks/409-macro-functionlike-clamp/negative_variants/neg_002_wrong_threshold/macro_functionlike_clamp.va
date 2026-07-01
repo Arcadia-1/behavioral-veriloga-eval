@@ -1,6 +1,6 @@
 `include "constants.vams"
 `include "disciplines.vams"
-`define V3_CLAMP(x) ((x) < 0.0 ? 0.0 : ((x) > 0.9 ? 0.9 : (x)))
+`define V3_CLAMP(x) ((x) < 0.0 ? 0.0 : ((x) > 0.6 ? 0.6 : (x)))
 
 module macro_functionlike_clamp (
     input  electrical vin,
@@ -34,7 +34,6 @@ analog begin
         out_v = `V3_CLAMP(V(vin));
         metric_v = out_v / vhi;
         count_q = count_q + 1;
-        if (V(vin) > (vth + 0.1)) out_v = vhi;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

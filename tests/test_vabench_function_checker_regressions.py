@@ -2504,6 +2504,84 @@ def test_v3_vector_checkers_follow_counter_and_reset_values() -> None:
         assert not checker(_vector_counter_rows(expected_fn, reset_edges={3}, wrong=True))[0]
 
 
+def test_v3_macro_lifecycle_loop_parameter_checkers_follow_hidden_stimulus_values() -> None:
+    def clamp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    def escaped_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        trim = 0.2 if row["mode"] > 0.45 else 0.1
+        return row["vin"] + trim, trim
+
+    def lifecycle_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return row["vin"], metric
+
+    def loop_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 3.0 + 3.0 * int(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if acc > 3.0 else 0.0, acc
+
+    def parameter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        state["count"] = (int(state["count"]) + 1) % 8
+        return 0.8 * row["vin"], float(state["count"])
+
+    def input_from(vin_segments, mode_segments=None):
+        return lambda time_ns: (
+            _task_input_from_segments(time_ns, vin_segments),
+            _task_input_from_segments(time_ns, mode_segments or [(0.0, 0.0)]),
+            0.9 if 230.0 <= time_ns <= 289.0 else 0.0,
+        )
+
+    cases = [
+        (
+            sim.check_v3_409_macro_functionlike_clamp,
+            clamp_update,
+            input_from([(0.0, 1.1), (100.0, -0.15), (200.0, 0.52), (300.0, 0.95), (400.0, 0.25)]),
+        ),
+        (
+            sim.check_v3_411_escaped_identifier_state,
+            escaped_update,
+            input_from(
+                [(0.0, 0.55), (100.0, 0.25), (200.0, 0.75), (300.0, 0.35), (400.0, 0.55)],
+                [(0.0, 0.0), (100.0, 0.9), (200.0, 0.0), (300.0, 0.9), (400.0, 0.0)],
+            ),
+        ),
+        (
+            sim.check_v3_412_initial_final_step_lifecycle,
+            lifecycle_update,
+            input_from([(0.0, 0.65), (100.0, 0.15), (200.0, 0.85), (300.0, 0.45), (400.0, 0.65)]),
+        ),
+        (
+            sim.check_v3_413_while_loop_array_sum,
+            loop_update,
+            input_from([(0.0, 0.1), (100.0, 0.9), (200.0, 0.3), (300.0, 0.8), (400.0, 0.1)]),
+        ),
+        (
+            sim.check_v3_414_parameter_range_real_control,
+            parameter_update,
+            input_from([(0.0, 0.35), (100.0, 0.75), (200.0, 0.15), (300.0, 0.9), (400.0, 0.35)]),
+        ),
+    ]
+    for checker, update_fn, input_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

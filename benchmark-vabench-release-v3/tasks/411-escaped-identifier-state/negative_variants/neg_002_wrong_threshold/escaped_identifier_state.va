@@ -32,11 +32,10 @@ analog begin
             count_q = 0;
             state_q = 0;
         end else begin
-        \trim.state = V(mode) > vth ? 0.2 : 0.1;
+        \trim.state = V(mode) > vth ? 0.05 : 0.1;
         out_v = V(vin) + \trim.state ;
         metric_v = \trim.state ;
         count_q = count_q + 1;
-        if (V(vin) > (vth + 0.1)) out_v = vhi;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

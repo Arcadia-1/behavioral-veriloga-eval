@@ -107,12 +107,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 406-vector-replication-mask,406,Vector Replication Mask,syntax-extension-candidate,vector_replication_mask.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 407-vector-reduction-parity,407,Vector Reduction Parity,syntax-extension-candidate,vector_reduction_parity.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 408-vector-shift-and-mask-decoder,408,Vector Shift And Mask Decoder,syntax-extension-candidate,vector_shift_and_mask_decoder.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-409-macro-functionlike-clamp,409,Macro Functionlike Clamp,syntax-extension-candidate,macro_functionlike_clamp.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-410-macro-ifdef-gain-select,410,Macro Ifdef Gain Select,syntax-extension-candidate,macro_ifdef_gain_select.va,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical
-411-escaped-identifier-state,411,Escaped Identifier State,syntax-extension-candidate,escaped_identifier_state.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-412-initial-final-step-lifecycle,412,Initial Final Step Lifecycle,syntax-extension-candidate,initial_final_step_lifecycle.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-413-while-loop-array-sum,413,While Loop Array Sum,syntax-extension-candidate,while_loop_array_sum.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-414-parameter-range-real-control,414,Parameter Range Real Control,syntax-extension-candidate,parameter_range_real_control.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+409-macro-functionlike-clamp,409,Macro Functionlike Clamp,syntax-extension-candidate,macro_functionlike_clamp.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+410-macro-ifdef-gain-select,410,Macro Ifdef Gain Select,syntax-extension-candidate,macro_ifdef_gain_select.va,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+411-escaped-identifier-state,411,Escaped Identifier State,syntax-extension-candidate,escaped_identifier_state.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+412-initial-final-step-lifecycle,412,Initial Final Step Lifecycle,syntax-extension-candidate,initial_final_step_lifecycle.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+413-while-loop-array-sum,413,While Loop Array Sum,syntax-extension-candidate,while_loop_array_sum.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+414-parameter-range-real-control,414,Parameter Range Real Control,syntax-extension-candidate,parameter_range_real_control.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 415-logic-vector-assign-slice,415,Logic Vector Assign Slice,ams-mixed-signal-candidate,logic_vector_assign_slice.vams,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical
 416-logic-vector-reduction-flag,416,Logic Vector Reduction Flag,ams-mixed-signal-candidate,logic_vector_reduction_flag.vams,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical
 417-always-async-reset-counter,417,Always Async Reset Counter,ams-mixed-signal-candidate,always_async_reset_counter.vams,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical

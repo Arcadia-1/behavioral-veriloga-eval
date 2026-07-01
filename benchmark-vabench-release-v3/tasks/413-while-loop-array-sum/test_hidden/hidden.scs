@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "while_loop_array_sum.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.6 100n 0.6 101n 0.2 200n 0.2 201n 0.7 300n 0.7 301n 0.4 420n 0.4]
+Vvin (vin 0) vsource type=pwl wave=[0 0.1 100n 0.1 101n 0.9 200n 0.9 201n 0.3 300n 0.3 301n 0.8 420n 0.8]
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 420n 1.0]
 Vmode (mode 0) vsource dc=0.0
-Vrst (rst 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 229n 0.0 230n 0.9 289n 0.9 290n 0.0 420n 0.0]
 
 XDUT (vin clk mode rst out metric) while_loop_array_sum
 
