@@ -27,8 +27,8 @@ analog begin
             metric_v = 0.0;
             count_q = 0;
         end else begin
-            out_v = (V(rst) > 0.45 ? 0.25 : (($port_connected(out) ? V(vin) : 0.0)));
-            metric_v = $port_connected(out);
+            out_v = ($port_connected(out) ? V(vin) : 0.0);
+            metric_v = 1.0 - $port_connected(out);
             count_q = count_q + 1;
         end
     end

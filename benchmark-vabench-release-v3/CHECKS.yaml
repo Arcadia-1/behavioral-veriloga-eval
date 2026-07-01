@@ -10784,14 +10784,40 @@
 465-port-connected-output-enable: |
   version: 1
   task_id: v3_465_port_connected_output_enable
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: port_connected_output_enable_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$port_connected"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/port_connected_output_enable.va
+    negative:
+      - negative_variants/neg_001_force_zero/port_connected_output_enable.va
+      - negative_variants/neg_002_wrong_threshold/port_connected_output_enable.va
+      - negative_variants/neg_003_reset_bias/port_connected_output_enable.va
+      - negative_variants/neg_004_metric_offset/port_connected_output_enable.va
+      - negative_variants/neg_005_scale_output/port_connected_output_enable.va
+    checks:
+      - port_connected_parse
+      - connected_output_follows_vin
+      - metric_reports_connected_output
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "$port_connected connected-output path promoted to executable EVAS behavior candidate."
 466-temperature-environment-metric: |
   version: 1
   task_id: v3_466_temperature_environment_metric

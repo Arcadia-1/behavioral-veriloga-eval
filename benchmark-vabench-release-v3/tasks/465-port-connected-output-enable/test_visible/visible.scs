@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "port_connected_output_enable.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.60 40n 0.60 41n 0.30 80n 0.30]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 9n 0.0 10n 1.0 14n 1.0 15n 0.0 49n 0.0 50n 1.0 54n 1.0 55n 0.0 80n 0.0]
+Vmode (mode 0) vsource dc=0.0
+Vrst (rst 0) vsource dc=0.0
+
+XDUT (vin clk mode rst out metric) port_connected_output_enable
+
 tran tran stop=80n
 save vin clk mode rst out metric

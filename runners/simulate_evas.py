@@ -8765,6 +8765,33 @@ def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.60),
+                (52.0, 0.30),
+                (72.0, 0.0),
+                (92.0, 0.80),
+                (132.0, 0.80),
+            ],
+            "metric": [
+                (12.0, 1.0),
+                (52.0, 1.0),
+                (72.0, 0.0),
+                (92.0, 1.0),
+                (132.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19245,6 +19272,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "462-vt-temperature-argument": check_v3_462_vt_temperature_argument,
     "v3_463_discontinuity_event_announcement": check_v3_463_discontinuity_event_announcement,
     "463-discontinuity-event-announcement": check_v3_463_discontinuity_event_announcement,
+    "v3_465_port_connected_output_enable": check_v3_465_port_connected_output_enable,
+    "465-port-connected-output-enable": check_v3_465_port_connected_output_enable,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
