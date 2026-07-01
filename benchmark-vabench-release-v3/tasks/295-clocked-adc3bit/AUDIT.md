@@ -1,9 +1,10 @@
-# Source Clocked ADC3bit Audit
+# Audit: 295-clocked-adc3bit
 
-- Source: `wangx/adc_8bit.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a clocked 3-bit ADC. On each rising clock edge, quantize VIN in [0,1] to code floor(8*VIN), clipped to 0..7.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch32-evas/295-clocked-adc3bit`
-  - `WORK/source-import-batch32-spectre/295-clocked-adc3bit`
+- Gate 1: `independent_l1_ready` after rescue. This is retained as a clocked 3-bit ADC with explicit voltage bit-bus outputs.
+- Gate 2: `cadence_modeling_ready` for the audited hidden/negative evidence slice. EVAS2 hidden gold and Spectre AX hidden gold pass.
+- AHDL lint/read-in triage: Spectre hidden gold and hidden negative logs were inspected for `AHDLLINT-*`, `VACOMP-1116`, and `VACOMP/SPECTRE` errors; none are present. Remaining setup notices are environment/Spectre X warnings, not task-specific AHDL lint failures.
+- Public prompt: rewritten to expose rising-edge sampling, uniform-bin quantization, clipping, output bit order, and bit rail levels.
+- Hidden coverage: repaired to include negative-range clipping, interior codes, and high-end clipping distinct from visible smoke.
+- Checker: generalized to derive expected `vd2/vd1/vd0` rails from sampled `vin`.
+- Negative evidence: 4/4 Spectre hidden negatives are behaviorally rejected.
+- Human review focus: confirm the bit-bus output interface makes this distinct from scalar-code ADC `167` and track/convert ADC `195`.

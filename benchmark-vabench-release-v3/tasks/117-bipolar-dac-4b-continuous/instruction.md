@@ -1,46 +1,33 @@
-# Source Bipolar DAC 4b Continuous
+# Bipolar DAC 4b Continuous
 
-## Task Contract
+Implement the Verilog-A DUT `bipolar_dac_4b_continuous` in `bipolar_dac_4b_continuous.va`.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter
-- Base function: source-derived `bipolar_dac_4b_continuous`
-- Domain: `voltage`
-- Target artifact(s): `bipolar_dac_4b_continuous.va`
-- Source provenance: `shigao/DAC4bit_1.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
-
-## Public Verilog-A Interface
-
-`bipolar_dac_4b_continuous.va` declares module `bipolar_dac_4b_continuous` with positional ports:
+The module port order is:
 
 ```text
 vd3, vd2, vd1, vd0, vout
 ```
 
-## Public Testbench And Observable Contract
+All ports are electrical. `vd3` is the MSB and `vd0` is the LSB.
 
-The public and hidden smoke testbench uses the transient statement shown in `test_hidden/tests/tb_source_ref.scs`.
-The evaluator samples stable windows after event edges and checks source-derived behavior. It does not require pointwise equality at simulator timesteps.
+## Public Parameters
 
-## Public Behavior Checks
+- `vref = 0.9`: bipolar output full-scale magnitude in volts.
+- `vtrans = 0.45`: input logic threshold in volts.
+- `tdel = 0`, `trise = 20p`, `tfall = 20p`: transition timing for `vout`.
 
-- continuous_code_to_bipolar_level
-- monotonic_output_across_codes
+## Functional Contract
+
+Continuously decode the four input voltages into an unsigned binary code. An input bit is logic 1 when its voltage is greater than `vtrans`, otherwise it is logic 0.
+
+Drive `vout` as a linear bipolar DAC output. Code 0 must produce approximately `-vref`, code 15 must produce approximately `+vref`, and each one-code increase must raise the output by the same voltage step. The output must be monotonic with the unsigned code.
+
+## Modeling Constraints
+
+Use voltage-domain Verilog-A behavior only. Do not use current contributions, `ddt()`, `idt()`, file I/O, or simulator-private side channels.
 
 ## Output Contract
 
-Return exactly one source artifact named `bipolar_dac_4b_continuous.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `bipolar_dac_4b_continuous`. This benchmark case is included because it captures a reusable primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
+Return exactly one source artifact named `bipolar_dac_4b_continuous.va`. Do not include explanatory prose outside the source artifact contents.
