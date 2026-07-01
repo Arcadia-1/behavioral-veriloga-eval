@@ -7790,16 +7790,50 @@
 380-file-feof-line-counter: |
   version: 1
   task_id: v3_380_file_feof_line_counter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_feof_line_counter_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fopen"
       - "$feof"
+      - "$fgets"
+      - "$fclose"
+      - "while"
+      - "config_lines.txt"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_feof_line_counter.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_feof_line_counter.va
+      - negative_variants/neg_002_wrong_threshold/file_feof_line_counter.va
+      - negative_variants/neg_003_reset_bias/file_feof_line_counter.va
+      - negative_variants/neg_004_metric_offset/file_feof_line_counter.va
+      - negative_variants/neg_005_scale_output/file_feof_line_counter.va
+    checks:
+      - config_file_staged_as_support_artifact
+      - feof_guards_file_read_loop
+      - fgets_statement_reads_each_line
+      - two_line_count_normalizes_metric_to_vhi
+      - output_requires_exact_two_loaded_lines
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "File I/O language extension promoted to executable EVAS behavior candidate."
 381-file-fseek-offset-reader: |
   version: 1
   task_id: v3_381_file_fseek_offset_reader

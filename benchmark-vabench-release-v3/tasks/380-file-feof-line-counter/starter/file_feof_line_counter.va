@@ -9,9 +9,35 @@ module file_feof_line_counter (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer line_count_q;
+integer fd;
+string line_buf;
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        line_count_q = 0;
+        fd = $fopen("config_lines.txt", "r");
+        while (!$feof(fd) && (line_count_q < 4)) begin
+            $fgets(line_buf, fd);
+            // TODO: count non-empty lines.
+        end
+        $fclose(fd);
+        // TODO: normalize line_count_q into metric_v.
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+        end else begin
+            // TODO: gate threshold output by the counted line total.
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

@@ -14,34 +14,30 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
-integer count_q;
-integer state_q;
+integer line_count_q;
 integer fd;
-integer nread;
 string line_buf;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
-        state_q = 0;
+        line_count_q = 0;
         fd = $fopen("config_lines.txt", "r");
-        nread = 0;
-        while (!$feof(fd) && nread < 2) begin
-            nread = nread + $fgets(line_buf, fd);
+        while (!$feof(fd) && (line_count_q < 4)) begin
+            $fgets(line_buf, fd);
+            if (line_buf != "") line_count_q = line_count_q + 1;
         end
         $fclose(fd);
-        metric_v = nread > 0 ? 1.0 : 0.0;
+        metric_v = vhi * line_count_q / 2.0;
+        if (metric_v < 0.0) metric_v = 0.0;
+        else if (metric_v > vhi) metric_v = vhi;
     end
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
-            count_q = 0;
-            state_q = 0;
         end else begin
-        count_q = count_q + 1;
-        out_v = V(vin) > vth ? vhi : 0.0;
+            if ((line_count_q == 2) && (V(vin) > vth)) out_v = vhi;
+            else out_v = 0.0;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

@@ -4492,6 +4492,9 @@
       "target": [
         "file_feof_line_counter.va"
       ],
+      "support": [
+        "config_lines.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Feof Line Counter",
       "syntax_focus": "Use $feof() to guard bounded file-read initialization logic.",
