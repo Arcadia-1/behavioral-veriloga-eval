@@ -8277,6 +8277,31 @@ def check_v3_371_combined_white_flicker_noise(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_372_analysis_aware_noise_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.2),
+                (180.0, 0.6),
+                (280.0, 0.3),
+                (380.0, 0.8),
+            ],
+            "metric": [
+                (80.0, 0.125),
+                (180.0, 0.25),
+                (280.0, 0.375),
+                (380.0, 0.5),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17314,6 +17339,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "370-ac-stim-phase-selector": check_v3_370_ac_stim_phase_selector,
     "v3_371_combined_white_flicker_noise": check_v3_371_combined_white_flicker_noise,
     "371-combined-white-flicker-noise": check_v3_371_combined_white_flicker_noise,
+    "v3_372_analysis_aware_noise_metric": check_v3_372_analysis_aware_noise_metric,
+    "372-analysis-aware-noise-metric": check_v3_372_analysis_aware_noise_metric,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -11,8 +11,15 @@ parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 real metric_v;
+integer count_q;
 analog begin
+    @(initial_step) begin
+        metric_v = 0.0;
+        count_q = 0;
+    end
+    // TODO: drive ctrl in transient, guard white_noise with analysis("noise"),
+    // and increment the metric counter on clk rising crossings.
     V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

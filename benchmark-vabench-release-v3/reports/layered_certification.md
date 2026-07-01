@@ -7,8 +7,8 @@ Date: 2026-07-01
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **70**
-- Compile-supported candidate rows: **124**
+- Behavior-certified extension rows: **71**
+- Compile-supported candidate rows: **123**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
@@ -22,7 +22,7 @@ Date: 2026-07-01
 | `behavioral_language_extension` | 143 | behavior_certified_extension: 40, compile_supported_candidate: 103 |
 | `cadence_simulator_function_extension` | 3 | compile_supported_candidate: 3 |
 | `conservative_kcl_syntax_extension` | 6 | compile_supported_kcl_candidate: 6 |
-| `noise_analysis_extension` | 12 | behavior_certified_extension: 11, compile_supported_candidate: 1 |
+| `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
 
 ## Claim Boundary
 
