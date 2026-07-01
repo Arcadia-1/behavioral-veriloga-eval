@@ -9086,10 +9086,17 @@
   syntax:
     must_include:
       - "`ifdef"
+      - "`define V3_HIGH_GAIN"
+      - "selected_gain = 1.25"
+      - "`else"
+      - "selected_gain = 0.75"
+      - "`endif"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Executable harness and behavior contract are staged, but promotion is blocked by EVAS issue #42: local `define is not honored by `ifdef."
 411-escaped-identifier-state: |
   version: 1
   task_id: v3_411_escaped_identifier_state

@@ -39,7 +39,7 @@ analog begin
         out_v = selected_gain * V(vin);
         metric_v = selected_gain;
         count_q = count_q + 1;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
+        if (count_q == 1) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
