@@ -1,7 +1,12 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 300 Verilog-A
-DUT/support/testbench/e2e tasks.
+This directory is a clean, RTL-Forge-style packaging of 494 Verilog-A
+DUT/support/testbench/e2e and language-extension tasks.
+
+The first 300 tasks remain the original behavior-certified full-300 surface.
+Tasks `301`-`494` are LRM/course-material extension candidates. They are
+compile-supported language rows unless promoted by layer-specific behavior
+evidence; they are not part of the original full-300 behavior claim.
 
 Top-level indexes:
 
@@ -9,6 +14,10 @@ Top-level indexes:
   Verilog-A artifacts for all tasks.
 - `CHECKS.yaml`: canonical checker configuration for all tasks, replacing
   per-task `test_harness/checks.yaml` files.
+- `reports/layered_certification.json`: machine-readable certification-layer
+  boundary for the 300 certified rows and 194 extension candidates.
+- `reports/layered_certification.md`: human-readable version of the layered
+  certification summary.
 
 Partitions:
 
@@ -18,6 +27,9 @@ Partitions:
 - `090`-`111`: additional useful Verilog-A module tasks promoted into v3.
 - `112`-`300`: imported and repaired DUT/module tasks, including the obsolete
   v2 five-task slice absorbed as normal v3 tasks.
+- `301`-`494`: Verilog-A / Verilog-AMS language extension candidates covering
+  functions/tasks, file I/O, table models, random/noise helpers, AMS digital
+  syntax, Cadence LRM helper calls, continuous-time operators, and KCL syntax.
 
 Each task is self-contained under `tasks/NNN-name/`:
 
