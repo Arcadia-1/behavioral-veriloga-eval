@@ -8576,6 +8576,31 @@ def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_456_event_or_cross_timer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checks = [
+        (1.5, 0.2, 0.8, 1.2),
+        (2.5, 0.2, 1.8, 2.2),
+        (3.5, 0.7, 2.8, 4.2),
+        (4.4, 0.7, 3.8, 5.2),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, metric_lo, metric_hi in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        if abs(out - expected_out) > 0.08:
+            return False, f"out@{time_ns:g}ns={out:.4f} expected={expected_out:.4f}"
+        if not (metric_lo <= metric <= metric_hi):
+            return False, f"metric@{time_ns:g}ns={metric:.4f} expected_range=[{metric_lo:.1f},{metric_hi:.1f}]"
+        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.3f}")
+    return True, " ".join(observed)
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19040,6 +19065,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
     "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
+    "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,
+    "456-event-or-cross-timer": check_v3_456_event_or_cross_timer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

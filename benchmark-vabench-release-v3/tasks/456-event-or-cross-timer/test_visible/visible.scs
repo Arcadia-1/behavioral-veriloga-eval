@@ -1,5 +1,12 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact.
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "event_or_cross_timer.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.2 2499p 0.2 2500p 0.7 4500p 0.7]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 2999p 0.0 3000p 1.0 3500p 1.0 3501p 0.0 4500p 0.0]
+
+XDUT (vin clk out metric) event_or_cross_timer
+
+tran tran stop=4500p
+save vin clk out metric

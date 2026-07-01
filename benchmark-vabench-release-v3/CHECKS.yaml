@@ -10485,16 +10485,40 @@
 456-event-or-cross-timer: |
   version: 1
   task_id: v3_456_event_or_cross_timer
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: event_or_cross_timer_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - " or timer"
+      - "cross("
+      - "timer("
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/event_or_cross_timer.va
+    negative:
+      - negative_variants/neg_001_force_zero/event_or_cross_timer.va
+      - negative_variants/neg_002_wrong_threshold/event_or_cross_timer.va
+      - negative_variants/neg_003_reset_bias/event_or_cross_timer.va
+      - negative_variants/neg_004_metric_offset/event_or_cross_timer.va
+      - negative_variants/neg_005_scale_output/event_or_cross_timer.va
+    checks:
+      - analog_event_or_parse
+      - cross_timer_event_body_executes
+      - vin_sampled_on_events
+      - event_count_monotonic_range
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Analog event-or cross/timer behavior promoted to executable EVAS behavior candidate."
 457-nested-function-pipeline: |
   version: 1
   task_id: v3_457_nested_function_pipeline

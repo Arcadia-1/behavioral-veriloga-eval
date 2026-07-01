@@ -3,5 +3,6 @@
 - Task id: `v3_456_event_or_cross_timer`
 - Category: `veriloga_event_semantics`
 - Required syntax focus: `Use an analog event expression combining cross() and timer() with or.`
-- EVAS status: `supported`
-- Boundary: language coverage candidate; KCL/current solving is outside this task unless explicitly required by the syntax itself.
+- EVAS status: `behavior-certified`
+- Boundary: behavioral voltage modeling only; no `I(...)` current contribution.
+- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
