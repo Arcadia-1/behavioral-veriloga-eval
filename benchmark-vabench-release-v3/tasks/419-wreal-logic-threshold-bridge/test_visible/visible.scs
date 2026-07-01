@@ -1,5 +1,12 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "wreal_logic_threshold_bridge.vams"
+
+Vain (ain 0) vsource type=pwl wave=[0 0.30 99n 0.30 100n 0.50 199n 0.50 200n 0.60 299n 0.60 300n 0.40 399n 0.40 400n 0.70 500n 0.70]
+Ven (en 0) vsource type=pwl wave=[0 1.0 249n 1.0 250n 0.0 349n 0.0 350n 1.0 500n 1.0]
+
+XDUT (ain en flag) wreal_logic_threshold_bridge
+
+tran tran stop=500n
+save ain en flag

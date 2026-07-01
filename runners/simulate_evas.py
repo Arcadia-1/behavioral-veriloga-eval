@@ -8050,6 +8050,26 @@ def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_419_wreal_logic_threshold_bridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ain", "en", "flag"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "flag": [
+                (50.0, 0.0),
+                (150.0, 1.0),
+                (275.0, 0.0),
+                (375.0, 0.0),
+                (450.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18472,6 +18492,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "413-while-loop-array-sum": check_v3_413_while_loop_array_sum,
     "v3_414_parameter_range_real_control": check_v3_414_parameter_range_real_control,
     "414-parameter-range-real-control": check_v3_414_parameter_range_real_control,
+    "v3_419_wreal_logic_threshold_bridge": check_v3_419_wreal_logic_threshold_bridge,
+    "419-wreal-logic-threshold-bridge": check_v3_419_wreal_logic_threshold_bridge,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

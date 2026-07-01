@@ -9355,16 +9355,40 @@
 419-wreal-logic-threshold-bridge: |
   version: 1
   task_id: v3_419_wreal_logic_threshold_bridge
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: wreal_logic_threshold_bridge_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ain
+    - en
+    - flag
   syntax:
     must_include:
       - "wreal"
+      - "logic"
+      - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/wreal_logic_threshold_bridge.vams
+    negative:
+      - negative_variants/neg_001_force_zero/wreal_logic_threshold_bridge.vams
+      - negative_variants/neg_002_wrong_threshold/wreal_logic_threshold_bridge.vams
+      - negative_variants/neg_003_reset_bias/wreal_logic_threshold_bridge.vams
+      - negative_variants/neg_004_metric_offset/wreal_logic_threshold_bridge.vams
+      - negative_variants/neg_005_scale_output/wreal_logic_threshold_bridge.vams
+    checks:
+      - wreal_input_parse
+      - logic_enable_parse
+      - threshold_above_asserts_flag
+      - threshold_below_deasserts_flag
+      - enable_low_gates_flag
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "AMS wreal-to-logic threshold bridge promoted to executable EVAS behavior candidate."
 420-mixed-analog-digital-mode-latch: |
   version: 1
   task_id: v3_420_mixed_analog_digital_mode_latch

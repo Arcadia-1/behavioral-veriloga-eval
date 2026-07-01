@@ -3,5 +3,5 @@ module wreal_logic_threshold_bridge(ain, en, flag);
     output flag;
     wreal ain;
     logic en, flag;
-    assign flag = en && (ain > 0.45);
+    assign flag = en && (ain > 0.35);
 endmodule

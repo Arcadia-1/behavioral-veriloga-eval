@@ -5,16 +5,16 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **111**
-- Tasks with executable visible+hidden SCS evidence: **117**
-- Tasks with behavior checker evidence: **112**
+- SOP-ready tasks: **112**
+- Tasks with executable visible+hidden SCS evidence: **118**
+- Tasks with behavior checker evidence: **113**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 82
-- `hidden_scs_not_executable:include,instance,source`: 76
-- `missing_required_behavior_section`: 77
-- `visible_scs_not_executable:include,instance,source`: 76
+- `checker_syntax_only_no_behavior_score`: 81
+- `hidden_scs_not_executable:include,instance,source`: 75
+- `missing_required_behavior_section`: 76
+- `visible_scs_not_executable:include,instance,source`: 75
 
 ## Range Summary
 
@@ -23,7 +23,7 @@ Date: 2026-07-02
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 40 | 45 | 41 | `checker_syntax_only_no_behavior_score`: 21<br>`missing_required_behavior_section`: 17<br>`visible_scs_not_executable:include,instance,source`: 16<br>`hidden_scs_not_executable:include,instance,source`: 16 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 41 | 46 | 42 | `checker_syntax_only_no_behavior_score`: 20<br>`missing_required_behavior_section`: 16<br>`visible_scs_not_executable:include,instance,source`: 15<br>`hidden_scs_not_executable:include,instance,source`: 15 |
 | `435-458` | manual syntax-completion candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 | `459-470` | course-material gap-fill candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
@@ -154,7 +154,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `416-logic-vector-reduction-flag` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `417-always-async-reset-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `418-always-enable-saturating-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `419-wreal-logic-threshold-bridge` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `419-wreal-logic-threshold-bridge` | `ams-mixed-signal-candidate` | True | - |
 | `420-mixed-analog-digital-mode-latch` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `421-task-local-variable-transform` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `422-file-fscanf-table-stimulus` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
