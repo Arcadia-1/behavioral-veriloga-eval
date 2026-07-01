@@ -1876,6 +1876,106 @@ def test_v3_logic_assign_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_logic_assign_rows(expected_fn, wrong=True))[0]
 
 
+def _clocked_dff_rows(*, edge: str = "posedge", wrong: bool = False) -> list[dict[str, float]]:
+    if edge == "posedge":
+        samples = [
+            (0.0, 0.0, 1.0, 1.0, 1.0),
+            (10.0, 0.2, 1.0, 1.0, 1.0),
+            (20.0, 0.0, 0.0, 1.0, 1.0),
+            (30.0, 0.2, 0.0, 1.0, 1.0),
+            (35.0, 0.0, 0.0, 1.0, 1.0),
+            (40.0, 0.0, 0.0, 0.0, 0.0),
+            (50.0, 0.2, 0.0, 0.0, 1.0),
+            (55.0, 0.0, 0.0, 0.0, 1.0),
+            (60.0, 0.0, 0.0, 1.0, 0.0),
+            (70.0, 0.2, 0.0, 1.0, 0.0),
+        ]
+    else:
+        samples = [
+            (0.0, 1.0, 1.0, 1.0, 1.0),
+            (10.0, 0.0, 1.0, 1.0, 1.0),
+            (20.0, 1.0, 0.0, 1.0, 1.0),
+            (30.0, 0.0, 0.0, 1.0, 1.0),
+            (35.0, 1.0, 0.0, 1.0, 1.0),
+            (40.0, 1.0, 0.0, 0.0, 0.0),
+            (50.0, 0.0, 0.0, 0.0, 1.0),
+            (55.0, 1.0, 0.0, 0.0, 1.0),
+            (60.0, 1.0, 0.0, 1.0, 0.0),
+            (70.0, 0.0, 0.0, 1.0, 0.0),
+        ]
+    q = 0.0
+    prev_clk = samples[0][1]
+    rows: list[dict[str, float]] = []
+    for time_ns, clk, rst, d, en in samples:
+        if rows:
+            is_edge = prev_clk <= 1e-9 < clk if edge == "posedge" else prev_clk > 1e-9 >= clk
+            if is_edge:
+                if rst > 1e-9:
+                    q = 0.0
+                elif en > 1e-9:
+                    q = 1.0 if d > 1e-9 else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "d": d,
+                "en": en,
+                "q": 1.0 - q if wrong else q,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def _counter_msb_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.0, 1.0, 1.0, 1.0),
+        (10.0, 1.0, 1.0, 1.0, 1.0),
+        (20.0, 0.0, 0.0, 1.0, 1.0),
+        (30.0, 1.0, 0.0, 1.0, 1.0),
+        (40.0, 0.0, 0.0, 1.0, 1.0),
+        (50.0, 1.0, 0.0, 1.0, 1.0),
+        (60.0, 0.0, 0.0, 0.0, 1.0),
+        (70.0, 1.0, 0.0, 0.0, 1.0),
+        (80.0, 0.0, 0.0, 1.0, 1.0),
+        (90.0, 1.0, 0.0, 1.0, 1.0),
+    ]
+    count = 0
+    prev_clk = samples[0][1]
+    rows: list[dict[str, float]] = []
+    for time_ns, clk, rst, d, en in samples:
+        if rows and prev_clk <= 0.45 < clk:
+            if rst > 0.45:
+                count = 0
+            elif en > 0.45 and d > 0.45:
+                count = (count + 1) & 0x3
+        q = 1.0 if (count & 0x2) else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "d": d,
+                "en": en,
+                "q": 1.0 - q if wrong else q,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_clocked_checkers_follow_edge_stimulus_values() -> None:
+    assert sim.check_v3_351_always_posedged_dff(_clocked_dff_rows())[0]
+    assert not sim.check_v3_351_always_posedged_dff(_clocked_dff_rows(wrong=True))[0]
+    assert sim.check_v3_352_always_negedge_sampler(_clocked_dff_rows(edge="negedge"))[0]
+    assert not sim.check_v3_352_always_negedge_sampler(
+        _clocked_dff_rows(edge="negedge", wrong=True)
+    )[0]
+    assert sim.check_v3_354_always_counter_two_bit(_counter_msb_rows())[0]
+    assert not sim.check_v3_354_always_counter_two_bit(_counter_msb_rows(wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

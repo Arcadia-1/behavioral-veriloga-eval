@@ -24,7 +24,7 @@
           1
         ]
       ],
-      "visible_hidden_distinct_count": 10
+      "visible_hidden_distinct_count": 14
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 92,
+    "sop_ready_visible_hidden_identical_count": 88,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 84,
-    "visible_hidden_identical_count": 110,
+    "visible_hidden_distinct_count": 88,
+    "visible_hidden_identical_count": 106,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 110
+      "visible_hidden_identical": 106
     }
   },
   "tasks": [
@@ -1349,11 +1349,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Posedged Dff",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1374,11 +1373,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Negedge Sampler",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1426,11 +1424,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Counter Two Bit",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1451,11 +1448,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Hold",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

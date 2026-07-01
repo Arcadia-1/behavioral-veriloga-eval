@@ -49,11 +49,11 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 348-logic-assign-xor-flag,348,Logic Assign Xor Flag,ams-mixed-signal-candidate,logic_assign_xor_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 349-logic-assign-priority-mux,349,Logic Assign Priority Mux,ams-mixed-signal-candidate,logic_assign_priority_mux.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 350-logic-assign-reduction,350,Logic Assign Reduction,ams-mixed-signal-candidate,logic_assign_reduction.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-351-always-posedged-dff,351,Always Posedged Dff,ams-mixed-signal-candidate,always_posedged_dff.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-352-always-negedge-sampler,352,Always Negedge Sampler,ams-mixed-signal-candidate,always_negedge_sampler.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+351-always-posedged-dff,351,Always Posedged Dff,ams-mixed-signal-candidate,always_posedged_dff.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+352-always-negedge-sampler,352,Always Negedge Sampler,ams-mixed-signal-candidate,always_negedge_sampler.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 353-always-resettable-toggle,353,Always Resettable Toggle,ams-mixed-signal-candidate,always_resettable_toggle.vams,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical
-354-always-counter-two-bit,354,Always Counter Two Bit,ams-mixed-signal-candidate,always_counter_two_bit.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-355-always-enable-hold,355,Always Enable Hold,ams-mixed-signal-candidate,always_enable_hold.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+354-always-counter-two-bit,354,Always Counter Two Bit,ams-mixed-signal-candidate,always_counter_two_bit.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+355-always-enable-hold,355,Always Enable Hold,ams-mixed-signal-candidate,always_enable_hold.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 356-mixed-logic-enable-voltage-driver,356,Mixed Logic Enable Voltage Driver,ams-mixed-signal-candidate,mixed_logic_enable_voltage_driver.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 357-mixed-wreal-to-electrical-buffer,357,Mixed Wreal To Electrical Buffer,ams-mixed-signal-candidate,mixed_wreal_to_electrical_buffer.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 358-mixed-electrical-threshold-logic-flag,358,Mixed Electrical Threshold Logic Flag,ams-mixed-signal-candidate,mixed_electrical_threshold_logic_flag.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
