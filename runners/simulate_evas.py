@@ -8189,6 +8189,25 @@ def check_v3_367_analysis_dependent_dc_tran_mode(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_368_analysis_dependent_noise_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "metric": [
+                (80.0, 0.2),
+                (180.0, 0.6),
+                (280.0, 0.3),
+                (380.0, 0.8),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17218,6 +17237,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "366-noise-table-gated-shaper": check_v3_366_noise_table_gated_shaper,
     "v3_367_analysis_dependent_dc_tran_mode": check_v3_367_analysis_dependent_dc_tran_mode,
     "367-analysis-dependent-dc-tran-mode": check_v3_367_analysis_dependent_dc_tran_mode,
+    "v3_368_analysis_dependent_noise_enable": check_v3_368_analysis_dependent_noise_enable,
+    "368-analysis-dependent-noise-enable": check_v3_368_analysis_dependent_noise_enable,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -17,7 +17,21 @@ module analysis_dependent_noise_enable (
 
 ## Required Behavior
 
-Use analysis() to enable noise contribution only in noise analysis.
+Use `analysis()` to enable a noise contribution only during noise analysis:
+
+```verilog
+V(out) <+ transition(0.0, 0.0, tr, tr);
+if (analysis("noise")) V(out) <+ white_noise(noise_power, "enabled_noise");
+```
+
+Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to the current control voltage:
+
+```verilog
+@(cross(V(clk)-vth,+1)) metric_v = V(ctrl);
+V(metric) <+ transition(metric_v, 0.0, tr, tr);
+```
+
+The transient checker verifies the clocked `metric` sideband and that the analysis-dependent noise form is executable. Noise-analysis behavior itself requires a noise-analysis-capable certification layer.
 
 Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
 

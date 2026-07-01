@@ -7256,17 +7256,45 @@
 368-analysis-dependent-noise-enable: |
   version: 1
   task_id: v3_368_analysis_dependent_noise_enable
-  backend: noise_analysis_capable
-  status: noise-analysis-candidate
-  checker: noise_analysis_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: analysis_dependent_noise_enable_transient_sideband_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ctrl
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - "white_noise"
       - "analysis("
+      - 'analysis("noise")'
+      - "V(out)"
+      - "cross"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/analysis_dependent_noise_enable.va
+    negative:
+      - negative_variants/neg_001_zero_noise/analysis_dependent_noise_enable.va
+      - negative_variants/neg_002_wrong_label/analysis_dependent_noise_enable.va
+      - negative_variants/neg_003_disable_analysis/analysis_dependent_noise_enable.va
+      - negative_variants/neg_004_wrong_metric/analysis_dependent_noise_enable.va
+      - negative_variants/neg_005_scale_output/analysis_dependent_noise_enable.va
+    checks:
+      - executable_analysis_guarded_white_noise_contribution
+      - metric_initial_step_zero
+      - metric_samples_ctrl_on_clk_rising_crossing
+      - transient_sideband_only_not_noise_analysis_certification
+      - no_current_domain_contribution
   notes:
-    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+    - "Analysis/noise extension task promoted for executable transient sideband behavior."
+    - "The checker verifies the deterministic metric sideband; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
 369-ac-stim-small-signal-source: |
   version: 1
   task_id: v3_369_ac_stim_small_signal_source
