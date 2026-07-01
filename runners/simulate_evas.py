@@ -8531,6 +8531,31 @@ def check_v3_381_file_fseek_offset_reader(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_382_file_ftell_position_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.0),
+                (380.0, 0.9),
+            ],
+            "metric": [
+                (80.0, 0.9),
+                (180.0, 0.9),
+                (280.0, 0.9),
+                (380.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17588,6 +17613,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "380-file-feof-line-counter": check_v3_380_file_feof_line_counter,
     "v3_381_file_fseek_offset_reader": check_v3_381_file_fseek_offset_reader,
     "381-file-fseek-offset-reader": check_v3_381_file_fseek_offset_reader,
+    "v3_382_file_ftell_position_meter": check_v3_382_file_ftell_position_meter,
+    "382-file-ftell-position-meter": check_v3_382_file_ftell_position_meter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

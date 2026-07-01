@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 8,
+      "complete_tests_count": 9,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 9,
+      "fair_eval_count": 10,
       "range": "373-434",
-      "sop_ready_count": 8,
+      "sop_ready_count": 9,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          54
+          53
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          53
+          52
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          53
+          52
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          53
+          52
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 80,
-    "fair_eval_count": 80,
+    "complete_tests_count": 81,
+    "fair_eval_count": 81,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 114,
-      "hidden_scs_not_executable:include,instance,source": 113,
-      "missing_required_behavior_section": 114,
-      "visible_scs_not_executable:include,instance,source": 113
+      "checker_syntax_only_no_behavior_score": 113,
+      "hidden_scs_not_executable:include,instance,source": 112,
+      "missing_required_behavior_section": 113,
+      "visible_scs_not_executable:include,instance,source": 112
     },
-    "sop_ready_count": 79,
+    "sop_ready_count": 80,
     "task_count": 194
   },
   "tasks": [
@@ -2022,20 +2022,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 382,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $ftell() to expose a file-position derived metric.",
       "target": "file_ftell_position_meter.va",

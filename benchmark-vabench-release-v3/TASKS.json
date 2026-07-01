@@ -4526,6 +4526,9 @@
       "target": [
         "file_ftell_position_meter.va"
       ],
+      "support": [
+        "config_lines.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Ftell Position Meter",
       "syntax_focus": "Use $ftell() to expose a file-position derived metric.",
