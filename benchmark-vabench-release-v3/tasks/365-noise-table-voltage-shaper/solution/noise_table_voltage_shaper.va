@@ -10,17 +10,17 @@ module noise_table_voltage_shaper (
 parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
-real out_v;
 real metric_v;
-integer count_q;
+
 analog begin
     @(initial_step) begin
-        out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
     end
-V(out) <+ noise_table("noise_profile.tbl", "profile_noise");
+
+    V(out) <+ noise_table("noise_profile.tbl", "profile_noise");
+
     @(cross(V(clk)-vth,+1)) metric_v = 0.3 + V(ctrl) * 0.2;
+
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

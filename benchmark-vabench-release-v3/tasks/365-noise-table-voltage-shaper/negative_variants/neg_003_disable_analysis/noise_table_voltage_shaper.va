@@ -15,12 +15,13 @@ real metric_v;
 integer count_q;
 analog begin
     @(initial_step) begin
-        out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
     end
-V(out) <+ 0.0 * noise_table("noise_profile.tbl", "profile_noise");
-    @(cross(V(clk)-vth,+1)) metric_v = 0.3 + V(ctrl) * 0.2;
+
+    V(out) <+ noise_table("noise_profile.tbl", "profile_noise");
+
+    @(cross(V(clk)-vth,+1)) metric_v = metric_v;
+
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule
