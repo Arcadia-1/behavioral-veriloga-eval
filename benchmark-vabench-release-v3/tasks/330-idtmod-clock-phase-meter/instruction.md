@@ -19,9 +19,22 @@ module idtmod_clock_phase_meter (
 
 ## Required Behavior
 
-Use idtmod() as a voltage-domain wrapped phase accumulator.
+Use `idtmod()` as a voltage-domain phase accumulator and sample its phase on clock edges.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a behavioral continuous-time/event task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `freq_q = 1.25e6 + 0.5e6 * V(vin)`
+- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0)`
+- on each rising crossing of `V(clk) - vth`, sample `phase_q`
+- while `V(rst) > vth`, the sampled phase and `metric` must reset to `0.0`
+- otherwise drive `out = 0.9 * sampled_phase`
+- otherwise drive `metric = 0.9` when the sampled phase is greater than `V(mode)`, else `0.0`
+
+The hidden testbench drives `vin = 0.4`, `mode = 0.55`, and clock rising edges near `100 ns`, `300 ns`, `500 ns`, and `700 ns`. The evaluator samples just after each edge to verify that the held output reports the clock-sampled phase rather than the continuously changing instantaneous phase.
 
 ## Output
 

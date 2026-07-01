@@ -5781,9 +5781,10 @@
 330-idtmod-clock-phase-meter: |
   version: 1
   task_id: v3_330_idtmod_clock_phase_meter
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5795,10 +5796,27 @@
   syntax:
     must_include:
       - "idtmod("
+      - "cross("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    positive:
+      - solution/idtmod_clock_phase_meter.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/idtmod_clock_phase_meter.va
+      - negative_variants/neg_002_drive_metric_zero/idtmod_clock_phase_meter.va
+      - negative_variants/neg_003_reset_polarity_wrong/idtmod_clock_phase_meter.va
+      - negative_variants/neg_004_logic_threshold_shifted/idtmod_clock_phase_meter.va
+      - negative_variants/neg_005_output_scale_low/idtmod_clock_phase_meter.va
+    checks:
+      - idtmod_phase_sampled_on_clock_crossing
+      - output_holds_sampled_phase_between_edges
+      - metric_thresholds_sampled_phase
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 331-above-threshold-latch: |
   version: 1
   task_id: v3_331_above_threshold_latch

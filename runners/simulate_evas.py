@@ -7408,6 +7408,33 @@ def check_v3_329_idtmod_modulo_phase_marker(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_330_idtmod_clock_phase_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (110.0, 0.130),
+                (310.0, 0.391),
+                (510.0, 0.652),
+                (710.0, 0.013),
+            ],
+            "metric": [
+                (50.0, 0.0),
+                (110.0, 0.0),
+                (310.0, 0.0),
+                (510.0, 0.9),
+                (710.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16363,6 +16390,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "328-idtmod-frequency-control": check_v3_328_idtmod_frequency_control,
     "v3_329_idtmod_modulo_phase_marker": check_v3_329_idtmod_modulo_phase_marker,
     "329-idtmod-modulo-phase-marker": check_v3_329_idtmod_modulo_phase_marker,
+    "v3_330_idtmod_clock_phase_meter": check_v3_330_idtmod_clock_phase_meter,
+    "330-idtmod-clock-phase-meter": check_v3_330_idtmod_clock_phase_meter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
