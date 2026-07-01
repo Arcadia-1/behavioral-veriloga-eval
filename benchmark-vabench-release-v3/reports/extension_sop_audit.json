@@ -52,28 +52,28 @@
       ]
     },
     {
-      "complete_tests_count": 11,
+      "complete_tests_count": 12,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 1,
+      "fair_eval_count": 2,
       "range": "435-458",
-      "sop_ready_count": 1,
+      "sop_ready_count": 2,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          23
+          22
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          13
+          12
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          13
+          12
         ],
         [
           "missing_required_behavior_section",
-          13
+          12
         ]
       ]
     },
@@ -133,15 +133,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 144,
-    "fair_eval_count": 127,
+    "complete_tests_count": 145,
+    "fair_eval_count": 128,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 67,
-      "hidden_scs_not_executable:include,instance,source": 49,
-      "missing_required_behavior_section": 50,
-      "visible_scs_not_executable:include,instance,source": 49
+      "checker_syntax_only_no_behavior_score": 66,
+      "hidden_scs_not_executable:include,instance,source": 48,
+      "missing_required_behavior_section": 49,
+      "visible_scs_not_executable:include,instance,source": 48
     },
-    "sop_ready_count": 126,
+    "sop_ready_count": 127,
     "task_count": 194
   },
   "tasks": [
@@ -3520,20 +3520,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 446,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $fstrobe() to write a formatted line to a file handle.",
       "target": "fstrobe_file_line_writer.va",
