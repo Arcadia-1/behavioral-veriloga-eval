@@ -52,11 +52,11 @@
       ]
     },
     {
-      "complete_tests_count": 17,
+      "complete_tests_count": 18,
       "description": "manual syntax-completion candidates",
       "fair_eval_count": 8,
       "range": "435-458",
-      "sop_ready_count": 7,
+      "sop_ready_count": 8,
       "task_count": 24,
       "top_issues": [
         [
@@ -70,14 +70,6 @@
         [
           "hidden_scs_not_executable:include,instance,source",
           6
-        ],
-        [
-          "visible_scs_not_executable:source",
-          1
-        ],
-        [
-          "hidden_scs_not_executable:source",
-          1
         ]
       ]
     },
@@ -137,17 +129,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 150,
+    "complete_tests_count": 151,
     "fair_eval_count": 134,
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 60,
       "hidden_scs_not_executable:include,instance,source": 42,
-      "hidden_scs_not_executable:source": 1,
       "missing_required_behavior_section": 37,
-      "visible_scs_not_executable:include,instance,source": 42,
-      "visible_scs_not_executable:source": 1
+      "visible_scs_not_executable:include,instance,source": 42
     },
-    "sop_ready_count": 132,
+    "sop_ready_count": 133,
     "task_count": 194
   },
   "tasks": [
@@ -3826,18 +3816,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:source",
-        "hidden_scs_not_executable:source"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 458,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a recursive user-defined function candidate.",
       "target": "recursive_function_candidate.va",

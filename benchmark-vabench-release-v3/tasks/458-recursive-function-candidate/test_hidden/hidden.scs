@@ -3,7 +3,8 @@ global 0
 
 ahdl_include "recursive_function_candidate.va"
 
+Vstim (stim 0) vsource dc=0.0
 XDUT (out) recursive_function_candidate
 
 tran tran stop=20n
-save out
+save stim out
