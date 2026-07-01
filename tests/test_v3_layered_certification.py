@@ -118,3 +118,25 @@ def test_staged_extension_rows_have_traceable_evas_issues() -> None:
 
     assert missing_checks_url == []
     assert missing_audit_url == []
+
+
+def test_blocking_issue_matrix_covers_all_staged_rows() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    staged_rows = [
+        row for row in report["task_rows"]
+        if row["score_claim"] == "excluded_until_behavior_promotion"
+    ]
+    blocking_issues = report["blocking_issues"]
+    issue_task_keys = {
+        task["task_key"]
+        for issue in blocking_issues
+        for task in issue["tasks"]
+    }
+
+    assert len(staged_rows) == 41
+    assert sum(issue["task_count"] for issue in blocking_issues) == 41
+    assert issue_task_keys == {row["task_key"] for row in staged_rows}
+    assert report["summary"]["blocking_issue_counts"] == {
+        issue["issue_url"]: issue["task_count"]
+        for issue in blocking_issues
+    }

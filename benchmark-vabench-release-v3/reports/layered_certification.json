@@ -1,4 +1,499 @@
 {
+  "blocking_issues": [
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/39",
+      "semantic_layers": {
+        "ams_mixed_signal_extension": 2
+      },
+      "task_count": 2,
+      "tasks": [
+        {
+          "semantic_layer": "ams_mixed_signal_extension",
+          "target": "always_resettable_toggle.vams",
+          "task_id": "v3_353_always_resettable_toggle",
+          "task_key": "353-always-resettable-toggle",
+          "tier": "ams-mixed-signal-candidate",
+          "title": "Always Resettable Toggle"
+        },
+        {
+          "semantic_layer": "ams_mixed_signal_extension",
+          "target": "always_async_reset_counter.vams",
+          "task_id": "v3_417_always_async_reset_counter",
+          "task_key": "417-always-async-reset-counter",
+          "tier": "ams-mixed-signal-candidate",
+          "title": "Always Async Reset Counter"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/40",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "table_model_string_param_source.va",
+          "task_id": "v3_488_table_model_string_param_source",
+          "task_key": "488-table-model-string-param-source",
+          "tier": "syntax-extension-candidate",
+          "title": "Table Model String Param Source"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/41",
+      "semantic_layers": {
+        "behavioral_language_extension": 2
+      },
+      "task_count": 2,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "hierarchy_support_artifact_staging.va",
+          "task_id": "v3_431_hierarchy_support_artifact_staging",
+          "task_key": "431-hierarchy-support-artifact-staging",
+          "tier": "syntax-extension-candidate",
+          "title": "Hierarchy Support Artifact Staging"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "hierarchy_nested_parameter_chain.va",
+          "task_id": "v3_432_hierarchy_nested_parameter_chain",
+          "task_key": "432-hierarchy-nested-parameter-chain",
+          "tier": "syntax-extension-candidate",
+          "title": "Hierarchy Nested Parameter Chain"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/42",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "macro_ifdef_gain_select.va",
+          "task_id": "v3_410_macro_ifdef_gain_select",
+          "task_key": "410-macro-ifdef-gain-select",
+          "tier": "syntax-extension-candidate",
+          "title": "Macro Ifdef Gain Select"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/43",
+      "semantic_layers": {
+        "ams_mixed_signal_extension": 3,
+        "behavioral_language_extension": 1
+      },
+      "task_count": 4,
+      "tasks": [
+        {
+          "semantic_layer": "ams_mixed_signal_extension",
+          "target": "logic_vector_assign_slice.vams",
+          "task_id": "v3_415_logic_vector_assign_slice",
+          "task_key": "415-logic-vector-assign-slice",
+          "tier": "ams-mixed-signal-candidate",
+          "title": "Logic Vector Assign Slice"
+        },
+        {
+          "semantic_layer": "ams_mixed_signal_extension",
+          "target": "logic_vector_reduction_flag.vams",
+          "task_id": "v3_416_logic_vector_reduction_flag",
+          "task_key": "416-logic-vector-reduction-flag",
+          "tier": "ams-mixed-signal-candidate",
+          "title": "Logic Vector Reduction Flag"
+        },
+        {
+          "semantic_layer": "ams_mixed_signal_extension",
+          "target": "always_enable_saturating_counter.vams",
+          "task_id": "v3_418_always_enable_saturating_counter",
+          "task_key": "418-always-enable-saturating-counter",
+          "tier": "ams-mixed-signal-candidate",
+          "title": "Always Enable Saturating Counter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "packed_logic_bus_slice.vams",
+          "task_id": "v3_455_packed_logic_bus_slice",
+          "task_key": "455-packed-logic-bus-slice",
+          "tier": "syntax-extension-candidate",
+          "title": "Packed Logic Bus Slice"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/44",
+      "semantic_layers": {
+        "behavioral_continuous_time_extension": 4,
+        "behavioral_language_extension": 10,
+        "conservative_kcl_syntax_extension": 4
+      },
+      "task_count": 18,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "ddt_voltage_derivative_source.va",
+          "task_id": "v3_435_ddt_voltage_derivative_source",
+          "task_key": "435-ddt-voltage-derivative-source",
+          "tier": "syntax-extension-candidate",
+          "title": "Ddt Voltage Derivative Source"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "idt_voltage_integrator_source.va",
+          "task_id": "v3_436_idt_voltage_integrator_source",
+          "task_key": "436-idt-voltage-integrator-source",
+          "tier": "syntax-extension-candidate",
+          "title": "Idt Voltage Integrator Source"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "laplace_nd_lowpass_filter.va",
+          "task_id": "v3_437_laplace_nd_lowpass_filter",
+          "task_key": "437-laplace-nd-lowpass-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Laplace Nd Lowpass Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "laplace_np_pole_filter.va",
+          "task_id": "v3_438_laplace_np_pole_filter",
+          "task_key": "438-laplace-np-pole-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Laplace Np Pole Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "laplace_zd_zero_den_filter.va",
+          "task_id": "v3_439_laplace_zd_zero_den_filter",
+          "task_key": "439-laplace-zd-zero-den-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Laplace Zd Zero Den Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "laplace_zp_zero_pole_filter.va",
+          "task_id": "v3_440_laplace_zp_zero_pole_filter",
+          "task_key": "440-laplace-zp-zero-pole-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Laplace Zp Zero Pole Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "zi_nd_discrete_filter.va",
+          "task_id": "v3_441_zi_nd_discrete_filter",
+          "task_key": "441-zi-nd-discrete-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Zi Nd Discrete Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "zi_np_discrete_filter.va",
+          "task_id": "v3_442_zi_np_discrete_filter",
+          "task_key": "442-zi-np-discrete-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Zi Np Discrete Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "zi_zd_discrete_filter.va",
+          "task_id": "v3_443_zi_zd_discrete_filter",
+          "task_key": "443-zi-zd-discrete-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Zi Zd Discrete Filter"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "zi_zp_discrete_filter.va",
+          "task_id": "v3_444_zi_zp_discrete_filter",
+          "task_key": "444-zi-zp-discrete-filter",
+          "tier": "syntax-extension-candidate",
+          "title": "Zi Zp Discrete Filter"
+        },
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "current_contribution_conductance.va",
+          "task_id": "v3_469_current_contribution_conductance",
+          "task_key": "469-current-contribution-conductance",
+          "tier": "kcl-syntax-candidate",
+          "title": "Current Contribution Conductance"
+        },
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "branch_current_probe_contribution.va",
+          "task_id": "v3_470_branch_current_probe_contribution",
+          "task_key": "470-branch-current-probe-contribution",
+          "tier": "kcl-syntax-candidate",
+          "title": "Branch Current Probe Contribution"
+        },
+        {
+          "semantic_layer": "behavioral_continuous_time_extension",
+          "target": "indirect_branch_null_balance.va",
+          "task_id": "v3_471_indirect_branch_null_balance",
+          "task_key": "471-indirect-branch-null-balance",
+          "tier": "behavioral-continuous-time-candidate",
+          "title": "Indirect Branch Null Balance"
+        },
+        {
+          "semantic_layer": "behavioral_continuous_time_extension",
+          "target": "indirect_branch_ddt_balance.va",
+          "task_id": "v3_472_indirect_branch_ddt_balance",
+          "task_key": "472-indirect-branch-ddt-balance",
+          "tier": "behavioral-continuous-time-candidate",
+          "title": "Indirect Branch Ddt Balance"
+        },
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "kcl_capacitor_ddt_current.va",
+          "task_id": "v3_491_kcl_capacitor_ddt_current",
+          "task_key": "491-kcl-capacitor-ddt-current",
+          "tier": "kcl-syntax-candidate",
+          "title": "Kcl Capacitor Ddt Current"
+        },
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "kcl_inductor_idt_voltage.va",
+          "task_id": "v3_492_kcl_inductor_idt_voltage",
+          "task_key": "492-kcl-inductor-idt-voltage",
+          "tier": "kcl-syntax-candidate",
+          "title": "Kcl Inductor Idt Voltage"
+        },
+        {
+          "semantic_layer": "behavioral_continuous_time_extension",
+          "target": "continuous_laplace_nd_filter.va",
+          "task_id": "v3_493_continuous_laplace_nd_filter",
+          "task_key": "493-continuous-laplace-nd-filter",
+          "tier": "behavioral-continuous-time-candidate",
+          "title": "Continuous Laplace Nd Filter"
+        },
+        {
+          "semantic_layer": "behavioral_continuous_time_extension",
+          "target": "continuous_zi_nd_filter.va",
+          "task_id": "v3_494_continuous_zi_nd_filter",
+          "task_key": "494-continuous-zi-nd-filter",
+          "tier": "behavioral-continuous-time-candidate",
+          "title": "Continuous Zi Nd Filter"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/45",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "generate_genvar_replicated_stage.vams",
+          "task_id": "v3_449_generate_genvar_replicated_stage",
+          "task_key": "449-generate-genvar-replicated-stage",
+          "tier": "syntax-extension-candidate",
+          "title": "Generate Genvar Replicated Stage"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/46",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "custom_nature_discipline_voltage.vams",
+          "task_id": "v3_450_custom_nature_discipline_voltage",
+          "task_key": "450-custom-nature-discipline-voltage",
+          "tier": "syntax-extension-candidate",
+          "title": "Custom Nature Discipline Voltage"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/47",
+      "semantic_layers": {
+        "behavioral_language_extension": 2
+      },
+      "task_count": 2,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "connectmodule_electrical_bridge.vams",
+          "task_id": "v3_451_connectmodule_electrical_bridge",
+          "task_key": "451-connectmodule-electrical-bridge",
+          "tier": "syntax-extension-candidate",
+          "title": "Connectmodule Electrical Bridge"
+        },
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "connectrules_electrical_map.vams",
+          "task_id": "v3_452_connectrules_electrical_map",
+          "task_key": "452-connectrules-electrical-map",
+          "tier": "syntax-extension-candidate",
+          "title": "Connectrules Electrical Map"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/48",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "specify_specparam_delay.vams",
+          "task_id": "v3_453_specify_specparam_delay",
+          "task_key": "453-specify-specparam-delay",
+          "tier": "syntax-extension-candidate",
+          "title": "Specify Specparam Delay"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/49",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "param_given_gain_select.va",
+          "task_id": "v3_464_param_given_gain_select",
+          "task_key": "464-param-given-gain-select",
+          "tier": "syntax-extension-candidate",
+          "title": "Param Given Gain Select"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/50",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "branch_declaration_voltage_probe.va",
+          "task_id": "v3_468_branch_declaration_voltage_probe",
+          "task_key": "468-branch-declaration-voltage-probe",
+          "tier": "syntax-extension-candidate",
+          "title": "Branch Declaration Voltage Probe"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/51",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "oomr_string_voltage_probe.va",
+          "task_id": "v3_476_oomr_string_voltage_probe",
+          "task_key": "476-oomr-string-voltage-probe",
+          "tier": "syntax-extension-candidate",
+          "title": "Oomr String Voltage Probe"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/52",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "analog_node_alias_initial.va",
+          "task_id": "v3_477_analog_node_alias_initial",
+          "task_key": "477-analog-node-alias-initial",
+          "tier": "syntax-extension-candidate",
+          "title": "Analog Node Alias Initial"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/53",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "mfactor_system_function_gain.va",
+          "task_id": "v3_480_mfactor_system_function_gain",
+          "task_key": "480-mfactor-system-function-gain",
+          "tier": "syntax-extension-candidate",
+          "title": "Mfactor System Function Gain"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/54",
+      "semantic_layers": {
+        "conservative_kcl_syntax_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "analog_primitive_resistor_instance.va",
+          "task_id": "v3_481_analog_primitive_resistor_instance",
+          "task_key": "481-analog-primitive-resistor-instance",
+          "tier": "kcl-syntax-candidate",
+          "title": "Analog Primitive Resistor Instance"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/55",
+      "semantic_layers": {
+        "conservative_kcl_syntax_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "conservative_kcl_syntax_extension",
+          "target": "analog_primitive_isource_instance.va",
+          "task_id": "v3_482_analog_primitive_isource_instance",
+          "task_key": "482-analog-primitive-isource-instance",
+          "tier": "kcl-syntax-candidate",
+          "title": "Analog Primitive Isource Instance"
+        }
+      ]
+    },
+    {
+      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/56",
+      "semantic_layers": {
+        "behavioral_language_extension": 1
+      },
+      "task_count": 1,
+      "tasks": [
+        {
+          "semantic_layer": "behavioral_language_extension",
+          "target": "table_model_2d_array_surface.va",
+          "task_id": "v3_487_table_model_2d_array_surface",
+          "task_key": "487-table-model-2d-array-surface",
+          "tier": "syntax-extension-candidate",
+          "title": "Table Model 2d Array Surface"
+        }
+      ]
+    }
+  ],
   "claim_boundary": [
     "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
     "Tasks 301-494 are extension candidates; they are excluded from score until promoted with behavior checkers and negative-case scoring.",
@@ -80,6 +575,26 @@
   "summary": {
     "behavior_certified_count": 453,
     "behavior_certified_extension_count": 153,
+    "blocking_issue_counts": {
+      "https://github.com/Arcadia-1/EVAS/issues/39": 2,
+      "https://github.com/Arcadia-1/EVAS/issues/40": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/41": 2,
+      "https://github.com/Arcadia-1/EVAS/issues/42": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/43": 4,
+      "https://github.com/Arcadia-1/EVAS/issues/44": 18,
+      "https://github.com/Arcadia-1/EVAS/issues/45": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/46": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/47": 2,
+      "https://github.com/Arcadia-1/EVAS/issues/48": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/49": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/50": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/51": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/52": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/53": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/54": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/55": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/56": 1
+    },
     "certification_level_counts": {
       "behavior_certified": 268,
       "behavior_certified_extension": 153,

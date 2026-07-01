@@ -212,7 +212,37 @@ def build_report() -> dict[str, Any]:
         "semantic_layer_counts": counter(rows, "semantic_layer"),
         "certification_level_counts": counter(rows, "certification_level"),
         "score_claim_counts": counter(rows, "score_claim"),
+        "blocking_issue_counts": dict(sorted(Counter(
+            issue_url
+            for row in rows
+            if row["score_claim"] == "excluded_until_behavior_promotion"
+            for issue_url in str(row["blocking_issue_urls"]).split(";")
+            if issue_url
+        ).items())),
     }
+    blocking_issues = []
+    for issue_url, count in summary["blocking_issue_counts"].items():
+        blocked_rows = [
+            row for row in rows
+            if issue_url in str(row["blocking_issue_urls"]).split(";")
+            and row["score_claim"] == "excluded_until_behavior_promotion"
+        ]
+        blocking_issues.append({
+            "issue_url": issue_url,
+            "task_count": count,
+            "semantic_layers": counter(blocked_rows, "semantic_layer"),
+            "tasks": [
+                {
+                    "task_key": row["task_key"],
+                    "task_id": row["task_id"],
+                    "title": row["title"],
+                    "tier": row["tier"],
+                    "semantic_layer": row["semantic_layer"],
+                    "target": row["target"],
+                }
+                for row in blocked_rows
+            ],
+        })
     return {
         "date": date.today().isoformat(),
         "release": "benchmark-vabench-release-v3",
@@ -229,6 +259,7 @@ def build_report() -> dict[str, Any]:
             }
             for layer, count in summary["semantic_layer_counts"].items()
         ],
+        "blocking_issues": blocking_issues,
         "claim_boundary": [
             "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
             "Tasks 301-494 are extension candidates; they are excluded from score until promoted with behavior checkers and negative-case scoring.",
@@ -298,6 +329,19 @@ def write_md(report: dict[str, Any]) -> None:
             for name, count in layer["certification_levels"].items()
         )
         lines.append(f"| `{layer['semantic_layer']}` | {layer['task_count']} | {levels} |")
+    lines.extend([
+        "",
+        "## Blocking Issues",
+        "",
+        "| EVAS issue | Blocked tasks | Semantic layers |",
+        "| --- | ---: | --- |",
+    ])
+    for issue in report["blocking_issues"]:
+        layers = ", ".join(
+            f"{name}: {count}"
+            for name, count in issue["semantic_layers"].items()
+        )
+        lines.append(f"| {issue['issue_url']} | {issue['task_count']} | {layers} |")
     lines.extend([
         "",
         "## Claim Boundary",

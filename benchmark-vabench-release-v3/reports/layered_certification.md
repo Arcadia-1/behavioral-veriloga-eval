@@ -24,6 +24,29 @@ Date: 2026-07-02
 | `conservative_kcl_syntax_extension` | 6 | compile_supported_kcl_candidate: 6 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
 
+## Blocking Issues
+
+| EVAS issue | Blocked tasks | Semantic layers |
+| --- | ---: | --- |
+| https://github.com/Arcadia-1/EVAS/issues/39 | 2 | ams_mixed_signal_extension: 2 |
+| https://github.com/Arcadia-1/EVAS/issues/40 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/41 | 2 | behavioral_language_extension: 2 |
+| https://github.com/Arcadia-1/EVAS/issues/42 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/43 | 4 | ams_mixed_signal_extension: 3, behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/44 | 18 | behavioral_continuous_time_extension: 4, behavioral_language_extension: 10, conservative_kcl_syntax_extension: 4 |
+| https://github.com/Arcadia-1/EVAS/issues/45 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/46 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/47 | 2 | behavioral_language_extension: 2 |
+| https://github.com/Arcadia-1/EVAS/issues/48 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/49 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/50 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/51 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/52 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/53 | 1 | behavioral_language_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/54 | 1 | conservative_kcl_syntax_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/55 | 1 | conservative_kcl_syntax_extension: 1 |
+| https://github.com/Arcadia-1/EVAS/issues/56 | 1 | behavioral_language_extension: 1 |
+
 ## Claim Boundary
 
 - Only tasks 001-300 are part of the original behavior-certified full-300 claim.
