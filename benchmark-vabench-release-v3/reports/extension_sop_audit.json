@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 18,
+      "complete_tests_count": 19,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 19,
+      "fair_eval_count": 20,
       "range": "373-434",
-      "sop_ready_count": 18,
+      "sop_ready_count": 19,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          44
+          43
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          43
+          42
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          43
+          42
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          43
+          42
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 90,
-    "fair_eval_count": 90,
+    "complete_tests_count": 91,
+    "fair_eval_count": 91,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 104,
-      "hidden_scs_not_executable:include,instance,source": 103,
-      "missing_required_behavior_section": 104,
-      "visible_scs_not_executable:include,instance,source": 103
+      "checker_syntax_only_no_behavior_score": 103,
+      "hidden_scs_not_executable:include,instance,source": 102,
+      "missing_required_behavior_section": 103,
+      "visible_scs_not_executable:include,instance,source": 102
     },
-    "sop_ready_count": 89,
+    "sop_ready_count": 90,
     "task_count": 194
   },
   "tasks": [
@@ -2252,20 +2252,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 392,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $rdist_poisson() for seeded count-like variation.",
       "target": "rdist_poisson_count_noise.va",

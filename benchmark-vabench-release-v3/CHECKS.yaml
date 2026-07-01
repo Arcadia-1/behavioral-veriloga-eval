@@ -8322,16 +8322,45 @@
 392-rdist-poisson-count-noise: |
   version: 1
   task_id: v3_392_rdist_poisson_count_noise
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rdist_poisson_count_noise_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "$rdist_poisson()"
+      - "$rdist_poisson"
+      - "seed_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/rdist_poisson_count_noise.va
+    negative:
+      - negative_variants/neg_001_force_zero/rdist_poisson_count_noise.va
+      - negative_variants/neg_002_wrong_threshold/rdist_poisson_count_noise.va
+      - negative_variants/neg_003_reset_bias/rdist_poisson_count_noise.va
+      - negative_variants/neg_004_metric_offset/rdist_poisson_count_noise.va
+      - negative_variants/neg_005_scale_output/rdist_poisson_count_noise.va
+    checks:
+      - seeded_poisson_draw_sequence_is_deterministic
+      - output_adds_small_count_noise_to_vin
+      - metric_reports_raw_poisson_count
+      - wrong_seed_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
 393-rdist-normal-offset-dither: |
   version: 1
   task_id: v3_393_rdist_normal_offset_dither

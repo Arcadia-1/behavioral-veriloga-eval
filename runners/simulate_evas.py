@@ -8781,6 +8781,31 @@ def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_392_rdist_poisson_count_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.73),
+                (180.0, 0.72),
+                (280.0, 0.70),
+                (380.0, 0.70),
+            ],
+            "metric": [
+                (80.0, 3.0),
+                (180.0, 2.0),
+                (280.0, 0.0),
+                (380.0, 0.0),
+            ],
+        },
+        tol=0.05,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17858,6 +17883,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "390-table-model-piecewise-calibrator": check_v3_390_table_model_piecewise_calibrator,
     "v3_391_rdist_exponential_jitter": check_v3_391_rdist_exponential_jitter,
     "391-rdist-exponential-jitter": check_v3_391_rdist_exponential_jitter,
+    "v3_392_rdist_poisson_count_noise": check_v3_392_rdist_poisson_count_noise,
+    "392-rdist-poisson-count-noise": check_v3_392_rdist_poisson_count_noise,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
