@@ -9273,13 +9273,23 @@
   backend: digital_mixed_capable
   status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - code0
+    - code1
+    - code2
+    - code3
+    - sel
+    - y
   syntax:
     must_include:
-      - "code[2]"
+      - "logic [3:0] code"
+      - "assign"
     must_not_include:
       - "I("
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Executable AMS/digital vector candidate staged pending EVAS digital continuous assign/vector-port support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
 416-logic-vector-reduction-flag: |
   version: 1
   task_id: v3_416_logic_vector_reduction_flag

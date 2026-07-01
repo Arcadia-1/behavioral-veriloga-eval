@@ -4,4 +4,5 @@
 - Category: `verilogams_digital_mixed_semantics`
 - Required syntax focus: `Use logic vectors with continuous assign and slice selection.`
 - Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: language extension candidate pending full behavioral certification.
+- Status: executable AMS/digital mixed-signal candidate pending full behavioral certification.
+- EVAS tracking: https://github.com/Arcadia-1/EVAS/issues/43
