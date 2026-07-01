@@ -9337,13 +9337,21 @@
   backend: digital_mixed_capable
   status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - clk
+    - rst
+    - en
+    - q0
+    - q1
   syntax:
     must_include:
       - "always @"
     must_not_include:
       - "I("
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Executable AMS/digital vector-output always candidate staged pending EVAS vector output support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
 419-wreal-logic-threshold-bridge: |
   version: 1
   task_id: v3_419_wreal_logic_threshold_bridge
