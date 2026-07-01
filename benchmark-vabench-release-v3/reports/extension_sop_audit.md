@@ -193,9 +193,9 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | True | - |
 | `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | True | - |
 | `452-connectrules-electrical-map` | `syntax-extension-candidate` | True | - |
-| `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `453-specify-specparam-delay` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `454-multidimensional-array-state` | `syntax-extension-candidate` | True | - |
-| `455-packed-logic-bus-slice` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `455-packed-logic-bus-slice` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | True | - |
 | `457-nested-function-pipeline` | `syntax-extension-candidate` | True | - |
 | `458-recursive-function-candidate` | `syntax-extension-candidate` | True | - |

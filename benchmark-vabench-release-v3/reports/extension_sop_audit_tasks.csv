@@ -151,9 +151,9 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 450-custom-nature-discipline-voltage,450,Custom Nature Discipline Voltage,syntax-extension-candidate,custom_nature_discipline_voltage.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 451-connectmodule-electrical-bridge,451,Connectmodule Electrical Bridge,syntax-extension-candidate,connectmodule_electrical_bridge.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 452-connectrules-electrical-map,452,Connectrules Electrical Map,syntax-extension-candidate,connectrules_electrical_map.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-453-specify-specparam-delay,453,Specify Specparam Delay,syntax-extension-candidate,specify_specparam_delay.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+453-specify-specparam-delay,453,Specify Specparam Delay,ams-mixed-signal-candidate,specify_specparam_delay.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 454-multidimensional-array-state,454,Multidimensional Array State,syntax-extension-candidate,multidimensional_array_state.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-455-packed-logic-bus-slice,455,Packed Logic Bus Slice,syntax-extension-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+455-packed-logic-bus-slice,455,Packed Logic Bus Slice,ams-mixed-signal-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 456-event-or-cross-timer,456,Event Or Cross Timer,syntax-extension-candidate,event_or_cross_timer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 457-nested-function-pipeline,457,Nested Function Pipeline,syntax-extension-candidate,nested_function_pipeline.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 458-recursive-function-candidate,458,Recursive Function Candidate,syntax-extension-candidate,recursive_function_candidate.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready

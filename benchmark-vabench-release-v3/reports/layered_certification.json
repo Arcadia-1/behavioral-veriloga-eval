@@ -97,8 +97,7 @@
       "promotion_acceptance": "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json",
       "semantic_layers": {
-        "ams_mixed_signal_extension": 3,
-        "behavioral_language_extension": 1
+        "ams_mixed_signal_extension": 4
       },
       "task_count": 4,
       "tasks": [
@@ -127,11 +126,11 @@
           "title": "Always Enable Saturating Counter"
         },
         {
-          "semantic_layer": "behavioral_language_extension",
+          "semantic_layer": "ams_mixed_signal_extension",
           "target": "packed_logic_bus_slice.vams",
           "task_id": "v3_455_packed_logic_bus_slice",
           "task_key": "455-packed-logic-bus-slice",
-          "tier": "syntax-extension-candidate",
+          "tier": "ams-mixed-signal-candidate",
           "title": "Packed Logic Bus Slice"
         }
       ]
@@ -316,16 +315,16 @@
       "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_453_453.json",
       "semantic_layers": {
-        "behavioral_language_extension": 1
+        "ams_mixed_signal_extension": 1
       },
       "task_count": 1,
       "tasks": [
         {
-          "semantic_layer": "behavioral_language_extension",
+          "semantic_layer": "ams_mixed_signal_extension",
           "target": "specify_specparam_delay.vams",
           "task_id": "v3_453_specify_specparam_delay",
           "task_key": "453-specify-specparam-delay",
-          "tier": "syntax-extension-candidate",
+          "tier": "ams-mixed-signal-candidate",
           "title": "Specify Specparam Delay"
         }
       ]
@@ -546,10 +545,10 @@
     {
       "certification_levels": {
         "behavior_certified_extension": 21,
-        "compile_supported_candidate": 5
+        "compile_supported_candidate": 7
       },
       "semantic_layer": "ams_mixed_signal_extension",
-      "task_count": 26
+      "task_count": 28
     },
     {
       "certification_levels": {
@@ -575,10 +574,10 @@
     {
       "certification_levels": {
         "behavior_certified_extension": 120,
-        "compile_supported_candidate": 13
+        "compile_supported_candidate": 11
       },
       "semantic_layer": "behavioral_language_extension",
-      "task_count": 133
+      "task_count": 131
     },
     {
       "certification_levels": {
@@ -642,11 +641,11 @@
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
-      "ams_mixed_signal_extension": 26,
+      "ams_mixed_signal_extension": 28,
       "behavioral_continuous_time_extension": 14,
       "behavioral_event_core": 268,
       "behavioral_event_support": 32,
-      "behavioral_language_extension": 133,
+      "behavioral_language_extension": 131,
       "cadence_simulator_function_extension": 3,
       "conservative_kcl_syntax_extension": 6,
       "noise_analysis_extension": 12
@@ -654,7 +653,7 @@
     "task_count": 494,
     "tier_counts": {
       "<none>": 260,
-      "ams-mixed-signal-candidate": 26,
+      "ams-mixed-signal-candidate": 28,
       "behavioral-continuous-time-candidate": 14,
       "cadence-simulator-function-candidate": 3,
       "core-formal-candidate": 1,
@@ -662,7 +661,7 @@
       "kcl-syntax-candidate": 6,
       "noise-analysis-candidate": 12,
       "support-formal-candidate": 32,
-      "syntax-extension-candidate": 133
+      "syntax-extension-candidate": 131
     },
     "unsupported_candidate_count": 0
   },
@@ -9718,13 +9717,13 @@
       "form": "dut",
       "in_original_full_300": false,
       "score_claim": "excluded_until_behavior_promotion",
-      "semantic_layer": "behavioral_language_extension",
+      "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use specify/specparam delay syntax.",
       "target": "specify_specparam_delay.vams",
       "task_id": "v3_453_specify_specparam_delay",
       "task_key": "453-specify-specparam-delay",
       "task_number": 453,
-      "tier": "syntax-extension-candidate",
+      "tier": "ams-mixed-signal-candidate",
       "title": "Specify Specparam Delay"
     },
     {
@@ -9758,13 +9757,13 @@
       "form": "dut",
       "in_original_full_300": false,
       "score_claim": "excluded_until_behavior_promotion",
-      "semantic_layer": "behavioral_language_extension",
+      "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
       "target": "packed_logic_bus_slice.vams",
       "task_id": "v3_455_packed_logic_bus_slice",
       "task_key": "455-packed-logic-bus-slice",
       "task_number": 455,
-      "tier": "syntax-extension-candidate",
+      "tier": "ams-mixed-signal-candidate",
       "title": "Packed Logic Bus Slice"
     },
     {
