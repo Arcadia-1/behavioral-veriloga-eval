@@ -9838,16 +9838,30 @@
 431-hierarchy-support-artifact-staging: |
   version: 1
   task_id: v3_431_hierarchy_support_artifact_staging
-  backend: evas_rust_compile_capable
+  backend: hierarchy_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "module instantiation"
+      - "staged_gain_child"
+      - "staged_limit_child"
+      - "#(.gain(0.75))"
+      - "u_gain"
+      - "u_limit"
     must_not_include:
       - "I("
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Executable hierarchy candidate staged pending EVAS same-source child module lookup support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/41"
 432-hierarchy-nested-parameter-chain: |
   version: 1
   task_id: v3_432_hierarchy_nested_parameter_chain

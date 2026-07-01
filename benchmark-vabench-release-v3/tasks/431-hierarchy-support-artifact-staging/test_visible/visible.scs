@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
-tran tran stop=80n
+
+ahdl_include "hierarchy_support_artifact_staging.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.40 119n 0.40 120n 1.40 260n 1.40]
+Vclk (clk 0) vsource dc=0.0
+Vmode (mode 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 149n 0.0 150n 1.0 240n 1.0 241n 0.0 260n 0.0]
+
+XDUT (vin clk mode rst out metric) hierarchy_support_artifact_staging
+
+tran tran stop=260n
 save vin clk mode rst out metric

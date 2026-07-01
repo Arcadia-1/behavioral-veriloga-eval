@@ -8357,6 +8357,27 @@ def check_v3_430_rdist_seed_reproducibility(rows: list[dict[str, float]]) -> tup
     return True, metric_detail + " out=" + ",".join(f"{value:.3f}" for value in observed)
 
 
+def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.30),
+                (220.0, 0.90),
+            ],
+            "metric": [
+                (80.0, 0.30),
+                (220.0, 1.05),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18803,6 +18824,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "429-string-config-label-select": check_v3_429_string_config_label_select,
     "v3_430_rdist_seed_reproducibility": check_v3_430_rdist_seed_reproducibility,
     "430-rdist-seed-reproducibility": check_v3_430_rdist_seed_reproducibility,
+    "v3_431_hierarchy_support_artifact_staging": check_v3_431_hierarchy_support_artifact_staging,
+    "431-hierarchy-support-artifact-staging": check_v3_431_hierarchy_support_artifact_staging,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
