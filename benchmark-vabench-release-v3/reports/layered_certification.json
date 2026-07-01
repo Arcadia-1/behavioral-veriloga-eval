@@ -537,6 +537,49 @@
     "Compile-supported KCL rows do not certify MNA/KCL solving behavior.",
     "AMS, noise/analysis, Cadence-helper, and table-model extension rows require layer-specific behavior evidence before paper-facing promotion."
   ],
+  "completion_audit": {
+    "is_complete": false,
+    "reason": "The full 301-494 objective is not complete because 41 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "requirements": [
+      {
+        "evidence": "layered_certification summary reports extension_candidate_count=194.",
+        "requirement": "Scope covers all v3 extension tasks 301-494.",
+        "status": "satisfied"
+      },
+      {
+        "evidence": "extension_sop_audit has no missing_required_behavior_section issue.",
+        "requirement": "Each extension task has a clear prompt and required behavior section.",
+        "status": "satisfied"
+      },
+      {
+        "evidence": "extension_sop_audit complete_tests_count=194.",
+        "requirement": "Each extension task has executable visible and hidden test evidence.",
+        "status": "satisfied"
+      },
+      {
+        "evidence": "extension_sop_audit reports no negative_count_lt5 issues.",
+        "requirement": "Each extension task has five useful negative variants.",
+        "status": "satisfied"
+      },
+      {
+        "evidence": "153 extension tasks are behavior-certified; 41 remain excluded_until_behavior_promotion.",
+        "gap": "The remaining staged rows are blocked by EVAS support issues and must not be counted as behavior-certified yet.",
+        "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
+        "status": "partial"
+      },
+      {
+        "evidence": "verify_301_494_layered: gold_pass=153, gold_fail=0, negative_rejected=765, negative_accepted=0, expectation_fail=0.",
+        "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
+        "status": "satisfied"
+      },
+      {
+        "evidence": "18 blocking issues cover 41 staged tasks.",
+        "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
+        "status": "satisfied"
+      }
+    ],
+    "status": "partial_external_blocked"
+  },
   "date": "2026-07-02",
   "evidence_sources": {
     "checker_manifest": "benchmark-vabench-release-v3/CHECKS.yaml",

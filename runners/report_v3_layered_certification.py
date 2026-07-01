@@ -19,6 +19,7 @@ REPORT_JSON = REPORTS_ROOT / "layered_certification.json"
 REPORT_MD = REPORTS_ROOT / "layered_certification.md"
 REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
+VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_494_layered.json"
 
 
 CORE_TIERS = {
@@ -100,6 +101,26 @@ def read_sop_ready_extension_tasks() -> set[str]:
             if task_key:
                 ready.add(task_key)
     return ready
+
+
+def read_sop_audit() -> dict[str, Any]:
+    if not EXTENSION_SOP_AUDIT_JSON.exists():
+        return {}
+    try:
+        return json.loads(EXTENSION_SOP_AUDIT_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def read_layered_verification_summary() -> dict[str, Any]:
+    if not VERIFY_LAYERED_JSON.exists():
+        return {}
+    try:
+        payload = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    summary = payload.get("summary")
+    return summary if isinstance(summary, dict) else {}
 
 
 def read_checks_issue_urls() -> dict[str, list[str]]:
@@ -210,9 +231,88 @@ def promotion_acceptance_for(blocked_rows: list[dict[str, Any]]) -> str:
     )
 
 
+def build_completion_audit(
+    summary: dict[str, Any],
+    sop_audit: dict[str, Any],
+    verification_summary: dict[str, Any],
+    blocking_issues: list[dict[str, Any]],
+) -> dict[str, Any]:
+    sop_summary = sop_audit.get("summary", {}) if isinstance(sop_audit, dict) else {}
+    issue_counts = sop_summary.get("issue_counts", {}) if isinstance(sop_summary, dict) else {}
+    requirements = [
+        {
+            "requirement": "Scope covers all v3 extension tasks 301-494.",
+            "status": "satisfied" if summary["extension_candidate_count"] == 194 else "not_satisfied",
+            "evidence": f"layered_certification summary reports extension_candidate_count={summary['extension_candidate_count']}.",
+        },
+        {
+            "requirement": "Each extension task has a clear prompt and required behavior section.",
+            "status": "satisfied" if issue_counts.get("missing_required_behavior_section", 0) == 0 else "not_satisfied",
+            "evidence": "extension_sop_audit has no missing_required_behavior_section issue.",
+        },
+        {
+            "requirement": "Each extension task has executable visible and hidden test evidence.",
+            "status": "satisfied" if sop_summary.get("complete_tests_count") == 194 else "not_satisfied",
+            "evidence": f"extension_sop_audit complete_tests_count={sop_summary.get('complete_tests_count')}.",
+        },
+        {
+            "requirement": "Each extension task has five useful negative variants.",
+            "status": "satisfied" if not any(str(key).startswith("negative_count_lt5") for key in issue_counts) else "not_satisfied",
+            "evidence": "extension_sop_audit reports no negative_count_lt5 issues.",
+        },
+        {
+            "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
+            "status": "partial",
+            "evidence": (
+                f"{summary['behavior_certified_extension_count']} extension tasks are behavior-certified; "
+                f"{summary['compile_supported_candidate_count']} remain excluded_until_behavior_promotion."
+            ),
+            "gap": "The remaining staged rows are blocked by EVAS support issues and must not be counted as behavior-certified yet.",
+        },
+        {
+            "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
+            "status": "satisfied" if (
+                verification_summary.get("gold_pass") == summary["behavior_certified_extension_count"]
+                and verification_summary.get("gold_fail") == 0
+                and verification_summary.get("negative_accepted") == 0
+                and verification_summary.get("expectation_fail") == 0
+            ) else "not_satisfied",
+            "evidence": (
+                f"verify_301_494_layered: gold_pass={verification_summary.get('gold_pass')}, "
+                f"gold_fail={verification_summary.get('gold_fail')}, "
+                f"negative_rejected={verification_summary.get('negative_rejected')}, "
+                f"negative_accepted={verification_summary.get('negative_accepted')}, "
+                f"expectation_fail={verification_summary.get('expectation_fail')}."
+            ),
+        },
+        {
+            "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
+            "status": "satisfied" if (
+                sum(issue["task_count"] for issue in blocking_issues) == summary["compile_supported_candidate_count"]
+                and all(issue.get("promotion_command") and issue.get("promotion_acceptance") for issue in blocking_issues)
+            ) else "not_satisfied",
+            "evidence": (
+                f"{len(blocking_issues)} blocking issues cover "
+                f"{sum(issue['task_count'] for issue in blocking_issues)} staged tasks."
+            ),
+        },
+    ]
+    return {
+        "status": "partial_external_blocked",
+        "is_complete": False,
+        "reason": (
+            "The full 301-494 objective is not complete because 41 extension tasks still lack "
+            "behavior checker evidence and are excluded until EVAS support issues are resolved."
+        ),
+        "requirements": requirements,
+    }
+
+
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
+    sop_audit = read_sop_audit()
     sop_ready_extension_tasks = read_sop_ready_extension_tasks()
+    verification_summary = read_layered_verification_summary()
     checks_issue_urls = read_checks_issue_urls()
     rows = [
         classify_task(key, tasks[key], sop_ready_extension_tasks, checks_issue_urls)
@@ -288,6 +388,12 @@ def build_report() -> dict[str, Any]:
             for layer, count in summary["semantic_layer_counts"].items()
         ],
         "blocking_issues": blocking_issues,
+        "completion_audit": build_completion_audit(
+            summary,
+            sop_audit,
+            verification_summary,
+            blocking_issues,
+        ),
         "claim_boundary": [
             "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
             "Tasks 301-494 are extension candidates; they are excluded from score until promoted with behavior checkers and negative-case scoring.",
@@ -372,6 +478,21 @@ def write_md(report: dict[str, Any]) -> None:
         lines.append(
             f"| {issue['issue_url']} | {issue['task_count']} | {layers} | "
             f"{issue['promotion_acceptance']} |"
+        )
+    lines.extend([
+        "",
+        "## Completion Audit",
+        "",
+        f"- Status: `{report['completion_audit']['status']}`",
+        f"- Complete: `{str(report['completion_audit']['is_complete']).lower()}`",
+        f"- Reason: {report['completion_audit']['reason']}",
+        "",
+        "| Requirement | Status | Evidence | Gap |",
+        "| --- | --- | --- | --- |",
+    ])
+    for item in report["completion_audit"]["requirements"]:
+        lines.append(
+            f"| {item['requirement']} | `{item['status']}` | {item.get('evidence', '')} | {item.get('gap', '')} |"
         )
     lines.extend([
         "",

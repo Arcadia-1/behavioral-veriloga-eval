@@ -158,3 +158,27 @@ def test_blocking_issue_matrix_has_promotion_checklists() -> None:
         assert f"{task_count}/{task_count} gold PASS" in acceptance
         assert f"{negative_count}/{negative_count} negative variants rejected" in acceptance
         assert "zero expectation_fail" in acceptance
+
+
+def test_completion_audit_preserves_full_goal_boundary() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    audit = report["completion_audit"]
+    requirements = audit["requirements"]
+    by_requirement = {item["requirement"]: item for item in requirements}
+
+    assert audit["status"] == "partial_external_blocked"
+    assert audit["is_complete"] is False
+    assert "41 extension tasks" in audit["reason"]
+    assert len(requirements) == 7
+    assert by_requirement[
+        "Each extension task has repository behavior checker evidence and can be scored fairly."
+    ]["status"] == "partial"
+    assert "153 extension tasks are behavior-certified" in by_requirement[
+        "Each extension task has repository behavior checker evidence and can be scored fairly."
+    ]["evidence"]
+    assert "41 remain excluded_until_behavior_promotion" in by_requirement[
+        "Each extension task has repository behavior checker evidence and can be scored fairly."
+    ]["evidence"]
+    assert by_requirement[
+        "Behavior-certified extension tasks pass gold verification and reject all negative variants."
+    ]["status"] == "satisfied"
