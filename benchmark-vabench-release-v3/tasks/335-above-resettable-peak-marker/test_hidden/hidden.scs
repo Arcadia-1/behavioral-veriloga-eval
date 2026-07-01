@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton for the language-semantics extension task.
-tran tran stop=200n
+
+ahdl_include "above_resettable_peak_marker.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.1 99n 0.1 100n 0.5 220n 0.5 300n 0.8 380n 0.8 381n 0.2 599n 0.2 600n 0.6 720n 0.6]
+Vmode (mode 0) vsource dc=0.0 type=dc
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 449n 0.0 450n 0.9 470n 0.9 471n 0.0 720n 0.0]
+Vclk (clk 0) vsource dc=0.0 type=dc
+
+XDUT (vin clk mode rst out metric) above_resettable_peak_marker
+
+tran tran stop=720n
 save vin clk mode rst out metric

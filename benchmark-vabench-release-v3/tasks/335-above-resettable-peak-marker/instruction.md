@@ -19,9 +19,22 @@ module above_resettable_peak_marker (
 
 ## Required Behavior
 
-Use above() and last_crossing() for threshold/edge timing behavior.
+Use `above()` to arm a resettable peak marker and track the largest input level seen after the arm event.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `@(above(V(vin) - vth))` arms the peak tracker
+- while armed, sample `V(vin)` on `@(timer(0, 50n))`
+- track `peak_q` as the largest sampled `V(vin)` since the tracker was armed
+- drive `out = 0.9` once armed, otherwise `0.0`
+- drive `metric = peak_q`, clamped to `0.0 ... 0.9`
+- `@(cross(V(rst) - vth, +1))` clears the armed state and peak value
+
+The hidden testbench ramps `vin` above threshold, later to a larger peak, then asserts reset and drives a smaller post-reset peak. The evaluator checks arming, peak retention, and reset clearing.
 
 ## Output
 

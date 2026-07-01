@@ -7548,6 +7548,34 @@ def check_v3_334_last_crossing_edge_age(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_335_above_resettable_peak_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (160.0, 0.9),
+                (360.0, 0.9),
+                (460.0, 0.0),
+                (660.0, 0.9),
+            ],
+            "metric": [
+                (50.0, 0.0),
+                (160.0, 0.5),
+                (360.0, 0.8),
+                (420.0, 0.8),
+                (460.0, 0.0),
+                (660.0, 0.6),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16513,6 +16541,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "333-last-crossing-period-meter": check_v3_333_last_crossing_period_meter,
     "v3_334_last_crossing_edge_age": check_v3_334_last_crossing_edge_age,
     "334-last-crossing-edge-age": check_v3_334_last_crossing_edge_age,
+    "v3_335_above_resettable_peak_marker": check_v3_335_above_resettable_peak_marker,
+    "335-above-resettable-peak-marker": check_v3_335_above_resettable_peak_marker,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
