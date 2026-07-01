@@ -7135,6 +7135,82 @@ def _check_v3_clocked_metric_expression(
     )
 
 
+def _check_v3_task_clocked_behavior(
+    rows: list[dict[str, float]],
+    *,
+    update_fn,
+    initial_state: dict[str, float | int],
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    state = dict(initial_state)
+    out_expected = float(state.get("out", 0.0))
+    metric_expected = float(state.get("metric", 0.0))
+    out_values = [out_expected]
+    metric_values = [metric_expected]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            out_expected, metric_expected = update_fn(state, row)
+        out_values.append(out_expected)
+        metric_values.append(metric_expected)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_out = 0
+    checked_metric = 0
+    observed_expected_out: list[float] = []
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        out_expected = out_values[index]
+        metric_expected = metric_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+
+        out_window = out_values[window_start:window_end]
+        if max(abs(out_expected - value) for value in out_window) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            observed_expected_out.append(out_expected)
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+
+        metric_window = metric_values[window_start:window_end]
+        if max(abs(metric_expected - value) for value in metric_window) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    out_span = max(observed_expected_out) - min(observed_expected_out) if observed_expected_out else 0.0
+    if out_span < 0.12:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"out_span={out_span:.4f} max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -9358,156 +9434,119 @@ def check_v3_372_analysis_aware_noise_metric(rows: list[dict[str, float]]) -> tu
 
 
 def check_v3_373_task_output_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["state_q"] = 0
+            return 0.0, 0.0
+        state["count"] = int(state["count"]) + 1
+        state_q = int(state["count"]) % 3
+        state["state_q"] = state_q
+        sample = row["vin"]
+        if state_q == 0:
+            out = sample
+        elif state_q == 1:
+            out = 0.9 if sample > 0.45 else 0.0
+        else:
+            out = min(0.9, max(0.0, sample))
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.3),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 1.0 / 3.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0, "state_q": 0},
     )
 
 
 def check_v3_374_task_dual_output_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        sample = row["vin"]
+        trim = row["mode"]
+        out = min(0.9, max(0.0, sample + trim))
+        metric_raw = min(0.9, max(0.0, sample - trim + 0.3))
+        return out, metric_raw / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.3),
-                (180.0, 0.5),
-                (280.0, 0.9),
-                (380.0, 0.1),
-            ],
-            "metric": [
-                (80.0, 4.0 / 9.0),
-                (180.0, 1.0),
-                (280.0, 4.0 / 9.0),
-                (380.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_375_task_event_counter_service(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["sum"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            state["count"] = int(state["count"]) + 1
+            state["sum"] = float(state["sum"]) + row["vin"]
+        count = int(state["count"])
+        out = min(0.9, 0.15 * count)
+        metric = float(state["sum"]) / count if count > 0 else 0.0
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.15),
-                (180.0, 0.15),
-                (280.0, 0.30),
-                (380.0, 0.45),
-            ],
-            "metric": [
-                (80.0, 0.20),
-                (180.0, 0.20),
-                (280.0, 0.40),
-                (380.0, 1.7 / 3.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0, "sum": 0.0},
     )
 
 
 def check_v3_376_task_reset_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["phase"] = 0
+            return 0.0, 0.0
+        state["phase"] = int(state["phase"]) + 1
+        out = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        out = min(0.9, max(0.0, out))
+        return out, int(state["phase"]) / 4.0
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.0),
-                (280.0, 0.8),
-                (380.0, 0.4),
-                (480.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.25),
-                (180.0, 0.0),
-                (280.0, 0.25),
-                (380.0, 0.5),
-                (480.0, 0.75),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "phase": 0},
     )
 
 
 def check_v3_377_task_stateful_threshold_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["threshold"] = 0.45
+            return 0.0, 0.0
+        threshold = float(state["threshold"])
+        out = 0.9 if row["vin"] > threshold else 0.0
+        metric = threshold
+        if row["mode"] > 0.45:
+            state["threshold"] = min(0.75, threshold + 0.1)
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.0),
-                (280.0, 0.0),
-                (380.0, 0.9),
-                (480.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 0.45),
-                (180.0, 0.45),
-                (280.0, 0.55),
-                (380.0, 0.55),
-                (480.0, 0.65),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "threshold": 0.45},
     )
 
 
 def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        sample = row["vin"]
+        out = min(0.9, max(0.0, sample))
+        norm_span = 0.9 if row["mode"] > 0.45 else 0.45
+        metric = 0.9 * abs(sample - 0.45) / norm_span
+        metric = min(0.9, max(0.0, metric))
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.45),
-                (180.0, 0.0),
-                (280.0, 0.9),
-                (380.0, 0.2),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.45),
-                (380.0, 0.25),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 

@@ -71,12 +71,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 370-ac-stim-phase-selector,370,Ac Stim Phase Selector,noise-analysis-candidate,ac_stim_phase_selector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 371-combined-white-flicker-noise,371,Combined White Flicker Noise,noise-analysis-candidate,combined_white_flicker_noise.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 372-analysis-aware-noise-metric,372,Analysis Aware Noise Metric,noise-analysis-candidate,analysis_aware_noise_metric.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-373-task-output-limiter,373,Task Output Limiter,syntax-extension-candidate,task_output_limiter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-374-task-dual-output-update,374,Task Dual Output Update,syntax-extension-candidate,task_dual_output_update.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-375-task-event-counter-service,375,Task Event Counter Service,syntax-extension-candidate,task_event_counter_service.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-376-task-reset-sequencer,376,Task Reset Sequencer,syntax-extension-candidate,task_reset_sequencer.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-377-task-stateful-threshold-update,377,Task Stateful Threshold Update,syntax-extension-candidate,task_stateful_threshold_update.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-378-task-metric-normalizer,378,Task Metric Normalizer,syntax-extension-candidate,task_metric_normalizer.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+373-task-output-limiter,373,Task Output Limiter,syntax-extension-candidate,task_output_limiter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+374-task-dual-output-update,374,Task Dual Output Update,syntax-extension-candidate,task_dual_output_update.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+375-task-event-counter-service,375,Task Event Counter Service,syntax-extension-candidate,task_event_counter_service.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+376-task-reset-sequencer,376,Task Reset Sequencer,syntax-extension-candidate,task_reset_sequencer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+377-task-stateful-threshold-update,377,Task Stateful Threshold Update,syntax-extension-candidate,task_stateful_threshold_update.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+378-task-metric-normalizer,378,Task Metric Normalizer,syntax-extension-candidate,task_metric_normalizer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 379-file-fgets-config-loader,379,File Fgets Config Loader,syntax-extension-candidate,file_fgets_config_loader.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 380-file-feof-line-counter,380,File Feof Line Counter,syntax-extension-candidate,file_feof_line_counter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 381-file-fseek-offset-reader,381,File Fseek Offset Reader,syntax-extension-candidate,file_fseek_offset_reader.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical

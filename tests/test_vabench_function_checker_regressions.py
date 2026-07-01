@@ -2124,6 +2124,172 @@ def test_v3_noise_analysis_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_noise_metric_rows(metric_fn, out_fn=out_fn, wrong=True))[0]
 
 
+def _task_input_from_segments(time_ns: float, segments: list[tuple[float, float]]) -> float:
+    value = segments[0][1]
+    for start_ns, segment_value in segments:
+        if time_ns >= start_ns:
+            value = segment_value
+        else:
+            break
+    return value
+
+
+def _task_clocked_rows(update_fn, input_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    state: dict[str, float | int] = {
+        "count": 0,
+        "state_q": 0,
+        "phase": 0,
+        "sum": 0.0,
+        "threshold": 0.45,
+    }
+    out = 0.0
+    metric = 0.0
+    prev_clk = 0.0
+    for idx in range(521):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in [50.0, 150.0, 250.0, 350.0, 450.0]) else 0.0
+        vin, mode, rst = input_fn(time_ns)
+        row = {
+            "time": time_ns * 1e-9,
+            "vin": vin,
+            "clk": clk,
+            "mode": mode,
+            "rst": rst,
+            "out": out,
+            "metric": metric,
+        }
+        if prev_clk <= 0.45 < clk:
+            out, metric = update_fn(state, row)
+        row["out"] = 0.0 if wrong else out
+        row["metric"] = 0.0 if wrong else metric
+        rows.append(row)
+        prev_clk = clk
+    return rows
+
+
+def test_v3_task_checkers_follow_hidden_stimulus_values() -> None:
+    def limiter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["state_q"] = 0
+            return 0.0, 0.0
+        state["count"] = int(state["count"]) + 1
+        state_q = int(state["count"]) % 3
+        sample = row["vin"]
+        if state_q == 0:
+            out = sample
+        elif state_q == 1:
+            out = 0.9 if sample > 0.45 else 0.0
+        else:
+            out = min(0.9, max(0.0, sample))
+        return out, out / 0.9
+
+    def dual_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"] + row["mode"]))
+        metric = min(0.9, max(0.0, row["vin"] - row["mode"] + 0.3)) / 0.9
+        return out, metric
+
+    def counter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["sum"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            state["count"] = int(state["count"]) + 1
+            state["sum"] = float(state["sum"]) + row["vin"]
+        count = int(state["count"])
+        return min(0.9, 0.15 * count), float(state["sum"]) / count if count else 0.0
+
+    def reset_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["phase"] = 0
+            return 0.0, 0.0
+        state["phase"] = int(state["phase"]) + 1
+        out = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        return min(0.9, max(0.0, out)), int(state["phase"]) / 4.0
+
+    def threshold_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["threshold"] = 0.45
+            return 0.0, 0.0
+        threshold = float(state["threshold"])
+        out = 0.9 if row["vin"] > threshold else 0.0
+        if row["mode"] > 0.45:
+            state["threshold"] = min(0.75, threshold + 0.1)
+        return out, threshold
+
+    def normalizer_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        norm_span = 0.9 if row["mode"] > 0.45 else 0.45
+        metric = min(0.9, max(0.0, 0.9 * abs(row["vin"] - 0.45) / norm_span))
+        return out, metric
+
+    cases = [
+        (
+            sim.check_v3_373_task_output_limiter,
+            limiter_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.15), (100.0, 0.95), (200.0, -0.20), (300.0, 0.55), (400.0, 1.25)]),
+                0.0,
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_374_task_dual_output_update,
+            dual_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, -0.10), (100.0, 0.35), (200.0, 0.95), (300.0, 0.45), (400.0, 0.10)]),
+                _task_input_from_segments(t, [(0.0, 0.25), (100.0, 0.10), (200.0, -0.30), (300.0, 0.55), (400.0, -0.15)]),
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_375_task_event_counter_service,
+            counter_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.75), (100.0, 0.20), (200.0, 0.85), (300.0, 0.40), (400.0, 0.65)]),
+                _task_input_from_segments(t, [(0.0, 0.0), (100.0, 0.9), (200.0, 0.9), (300.0, 0.0), (400.0, 0.9)]),
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_376_task_reset_sequencer,
+            reset_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.55), (100.0, 0.10), (200.0, 0.75), (300.0, 0.35), (400.0, 0.95)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (300.0, 0.0)]),
+                0.9 if 230.0 <= t <= 289.0 else 0.0,
+            ),
+        ),
+        (
+            sim.check_v3_377_task_stateful_threshold_update,
+            threshold_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.30), (100.0, 0.62), (200.0, 0.58), (300.0, 0.72), (400.0, 0.50)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (200.0, 0.0), (300.0, 0.9), (400.0, 0.0)]),
+                0.9 if 230.0 <= t <= 289.0 else 0.0,
+            ),
+        ),
+        (
+            sim.check_v3_378_task_metric_normalizer,
+            normalizer_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.10), (100.0, 0.45), (200.0, 0.82), (300.0, -0.20), (400.0, 1.10)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (300.0, 0.0), (400.0, 0.9)]),
+                0.0,
+            ),
+        ),
+    ]
+    for checker, update_fn, input_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
