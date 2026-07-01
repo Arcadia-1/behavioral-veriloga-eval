@@ -6166,9 +6166,10 @@
 340-bound-step-clock-guard: |
   version: 1
   task_id: v3_340_bound_step_clock_guard
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -6182,8 +6183,23 @@
       - "$bound_step"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/bound_step_clock_guard.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/bound_step_clock_guard.va
+      - negative_variants/neg_002_drive_metric_zero/bound_step_clock_guard.va
+      - negative_variants/neg_003_reset_polarity_wrong/bound_step_clock_guard.va
+      - negative_variants/neg_004_logic_threshold_shifted/bound_step_clock_guard.va
+      - negative_variants/neg_005_output_scale_low/bound_step_clock_guard.va
+    checks:
+      - bound_step_declared
+      - low_mode_guards_clock_update
+      - high_mode_samples_input
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 341-wreal-gain-pass-through: |
   version: 1
   task_id: v3_341_wreal_gain_pass_through

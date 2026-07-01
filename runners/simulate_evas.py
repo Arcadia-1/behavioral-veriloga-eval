@@ -7668,6 +7668,29 @@ def check_v3_339_random_seeded_dither_source(rows: list[dict[str, float]]) -> tu
     )
 
 
+def check_v3_340_bound_step_clock_guard(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (120.0, 0.0),
+                (320.0, 0.75),
+                (520.0, 0.0),
+            ],
+            "metric": [
+                (120.0, 0.2),
+                (320.0, 0.8),
+                (520.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16643,6 +16666,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "338-math-trig-envelope-detector": check_v3_338_math_trig_envelope_detector,
     "v3_339_random_seeded_dither_source": check_v3_339_random_seeded_dither_source,
     "339-random-seeded-dither-source": check_v3_339_random_seeded_dither_source,
+    "v3_340_bound_step_clock_guard": check_v3_340_bound_step_clock_guard,
+    "340-bound-step-clock-guard": check_v3_340_bound_step_clock_guard,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
