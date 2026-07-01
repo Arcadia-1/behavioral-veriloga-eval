@@ -9639,16 +9639,43 @@
 426-string-sformat-mode-tag: |
   version: 1
   task_id: v3_426_string_sformat_mode_tag
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: string_sformat_mode_tag_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "string"
       - "$sformat"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/string_sformat_mode_tag.va
+    negative:
+      - negative_variants/neg_001_force_zero/string_sformat_mode_tag.va
+      - negative_variants/neg_002_wrong_threshold/string_sformat_mode_tag.va
+      - negative_variants/neg_003_reset_bias/string_sformat_mode_tag.va
+      - negative_variants/neg_004_metric_offset/string_sformat_mode_tag.va
+      - negative_variants/neg_005_scale_output/string_sformat_mode_tag.va
+    checks:
+      - string_variable_parse
+      - sformat_expression_parse
+      - clocked_label_update_path_executes
+      - threshold_output_high_low
+      - metric_count_sequence
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "String sformat mode-tag behavior promoted to executable EVAS behavior candidate."
 427-string-formatted-metric-line: |
   version: 1
   task_id: v3_427_string_formatted_metric_line
