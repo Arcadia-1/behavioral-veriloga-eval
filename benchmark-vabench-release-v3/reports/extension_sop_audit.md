@@ -6,15 +6,15 @@ Date: 2026-07-02
 
 - Audited extension tasks: **194**
 - SOP-ready tasks: **152**
-- Tasks with executable visible+hidden SCS evidence: **186**
+- Tasks with executable visible+hidden SCS evidence: **187**
 - Tasks with behavior checker evidence: **153**
 
 ## Issue Counts
 
 - `checker_syntax_only_no_behavior_score`: 41
-- `hidden_scs_not_executable:include,instance,source`: 7
-- `missing_required_behavior_section`: 2
-- `visible_scs_not_executable:include,instance,source`: 7
+- `hidden_scs_not_executable:include,instance,source`: 6
+- `missing_required_behavior_section`: 1
+- `visible_scs_not_executable:include,instance,source`: 6
 
 ## Range Summary
 
@@ -26,7 +26,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 23 | 11 | `checker_syntax_only_no_behavior_score`: 13<br>`visible_scs_not_executable:include,instance,source`: 1<br>`hidden_scs_not_executable:include,instance,source`: 1<br>`missing_required_behavior_section`: 1 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | `checker_syntax_only_no_behavior_score`: 13 |
 
 ## Highest Severity Finding
 
@@ -229,4 +229,4 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |

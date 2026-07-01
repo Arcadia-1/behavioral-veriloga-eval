@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "continuous_zi_nd_filter.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.0 20n 0.0 21n 1.0 80n 1.0]
+
+XDUT (inp out) continuous_zi_nd_filter
+
 tran tran stop=80n
-save vin clk mode rst out metric
+save inp out
