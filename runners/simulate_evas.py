@@ -7435,6 +7435,34 @@ def check_v3_330_idtmod_clock_phase_meter(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_331_above_threshold_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (120.0, 0.9),
+                (220.0, 0.9),
+                (320.0, 0.9),
+                (460.0, 0.0),
+                (620.0, 0.9),
+            ],
+            "metric": [
+                (50.0, 0.0),
+                (120.0, 0.0),
+                (320.0, 0.9),
+                (460.0, 0.0),
+                (620.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16392,6 +16420,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "329-idtmod-modulo-phase-marker": check_v3_329_idtmod_modulo_phase_marker,
     "v3_330_idtmod_clock_phase_meter": check_v3_330_idtmod_clock_phase_meter,
     "330-idtmod-clock-phase-meter": check_v3_330_idtmod_clock_phase_meter,
+    "v3_331_above_threshold_latch": check_v3_331_above_threshold_latch,
+    "331-above-threshold-latch": check_v3_331_above_threshold_latch,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

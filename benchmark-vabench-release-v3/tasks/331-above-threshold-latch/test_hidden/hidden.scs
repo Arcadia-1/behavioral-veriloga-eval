@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton for the language-semantics extension task.
-tran tran stop=200n
+
+ahdl_include "above_threshold_latch.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.1 99n 0.1 100n 0.8 180n 0.8 181n 0.1 299n 0.1 300n 0.8 360n 0.8 361n 0.1 599n 0.1 600n 0.8 700n 0.8]
+Vmode (mode 0) vsource dc=0.0 type=dc
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 449n 0.0 450n 0.9 470n 0.9 471n 0.0 700n 0.0]
+Vclk (clk 0) vsource dc=0.0 type=dc
+
+XDUT (vin clk mode rst out metric) above_threshold_latch
+
+tran tran stop=700n
 save vin clk mode rst out metric
