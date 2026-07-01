@@ -3,6 +3,6 @@
 
 module generic_potential_access_function (input electrical in, output electrical out);
 analog begin
-    V(out) <+ transition(potential(in), 0.0, 200p, 200p);
+    V(out) <+ transition(potential(in) + 0.1, 0.0, 200p, 200p);
 end
 endmodule

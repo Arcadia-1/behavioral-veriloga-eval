@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "generic_potential_access_function.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.30 60n 0.30 61n 0.60 100n 0.60 101n -0.10 160n -0.10]
+
+XDUT (inp out) generic_potential_access_function
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save inp out

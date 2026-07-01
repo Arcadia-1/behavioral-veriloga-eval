@@ -8869,6 +8869,25 @@ def check_v3_473_attribute_potential_abstol_probe(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_474_generic_potential_access_function(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.30),
+                (90.0, 0.60),
+                (130.0, -0.10),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19357,6 +19376,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "467-simparam-query-tnom": check_v3_467_simparam_query_tnom,
     "v3_473_attribute_potential_abstol_probe": check_v3_473_attribute_potential_abstol_probe,
     "473-attribute-potential-abstol-probe": check_v3_473_attribute_potential_abstol_probe,
+    "v3_474_generic_potential_access_function": check_v3_474_generic_potential_access_function,
+    "474-generic-potential-access-function": check_v3_474_generic_potential_access_function,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

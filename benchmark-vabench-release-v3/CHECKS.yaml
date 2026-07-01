@@ -10986,14 +10986,34 @@
 474-generic-potential-access-function: |
   version: 1
   task_id: v3_474_generic_potential_access_function
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: generic_potential_access_function_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "potential("
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/generic_potential_access_function.va
+    negative:
+      - negative_variants/neg_001_force_zero/generic_potential_access_function.va
+      - negative_variants/neg_002_wrong_threshold/generic_potential_access_function.va
+      - negative_variants/neg_003_reset_bias/generic_potential_access_function.va
+      - negative_variants/neg_004_metric_offset/generic_potential_access_function.va
+      - negative_variants/neg_005_scale_output/generic_potential_access_function.va
+    checks:
+      - generic_potential_parse
+      - output_tracks_potential_input
+      - no_current_domain_contribution
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Generic potential() access behavior promoted to executable EVAS behavior candidate."
 475-generic-potential-contribution: |
   version: 1
   task_id: v3_475_generic_potential_contribution
