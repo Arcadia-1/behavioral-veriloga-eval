@@ -10660,14 +10660,40 @@
 461-vt-thermal-voltage-source: |
   version: 1
   task_id: v3_461_vt_thermal_voltage_source
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vt_thermal_voltage_source_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$vt"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/vt_thermal_voltage_source.va
+    negative:
+      - negative_variants/neg_001_force_zero/vt_thermal_voltage_source.va
+      - negative_variants/neg_002_wrong_threshold/vt_thermal_voltage_source.va
+      - negative_variants/neg_003_reset_bias/vt_thermal_voltage_source.va
+      - negative_variants/neg_004_metric_offset/vt_thermal_voltage_source.va
+      - negative_variants/neg_005_scale_output/vt_thermal_voltage_source.va
+    checks:
+      - vt_function_parse
+      - thermal_voltage_range
+      - reset_clears_output
+      - metric_matches_output
+      - no_current_domain_contribution
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "$vt thermal voltage behavior promoted to executable EVAS behavior candidate."
 462-vt-temperature-argument: |
   version: 1
   task_id: v3_462_vt_temperature_argument

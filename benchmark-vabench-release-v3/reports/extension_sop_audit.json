@@ -74,28 +74,28 @@
       ]
     },
     {
-      "complete_tests_count": 2,
+      "complete_tests_count": 3,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 2,
+      "fair_eval_count": 3,
       "range": "459-470",
-      "sop_ready_count": 2,
+      "sop_ready_count": 3,
       "task_count": 12,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          10
+          9
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          10
+          9
         ],
         [
           "missing_required_behavior_section",
-          10
+          9
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          10
+          9
         ]
       ]
     },
@@ -129,15 +129,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 153,
-    "fair_eval_count": 136,
+    "complete_tests_count": 154,
+    "fair_eval_count": 137,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 58,
-      "hidden_scs_not_executable:include,instance,source": 40,
-      "missing_required_behavior_section": 35,
-      "visible_scs_not_executable:include,instance,source": 40
+      "checker_syntax_only_no_behavior_score": 57,
+      "hidden_scs_not_executable:include,instance,source": 39,
+      "missing_required_behavior_section": 34,
+      "visible_scs_not_executable:include,instance,source": 39
     },
-    "sop_ready_count": 135,
+    "sop_ready_count": 136,
     "task_count": 194
   },
   "tasks": [
@@ -3885,20 +3885,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 461,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $vt as a thermal voltage environment value.",
       "target": "vt_thermal_voltage_source.va",
