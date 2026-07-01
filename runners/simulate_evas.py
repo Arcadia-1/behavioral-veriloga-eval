@@ -6848,6 +6848,66 @@ def check_v3_306_case_mode_gain_selector(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_307_case_priority_status_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.30), (37.0, 0.60), (47.0, 0.90)],
+            "metric": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.30), (37.0, 0.60), (47.0, 0.90)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_308_case_quantized_output_level(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.30), (37.0, 0.60), (47.0, 0.90)],
+            "metric": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.30), (37.0, 0.60), (47.0, 0.90)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_309_case_clocked_range_bucket(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.10), (27.0, 0.55), (37.0, 0.80), (47.0, 0.85)],
+            "metric": [(7.0, 0.0), (17.0, 0.10), (27.0, 0.45), (37.0, 0.80), (47.0, 0.80)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_310_case_resettable_state_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.30), (27.0, 0.60), (37.0, 0.60), (47.0, 0.90), (57.0, 0.0), (67.0, 0.30)],
+            "metric": [(7.0, 0.0), (17.0, 0.30), (27.0, 0.60), (37.0, 0.60), (47.0, 0.90), (57.0, 0.0), (67.0, 0.30)],
+        },
+        tol=0.025,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -15757,6 +15817,14 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "305-function-soft-threshold": check_v3_305_function_soft_threshold,
     "v3_306_case_mode_gain_selector": check_v3_306_case_mode_gain_selector,
     "306-case-mode-gain-selector": check_v3_306_case_mode_gain_selector,
+    "v3_307_case_priority_status_decoder": check_v3_307_case_priority_status_decoder,
+    "307-case-priority-status-decoder": check_v3_307_case_priority_status_decoder,
+    "v3_308_case_quantized_output_level": check_v3_308_case_quantized_output_level,
+    "308-case-quantized-output-level": check_v3_308_case_quantized_output_level,
+    "v3_309_case_clocked_range_bucket": check_v3_309_case_clocked_range_bucket,
+    "309-case-clocked-range-bucket": check_v3_309_case_clocked_range_bucket,
+    "v3_310_case_resettable_state_decoder": check_v3_310_case_resettable_state_decoder,
+    "310-case-resettable-state-decoder": check_v3_310_case_resettable_state_decoder,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

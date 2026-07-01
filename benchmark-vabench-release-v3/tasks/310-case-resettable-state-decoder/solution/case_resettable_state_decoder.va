@@ -29,12 +29,15 @@ analog begin
             out_v = 0.0;
             metric_v = 0.0;
         end else begin
-            state_q = (V(mode) < 0.225) ? 0 : ((V(mode) < 0.45) ? 1 : ((V(mode) < 0.675) ? 2 : 3));
+            if (V(mode) > vth) begin
+                if (state_q >= 3) state_q = 0;
+                else state_q = state_q + 1;
+            end
             case (state_q)
-                0: begin out_v = 0.20 * V(vin); metric_v = 0.00; end
-                1: begin out_v = 0.50 * V(vin); metric_v = 0.30; end
-                2: begin out_v = 0.75 * V(vin); metric_v = 0.60; end
-                default: begin out_v = V(vin); metric_v = 0.90; end
+                0: begin out_v = 0.00; metric_v = 0.00; end
+                1: begin out_v = 0.30; metric_v = 0.30; end
+                2: begin out_v = 0.60; metric_v = 0.60; end
+                default: begin out_v = 0.90; metric_v = 0.90; end
             endcase
         end
     end

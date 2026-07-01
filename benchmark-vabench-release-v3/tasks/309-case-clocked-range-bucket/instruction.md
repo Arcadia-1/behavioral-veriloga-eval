@@ -19,9 +19,22 @@ module case_clocked_range_bucket (
 
 ## Required Behavior
 
-Use a case statement to select voltage-domain behavior.
+Use a Verilog-A `case` statement to select a range bucket from sampled `vin`, with `mode` adding a small output offset.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, compute:
+
+- bucket/state `0` when `vin < 0.30`
+- bucket/state `1` when `0.30 <= vin < 0.60`
+- bucket/state `2` otherwise
+- `mode_hi = 1` when `mode > 0.45`, otherwise `0`
+
+Use `case (state_q)` to update:
+
+- state `0`: `out = 0.10 + 0.10 * mode_hi`, `metric = 0.10`
+- state `1`: `out = 0.45 + 0.10 * mode_hi`, `metric = 0.45`
+- default/state `2`: `out = 0.80 + 0.05 * mode_hi`, `metric = 0.80`
+
+A high `rst` resets state and outputs to zero. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

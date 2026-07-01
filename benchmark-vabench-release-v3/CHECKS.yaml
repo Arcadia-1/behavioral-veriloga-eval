@@ -4969,11 +4969,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 307-case-priority-status-decoder: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_307_case_priority_status_decoder
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_307_case_priority_status_decoder
+    metric: sampled_case_priority_status
   required_columns:
     - time
     - vin
@@ -4988,14 +4991,26 @@
       - "endcase"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_forces_outputs_low
+      - low_vin_low_mode_maps_to_status_0
+      - mid_vin_maps_to_status_1
+      - high_mode_maps_to_status_2
+      - high_vin_has_priority_over_high_mode_status_3
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 308-case-quantized-output-level: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_308_case_quantized_output_level
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_308_case_quantized_output_level
+    metric: sampled_case_quantized_level
   required_columns:
     - time
     - vin
@@ -5010,14 +5025,26 @@
       - "endcase"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_forces_outputs_low
+      - vin_bin_0_outputs_0p00
+      - vin_bin_1_outputs_0p30
+      - vin_bin_2_outputs_0p60
+      - vin_bin_3_outputs_0p90
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 309-case-clocked-range-bucket: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_309_case_clocked_range_bucket
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_309_case_clocked_range_bucket
+    metric: sampled_case_range_bucket
   required_columns:
     - time
     - vin
@@ -5032,14 +5059,27 @@
       - "endcase"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_forces_outputs_low
+      - low_range_bucket_outputs_0p10
+      - mid_range_bucket_applies_mode_offset
+      - high_range_bucket_outputs_0p80
+      - high_range_bucket_applies_smaller_mode_offset
+      - metric_reports_range_bucket_not_mode_offset
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 310-case-resettable-state-decoder: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_310_case_resettable_state_decoder
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_310_case_resettable_state_decoder
+    metric: sampled_case_resettable_state
   required_columns:
     - time
     - vin
@@ -5054,8 +5094,17 @@
       - "endcase"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_forces_state_zero
+      - mode_high_advances_state
+      - mode_low_holds_state
+      - case_decodes_states_to_0p00_0p30_0p60_0p90
+      - rising_reset_event_resets_immediately
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 311-for-loop-running-average: |
   version: 1
   task_id: v3_311_for_loop_running_average

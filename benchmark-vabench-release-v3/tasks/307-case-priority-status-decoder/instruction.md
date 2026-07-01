@@ -19,9 +19,16 @@ module case_priority_status_decoder (
 
 ## Required Behavior
 
-Use a case statement to select voltage-domain behavior.
+Use a Verilog-A `case` statement to decode a priority status code.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, compute `state_q` with this priority order:
+
+- if `vin > 0.75`, state `3`
+- else if `mode > 0.60`, state `2`
+- else if `vin > 0.35`, state `1`
+- else state `0`
+
+Use `case (state_q)` to drive `out` and `metric` to `0.00`, `0.30`, `0.60`, or `0.90` V for states `0`, `1`, `2`, and `3`. A high `rst` resets the state and both outputs to zero. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

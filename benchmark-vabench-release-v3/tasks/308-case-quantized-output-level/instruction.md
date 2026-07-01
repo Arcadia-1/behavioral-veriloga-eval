@@ -19,9 +19,16 @@ module case_quantized_output_level (
 
 ## Required Behavior
 
-Use a case statement to select voltage-domain behavior.
+Use a Verilog-A `case` statement to turn the sampled input voltage into one of four quantized output levels.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, compute:
+
+- state `0` when `vin < 0.225`
+- state `1` when `0.225 <= vin < 0.45`
+- state `2` when `0.45 <= vin < 0.675`
+- state `3` otherwise
+
+Use `case (state_q)` to drive both `out` and `metric` to `0.00`, `0.30`, `0.60`, or `0.90` V for states `0`, `1`, `2`, and `3`. A high `rst` resets state and outputs to zero. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

@@ -1,0 +1,5548 @@
+{
+  "date": "2026-07-01",
+  "range_summary": [
+    {
+      "complete_tests_count": 10,
+      "description": "language-semantics voltage-domain candidates",
+      "fair_eval_count": 10,
+      "range": "301-340",
+      "sop_ready_count": 10,
+      "task_count": 40,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source",
+          30
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          30
+        ],
+        [
+          "generic_prompt_template",
+          30
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          30
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "AMS mixed-signal candidates",
+      "fair_eval_count": 0,
+      "range": "341-360",
+      "sop_ready_count": 0,
+      "task_count": 20,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source,save",
+          20
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source,save",
+          20
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          20
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "noise and analysis candidates",
+      "fair_eval_count": 0,
+      "range": "361-372",
+      "sop_ready_count": 0,
+      "task_count": 12,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source,save",
+          12
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source,save",
+          12
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          12
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "task/file/table/random/hierarchy syntax candidates",
+      "fair_eval_count": 0,
+      "range": "373-434",
+      "sop_ready_count": 0,
+      "task_count": 62,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source",
+          62
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          62
+        ],
+        [
+          "missing_required_behavior_section",
+          62
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          62
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "manual syntax-completion candidates",
+      "fair_eval_count": 0,
+      "range": "435-458",
+      "sop_ready_count": 0,
+      "task_count": 24,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source",
+          24
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          24
+        ],
+        [
+          "missing_required_behavior_section",
+          24
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          24
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "course-material gap-fill candidates",
+      "fair_eval_count": 0,
+      "range": "459-470",
+      "sop_ready_count": 0,
+      "task_count": 12,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source",
+          12
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          12
+        ],
+        [
+          "missing_required_behavior_section",
+          12
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          12
+        ]
+      ]
+    },
+    {
+      "complete_tests_count": 0,
+      "description": "LRM KCL/continuous-time gap-fill candidates",
+      "fair_eval_count": 0,
+      "range": "471-494",
+      "sop_ready_count": 0,
+      "task_count": 24,
+      "top_issues": [
+        [
+          "visible_scs_not_executable:include,instance,source",
+          24
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          24
+        ],
+        [
+          "missing_required_behavior_section",
+          24
+        ],
+        [
+          "checker_syntax_only_no_behavior_score",
+          24
+        ]
+      ]
+    }
+  ],
+  "scope": "benchmark-vabench-release-v3 tasks 301-494",
+  "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
+  "summary": {
+    "complete_tests_count": 10,
+    "fair_eval_count": 10,
+    "issue_counts": {
+      "checker_syntax_only_no_behavior_score": 184,
+      "generic_prompt_template": 30,
+      "hidden_scs_not_executable:include,instance,source": 152,
+      "hidden_scs_not_executable:include,instance,source,save": 32,
+      "missing_required_behavior_section": 122,
+      "visible_scs_not_executable:include,instance,source": 152,
+      "visible_scs_not_executable:include,instance,source,save": 32
+    },
+    "sop_ready_count": 10,
+    "task_count": 194
+  },
+  "tasks": [
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 301,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a user-defined function to clamp an input window.",
+      "target": "function_clamp_window.va",
+      "task": "301-function-clamp-window",
+      "tier": "syntax-extension-candidate",
+      "title": "Function Clamp Window",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 302,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a user-defined function to implement deadband mapping.",
+      "target": "function_deadband_map.va",
+      "task": "302-function-deadband-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Function Deadband Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 303,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a user-defined function for piecewise gain.",
+      "target": "function_piecewise_gain.va",
+      "task": "303-function-piecewise-gain",
+      "tier": "syntax-extension-candidate",
+      "title": "Function Piecewise Gain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 304,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a user-defined function for code normalization.",
+      "target": "function_code_normalizer.va",
+      "task": "304-function-code-normalizer",
+      "tier": "syntax-extension-candidate",
+      "title": "Function Code Normalizer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 305,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a user-defined function for a soft threshold curve.",
+      "target": "function_soft_threshold.va",
+      "task": "305-function-soft-threshold",
+      "tier": "syntax-extension-candidate",
+      "title": "Function Soft Threshold",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 306,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "target": "case_mode_gain_selector.va",
+      "task": "306-case-mode-gain-selector",
+      "tier": "syntax-extension-candidate",
+      "title": "Case Mode Gain Selector",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 307,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "target": "case_priority_status_decoder.va",
+      "task": "307-case-priority-status-decoder",
+      "tier": "syntax-extension-candidate",
+      "title": "Case Priority Status Decoder",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 308,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "target": "case_quantized_output_level.va",
+      "task": "308-case-quantized-output-level",
+      "tier": "syntax-extension-candidate",
+      "title": "Case Quantized Output Level",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 309,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "target": "case_clocked_range_bucket.va",
+      "task": "309-case-clocked-range-bucket",
+      "tier": "syntax-extension-candidate",
+      "title": "Case Clocked Range Bucket",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": true,
+      "fair_eval": true,
+      "hidden_scs_count": 1,
+      "issues": [],
+      "negative_count": 5,
+      "number": 310,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": true,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a case statement to select voltage-domain behavior.",
+      "target": "case_resettable_state_decoder.va",
+      "task": "310-case-resettable-state-decoder",
+      "tier": "syntax-extension-candidate",
+      "title": "Case Resettable State Decoder",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 311,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "target": "for_loop_running_average.va",
+      "task": "311-for-loop-running-average",
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Running Average",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 312,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "target": "for_loop_thermometer_count.va",
+      "task": "312-for-loop-thermometer-count",
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Thermometer Count",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 313,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "target": "for_loop_weighted_accumulator.va",
+      "task": "313-for-loop-weighted-accumulator",
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Weighted Accumulator",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 314,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "target": "for_loop_windowed_peak.va",
+      "task": "314-for-loop-windowed-peak",
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Windowed Peak",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 315,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
+      "target": "for_loop_code_popcount.va",
+      "task": "315-for-loop-code-popcount",
+      "tier": "syntax-extension-candidate",
+      "title": "For Loop Code Popcount",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 316,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "target": "final_step_edge_counter_file.va",
+      "task": "316-final-step-edge-counter-file",
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Edge Counter File",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 317,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "target": "final_step_average_metric_file.va",
+      "task": "317-final-step-average-metric-file",
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Average Metric File",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 318,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "target": "final_step_max_observer_file.va",
+      "task": "318-final-step-max-observer-file",
+      "tier": "syntax-extension-candidate",
+      "title": "Final Step Max Observer File",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 319,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "target": "display_strobe_event_logger.va",
+      "task": "319-display-strobe-event-logger",
+      "tier": "syntax-extension-candidate",
+      "title": "Display Strobe Event Logger",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 320,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
+      "target": "file_io_sampled_metric_writer.va",
+      "task": "320-file-io-sampled-metric-writer",
+      "tier": "syntax-extension-candidate",
+      "title": "File Io Sampled Metric Writer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 321,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "target": "slew_limited_voltage_follower.va",
+      "task": "321-slew-limited-voltage-follower",
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Voltage Follower",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 322,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "target": "slew_limited_mode_stepper.va",
+      "task": "322-slew-limited-mode-stepper",
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Mode Stepper",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 323,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "target": "slew_output_reset_recovery.va",
+      "task": "323-slew-output-reset-recovery",
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Output Reset Recovery",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 324,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "target": "slew_limited_envelope.va",
+      "task": "324-slew-limited-envelope",
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Limited Envelope",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 325,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use slew() to limit voltage-domain output slope.",
+      "target": "slew_asymmetric_rise_fall.va",
+      "task": "325-slew-asymmetric-rise-fall",
+      "tier": "syntax-extension-candidate",
+      "title": "Slew Asymmetric Rise Fall",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 326,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "target": "idtmod_phase_accumulator.va",
+      "task": "326-idtmod-phase-accumulator",
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Phase Accumulator",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 327,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "target": "idtmod_wrapped_ramp_source.va",
+      "task": "327-idtmod-wrapped-ramp-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Wrapped Ramp Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 328,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "target": "idtmod_frequency_control.va",
+      "task": "328-idtmod-frequency-control",
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Frequency Control",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 329,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "target": "idtmod_modulo_phase_marker.va",
+      "task": "329-idtmod-modulo-phase-marker",
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Modulo Phase Marker",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 330,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idtmod() as a voltage-domain wrapped phase accumulator.",
+      "target": "idtmod_clock_phase_meter.va",
+      "task": "330-idtmod-clock-phase-meter",
+      "tier": "syntax-extension-candidate",
+      "title": "Idtmod Clock Phase Meter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 331,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "target": "above_threshold_latch.va",
+      "task": "331-above-threshold-latch",
+      "tier": "syntax-extension-candidate",
+      "title": "Above Threshold Latch",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 332,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "target": "above_window_qualifier.va",
+      "task": "332-above-window-qualifier",
+      "tier": "syntax-extension-candidate",
+      "title": "Above Window Qualifier",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 333,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "target": "last_crossing_period_meter.va",
+      "task": "333-last-crossing-period-meter",
+      "tier": "syntax-extension-candidate",
+      "title": "Last Crossing Period Meter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 334,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "target": "last_crossing_edge_age.va",
+      "task": "334-last-crossing-edge-age",
+      "tier": "syntax-extension-candidate",
+      "title": "Last Crossing Edge Age",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 335,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
+      "target": "above_resettable_peak_marker.va",
+      "task": "335-above-resettable-peak-marker",
+      "tier": "syntax-extension-candidate",
+      "title": "Above Resettable Peak Marker",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 336,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use compiler directives for mode-specific threshold.",
+      "target": "directive_configurable_threshold.va",
+      "task": "336-directive-configurable-threshold",
+      "tier": "syntax-extension-candidate",
+      "title": "Directive Configurable Threshold",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 337,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use parameter range constraints.",
+      "target": "parameter_range_limited_gain.va",
+      "task": "337-parameter-range-limited-gain",
+      "tier": "syntax-extension-candidate",
+      "title": "Parameter Range Limited Gain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 338,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use trigonometric/math functions.",
+      "target": "math_trig_envelope_detector.va",
+      "task": "338-math-trig-envelope-detector",
+      "tier": "syntax-extension-candidate",
+      "title": "Math Trig Envelope Detector",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 339,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use deterministic random/distribution function call.",
+      "target": "random_seeded_dither_source.va",
+      "task": "339-random-seeded-dither-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Random Seeded Dither Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "generic_prompt_template",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 340,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $bound_step for time-step control.",
+      "target": "bound_step_clock_guard.va",
+      "task": "340-bound-step-clock-guard",
+      "tier": "syntax-extension-candidate",
+      "title": "Bound Step Clock Guard",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 341,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use wreal nets and continuous assign for real-valued pass-through gain.",
+      "target": "wreal_gain_pass_through.vams",
+      "task": "341-wreal-gain-pass-through",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Gain Pass Through",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 342,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use wreal nets and continuous assign for a real-valued two-input summer.",
+      "target": "wreal_two_input_summer.vams",
+      "task": "342-wreal-two-input-summer",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Two Input Summer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 343,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use wreal threshold logic with continuous assign.",
+      "target": "wreal_threshold_flag.vams",
+      "task": "343-wreal-threshold-flag",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Threshold Flag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 344,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use wreal select behavior with continuous assign.",
+      "target": "wreal_clamped_mux.vams",
+      "task": "344-wreal-clamped-mux",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Clamped Mux",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 345,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use wreal affine scaling with continuous assign.",
+      "target": "wreal_scale_offset.vams",
+      "task": "345-wreal-scale-offset",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Scale Offset",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 346,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic nets and continuous assign for inversion.",
+      "target": "logic_assign_inverter.vams",
+      "task": "346-logic-assign-inverter",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Inverter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 347,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic nets and bitwise continuous assign.",
+      "target": "logic_assign_and_or.vams",
+      "task": "347-logic-assign-and-or",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign And Or",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 348,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic XOR with continuous assign.",
+      "target": "logic_assign_xor_flag.vams",
+      "task": "348-logic-assign-xor-flag",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Xor Flag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 349,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic ternary mux with continuous assign.",
+      "target": "logic_assign_priority_mux.vams",
+      "task": "349-logic-assign-priority-mux",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Priority Mux",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 350,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic reduction-like combinational assign.",
+      "target": "logic_assign_reduction.vams",
+      "task": "350-logic-assign-reduction",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Assign Reduction",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 351,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use always @(posedge clk) for a logic DFF.",
+      "target": "always_posedged_dff.vams",
+      "task": "351-always-posedged-dff",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Posedged Dff",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 352,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use always @(negedge clk) for a logic sampler.",
+      "target": "always_negedge_sampler.vams",
+      "task": "352-always-negedge-sampler",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Negedge Sampler",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 353,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use edge-triggered always with async reset.",
+      "target": "always_resettable_toggle.vams",
+      "task": "353-always-resettable-toggle",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Resettable Toggle",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 354,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use always block with small digital counter state.",
+      "target": "always_counter_two_bit.vams",
+      "task": "354-always-counter-two-bit",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Counter Two Bit",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 355,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use always block with enable/hold semantics.",
+      "target": "always_enable_hold.vams",
+      "task": "355-always-enable-hold",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Enable Hold",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 356,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic control to gate an electrical voltage-domain output.",
+      "target": "mixed_logic_enable_voltage_driver.vams",
+      "task": "356-mixed-logic-enable-voltage-driver",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Logic Enable Voltage Driver",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 357,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Bridge wreal value into an electrical voltage output.",
+      "target": "mixed_wreal_to_electrical_buffer.vams",
+      "task": "357-mixed-wreal-to-electrical-buffer",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Wreal To Electrical Buffer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 358,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use electrical thresholding to produce logic-like voltage behavior.",
+      "target": "mixed_electrical_threshold_logic_flag.vams",
+      "task": "358-mixed-electrical-threshold-logic-flag",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Electrical Threshold Logic Flag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 359,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Combine logic always sampling with analog voltage output.",
+      "target": "mixed_logic_clocked_voltage_sampler.vams",
+      "task": "359-mixed-logic-clocked-voltage-sampler",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Logic Clocked Voltage Sampler",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 360,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic select over wreal values and drive electrical output.",
+      "target": "mixed_wreal_logic_select_driver.vams",
+      "task": "360-mixed-wreal-logic-select-driver",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Wreal Logic Select Driver",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 361,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use white_noise() as a voltage-domain behavioral noise source.",
+      "target": "white_noise_voltage_source.va",
+      "task": "361-white-noise-voltage-source",
+      "tier": "noise-analysis-candidate",
+      "title": "White Noise Voltage Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 362,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Gate white_noise() with a behavioral control voltage.",
+      "target": "white_noise_gated_source.va",
+      "task": "362-white-noise-gated-source",
+      "tier": "noise-analysis-candidate",
+      "title": "White Noise Gated Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 363,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use flicker_noise() as a behavioral 1/f noise contribution.",
+      "target": "flicker_noise_voltage_source.va",
+      "task": "363-flicker-noise-voltage-source",
+      "tier": "noise-analysis-candidate",
+      "title": "Flicker Noise Voltage Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 364,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Select flicker_noise() strength with a voltage-domain control.",
+      "target": "flicker_noise_corner_selector.va",
+      "task": "364-flicker-noise-corner-selector",
+      "tier": "noise-analysis-candidate",
+      "title": "Flicker Noise Corner Selector",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 365,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use noise_table() as a table-defined behavioral noise source.",
+      "target": "noise_table_voltage_shaper.va",
+      "task": "365-noise-table-voltage-shaper",
+      "tier": "noise-analysis-candidate",
+      "title": "Noise Table Voltage Shaper",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 366,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Gate a noise_table() contribution.",
+      "target": "noise_table_gated_shaper.va",
+      "task": "366-noise-table-gated-shaper",
+      "tier": "noise-analysis-candidate",
+      "title": "Noise Table Gated Shaper",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 367,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use analysis() to choose DC versus transient behavior.",
+      "target": "analysis_dependent_dc_tran_mode.va",
+      "task": "367-analysis-dependent-dc-tran-mode",
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Dependent Dc Tran Mode",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 368,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use analysis() to enable noise contribution only in noise analysis.",
+      "target": "analysis_dependent_noise_enable.va",
+      "task": "368-analysis-dependent-noise-enable",
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Dependent Noise Enable",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 369,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use ac_stim() for small-signal AC stimulus while retaining transient behavior.",
+      "target": "ac_stim_small_signal_source.va",
+      "task": "369-ac-stim-small-signal-source",
+      "tier": "noise-analysis-candidate",
+      "title": "Ac Stim Small Signal Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 370,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Select ac_stim() phase from a behavioral control voltage.",
+      "target": "ac_stim_phase_selector.va",
+      "task": "370-ac-stim-phase-selector",
+      "tier": "noise-analysis-candidate",
+      "title": "Ac Stim Phase Selector",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 371,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Combine white_noise() and flicker_noise() in one behavioral source.",
+      "target": "combined_white_flicker_noise.va",
+      "task": "371-combined-white-flicker-noise",
+      "tier": "noise-analysis-candidate",
+      "title": "Combined White Flicker Noise",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source,save",
+        "hidden_scs_not_executable:include,instance,source,save",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 372,
+      "reasonable_task": true,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use analysis() and noise contribution while maintaining a transient metric output.",
+      "target": "analysis_aware_noise_metric.va",
+      "task": "372-analysis-aware-noise-metric",
+      "tier": "noise-analysis-candidate",
+      "title": "Analysis Aware Noise Metric",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 373,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare and call a Verilog-A task that clamps an output sample.",
+      "target": "task_output_limiter.va",
+      "task": "373-task-output-limiter",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Output Limiter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 374,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task with two real inputs to update output and metric state.",
+      "target": "task_dual_output_update.va",
+      "task": "374-task-dual-output-update",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Dual Output Update",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 375,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task to service event counter state on clock crossings.",
+      "target": "task_event_counter_service.va",
+      "task": "375-task-event-counter-service",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Event Counter Service",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 376,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task to share reset and normal update sequencing.",
+      "target": "task_reset_sequencer.va",
+      "task": "376-task-reset-sequencer",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Reset Sequencer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 377,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task to update state from thresholded analog inputs.",
+      "target": "task_stateful_threshold_update.va",
+      "task": "377-task-stateful-threshold-update",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Stateful Threshold Update",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 378,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task to normalize a computed metric into a voltage-domain output.",
+      "target": "task_metric_normalizer.va",
+      "task": "378-task-metric-normalizer",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Metric Normalizer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 379,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fopen(), $fgets(), and $fclose() in initial_step configuration loading.",
+      "target": "file_fgets_config_loader.va",
+      "task": "379-file-fgets-config-loader",
+      "tier": "syntax-extension-candidate",
+      "title": "File Fgets Config Loader",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 380,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $feof() to guard bounded file-read initialization logic.",
+      "target": "file_feof_line_counter.va",
+      "task": "380-file-feof-line-counter",
+      "tier": "syntax-extension-candidate",
+      "title": "File Feof Line Counter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 381,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fseek() to reposition a file handle before reading.",
+      "target": "file_fseek_offset_reader.va",
+      "task": "381-file-fseek-offset-reader",
+      "tier": "syntax-extension-candidate",
+      "title": "File Fseek Offset Reader",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 382,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $ftell() to expose a file-position derived metric.",
+      "target": "file_ftell_position_meter.va",
+      "task": "382-file-ftell-position-meter",
+      "tier": "syntax-extension-candidate",
+      "title": "File Ftell Position Meter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 383,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $rewind() to perform a second pass over an opened file.",
+      "target": "file_rewind_second_pass.va",
+      "task": "383-file-rewind-second-pass",
+      "tier": "syntax-extension-candidate",
+      "title": "File Rewind Second Pass",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 384,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fopen() mode selection with string-line ingestion.",
+      "target": "file_fopen_mode_selector.va",
+      "task": "384-file-fopen-mode-selector",
+      "tier": "syntax-extension-candidate",
+      "title": "File Fopen Mode Selector",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 385,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() for a one-dimensional linear gain lookup.",
+      "target": "table_model_linear_gain.va",
+      "task": "385-table-model-linear-gain",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Linear Gain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 386,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() for a clamped transfer curve lookup.",
+      "target": "table_model_clamped_transfer.va",
+      "task": "386-table-model-clamped-transfer",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Clamped Transfer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 387,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() to map a control voltage to threshold state.",
+      "target": "table_model_threshold_map.va",
+      "task": "387-table-model-threshold-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Threshold Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 388,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() as a compact DAC code transfer map.",
+      "target": "table_model_dac_code_map.va",
+      "task": "388-table-model-dac-code-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Dac Code Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 389,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() for a profile-shaped behavioral output.",
+      "target": "table_model_temperature_profile.va",
+      "task": "389-table-model-temperature-profile",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Temperature Profile",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 390,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $table_model() as a piecewise calibration primitive.",
+      "target": "table_model_piecewise_calibrator.va",
+      "task": "390-table-model-piecewise-calibrator",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Piecewise Calibrator",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 391,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_exponential() for deterministic seeded jitter modeling.",
+      "target": "rdist_exponential_jitter.va",
+      "task": "391-rdist-exponential-jitter",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Exponential Jitter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 392,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_poisson() for seeded count-like variation.",
+      "target": "rdist_poisson_count_noise.va",
+      "task": "392-rdist-poisson-count-noise",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Poisson Count Noise",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 393,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_normal() for deterministic offset dither.",
+      "target": "rdist_normal_offset_dither.va",
+      "task": "393-rdist-normal-offset-dither",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Normal Offset Dither",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 394,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_chi_square() for seeded energy-like variation.",
+      "target": "rdist_chi_square_energy.va",
+      "task": "394-rdist-chi-square-energy",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Chi Square Energy",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 395,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_t() for heavy-tail seeded dither.",
+      "target": "rdist_t_tail_dither.va",
+      "task": "395-rdist-t-tail-dither",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist T Tail Dither",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 396,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_erlang() for multi-stage latency variation.",
+      "target": "rdist_erlang_latency.va",
+      "task": "396-rdist-erlang-latency",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Erlang Latency",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 397,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Instantiate a child behavioral module for gain staging.",
+      "target": "hierarchy_gain_child.va",
+      "task": "397-hierarchy-gain-child",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Gain Child",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 398,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Build a two-stage hierarchy with an internal electrical node.",
+      "target": "hierarchy_two_stage_chain.va",
+      "task": "398-hierarchy-two-stage-chain",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Two Stage Chain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 399,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Override a child module parameter at instantiation.",
+      "target": "hierarchy_parameter_override.va",
+      "task": "399-hierarchy-parameter-override",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Parameter Override",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 400,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use named port mapping for a child module instance.",
+      "target": "hierarchy_named_port_map.va",
+      "task": "400-hierarchy-named-port-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Named Port Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 401,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use ordered port mapping for a child module instance.",
+      "target": "hierarchy_ordered_port_map.va",
+      "task": "401-hierarchy-ordered-port-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Ordered Port Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 402,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Share a thresholding child module inside a parent behavioral DUT.",
+      "target": "hierarchy_shared_threshold_child.va",
+      "task": "402-hierarchy-shared-threshold-child",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Shared Threshold Child",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 403,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use Verilog bit-select syntax on integer vector state.",
+      "target": "vector_bit_select_flag.va",
+      "task": "403-vector-bit-select-flag",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Bit Select Flag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 404,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use Verilog part-select syntax on integer vector state.",
+      "target": "vector_part_select_window.va",
+      "task": "404-vector-part-select-window",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Part Select Window",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 405,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use concatenation to build a compact control code.",
+      "target": "vector_concat_code_build.va",
+      "task": "405-vector-concat-code-build",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Concat Code Build",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 406,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use replication concatenation to build a repeated mask.",
+      "target": "vector_replication_mask.va",
+      "task": "406-vector-replication-mask",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Replication Mask",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 407,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use reduction operators for parity/validity metrics.",
+      "target": "vector_reduction_parity.va",
+      "task": "407-vector-reduction-parity",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Reduction Parity",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 408,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use shifts and masks for compact code decoding.",
+      "target": "vector_shift_and_mask_decoder.va",
+      "task": "408-vector-shift-and-mask-decoder",
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Shift And Mask Decoder",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 409,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a function-like preprocessor macro in analog behavior.",
+      "target": "macro_functionlike_clamp.va",
+      "task": "409-macro-functionlike-clamp",
+      "tier": "syntax-extension-candidate",
+      "title": "Macro Functionlike Clamp",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 410,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use `ifdef selection to alter a behavioral gain constant.",
+      "target": "macro_ifdef_gain_select.va",
+      "task": "410-macro-ifdef-gain-select",
+      "tier": "syntax-extension-candidate",
+      "title": "Macro Ifdef Gain Select",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 411,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an escaped identifier for internal analog state.",
+      "target": "escaped_identifier_state.va",
+      "task": "411-escaped-identifier-state",
+      "tier": "syntax-extension-candidate",
+      "title": "Escaped Identifier State",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 412,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use initial_step and final_step in one behavioral model.",
+      "target": "initial_final_step_lifecycle.va",
+      "task": "412-initial-final-step-lifecycle",
+      "tier": "syntax-extension-candidate",
+      "title": "Initial Final Step Lifecycle",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 413,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a while loop over small behavioral state.",
+      "target": "while_loop_array_sum.va",
+      "task": "413-while-loop-array-sum",
+      "tier": "syntax-extension-candidate",
+      "title": "While Loop Array Sum",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 414,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use parameter range constraints for real-valued controls.",
+      "target": "parameter_range_real_control.va",
+      "task": "414-parameter-range-real-control",
+      "tier": "syntax-extension-candidate",
+      "title": "Parameter Range Real Control",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 415,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic vectors with continuous assign and slice selection.",
+      "target": "logic_vector_assign_slice.vams",
+      "task": "415-logic-vector-assign-slice",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Assign Slice",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 416,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use logic vector reduction in a continuous assignment.",
+      "target": "logic_vector_reduction_flag.vams",
+      "task": "416-logic-vector-reduction-flag",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Reduction Flag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 417,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an always block with asynchronous reset sensitivity.",
+      "target": "always_async_reset_counter.vams",
+      "task": "417-always-async-reset-counter",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Async Reset Counter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 418,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an always block for enabled saturating state update.",
+      "target": "always_enable_saturating_counter.vams",
+      "task": "418-always-enable-saturating-counter",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Enable Saturating Counter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 419,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Bridge wreal input into logic threshold behavior.",
+      "target": "wreal_logic_threshold_bridge.vams",
+      "task": "419-wreal-logic-threshold-bridge",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Logic Threshold Bridge",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 420,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Combine electrical threshold sampling with logic state output.",
+      "target": "mixed_analog_digital_mode_latch.vams",
+      "task": "420-mixed-analog-digital-mode-latch",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Analog Digital Mode Latch",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 421,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a task with an internal local variable before updating output and metric state.",
+      "target": "task_local_variable_transform.va",
+      "task": "421-task-local-variable-transform",
+      "tier": "syntax-extension-candidate",
+      "title": "Task Local Variable Transform",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 422,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fscanf() to read a table-driven stimulus/profile row.",
+      "target": "file_fscanf_table_stimulus.va",
+      "task": "422-file-fscanf-table-stimulus",
+      "tier": "syntax-extension-candidate",
+      "title": "File Fscanf Table Stimulus",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 423,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fseek(), $ftell(), and $rewind() together for profile replay bookkeeping.",
+      "target": "file_profile_replay_controller.va",
+      "task": "423-file-profile-replay-controller",
+      "tier": "syntax-extension-candidate",
+      "title": "File Profile Replay Controller",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 424,
+      "reasonable_task": false,
+      "solution_file_count": 2,
+      "sop_ready": false,
+      "starter_file_count": 2,
+      "syntax_focus": "Use $fscanf() to ingest a multi-column behavioral profile.",
+      "target": "file_fscanf_multi_column_profile.va",
+      "task": "424-file-fscanf-multi-column-profile",
+      "tier": "syntax-extension-candidate",
+      "title": "File Fscanf Multi Column Profile",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 425,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $swrite() to build an internal label string.",
+      "target": "string_swrite_label_builder.va",
+      "task": "425-string-swrite-label-builder",
+      "tier": "syntax-extension-candidate",
+      "title": "String Swrite Label Builder",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 426,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $sformat() to generate a mode-tagged behavioral label.",
+      "target": "string_sformat_mode_tag.va",
+      "task": "426-string-sformat-mode-tag",
+      "tier": "syntax-extension-candidate",
+      "title": "String Sformat Mode Tag",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 427,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $swrite() to format a metric file line before writing it.",
+      "target": "string_formatted_metric_line.va",
+      "task": "427-string-formatted-metric-line",
+      "tier": "syntax-extension-candidate",
+      "title": "String Formatted Metric Line",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 428,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $sformat() to create mode-tagged log text for $strobe().",
+      "target": "string_mode_tagged_log.va",
+      "task": "428-string-mode-tagged-log",
+      "tier": "syntax-extension-candidate",
+      "title": "String Mode Tagged Log",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 429,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use string formatting to select and record configuration labels.",
+      "target": "string_config_label_select.va",
+      "task": "429-string-config-label-select",
+      "tier": "syntax-extension-candidate",
+      "title": "String Config Label Select",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 430,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use repeated seeded random distribution calls to make reproducibility explicit.",
+      "target": "rdist_seed_reproducibility.va",
+      "task": "430-rdist-seed-reproducibility",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Seed Reproducibility",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 431,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a parent module plus staged support child artifact in the same source.",
+      "target": "hierarchy_support_artifact_staging.va",
+      "task": "431-hierarchy-support-artifact-staging",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Support Artifact Staging",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 432,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use nested child module instances with parameter overrides across two stages.",
+      "target": "hierarchy_nested_parameter_chain.va",
+      "task": "432-hierarchy-nested-parameter-chain",
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Nested Parameter Chain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 433,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use `ifndef, `elsif, and `undef to select a behavioral constant.",
+      "target": "preprocessor_ifndef_elsif_undef.va",
+      "task": "433-preprocessor-ifndef-elsif-undef",
+      "tier": "syntax-extension-candidate",
+      "title": "Preprocessor Ifndef Elsif Undef",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 434,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use repeat-loop syntax to accumulate bounded behavioral state.",
+      "target": "repeat_loop_accumulator.va",
+      "task": "434-repeat-loop-accumulator",
+      "tier": "syntax-extension-candidate",
+      "title": "Repeat Loop Accumulator",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 435,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use ddt() to form a voltage-domain derivative source.",
+      "target": "ddt_voltage_derivative_source.va",
+      "task": "435-ddt-voltage-derivative-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Ddt Voltage Derivative Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 436,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use idt() to form a voltage-domain integrator source.",
+      "target": "idt_voltage_integrator_source.va",
+      "task": "436-idt-voltage-integrator-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Idt Voltage Integrator Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 437,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use laplace_nd() for continuous-time transfer modeling.",
+      "target": "laplace_nd_lowpass_filter.va",
+      "task": "437-laplace-nd-lowpass-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Laplace Nd Lowpass Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 438,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use laplace_np() for pole-form continuous-time transfer modeling.",
+      "target": "laplace_np_pole_filter.va",
+      "task": "438-laplace-np-pole-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Laplace Np Pole Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 439,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use laplace_zd() for zero/denominator transfer modeling.",
+      "target": "laplace_zd_zero_den_filter.va",
+      "task": "439-laplace-zd-zero-den-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Laplace Zd Zero Den Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 440,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use laplace_zp() for zero/pole transfer modeling.",
+      "target": "laplace_zp_zero_pole_filter.va",
+      "task": "440-laplace-zp-zero-pole-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Laplace Zp Zero Pole Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 441,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
+      "target": "zi_nd_discrete_filter.va",
+      "task": "441-zi-nd-discrete-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Zi Nd Discrete Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 442,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use zi_np() for discrete-time numerator/pole filtering.",
+      "target": "zi_np_discrete_filter.va",
+      "task": "442-zi-np-discrete-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Zi Np Discrete Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 443,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use zi_zd() for discrete-time zero/denominator filtering.",
+      "target": "zi_zd_discrete_filter.va",
+      "task": "443-zi-zd-discrete-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Zi Zd Discrete Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 444,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use zi_zp() for discrete-time zero/pole filtering.",
+      "target": "zi_zp_discrete_filter.va",
+      "task": "444-zi-zp-discrete-filter",
+      "tier": "syntax-extension-candidate",
+      "title": "Zi Zp Discrete Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 445,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use limexp() for a limited exponential behavioral transform.",
+      "target": "limexp_soft_exponential.va",
+      "task": "445-limexp-soft-exponential",
+      "tier": "syntax-extension-candidate",
+      "title": "Limexp Soft Exponential",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 446,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $fstrobe() to write a formatted line to a file handle.",
+      "target": "fstrobe_file_line_writer.va",
+      "task": "446-fstrobe-file-line-writer",
+      "tier": "syntax-extension-candidate",
+      "title": "Fstrobe File Line Writer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 447,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $display(), $warning(), $error(), and $debug() system output calls.",
+      "target": "display_warning_debug_log.va",
+      "task": "447-display-warning-debug-log",
+      "tier": "syntax-extension-candidate",
+      "title": "Display Warning Debug Log",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 448,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rdist_uniform() for seeded uniform dither.",
+      "target": "rdist_uniform_seeded_dither.va",
+      "task": "448-rdist-uniform-seeded-dither",
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Uniform Seeded Dither",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 449,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use generate/genvar to replicate a behavioral stage.",
+      "target": "generate_genvar_replicated_stage.vams",
+      "task": "449-generate-genvar-replicated-stage",
+      "tier": "syntax-extension-candidate",
+      "title": "Generate Genvar Replicated Stage",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 450,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare a custom nature and discipline for behavioral voltage modeling.",
+      "target": "custom_nature_discipline_voltage.vams",
+      "task": "450-custom-nature-discipline-voltage",
+      "tier": "syntax-extension-candidate",
+      "title": "Custom Nature Discipline Voltage",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 451,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare a connectmodule bridge for mixed-signal connection behavior.",
+      "target": "connectmodule_electrical_bridge.vams",
+      "task": "451-connectmodule-electrical-bridge",
+      "tier": "syntax-extension-candidate",
+      "title": "Connectmodule Electrical Bridge",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 452,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare connectrules mapping between disciplines.",
+      "target": "connectrules_electrical_map.vams",
+      "task": "452-connectrules-electrical-map",
+      "tier": "syntax-extension-candidate",
+      "title": "Connectrules Electrical Map",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 453,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use specify/specparam delay syntax.",
+      "target": "specify_specparam_delay.vams",
+      "task": "453-specify-specparam-delay",
+      "tier": "syntax-extension-candidate",
+      "title": "Specify Specparam Delay",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 454,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a two-dimensional integer array for behavioral state.",
+      "target": "multidimensional_array_state.va",
+      "task": "454-multidimensional-array-state",
+      "tier": "syntax-extension-candidate",
+      "title": "Multidimensional Array State",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 455,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
+      "target": "packed_logic_bus_slice.vams",
+      "task": "455-packed-logic-bus-slice",
+      "tier": "syntax-extension-candidate",
+      "title": "Packed Logic Bus Slice",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 456,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an analog event expression combining cross() and timer() with or.",
+      "target": "event_or_cross_timer.va",
+      "task": "456-event-or-cross-timer",
+      "tier": "syntax-extension-candidate",
+      "title": "Event Or Cross Timer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 457,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use nested user-defined function calls in a behavioral pipeline.",
+      "target": "nested_function_pipeline.va",
+      "task": "457-nested-function-pipeline",
+      "tier": "syntax-extension-candidate",
+      "title": "Nested Function Pipeline",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 458,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a recursive user-defined function candidate.",
+      "target": "recursive_function_candidate.va",
+      "task": "458-recursive-function-candidate",
+      "tier": "syntax-extension-candidate",
+      "title": "Recursive Function Candidate",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 459,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use do ... while loop syntax to accumulate bounded behavioral state.",
+      "target": "do_while_loop_accumulator.va",
+      "task": "459-do-while-loop-accumulator",
+      "tier": "syntax-extension-candidate",
+      "title": "Do While Loop Accumulator",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 460,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an analog initial block to initialize behavioral state.",
+      "target": "analog_initial_block_state.va",
+      "task": "460-analog-initial-block-state",
+      "tier": "syntax-extension-candidate",
+      "title": "Analog Initial Block State",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 461,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $vt as a thermal voltage environment value.",
+      "target": "vt_thermal_voltage_source.va",
+      "task": "461-vt-thermal-voltage-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Vt Thermal Voltage Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 462,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $vt(temp) with an explicit temperature argument.",
+      "target": "vt_temperature_argument.va",
+      "task": "462-vt-temperature-argument",
+      "tier": "syntax-extension-candidate",
+      "title": "Vt Temperature Argument",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 463,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $discontinuity() in an event body to announce a behavioral discontinuity.",
+      "target": "discontinuity_event_announcement.va",
+      "task": "463-discontinuity-event-announcement",
+      "tier": "syntax-extension-candidate",
+      "title": "Discontinuity Event Announcement",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 464,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $param_given() to choose behavior based on parameter override presence.",
+      "target": "param_given_gain_select.va",
+      "task": "464-param-given-gain-select",
+      "tier": "syntax-extension-candidate",
+      "title": "Param Given Gain Select",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 465,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $port_connected() to choose behavior based on optional port binding.",
+      "target": "port_connected_output_enable.va",
+      "task": "465-port-connected-output-enable",
+      "tier": "syntax-extension-candidate",
+      "title": "Port Connected Output Enable",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 466,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $temperature as an environment-dependent metric.",
+      "target": "temperature_environment_metric.va",
+      "task": "466-temperature-environment-metric",
+      "tier": "syntax-extension-candidate",
+      "title": "Temperature Environment Metric",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 467,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $simparam() to query simulator/environment parameters.",
+      "target": "simparam_query_tnom.va",
+      "task": "467-simparam-query-tnom",
+      "tier": "syntax-extension-candidate",
+      "title": "Simparam Query Tnom",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 468,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare an explicit branch and read its voltage.",
+      "target": "branch_declaration_voltage_probe.va",
+      "task": "468-branch-declaration-voltage-probe",
+      "tier": "syntax-extension-candidate",
+      "title": "Branch Declaration Voltage Probe",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 469,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
+      "target": "current_contribution_conductance.va",
+      "task": "469-current-contribution-conductance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Current Contribution Conductance",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 470,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a named branch with current contribution and current probing.",
+      "target": "branch_current_probe_contribution.va",
+      "task": "470-branch-current-probe-contribution",
+      "tier": "kcl-syntax-candidate",
+      "title": "Branch Current Probe Contribution",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 471,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use an indirect branch assignment target/equation form.",
+      "target": "indirect_branch_null_balance.va",
+      "task": "471-indirect-branch-null-balance",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Null Balance",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 472,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use indirect branch assignment with a ddt() equation term.",
+      "target": "indirect_branch_ddt_balance.va",
+      "task": "472-indirect-branch-ddt-balance",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Ddt Balance",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 473,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Access a node potential attribute through hierarchical attribute syntax.",
+      "target": "attribute_potential_abstol_probe.va",
+      "task": "473-attribute-potential-abstol-probe",
+      "tier": "syntax-extension-candidate",
+      "title": "Attribute Potential Abstol Probe",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 474,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use the generic potential() access function for an electrical node.",
+      "target": "generic_potential_access_function.va",
+      "task": "474-generic-potential-access-function",
+      "tier": "syntax-extension-candidate",
+      "title": "Generic Potential Access Function",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 475,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use the generic potential() access function as a contribution target.",
+      "target": "generic_potential_contribution.va",
+      "task": "475-generic-potential-contribution",
+      "tier": "syntax-extension-candidate",
+      "title": "Generic Potential Contribution",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 476,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a string out-of-module reference in a voltage probe.",
+      "target": "oomr_string_voltage_probe.va",
+      "task": "476-oomr-string-voltage-probe",
+      "tier": "syntax-extension-candidate",
+      "title": "Oomr String Voltage Probe",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 477,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $analog_node_alias inside analog initial for hierarchical node aliasing.",
+      "target": "analog_node_alias_initial.va",
+      "task": "477-analog-node-alias-initial",
+      "tier": "syntax-extension-candidate",
+      "title": "Analog Node Alias Initial",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 478,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare inherited terminal attributes on supply-like ports.",
+      "target": "inherited_port_attribute_supply.va",
+      "task": "478-inherited-port-attribute-supply",
+      "tier": "syntax-extension-candidate",
+      "title": "Inherited Port Attribute Supply",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 479,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Declare an inherited m-factor parameter attribute.",
+      "target": "inherited_mfactor_parameter.va",
+      "task": "479-inherited-mfactor-parameter",
+      "tier": "syntax-extension-candidate",
+      "title": "Inherited Mfactor Parameter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 480,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $mfactor() to scale behavioral gain.",
+      "target": "mfactor_system_function_gain.va",
+      "task": "480-mfactor-system-function-gain",
+      "tier": "syntax-extension-candidate",
+      "title": "Mfactor System Function Gain",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 481,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Instantiate a Spectre analog resistor primitive inside a Verilog-A module.",
+      "target": "analog_primitive_resistor_instance.va",
+      "task": "481-analog-primitive-resistor-instance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Resistor Instance",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 482,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Instantiate a Spectre analog current-source primitive inside a Verilog-A module.",
+      "target": "analog_primitive_isource_instance.va",
+      "task": "482-analog-primitive-isource-instance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Isource Instance",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 483,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $cds_violation() to emit a Verilog-A assert violation.",
+      "target": "cds_violation_threshold_assert.va",
+      "task": "483-cds-violation-threshold-assert",
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Cds Violation Threshold Assert",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 484,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $rtoi() to convert real-valued code to integer state.",
+      "target": "rtoi_conversion_quantizer.va",
+      "task": "484-rtoi-conversion-quantizer",
+      "tier": "syntax-extension-candidate",
+      "title": "Rtoi Conversion Quantizer",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 485,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $cds_get_mc_trial_number() to expose the Monte Carlo trial index.",
+      "target": "mc_trial_number_metric.va",
+      "task": "485-mc-trial-number-metric",
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Mc Trial Number Metric",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 486,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use $cds_set_rf_source_info() to register an RF source name and frequency.",
+      "target": "rf_source_info_registration.va",
+      "task": "486-rf-source-info-registration",
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Rf Source Info Registration",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 487,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use two independent arrays and one output array in a 2D $table_model().",
+      "target": "table_model_2d_array_surface.va",
+      "task": "487-table-model-2d-array-surface",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model 2d Array Surface",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 488,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a string parameter as the $table_model() data source.",
+      "target": "table_model_string_param_source.va",
+      "task": "488-table-model-string-param-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model String Param Source",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 489,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use a deeper analog event expression with nested cross/above/timer terms.",
+      "target": "event_nested_or_expression.va",
+      "task": "489-event-nested-or-expression",
+      "tier": "syntax-extension-candidate",
+      "title": "Event Nested Or Expression",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 490,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Combine event body, task state update, and function post-processing.",
+      "target": "event_task_function_state_update.va",
+      "task": "490-event-task-function-state-update",
+      "tier": "syntax-extension-candidate",
+      "title": "Event Task Function State Update",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 491,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
+      "target": "kcl_capacitor_ddt_current.va",
+      "task": "491-kcl-capacitor-ddt-current",
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Capacitor Ddt Current",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 492,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use voltage contribution with idt() of branch current for an inductor-style model.",
+      "target": "kcl_inductor_idt_voltage.va",
+      "task": "492-kcl-inductor-idt-voltage",
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Inductor Idt Voltage",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 493,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use laplace_nd() as a continuous-time behavioral transfer function.",
+      "target": "continuous_laplace_nd_filter.va",
+      "task": "493-continuous-laplace-nd-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Laplace Nd Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    },
+    {
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "complete_tests": false,
+      "fair_eval": false,
+      "hidden_scs_count": 1,
+      "issues": [
+        "visible_scs_not_executable:include,instance,source",
+        "hidden_scs_not_executable:include,instance,source",
+        "missing_required_behavior_section",
+        "checker_syntax_only_no_behavior_score"
+      ],
+      "negative_count": 5,
+      "number": 494,
+      "reasonable_task": false,
+      "solution_file_count": 1,
+      "sop_ready": false,
+      "starter_file_count": 1,
+      "syntax_focus": "Use zi_nd() as a sampled-data behavioral transfer function.",
+      "target": "continuous_zi_nd_filter.va",
+      "task": "494-continuous-zi-nd-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Zi Nd Filter",
+      "usable_scene": true,
+      "visible_scs_count": 1,
+      "warnings": [
+        "candidate_tier_not_score_ready"
+      ]
+    }
+  ]
+}
