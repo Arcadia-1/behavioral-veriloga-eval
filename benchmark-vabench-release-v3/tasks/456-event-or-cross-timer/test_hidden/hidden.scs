@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "event_or_cross_timer.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.2 2499p 0.2 2500p 0.7 4500p 0.7]
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 2999p 0.0 3000p 1.0 3500p 1.0 3501p 0.0 4500p 0.0]
+Vvin (vin 0) vsource type=pwl wave=[0 0.35 1699p 0.35 1700p 0.75 3699p 0.75 3700p 0.15 5500p 0.15]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 2199p 0.0 2200p 1.0 2700p 1.0 2701p 0.0 4199p 0.0 4200p 1.0 4700p 1.0 4701p 0.0 5500p 0.0]
 
 XDUT (vin clk out metric) event_or_cross_timer
 
-tran tran stop=4500p
+tran tran stop=5500p
 save vin clk out metric

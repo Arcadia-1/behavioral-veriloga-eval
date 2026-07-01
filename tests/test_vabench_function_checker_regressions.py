@@ -2813,6 +2813,105 @@ def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values(
         )[0]
 
 
+def test_v3_clocked_semantic_gap_checkers_follow_hidden_values() -> None:
+    def input_fn(time_ns: float) -> tuple[float, float, float]:
+        return (
+            _task_input_from_segments(time_ns, [(0.0, 0.48), (100.0, 0.62), (200.0, 0.52), (300.0, 0.22), (400.0, 0.82)]),
+            _task_input_from_segments(time_ns, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (400.0, 0.0)]),
+            0.9 if 330.0 <= time_ns <= 389.0 else 0.0,
+        )
+
+    def threshold_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        eff_th = 0.5 if row["mode"] > 0.45 else 0.6
+        return 0.9 if row["vin"] > eff_th else 0.0, eff_th
+
+    def gain_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        effective = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        raw = 1.25 * effective
+        return min(0.9, max(0.0, raw)), raw
+
+    def trig_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        phase = 2.0 * math.pi * row["vin"]
+        if row["mode"] > 0.45:
+            phase -= 0.5 * math.pi
+        out = min(0.9, max(0.0, 0.45 + 0.25 * math.sin(phase)))
+        return out, math.sqrt(abs(out))
+
+    def random_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows = _task_clocked_rows(
+            lambda _state, row: (
+                0.0 if row["rst"] > 0.45 else row["vin"] + 0.5 * (0.2 if row["mode"] > 0.45 else 0.1),
+                0.0 if row["rst"] > 0.45 else (0.2 if row["mode"] > 0.45 else 0.1),
+            ),
+            input_fn,
+            wrong=wrong,
+        )
+        return rows
+
+    def guard_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["out"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            out = min(0.9, max(0.0, row["vin"]))
+            state["out"] = out
+            return out, 0.8
+        return float(state.get("out", 0.0)), 0.2
+
+    cases = [
+        (sim.check_v3_336_directive_configurable_threshold, threshold_update),
+        (sim.check_v3_337_parameter_range_limited_gain, gain_update),
+        (sim.check_v3_338_math_trig_envelope_detector, trig_update),
+        (sim.check_v3_340_bound_step_clock_guard, guard_update),
+    ]
+    for checker, update_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+    assert sim.check_v3_339_random_seeded_dither_source(random_rows())[0]
+    assert not sim.check_v3_339_random_seeded_dither_source(random_rows(wrong=True))[0]
+
+
+def test_v3_event_or_timer_checker_follows_hidden_events() -> None:
+    def rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        output_rows: list[dict[str, float]] = []
+        out = 0.0
+        metric = 0.0
+        prev_clk = 0.0
+        next_timer = 1.0
+        for idx in range(0, 5601, 10):
+            time_ns = idx / 1000.0
+            vin = _task_input_from_segments(time_ns, [(0.0, 0.35), (1.7, 0.75), (3.7, 0.15)])
+            clk = 1.0 if 2.2 <= time_ns <= 2.7 or 4.2 <= time_ns <= 4.7 else 0.0
+            while time_ns + 1e-6 >= next_timer:
+                metric += 1.0
+                out = vin
+                next_timer += 1.0
+            if prev_clk <= 0.45 < clk:
+                metric += 1.0
+                out = vin
+            output_rows.append(
+                {
+                    "time": time_ns * 1e-9,
+                    "vin": vin,
+                    "clk": clk,
+                    "out": 0.0 if wrong else out,
+                    "metric": 0.0 if wrong else metric,
+                }
+            )
+            prev_clk = clk
+        return output_rows
+
+    assert sim.check_v3_456_event_or_cross_timer(rows())[0]
+    assert not sim.check_v3_456_event_or_cross_timer(rows(wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

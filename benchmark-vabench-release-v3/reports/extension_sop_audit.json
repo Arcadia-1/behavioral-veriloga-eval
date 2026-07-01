@@ -9,7 +9,7 @@
       "sop_ready_count": 40,
       "task_count": 40,
       "top_issues": [],
-      "visible_hidden_distinct_count": 26
+      "visible_hidden_distinct_count": 31
     },
     {
       "complete_tests_count": 20,
@@ -64,7 +64,7 @@
           16
         ]
       ],
-      "visible_hidden_distinct_count": 12
+      "visible_hidden_distinct_count": 13
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 16,
+    "sop_ready_visible_hidden_identical_count": 10,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 161,
-    "visible_hidden_identical_count": 33,
+    "visible_hidden_distinct_count": 167,
+    "visible_hidden_identical_count": 27,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 33
+      "visible_hidden_identical": 27
     }
   },
   "tasks": [
@@ -984,11 +984,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Directive Configurable Threshold",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1009,11 +1008,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Parameter Range Limited Gain",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1034,11 +1032,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Math Trig Envelope Detector",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1059,11 +1056,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Random Seeded Dither Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1084,11 +1080,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Bound Step Clock Guard",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3934,11 +3929,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Event Or Cross Timer",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

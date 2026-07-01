@@ -34,11 +34,11 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 333-last-crossing-period-meter,333,Last Crossing Period Meter,syntax-extension-candidate,last_crossing_period_meter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 334-last-crossing-edge-age,334,Last Crossing Edge Age,syntax-extension-candidate,last_crossing_edge_age.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 335-above-resettable-peak-marker,335,Above Resettable Peak Marker,syntax-extension-candidate,above_resettable_peak_marker.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-336-directive-configurable-threshold,336,Directive Configurable Threshold,syntax-extension-candidate,directive_configurable_threshold.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-337-parameter-range-limited-gain,337,Parameter Range Limited Gain,syntax-extension-candidate,parameter_range_limited_gain.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-338-math-trig-envelope-detector,338,Math Trig Envelope Detector,syntax-extension-candidate,math_trig_envelope_detector.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-339-random-seeded-dither-source,339,Random Seeded Dither Source,syntax-extension-candidate,random_seeded_dither_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-340-bound-step-clock-guard,340,Bound Step Clock Guard,syntax-extension-candidate,bound_step_clock_guard.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+336-directive-configurable-threshold,336,Directive Configurable Threshold,syntax-extension-candidate,directive_configurable_threshold.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+337-parameter-range-limited-gain,337,Parameter Range Limited Gain,syntax-extension-candidate,parameter_range_limited_gain.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+338-math-trig-envelope-detector,338,Math Trig Envelope Detector,syntax-extension-candidate,math_trig_envelope_detector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+339-random-seeded-dither-source,339,Random Seeded Dither Source,syntax-extension-candidate,random_seeded_dither_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+340-bound-step-clock-guard,340,Bound Step Clock Guard,syntax-extension-candidate,bound_step_clock_guard.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 341-wreal-gain-pass-through,341,Wreal Gain Pass Through,ams-mixed-signal-candidate,wreal_gain_pass_through.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 342-wreal-two-input-summer,342,Wreal Two Input Summer,ams-mixed-signal-candidate,wreal_two_input_summer.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 343-wreal-threshold-flag,343,Wreal Threshold Flag,ams-mixed-signal-candidate,wreal_threshold_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
@@ -154,7 +154,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 453-specify-specparam-delay,453,Specify Specparam Delay,syntax-extension-candidate,specify_specparam_delay.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 454-multidimensional-array-state,454,Multidimensional Array State,syntax-extension-candidate,multidimensional_array_state.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 455-packed-logic-bus-slice,455,Packed Logic Bus Slice,syntax-extension-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
-456-event-or-cross-timer,456,Event Or Cross Timer,syntax-extension-candidate,event_or_cross_timer.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+456-event-or-cross-timer,456,Event Or Cross Timer,syntax-extension-candidate,event_or_cross_timer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 457-nested-function-pipeline,457,Nested Function Pipeline,syntax-extension-candidate,nested_function_pipeline.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 458-recursive-function-candidate,458,Recursive Function Candidate,syntax-extension-candidate,recursive_function_candidate.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 459-do-while-loop-accumulator,459,Do While Loop Accumulator,syntax-extension-candidate,do_while_loop_accumulator.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
