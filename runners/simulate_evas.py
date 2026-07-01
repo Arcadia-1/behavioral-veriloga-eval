@@ -8327,6 +8327,31 @@ def check_v3_373_task_output_limiter(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_v3_374_task_dual_output_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.3),
+                (180.0, 0.5),
+                (280.0, 0.9),
+                (380.0, 0.1),
+            ],
+            "metric": [
+                (80.0, 4.0 / 9.0),
+                (180.0, 1.0),
+                (280.0, 4.0 / 9.0),
+                (380.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17368,6 +17393,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "372-analysis-aware-noise-metric": check_v3_372_analysis_aware_noise_metric,
     "v3_373_task_output_limiter": check_v3_373_task_output_limiter,
     "373-task-output-limiter": check_v3_373_task_output_limiter,
+    "v3_374_task_dual_output_update": check_v3_374_task_dual_output_update,
+    "374-task-dual-output-update": check_v3_374_task_dual_output_update,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

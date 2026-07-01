@@ -7513,16 +7513,49 @@
 374-task-dual-output-update: |
   version: 1
   task_id: v3_374_task_dual_output_update
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: task_dual_output_update_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "task "
+      - "update_outputs"
+      - "input real sample"
+      - "input real trim"
+      - "endtask"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/task_dual_output_update.va
+    negative:
+      - negative_variants/neg_001_force_zero/task_dual_output_update.va
+      - negative_variants/neg_002_wrong_threshold/task_dual_output_update.va
+      - negative_variants/neg_003_reset_bias/task_dual_output_update.va
+      - negative_variants/neg_004_metric_offset/task_dual_output_update.va
+      - negative_variants/neg_005_scale_output/task_dual_output_update.va
+    checks:
+      - task_declared_and_called
+      - task_accepts_two_real_inputs
+      - output_clamps_sample_plus_trim
+      - metric_uses_sample_minus_trim_bias
+      - rising_clock_updates_only
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Task language extension promoted to executable EVAS behavior candidate."
 375-task-event-counter-service: |
   version: 1
   task_id: v3_375_task_event_counter_service

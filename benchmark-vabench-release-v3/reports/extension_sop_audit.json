@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 0,
+      "complete_tests_count": 1,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 1,
+      "fair_eval_count": 2,
       "range": "373-434",
-      "sop_ready_count": 0,
+      "sop_ready_count": 1,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          62
+          61
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          61
+          60
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          61
+          60
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          61
+          60
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 72,
-    "fair_eval_count": 72,
+    "complete_tests_count": 73,
+    "fair_eval_count": 73,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 122,
-      "hidden_scs_not_executable:include,instance,source": 121,
-      "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 121
+      "checker_syntax_only_no_behavior_score": 121,
+      "hidden_scs_not_executable:include,instance,source": 120,
+      "missing_required_behavior_section": 121,
+      "visible_scs_not_executable:include,instance,source": 120
     },
-    "sop_ready_count": 71,
+    "sop_ready_count": 72,
     "task_count": 194
   },
   "tasks": [
@@ -1838,20 +1838,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 374,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a task with two real inputs to update output and metric state.",
       "target": "task_dual_output_update.va",
