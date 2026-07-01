@@ -7622,6 +7622,29 @@ def check_v3_337_parameter_range_limited_gain(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_338_math_trig_envelope_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (120.0, 0.70),
+                (320.0, 0.45),
+                (520.0, 0.0),
+            ],
+            "metric": [
+                (120.0, 0.8367),
+                (320.0, 0.6708),
+                (520.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16593,6 +16616,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "336-directive-configurable-threshold": check_v3_336_directive_configurable_threshold,
     "v3_337_parameter_range_limited_gain": check_v3_337_parameter_range_limited_gain,
     "337-parameter-range-limited-gain": check_v3_337_parameter_range_limited_gain,
+    "v3_338_math_trig_envelope_detector": check_v3_338_math_trig_envelope_detector,
+    "338-math-trig-envelope-detector": check_v3_338_math_trig_envelope_detector,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

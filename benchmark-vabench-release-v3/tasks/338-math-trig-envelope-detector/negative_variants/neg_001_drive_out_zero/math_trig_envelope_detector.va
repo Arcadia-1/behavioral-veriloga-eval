@@ -14,6 +14,7 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
+real phase_v;
 integer count_q;
 integer state_q;
 analog begin
@@ -24,8 +25,17 @@ analog begin
         state_q = 0;
     end
     @(cross(V(clk) - vth, +1)) begin
-        out_v = 0.45 + 0.25 * sin(6.28318530718 * V(vin));
-        metric_v = sqrt(abs(out_v));
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            phase_v = 6.28318530718 * V(vin);
+            if (V(mode) > vth) phase_v = phase_v - 1.57079632679;
+            out_v = 0.45 + 0.25 * sin(phase_v);
+            if (out_v > vhi) out_v = vhi;
+            if (out_v < 0.0) out_v = 0.0;
+            metric_v = sqrt(abs(out_v));
+        end
     end
     V(out) <+ transition(0.0, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
