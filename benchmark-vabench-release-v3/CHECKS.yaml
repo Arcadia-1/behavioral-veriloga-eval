@@ -8868,16 +8868,45 @@
 405-vector-concat-code-build: |
   version: 1
   task_id: v3_405_vector_concat_code_build
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vector_concat_code_build_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "{2'b10"
+      - "count_q[1:0]"
+      - "cross"
+      - "code_q"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/vector_concat_code_build.va
+    negative:
+      - negative_variants/neg_001_force_zero/vector_concat_code_build.va
+      - negative_variants/neg_002_wrong_threshold/vector_concat_code_build.va
+      - negative_variants/neg_003_reset_bias/vector_concat_code_build.va
+      - negative_variants/neg_004_metric_offset/vector_concat_code_build.va
+      - negative_variants/neg_005_scale_output/vector_concat_code_build.va
+    checks:
+      - concatenation_builds_upper_prefix_and_low_counter_bits
+      - metric_reports_compact_code_sequence
+      - output_threshold_distinguishes_code_eight_from_higher_codes
+      - shifted_concat_code_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
 406-vector-replication-mask: |
   version: 1
   task_id: v3_406_vector_replication_mask

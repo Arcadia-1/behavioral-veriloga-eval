@@ -9104,6 +9104,33 @@ def check_v3_404_vector_part_select_window(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_405_vector_concat_code_build(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.9),
+                (380.0, 0.9),
+                (480.0, 0.0),
+            ],
+            "metric": [
+                (80.0, 8.0),
+                (180.0, 9.0),
+                (280.0, 10.0),
+                (380.0, 11.0),
+                (480.0, 8.0),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18207,6 +18234,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "403-vector-bit-select-flag": check_v3_403_vector_bit_select_flag,
     "v3_404_vector_part_select_window": check_v3_404_vector_part_select_window,
     "404-vector-part-select-window": check_v3_404_vector_part_select_window,
+    "v3_405_vector_concat_code_build": check_v3_405_vector_concat_code_build,
+    "405-vector-concat-code-build": check_v3_405_vector_concat_code_build,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
