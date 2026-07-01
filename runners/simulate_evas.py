@@ -7725,6 +7725,23 @@ def check_v3_342_wreal_two_input_summer(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_343_wreal_threshold_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (120.0, 0.0),
+                (320.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16706,6 +16723,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "341-wreal-gain-pass-through": check_v3_341_wreal_gain_pass_through,
     "v3_342_wreal_two_input_summer": check_v3_342_wreal_two_input_summer,
     "342-wreal-two-input-summer": check_v3_342_wreal_two_input_summer,
+    "v3_343_wreal_threshold_flag": check_v3_343_wreal_threshold_flag,
+    "343-wreal-threshold-flag": check_v3_343_wreal_threshold_flag,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

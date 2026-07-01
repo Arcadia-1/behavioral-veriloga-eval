@@ -3,9 +3,9 @@ module wreal_threshold_flag(a, b, sel, y);
     output y;
     wreal a, b, sel, y;
     parameter real gain = 0.75;
-parameter real offset = 0.1;
-parameter real threshold = 0.45;
-parameter real high = 0.9;
-parameter real low = 0.0;
-    assign y = ~ (a > threshold) ? high : low;
+    parameter real offset = 0.1;
+    parameter real threshold = 0.45;
+    parameter real high = 0.9;
+    parameter real low = 0.0;
+    assign y = ((sel > threshold ? a : (a + offset)) > threshold) ? high : low;
 endmodule
