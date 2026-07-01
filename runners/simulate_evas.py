@@ -9071,6 +9071,39 @@ def check_v3_403_vector_bit_select_flag(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_404_vector_part_select_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.9),
+                (180.0, 0.9),
+                (280.0, 0.9),
+                (380.0, 0.9),
+                (480.0, 0.9),
+                (580.0, 0.9),
+                (680.0, 0.9),
+                (780.0, 0.0),
+            ],
+            "metric": [
+                (80.0, 4.0),
+                (180.0, 5.0),
+                (280.0, 5.0),
+                (380.0, 6.0),
+                (480.0, 6.0),
+                (580.0, 7.0),
+                (680.0, 7.0),
+                (780.0, 0.0),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18172,6 +18205,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "402-hierarchy-shared-threshold-child": check_v3_402_hierarchy_shared_threshold_child,
     "v3_403_vector_bit_select_flag": check_v3_403_vector_bit_select_flag,
     "403-vector-bit-select-flag": check_v3_403_vector_bit_select_flag,
+    "v3_404_vector_part_select_window": check_v3_404_vector_part_select_window,
+    "404-vector-part-select-window": check_v3_404_vector_part_select_window,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

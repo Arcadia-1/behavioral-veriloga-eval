@@ -8825,16 +8825,46 @@
 404-vector-part-select-window: |
   version: 1
   task_id: v3_404_vector_part_select_window
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vector_part_select_window_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "code_q"
+      - "window_q"
       - "[3:1]"
+      - "cross"
+      - "count_q"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/vector_part_select_window.va
+    negative:
+      - negative_variants/neg_001_force_zero/vector_part_select_window.va
+      - negative_variants/neg_002_wrong_threshold/vector_part_select_window.va
+      - negative_variants/neg_003_reset_bias/vector_part_select_window.va
+      - negative_variants/neg_004_metric_offset/vector_part_select_window.va
+      - negative_variants/neg_005_scale_output/vector_part_select_window.va
+    checks:
+      - part_select_extracts_bits_three_down_to_one
+      - window_metric_sequence_matches_counter_codes
+      - output_drops_when_window_wraps_to_zero
+      - off_by_one_code_sequence_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
 405-vector-concat-code-build: |
   version: 1
   task_id: v3_405_vector_concat_code_build

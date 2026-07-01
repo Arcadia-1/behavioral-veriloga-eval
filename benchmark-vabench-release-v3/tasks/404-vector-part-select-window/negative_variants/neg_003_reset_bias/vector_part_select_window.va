@@ -32,12 +32,11 @@ analog begin
             count_q = 0;
             state_q = 0;
         end else begin
-        code_q = count_q + 9;
+        code_q = count_q + 10;
         window_q = code_q[3:1];
         out_v = window_q > 3 ? vhi : 0.0;
         metric_v = window_q;
         count_q = count_q + 1;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
