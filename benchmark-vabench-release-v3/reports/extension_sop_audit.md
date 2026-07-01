@@ -13,7 +13,7 @@ Date: 2026-07-02
 
 - `checker_syntax_only_no_behavior_score`: 64
 - `hidden_scs_not_executable:include,instance,source`: 46
-- `missing_required_behavior_section`: 45
+- `missing_required_behavior_section`: 42
 - `visible_scs_not_executable:include,instance,source`: 46
 
 ## Range Summary
@@ -24,7 +24,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
-| `435-458` | manual syntax-completion candidates | 24 | 4 | 14 | 4 | `checker_syntax_only_no_behavior_score`: 20<br>`visible_scs_not_executable:include,instance,source`: 10<br>`hidden_scs_not_executable:include,instance,source`: 10<br>`missing_required_behavior_section`: 8 |
+| `435-458` | manual syntax-completion candidates | 24 | 4 | 14 | 4 | `checker_syntax_only_no_behavior_score`: 20<br>`visible_scs_not_executable:include,instance,source`: 10<br>`hidden_scs_not_executable:include,instance,source`: 10<br>`missing_required_behavior_section`: 5 |
 | `459-470` | course-material gap-fill candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 
@@ -186,9 +186,9 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `448-rdist-uniform-seeded-dither` | `syntax-extension-candidate` | True | - |
 | `449-generate-genvar-replicated-stage` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
 | `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
-| `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
-| `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
+| `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
+| `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
 | `454-multidimensional-array-state` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `455-packed-logic-bus-slice` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

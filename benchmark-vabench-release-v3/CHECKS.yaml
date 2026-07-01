@@ -10380,42 +10380,50 @@
 451-connectmodule-electrical-bridge: |
   version: 1
   task_id: v3_451_connectmodule_electrical_bridge
-  backend: evas_rust_compile_capable
+  backend: verilogams_connect_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "connectmodule"
+      - "endconnectmodule"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "connectmodule candidate staged pending EVAS connectmodule support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/47"
 452-connectrules-electrical-map: |
   version: 1
   task_id: v3_452_connectrules_electrical_map
-  backend: evas_rust_compile_capable
+  backend: verilogams_connect_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "connectrules"
+      - "connectmodule"
+      - "endconnectrules"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "connectrules candidate staged pending EVAS connectrules/connectmodule support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/47"
 453-specify-specparam-delay: |
   version: 1
   task_id: v3_453_specify_specparam_delay
-  backend: evas_rust_compile_capable
+  backend: digital_timing_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "specify"
+      - "specparam"
+      - "endspecify"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "specify/specparam timing candidate staged pending EVAS timing block support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/48"
 454-multidimensional-array-state: |
   version: 1
   task_id: v3_454_multidimensional_array_state

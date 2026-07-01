@@ -73,7 +73,7 @@
         ],
         [
           "missing_required_behavior_section",
-          8
+          5
         ]
       ]
     },
@@ -138,7 +138,7 @@
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 64,
       "hidden_scs_not_executable:include,instance,source": 46,
-      "missing_required_behavior_section": 45,
+      "missing_required_behavior_section": 42,
       "visible_scs_not_executable:include,instance,source": 46
     },
     "sop_ready_count": 129,
@@ -3649,12 +3649,11 @@
       "issues": [
         "visible_scs_not_executable:include,instance,source",
         "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 451,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,
@@ -3677,12 +3676,11 @@
       "issues": [
         "visible_scs_not_executable:include,instance,source",
         "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 452,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,
@@ -3705,12 +3703,11 @@
       "issues": [
         "visible_scs_not_executable:include,instance,source",
         "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 453,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,
