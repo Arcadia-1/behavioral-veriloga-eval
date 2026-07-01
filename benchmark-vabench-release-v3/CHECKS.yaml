@@ -10522,16 +10522,37 @@
 457-nested-function-pipeline: |
   version: 1
   task_id: v3_457_nested_function_pipeline
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: nested_function_pipeline_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - out
   syntax:
     must_include:
+      - "function real f1"
       - "f2("
+      - "endfunction"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/nested_function_pipeline.va
+    negative:
+      - negative_variants/neg_001_force_zero/nested_function_pipeline.va
+      - negative_variants/neg_002_wrong_threshold/nested_function_pipeline.va
+      - negative_variants/neg_003_reset_bias/nested_function_pipeline.va
+      - negative_variants/neg_004_metric_offset/nested_function_pipeline.va
+      - negative_variants/neg_005_scale_output/nested_function_pipeline.va
+    checks:
+      - nested_function_parse
+      - f1_calls_f2
+      - squared_plus_one_transfer
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Nested user-defined function pipeline behavior promoted to executable EVAS behavior candidate."
 458-recursive-function-candidate: |
   version: 1
   task_id: v3_458_recursive_function_candidate

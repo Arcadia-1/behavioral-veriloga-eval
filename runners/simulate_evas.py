@@ -8601,6 +8601,25 @@ def check_v3_456_event_or_cross_timer(rows: list[dict[str, float]]) -> tuple[boo
     return True, " ".join(observed)
 
 
+def check_v3_457_nested_function_pipeline(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 1.0),
+                (150.0, 1.25),
+                (250.0, 1.25),
+                (350.0, 2.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19067,6 +19086,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
     "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,
     "456-event-or-cross-timer": check_v3_456_event_or_cross_timer,
+    "v3_457_nested_function_pipeline": check_v3_457_nested_function_pipeline,
+    "457-nested-function-pipeline": check_v3_457_nested_function_pipeline,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -52,28 +52,28 @@
       ]
     },
     {
-      "complete_tests_count": 16,
+      "complete_tests_count": 17,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 6,
+      "fair_eval_count": 7,
       "range": "435-458",
-      "sop_ready_count": 6,
+      "sop_ready_count": 7,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          18
+          17
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          8
+          7
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          8
+          7
         ],
         [
           "missing_required_behavior_section",
-          2
+          1
         ]
       ]
     },
@@ -133,15 +133,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 149,
-    "fair_eval_count": 132,
+    "complete_tests_count": 150,
+    "fair_eval_count": 133,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 62,
-      "hidden_scs_not_executable:include,instance,source": 44,
-      "missing_required_behavior_section": 39,
-      "visible_scs_not_executable:include,instance,source": 44
+      "checker_syntax_only_no_behavior_score": 61,
+      "hidden_scs_not_executable:include,instance,source": 43,
+      "missing_required_behavior_section": 38,
+      "visible_scs_not_executable:include,instance,source": 43
     },
-    "sop_ready_count": 131,
+    "sop_ready_count": 132,
     "task_count": 194
   },
   "tasks": [
@@ -3797,20 +3797,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 457,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use nested user-defined function calls in a behavioral pipeline.",
       "target": "nested_function_pipeline.va",
