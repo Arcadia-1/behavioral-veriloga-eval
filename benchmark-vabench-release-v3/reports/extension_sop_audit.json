@@ -25,24 +25,24 @@
       ]
     },
     {
-      "complete_tests_count": 1,
+      "complete_tests_count": 2,
       "description": "noise and analysis candidates",
-      "fair_eval_count": 1,
+      "fair_eval_count": 2,
       "range": "361-372",
-      "sop_ready_count": 1,
+      "sop_ready_count": 2,
       "task_count": 12,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source,save",
-          11
+          10
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          11
+          10
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          11
+          10
         ]
       ]
     },
@@ -154,17 +154,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 61,
-    "fair_eval_count": 60,
+    "complete_tests_count": 62,
+    "fair_eval_count": 61,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 134,
+      "checker_syntax_only_no_behavior_score": 133,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 11,
+      "hidden_scs_not_executable:include,instance,source,save": 10,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 11
+      "visible_scs_not_executable:include,instance,source,save": 10
     },
-    "sop_ready_count": 60,
+    "sop_ready_count": 61,
     "task_count": 194
   },
   "tasks": [
@@ -1575,19 +1575,15 @@
     },
     {
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 362,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Gate white_noise() with a behavioral control voltage.",
       "target": "white_noise_gated_source.va",

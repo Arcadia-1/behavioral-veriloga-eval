@@ -12,7 +12,9 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real metric_v;
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) metric_v = 0.0;
+    // TODO: gate white_noise on out and sample the gate state into metric_v.
+    V(out) <+ 0.0;
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule
