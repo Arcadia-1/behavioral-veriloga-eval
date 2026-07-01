@@ -19,9 +19,23 @@ module last_crossing_period_meter (
 
 ## Required Behavior
 
-Use above() and last_crossing() for threshold/edge timing behavior.
+Use `last_crossing()` to measure the period between rising threshold crossings.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
+- `@(cross(V(vin) - vth, +1, 0.0, 1e-12))` records the latest rising crossing time from `lc_q`
+- after the first crossing, keep `out = 0.0` and `metric = 0.0`
+- after the second and later crossings, compute `period_q = last_t - prev_t`
+- drive `out = 0.9 * period_q / 400 ns`, clamped to the range `0.0` to `0.9`
+- drive `metric = 0.9` once a valid period has been measured, otherwise `0.0`
+- `@(cross(V(rst) - vth, +1))` clears the period state and both outputs
+
+The hidden testbench drives rising crossings about `200 ns`, then `300 ns`, then `400 ns` apart with a reset before the last single crossing. The evaluator checks the measured-period voltage and reset clearing behavior.
 
 ## Output
 

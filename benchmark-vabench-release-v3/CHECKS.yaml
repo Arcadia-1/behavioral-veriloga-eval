@@ -5896,9 +5896,10 @@
 333-last-crossing-period-meter: |
   version: 1
   task_id: v3_333_last_crossing_period_meter
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5910,10 +5911,26 @@
   syntax:
     must_include:
       - "last_crossing("
+      - "cross("
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/last_crossing_period_meter.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/last_crossing_period_meter.va
+      - negative_variants/neg_002_drive_metric_zero/last_crossing_period_meter.va
+      - negative_variants/neg_003_reset_polarity_wrong/last_crossing_period_meter.va
+      - negative_variants/neg_004_logic_threshold_shifted/last_crossing_period_meter.va
+      - negative_variants/neg_005_output_scale_low/last_crossing_period_meter.va
+    checks:
+      - last_crossing_measures_rising_period
+      - output_encodes_period_scaled_to_voltage
+      - metric_marks_valid_period
+      - reset_clears_period_state
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 334-last-crossing-edge-age: |
   version: 1
   task_id: v3_334_last_crossing_edge_age

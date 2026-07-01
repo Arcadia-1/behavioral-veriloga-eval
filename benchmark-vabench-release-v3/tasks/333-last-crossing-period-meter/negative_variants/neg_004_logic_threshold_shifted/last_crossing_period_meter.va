@@ -9,7 +9,7 @@ module last_crossing_period_meter (
     output electrical out,
     output electrical metric
 );
-parameter real vth = 0.55;
+parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
@@ -19,27 +19,46 @@ integer state_q;
 real last_t;
 real prev_t;
 real period_q;
+real lc_q;
+real scaled_q;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
         count_q = 0;
         state_q = 0;
+        last_t = -1.0;
+        prev_t = -1.0;
+        period_q = 0.0;
+        lc_q = -1.0;
+        scaled_q = 0.0;
     end
-    @(above(V(vin) - vth)) begin
-        state_q = 1;
-        out_v = vhi;
-    end
-    @(cross(V(vin) - vth, +1)) begin
+    lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12);
+    @(cross(V(vin) - vth, +1, 0.0, 1e-12)) begin
         prev_t = last_t;
-        last_t = last_crossing(V(vin) - vth, +1);
-        if (prev_t > 0.0) period_q = last_t - prev_t;
-        metric_v = period_q * 1.0e9;
+        last_t = lc_q;
+        count_q = count_q + 1;
+        if (prev_t > 0.0) begin
+            period_q = last_t - prev_t;
+            scaled_q = vhi * period_q / 300e-9;
+            if (scaled_q < 0.0) scaled_q = 0.0;
+            if (scaled_q > vhi) scaled_q = vhi;
+            out_v = scaled_q;
+            metric_v = vhi;
+        end else begin
+            out_v = 0.0;
+            metric_v = 0.0;
+        end
     end
     @(cross(V(rst) - vth, +1)) begin
-        state_q = 0;
+        count_q = 0;
         out_v = 0.0;
         metric_v = 0.0;
+        last_t = -1.0;
+        prev_t = -1.0;
+        period_q = 0.0;
+        lc_q = -1.0;
+        scaled_q = 0.0;
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

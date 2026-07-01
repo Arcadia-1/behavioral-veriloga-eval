@@ -7490,6 +7490,33 @@ def check_v3_332_above_window_qualifier(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_333_last_crossing_period_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (120.0, 0.0),
+                (320.0, 0.45),
+                (620.0, 0.675),
+                (760.0, 0.0),
+                (860.0, 0.0),
+            ],
+            "metric": [
+                (120.0, 0.0),
+                (320.0, 0.9),
+                (620.0, 0.9),
+                (760.0, 0.0),
+                (860.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16451,6 +16478,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "331-above-threshold-latch": check_v3_331_above_threshold_latch,
     "v3_332_above_window_qualifier": check_v3_332_above_window_qualifier,
     "332-above-window-qualifier": check_v3_332_above_window_qualifier,
+    "v3_333_last_crossing_period_meter": check_v3_333_last_crossing_period_meter,
+    "333-last-crossing-period-meter": check_v3_333_last_crossing_period_meter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
