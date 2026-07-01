@@ -8378,6 +8378,27 @@ def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]
     )
 
 
+def check_v3_432_hierarchy_nested_parameter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.30),
+                (220.0, 0.60),
+            ],
+            "metric": [
+                (80.0, 0.60),
+                (220.0, 1.20),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18826,6 +18847,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "430-rdist-seed-reproducibility": check_v3_430_rdist_seed_reproducibility,
     "v3_431_hierarchy_support_artifact_staging": check_v3_431_hierarchy_support_artifact_staging,
     "431-hierarchy-support-artifact-staging": check_v3_431_hierarchy_support_artifact_staging,
+    "v3_432_hierarchy_nested_parameter_chain": check_v3_432_hierarchy_nested_parameter_chain,
+    "432-hierarchy-nested-parameter-chain": check_v3_432_hierarchy_nested_parameter_chain,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

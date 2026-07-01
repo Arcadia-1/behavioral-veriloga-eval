@@ -9865,16 +9865,29 @@
 432-hierarchy-nested-parameter-chain: |
   version: 1
   task_id: v3_432_hierarchy_nested_parameter_chain
-  backend: evas_rust_compile_capable
+  backend: hierarchy_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "parameter override"
+      - "staged_gain_child"
+      - "#(.gain(1.2))"
+      - "#(.gain(0.5))"
+      - "u_gain0"
+      - "u_gain1"
     must_not_include:
       - "I("
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Executable hierarchy parameter-chain candidate staged pending EVAS same-source child module lookup support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/41"
 433-preprocessor-ifndef-elsif-undef: |
   version: 1
   task_id: v3_433_preprocessor_ifndef_elsif_undef
