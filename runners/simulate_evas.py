@@ -9526,6 +9526,211 @@ def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
+def _check_source_tanh_transfer(
+    rows: list[dict[str, float]],
+    *,
+    high: float,
+    low: float,
+    offset: float,
+    slope: float,
+    tol: float,
+) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigref", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source tanh comparator signals"
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        if row["time"] < 0.05e-9:
+            continue
+        expected = (
+            0.5 * (high - low) * math.tanh(slope * (row["sigin"] - row["sigref"] - offset))
+            + 0.5 * (high + low)
+        )
+        err = abs(row["sigout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_tanh_rows={checked}"
+    return max_err <= tol, f"checked={checked} max_tanh_error={max_err:.5f}"
+
+
+def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_tanh_transfer(rows, high=0.9, low=0.0, offset=0.0, slope=20.0, tol=0.025)
+
+
+def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_tanh_transfer(rows, high=1.0, low=-1.0, offset=0.05, slope=4.0, tol=0.025)
+
+
+def _stable_voltage_bit(row: dict[str, float], signal: str) -> int | None:
+    value = row.get(signal)
+    if value is None:
+        return None
+    if value <= 0.15:
+        return 0
+    if value >= 0.75:
+        return 1
+    return None
+
+
+def _check_source_weighted_decoder(
+    rows: list[dict[str, float]],
+    *,
+    bit_names: list[str],
+    weights: list[float],
+    tol: float,
+) -> tuple[bool, str]:
+    required = {"time", "vout", *bit_names}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source weighted decoder signals"
+    full_scale = sum(weights)
+    max_err = 0.0
+    checked = 0
+    worst_code = ""
+    for row in rows:
+        if row["time"] < 0.05e-9:
+            continue
+        bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
+        if any(bit is None for bit in bits):
+            continue
+        code_value = sum(float(bit) * weight for bit, weight in zip(bits, weights))
+        expected = code_value / full_scale
+        err = abs(row["vout"] - expected)
+        if err > max_err:
+            max_err = err
+            worst_code = "".join(str(int(bit)) for bit in bits if bit is not None)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_stable_weighted_rows={checked}"
+    return max_err <= tol, f"checked={checked} max_weighted_error={max_err:.5f} worst_code={worst_code}"
+
+
+def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_weighted_decoder(
+        rows,
+        bit_names=["vd1", "vd2", "vd3", "vd4", "vd5", "vd6"],
+        weights=[32.0, 16.0, 8.0, 4.0, 2.0, 1.0],
+        tol=0.03,
+    )
+
+
+def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    weights = [1.8**idx for idx in range(9, -1, -1)]
+    return _check_source_weighted_decoder(
+        rows,
+        bit_names=["vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0"],
+        weights=weights,
+        tol=0.03,
+    )
+
+
+def _source_pfd_actions(
+    rows: list[dict[str, float]],
+    *,
+    first_signal: str,
+    second_signal: str,
+    reset_delay: float,
+    threshold: float = 0.45,
+) -> list[tuple[float, str]]:
+    times = [row["time"] for row in rows]
+    first_edges = _threshold_crossings([row[first_signal] for row in rows], times, threshold=threshold, direction="rising")
+    second_edges = _threshold_crossings([row[second_signal] for row in rows], times, threshold=threshold, direction="rising")
+    edge_events = sorted([(time_s, "first") for time_s in first_edges] + [(time_s, "second") for time_s in second_edges])
+    actions: list[tuple[float, str]] = []
+    first_state = False
+    second_state = False
+    reset_at: float | None = None
+    for event_time, event_kind in edge_events:
+        if reset_at is not None and reset_at <= event_time:
+            actions.append((reset_at, "reset"))
+            first_state = False
+            second_state = False
+            reset_at = None
+        actions.append((event_time, event_kind))
+        if event_kind == "first":
+            first_state = True
+        else:
+            second_state = True
+        if first_state and second_state and reset_at is None:
+            reset_at = event_time + reset_delay
+    if reset_at is not None:
+        actions.append((reset_at, "reset"))
+    return sorted(actions)
+
+
+def _source_pfd_state_at(actions: list[tuple[float, str]], time_s: float) -> tuple[bool, bool]:
+    first_state = False
+    second_state = False
+    for action_time, action_kind in actions:
+        if action_time > time_s:
+            break
+        if action_kind == "reset":
+            first_state = False
+            second_state = False
+        elif action_kind == "first":
+            first_state = True
+        elif action_kind == "second":
+            second_state = True
+    return first_state, second_state
+
+
+def _check_source_pfd_reset(
+    rows: list[dict[str, float]],
+    *,
+    first_signal: str,
+    second_signal: str,
+    first_output: str,
+    second_output: str,
+    reset_delay: float,
+    vh: float = 0.9,
+) -> tuple[bool, str]:
+    required = {"time", first_signal, second_signal, first_output, second_output}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source pfd reset signals"
+    actions = _source_pfd_actions(rows, first_signal=first_signal, second_signal=second_signal, reset_delay=reset_delay)
+    if sum(1 for _, kind in actions if kind == "first") < 2 or sum(1 for _, kind in actions if kind == "second") < 2:
+        return False, "insufficient_pfd_input_edges"
+    edge_guard = 18e-12
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        time_s = row["time"]
+        if time_s < 0.05e-9 or any(abs(time_s - action_time) < edge_guard for action_time, _ in actions):
+            continue
+        first_state, second_state = _source_pfd_state_at(actions, time_s)
+        expected_first = 0.0 if first_state else vh
+        expected_second = vh if second_state else 0.0
+        err = max(abs(row[first_output] - expected_first), abs(row[second_output] - expected_second))
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 30:
+        return False, f"insufficient_stable_pfd_rows={checked}"
+    return max_err <= 0.12, f"checked={checked} pfd_actions={len(actions)} max_pfd_error={max_err:.5f}"
+
+
+def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_pfd_reset(
+        rows,
+        first_signal="a",
+        second_signal="b",
+        first_output="ub",
+        second_output="d",
+        reset_delay=100e-12,
+    )
+
+
+def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_pfd_reset(
+        rows,
+        first_signal="ref",
+        second_signal="fb",
+        first_output="upb",
+        second_output="down",
+        reset_delay=80e-12,
+    )
+
+
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
     value = params.get(key, default)
     try:
@@ -15221,6 +15426,35 @@ for _task_id_alias, _checker_id in V3_TASK_ID_ALIASES.items():
     if _checker_id in CHECKS:
         CHECKS[_task_id_alias] = CHECKS[_checker_id]
 # End v3 task id aliases.
+
+CHECKS["v3_source_smooth_comparator_tanh"] = check_v3_source_smooth_comparator_tanh
+CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bit
+CHECKS["v3_source_pfd_timer_reset"] = check_v3_source_pfd_timer_reset
+CHECKS["v3_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
+CHECKS["v3_source_subradix_dac10"] = check_v3_source_subradix_dac10
+CHECKS["v3_source_pfd_active_low_reset"] = check_v3_source_pfd_active_low_reset
+
+V3_SOURCE_FORM_CHECK_ALIASES = {
+    "v3_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
+    "v3_146_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
+    "v3_source_absolute_value": "v3_absolute_value",
+    "v3_148_source_absolute_value": "v3_absolute_value",
+    "v3_288_source_absolute_value": "v3_absolute_value",
+    "v3_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
+    "v3_274_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
+    "v3_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
+    "v3_282_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
+    "v3_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
+    "v3_292_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
+    "v3_source_subradix_dac10": "v3_source_subradix_dac10",
+    "v3_294_source_subradix_dac10": "v3_source_subradix_dac10",
+    "v3_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",
+    "v3_300_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",
+}
+for _source_form_alias, _checker_id in V3_SOURCE_FORM_CHECK_ALIASES.items():
+    if _checker_id in CHECKS:
+        CHECKS[_source_form_alias] = CHECKS[_checker_id]
+
 CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator
