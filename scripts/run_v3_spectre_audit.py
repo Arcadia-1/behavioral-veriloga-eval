@@ -31,6 +31,7 @@ from simulate_evas import (  # noqa: E402
     behavior_side_output_names,
     evaluate_behavior_with_timeout,
     read_task_artifact_targets,
+    read_task_index_id,
     validate_behavior_side_outputs,
 )
 
@@ -120,6 +121,7 @@ def checker_candidates(task_dir: Path, meta: dict[str, Any], checks_config: dict
     values = [
         checks_config.get("checker_task_id"),
         meta.get("id"),
+        read_task_index_id(task_dir),
         task_dir.name,
         checks_config.get("task_id"),
         f"{checks_config.get('task_id')}:{meta.get('form')}" if checks_config.get("task_id") and meta.get("form") else None,
@@ -287,13 +289,14 @@ def run_audit_case(
     force_harness_tb: bool,
 ) -> dict[str, Any]:
     meta = read_task_toml(task_dir)
+    task_index_id = read_task_index_id(task_dir)
     form = str(meta.get("form") or "")
     targets = read_task_artifact_targets(task_dir)
     checks_config = load_v3_checks_config(task_dir)
     checker_id = resolve_checker_id(task_dir, meta, checks_config)
     row: dict[str, Any] = {
         "task": task_dir.name,
-        "task_id": meta.get("id") or task_dir.name,
+        "task_id": meta.get("id") or task_index_id or task_dir.name,
         "form": form,
         "split": split,
         "variant": variant_label,

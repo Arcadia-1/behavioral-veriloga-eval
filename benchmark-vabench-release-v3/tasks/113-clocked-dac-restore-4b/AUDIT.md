@@ -1,22 +1,21 @@
-# Audit: 113-clocked-dac-restore-4b
+# Audit: 113 Clocked DAC Restore 4b
 
-- Status: source import certified
-- Source provenance: `wangxy/DAC_restore_4bit.va`
-- EVAS: PASS, checker `113-clocked-dac-restore-4b`
-- Spectre: PASS, mode AX via SUI direct
-- EVAS/Spectre parity: `passed`
-- Spectre checker note: vout=-0.844,-0.281,0.281,0.844 monotonic=True
-- Evidence:
-  - `WORK/source-import-pilot-evas/summary.json`
-  - `WORK/source-import-pilot-spectre/summary.json`
+Gate 1: `independent_l1_ready`. This is a clocked 4-bit mid-rise bipolar DAC
+restore model. It is not counted as merely another binary voltage DAC because
+the public behavior is sampled on the clock, uses a bipolar mid-rise transfer,
+and holds the reconstructed level between updates.
 
-## Four-Standard Review
+Gate 2: `cadence_modeling_ready`. The public prompt states the interface, bit
+order, rising-clock sampling, mid-rise half-LSB offset, nominal output range,
+hold behavior, transition smoothing, and voltage-only constraints. Current PR
+validation: EVAS gold PASS, Spectre AX hidden gold PASS, and EVAS/Spectre
+negatives rejected with no Spectre errors. Spectre emitted only
+environment/setup warnings.
 
-- Useful scenario: yes. This is a reusable source-derived voltage-domain primitive for converter/timing behavioral flows.
-- Reasonable task: yes. The public task is a single DUT with fixed port order and bounded scope.
-- Complete tests: yes for this import stage. Visible smoke compiles starter; hidden gold runs EVAS and Spectre on the same testbench with semantic checker.
-- Fair evaluation: yes. The checker samples stable windows after events and does not require raw timestep equality.
+Hidden/visible coverage: repaired in this PR. The hidden deck now uses a
+different monotonic code sequence from the visible smoke deck, so hidden
+coverage is no longer byte-identical to visible coverage.
 
-## Submit Decision
-
-Can submit: yes. This task passed visible smoke, EVAS hidden gold, Spectre AX hidden gold, and EVAS/Spectre parity.
+Checker coverage: `v3_clocked_dac_restore_4b` checks private stable samples
+against the public mid-rise transfer and rejects missing offset, reversed
+weights, compressed scale, wrong timing, and zero-output behavior.
