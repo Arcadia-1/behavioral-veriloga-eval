@@ -9640,154 +9640,104 @@ def check_v3_390_table_model_piecewise_calibrator(rows: list[dict[str, float]]) 
     return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.3, 0.25), (0.6, 0.65), (0.9, 0.9)])
 
 
-def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _check_v3_rdist_sequence(
+    rows: list[dict[str, float]],
+    metric_sequence: list[float],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.7379),
-                (180.0, 0.7056),
-                (280.0, 0.7062),
-                (380.0, 0.7017),
-            ],
-            "metric": [
-                (80.0, 3.7943),
-                (180.0, 0.5581),
-                (280.0, 0.6179),
-                (380.0, 0.1685),
-            ],
-        },
-        tol=0.05,
+
+    expected_metric = 0.0
+    expected_out = 0.0
+    metric_values: list[float] = [expected_metric]
+    out_values: list[float] = [expected_out]
+    edge_count = 0
+    edge_times: list[float] = []
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_times.append(row["time"])
+            if row["rst"] > 0.45:
+                expected_metric = 0.0
+                expected_out = 0.0
+            else:
+                if edge_count >= len(metric_sequence):
+                    return False, f"unexpected_extra_random_edge={edge_count + 1}"
+                expected_metric = metric_sequence[edge_count]
+                expected_out = row["vin"] + 0.01 * expected_metric
+                edge_count += 1
+        metric_values.append(expected_metric)
+        out_values.append(expected_out)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_metric = 0
+    checked_out = 0
+    max_metric_err = 0.0
+    max_out_err = 0.0
+    for index in range(0, len(rows), stride):
+        if any(0.0 <= rows[index]["time"] - edge_time <= 1.0e-9 for edge_time in edge_times):
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        metric_expected = metric_values[index]
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+        out_expected = out_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > max(0.02, tol):
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={max(0.02, tol):.4f}"
+                )
+
+    if edge_count != len(metric_sequence):
+        return False, f"random_edge_count={edge_count} expected={len(metric_sequence)}"
+    if checked_metric < 8 or checked_out < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
     )
+
+
+def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [3.7943, 0.5581, 0.6179, 0.1685], tol=0.05)
 
 
 def check_v3_392_rdist_poisson_count_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.73),
-                (180.0, 0.72),
-                (280.0, 0.70),
-                (380.0, 0.70),
-            ],
-            "metric": [
-                (80.0, 3.0),
-                (180.0, 2.0),
-                (280.0, 0.0),
-                (380.0, 0.0),
-            ],
-        },
-        tol=0.05,
-    )
+    return _check_v3_rdist_sequence(rows, [3.0, 2.0, 0.0, 0.0], tol=0.05)
 
 
 def check_v3_393_rdist_normal_offset_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.7001),
-                (180.0, 0.6998),
-                (280.0, 0.7006),
-                (380.0, 0.7003),
-            ],
-            "metric": [
-                (80.0, 0.0113),
-                (180.0, -0.0160),
-                (280.0, 0.0591),
-                (380.0, 0.0312),
-            ],
-        },
-        tol=0.008,
-    )
+    return _check_v3_rdist_sequence(rows, [0.0113, -0.0160, 0.0591, 0.0312], tol=0.008)
 
 
 def check_v3_394_rdist_chi_square_energy(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.7050),
-                (180.0, 0.7054),
-                (280.0, 0.7099),
-                (380.0, 0.7169),
-            ],
-            "metric": [
-                (80.0, 0.5044),
-                (180.0, 0.5387),
-                (280.0, 0.9852),
-                (380.0, 1.6858),
-            ],
-        },
-        tol=0.03,
-    )
+    return _check_v3_rdist_sequence(rows, [0.5044, 0.5387, 0.9852, 1.6858], tol=0.03)
 
 
 def check_v3_395_rdist_t_tail_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.6825),
-                (180.0, 0.7010),
-                (280.0, 0.7047),
-                (380.0, 0.6847),
-            ],
-            "metric": [
-                (80.0, -1.7540),
-                (180.0, 0.0963),
-                (280.0, 0.4683),
-                (380.0, -1.5343),
-            ],
-        },
-        tol=0.03,
-    )
+    return _check_v3_rdist_sequence(rows, [-1.7540, 0.0963, 0.4683, -1.5343], tol=0.03)
 
 
 def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.7109),
-                (180.0, 0.7109),
-                (280.0, 0.7051),
-                (380.0, 0.7026),
-            ],
-            "metric": [
-                (80.0, 1.0851),
-                (180.0, 1.0945),
-                (280.0, 0.5121),
-                (380.0, 0.2559),
-            ],
-        },
-        tol=0.03,
-    )
+    return _check_v3_rdist_sequence(rows, [1.0851, 1.0945, 0.5121, 0.2559], tol=0.03)
 
 
 def check_v3_397_hierarchy_gain_child(rows: list[dict[str, float]]) -> tuple[bool, str]:

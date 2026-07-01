@@ -49,7 +49,7 @@
           7
         ]
       ],
-      "visible_hidden_distinct_count": 24
+      "visible_hidden_distinct_count": 30
     },
     {
       "complete_tests_count": 24,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 53,
+    "sop_ready_visible_hidden_identical_count": 47,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 123,
-    "visible_hidden_identical_count": 71,
+    "visible_hidden_distinct_count": 129,
+    "visible_hidden_identical_count": 65,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 71
+      "visible_hidden_identical": 65
     }
   },
   "tasks": [
@@ -2312,11 +2312,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Exponential Jitter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2337,11 +2336,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Poisson Count Noise",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2362,11 +2360,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Normal Offset Dither",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2387,11 +2384,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Chi Square Energy",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2412,11 +2408,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist T Tail Dither",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2437,11 +2432,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Erlang Latency",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

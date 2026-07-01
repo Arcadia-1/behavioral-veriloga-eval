@@ -89,12 +89,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 388-table-model-dac-code-map,388,Table Model Dac Code Map,syntax-extension-candidate,table_model_dac_code_map.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 389-table-model-temperature-profile,389,Table Model Temperature Profile,syntax-extension-candidate,table_model_temperature_profile.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 390-table-model-piecewise-calibrator,390,Table Model Piecewise Calibrator,syntax-extension-candidate,table_model_piecewise_calibrator.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-391-rdist-exponential-jitter,391,Rdist Exponential Jitter,syntax-extension-candidate,rdist_exponential_jitter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-392-rdist-poisson-count-noise,392,Rdist Poisson Count Noise,syntax-extension-candidate,rdist_poisson_count_noise.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-393-rdist-normal-offset-dither,393,Rdist Normal Offset Dither,syntax-extension-candidate,rdist_normal_offset_dither.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-394-rdist-chi-square-energy,394,Rdist Chi Square Energy,syntax-extension-candidate,rdist_chi_square_energy.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-395-rdist-t-tail-dither,395,Rdist T Tail Dither,syntax-extension-candidate,rdist_t_tail_dither.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-396-rdist-erlang-latency,396,Rdist Erlang Latency,syntax-extension-candidate,rdist_erlang_latency.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+391-rdist-exponential-jitter,391,Rdist Exponential Jitter,syntax-extension-candidate,rdist_exponential_jitter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+392-rdist-poisson-count-noise,392,Rdist Poisson Count Noise,syntax-extension-candidate,rdist_poisson_count_noise.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+393-rdist-normal-offset-dither,393,Rdist Normal Offset Dither,syntax-extension-candidate,rdist_normal_offset_dither.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+394-rdist-chi-square-energy,394,Rdist Chi Square Energy,syntax-extension-candidate,rdist_chi_square_energy.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+395-rdist-t-tail-dither,395,Rdist T Tail Dither,syntax-extension-candidate,rdist_t_tail_dither.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+396-rdist-erlang-latency,396,Rdist Erlang Latency,syntax-extension-candidate,rdist_erlang_latency.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 397-hierarchy-gain-child,397,Hierarchy Gain Child,syntax-extension-candidate,hierarchy_gain_child.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 398-hierarchy-two-stage-chain,398,Hierarchy Two Stage Chain,syntax-extension-candidate,hierarchy_two_stage_chain.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 399-hierarchy-parameter-override,399,Hierarchy Parameter Override,syntax-extension-candidate,hierarchy_parameter_override.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready

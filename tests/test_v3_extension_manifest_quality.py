@@ -135,8 +135,8 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 123
-    assert len(identical_tasks) == 71
+    assert len(distinct_tasks) == 129
+    assert len(identical_tasks) == 65
     assert "331-above-threshold-latch" in identical_tasks
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks

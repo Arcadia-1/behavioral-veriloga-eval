@@ -2375,6 +2375,50 @@ def test_v3_table_model_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_task_clocked_rows(make_update(points), input_fn, wrong=True))[0]
 
 
+def _rdist_sequence_rows(metric_sequence: list[float], *, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vin_segments = [(0.0, 0.62), (100.0, 0.74), (200.0, 0.66), (300.0, 0.81)]
+    metric = 0.0
+    out = 0.0
+    prev_clk = 0.0
+    edge_count = 0
+    for idx in range(421):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in [50.0, 150.0, 250.0, 350.0]) else 0.0
+        vin = _task_input_from_segments(time_ns, vin_segments)
+        if prev_clk <= 0.45 < clk:
+            metric = metric_sequence[edge_count]
+            out = vin + 0.01 * metric
+            edge_count += 1
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "vin": vin,
+                "clk": clk,
+                "mode": 0.0,
+                "rst": 0.0,
+                "out": 0.0 if wrong else out,
+                "metric": 0.0 if wrong else metric,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_rdist_checkers_follow_hidden_vin_values() -> None:
+    cases = [
+        (sim.check_v3_391_rdist_exponential_jitter, [3.7943, 0.5581, 0.6179, 0.1685]),
+        (sim.check_v3_392_rdist_poisson_count_noise, [3.0, 2.0, 0.0, 0.0]),
+        (sim.check_v3_393_rdist_normal_offset_dither, [0.0113, -0.0160, 0.0591, 0.0312]),
+        (sim.check_v3_394_rdist_chi_square_energy, [0.5044, 0.5387, 0.9852, 1.6858]),
+        (sim.check_v3_395_rdist_t_tail_dither, [-1.7540, 0.0963, 0.4683, -1.5343]),
+        (sim.check_v3_396_rdist_erlang_latency, [1.0851, 1.0945, 0.5121, 0.2559]),
+    ]
+    for checker, sequence in cases:
+        assert checker(_rdist_sequence_rows(sequence))[0]
+        assert not checker(_rdist_sequence_rows(sequence, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
