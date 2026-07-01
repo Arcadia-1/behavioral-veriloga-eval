@@ -10858,14 +10858,41 @@
 467-simparam-query-tnom: |
   version: 1
   task_id: v3_467_simparam_query_tnom
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: simparam_query_tnom_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$simparam"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/simparam_query_tnom.va
+    negative:
+      - negative_variants/neg_001_force_zero/simparam_query_tnom.va
+      - negative_variants/neg_002_wrong_threshold/simparam_query_tnom.va
+      - negative_variants/neg_003_reset_bias/simparam_query_tnom.va
+      - negative_variants/neg_004_metric_offset/simparam_query_tnom.va
+      - negative_variants/neg_005_scale_output/simparam_query_tnom.va
+    checks:
+      - simparam_parse
+      - tnom_default_query
+      - output_reports_tnom_ratio
+      - metric_matches_output
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "$simparam tnom query behavior promoted to executable EVAS behavior candidate."
 468-branch-declaration-voltage-probe: |
   version: 1
   task_id: v3_468_branch_declaration_voltage_probe
