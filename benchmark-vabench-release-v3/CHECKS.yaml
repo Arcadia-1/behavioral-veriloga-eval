@@ -10950,7 +10950,7 @@
     must_include:
       - "ddt(V(out))"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Continuous-time/constraint task with executable source-driven testbench; ddt indirect-branch behavior remains outside ordinary event-level certification."
 473-attribute-potential-abstol-probe: |
   version: 1
   task_id: v3_473_attribute_potential_abstol_probe
