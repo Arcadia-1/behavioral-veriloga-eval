@@ -118,6 +118,29 @@ def test_all_v3_extension_visible_and_hidden_scs_are_executable_testbenches() ->
             assert missing == [], f"{task_key} {rel_path} missing SCS features {missing}"
 
 
+def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
+    distinct_tasks: list[str] = []
+    identical_tasks: list[str] = []
+    for task_key in extension_tasks():
+        visible = (TASK_ROOT / task_key / "test_visible" / "visible.scs").read_text(
+            encoding="utf-8",
+            errors="ignore",
+        )
+        hidden = (TASK_ROOT / task_key / "test_hidden" / "hidden.scs").read_text(
+            encoding="utf-8",
+            errors="ignore",
+        )
+        if visible == hidden:
+            identical_tasks.append(task_key)
+        else:
+            distinct_tasks.append(task_key)
+
+    assert len(distinct_tasks) == 74
+    assert len(identical_tasks) == 120
+    assert "331-above-threshold-latch" in identical_tasks
+    assert "397-hierarchy-gain-child" in distinct_tasks
+
+
 def negative_variants(task_key: str) -> list[dict]:
     manifest = json.loads(
         (TASK_ROOT / task_key / "negative_variants" / "manifest.json").read_text(

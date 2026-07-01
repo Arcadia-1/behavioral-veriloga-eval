@@ -33,6 +33,20 @@ def test_v3_layered_certification_counts_match_task_manifest() -> None:
     assert summary["tier_counts"] == dict(sorted(tier_counts.items()))
 
 
+def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    rows = sop_audit["tasks"]
+    summary = sop_audit["summary"]
+
+    distinct_rows = [row for row in rows if row["visible_hidden_distinct"]]
+    identical_rows = [row for row in rows if not row["visible_hidden_distinct"]]
+
+    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 74
+    assert summary["visible_hidden_identical_count"] == len(identical_rows) == 120
+    assert summary["warning_counts"]["visible_hidden_identical"] == 120
+    assert all("visible_hidden_identical" in row["warnings"] for row in identical_rows)
+
+
 def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))

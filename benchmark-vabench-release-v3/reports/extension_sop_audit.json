@@ -8,7 +8,8 @@
       "range": "301-340",
       "sop_ready_count": 40,
       "task_count": 40,
-      "top_issues": []
+      "top_issues": [],
+      "visible_hidden_distinct_count": 26
     },
     {
       "complete_tests_count": 20,
@@ -22,7 +23,8 @@
           "checker_syntax_only_no_behavior_score",
           1
         ]
-      ]
+      ],
+      "visible_hidden_distinct_count": 0
     },
     {
       "complete_tests_count": 12,
@@ -31,7 +33,8 @@
       "range": "361-372",
       "sop_ready_count": 12,
       "task_count": 12,
-      "top_issues": []
+      "top_issues": [],
+      "visible_hidden_distinct_count": 0
     },
     {
       "complete_tests_count": 62,
@@ -45,7 +48,8 @@
           "checker_syntax_only_no_behavior_score",
           7
         ]
-      ]
+      ],
+      "visible_hidden_distinct_count": 6
     },
     {
       "complete_tests_count": 24,
@@ -59,7 +63,8 @@
           "checker_syntax_only_no_behavior_score",
           16
         ]
-      ]
+      ],
+      "visible_hidden_distinct_count": 6
     },
     {
       "complete_tests_count": 12,
@@ -73,7 +78,8 @@
           "checker_syntax_only_no_behavior_score",
           4
         ]
-      ]
+      ],
+      "visible_hidden_distinct_count": 12
     },
     {
       "complete_tests_count": 24,
@@ -87,7 +93,8 @@
           "checker_syntax_only_no_behavior_score",
           13
         ]
-      ]
+      ],
+      "visible_hidden_distinct_count": 24
     }
   ],
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
@@ -99,7 +106,13 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "task_count": 194
+    "task_count": 194,
+    "visible_hidden_distinct_count": 74,
+    "visible_hidden_identical_count": 120,
+    "warning_counts": {
+      "candidate_tier_not_score_ready": 194,
+      "visible_hidden_identical": 120
+    }
   },
   "tasks": [
     {
@@ -120,6 +133,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Function Clamp Window",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -143,6 +157,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Function Deadband Map",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -166,6 +181,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Function Piecewise Gain",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -189,6 +205,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Function Code Normalizer",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -212,6 +229,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Function Soft Threshold",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -235,6 +253,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Case Mode Gain Selector",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -258,6 +277,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Case Priority Status Decoder",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -281,6 +301,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Case Quantized Output Level",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -304,6 +325,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Case Clocked Range Bucket",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -327,6 +349,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Case Resettable State Decoder",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -350,6 +373,7 @@
       "tier": "syntax-extension-candidate",
       "title": "For Loop Running Average",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -373,6 +397,7 @@
       "tier": "syntax-extension-candidate",
       "title": "For Loop Thermometer Count",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -396,6 +421,7 @@
       "tier": "syntax-extension-candidate",
       "title": "For Loop Weighted Accumulator",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -419,6 +445,7 @@
       "tier": "syntax-extension-candidate",
       "title": "For Loop Windowed Peak",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -442,6 +469,7 @@
       "tier": "syntax-extension-candidate",
       "title": "For Loop Code Popcount",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -465,6 +493,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Final Step Edge Counter File",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -488,6 +517,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Final Step Average Metric File",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -511,6 +541,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Final Step Max Observer File",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -534,6 +565,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Display Strobe Event Logger",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -557,6 +589,7 @@
       "tier": "syntax-extension-candidate",
       "title": "File Io Sampled Metric Writer",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -580,6 +613,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Slew Limited Voltage Follower",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -603,6 +637,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Slew Limited Mode Stepper",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -626,6 +661,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Slew Output Reset Recovery",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -649,6 +685,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Slew Limited Envelope",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -672,6 +709,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Slew Asymmetric Rise Fall",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -695,6 +733,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Phase Accumulator",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -718,9 +757,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Wrapped Ramp Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -741,9 +782,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Frequency Control",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -764,9 +807,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Modulo Phase Marker",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -787,9 +832,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Clock Phase Meter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -810,9 +857,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Threshold Latch",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -833,9 +882,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Window Qualifier",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -856,9 +907,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Last Crossing Period Meter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -879,9 +932,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Last Crossing Edge Age",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -902,9 +957,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Resettable Peak Marker",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -925,9 +982,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Directive Configurable Threshold",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -948,9 +1007,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Parameter Range Limited Gain",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -971,9 +1032,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Math Trig Envelope Detector",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -994,9 +1057,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Random Seeded Dither Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1017,9 +1082,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Bound Step Clock Guard",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1040,9 +1107,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Gain Pass Through",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1063,9 +1132,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Two Input Summer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1086,9 +1157,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Threshold Flag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1109,9 +1182,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Clamped Mux",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1132,9 +1207,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Scale Offset",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1155,9 +1232,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Inverter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1178,9 +1257,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign And Or",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1201,9 +1282,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Xor Flag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1224,9 +1307,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Priority Mux",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1247,9 +1332,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Reduction",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1270,9 +1357,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Posedged Dff",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1293,9 +1382,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Negedge Sampler",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1318,9 +1409,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Resettable Toggle",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1341,9 +1434,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Counter Two Bit",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1364,9 +1459,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Hold",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1387,9 +1484,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Logic Enable Voltage Driver",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1410,9 +1509,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Wreal To Electrical Buffer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1433,9 +1534,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Electrical Threshold Logic Flag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1456,9 +1559,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Logic Clocked Voltage Sampler",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1479,9 +1584,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Wreal Logic Select Driver",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1502,9 +1609,11 @@
       "tier": "noise-analysis-candidate",
       "title": "White Noise Voltage Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1525,9 +1634,11 @@
       "tier": "noise-analysis-candidate",
       "title": "White Noise Gated Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1548,9 +1659,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Flicker Noise Voltage Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1571,9 +1684,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Flicker Noise Corner Selector",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1594,9 +1709,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Noise Table Voltage Shaper",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1617,9 +1734,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Noise Table Gated Shaper",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1640,9 +1759,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Dependent Dc Tran Mode",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1663,9 +1784,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Dependent Noise Enable",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1686,9 +1809,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Ac Stim Small Signal Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1709,9 +1834,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Ac Stim Phase Selector",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1732,9 +1859,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Combined White Flicker Noise",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1755,9 +1884,11 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Aware Noise Metric",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1778,9 +1909,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Output Limiter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1801,9 +1934,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Dual Output Update",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1824,9 +1959,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Event Counter Service",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1847,9 +1984,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Reset Sequencer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1870,9 +2009,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Stateful Threshold Update",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1893,9 +2034,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Metric Normalizer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1916,9 +2059,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fgets Config Loader",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1939,9 +2084,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Feof Line Counter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1962,9 +2109,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fseek Offset Reader",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -1985,9 +2134,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Ftell Position Meter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2008,9 +2159,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Rewind Second Pass",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2031,9 +2184,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fopen Mode Selector",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2054,9 +2209,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Linear Gain",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2077,9 +2234,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Clamped Transfer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2100,9 +2259,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Threshold Map",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2123,9 +2284,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Dac Code Map",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2146,9 +2309,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Temperature Profile",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2169,9 +2334,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model Piecewise Calibrator",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2192,9 +2359,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Exponential Jitter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2215,9 +2384,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Poisson Count Noise",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2238,9 +2409,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Normal Offset Dither",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2261,9 +2434,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Chi Square Energy",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2284,9 +2459,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist T Tail Dither",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2307,9 +2484,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Erlang Latency",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2330,6 +2509,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Gain Child",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2353,6 +2533,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Two Stage Chain",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2376,6 +2557,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Parameter Override",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2399,6 +2581,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Named Port Map",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2422,6 +2605,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Ordered Port Map",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2445,6 +2629,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Shared Threshold Child",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -2468,9 +2653,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Bit Select Flag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2491,9 +2678,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Part Select Window",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2514,9 +2703,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Concat Code Build",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2537,9 +2728,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Replication Mask",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2560,9 +2753,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Reduction Parity",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2583,9 +2778,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Shift And Mask Decoder",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2606,9 +2803,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Macro Functionlike Clamp",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2631,9 +2830,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Macro Ifdef Gain Select",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2654,9 +2855,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Escaped Identifier State",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2677,9 +2880,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Initial Final Step Lifecycle",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2700,9 +2905,11 @@
       "tier": "syntax-extension-candidate",
       "title": "While Loop Array Sum",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2723,9 +2930,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Parameter Range Real Control",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2748,9 +2957,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Assign Slice",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2773,9 +2984,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Reduction Flag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2798,9 +3011,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Async Reset Counter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2823,9 +3038,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Saturating Counter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2846,9 +3063,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Logic Threshold Bridge",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2869,9 +3088,11 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Analog Digital Mode Latch",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2892,9 +3113,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Local Variable Transform",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2915,9 +3138,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Table Stimulus",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2938,9 +3163,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Profile Replay Controller",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2961,9 +3188,11 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Multi Column Profile",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -2984,9 +3213,11 @@
       "tier": "syntax-extension-candidate",
       "title": "String Swrite Label Builder",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3007,9 +3238,11 @@
       "tier": "syntax-extension-candidate",
       "title": "String Sformat Mode Tag",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3030,9 +3263,11 @@
       "tier": "syntax-extension-candidate",
       "title": "String Formatted Metric Line",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3053,9 +3288,11 @@
       "tier": "syntax-extension-candidate",
       "title": "String Mode Tagged Log",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3076,9 +3313,11 @@
       "tier": "syntax-extension-candidate",
       "title": "String Config Label Select",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3099,9 +3338,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Seed Reproducibility",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3124,9 +3365,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Support Artifact Staging",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3149,9 +3392,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Nested Parameter Chain",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3172,9 +3417,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Preprocessor Ifndef Elsif Undef",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3195,9 +3442,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Repeat Loop Accumulator",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3220,9 +3469,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Ddt Voltage Derivative Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3245,9 +3496,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Idt Voltage Integrator Source",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3270,9 +3523,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Nd Lowpass Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3295,9 +3550,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Np Pole Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3320,9 +3577,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Zd Zero Den Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3345,9 +3604,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Laplace Zp Zero Pole Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3370,9 +3631,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Nd Discrete Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3395,9 +3658,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Np Discrete Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3420,9 +3685,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Zd Discrete Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3445,9 +3712,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Zi Zp Discrete Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3468,9 +3737,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Limexp Soft Exponential",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3491,9 +3762,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Fstrobe File Line Writer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3514,9 +3787,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Display Warning Debug Log",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3537,9 +3812,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Uniform Seeded Dither",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3562,6 +3839,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Generate Genvar Replicated Stage",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3587,6 +3865,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Custom Nature Discipline Voltage",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3612,6 +3891,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Connectmodule Electrical Bridge",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3637,6 +3917,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Connectrules Electrical Map",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3662,6 +3943,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Specify Specparam Delay",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3685,9 +3967,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Multidimensional Array State",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3710,6 +3994,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Packed Logic Bus Slice",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3733,9 +4018,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Event Or Cross Timer",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3756,9 +4043,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Nested Function Pipeline",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3779,9 +4068,11 @@
       "tier": "syntax-extension-candidate",
       "title": "Recursive Function Candidate",
       "usable_scene": true,
+      "visible_hidden_distinct": false,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready"
+        "candidate_tier_not_score_ready",
+        "visible_hidden_identical"
       ]
     },
     {
@@ -3802,6 +4093,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Do While Loop Accumulator",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3825,6 +4117,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Analog Initial Block State",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3848,6 +4141,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Vt Thermal Voltage Source",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3871,6 +4165,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Vt Temperature Argument",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3894,6 +4189,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Discontinuity Event Announcement",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3919,6 +4215,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Param Given Gain Select",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3942,6 +4239,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Port Connected Output Enable",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3965,6 +4263,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Temperature Environment Metric",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -3988,6 +4287,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Simparam Query Tnom",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4013,6 +4313,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Branch Declaration Voltage Probe",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4038,6 +4339,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Current Contribution Conductance",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4063,6 +4365,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Branch Current Probe Contribution",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4088,6 +4391,7 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Null Balance",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4113,6 +4417,7 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Ddt Balance",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4136,6 +4441,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Attribute Potential Abstol Probe",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4159,6 +4465,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Generic Potential Access Function",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4182,6 +4489,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Generic Potential Contribution",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4207,6 +4515,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Oomr String Voltage Probe",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4232,6 +4541,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Analog Node Alias Initial",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4255,6 +4565,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Inherited Port Attribute Supply",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4278,6 +4589,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Inherited Mfactor Parameter",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4303,6 +4615,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Mfactor System Function Gain",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4328,6 +4641,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Resistor Instance",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4353,6 +4667,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Isource Instance",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4376,6 +4691,7 @@
       "tier": "cadence-simulator-function-candidate",
       "title": "Cds Violation Threshold Assert",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4399,6 +4715,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Rtoi Conversion Quantizer",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4422,6 +4739,7 @@
       "tier": "cadence-simulator-function-candidate",
       "title": "Mc Trial Number Metric",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4445,6 +4763,7 @@
       "tier": "cadence-simulator-function-candidate",
       "title": "Rf Source Info Registration",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4470,6 +4789,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model 2d Array Surface",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4495,6 +4815,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model String Param Source",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4518,6 +4839,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Event Nested Or Expression",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4541,6 +4863,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Event Task Function State Update",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4566,6 +4889,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Capacitor Ddt Current",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4591,6 +4915,7 @@
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Inductor Idt Voltage",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4616,6 +4941,7 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Laplace Nd Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"
@@ -4641,6 +4967,7 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Zi Nd Filter",
       "usable_scene": true,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
         "candidate_tier_not_score_ready"

@@ -110,6 +110,7 @@ def audit_task(slug: str, task: dict[str, Any], checks: dict[str, str]) -> dict[
     hidden_scs = sorted((task_dir / "test_hidden").glob("**/*.scs"))
     visible_text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in visible_scs)
     hidden_text = "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in hidden_scs)
+    visible_hidden_distinct = bool(visible_text and hidden_text and visible_text != hidden_text)
     check_text = checks.get(slug, "")
 
     issues: list[str] = []
@@ -158,6 +159,8 @@ def audit_task(slug: str, task: dict[str, Any], checks: dict[str, str]) -> dict[
         warnings.append("compile_scope_only")
     if str(task.get("tier", "")).endswith("candidate"):
         warnings.append("candidate_tier_not_score_ready")
+    if visible_text and hidden_text and not visible_hidden_distinct:
+        warnings.append("visible_hidden_identical")
 
     usable_scene = not any(issue in issues for issue in ("missing_instruction", "missing_target"))
     reasonable_task = "generic_prompt_template" not in issues and "missing_required_behavior_section" not in issues
@@ -177,6 +180,7 @@ def audit_task(slug: str, task: dict[str, Any], checks: dict[str, str]) -> dict[
         "starter_file_count": len(starter_files),
         "visible_scs_count": len(visible_scs),
         "hidden_scs_count": len(hidden_scs),
+        "visible_hidden_distinct": visible_hidden_distinct,
         "negative_count": neg_count,
         "usable_scene": usable_scene,
         "reasonable_task": reasonable_task,
@@ -195,6 +199,7 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         "title",
         "tier",
         "target",
+        "visible_hidden_distinct",
         "negative_count",
         "usable_scene",
         "reasonable_task",
@@ -227,6 +232,8 @@ def write_md(report: dict[str, Any]) -> None:
         f"- SOP-ready tasks: **{summary['sop_ready_count']}**",
         f"- Tasks with executable visible+hidden SCS evidence: **{summary['complete_tests_count']}**",
         f"- Tasks with behavior checker evidence: **{summary['fair_eval_count']}**",
+        f"- Tasks with distinct visible/hidden SCS stimuli: **{summary['visible_hidden_distinct_count']}**",
+        f"- Tasks with identical visible/hidden SCS stimuli: **{summary['visible_hidden_identical_count']}**",
         "",
         "## Issue Counts",
         "",
@@ -235,17 +242,24 @@ def write_md(report: dict[str, Any]) -> None:
         lines.append(f"- `{issue}`: {count}")
     lines.extend([
         "",
+        "## Warning Counts",
+        "",
+    ])
+    for warning, count in summary["warning_counts"].items():
+        lines.append(f"- `{warning}`: {count}")
+    lines.extend([
+        "",
         "## Range Summary",
         "",
-        "| Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Top Issues |",
-        "| --- | --- | ---: | ---: | ---: | ---: | --- |",
+        "| Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Distinct V/H | Top Issues |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
     ])
     for row in report["range_summary"]:
         top_issues = "<br>".join(f"`{issue}`: {count}" for issue, count in row["top_issues"])
         lines.append(
             f"| `{row['range']}` | {row['description']} | {row['task_count']} | "
             f"{row['sop_ready_count']} | {row['complete_tests_count']} | "
-            f"{row['fair_eval_count']} | {top_issues} |"
+            f"{row['fair_eval_count']} | {row['visible_hidden_distinct_count']} | {top_issues} |"
         )
     lines.extend([
         "",
@@ -277,6 +291,7 @@ def main() -> int:
         if task_number(slug) >= 301
     ]
     issue_counts = dict(sorted(Counter(issue for row in rows for issue in row["issues"]).items()))
+    warning_counts = dict(sorted(Counter(warning for row in rows for warning in row["warnings"]).items()))
     range_summary = []
     for start, end, description in RANGE_GROUPS:
         group_rows = [row for row in rows if start <= row["number"] <= end]
@@ -288,6 +303,7 @@ def main() -> int:
             "sop_ready_count": sum(row["sop_ready"] for row in group_rows),
             "complete_tests_count": sum(row["complete_tests"] for row in group_rows),
             "fair_eval_count": sum(row["fair_eval"] for row in group_rows),
+            "visible_hidden_distinct_count": sum(row["visible_hidden_distinct"] for row in group_rows),
             "top_issues": group_issues.most_common(5),
         })
     report = {
@@ -299,7 +315,15 @@ def main() -> int:
             "sop_ready_count": sum(row["sop_ready"] for row in rows),
             "complete_tests_count": sum(row["complete_tests"] for row in rows),
             "fair_eval_count": sum(row["fair_eval"] for row in rows),
+            "visible_hidden_distinct_count": sum(row["visible_hidden_distinct"] for row in rows),
+            "visible_hidden_identical_count": sum(
+                row["visible_scs_count"] > 0
+                and row["hidden_scs_count"] > 0
+                and not row["visible_hidden_distinct"]
+                for row in rows
+            ),
             "issue_counts": issue_counts,
+            "warning_counts": warning_counts,
         },
         "range_summary": range_summary,
         "tasks": rows,
