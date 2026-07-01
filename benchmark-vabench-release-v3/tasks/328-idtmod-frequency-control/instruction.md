@@ -19,9 +19,22 @@ module idtmod_frequency_control (
 
 ## Required Behavior
 
-Use idtmod() as a voltage-domain wrapped phase accumulator.
+Use `idtmod()` as a voltage-domain phase accumulator whose frequency is controlled by `vin` and `mode`.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a behavioral continuous-time task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `gain_q = 2.0e6` when `V(mode) > vth`, otherwise `1.0e6`
+- `freq_q = 0.5e6 + gain_q * V(vin)`
+- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0)`
+- while `V(rst) > vth`, drive both outputs to `0.0`
+- otherwise drive `out = 0.9 * phase_q`
+- otherwise drive `metric = 0.9` when `phase_q > 0.75`, else `0.0`
+
+The hidden testbench keeps `mode` high and steps `vin` from `0.1 V` to `0.6 V` around `400 ns`. The evaluator samples the ramp before and after the step to verify that `vin` changes the idtmod phase slope.
 
 ## Output
 

@@ -5704,9 +5704,10 @@
 328-idtmod-frequency-control: |
   version: 1
   task_id: v3_328_idtmod_frequency_control
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5720,8 +5721,25 @@
       - "idtmod("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    positive:
+      - solution/idtmod_frequency_control.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/idtmod_frequency_control.va
+      - negative_variants/neg_002_drive_metric_zero/idtmod_frequency_control.va
+      - negative_variants/neg_003_reset_polarity_wrong/idtmod_frequency_control.va
+      - negative_variants/neg_004_logic_threshold_shifted/idtmod_frequency_control.va
+      - negative_variants/neg_005_output_scale_low/idtmod_frequency_control.va
+    checks:
+      - idtmod_phase_slope_tracks_vin_step
+      - mode_selects_high_frequency_gain
+      - output_tracks_scaled_phase_voltage
+      - metric_marks_upper_phase_region
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 329-idtmod-modulo-phase-marker: |
   version: 1
   task_id: v3_329_idtmod_modulo_phase_marker
