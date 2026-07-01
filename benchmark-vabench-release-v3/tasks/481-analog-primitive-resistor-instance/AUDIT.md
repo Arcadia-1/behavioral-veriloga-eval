@@ -5,3 +5,5 @@
 - Required syntax focus: `Instantiate a Spectre analog resistor primitive inside a Verilog-A module.`
 - Certification scope: `language_extension_not_part_of_original_full_300_claim`
 - Tier: `kcl-syntax-candidate`
+- EVAS status: `primitive-instantiation smoke tests staged, but EVAS issue #54 blocks execution because resistor is treated as an unknown child module`
+- Blocking issue: `https://github.com/Arcadia-1/EVAS/issues/54`
