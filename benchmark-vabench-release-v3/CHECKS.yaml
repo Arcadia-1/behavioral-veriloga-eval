@@ -10363,16 +10363,20 @@
 450-custom-nature-discipline-voltage: |
   version: 1
   task_id: v3_450_custom_nature_discipline_voltage
-  backend: evas_rust_compile_capable
+  backend: verilogams_discipline_capable
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "nature"
+      - "discipline"
+      - "potential"
+      - "v3electrical"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Custom nature/discipline candidate staged pending EVAS custom discipline support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/46"
 451-connectmodule-electrical-bridge: |
   version: 1
   task_id: v3_451_connectmodule_electrical_bridge
