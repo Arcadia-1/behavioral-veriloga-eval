@@ -5,16 +5,16 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **149**
-- Tasks with executable visible+hidden SCS evidence: **178**
-- Tasks with behavior checker evidence: **150**
+- SOP-ready tasks: **150**
+- Tasks with executable visible+hidden SCS evidence: **179**
+- Tasks with behavior checker evidence: **151**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 44
-- `hidden_scs_not_executable:include,instance,source`: 15
-- `missing_required_behavior_section`: 10
-- `visible_scs_not_executable:include,instance,source`: 15
+- `checker_syntax_only_no_behavior_score`: 43
+- `hidden_scs_not_executable:include,instance,source`: 14
+- `missing_required_behavior_section`: 9
+- `visible_scs_not_executable:include,instance,source`: 14
 
 ## Range Summary
 
@@ -26,7 +26,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 8 | 15 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 9<br>`hidden_scs_not_executable:include,instance,source`: 9<br>`missing_required_behavior_section`: 9 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 9 | 16 | 9 | `checker_syntax_only_no_behavior_score`: 15<br>`visible_scs_not_executable:include,instance,source`: 8<br>`hidden_scs_not_executable:include,instance,source`: 8<br>`missing_required_behavior_section`: 8 |
 
 ## Highest Severity Finding
 
@@ -221,7 +221,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `483-cds-violation-threshold-assert` | `cadence-simulator-function-candidate` | True | - |
 | `484-rtoi-conversion-quantizer` | `syntax-extension-candidate` | True | - |
 | `485-mc-trial-number-metric` | `cadence-simulator-function-candidate` | True | - |
-| `486-rf-source-info-registration` | `cadence-simulator-function-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `486-rf-source-info-registration` | `cadence-simulator-function-candidate` | True | - |
 | `487-table-model-2d-array-surface` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `488-table-model-string-param-source` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `489-event-nested-or-expression` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

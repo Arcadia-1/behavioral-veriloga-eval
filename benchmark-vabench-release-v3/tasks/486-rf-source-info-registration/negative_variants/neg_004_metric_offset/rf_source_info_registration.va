@@ -8,6 +8,6 @@ analog begin
     @(initial_step) begin
         $cds_set_rf_source_info(fundname, freq);
     end
-    V(out) <+ transition(0.05 + V(in), 0.0, 200p, 200p);
+    V(out) <+ transition(0.05 + V(in) + freq / 1.0e10, 0.0, 200p, 200p);
 end
 endmodule

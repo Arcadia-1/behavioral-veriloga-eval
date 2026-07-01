@@ -11266,14 +11266,33 @@
 486-rf-source-info-registration: |
   version: 1
   task_id: v3_486_rf_source_info_registration
-  backend: evas_rust_compile_capable
-  status: cadence-simulator-function-candidate
-  checker: cadence_simulator_function_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rf_source_info_registration_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "$cds_set_rf_source_info"
+      - "parameter string fundname"
+      - "parameter real freq"
+  sim_correct:
+    positive:
+      - solution/rf_source_info_registration.va
+    negative:
+      - negative_variants/neg_001_force_zero/rf_source_info_registration.va
+      - negative_variants/neg_002_wrong_threshold/rf_source_info_registration.va
+      - negative_variants/neg_003_reset_bias/rf_source_info_registration.va
+      - negative_variants/neg_004_metric_offset/rf_source_info_registration.va
+      - negative_variants/neg_005_scale_output/rf_source_info_registration.va
+    checks:
+      - rf_source_info_call_parse
+      - frequency_offset_observable
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "RF source registration helper promoted with executable frequency-parameter behavior verification."
 487-table-model-2d-array-surface: |
   version: 1
   task_id: v3_487_table_model_2d_array_surface

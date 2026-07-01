@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "rf_source_info_registration.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.10 20n 0.10 21n 0.30 60n 0.30 61n 0.50 100n 0.50]
+
+XDUT (inp out) rf_source_info_registration
+
+tran tran stop=100n
+save inp out
