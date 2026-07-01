@@ -894,6 +894,11 @@ FINAL_STEP_MAX_METRIC_TASKS = {
     "318-final-step-max-observer-file",
 }
 
+SAMPLED_METRIC_WRITER_TASKS = {
+    "v3_320_file_io_sampled_metric_writer",
+    "320-file-io-sampled-metric-writer",
+}
+
 
 def _remove_stale_metric_file(task_id: str, run_dir: Path) -> None:
     for name in behavior_side_output_names(task_id):
@@ -950,6 +955,28 @@ def _parse_metric_time_token(token: str) -> float:
 
 
 def _validate_file_metric_output(task_id: str, run_dir: Path, csv_path: Path) -> tuple[bool, str] | None:
+    if task_id in SAMPLED_METRIC_WRITER_TASKS:
+        candidate_paths = []
+        for path in (run_dir / "samples.out", csv_path.parent / "samples.out"):
+            if path not in candidate_paths:
+                candidate_paths.append(path)
+        metric_path = next((path for path in candidate_paths if path.exists()), None)
+        if metric_path is None:
+            return False, "samples_file_missing"
+        text = metric_path.read_text(encoding="utf-8")
+        record_re = re.compile(
+            r"sample=([0-9]+)\s+value=([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s+metric=([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?:\s|n|$)"
+        )
+        matches = list(record_re.finditer(text))
+        expected = [(1, 0.18, 0.20), (2, 0.36, 0.40), (3, 0.72, 0.80), (4, 0.54, 0.60)]
+        if len(matches) != len(expected):
+            return False, f"samples_file_record_count={len(matches)} expected={len(expected)} text={text!r}"
+        parsed = [(int(match.group(1)), float(match.group(2)), float(match.group(3))) for match in matches]
+        for got, exp in zip(parsed, expected):
+            if got[0] != exp[0] or abs(got[1] - exp[1]) > 0.02 or abs(got[2] - exp[2]) > 0.02:
+                return False, f"samples_file_mismatch={parsed}"
+        return True, f"samples_file_records={len(parsed)}"
+
     if task_id in FINAL_STEP_MAX_METRIC_TASKS:
         candidate_paths = []
         for path in (run_dir / "candidate.out", csv_path.parent / "candidate.out"):
@@ -1044,6 +1071,8 @@ def validate_behavior_side_outputs(task_id: str, run_dir: Path, csv_path: Path) 
 
 
 def behavior_side_output_names(task_id: str) -> tuple[str, ...]:
+    if task_id in SAMPLED_METRIC_WRITER_TASKS:
+        return ("samples.out",)
     if task_id in FINAL_STEP_MAX_METRIC_TASKS:
         return ("candidate.out",)
     if task_id in FINAL_STEP_AVERAGE_METRIC_TASKS:
@@ -7096,6 +7125,21 @@ def check_v3_319_display_strobe_event_logger(rows: list[dict[str, float]]) -> tu
         {
             "out": [(7.0, 0.0), (27.0, 0.225), (47.0, 0.45), (67.0, 0.90), (87.0, 0.45)],
             "metric": [(7.0, 0.0), (27.0, 0.25), (47.0, 0.50), (67.0, 0.75), (87.0, 1.00)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_320_file_io_sampled_metric_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (27.0, 0.18), (47.0, 0.36), (67.0, 0.72), (87.0, 0.54)],
+            "metric": [(7.0, 0.0), (27.0, 0.20), (47.0, 0.40), (67.0, 0.80), (87.0, 0.60)],
         },
         tol=0.025,
     )
@@ -16036,6 +16080,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "318-final-step-max-observer-file": check_v3_318_final_step_max_observer_file,
     "v3_319_display_strobe_event_logger": check_v3_319_display_strobe_event_logger,
     "319-display-strobe-event-logger": check_v3_319_display_strobe_event_logger,
+    "v3_320_file_io_sampled_metric_writer": check_v3_320_file_io_sampled_metric_writer,
+    "320-file-io-sampled-metric-writer": check_v3_320_file_io_sampled_metric_writer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

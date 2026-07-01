@@ -5420,11 +5420,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 320-file-io-sampled-metric-writer: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_320_file_io_sampled_metric_writer
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_320_file_io_sampled_metric_writer
+    metric: sampled_file_io_sampled_metric_writer
   required_columns:
     - time
     - vin
@@ -5435,12 +5438,24 @@
     - metric
   syntax:
     must_include:
-      - "final_step"
+      - "$fopen"
       - "$fwrite"
+      - "final_step"
+      - "$fclose"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_clock_edge_does_not_write_sample
+      - post_reset_samples_drive_out
+      - metric_tracks_sample_normalized_by_vhi
+      - fwrite_emits_one_line_per_sample
+      - final_step_closes_samples_file
+      - samples_file_matches_hidden_sample_sequence
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 321-slew-limited-voltage-follower: |
   version: 1
   task_id: v3_321_slew_limited_voltage_follower

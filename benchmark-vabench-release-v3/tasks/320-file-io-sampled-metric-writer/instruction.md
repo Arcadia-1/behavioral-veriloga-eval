@@ -19,9 +19,25 @@ module file_io_sampled_metric_writer (
 
 ## Required Behavior
 
-Use final_step and file/display system tasks for a deterministic metric.
+Use file I/O system tasks to write one sampled metric record per accepted clock event.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+Use voltage-coded logic with `vth = 0.45` V and `vhi = 0.9` V.
+
+At `initial_step`, open a file named `samples.out` for writing. A rising `rst` event must clear the sample count, `out`, and `metric`.
+
+On each rising crossing of `clk` through `vth` while reset is low:
+
+- increment `count_q`
+- sample `vin`
+- drive `out = vin`
+- drive `metric = vin / vhi`, capped to `[0, 1]`
+- write exactly one line to `samples.out` using `$fwrite`:
+
+```text
+sample=<integer> value=<real> metric=<real>
+```
+
+During `@(final_step)`, close the file with `$fclose`. The first hidden clock edge occurs while reset is high and must not write a sample record. Four later post-reset samples must write the values `0.18`, `0.36`, `0.72`, and `0.54`, with metrics `0.20`, `0.40`, `0.80`, and `0.60`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

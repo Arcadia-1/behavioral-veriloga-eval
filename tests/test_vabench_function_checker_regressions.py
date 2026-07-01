@@ -1313,6 +1313,64 @@ def test_final_step_max_metric_side_output_requires_max_record(tmp_path: Path) -
     assert "candidate_file_count=4" in note
 
 
+def test_sampled_metric_writer_side_output_requires_four_sample_records(tmp_path: Path) -> None:
+    csv_path = tmp_path / "out" / "tran.csv"
+    csv_path.parent.mkdir()
+    csv_path.write_text("time,vin,clk,mode,rst,out,metric\n", encoding="utf-8")
+
+    missing_ok, missing_note = sim.validate_behavior_side_outputs(
+        "v3_320_file_io_sampled_metric_writer",
+        tmp_path,
+        csv_path,
+    )
+    assert not missing_ok
+    assert missing_note == "samples_file_missing"
+
+    (tmp_path / "samples.out").write_text(
+        "sample=1 value=0.180 metric=0.200\n"
+        "sample=2 value=0.360 metric=0.400\n"
+        "sample=3 value=0.720 metric=0.800\n",
+        encoding="utf-8",
+    )
+    short_ok, short_note = sim.validate_behavior_side_outputs(
+        "v3_320_file_io_sampled_metric_writer",
+        tmp_path,
+        csv_path,
+    )
+    assert not short_ok
+    assert "samples_file_record_count=3" in short_note
+
+    (tmp_path / "samples.out").write_text(
+        "sample=1 value=0.180 metric=0.200\n"
+        "sample=2 value=0.360 metric=0.400\n"
+        "sample=3 value=0.720 metric=0.800\n"
+        "sample=4 value=0.540 metric=0.600\n",
+        encoding="utf-8",
+    )
+    ok, note = sim.validate_behavior_side_outputs(
+        "v3_320_file_io_sampled_metric_writer",
+        tmp_path,
+        csv_path,
+    )
+    assert ok
+    assert "samples_file_records=4" in note
+
+    (tmp_path / "samples.out").write_text(
+        "sample=1 value=0.180 metric=0.200n"
+        "sample=2 value=0.360 metric=0.400n"
+        "sample=3 value=0.720 metric=0.800n"
+        "sample=4 value=0.540 metric=0.600n",
+        encoding="utf-8",
+    )
+    evas_ok, evas_note = sim.validate_behavior_side_outputs(
+        "v3_320_file_io_sampled_metric_writer",
+        tmp_path,
+        csv_path,
+    )
+    assert evas_ok
+    assert "samples_file_records=4" in evas_note
+
+
 def _gain_trim_rows(*, cap_upper: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     ctrl = 0.30
