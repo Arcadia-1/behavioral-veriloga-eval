@@ -1,7 +1,13 @@
-module mixed_logic_clocked_voltage_sampler(a, b, sel, y);
-    input a, b, sel;
-    output y;
-    wreal a, b, sel, y;
-    // TODO: implement the requested Verilog-AMS mixed-signal behavior.
-    assign y = 0.0;
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mixed_logic_clocked_voltage_sampler(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+    logic sampled;
+    parameter real tr = 200p;
+    // TODO: implement the requested clocked mixed-signal sampler.
 endmodule

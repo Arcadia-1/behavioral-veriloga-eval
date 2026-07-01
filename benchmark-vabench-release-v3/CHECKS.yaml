@@ -6877,18 +6877,48 @@
 359-mixed-logic-clocked-voltage-sampler: |
   version: 1
   task_id: v3_359_mixed_logic_clocked_voltage_sampler
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_mixed_signal_voltage_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - en
+    - sel
+    - a
+    - b
+    - vout
   syntax:
     must_include:
       - "wreal"
       - "logic"
       - "always"
+      - "posedge clk"
+      - "V(vout)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/mixed_logic_clocked_voltage_sampler.vams
+    negative:
+      - negative_variants/neg_001_force_zero/mixed_logic_clocked_voltage_sampler.vams
+      - negative_variants/neg_002_invert_select/mixed_logic_clocked_voltage_sampler.vams
+      - negative_variants/neg_003_drop_reset/mixed_logic_clocked_voltage_sampler.vams
+      - negative_variants/neg_004_wrong_edge/mixed_logic_clocked_voltage_sampler.vams
+      - negative_variants/neg_005_scale_low/mixed_logic_clocked_voltage_sampler.vams
+    checks:
+      - mixed_electrical_output_trace
+      - always_posedge_samples_logic_enable
+      - sampled_low_holds_output_zero_after_en_rises
+      - sampled_high_enables_vin_after_next_clock
+      - sampled_high_holds_after_en_falls_until_clock
+      - sampled_low_disables_until_next_clock
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 360-mixed-wreal-logic-select-driver: |
   version: 1
   task_id: v3_360_mixed_wreal_logic_select_driver
