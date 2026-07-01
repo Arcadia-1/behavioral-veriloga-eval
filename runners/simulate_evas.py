@@ -8030,6 +8030,26 @@ def check_v3_359_mixed_logic_clocked_voltage_sampler(rows: list[dict[str, float]
     )
 
 
+def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "vout": [
+                (80.0, 0.8),
+                (150.0, 0.25),
+                (220.0, 0.7),
+                (360.0, 0.15),
+                (500.0, 0.35),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17043,6 +17063,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "358-mixed-electrical-threshold-logic-flag": check_v3_358_mixed_electrical_threshold_logic_flag,
     "v3_359_mixed_logic_clocked_voltage_sampler": check_v3_359_mixed_logic_clocked_voltage_sampler,
     "359-mixed-logic-clocked-voltage-sampler": check_v3_359_mixed_logic_clocked_voltage_sampler,
+    "v3_360_mixed_wreal_logic_select_driver": check_v3_360_mixed_wreal_logic_select_driver,
+    "360-mixed-wreal-logic-select-driver": check_v3_360_mixed_wreal_logic_select_driver,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -1,4 +1,16 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "mixed_wreal_logic_select_driver.vams"
+
+Vvin (vin 0) vsource dc=0.0
+Vclk (clk 0) vsource dc=0.0
+Ven (en 0) vsource dc=1.0
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 119n 0.0 120n 1.0 319n 1.0 320n 0.0 459n 0.0 460n 1.0 600n 1.0]
+Va (a 0) vsource type=pwl wave=[0 0.25 179n 0.25 180n 0.70 419n 0.70 420n 0.35 600n 0.35]
+Vb (b 0) vsource type=pwl wave=[0 0.80 259n 0.80 260n 0.15 600n 0.15]
+
+XDUT (vin clk en sel a b vout) mixed_wreal_logic_select_driver
+
+tran tran stop=600n
+save vin clk en sel a b vout
