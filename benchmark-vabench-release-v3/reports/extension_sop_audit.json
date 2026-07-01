@@ -9,7 +9,7 @@
       "sop_ready_count": 40,
       "task_count": 40,
       "top_issues": [],
-      "visible_hidden_distinct_count": 36
+      "visible_hidden_distinct_count": 40
     },
     {
       "complete_tests_count": 20,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 5,
+    "sop_ready_visible_hidden_identical_count": 1,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 172,
-    "visible_hidden_identical_count": 22,
+    "visible_hidden_distinct_count": 176,
+    "visible_hidden_identical_count": 18,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 22
+      "visible_hidden_identical": 18
     }
   },
   "tasks": [
@@ -759,11 +759,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Wrapped Ramp Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -784,11 +783,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Frequency Control",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -809,11 +807,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Modulo Phase Marker",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -834,11 +831,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Idtmod Clock Phase Meter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

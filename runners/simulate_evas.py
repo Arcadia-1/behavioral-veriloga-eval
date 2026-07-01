@@ -7272,6 +7272,24 @@ def _check_v3_expected_trace(
     )
 
 
+def _v3_integrated_mod_phase_values(
+    rows: list[dict[str, float]],
+    *,
+    freq_fn,
+    modulus: float,
+) -> list[float]:
+    phase = 0.0
+    phases = [phase]
+    for prev, row in zip(rows, rows[1:]):
+        dt = max(0.0, row["time"] - prev["time"])
+        if prev.get("rst", 0.0) <= 0.45 and row.get("rst", 0.0) <= 0.45:
+            f0 = freq_fn(prev)
+            f1 = freq_fn(row)
+            phase = (phase + 0.5 * (f0 + f1) * dt) % modulus
+        phases.append(phase)
+    return phases
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -7806,28 +7824,23 @@ def check_v3_327_idtmod_wrapped_ramp_source(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (200.0, 0.135),
-                (300.0, 0.270),
-                (500.0, 0.540),
-                (550.0, 0.6075),
-                (750.0, 0.8775),
-                (820.0, 0.054),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (300.0, 0.0),
-                (450.0, 0.0),
-                (550.0, 0.9),
-                (750.0, 0.9),
-                (820.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.75e6 + 1.5e6 * row["vin"],
+        modulus=1.0,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase > row["mode"] else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7836,26 +7849,23 @@ def check_v3_328_idtmod_frequency_control(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (200.0, 0.126),
-                (400.0, 0.252),
-                (500.0, 0.405),
-                (650.0, 0.6345),
-                (720.0, 0.7416),
-                (850.0, 0.0405),
-            ],
-            "metric": [
-                (200.0, 0.0),
-                (500.0, 0.0),
-                (650.0, 0.0),
-                (720.0, 0.9),
-                (850.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.5e6 + (2.0e6 if row["mode"] > 0.45 else 1.0e6) * row["vin"],
+        modulus=1.0,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase > 0.75 else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7864,27 +7874,23 @@ def check_v3_329_idtmod_modulo_phase_marker(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (20.0, 0.054),
-                (100.0, 0.270),
-                (300.0, 0.810),
-                (350.0, 0.045),
-                (500.0, 0.450),
-                (680.0, 0.036),
-            ],
-            "metric": [
-                (20.0, 0.9),
-                (100.0, 0.0),
-                (300.0, 0.0),
-                (350.0, 0.9),
-                (500.0, 0.0),
-                (680.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.5e6 + 0.5e6 * row["vin"],
+        modulus=0.25,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase / 0.25 for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase < (0.05 if row["mode"] > 0.45 else 0.025) else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7893,25 +7899,38 @@ def check_v3_330_idtmod_clock_phase_meter(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (110.0, 0.130),
-                (310.0, 0.391),
-                (510.0, 0.652),
-                (710.0, 0.013),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (110.0, 0.0),
-                (310.0, 0.0),
-                (510.0, 0.9),
-                (710.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 1.25e6 + 0.5e6 * row["vin"],
+        modulus=1.0,
+    )
+    sample = 0.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_clk = rows[0]["clk"]
+    for row, phase in zip(rows, phases):
+        if prev_clk <= 0.45 < row["clk"]:
+            if row["rst"] > 0.45:
+                sample = 0.0
+                metric = 0.0
+            else:
+                sample = phase
+                metric = 0.9 if sample > row["mode"] else 0.0
+            last_change = row["time"]
+        out_values.append(0.9 * sample)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_clk = row["clk"]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
+        tol=0.09,
     )
 
 

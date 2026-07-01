@@ -41,11 +41,11 @@ def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
     distinct_rows = [row for row in rows if row["visible_hidden_distinct"]]
     identical_rows = [row for row in rows if not row["visible_hidden_distinct"]]
 
-    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 172
-    assert summary["visible_hidden_identical_count"] == len(identical_rows) == 22
-    assert summary["sop_ready_visible_hidden_identical_count"] == 5
+    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 176
+    assert summary["visible_hidden_identical_count"] == len(identical_rows) == 18
+    assert summary["sop_ready_visible_hidden_identical_count"] == 1
     assert summary["staged_visible_hidden_identical_count"] == 17
-    assert summary["warning_counts"]["visible_hidden_identical"] == 22
+    assert summary["warning_counts"]["visible_hidden_identical"] == 18
     assert all("visible_hidden_identical" in row["warnings"] for row in identical_rows)
 
 

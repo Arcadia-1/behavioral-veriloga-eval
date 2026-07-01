@@ -3044,6 +3044,118 @@ def test_v3_above_last_crossing_checkers_follow_hidden_events() -> None:
         assert not checker(make_rows(vin_segments, rst_segments, model_fn, stop_ns=stop_ns, wrong=True))[0]
 
 
+def test_v3_idtmod_phase_checkers_follow_hidden_waveforms() -> None:
+    def base_rows(vin_segments, mode_segments, rst_segments, clk_segments=None, *, stop_ns: int = 900) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(stop_ns + 1):
+            time_ns = float(idx)
+            rows.append(
+                {
+                    "time": time_ns * 1e-9,
+                    "vin": _task_input_from_segments(time_ns, vin_segments),
+                    "clk": _task_input_from_segments(time_ns, clk_segments or [(0.0, 0.0)]),
+                    "mode": _task_input_from_segments(time_ns, mode_segments),
+                    "rst": _task_input_from_segments(time_ns, rst_segments),
+                    "out": 0.0,
+                    "metric": 0.0,
+                }
+            )
+        return rows
+
+    def fill_continuous(rows, freq_fn, metric_fn, *, modulus=1.0, wrong: bool = False):
+        phases = sim._v3_integrated_mod_phase_values(rows, freq_fn=freq_fn, modulus=modulus)
+        for row, phase in zip(rows, phases):
+            if row["rst"] > 0.45:
+                out = 0.0
+                metric = 0.0
+            else:
+                out = 0.9 * phase / modulus
+                metric = metric_fn(row, phase)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+        return rows
+
+    rows_327 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.30), (250.0, 0.70), (550.0, 0.45)],
+            [(0.0, 0.55)],
+            [(0.0, 0.9), (80.0, 0.0), (650.0, 0.9), (700.0, 0.0)],
+        ),
+        lambda row: 0.75e6 + 1.5e6 * row["vin"],
+        lambda row, phase: 0.9 if phase > row["mode"] else 0.0,
+        wrong=wrong,
+    )
+    rows_328 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.25), (300.0, 0.55), (600.0, 0.15)],
+            [(0.0, 0.0), (350.0, 0.9), (750.0, 0.0)],
+            [(0.0, 0.0)],
+        ),
+        lambda row: 0.5e6 + (2.0e6 if row["mode"] > 0.45 else 1.0e6) * row["vin"],
+        lambda _row, phase: 0.9 if phase > 0.75 else 0.0,
+        wrong=wrong,
+    )
+    rows_329 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.20), (200.0, 0.80), (500.0, 0.35)],
+            [(0.0, 0.9), (250.0, 0.0), (550.0, 0.9)],
+            [(0.0, 0.0)],
+            stop_ns=750,
+        ),
+        lambda row: 0.5e6 + 0.5e6 * row["vin"],
+        lambda row, phase: 0.9 if phase < (0.05 if row["mode"] > 0.45 else 0.025) else 0.0,
+        modulus=0.25,
+        wrong=wrong,
+    )
+
+    def rows_330(wrong: bool = False):
+        rows = base_rows(
+            [(0.0, 0.20), (250.0, 0.65), (550.0, 0.35)],
+            [(0.0, 0.55)],
+            [(0.0, 0.0)],
+            [
+                (0.0, 0.0),
+                (120.0, 0.9),
+                (146.0, 0.0),
+                (280.0, 0.9),
+                (306.0, 0.0),
+                (460.0, 0.9),
+                (486.0, 0.0),
+                (640.0, 0.9),
+                (666.0, 0.0),
+                (740.0, 0.9),
+                (766.0, 0.0),
+            ],
+            stop_ns=780,
+        )
+        phases = sim._v3_integrated_mod_phase_values(
+            rows,
+            freq_fn=lambda row: 1.25e6 + 0.5e6 * row["vin"],
+            modulus=1.0,
+        )
+        sample = 0.0
+        metric = 0.0
+        prev_clk = rows[0]["clk"]
+        for row, phase in zip(rows, phases):
+            if prev_clk <= 0.45 < row["clk"]:
+                sample = phase
+                metric = 0.9 if sample > row["mode"] else 0.0
+            row["out"] = 0.0 if wrong else 0.9 * sample
+            row["metric"] = 0.0 if wrong else metric
+            prev_clk = row["clk"]
+        return rows
+
+    cases = [
+        (sim.check_v3_327_idtmod_wrapped_ramp_source, rows_327),
+        (sim.check_v3_328_idtmod_frequency_control, rows_328),
+        (sim.check_v3_329_idtmod_modulo_phase_marker, rows_329),
+        (sim.check_v3_330_idtmod_clock_phase_meter, rows_330),
+    ]
+    for checker, make_rows in cases:
+        assert checker(make_rows())[0]
+        assert not checker(make_rows(wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
