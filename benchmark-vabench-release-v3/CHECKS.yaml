@@ -6705,8 +6705,8 @@
 422-file-fscanf-table-stimulus: |
   version: 1
   task_id: v3_422_file_fscanf_table_stimulus
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6731,8 +6731,8 @@
 424-file-fscanf-multi-column-profile: |
   version: 1
   task_id: v3_424_file_fscanf_multi_column_profile
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6757,8 +6757,8 @@
 426-string-sformat-mode-tag: |
   version: 1
   task_id: v3_426_string_sformat_mode_tag
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6783,8 +6783,8 @@
 428-string-mode-tagged-log: |
   version: 1
   task_id: v3_428_string_mode_tagged_log
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6796,8 +6796,8 @@
 429-string-config-label-select: |
   version: 1
   task_id: v3_429_string_config_label_select
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6861,8 +6861,8 @@
 434-repeat-loop-accumulator: |
   version: 1
   task_id: v3_434_repeat_loop_accumulator
-  backend: evas_unsupported_pending_issue_30
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6871,3 +6871,328 @@
       - "I("
   notes:
     - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+435-ddt-voltage-derivative-source: |
+  version: 1
+  task_id: v3_435_ddt_voltage_derivative_source
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "ddt("
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+436-idt-voltage-integrator-source: |
+  version: 1
+  task_id: v3_436_idt_voltage_integrator_source
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "idt("
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+437-laplace-nd-lowpass-filter: |
+  version: 1
+  task_id: v3_437_laplace_nd_lowpass_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "laplace_nd"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+438-laplace-np-pole-filter: |
+  version: 1
+  task_id: v3_438_laplace_np_pole_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "laplace_np"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+439-laplace-zd-zero-den-filter: |
+  version: 1
+  task_id: v3_439_laplace_zd_zero_den_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "laplace_zd"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+440-laplace-zp-zero-pole-filter: |
+  version: 1
+  task_id: v3_440_laplace_zp_zero_pole_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "laplace_zp"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+441-zi-nd-discrete-filter: |
+  version: 1
+  task_id: v3_441_zi_nd_discrete_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "zi_nd"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+442-zi-np-discrete-filter: |
+  version: 1
+  task_id: v3_442_zi_np_discrete_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "zi_np"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+443-zi-zd-discrete-filter: |
+  version: 1
+  task_id: v3_443_zi_zd_discrete_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "zi_zd"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+444-zi-zp-discrete-filter: |
+  version: 1
+  task_id: v3_444_zi_zp_discrete_filter
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "zi_zp"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+445-limexp-soft-exponential: |
+  version: 1
+  task_id: v3_445_limexp_soft_exponential
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "limexp"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+446-fstrobe-file-line-writer: |
+  version: 1
+  task_id: v3_446_fstrobe_file_line_writer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fstrobe"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+447-display-warning-debug-log: |
+  version: 1
+  task_id: v3_447_display_warning_debug_log
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$display"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+448-rdist-uniform-seeded-dither: |
+  version: 1
+  task_id: v3_448_rdist_uniform_seeded_dither
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_uniform"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+449-generate-genvar-replicated-stage: |
+  version: 1
+  task_id: v3_449_generate_genvar_replicated_stage
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "genvar"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+450-custom-nature-discipline-voltage: |
+  version: 1
+  task_id: v3_450_custom_nature_discipline_voltage
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "nature"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+451-connectmodule-electrical-bridge: |
+  version: 1
+  task_id: v3_451_connectmodule_electrical_bridge
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "connectmodule"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+452-connectrules-electrical-map: |
+  version: 1
+  task_id: v3_452_connectrules_electrical_map
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "connectrules"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+453-specify-specparam-delay: |
+  version: 1
+  task_id: v3_453_specify_specparam_delay
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "specify"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+454-multidimensional-array-state: |
+  version: 1
+  task_id: v3_454_multidimensional_array_state
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "[0:1][0:1]"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+455-packed-logic-bus-slice: |
+  version: 1
+  task_id: v3_455_packed_logic_bus_slice
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "logic [7:0]"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+456-event-or-cross-timer: |
+  version: 1
+  task_id: v3_456_event_or_cross_timer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - " or timer"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+457-nested-function-pipeline: |
+  version: 1
+  task_id: v3_457_nested_function_pipeline
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "f2("
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+458-recursive-function-candidate: |
+  version: 1
+  task_id: v3_458_recursive_function_candidate
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "fact("
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+459-do-while-loop-accumulator: |
+  version: 1
+  task_id: v3_459_do_while_loop_accumulator
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "do begin"
+    must_not_include:
+      - "I("
+  notes:
+    - "Manual language gap-fill task; row compiles with current local EVAS."

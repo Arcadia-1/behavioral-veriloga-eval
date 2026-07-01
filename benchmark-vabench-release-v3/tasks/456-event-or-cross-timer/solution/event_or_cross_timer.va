@@ -1,0 +1,17 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module event_or_cross_timer(input electrical vin, input electrical clk, output electrical out, output electrical metric);
+parameter real vth = 0.45;
+parameter real tr = 200p;
+real out_v;
+integer event_count;
+analog begin
+    @(initial_step) begin out_v = 0.0; event_count = 0; end
+    @(cross(V(clk) - vth, +1) or timer(1n, 1n)) begin
+        out_v = V(vin);
+        event_count = event_count + 1;
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(event_count, 0.0, tr, tr);
+end
+endmodule

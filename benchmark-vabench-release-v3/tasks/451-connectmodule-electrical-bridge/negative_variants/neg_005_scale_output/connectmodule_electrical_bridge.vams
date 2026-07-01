@@ -1,0 +1,6 @@
+connectmodule connectmodule_electrical_bridge(input electrical a, output electrical y);
+    parameter real gain = 1.0;
+    analog begin
+        V(y) <+ (0.5 * (gain * V(a)));
+    end
+endconnectmodule

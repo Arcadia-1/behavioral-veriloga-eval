@@ -1,0 +1,14 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module recursive_function_candidate(output electrical out);
+function real fact;
+    input integer n;
+    begin
+        if (n <= 1) fact = 1.0;
+        else fact = n * fact(n - 1);
+    end
+endfunction
+analog begin
+    V(out) <+ (0.5 * (fact(3)));
+end
+endmodule

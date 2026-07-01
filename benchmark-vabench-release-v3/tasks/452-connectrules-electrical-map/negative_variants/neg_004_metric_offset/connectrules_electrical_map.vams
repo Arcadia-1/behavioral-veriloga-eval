@@ -1,0 +1,12 @@
+connectrules connectrules_electrical_map_rules;
+    connect electrical electrical connectrules_electrical_map_bridge;
+endconnectrules
+
+connectmodule connectrules_electrical_map_bridge(input electrical a, output electrical y);
+    analog begin
+        V(y) <+ ((V(a)) + 0.125);
+    end
+endconnectmodule
+
+module connectrules_electrical_map();
+endmodule

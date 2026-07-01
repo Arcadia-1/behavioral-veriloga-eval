@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Force output low after otherwise plausible computation.",
+      "files": [
+        "neg_001_force_zero/specify_specparam_delay.vams"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "files": [
+        "neg_002_wrong_threshold/specify_specparam_delay.vams"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "files": [
+        "neg_003_reset_bias/specify_specparam_delay.vams"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "files": [
+        "neg_004_metric_offset/specify_specparam_delay.vams"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "files": [
+        "neg_005_scale_output/specify_specparam_delay.vams"
+      ]
+    }
+  ]
+}

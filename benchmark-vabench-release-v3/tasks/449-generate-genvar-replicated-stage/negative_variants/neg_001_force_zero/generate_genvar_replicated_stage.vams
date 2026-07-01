@@ -1,0 +1,12 @@
+module generate_genvar_replicated_stage(input a, output y);
+    wreal a;
+    wreal y;
+    wreal stage[0:0];
+    genvar i;
+    generate
+        for (i = 0; i < 1; i = i + 1) begin: g_stage
+            assign stage[i] = a;
+        end
+    endgenerate
+    assign y = 0.0;
+endmodule

@@ -1,0 +1,15 @@
+`include "constants.vams"
+`include "disciplines.vams"
+module nested_function_pipeline(input electrical vin, output electrical out);
+function real f2;
+    input real x;
+    begin f2 = x * x; end
+endfunction
+function real f1;
+    input real x;
+    begin f1 = f2(x) + 1.0; end
+endfunction
+analog begin
+    V(out) <+ f1(V(vin));
+end
+endmodule

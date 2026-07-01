@@ -44,6 +44,13 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   combined file replay, string formatting with `$swrite()` / `$sformat()`,
   seed reproducibility, staged hierarchy, `ifndef` / `elsif` / `undef`, and
   `repeat` loops.
+- `435`-`458`: manual syntax-completion rows for `ddt()`, `idt()`, Laplace
+  filters, Z-domain filters, `limexp()`, `$fstrobe()`, system output calls,
+  `$rdist_uniform()`, `generate` / `genvar`, custom nature/discipline,
+  `connectmodule` / `connectrules`, `specify` / `specparam`, multi-dimensional
+  arrays, packed bus declarations, analog event-or expressions, nested
+  functions, and recursive function candidates.
+- `459`: explicit `do ... while` control-flow candidate.
 
 Each extension task contains:
 
@@ -73,20 +80,22 @@ Current local EVAS compile status after this expansion:
 - `422`, `424`, `426`, `428`, `429`, and `434`: intentionally
   retained as `evas-unsupported-candidate` rows so the benchmark records manual
   syntax gaps even before EVAS supports them.
+- `446`, `447`, `448`, `449`, `450`, `452`, `453`, `455`, `456`, and `457`:
+  additional syntax-completion rows that compile with current local EVAS.
+- `435`-`445`, `451`, `454`, and `458`: intentionally retained as
+  `evas-unsupported-candidate` rows for dynamic operators, transfer functions,
+  `connectmodule`, multi-dimensional arrays, and recursive functions.
+- `459`: additional control-flow row that compiles with current local EVAS.
 - `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
   longer inside conditionally executed `analysis()` branches.
 
 ## Remaining Language Gaps Worth Tracking
 
-Tracked upstream in EVAS issue #30.
+Tracked upstream in EVAS issues #31, #32, and #33.
 
 The newly added rows avoid current-domain KCL and still leave some manual
 features as future work:
 
-- `$fscanf()` backend execution.
-- `$sformat()` string formatting backend execution.
-- `repeat` and `do ... while` loop syntax.
-- `$rdist_uniform()` backend execution.
 - richer multi-dimensional `$table_model()` behavior certification.
-- broader AMS connect-module/connect-rule semantics.
+- broader AMS `connectmodule` semantics.
 - AC/noise behavior certification beyond compile-level helper coverage.

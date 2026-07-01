@@ -1,0 +1,18 @@
+nature V3Voltage;
+    units = "V";
+    access = V;
+    abstol = 1u;
+endnature
+
+discipline v3electrical;
+    potential V3Voltage;
+enddiscipline
+
+module custom_nature_discipline_voltage(a, y);
+    input a;
+    output y;
+    v3electrical a, y;
+    analog begin
+        V(y) <+ 0.0;
+    end
+endmodule

@@ -1,0 +1,8 @@
+module specify_specparam_delay(input a, output y);
+    logic a, y;
+    assign y = a;
+    specify
+        specparam tpd = 0;
+        (a => y) = tpd;
+    endspecify
+endmodule

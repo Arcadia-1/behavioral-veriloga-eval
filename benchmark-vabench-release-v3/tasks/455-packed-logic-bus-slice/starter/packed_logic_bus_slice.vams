@@ -1,0 +1,4 @@
+module packed_logic_bus_slice(input a, output y);
+    logic a, y;
+    assign y = a;
+endmodule

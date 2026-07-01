@@ -5077,7 +5077,7 @@
       "target": [
         "file_fscanf_table_stimulus.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "File Fscanf Table Stimulus",
       "syntax_focus": "Use $fscanf() to read a table-driven stimulus/profile row.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5105,7 +5105,7 @@
       "target": [
         "file_fscanf_multi_column_profile.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "File Fscanf Multi Column Profile",
       "syntax_focus": "Use $fscanf() to ingest a multi-column behavioral profile.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5133,7 +5133,7 @@
       "target": [
         "string_sformat_mode_tag.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "String Sformat Mode Tag",
       "syntax_focus": "Use $sformat() to generate a mode-tagged behavioral label.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5161,7 +5161,7 @@
       "target": [
         "string_mode_tagged_log.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "String Mode Tagged Log",
       "syntax_focus": "Use $sformat() to create mode-tagged log text for $strobe().",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5175,7 +5175,7 @@
       "target": [
         "string_config_label_select.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "String Config Label Select",
       "syntax_focus": "Use string formatting to select and record configuration labels.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5245,9 +5245,359 @@
       "target": [
         "repeat_loop_accumulator.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Repeat Loop Accumulator",
       "syntax_focus": "Use repeat-loop syntax to accumulate bounded behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "435-ddt-voltage-derivative-source": {
+      "category": "veriloga_dynamic_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_435_ddt_voltage_derivative_source",
+      "level": "NA",
+      "target": [
+        "ddt_voltage_derivative_source.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Ddt Voltage Derivative Source",
+      "syntax_focus": "Use ddt() to form a voltage-domain derivative source.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "436-idt-voltage-integrator-source": {
+      "category": "veriloga_dynamic_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_436_idt_voltage_integrator_source",
+      "level": "NA",
+      "target": [
+        "idt_voltage_integrator_source.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Idt Voltage Integrator Source",
+      "syntax_focus": "Use idt() to form a voltage-domain integrator source.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "437-laplace-nd-lowpass-filter": {
+      "category": "veriloga_laplace_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_437_laplace_nd_lowpass_filter",
+      "level": "NA",
+      "target": [
+        "laplace_nd_lowpass_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Laplace Nd Lowpass Filter",
+      "syntax_focus": "Use laplace_nd() for continuous-time transfer modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "438-laplace-np-pole-filter": {
+      "category": "veriloga_laplace_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_438_laplace_np_pole_filter",
+      "level": "NA",
+      "target": [
+        "laplace_np_pole_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Laplace Np Pole Filter",
+      "syntax_focus": "Use laplace_np() for pole-form continuous-time transfer modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "439-laplace-zd-zero-den-filter": {
+      "category": "veriloga_laplace_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_439_laplace_zd_zero_den_filter",
+      "level": "NA",
+      "target": [
+        "laplace_zd_zero_den_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Laplace Zd Zero Den Filter",
+      "syntax_focus": "Use laplace_zd() for zero/denominator transfer modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "440-laplace-zp-zero-pole-filter": {
+      "category": "veriloga_laplace_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_440_laplace_zp_zero_pole_filter",
+      "level": "NA",
+      "target": [
+        "laplace_zp_zero_pole_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Laplace Zp Zero Pole Filter",
+      "syntax_focus": "Use laplace_zp() for zero/pole transfer modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "441-zi-nd-discrete-filter": {
+      "category": "veriloga_z_domain_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_441_zi_nd_discrete_filter",
+      "level": "NA",
+      "target": [
+        "zi_nd_discrete_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Zi Nd Discrete Filter",
+      "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "442-zi-np-discrete-filter": {
+      "category": "veriloga_z_domain_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_442_zi_np_discrete_filter",
+      "level": "NA",
+      "target": [
+        "zi_np_discrete_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Zi Np Discrete Filter",
+      "syntax_focus": "Use zi_np() for discrete-time numerator/pole filtering.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "443-zi-zd-discrete-filter": {
+      "category": "veriloga_z_domain_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_443_zi_zd_discrete_filter",
+      "level": "NA",
+      "target": [
+        "zi_zd_discrete_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Zi Zd Discrete Filter",
+      "syntax_focus": "Use zi_zd() for discrete-time zero/denominator filtering.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "444-zi-zp-discrete-filter": {
+      "category": "veriloga_z_domain_filter_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_444_zi_zp_discrete_filter",
+      "level": "NA",
+      "target": [
+        "zi_zp_discrete_filter.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Zi Zp Discrete Filter",
+      "syntax_focus": "Use zi_zp() for discrete-time zero/pole filtering.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "445-limexp-soft-exponential": {
+      "category": "veriloga_math_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_445_limexp_soft_exponential",
+      "level": "NA",
+      "target": [
+        "limexp_soft_exponential.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Limexp Soft Exponential",
+      "syntax_focus": "Use limexp() for a limited exponential behavioral transform.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "446-fstrobe-file-line-writer": {
+      "category": "veriloga_system_output_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_446_fstrobe_file_line_writer",
+      "level": "NA",
+      "target": [
+        "fstrobe_file_line_writer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Fstrobe File Line Writer",
+      "syntax_focus": "Use $fstrobe() to write a formatted line to a file handle.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "447-display-warning-debug-log": {
+      "category": "veriloga_system_output_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_447_display_warning_debug_log",
+      "level": "NA",
+      "target": [
+        "display_warning_debug_log.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Display Warning Debug Log",
+      "syntax_focus": "Use $display(), $warning(), $error(), and $debug() system output calls.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "448-rdist-uniform-seeded-dither": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_448_rdist_uniform_seeded_dither",
+      "level": "NA",
+      "target": [
+        "rdist_uniform_seeded_dither.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Uniform Seeded Dither",
+      "syntax_focus": "Use $rdist_uniform() for seeded uniform dither.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "449-generate-genvar-replicated-stage": {
+      "category": "veriloga_generate_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_449_generate_genvar_replicated_stage",
+      "level": "NA",
+      "target": [
+        "generate_genvar_replicated_stage.vams"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Generate Genvar Replicated Stage",
+      "syntax_focus": "Use generate/genvar to replicate a behavioral stage.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "450-custom-nature-discipline-voltage": {
+      "category": "verilogams_discipline_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_450_custom_nature_discipline_voltage",
+      "level": "NA",
+      "target": [
+        "custom_nature_discipline_voltage.vams"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Custom Nature Discipline Voltage",
+      "syntax_focus": "Declare a custom nature and discipline for behavioral voltage modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "451-connectmodule-electrical-bridge": {
+      "category": "verilogams_connect_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_451_connectmodule_electrical_bridge",
+      "level": "NA",
+      "target": [
+        "connectmodule_electrical_bridge.vams"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Connectmodule Electrical Bridge",
+      "syntax_focus": "Declare a connectmodule bridge for mixed-signal connection behavior.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "452-connectrules-electrical-map": {
+      "category": "verilogams_connect_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_452_connectrules_electrical_map",
+      "level": "NA",
+      "target": [
+        "connectrules_electrical_map.vams"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Connectrules Electrical Map",
+      "syntax_focus": "Declare connectrules mapping between disciplines.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "453-specify-specparam-delay": {
+      "category": "verilogams_specify_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_453_specify_specparam_delay",
+      "level": "NA",
+      "target": [
+        "specify_specparam_delay.vams"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Specify Specparam Delay",
+      "syntax_focus": "Use specify/specparam delay syntax.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "454-multidimensional-array-state": {
+      "category": "veriloga_array_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_454_multidimensional_array_state",
+      "level": "NA",
+      "target": [
+        "multidimensional_array_state.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Multidimensional Array State",
+      "syntax_focus": "Use a two-dimensional integer array for behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "455-packed-logic-bus-slice": {
+      "category": "verilogams_vector_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_455_packed_logic_bus_slice",
+      "level": "NA",
+      "target": [
+        "packed_logic_bus_slice.vams"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Packed Logic Bus Slice",
+      "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "456-event-or-cross-timer": {
+      "category": "veriloga_event_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_456_event_or_cross_timer",
+      "level": "NA",
+      "target": [
+        "event_or_cross_timer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Event Or Cross Timer",
+      "syntax_focus": "Use an analog event expression combining cross() and timer() with or.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "457-nested-function-pipeline": {
+      "category": "veriloga_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_457_nested_function_pipeline",
+      "level": "NA",
+      "target": [
+        "nested_function_pipeline.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Nested Function Pipeline",
+      "syntax_focus": "Use nested user-defined function calls in a behavioral pipeline.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "458-recursive-function-candidate": {
+      "category": "veriloga_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_458_recursive_function_candidate",
+      "level": "NA",
+      "target": [
+        "recursive_function_candidate.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Recursive Function Candidate",
+      "syntax_focus": "Use a recursive user-defined function candidate.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "459-do-while-loop-accumulator": {
+      "category": "veriloga_control_flow_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_459_do_while_loop_accumulator",
+      "level": "NA",
+      "target": [
+        "do_while_loop_accumulator.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Do While Loop Accumulator",
+      "syntax_focus": "Use do ... while loop syntax to accumulate bounded behavioral state.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     }
   }

@@ -1,0 +1,5 @@
+module packed_logic_bus_slice(input [7:0] a, output [3:0] y);
+    logic [7:0] a;
+    logic [3:0] y;
+    assign y = (({a[7:6], a[1:0]}) > 0.55 ? 0.9 : 0.0);
+endmodule
