@@ -96,22 +96,25 @@ The common blocking issues are skeleton visible/hidden SCS decks without a
 candidate include, DUT instance, or stimulus source, plus syntax-only checker
 entries that do not yet prove hidden behavior or reject the negative variants.
 
-The same boundary is confirmed by local EVAS 0.4.6 simulation using the Python
-engine:
+The same boundary is confirmed by local `evas-sim` 0.5.0 simulation using the
+Python engine. The PyPI 0.5.0 default `EVAS_ENGINE=evas2` path still requires a
+local `libevas_rust_core.so`, so this evidence intentionally pins the Python
+compatibility engine:
 
 ```bash
 PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   VAEVAS_EVAS_PERSISTENT_WORKER=0 \
   PATH="$PWD/.venv/bin:$PATH" \
   .venv/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 494 --timeout 60 --jobs 16 \
-  --out results/v3-verification/gold_negative_301_494_python.json
+  --start 301 --end 494 --gold-only --timeout 60 --jobs 16 \
+  --out results/v3-verification/gold_301_494_evas050_python.json
 ```
 
-Result: `0/194` extension gold rows pass. All `970` negative rows are non-PASS,
-but that is not useful negative evidence because the corresponding gold rows
-also fail. These rows remain non-scored extension candidates until their
-testbenches instantiate the DUT and behavior checkers are implemented.
+Result: `0/194` extension gold rows pass. Earlier negative sweeps showed all
+`970` negative rows are non-PASS, but that is not useful negative evidence
+because the corresponding gold rows also fail. These rows remain non-scored
+extension candidates until their testbenches instantiate the DUT and behavior
+checkers are implemented.
 
 Current local EVAS compile status after this expansion:
 
