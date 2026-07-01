@@ -8490,16 +8490,45 @@
 396-rdist-erlang-latency: |
   version: 1
   task_id: v3_396_rdist_erlang_latency
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rdist_erlang_latency_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "$rdist_erlang()"
+      - "$rdist_erlang"
+      - "seed_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/rdist_erlang_latency.va
+    negative:
+      - negative_variants/neg_001_force_zero/rdist_erlang_latency.va
+      - negative_variants/neg_002_wrong_threshold/rdist_erlang_latency.va
+      - negative_variants/neg_003_reset_bias/rdist_erlang_latency.va
+      - negative_variants/neg_004_metric_offset/rdist_erlang_latency.va
+      - negative_variants/neg_005_scale_output/rdist_erlang_latency.va
+    checks:
+      - seeded_erlang_draw_sequence_is_deterministic
+      - output_adds_small_latency_variation_to_vin
+      - metric_reports_raw_erlang_latency
+      - wrong_seed_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
 397-hierarchy-gain-child: |
   version: 1
   task_id: v3_397_hierarchy_gain_child

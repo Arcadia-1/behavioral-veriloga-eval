@@ -8881,6 +8881,31 @@ def check_v3_395_rdist_t_tail_dither(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.7109),
+                (180.0, 0.7109),
+                (280.0, 0.7051),
+                (380.0, 0.7026),
+            ],
+            "metric": [
+                (80.0, 1.0851),
+                (180.0, 1.0945),
+                (280.0, 0.5121),
+                (380.0, 0.2559),
+            ],
+        },
+        tol=0.03,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17966,6 +17991,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "394-rdist-chi-square-energy": check_v3_394_rdist_chi_square_energy,
     "v3_395_rdist_t_tail_dither": check_v3_395_rdist_t_tail_dither,
     "395-rdist-t-tail-dither": check_v3_395_rdist_t_tail_dither,
+    "v3_396_rdist_erlang_latency": check_v3_396_rdist_erlang_latency,
+    "396-rdist-erlang-latency": check_v3_396_rdist_erlang_latency,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
