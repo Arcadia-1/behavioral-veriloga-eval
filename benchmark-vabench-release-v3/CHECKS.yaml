@@ -10697,14 +10697,40 @@
 462-vt-temperature-argument: |
   version: 1
   task_id: v3_462_vt_temperature_argument
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vt_temperature_argument_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "$vt("
+      - "$vt(600.0)"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/vt_temperature_argument.va
+    negative:
+      - negative_variants/neg_001_force_zero/vt_temperature_argument.va
+      - negative_variants/neg_002_wrong_threshold/vt_temperature_argument.va
+      - negative_variants/neg_003_reset_bias/vt_temperature_argument.va
+      - negative_variants/neg_004_metric_offset/vt_temperature_argument.va
+      - negative_variants/neg_005_scale_output/vt_temperature_argument.va
+    checks:
+      - vt_temperature_argument_parse
+      - explicit_temperature_600k_range
+      - reset_clears_output
+      - metric_matches_output
+      - no_current_domain_contribution
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "$vt(temp) explicit-temperature behavior promoted to executable EVAS behavior candidate."
 463-discontinuity-event-announcement: |
   version: 1
   task_id: v3_463_discontinuity_event_announcement

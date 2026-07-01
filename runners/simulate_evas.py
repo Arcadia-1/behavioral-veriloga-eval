@@ -8708,6 +8708,34 @@ def check_v3_461_vt_thermal_voltage_source(rows: list[dict[str, float]]) -> tupl
     return True, " ".join(observed)
 
 
+def check_v3_462_vt_temperature_argument(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    vt_expected = 0.05170
+    checks = [
+        (12.0, vt_expected, vt_expected),
+        (32.0, vt_expected, vt_expected),
+        (52.0, vt_expected, vt_expected),
+        (72.0, 0.0, 0.0),
+        (92.0, vt_expected, vt_expected),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, expected_metric in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        tol = 0.006
+        if abs(out - expected_out) > tol:
+            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
+        if abs(metric - expected_metric) > tol:
+            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
+        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
+    return True, " ".join(observed)
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19184,6 +19212,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "460-analog-initial-block-state": check_v3_460_analog_initial_block_state,
     "v3_461_vt_thermal_voltage_source": check_v3_461_vt_thermal_voltage_source,
     "461-vt-thermal-voltage-source": check_v3_461_vt_thermal_voltage_source,
+    "v3_462_vt_temperature_argument": check_v3_462_vt_temperature_argument,
+    "462-vt-temperature-argument": check_v3_462_vt_temperature_argument,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
