@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "oomr_string_voltage_probe.va"
+
+Vin (vin 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.20 60n 0.20 61n 0.50 100n 0.50 101n -0.20 160n -0.20]
+
+XDUT (out) oomr_string_voltage_probe
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save vin out

@@ -11048,14 +11048,15 @@
 476-oomr-string-voltage-probe: |
   version: 1
   task_id: v3_476_oomr_string_voltage_probe
-  backend: evas_rust_compile_capable
+  backend: evas_pending_string_oomr_voltage_probe_semantics
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "V(sigpath)"
+      - "parameter string sigpath"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "LRM gap-fill task with executable tests; behavior promotion is blocked by EVAS issue #51 because V(sigpath) currently resolves to 0."
 477-analog-node-alias-initial: |
   version: 1
   task_id: v3_477_analog_node_alias_initial
