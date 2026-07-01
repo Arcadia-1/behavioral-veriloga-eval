@@ -10954,14 +10954,35 @@
 473-attribute-potential-abstol-probe: |
   version: 1
   task_id: v3_473_attribute_potential_abstol_probe
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: attribute_potential_abstol_probe_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - ".potential.abstol"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/attribute_potential_abstol_probe.va
+    negative:
+      - negative_variants/neg_001_force_zero/attribute_potential_abstol_probe.va
+      - negative_variants/neg_002_wrong_threshold/attribute_potential_abstol_probe.va
+      - negative_variants/neg_003_reset_bias/attribute_potential_abstol_probe.va
+      - negative_variants/neg_004_metric_offset/attribute_potential_abstol_probe.va
+      - negative_variants/neg_005_scale_output/attribute_potential_abstol_probe.va
+    checks:
+      - potential_abstol_attribute_parse
+      - attribute_value_affects_output
+      - output_tracks_input_plus_scaled_abstol
+      - no_current_domain_contribution
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Node potential abstol attribute behavior promoted to executable EVAS behavior candidate."
 474-generic-potential-access-function: |
   version: 1
   task_id: v3_474_generic_potential_access_function

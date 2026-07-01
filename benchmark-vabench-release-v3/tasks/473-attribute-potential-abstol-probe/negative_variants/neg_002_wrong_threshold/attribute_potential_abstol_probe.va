@@ -5,6 +5,6 @@ module attribute_potential_abstol_probe (input electrical in, output electrical 
 real tol;
 analog begin
     tol = in.potential.abstol;
-    V(out) <+ transition(V(in) + 0.0 * tol, 0.0, 200p, 200p);
+    V(out) <+ transition(V(in) + 1e4 * tol, 0.0, 200p, 200p);
 end
 endmodule
