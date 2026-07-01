@@ -7576,6 +7576,29 @@ def check_v3_335_above_resettable_peak_marker(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_336_directive_configurable_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (120.0, 0.0),
+                (320.0, 0.9),
+                (520.0, 0.0),
+            ],
+            "metric": [
+                (120.0, 0.60),
+                (320.0, 0.50),
+                (520.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16543,6 +16566,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "334-last-crossing-edge-age": check_v3_334_last_crossing_edge_age,
     "v3_335_above_resettable_peak_marker": check_v3_335_above_resettable_peak_marker,
     "335-above-resettable-peak-marker": check_v3_335_above_resettable_peak_marker,
+    "v3_336_directive_configurable_threshold": check_v3_336_directive_configurable_threshold,
+    "336-directive-configurable-threshold": check_v3_336_directive_configurable_threshold,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

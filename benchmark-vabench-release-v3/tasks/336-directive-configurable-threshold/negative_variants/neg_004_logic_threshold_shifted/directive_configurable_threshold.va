@@ -1,9 +1,7 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-`define USE_HIGH_THRESHOLD
-`ifdef USE_HIGH_THRESHOLD
-`endif
+// `define USE_HIGH_THRESHOLD 1
 module directive_configurable_threshold (
     input  electrical vin,
     input  electrical clk,
@@ -12,11 +10,17 @@ module directive_configurable_threshold (
     output electrical out,
     output electrical metric
 );
-parameter real vth = 0.55;
+parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
+`ifdef USE_HIGH_THRESHOLD
+parameter real base_th = 0.60;
+`else
+parameter real base_th = 0.40;
+`endif
 real out_v;
 real metric_v;
+real eff_th;
 integer count_q;
 integer state_q;
 analog begin
@@ -26,9 +30,15 @@ analog begin
         count_q = 0;
         state_q = 0;
     end
+    eff_th = (V(mode) > vth) ? (base_th - 0.10) : base_th;
     @(cross(V(clk) - vth, +1)) begin
-out_v = (V(vin) > 0.6) ? vhi : 0.0;
-        metric_v = out_v / vhi;
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            out_v = (V(vin) > eff_th) ? vhi : 0.0;
+            metric_v = eff_th;
+        end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

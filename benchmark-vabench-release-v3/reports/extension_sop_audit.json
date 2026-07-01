@@ -2,28 +2,28 @@
   "date": "2026-07-01",
   "range_summary": [
     {
-      "complete_tests_count": 35,
+      "complete_tests_count": 36,
       "description": "language-semantics voltage-domain candidates",
-      "fair_eval_count": 35,
+      "fair_eval_count": 36,
       "range": "301-340",
-      "sop_ready_count": 35,
+      "sop_ready_count": 36,
       "task_count": 40,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "generic_prompt_template",
-          5
+          4
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          5
+          4
         ]
       ]
     },
@@ -179,18 +179,18 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 35,
-    "fair_eval_count": 35,
+    "complete_tests_count": 36,
+    "fair_eval_count": 36,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 159,
-      "generic_prompt_template": 5,
-      "hidden_scs_not_executable:include,instance,source": 127,
+      "checker_syntax_only_no_behavior_score": 158,
+      "generic_prompt_template": 4,
+      "hidden_scs_not_executable:include,instance,source": 126,
       "hidden_scs_not_executable:include,instance,source,save": 32,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 127,
+      "visible_scs_not_executable:include,instance,source": 126,
       "visible_scs_not_executable:include,instance,source,save": 32
     },
-    "sop_ready_count": 35,
+    "sop_ready_count": 36,
     "task_count": 194
   },
   "tasks": [
@@ -1001,20 +1001,15 @@
     },
     {
       "certification_scope": "extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "generic_prompt_template",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 336,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use compiler directives for mode-specific threshold.",
       "target": "directive_configurable_threshold.va",

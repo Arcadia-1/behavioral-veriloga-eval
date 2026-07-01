@@ -6011,9 +6011,10 @@
 336-directive-configurable-threshold: |
   version: 1
   task_id: v3_336_directive_configurable_threshold
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -6024,11 +6025,29 @@
     - metric
   syntax:
     must_include:
+      - "`define"
       - "`ifdef"
+      - "`else"
+      - "`endif"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/directive_configurable_threshold.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/directive_configurable_threshold.va
+      - negative_variants/neg_002_drive_metric_zero/directive_configurable_threshold.va
+      - negative_variants/neg_003_reset_polarity_wrong/directive_configurable_threshold.va
+      - negative_variants/neg_004_logic_threshold_shifted/directive_configurable_threshold.va
+      - negative_variants/neg_005_output_scale_low/directive_configurable_threshold.va
+    checks:
+      - preprocessor_selects_high_threshold_path
+      - mode_offsets_threshold_at_runtime
+      - clocked_comparator_samples_threshold
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 337-parameter-range-limited-gain: |
   version: 1
   task_id: v3_337_parameter_range_limited_gain
