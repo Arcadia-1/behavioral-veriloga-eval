@@ -31,7 +31,7 @@ analog begin
     end
     @(cross(V(clk) - vth, +1)) begin
         out_v = soft_threshold(V(vin));
-        metric_v = out_v;
+        metric_v = out_v / vhi;
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

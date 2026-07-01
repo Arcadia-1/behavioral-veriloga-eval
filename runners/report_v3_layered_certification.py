@@ -16,6 +16,7 @@ TASKS_JSON = PACKAGE_ROOT / "TASKS.json"
 REPORT_JSON = REPORTS_ROOT / "layered_certification.json"
 REPORT_MD = REPORTS_ROOT / "layered_certification.md"
 REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
+EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
 
 
 CORE_TIERS = {
@@ -83,11 +84,27 @@ def read_tasks() -> dict[str, Any]:
     return json.loads(TASKS_JSON.read_text(encoding="utf-8"))["tasks"]
 
 
+def read_sop_ready_extension_tasks() -> set[str]:
+    if not EXTENSION_SOP_AUDIT_JSON.exists():
+        return set()
+    try:
+        audit = json.loads(EXTENSION_SOP_AUDIT_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return set()
+    ready: set[str] = set()
+    for row in audit.get("tasks", []):
+        if isinstance(row, dict) and row.get("sop_ready") is True:
+            task_key = str(row.get("task") or "").strip()
+            if task_key:
+                ready.add(task_key)
+    return ready
+
+
 def task_number(key: str) -> int:
     return int(key.split("-", 1)[0])
 
 
-def classify_task(key: str, task: dict[str, Any]) -> dict[str, Any]:
+def classify_task(key: str, task: dict[str, Any], sop_ready_extension_tasks: set[str]) -> dict[str, Any]:
     tier = str(task.get("tier") or "<none>")
     if tier not in TIER_TO_LAYER:
         raise ValueError(f"unknown tier for {key}: {tier}")
@@ -95,6 +112,14 @@ def classify_task(key: str, task: dict[str, Any]) -> dict[str, Any]:
     number = task_number(key)
     in_original_full_300 = number <= 300
     extension_candidate = number > 300
+    sop_ready_extension = extension_candidate and key in sop_ready_extension_tasks
+    if sop_ready_extension:
+        certification_level = "behavior_certified_extension"
+        claim_boundary = (
+            "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, "
+            "repository behavior checker, and five rejected negative variants. It remains outside "
+            "the original full-300 denominator."
+        )
     return {
         "task_key": key,
         "task_number": number,
@@ -111,6 +136,8 @@ def classify_task(key: str, task: dict[str, Any]) -> dict[str, Any]:
         "score_claim": (
             "original_full_300_policy"
             if in_original_full_300
+            else "extension_behavior_certified_outside_original_300"
+            if sop_ready_extension
             else "excluded_until_behavior_promotion"
         ),
         "claim_boundary": claim_boundary,
@@ -126,7 +153,11 @@ def counter(rows: list[dict[str, Any]], key: str) -> dict[str, int]:
 
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
-    rows = [classify_task(key, tasks[key]) for key in sorted(tasks, key=task_number)]
+    sop_ready_extension_tasks = read_sop_ready_extension_tasks()
+    rows = [
+        classify_task(key, tasks[key], sop_ready_extension_tasks)
+        for key in sorted(tasks, key=task_number)
+    ]
     extension_rows = [row for row in rows if row["extension_candidate"]]
     behavior_rows = [row for row in rows if row["behavior_certified"]]
     compile_rows = [
@@ -174,6 +205,7 @@ def build_report() -> dict[str, Any]:
         "evidence_sources": {
             "task_manifest": "benchmark-vabench-release-v3/TASKS.json",
             "checker_manifest": "benchmark-vabench-release-v3/CHECKS.yaml",
+            "extension_sop_audit": "benchmark-vabench-release-v3/reports/extension_sop_audit.json",
             "language_extension_notes": "benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md",
             "core_behavior_evidence": "benchmark-vabench-release-v1/reports/benchmark_overview.json",
             "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",

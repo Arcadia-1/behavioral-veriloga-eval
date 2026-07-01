@@ -19,9 +19,16 @@ module function_code_normalizer (
 
 ## Required Behavior
 
-Use a user-defined function for code normalization.
+Use a Verilog-A user-defined function named `normalize4` or an equivalently clear function to quantize the sampled input into a 4-bit normalized code.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(vin)` and update:
+
+- Clamp the sampled value to the input range `[0.0, 0.9]`
+- Compute `code = floor(16 * vin / 0.9)`, then clamp `code` to `[0, 15]`
+- `out = code / 15.0 * 0.9`
+- `metric = out / 0.9`
+
+Drive both outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. The model must remain pure voltage-domain behavioral Verilog-A: no `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

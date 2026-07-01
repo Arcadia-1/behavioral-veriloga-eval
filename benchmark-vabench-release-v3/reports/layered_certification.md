@@ -7,8 +7,8 @@ Date: 2026-07-01
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **0**
-- Compile-supported candidate rows: **194**
+- Behavior-certified extension rows: **6**
+- Compile-supported candidate rows: **188**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
@@ -19,7 +19,7 @@ Date: 2026-07-01
 | `behavioral_continuous_time_extension` | 4 | compile_supported_continuous_time_candidate: 4 |
 | `behavioral_event_core` | 268 | behavior_certified: 268 |
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
-| `behavioral_language_extension` | 143 | compile_supported_candidate: 143 |
+| `behavioral_language_extension` | 143 | behavior_certified_extension: 6, compile_supported_candidate: 137 |
 | `cadence_simulator_function_extension` | 3 | compile_supported_candidate: 3 |
 | `conservative_kcl_syntax_extension` | 6 | compile_supported_kcl_candidate: 6 |
 | `noise_analysis_extension` | 12 | compile_supported_candidate: 12 |
@@ -38,6 +38,7 @@ Date: 2026-07-01
 | --- | --- |
 | `task_manifest` | `benchmark-vabench-release-v3/TASKS.json` |
 | `checker_manifest` | `benchmark-vabench-release-v3/CHECKS.yaml` |
+| `extension_sop_audit` | `benchmark-vabench-release-v3/reports/extension_sop_audit.json` |
 | `language_extension_notes` | `benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md` |
 | `core_behavior_evidence` | `benchmark-vabench-release-v1/reports/benchmark_overview.json` |
 | `latest_compile_probe` | `local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures` |

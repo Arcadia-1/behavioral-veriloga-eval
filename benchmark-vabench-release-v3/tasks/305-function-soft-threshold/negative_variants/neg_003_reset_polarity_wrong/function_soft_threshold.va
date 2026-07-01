@@ -19,7 +19,7 @@ integer state_q;
 function real soft_threshold;
     input real x;
     begin
-        soft_threshold = 0.45 + 0.45 * tanh(8.0 * (x - 0.45));
+        soft_threshold = 0.45 + 0.45 * tanh(6.0 * (x - 0.45));
     end
 endfunction
 analog begin

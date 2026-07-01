@@ -19,9 +19,23 @@ module case_mode_gain_selector (
 
 ## Required Behavior
 
-Use a case statement to select voltage-domain behavior.
+Use a Verilog-A `case` statement to select one of four clocked gain modes.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(mode)` and convert it to an integer state:
+
+- state `0` when `mode < 0.225`
+- state `1` when `0.225 <= mode < 0.45`
+- state `2` when `0.45 <= mode < 0.675`
+- state `3` otherwise
+
+Then use `case (state_q)` to update:
+
+- state `0`: `out = 0.20 * vin`, `metric = 0.00`
+- state `1`: `out = 0.50 * vin`, `metric = 0.30`
+- state `2`: `out = 0.75 * vin`, `metric = 0.60`
+- default/state `3`: `out = vin`, `metric = 0.90`
+
+When `rst` crosses high or is high during a clock event, reset state and both outputs to zero. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

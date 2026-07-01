@@ -19,9 +19,14 @@ module function_soft_threshold (
 
 ## Required Behavior
 
-Use a user-defined function for a soft threshold curve.
+Use a Verilog-A user-defined function named `soft_threshold` or an equivalently clear function to implement a smooth threshold curve.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(vin)` and update:
+
+- `out = 0.45 + 0.45 * tanh(8.0 * (vin - 0.45))`
+- `metric = out`
+
+Drive both outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. The model must remain pure voltage-domain behavioral Verilog-A: no `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

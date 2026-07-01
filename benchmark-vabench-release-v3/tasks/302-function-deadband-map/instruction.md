@@ -19,9 +19,16 @@ module function_deadband_map (
 
 ## Required Behavior
 
-Use a user-defined function to implement deadband mapping.
+Use a Verilog-A user-defined function named `map_value` or an equivalently clear function to implement the deadband transfer curve.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(vin)` and update:
+
+- `out = 0.0` when `vin < 0.38`
+- `out = 0.45` when `0.38 <= vin <= 0.52`
+- `out = 0.9` when `vin > 0.52`
+- `metric = (out - 0.45) / 0.45`, so the three regions report `-1`, `0`, and `+1`
+
+Drive both outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. The model must remain pure voltage-domain behavioral Verilog-A: no `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

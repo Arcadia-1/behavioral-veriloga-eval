@@ -19,9 +19,16 @@ module function_clamp_window (
 
 ## Required Behavior
 
-Use a user-defined function to clamp an input window.
+Use a Verilog-A user-defined function named `clamp_window` or an equivalently clear function to compute the sampled value.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(vin)` and update:
+
+- `out = 0.1` when `vin < 0.1`
+- `out = vin` when `0.1 <= vin <= 0.8`
+- `out = 0.8` when `vin > 0.8`
+- `metric = out / 0.9`
+
+Drive both outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. The model must remain pure voltage-domain behavioral Verilog-A: no `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

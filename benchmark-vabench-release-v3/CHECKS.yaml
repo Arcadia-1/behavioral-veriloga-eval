@@ -4764,11 +4764,14 @@
       - tb_compile
       - sim_correct
 301-function-clamp-window: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_301_function_clamp_window
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_301_function_clamp_window
+    metric: sampled_out_metric_map
   required_columns:
     - time
     - vin
@@ -4783,14 +4786,26 @@
       - "endfunction"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - clamp_low_inputs_to_0p10
+      - pass_mid_window_inputs_unchanged
+      - clamp_high_inputs_to_0p80
+      - metric_equals_out_divided_by_0p9
+      - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 302-function-deadband-map: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_302_function_deadband_map
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_302_function_deadband_map
+    metric: sampled_out_metric_map
   required_columns:
     - time
     - vin
@@ -4805,14 +4820,26 @@
       - "endfunction"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - vin_below_0p38_maps_to_0p0
+      - vin_inside_deadband_maps_to_0p45
+      - vin_above_0p52_maps_to_0p9
+      - metric_maps_low_mid_high_to_minus_one_zero_plus_one
+      - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 303-function-piecewise-gain: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_303_function_piecewise_gain
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_303_function_piecewise_gain
+    metric: sampled_out_metric_map
   required_columns:
     - time
     - vin
@@ -4827,14 +4854,26 @@
       - "endfunction"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - low_region_has_half_gain
+      - mid_region_has_unity_gain
+      - high_region_has_quarter_gain_above_0p65
+      - metric_equals_out
+      - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 304-function-code-normalizer: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_304_function_code_normalizer
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_304_function_code_normalizer
+    metric: sampled_out_metric_map
   required_columns:
     - time
     - vin
@@ -4849,14 +4888,26 @@
       - "endfunction"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - clamp_negative_or_low_to_code_zero
+      - quantize_to_16_uniform_codes
+      - clamp_high_to_code_fifteen
+      - metric_equals_out_divided_by_0p9
+      - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 305-function-soft-threshold: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_305_function_soft_threshold
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_305_function_soft_threshold
+    metric: sampled_out_metric_map
   required_columns:
     - time
     - vin
@@ -4871,14 +4922,26 @@
       - "endfunction"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - tanh_soft_threshold_centered_at_0p45
+      - low_inputs_approach_zero_smoothly
+      - high_inputs_approach_0p9_smoothly
+      - metric_equals_out
+      - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 306-case-mode-gain-selector: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_306_case_mode_gain_selector
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_306_case_mode_gain_selector
+    metric: sampled_case_mode_map
   required_columns:
     - time
     - vin
@@ -4893,8 +4956,18 @@
       - "endcase"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_forces_outputs_low
+      - case_state_0_selects_0p20_gain
+      - case_state_1_selects_0p50_gain
+      - case_state_2_selects_0p75_gain
+      - default_state_selects_unity_gain
+      - metric_encodes_selected_state
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 307-case-priority-status-decoder: |
   version: 1
   task_id: v3_307_case_priority_status_decoder

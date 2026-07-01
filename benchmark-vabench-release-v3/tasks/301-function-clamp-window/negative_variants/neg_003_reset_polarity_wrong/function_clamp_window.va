@@ -19,7 +19,7 @@ integer state_q;
 function real clamp_window;
     input real x;
     begin
-        if (x < 0.1) clamp_window = 0.1;
+        if (x < 0.1) clamp_window = 0.0;
         else if (x > 0.8) clamp_window = 0.8;
         else clamp_window = x;
     end

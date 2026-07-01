@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton for the language-semantics extension task.
-tran tran stop=200n
+
+ahdl_include "function_code_normalizer.va"
+
+Vvin (vin 0) vsource type=pwl wave=[ 0n 0.05 9n 0.05 10n 0.10 19n 0.10 20n 0.37 29n 0.37 30n 0.45 39n 0.45 40n 0.53 49n 0.53 50n 0.78 59n 0.78 60n 0.82 69n 0.82 70n 0.90 85n 0.90 ]
+Vclk (clk 0) vsource type=pwl wave=[ 0n 0 4.9n 0 5.0n 0.9 5.5n 0.9 5.6n 0 14.9n 0 15.0n 0.9 15.5n 0.9 15.6n 0 24.9n 0 25.0n 0.9 25.5n 0.9 25.6n 0 34.9n 0 35.0n 0.9 35.5n 0.9 35.6n 0 44.9n 0 45.0n 0.9 45.5n 0.9 45.6n 0 54.9n 0 55.0n 0.9 55.5n 0.9 55.6n 0 64.9n 0 65.0n 0.9 65.5n 0.9 65.6n 0 74.9n 0 75.0n 0.9 75.5n 0.9 75.6n 0 85n 0 ]
+Vmode (mode 0) vsource type=pwl wave=[ 0n 0 85n 0 ]
+Vrst (rst 0) vsource type=pwl wave=[ 0n 0 85n 0 ]
+
+XDUT (vin clk mode rst out metric) function_code_normalizer
+
+tran tran stop=85n
 save vin clk mode rst out metric

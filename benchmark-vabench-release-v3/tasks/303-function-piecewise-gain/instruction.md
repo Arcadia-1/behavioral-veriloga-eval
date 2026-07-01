@@ -19,9 +19,16 @@ module function_piecewise_gain (
 
 ## Required Behavior
 
-Use a user-defined function for piecewise gain.
+Use a Verilog-A user-defined function named `gain_map` or an equivalently clear function to implement the piecewise gain.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+On each rising crossing of `clk` through `vth = 0.45` V, sample `V(vin)` and update:
+
+- `out = 0.5 * vin` when `vin < 0.25`
+- `out = vin` when `0.25 <= vin < 0.65`
+- `out = 0.65 + 0.25 * (vin - 0.65)` when `vin >= 0.65`
+- `metric = out`
+
+Drive both outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. The model must remain pure voltage-domain behavioral Verilog-A: no `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

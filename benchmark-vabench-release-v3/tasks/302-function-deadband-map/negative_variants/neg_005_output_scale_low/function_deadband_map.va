@@ -33,7 +33,7 @@ analog begin
     end
     @(cross(V(clk) - vth, +1)) begin
         out_v = map_value(V(vin));
-        metric_v = (out_v - 0.45) / 0.45;
+        metric_v = out_v / vhi;
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

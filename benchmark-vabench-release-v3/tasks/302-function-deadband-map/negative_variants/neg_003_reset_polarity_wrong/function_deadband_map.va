@@ -20,7 +20,7 @@ function real map_value;
     input real x;
     begin
         if (x > 0.52) map_value = 0.9;
-        else if (x < 0.38) map_value = 0.0;
+        else if (x < 0.30) map_value = 0.0;
         else map_value = 0.45;
     end
 endfunction

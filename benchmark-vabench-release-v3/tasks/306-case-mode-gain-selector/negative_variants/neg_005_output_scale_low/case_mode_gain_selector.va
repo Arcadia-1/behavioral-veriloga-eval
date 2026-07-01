@@ -34,7 +34,7 @@ analog begin
                 0: begin out_v = 0.20 * V(vin); metric_v = 0.00; end
                 1: begin out_v = 0.50 * V(vin); metric_v = 0.30; end
                 2: begin out_v = 0.75 * V(vin); metric_v = 0.60; end
-                default: begin out_v = V(vin); metric_v = 0.90; end
+                default: begin out_v = 0.80 * V(vin); metric_v = 0.90; end
             endcase
         end
     end

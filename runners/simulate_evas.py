@@ -6705,6 +6705,149 @@ def _sample_many(
     return True, " ".join(details)
 
 
+def _check_v3_function_sampled_map(
+    rows: list[dict[str, float]],
+    *,
+    label: str,
+    sample_values: list[tuple[float, float, float]],
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    mismatches: list[str] = []
+    observed: list[str] = []
+    previous_out: float | None = None
+    for idx, (time_ns, expected_out, expected_metric) in enumerate(sample_values):
+        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
+        clk = sample_signal_at(rows, "clk", time_ns * 1e-9)
+        rst = sample_signal_at(rows, "rst", time_ns * 1e-9)
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if None in {vin, clk, rst, out, metric}:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        assert vin is not None and clk is not None and rst is not None
+        assert out is not None and metric is not None
+        observed.append(f"{idx}:{vin:.3f}->{out:.3f}/{metric:.3f}")
+        if clk > 0.45:
+            mismatches.append(f"sample{idx}_clk_not_low={clk:.3f}")
+        if rst > 0.20:
+            mismatches.append(f"sample{idx}_rst_not_low={rst:.3f}")
+        if abs(out - expected_out) > 0.025:
+            mismatches.append(f"sample{idx}_out={out:.4f}_expected={expected_out:.4f}")
+        if abs(metric - expected_metric) > 0.030:
+            mismatches.append(f"sample{idx}_metric={metric:.4f}_expected={expected_metric:.4f}")
+        if previous_out is not None and abs(out - previous_out) < 1e-4 and idx not in {1}:
+            # Adjacent duplicate samples are only expected for the clamp task at 0.05/0.10 V.
+            pass
+        previous_out = out
+
+    if mismatches:
+        return False, ";".join(mismatches[:8])
+    return True, f"{label}_sampled_map_ok " + " ".join(observed)
+
+
+def check_v3_301_function_clamp_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_function_sampled_map(
+        rows,
+        label="function_clamp_window",
+        sample_values=[
+            (7.0, 0.10, 0.10 / 0.9),
+            (17.0, 0.10, 0.10 / 0.9),
+            (27.0, 0.37, 0.37 / 0.9),
+            (37.0, 0.45, 0.45 / 0.9),
+            (47.0, 0.53, 0.53 / 0.9),
+            (57.0, 0.78, 0.78 / 0.9),
+            (67.0, 0.80, 0.80 / 0.9),
+            (77.0, 0.80, 0.80 / 0.9),
+        ],
+    )
+
+
+def check_v3_302_function_deadband_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_function_sampled_map(
+        rows,
+        label="function_deadband_map",
+        sample_values=[
+            (7.0, 0.00, -1.0),
+            (17.0, 0.00, -1.0),
+            (27.0, 0.00, -1.0),
+            (37.0, 0.45, 0.0),
+            (47.0, 0.90, 1.0),
+            (57.0, 0.90, 1.0),
+            (67.0, 0.90, 1.0),
+            (77.0, 0.90, 1.0),
+        ],
+    )
+
+
+def check_v3_303_function_piecewise_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_function_sampled_map(
+        rows,
+        label="function_piecewise_gain",
+        sample_values=[
+            (7.0, 0.025, 0.025),
+            (17.0, 0.050, 0.050),
+            (27.0, 0.370, 0.370),
+            (37.0, 0.450, 0.450),
+            (47.0, 0.530, 0.530),
+            (57.0, 0.6825, 0.6825),
+            (67.0, 0.6925, 0.6925),
+            (77.0, 0.7125, 0.7125),
+        ],
+    )
+
+
+def check_v3_304_function_code_normalizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_function_sampled_map(
+        rows,
+        label="function_code_normalizer",
+        sample_values=[
+            (7.0, 0.00, 0.00),
+            (17.0, 0.06, 0.06 / 0.9),
+            (27.0, 0.36, 0.36 / 0.9),
+            (37.0, 0.48, 0.48 / 0.9),
+            (47.0, 0.54, 0.54 / 0.9),
+            (57.0, 0.78, 0.78 / 0.9),
+            (67.0, 0.84, 0.84 / 0.9),
+            (77.0, 0.90, 1.00),
+        ],
+    )
+
+
+def check_v3_305_function_soft_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_function_sampled_map(
+        rows,
+        label="function_soft_threshold",
+        sample_values=[
+            (7.0, 0.00067, 0.00067),
+            (17.0, 0.00270, 0.00270),
+            (27.0, 0.19580, 0.19580),
+            (37.0, 0.45000, 0.45000),
+            (47.0, 0.70420, 0.70420),
+            (57.0, 0.89595, 0.89595),
+            (67.0, 0.89730, 0.89730),
+            (77.0, 0.89933, 0.89933),
+        ],
+    )
+
+
+def check_v3_306_case_mode_gain_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.16), (27.0, 0.40), (37.0, 0.60), (47.0, 0.80)],
+            "metric": [(7.0, 0.0), (17.0, 0.00), (27.0, 0.30), (37.0, 0.60), (47.0, 0.90)],
+        },
+        tol=0.025,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -15602,6 +15745,18 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "101-fixed-gain-amplifier": check_v3_fixed_gain_amplifier,
     "v3_107_reference_step_clock": check_v3_reference_step_clock,
     "107-reference-step-clock": check_v3_reference_step_clock,
+    "v3_301_function_clamp_window": check_v3_301_function_clamp_window,
+    "301-function-clamp-window": check_v3_301_function_clamp_window,
+    "v3_302_function_deadband_map": check_v3_302_function_deadband_map,
+    "302-function-deadband-map": check_v3_302_function_deadband_map,
+    "v3_303_function_piecewise_gain": check_v3_303_function_piecewise_gain,
+    "303-function-piecewise-gain": check_v3_303_function_piecewise_gain,
+    "v3_304_function_code_normalizer": check_v3_304_function_code_normalizer,
+    "304-function-code-normalizer": check_v3_304_function_code_normalizer,
+    "v3_305_function_soft_threshold": check_v3_305_function_soft_threshold,
+    "305-function-soft-threshold": check_v3_305_function_soft_threshold,
+    "v3_306_case_mode_gain_selector": check_v3_306_case_mode_gain_selector,
+    "306-case-mode-gain-selector": check_v3_306_case_mode_gain_selector,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -20,7 +20,7 @@ function real normalize4;
     input real x;
     integer code;
     begin
-        code = x < 0.0 ? 0 : (x > 0.9 ? 15 : floor(16.0 * x / 0.9));
+        code = x < 0.0 ? 0 : (x > 0.9 ? 15 : floor(15.0 * x / 0.9));
         if (code > 15) code = 15;
         normalize4 = code / 15.0 * 0.9;
     end

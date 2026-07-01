@@ -9,19 +9,22 @@ ROOT = Path(__file__).resolve().parents[1]
 V3 = ROOT / "benchmark-vabench-release-v3"
 REPORT = V3 / "reports" / "layered_certification.json"
 TASKS = V3 / "TASKS.json"
+SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
 
 
 def test_v3_layered_certification_counts_match_task_manifest() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     tasks = json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    sop_ready_count = sop_audit["summary"]["sop_ready_count"]
     summary = report["summary"]
 
     assert summary["task_count"] == len(tasks) == 494
     assert summary["original_full_300_count"] == 300
     assert summary["extension_candidate_count"] == 194
-    assert summary["behavior_certified_count"] == 300
-    assert summary["behavior_certified_extension_count"] == 0
-    assert summary["compile_supported_candidate_count"] == 194
+    assert summary["behavior_certified_count"] == 300 + sop_ready_count
+    assert summary["behavior_certified_extension_count"] == sop_ready_count
+    assert summary["compile_supported_candidate_count"] == 194 - sop_ready_count
     assert summary["unsupported_candidate_count"] == 0
 
     tier_counts = Counter((task.get("tier") or "<none>") for task in tasks.values())
@@ -30,12 +33,23 @@ def test_v3_layered_certification_counts_match_task_manifest() -> None:
 
 def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    sop_ready_tasks = {
+        row["task"]
+        for row in sop_audit["tasks"]
+        if row["sop_ready"]
+    }
     rows = report["task_rows"]
 
     extension_rows = [row for row in rows if row["extension_candidate"]]
     assert len(extension_rows) == 194
-    assert all(not row["behavior_certified"] for row in extension_rows)
-    assert all(row["score_claim"] == "excluded_until_behavior_promotion" for row in extension_rows)
+    for row in extension_rows:
+        if row["task_key"] in sop_ready_tasks:
+            assert row["behavior_certified"]
+            assert row["score_claim"] == "extension_behavior_certified_outside_original_300"
+        else:
+            assert not row["behavior_certified"]
+            assert row["score_claim"] == "excluded_until_behavior_promotion"
 
     continuous_rows = [
         row for row in rows
