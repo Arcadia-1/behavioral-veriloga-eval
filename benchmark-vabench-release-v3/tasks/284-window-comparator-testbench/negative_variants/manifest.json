@@ -5,6 +5,24 @@
       "artifact": "neg_001_no_window_sweep/tb_window_comparator_ref.scs",
       "expected_status": "FAIL_SIM_CORRECTNESS",
       "mutation": "Input never visits the comparator window."
+    },
+    {
+      "id": "neg_002_no_above_window",
+      "artifact": "neg_002_no_above_window/tb_window_comparator_ref.scs",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Input visits below-window and inside-window regions but never rises above the upper threshold."
+    },
+    {
+      "id": "neg_003_no_falling_window",
+      "artifact": "neg_003_no_falling_window/tb_window_comparator_ref.scs",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Input rises through the window and above the upper threshold but never returns through the window on the falling side."
+    },
+    {
+      "id": "neg_004_no_below_window",
+      "artifact": "neg_004_no_below_window/tb_window_comparator_ref.scs",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Input starts inside the window and visits above-window, but never provides a below-window region."
     }
   ]
 }

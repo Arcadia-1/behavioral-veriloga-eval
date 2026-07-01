@@ -13,14 +13,26 @@ module sample_hold_aperture_ref (
     parameter real tedge = 50p from (0:inf);
 
     real sampled;
+    real sample_t;
+    integer armed;
 
     analog begin
         @(initial_step) begin
             sampled = V(vin);
+            sample_t = -1.0;
+            armed = 0;
         end
 
         @(cross(V(clk) - vth, +1)) begin
             sampled = V(vin);
+            sample_t = $abstime + taperture;
+            armed = 1;
+        end
+
+        @(timer(sample_t)) begin
+            if (armed) begin
+                armed = 0;
+            end
         end
 
         V(vout) <+ transition(sampled, 0.0, tedge, tedge);

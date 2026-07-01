@@ -1,61 +1,29 @@
-# Task: vbr1_l1_aperture_delay_track_and_hold:dut
+# Aperture Delay Track And Hold
 
-## Release Task Contract
+Implement `sample_hold_aperture_ref.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Sampling and Analog Memory
-- Base function: Aperture-delay track-and-hold
-- Domain: `voltage`
-- Target artifact(s): `sample_hold_aperture_ref.va`
-- Supplied/reference support artifact(s): `tb_sample_hold_aperture_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `sample_hold_aperture_ref(VDD, VSS, clk, vin, vout)` with
+scalar electrical voltage-domain ports. `clk` is a voltage-coded control input.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `vth`: clock threshold, default `0.45`.
+- `taperture`: aperture delay after a rising clock edge, default `200p`.
+- `tedge`: output transition smoothing time, default `50p`.
 
-- `sample_hold_aperture_ref.va` declares module `sample_hold_aperture_ref` with positional ports: `VDD`, `VSS`, `clk`, `vin`, `vout`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize the held value from the initial value of `vin`.
+- On each rising `clk` transition, arm a sample for `$abstime + taperture`.
+- At the delayed aperture instant, capture the current value of `vin`.
+- Hold the captured value on `vout` until the next delayed sample.
+- Drive `vout` with smooth voltage-domain transitions.
 
-Public transient setting used by the release harness:
+## Modeling Constraints
 
-```spectre
-tran tran stop=140n maxstep=100p
-```
-
-The release harness expects these exact public scalar observables:
-
-- `vin`
-- `clk`
-- `vout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `sampled_values_match_aperture_delayed_input`
-- `held_output_remains_between_samples`
-
-## Output Contract
-
-Return exactly one source artifact named `sample_hold_aperture_ref.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Public Description
-
-Write a pure voltage-domain Verilog-A module for a sample-and-hold with aperture delay.
-
-The DUT module is `sample_hold_aperture_ref` with ports `VDD, VSS, clk, vin, vout`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- On a rising `clk` edge, schedule sampling after a 200 ps aperture delay.
-- At the aperture timer event, capture `vin` and hold it on `vout` until the next sample.
-- Drive `vout` with smoothed voltage-domain transitions.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `sample_hold_aperture_ref.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, `ddt()`, or
+`idt()`.
