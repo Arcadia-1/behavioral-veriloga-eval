@@ -5,25 +5,25 @@ Date: 2026-07-01
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **41**
-- Tasks with executable visible+hidden SCS evidence: **41**
-- Tasks with behavior checker evidence: **41**
+- SOP-ready tasks: **42**
+- Tasks with executable visible+hidden SCS evidence: **42**
+- Tasks with behavior checker evidence: **42**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 153
+- `checker_syntax_only_no_behavior_score`: 152
 - `hidden_scs_not_executable:include,instance,source`: 122
-- `hidden_scs_not_executable:include,instance,source,save`: 31
+- `hidden_scs_not_executable:include,instance,source,save`: 30
 - `missing_required_behavior_section`: 122
 - `visible_scs_not_executable:include,instance,source`: 122
-- `visible_scs_not_executable:include,instance,source,save`: 31
+- `visible_scs_not_executable:include,instance,source,save`: 30
 
 ## Range Summary
 
 | Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Top Issues |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 |  |
-| `341-360` | AMS mixed-signal candidates | 20 | 1 | 1 | 1 | `visible_scs_not_executable:include,instance,source,save`: 19<br>`hidden_scs_not_executable:include,instance,source,save`: 19<br>`checker_syntax_only_no_behavior_score`: 19 |
+| `341-360` | AMS mixed-signal candidates | 20 | 2 | 2 | 2 | `visible_scs_not_executable:include,instance,source,save`: 18<br>`hidden_scs_not_executable:include,instance,source,save`: 18<br>`checker_syntax_only_no_behavior_score`: 18 |
 | `361-372` | noise and analysis candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source,save`: 12<br>`hidden_scs_not_executable:include,instance,source,save`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 62<br>`hidden_scs_not_executable:include,instance,source`: 62<br>`missing_required_behavior_section`: 62<br>`checker_syntax_only_no_behavior_score`: 62 |
 | `435-458` | manual syntax-completion candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
@@ -79,7 +79,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `339-random-seeded-dither-source` | `syntax-extension-candidate` | True | - |
 | `340-bound-step-clock-guard` | `syntax-extension-candidate` | True | - |
 | `341-wreal-gain-pass-through` | `ams-mixed-signal-candidate` | True | - |
-| `342-wreal-two-input-summer` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
+| `342-wreal-two-input-summer` | `ams-mixed-signal-candidate` | True | - |
 | `343-wreal-threshold-flag` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
 | `344-wreal-clamped-mux` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
 | `345-wreal-scale-offset` | `ams-mixed-signal-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |

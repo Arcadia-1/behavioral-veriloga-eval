@@ -1,4 +1,13 @@
 simulator lang=spectre
 global 0
-// Visible AMS smoke skeleton. An AMS-capable evaluator supplies and compiles the candidate.
-tran tran stop=80n
+
+ahdl_include "wreal_two_input_summer.vams"
+
+Va (a 0) vsource dc=0.25 type=dc
+Vb (b 0) vsource dc=0.35 type=dc
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+
+XDUT (a b sel y) wreal_two_input_summer
+
+tran tran stop=500n
+save a b sel y
