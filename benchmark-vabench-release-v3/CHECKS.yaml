@@ -5457,11 +5457,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 321-slew-limited-voltage-follower: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_321_slew_limited_voltage_follower
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_321_slew_limited_voltage_follower
+    metric: sampled_slew_limited_voltage_follower
   required_columns:
     - time
     - vin
@@ -5475,8 +5478,19 @@
       - "slew("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+      - "transition("
+  sim_correct:
+    checks:
+      - reset_event_clears_slew_target
+      - rising_target_is_slew_limited
+      - falling_target_is_slew_limited
+      - output_reaches_final_target_after_ramp
+      - metric_tracks_normalized_slew_target
+      - immediate_step_output_is_rejected
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 322-slew-limited-mode-stepper: |
   version: 1
   task_id: v3_322_slew_limited_mode_stepper

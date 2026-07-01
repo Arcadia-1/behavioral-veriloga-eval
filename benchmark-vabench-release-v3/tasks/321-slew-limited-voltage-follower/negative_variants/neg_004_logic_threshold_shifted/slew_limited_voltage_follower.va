@@ -9,7 +9,7 @@ module slew_limited_voltage_follower (
     output electrical out,
     output electrical metric
 );
-parameter real vth = 0.55;
+parameter real vth = 0.95;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 parameter real rise_rate = 8.0e8;

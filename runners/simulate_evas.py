@@ -7145,6 +7145,35 @@ def check_v3_320_file_io_sampled_metric_writer(rows: list[dict[str, float]]) -> 
     )
 
 
+def check_v3_321_slew_limited_voltage_follower(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (7.0, 0.0),
+                (25.5, 0.40),
+                (26.2, 0.90),
+                (45.5, 0.75),
+                (47.0, 0.30),
+                (48.2, 0.0),
+            ],
+            "metric": [
+                (7.0, 0.0),
+                (25.5, 0.40),
+                (26.2, 1.00),
+                (45.5, 0.85),
+                (47.0, 0.40),
+                (48.2, 0.0),
+            ],
+        },
+        tol=0.09,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16082,6 +16111,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "319-display-strobe-event-logger": check_v3_319_display_strobe_event_logger,
     "v3_320_file_io_sampled_metric_writer": check_v3_320_file_io_sampled_metric_writer,
     "320-file-io-sampled-metric-writer": check_v3_320_file_io_sampled_metric_writer,
+    "v3_321_slew_limited_voltage_follower": check_v3_321_slew_limited_voltage_follower,
+    "321-slew-limited-voltage-follower": check_v3_321_slew_limited_voltage_follower,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

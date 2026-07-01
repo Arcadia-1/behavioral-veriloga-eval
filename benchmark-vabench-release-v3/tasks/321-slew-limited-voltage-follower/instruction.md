@@ -19,9 +19,18 @@ module slew_limited_voltage_follower (
 
 ## Required Behavior
 
-Use slew() to limit voltage-domain output slope.
+Use `slew()` to limit voltage-domain output slope.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+Use voltage-coded logic with `vth = 0.45` V and `vhi = 0.9` V. Use `rise_rate = 8.0e8` V/s and `fall_rate = 3.0e8` V/s.
+
+On a rising `rst` event, clear the internal target values to zero. On every rising crossing of `clk` through `vth` while reset is low:
+
+- when `mode` is low, set the target output to `vin`
+- when `mode` is high, set the target output to `vhi - vin`
+- clamp the target output to `[0, vhi]`
+- set the target metric to `target_out / vhi`
+
+Drive both outputs through `slew(target, rise_rate, fall_rate)`. The hidden evaluator checks both the settled levels and intermediate ramp points, so replacing `slew()` with an immediate or `transition()` output is incorrect. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 
