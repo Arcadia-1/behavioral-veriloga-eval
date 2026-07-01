@@ -2,5 +2,5 @@ module logic_assign_inverter(a, b, en, y);
     input a, b, en;
     output y;
     logic a, b, en, y;
-    assign y = 0.0 * ~a;
+    assign y = 1'b0;
 endmodule

@@ -6383,17 +6383,38 @@
 346-logic-assign-inverter: |
   version: 1
   task_id: v3_346_logic_assign_inverter
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_logic_assign_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - a
+    - b
+    - en
+    - y
   syntax:
     must_include:
       - "logic"
       - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/logic_assign_inverter.vams
+    negative:
+      - negative_variants/neg_001_force_zero/logic_assign_inverter.vams
+      - negative_variants/neg_002_invert_select/logic_assign_inverter.vams
+      - negative_variants/neg_003_drop_reset/logic_assign_inverter.vams
+      - negative_variants/neg_004_wrong_edge/logic_assign_inverter.vams
+      - negative_variants/neg_005_scale_low/logic_assign_inverter.vams
+    checks:
+      - logic_ports_parse
+      - continuous_assign_inverts_when_enabled
+      - disabled_path_passes_b
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 347-logic-assign-and-or: |
   version: 1
   task_id: v3_347_logic_assign_and_or

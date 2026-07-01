@@ -1,4 +1,13 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "logic_assign_inverter.vams"
+
+Va (a 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 1.0 500n 1.0]
+Vb (b 0) vsource dc=1.0 type=dc
+Ven (en 0) vsource type=pwl wave=[0 1.0 349n 1.0 350n 0.0 500n 0.0]
+
+XDUT (a b en y) logic_assign_inverter
+
+tran tran stop=500n
+save a b en y

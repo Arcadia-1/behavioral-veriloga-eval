@@ -7776,6 +7776,24 @@ def check_v3_345_wreal_scale_offset(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
+def check_v3_346_logic_assign_inverter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "en", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (120.0, 1.0),
+                (320.0, 0.0),
+                (420.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16763,6 +16781,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "344-wreal-clamped-mux": check_v3_344_wreal_clamped_mux,
     "v3_345_wreal_scale_offset": check_v3_345_wreal_scale_offset,
     "345-wreal-scale-offset": check_v3_345_wreal_scale_offset,
+    "v3_346_logic_assign_inverter": check_v3_346_logic_assign_inverter,
+    "346-logic-assign-inverter": check_v3_346_logic_assign_inverter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
