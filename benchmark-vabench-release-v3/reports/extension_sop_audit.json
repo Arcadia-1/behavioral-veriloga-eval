@@ -11,24 +11,24 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 11,
+      "complete_tests_count": 12,
       "description": "AMS mixed-signal candidates",
-      "fair_eval_count": 11,
+      "fair_eval_count": 12,
       "range": "341-360",
-      "sop_ready_count": 11,
+      "sop_ready_count": 12,
       "task_count": 20,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source,save",
-          9
+          8
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          9
+          8
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          9
+          8
         ]
       ]
     },
@@ -162,17 +162,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 51,
-    "fair_eval_count": 51,
+    "complete_tests_count": 52,
+    "fair_eval_count": 52,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 143,
+      "checker_syntax_only_no_behavior_score": 142,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 21,
+      "hidden_scs_not_executable:include,instance,source,save": 20,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 21
+      "visible_scs_not_executable:include,instance,source,save": 20
     },
-    "sop_ready_count": 51,
+    "sop_ready_count": 52,
     "task_count": 194
   },
   "tasks": [
@@ -1351,19 +1351,15 @@
     },
     {
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 352,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use always @(negedge clk) for a logic sampler.",
       "target": "always_negedge_sampler.vams",

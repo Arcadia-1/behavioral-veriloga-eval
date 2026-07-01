@@ -3,5 +3,8 @@ module always_negedge_sampler(clk, rst, d, en, q);
     output q;
     logic clk, rst, d, en, q;
 
-    always @(negedge clk) begin q = d; end
+    always @(negedge clk) begin
+        if (en) q = d;
+        else q = q;
+    end
 endmodule

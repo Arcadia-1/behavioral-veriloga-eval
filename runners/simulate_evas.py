@@ -7888,6 +7888,27 @@ def check_v3_351_always_posedged_dff(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def check_v3_352_always_negedge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "d", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "q": [
+                (70.0, 0.0),
+                (130.0, 0.0),
+                (180.0, 1.0),
+                (280.0, 1.0),
+                (380.0, 0.0),
+                (480.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16887,6 +16908,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "350-logic-assign-reduction": check_v3_350_logic_assign_reduction,
     "v3_351_always_posedged_dff": check_v3_351_always_posedged_dff,
     "351-always-posedged-dff": check_v3_351_always_posedged_dff,
+    "v3_352_always_negedge_sampler": check_v3_352_always_negedge_sampler,
+    "352-always-negedge-sampler": check_v3_352_always_negedge_sampler,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

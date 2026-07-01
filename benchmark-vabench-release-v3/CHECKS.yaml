@@ -6612,17 +6612,43 @@
 352-always-negedge-sampler: |
   version: 1
   task_id: v3_352_always_negedge_sampler
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_logic_sequential_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - clk
+    - rst
+    - d
+    - en
+    - q
   syntax:
     must_include:
       - "logic"
       - "always"
+      - "negedge"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/always_negedge_sampler.vams
+    negative:
+      - negative_variants/neg_001_force_zero/always_negedge_sampler.vams
+      - negative_variants/neg_002_invert_select/always_negedge_sampler.vams
+      - negative_variants/neg_003_drop_reset/always_negedge_sampler.vams
+      - negative_variants/neg_004_wrong_edge/always_negedge_sampler.vams
+      - negative_variants/neg_005_scale_low/always_negedge_sampler.vams
+    checks:
+      - logic_ports_parse
+      - always_negedge_event_parse
+      - synchronous_reset_clears_q
+      - negedge_samples_d_when_enabled
+      - enable_low_holds_previous_q
+      - posedge_does_not_update_q
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 353-always-resettable-toggle: |
   version: 1
   task_id: v3_353_always_resettable_toggle
