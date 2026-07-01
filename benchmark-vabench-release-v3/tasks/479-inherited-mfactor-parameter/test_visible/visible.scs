@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "inherited_mfactor_parameter.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.20 60n 0.20 61n 0.40 100n 0.40]
+
+XDUT (inp out) inherited_mfactor_parameter m=1.5
+
+tran tran stop=100n
+save inp out

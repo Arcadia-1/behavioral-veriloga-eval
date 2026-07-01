@@ -8964,6 +8964,25 @@ def check_v3_478_inherited_port_attribute_supply(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_479_inherited_mfactor_parameter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.30),
+                (90.0, 0.60),
+                (130.0, -0.15),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19462,6 +19481,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "477-analog-node-alias-initial": check_v3_477_analog_node_alias_initial,
     "v3_478_inherited_port_attribute_supply": check_v3_478_inherited_port_attribute_supply,
     "478-inherited-port-attribute-supply": check_v3_478_inherited_port_attribute_supply,
+    "v3_479_inherited_mfactor_parameter": check_v3_479_inherited_mfactor_parameter,
+    "479-inherited-mfactor-parameter": check_v3_479_inherited_mfactor_parameter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

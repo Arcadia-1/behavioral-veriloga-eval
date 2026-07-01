@@ -11103,14 +11103,34 @@
 479-inherited-mfactor-parameter: |
   version: 1
   task_id: v3_479_inherited_mfactor_parameter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: inherited_mfactor_parameter_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "inherited_mfactor"
+      - "parameter real m"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/inherited_mfactor_parameter.va
+    negative:
+      - negative_variants/neg_001_force_zero/inherited_mfactor_parameter.va
+      - negative_variants/neg_002_wrong_threshold/inherited_mfactor_parameter.va
+      - negative_variants/neg_003_reset_bias/inherited_mfactor_parameter.va
+      - negative_variants/neg_004_metric_offset/inherited_mfactor_parameter.va
+      - negative_variants/neg_005_scale_output/inherited_mfactor_parameter.va
+    checks:
+      - inherited_mfactor_attribute_parse
+      - output_uses_instance_m_gain
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Inherited m-factor parameter attribute promoted with executable parameter-gain behavior verification."
 480-mfactor-system-function-gain: |
   version: 1
   task_id: v3_480_mfactor_system_function_gain
