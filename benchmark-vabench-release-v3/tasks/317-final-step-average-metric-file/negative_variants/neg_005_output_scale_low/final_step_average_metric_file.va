@@ -18,7 +18,7 @@ integer count_q;
 integer state_q;
 integer fd;
 real sum_q;
-real max_q;
+real avg_q;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
@@ -26,19 +26,31 @@ analog begin
         count_q = 0;
         state_q = 0;
         sum_q = 0.0;
-        max_q = 0.0;
+        avg_q = 0.0;
     end
-    @(cross(V(clk) - vth, +1)) begin
-        count_q = count_q + 1;
-        sum_q = sum_q + V(vin);
-        if (V(vin) > max_q) max_q = V(vin);
-        out_v = V(vin);
-        metric_v = count_q > 0 ? sum_q / count_q : 0.0;
-        $strobe("sample count=%0d vin=%g", count_q, V(vin));
+    @(cross(V(clk) - vth, +1) or cross(V(rst) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            count_q = 0;
+            state_q = 0;
+            sum_q = 0.0;
+            avg_q = 0.0;
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            count_q = count_q + 1;
+            state_q = count_q;
+            sum_q = sum_q + V(vin);
+            avg_q = sum_q / count_q;
+            out_v = 0.8 * avg_q;
+            metric_v = avg_q / vhi;
+            if (metric_v > 1.0) metric_v = 1.0;
+            if (metric_v < 0.0) metric_v = 0.0;
+            $strobe("sample_average count=%0d avg=%g metric=%g", count_q, avg_q, metric_v);
+        end
     end
     @(final_step) begin
-        fd = $fopen("syntax_extension_metric.out", "w");
-        $fwrite(fd, "count=%0d avg=%.6g max=%.6g", count_q, metric_v, max_q);
+        fd = $fopen("candidate.out", "w");
+        $fwrite(fd, "count=%0d avg=%.3f metric=%.3f", count_q, avg_q, metric_v);
         $fclose(fd);
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

@@ -5311,11 +5311,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 317-final-step-average-metric-file: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_317_final_step_average_metric_file
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_317_final_step_average_metric_file
+    metric: sampled_final_step_average_metric_file
   required_columns:
     - time
     - vin
@@ -5327,11 +5330,23 @@
   syntax:
     must_include:
       - "final_step"
+      - "$fopen"
       - "$fwrite"
+      - "$fclose"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_sample_is_ignored
+      - post_reset_samples_update_running_average
+      - output_tracks_running_average_voltage
+      - metric_tracks_average_normalized_by_vhi
+      - final_step_writes_candidate_out
+      - candidate_out_matches_final_average_and_metric
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 318-final-step-max-observer-file: |
   version: 1
   task_id: v3_318_final_step_max_observer_file

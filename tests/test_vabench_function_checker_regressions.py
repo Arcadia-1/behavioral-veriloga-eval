@@ -1249,6 +1249,38 @@ def test_final_step_metric_side_output_requires_candidate_file(tmp_path: Path) -
     assert "candidate_file_count=4" in note
 
 
+def test_final_step_average_metric_side_output_requires_average_record(tmp_path: Path) -> None:
+    csv_path = tmp_path / "out" / "tran.csv"
+    csv_path.parent.mkdir()
+    csv_path.write_text("time,vin,clk,mode,rst,out,metric\n", encoding="utf-8")
+
+    missing_ok, missing_note = sim.validate_behavior_side_outputs(
+        "v3_317_final_step_average_metric_file",
+        tmp_path,
+        csv_path,
+    )
+    assert not missing_ok
+    assert missing_note == "candidate_file_missing"
+
+    (tmp_path / "candidate.out").write_text("count=4 avg=0.600 metric=0.667", encoding="utf-8")
+    bad_ok, bad_note = sim.validate_behavior_side_outputs(
+        "v3_317_final_step_average_metric_file",
+        tmp_path,
+        csv_path,
+    )
+    assert not bad_ok
+    assert "avg=0.600" in bad_note
+
+    (tmp_path / "candidate.out").write_text("count=4 avg=0.450 metric=0.500", encoding="utf-8")
+    ok, note = sim.validate_behavior_side_outputs(
+        "v3_317_final_step_average_metric_file",
+        tmp_path,
+        csv_path,
+    )
+    assert ok
+    assert "candidate_file_count=4" in note
+
+
 def _gain_trim_rows(*, cap_upper: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     ctrl = 0.30
