@@ -64,7 +64,7 @@
           16
         ]
       ],
-      "visible_hidden_distinct_count": 6
+      "visible_hidden_distinct_count": 12
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 22,
+    "sop_ready_visible_hidden_identical_count": 16,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 155,
-    "visible_hidden_identical_count": 39,
+    "visible_hidden_distinct_count": 161,
+    "visible_hidden_identical_count": 33,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 39
+      "visible_hidden_identical": 33
     }
   },
   "tasks": [
@@ -3658,11 +3658,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Limexp Soft Exponential",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3683,11 +3682,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Fstrobe File Line Writer",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3708,11 +3706,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Display Warning Debug Log",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3733,11 +3730,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Uniform Seeded Dither",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3888,11 +3884,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Multidimensional Array State",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3964,11 +3959,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Nested Function Pipeline",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

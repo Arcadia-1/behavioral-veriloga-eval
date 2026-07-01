@@ -135,8 +135,8 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 155
-    assert len(identical_tasks) == 39
+    assert len(distinct_tasks) == 161
+    assert len(identical_tasks) == 33
     assert "331-above-threshold-latch" in identical_tasks
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks
@@ -148,6 +148,8 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
     assert "410-macro-ifdef-gain-select" in distinct_tasks
     assert "419-wreal-logic-threshold-bridge" in distinct_tasks
     assert "434-repeat-loop-accumulator" in distinct_tasks
+    assert "445-limexp-soft-exponential" in distinct_tasks
+    assert "457-nested-function-pipeline" in distinct_tasks
 
 
 def negative_variants(task_key: str) -> list[dict]:

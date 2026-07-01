@@ -2686,6 +2686,17 @@ def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values(
             return 0.0, 0.0
         return row["vin"] + 0.03, 1.0
 
+    def uniform_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return row["vin"] + 0.01, 0.5
+
+    def exp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = math.exp(row["vin"])
+        return out, out
+
     def gain_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
         if row["rst"] > 0.45:
             return 0.0, 0.0
@@ -2699,10 +2710,32 @@ def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values(
         state["count"] = int(state["count"]) + 1
         return 0.9 if acc > 4 else 0.0, float(acc)
 
+    def multi_array_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = int(state["count"]) + 1
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if metric > 2 else 0.0, float(metric)
+
+    def nested_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(401):
+            time_ns = float(idx)
+            vin = _task_input_from_segments(
+                time_ns,
+                [(0.0, -0.75), (100.0, 0.25), (200.0, 0.90), (300.0, -0.10)],
+            )
+            out = vin * vin + 1.0
+            rows.append({"time": time_ns * 1e-9, "vin": vin, "out": 0.0 if wrong else out})
+        return rows
+
     assert sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows())[0]
     assert not sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows(wrong=True))[0]
     assert sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows())[0]
     assert not sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows(wrong=True))[0]
+    assert sim.check_v3_457_nested_function_pipeline(nested_rows())[0]
+    assert not sim.check_v3_457_nested_function_pipeline(nested_rows(wrong=True))[0]
 
     cases = [
         (sim.check_v3_421_task_local_variable_transform, clamp_update, input_general, 0.0, 0.0),
@@ -2731,6 +2764,41 @@ def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values(
                 _task_input_from_segments(t, [(0.0, 0.62), (150.0, 0.18), (250.0, 0.76), (350.0, 0.44)]),
                 0.0,
                 0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_445_limexp_soft_exponential,
+            exp_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, -0.25), (150.0, 0.75), (250.0, 0.20), (350.0, -0.60)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (sim.check_v3_446_fstrobe_file_line_writer, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_447_display_warning_debug_log, count_threshold_update, input_general, 0.0, 0.0),
+        (
+            sim.check_v3_448_rdist_uniform_seeded_dither,
+            uniform_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.62), (150.0, 0.18), (250.0, 0.76), (350.0, 0.44)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_454_multidimensional_array_state,
+            multi_array_update,
+            lambda t: (
+                0.0,
+                0.0,
+                0.9 if 360.0 <= t <= 429.0 else 0.0,
             ),
             0.0,
             0.0,

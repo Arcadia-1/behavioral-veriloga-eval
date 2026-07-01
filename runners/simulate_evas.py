@@ -8558,78 +8558,26 @@ def check_v3_434_repeat_loop_accumulator(rows: list[dict[str, float]]) -> tuple[
 
 
 def check_v3_445_limexp_soft_exponential(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = math.exp(row["vin"])
+        return out, out
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (130.0, 1.0),
-                (230.0, 1.6487),
-                (330.0, 0.0),
-                (430.0, 0.6065),
-            ],
-            "metric": [
-                (130.0, 1.0),
-                (230.0, 1.6487),
-                (330.0, 0.0),
-                (430.0, 0.6065),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+        tol=0.1,
     )
 
 
 def check_v3_446_fstrobe_file_line_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (130.0, 0.9),
-                (230.0, 0.0),
-                (330.0, 0.0),
-                (430.0, 0.9),
-            ],
-            "metric": [
-                (130.0, 0.0),
-                (230.0, 1.0),
-                (330.0, 0.0),
-                (430.0, 0.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return check_v3_425_string_swrite_label_builder(rows)
 
 
 def check_v3_447_display_warning_debug_log(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (130.0, 0.9),
-                (230.0, 0.0),
-                (330.0, 0.0),
-                (430.0, 0.9),
-            ],
-            "metric": [
-                (130.0, 0.0),
-                (230.0, 1.0),
-                (330.0, 0.0),
-                (430.0, 0.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return check_v3_425_string_swrite_label_builder(rows)
 
 
 def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -8637,50 +8585,72 @@ def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tu
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    checks = [
-        (130.0, 0.70, 0.70, 0.715, 0.0, 1.0),
-        (230.0, 0.30, 0.30, 0.315, 0.0, 1.0),
-        (330.0, 0.80, -0.04, 0.04, -0.04, 0.04),
-        (430.0, 0.80, 0.80, 0.815, 0.0, 1.0),
-    ]
+    expected_out = 0.0
+    expected_metric = 0.0
+    out_expected_values = [expected_out]
+    metric_expected_values = [expected_metric]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            if row["rst"] > 0.45:
+                expected_out = 0.0
+                expected_metric = 0.0
+            else:
+                expected_out = row["vin"]
+                expected_metric = 0.5
+        prev_clk = row["clk"]
+        out_expected_values.append(expected_out)
+        metric_expected_values.append(expected_metric)
+
+    checked = 0
+    stride = max(1, len(rows) // 120)
     observed: list[str] = []
-    for time_ns, _vin_ref, out_lo, out_hi, metric_lo, metric_hi in checks:
-        out = sample_signal_at(rows, "out", time_ns * 1e-9)
-        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
-        if out is None or metric is None:
-            return False, f"missing_sample_at={time_ns:g}ns"
-        if not (out_lo <= out <= out_hi):
-            return False, f"out@{time_ns:g}ns={out:.4f} expected_range=[{out_lo:.3f},{out_hi:.3f}]"
-        if not (metric_lo <= metric <= metric_hi):
-            return False, f"metric@{time_ns:g}ns={metric:.4f} expected_range=[{metric_lo:.3f},{metric_hi:.3f}]"
-        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.3f}")
-    return True, " ".join(observed)
+    for index in range(0, len(rows), stride):
+        out_expected = out_expected_values[index]
+        metric_expected = metric_expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(out_expected - value) for value in out_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if max(abs(metric_expected - value) for value in metric_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if metric_expected == 0.0:
+            out_ok = abs(rows[index]["out"]) <= 0.08
+            metric_ok = abs(rows[index]["metric"]) <= 0.08
+        else:
+            out_ok = out_expected - 0.02 <= rows[index]["out"] <= out_expected + 0.04
+            metric_ok = 0.0 <= rows[index]["metric"] <= 1.0
+        if not out_ok:
+            return False, (
+                f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                f"expected_near_vin={out_expected:.4f}"
+            )
+        if not metric_ok:
+            return False, f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} expected_uniform_range"
+        checked += 1
+        observed.append(f"{rows[index]['time'] * 1e9:g}ns/out={rows[index]['out']:.3f}/metric={rows[index]['metric']:.3f}")
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    return True, f"edges={edge_count} samples={checked} " + " ".join(observed[:4])
 
 
 def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = int(state["count"]) + 1
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if metric > 2 else 0.0, float(metric)
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (130.0, 0.0),
-                (230.0, 0.0),
-                (330.0, 0.9),
-                (430.0, 0.0),
-                (530.0, 0.0),
-            ],
-            "metric": [
-                (130.0, 1.0),
-                (230.0, 2.0),
-                (330.0, 3.0),
-                (430.0, 0.0),
-                (530.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
 
 
@@ -8714,18 +8684,23 @@ def check_v3_457_nested_function_pipeline(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (50.0, 1.0),
-                (150.0, 1.25),
-                (250.0, 1.25),
-                (350.0, 2.0),
-            ],
-        },
-        tol=0.08,
-    )
+    checked = 0
+    expected_values: list[float] = []
+    max_err = 0.0
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        expected = row["vin"] * row["vin"] + 1.0
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        expected_values.append(expected)
+        if err > 0.08:
+            return False, f"out@{row['time'] * 1e9:g}ns={row['out']:.4f} expected={expected:.4f}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    if max(expected_values) - min(expected_values) < 0.2:
+        return False, "insufficient_out_dynamic_range"
+    return True, f"samples={checked} max_out_err={max_err:.4f}"
 
 
 def check_v3_458_recursive_function_candidate(rows: list[dict[str, float]]) -> tuple[bool, str]:

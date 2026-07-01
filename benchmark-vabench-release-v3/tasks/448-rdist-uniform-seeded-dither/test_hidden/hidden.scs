@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "rdist_uniform_seeded_dither.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.70 149n 0.70 150n 0.30 249n 0.30 250n 0.80 450n 0.80]
+Vvin (vin 0) vsource type=pwl wave=[0 0.62 149n 0.62 150n 0.18 249n 0.18 250n 0.76 349n 0.76 350n 0.44 450n 0.44]
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 199n 0.0 200n 1.0 249n 1.0 250n 0.0 299n 0.0 300n 1.0 349n 1.0 350n 0.0 399n 0.0 400n 1.0 450n 1.0]
 Vmode (mode 0) vsource dc=0.0
-Vrst (rst 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 1.0 349n 1.0 350n 0.0 450n 0.0]
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 349n 0.0 350n 1.0 429n 1.0 430n 0.0 450n 0.0]
 
 XDUT (vin clk mode rst out metric) rdist_uniform_seeded_dither
 
