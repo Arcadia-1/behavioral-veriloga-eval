@@ -69,8 +69,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 8,
-        "compile_supported_candidate": 4
+        "behavior_certified_extension": 9,
+        "compile_supported_candidate": 3
       },
       "semantic_layer": "noise_analysis_extension",
       "task_count": 12
@@ -79,22 +79,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 367,
-    "behavior_certified_extension_count": 67,
+    "behavior_certified_count": 368,
+    "behavior_certified_extension_count": 68,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 67,
+      "behavior_certified_extension": 68,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 117,
+      "compile_supported_candidate": 116,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 127,
+    "compile_supported_candidate_count": 126,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 127,
-      "extension_behavior_certified_outside_original_300": 67,
+      "excluded_until_behavior_promotion": 126,
+      "extension_behavior_certified_outside_original_300": 68,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -7116,15 +7116,15 @@
       "title": "Analysis Dependent Noise Enable"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_noise_analysis_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Noise/analysis helper syntax candidate; AC/noise behavior certification is pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "noise_analysis_extension",
       "syntax_focus": "Use ac_stim() for small-signal AC stimulus while retaining transient behavior.",
       "target": "ac_stim_small_signal_source.va",
