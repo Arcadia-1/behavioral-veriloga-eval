@@ -8910,16 +8910,46 @@
 406-vector-replication-mask: |
   version: 1
   task_id: v3_406_vector_replication_mask
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vector_replication_mask_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "{2{"
+      - "2'b10"
+      - "mask_q"
+      - "count_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/vector_replication_mask.va
+    negative:
+      - negative_variants/neg_001_force_zero/vector_replication_mask.va
+      - negative_variants/neg_002_wrong_threshold/vector_replication_mask.va
+      - negative_variants/neg_003_reset_bias/vector_replication_mask.va
+      - negative_variants/neg_004_metric_offset/vector_replication_mask.va
+      - negative_variants/neg_005_scale_output/vector_replication_mask.va
+    checks:
+      - replication_builds_repeated_1010_mask
+      - output_tracks_masked_counter_bits
+      - metric_reports_mask_value_ten
+      - startup_count_bias_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
 407-vector-reduction-parity: |
   version: 1
   task_id: v3_407_vector_reduction_parity

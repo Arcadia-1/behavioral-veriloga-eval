@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 32,
+      "complete_tests_count": 33,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 33,
+      "fair_eval_count": 34,
       "range": "373-434",
-      "sop_ready_count": 32,
+      "sop_ready_count": 33,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          30
+          29
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          29
+          28
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          29
+          28
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          29
+          28
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 104,
-    "fair_eval_count": 104,
+    "complete_tests_count": 105,
+    "fair_eval_count": 105,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 90,
-      "hidden_scs_not_executable:include,instance,source": 89,
-      "missing_required_behavior_section": 90,
-      "visible_scs_not_executable:include,instance,source": 89
+      "checker_syntax_only_no_behavior_score": 89,
+      "hidden_scs_not_executable:include,instance,source": 88,
+      "missing_required_behavior_section": 89,
+      "visible_scs_not_executable:include,instance,source": 88
     },
-    "sop_ready_count": 103,
+    "sop_ready_count": 104,
     "task_count": 194
   },
   "tasks": [
@@ -2574,20 +2574,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 406,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use replication concatenation to build a repeated mask.",
       "target": "vector_replication_mask.va",
