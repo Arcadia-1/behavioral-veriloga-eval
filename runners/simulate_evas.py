@@ -8606,6 +8606,31 @@ def check_v3_384_file_fopen_mode_selector(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.1556),
+                (180.0, 0.6556),
+                (280.0, 0.2333),
+                (380.0, 0.7778),
+            ],
+            "metric": [
+                (80.0, 0.1728),
+                (180.0, 0.7284),
+                (280.0, 0.2593),
+                (380.0, 0.8642),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17669,6 +17694,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "383-file-rewind-second-pass": check_v3_383_file_rewind_second_pass,
     "v3_384_file_fopen_mode_selector": check_v3_384_file_fopen_mode_selector,
     "384-file-fopen-mode-selector": check_v3_384_file_fopen_mode_selector,
+    "v3_385_table_model_linear_gain": check_v3_385_table_model_linear_gain,
+    "385-table-model-linear-gain": check_v3_385_table_model_linear_gain,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
