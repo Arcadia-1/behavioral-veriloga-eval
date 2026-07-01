@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton for the language-semantics extension task.
-tran tran stop=200n
+
+ahdl_include "idtmod_modulo_phase_marker.va"
+
+Vvin (vin 0) vsource dc=0.5 type=dc
+Vmode (mode 0) vsource dc=0.9 type=dc
+Vrst (rst 0) vsource dc=0.0 type=dc
+Vclk (clk 0) vsource dc=0.0 type=dc
+
+XDUT (vin clk mode rst out metric) idtmod_modulo_phase_marker
+
+tran tran stop=750n
 save vin clk mode rst out metric

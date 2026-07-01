@@ -7379,6 +7379,35 @@ def check_v3_328_idtmod_frequency_control(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_329_idtmod_modulo_phase_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (20.0, 0.054),
+                (100.0, 0.270),
+                (300.0, 0.810),
+                (350.0, 0.045),
+                (500.0, 0.450),
+                (680.0, 0.036),
+            ],
+            "metric": [
+                (20.0, 0.9),
+                (100.0, 0.0),
+                (300.0, 0.0),
+                (350.0, 0.9),
+                (500.0, 0.0),
+                (680.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16332,6 +16361,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "327-idtmod-wrapped-ramp-source": check_v3_327_idtmod_wrapped_ramp_source,
     "v3_328_idtmod_frequency_control": check_v3_328_idtmod_frequency_control,
     "328-idtmod-frequency-control": check_v3_328_idtmod_frequency_control,
+    "v3_329_idtmod_modulo_phase_marker": check_v3_329_idtmod_modulo_phase_marker,
+    "329-idtmod-modulo-phase-marker": check_v3_329_idtmod_modulo_phase_marker,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

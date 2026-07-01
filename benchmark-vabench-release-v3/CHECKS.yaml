@@ -5743,9 +5743,10 @@
 329-idtmod-modulo-phase-marker: |
   version: 1
   task_id: v3_329_idtmod_modulo_phase_marker
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5759,8 +5760,24 @@
       - "idtmod("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    positive:
+      - solution/idtmod_modulo_phase_marker.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/idtmod_modulo_phase_marker.va
+      - negative_variants/neg_002_drive_metric_zero/idtmod_modulo_phase_marker.va
+      - negative_variants/neg_003_reset_polarity_wrong/idtmod_modulo_phase_marker.va
+      - negative_variants/neg_004_logic_threshold_shifted/idtmod_modulo_phase_marker.va
+      - negative_variants/neg_005_output_scale_low/idtmod_modulo_phase_marker.va
+    checks:
+      - idtmod_uses_explicit_quarter_phase_modulus
+      - output_tracks_scaled_modulo_phase
+      - metric_marks_post_wrap_phase_window
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 330-idtmod-clock-phase-meter: |
   version: 1
   task_id: v3_330_idtmod_clock_phase_meter

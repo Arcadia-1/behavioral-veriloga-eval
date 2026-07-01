@@ -19,9 +19,22 @@ module idtmod_modulo_phase_marker (
 
 ## Required Behavior
 
-Use idtmod() as a voltage-domain wrapped phase accumulator.
+Use `idtmod()` with an explicit modulo value to build a wrapped phase marker.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a behavioral continuous-time task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `freq_q = 0.5e6 + 0.5e6 * V(vin)`
+- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 0.25)`
+- `marker_width_q = 0.05` when `V(mode) > vth`, otherwise `0.025`
+- while `V(rst) > vth`, drive both outputs to `0.0`
+- otherwise drive `out = 0.9 * phase_q / 0.25`
+- otherwise drive `metric = 0.9` when `phase_q < marker_width_q`, else `0.0`
+
+The hidden testbench drives `vin = 0.5` and `mode = 0.9`, so the 0.25-modulo phase wraps about every `333 ns`. The evaluator samples the scaled sawtooth and checks that `metric` marks only the short post-wrap phase interval.
 
 ## Output
 
