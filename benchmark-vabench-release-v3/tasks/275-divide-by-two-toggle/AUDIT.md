@@ -1,9 +1,52 @@
-# Source Divide By Two Toggle Audit
+# Two-Gate SOP Audit: Task 275 Divide By Two Toggle
 
-- Source: `zhangz/L2_Divider_2.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a divide-by-two edge toggle. OUT toggles on every rising CLK edge, starting low and becoming high after the first edge.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch30-evas/275-divide-by-two-toggle`
-  - `WORK/source-import-batch30-spectre/275-divide-by-two-toggle`
+## Scope
+
+Task 275 is the canonical divide-by-two edge-toggle row after manual review of
+the duplicate-title pair 184/275.
+
+## Gate 1: Admission And Counting
+
+- Admission label: `independent_l1_ready`.
+- Counting decision: keep task 275 as the canonical independent L1
+  divide-by-two toggle row; keep task 184 only as a non-counted
+  duplicate/migration artifact unless rewritten.
+- Function boundary: `out` starts low, toggles on each rising crossing of
+  `clk` through `vth`, and drives either `0` or `vdd` through the public
+  transition parameters.
+- Distinctness policy: task 275 does not gain independent coverage from task
+  184; it replaces task 184 as the counted row for this function.
+
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` for the canonical audited
+  artifact.
+- Prompt hygiene: the public prompt now removes historical source-provenance
+  wording and exposes interface, initial state, rising-edge semantics, output
+  levels, threshold, delay, transition time, and modeling constraints.
+- Gold quality: the gold model uses `@(initial_step)` for low-state
+  initialization, `@(cross(V(clk)-vth,+1))` for edge detection, and a voltage
+  contribution through `transition(...)`.
+- Checker role: the checker now derives expected output state from detected
+  rising input edges, so visible and hidden stimuli can differ without changing
+  checker code.
+- Functional-math invariant: with initial state low, the expected output state
+  is high after an odd number of rising edges and low after an even number.
+- Cadence reference correspondence: Cadence Verilog-AMS examples show
+  `@(initial_step)` initialization,
+  `@(cross(...,+1))` threshold events, and `transition(state*Vdd, td, tr)` style
+  output driving. Task 275 follows that event/state/transition pattern; the
+  benchmark-specific part is only the divide-by-two state update.
+
+## Evidence
+
+- Human confirmation: user confirmed only one divide-by-two toggle row should
+  remain counted; task 275 is retained as canonical.
+- Visible/hidden relationship: hidden stimulus now uses a different edge
+  schedule and stop time from the visible smoke deck.
+- EVAS gold after dynamic-checker repair: PASS.
+- EVAS negatives after dynamic-checker repair: 4/4 `FAIL_SIM_CORRECTNESS`.
+- Spectre gold after dynamic-checker repair: visible PASS and hidden PASS.
+- Spectre negatives after dynamic-checker repair: 4/4 `NEGATIVE_REJECTED`.
+- AHDL lint/read-in triage: no `AHDLLINT-*` messages were found in the visible,
+  hidden, or negative Spectre logs reviewed for this repair.
