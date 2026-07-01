@@ -1,0 +1,19 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module table_model_2d_array_surface (input electrical xnode, input electrical ynode, output electrical out);
+real x[0:3];
+real y[0:3];
+real z[0:3];
+real yv;
+analog begin
+    @(initial_step) begin
+        x[0] = 0.0; y[0] = 0.0; z[0] = 0.0;
+        x[1] = 1.0; y[1] = 0.0; z[1] = 1.0;
+        x[2] = 0.0; y[2] = 1.0; z[2] = 2.0;
+        x[3] = 1.0; y[3] = 1.0; z[3] = 3.0;
+    end
+    yv = $table_model(V(xnode), V(ynode), x, y, z, "1L,1L");
+    V(out) <+ transition(0.05 + yv, 0.0, 200p, 200p);
+end
+endmodule

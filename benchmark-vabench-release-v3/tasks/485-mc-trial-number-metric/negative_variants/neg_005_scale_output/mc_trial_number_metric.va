@@ -1,0 +1,12 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mc_trial_number_metric (output electrical out);
+integer trial_num;
+analog begin
+    @(initial_step) begin
+        trial_num = $cds_get_mc_trial_number();
+    end
+    V(out) <+ transition(0.8 * (trial_num), 0.0, 200p, 200p);
+end
+endmodule

@@ -5609,7 +5609,7 @@
       "target": [
         "analog_initial_block_state.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Analog Initial Block State",
       "syntax_focus": "Use an analog initial block to initialize behavioral state.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5637,7 +5637,7 @@
       "target": [
         "vt_temperature_argument.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Vt Temperature Argument",
       "syntax_focus": "Use $vt(temp) with an explicit temperature argument.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5665,7 +5665,7 @@
       "target": [
         "param_given_gain_select.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Param Given Gain Select",
       "syntax_focus": "Use $param_given() to choose behavior based on parameter override presence.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5679,7 +5679,7 @@
       "target": [
         "port_connected_output_enable.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Port Connected Output Enable",
       "syntax_focus": "Use $port_connected() to choose behavior based on optional port binding.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5707,7 +5707,7 @@
       "target": [
         "simparam_query_tnom.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Simparam Query Tnom",
       "syntax_focus": "Use $simparam() to query simulator/environment parameters.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5752,6 +5752,342 @@
       "tier": "kcl-syntax-candidate",
       "title": "Branch Current Probe Contribution",
       "syntax_focus": "Use a named branch with current contribution and current probing.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "471-indirect-branch-null-balance": {
+      "category": "veriloga_indirect_branch_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_471_indirect_branch_null_balance",
+      "level": "NA",
+      "target": [
+        "indirect_branch_null_balance.va"
+      ],
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Null Balance",
+      "syntax_focus": "Use an indirect branch assignment target/equation form.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "472-indirect-branch-ddt-balance": {
+      "category": "veriloga_indirect_branch_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_472_indirect_branch_ddt_balance",
+      "level": "NA",
+      "target": [
+        "indirect_branch_ddt_balance.va"
+      ],
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Ddt Balance",
+      "syntax_focus": "Use indirect branch assignment with a ddt() equation term.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "473-attribute-potential-abstol-probe": {
+      "category": "veriloga_attribute_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_473_attribute_potential_abstol_probe",
+      "level": "NA",
+      "target": [
+        "attribute_potential_abstol_probe.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Attribute Potential Abstol Probe",
+      "syntax_focus": "Access a node potential attribute through hierarchical attribute syntax.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "474-generic-potential-access-function": {
+      "category": "veriloga_access_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_474_generic_potential_access_function",
+      "level": "NA",
+      "target": [
+        "generic_potential_access_function.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Generic Potential Access Function",
+      "syntax_focus": "Use the generic potential() access function for an electrical node.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "475-generic-potential-contribution": {
+      "category": "veriloga_access_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_475_generic_potential_contribution",
+      "level": "NA",
+      "target": [
+        "generic_potential_contribution.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Generic Potential Contribution",
+      "syntax_focus": "Use the generic potential() access function as a contribution target.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "476-oomr-string-voltage-probe": {
+      "category": "veriloga_oomr_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_476_oomr_string_voltage_probe",
+      "level": "NA",
+      "target": [
+        "oomr_string_voltage_probe.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Oomr String Voltage Probe",
+      "syntax_focus": "Use a string out-of-module reference in a voltage probe.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "477-analog-node-alias-initial": {
+      "category": "veriloga_alias_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_477_analog_node_alias_initial",
+      "level": "NA",
+      "target": [
+        "analog_node_alias_initial.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Analog Node Alias Initial",
+      "syntax_focus": "Use $analog_node_alias inside analog initial for hierarchical node aliasing.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "478-inherited-port-attribute-supply": {
+      "category": "veriloga_inherited_port_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_478_inherited_port_attribute_supply",
+      "level": "NA",
+      "target": [
+        "inherited_port_attribute_supply.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Inherited Port Attribute Supply",
+      "syntax_focus": "Declare inherited terminal attributes on supply-like ports.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "479-inherited-mfactor-parameter": {
+      "category": "veriloga_mfactor_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_479_inherited_mfactor_parameter",
+      "level": "NA",
+      "target": [
+        "inherited_mfactor_parameter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Inherited Mfactor Parameter",
+      "syntax_focus": "Declare an inherited m-factor parameter attribute.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "480-mfactor-system-function-gain": {
+      "category": "veriloga_mfactor_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_480_mfactor_system_function_gain",
+      "level": "NA",
+      "target": [
+        "mfactor_system_function_gain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Mfactor System Function Gain",
+      "syntax_focus": "Use $mfactor() to scale behavioral gain.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "481-analog-primitive-resistor-instance": {
+      "category": "veriloga_analog_primitive_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_481_analog_primitive_resistor_instance",
+      "level": "NA",
+      "target": [
+        "analog_primitive_resistor_instance.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Resistor Instance",
+      "syntax_focus": "Instantiate a Spectre analog resistor primitive inside a Verilog-A module.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "482-analog-primitive-isource-instance": {
+      "category": "veriloga_analog_primitive_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_482_analog_primitive_isource_instance",
+      "level": "NA",
+      "target": [
+        "analog_primitive_isource_instance.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Isource Instance",
+      "syntax_focus": "Instantiate a Spectre analog current-source primitive inside a Verilog-A module.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "483-cds-violation-threshold-assert": {
+      "category": "veriloga_assert_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_483_cds_violation_threshold_assert",
+      "level": "NA",
+      "target": [
+        "cds_violation_threshold_assert.va"
+      ],
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Cds Violation Threshold Assert",
+      "syntax_focus": "Use $cds_violation() to emit a Verilog-A assert violation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "484-rtoi-conversion-quantizer": {
+      "category": "veriloga_conversion_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_484_rtoi_conversion_quantizer",
+      "level": "NA",
+      "target": [
+        "rtoi_conversion_quantizer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rtoi Conversion Quantizer",
+      "syntax_focus": "Use $rtoi() to convert real-valued code to integer state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "485-mc-trial-number-metric": {
+      "category": "veriloga_monte_carlo_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_485_mc_trial_number_metric",
+      "level": "NA",
+      "target": [
+        "mc_trial_number_metric.va"
+      ],
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Mc Trial Number Metric",
+      "syntax_focus": "Use $cds_get_mc_trial_number() to expose the Monte Carlo trial index.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "486-rf-source-info-registration": {
+      "category": "veriloga_rf_source_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_486_rf_source_info_registration",
+      "level": "NA",
+      "target": [
+        "rf_source_info_registration.va"
+      ],
+      "tier": "cadence-simulator-function-candidate",
+      "title": "Rf Source Info Registration",
+      "syntax_focus": "Use $cds_set_rf_source_info() to register an RF source name and frequency.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "487-table-model-2d-array-surface": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_487_table_model_2d_array_surface",
+      "level": "NA",
+      "target": [
+        "table_model_2d_array_surface.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model 2d Array Surface",
+      "syntax_focus": "Use two independent arrays and one output array in a 2D $table_model().",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "488-table-model-string-param-source": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_488_table_model_string_param_source",
+      "level": "NA",
+      "target": [
+        "table_model_string_param_source.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model String Param Source",
+      "syntax_focus": "Use a string parameter as the $table_model() data source.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "489-event-nested-or-expression": {
+      "category": "veriloga_event_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_489_event_nested_or_expression",
+      "level": "NA",
+      "target": [
+        "event_nested_or_expression.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Event Nested Or Expression",
+      "syntax_focus": "Use a deeper analog event expression with nested cross/above/timer terms.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "490-event-task-function-state-update": {
+      "category": "veriloga_event_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_490_event_task_function_state_update",
+      "level": "NA",
+      "target": [
+        "event_task_function_state_update.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Event Task Function State Update",
+      "syntax_focus": "Combine event body, task state update, and function post-processing.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "491-kcl-capacitor-ddt-current": {
+      "category": "veriloga_kcl_contribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_491_kcl_capacitor_ddt_current",
+      "level": "NA",
+      "target": [
+        "kcl_capacitor_ddt_current.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Capacitor Ddt Current",
+      "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "492-kcl-inductor-idt-voltage": {
+      "category": "veriloga_kcl_contribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_492_kcl_inductor_idt_voltage",
+      "level": "NA",
+      "target": [
+        "kcl_inductor_idt_voltage.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Inductor Idt Voltage",
+      "syntax_focus": "Use voltage contribution with idt() of branch current for an inductor-style model.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "493-continuous-laplace-nd-filter": {
+      "category": "veriloga_continuous_time_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_493_continuous_laplace_nd_filter",
+      "level": "NA",
+      "target": [
+        "continuous_laplace_nd_filter.va"
+      ],
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Laplace Nd Filter",
+      "syntax_focus": "Use laplace_nd() as a continuous-time behavioral transfer function.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "494-continuous-zi-nd-filter": {
+      "category": "veriloga_continuous_time_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_494_continuous_zi_nd_filter",
+      "level": "NA",
+      "target": [
+        "continuous_zi_nd_filter.va"
+      ],
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Zi Nd Filter",
+      "syntax_focus": "Use zi_nd() as a sampled-data behavioral transfer function.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     }
   }

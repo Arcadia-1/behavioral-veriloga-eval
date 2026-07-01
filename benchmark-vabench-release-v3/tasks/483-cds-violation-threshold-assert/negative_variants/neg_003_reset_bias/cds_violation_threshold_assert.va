@@ -1,0 +1,11 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module cds_violation_threshold_assert (input electrical in, output electrical out);
+analog begin
+    if (V(in) > 1.0) begin
+        $cds_violation("va_threshold", "input above threshold", V(in));
+    end
+    V(out) <+ transition(V(in), 0.0, 200p, 200p);
+end
+endmodule

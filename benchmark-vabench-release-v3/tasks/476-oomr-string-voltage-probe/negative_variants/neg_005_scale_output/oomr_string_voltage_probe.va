@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module oomr_string_voltage_probe (output electrical out);
+parameter string sigpath = "$root.vin";
+analog begin
+    V(out) <+ transition(0.8 * (V(sigpath)), 0.0, 200p, 200p);
+end
+endmodule

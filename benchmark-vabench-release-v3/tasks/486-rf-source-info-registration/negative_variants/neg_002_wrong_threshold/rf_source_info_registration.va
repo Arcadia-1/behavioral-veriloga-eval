@@ -1,0 +1,13 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module rf_source_info_registration (input electrical in, output electrical out);
+parameter string fundname = "rf";
+parameter real freq = 1G;
+analog begin
+    @(initial_step) begin
+        $cds_set_rf_source_info(fundname, freq);
+    end
+    V(out) <+ transition(V(in), 0.0, 200p, 200p);
+end
+endmodule

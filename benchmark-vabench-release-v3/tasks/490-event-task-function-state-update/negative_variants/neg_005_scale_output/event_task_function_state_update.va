@@ -1,0 +1,29 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module event_task_function_state_update (input electrical clk, input electrical in, output electrical out);
+integer count;
+real q;
+function real clamp01;
+    input real x;
+    begin
+        if (x < 0.0) clamp01 = 0.0;
+        else if (x > 1.0) clamp01 = 1.0;
+        else clamp01 = x;
+    end
+endfunction
+task update_state;
+    input real sample;
+    begin
+        count = count + 1;
+        q = clamp01(sample + 0.05 * count);
+    end
+endtask
+analog begin
+    @(initial_step) begin count = 0; q = 0.0; end
+    @(cross(V(clk) - 0.45, +1)) begin
+        update_state(V(in));
+    end
+    V(out) <+ transition(0.8 * (q), 0.0, 200p, 200p);
+end
+endmodule

@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module inherited_mfactor_parameter (input electrical in, output electrical out);
+(* inherited_mfactor *) parameter real m = 1.0;
+analog begin
+    V(out) <+ transition(0.8 * (m * V(in)), 0.0, 200p, 200p);
+end
+endmodule

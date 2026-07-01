@@ -1,0 +1,13 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module inherited_port_attribute_supply (out, in, vdd, gnd);
+output out; input in;
+electrical out, in;
+(* inh_conn_prop_name = "vdd", inh_conn_def_value = "cds_globals.\vdd!" *) inout vdd;
+(* inh_conn_prop_name = "gnd", inh_conn_def_value = "cds_globals.\gnd!" *) inout gnd;
+electrical vdd, gnd;
+analog begin
+    V(out, gnd) <+ transition(V(in, gnd), 0.0, 200p, 200p);
+end
+endmodule

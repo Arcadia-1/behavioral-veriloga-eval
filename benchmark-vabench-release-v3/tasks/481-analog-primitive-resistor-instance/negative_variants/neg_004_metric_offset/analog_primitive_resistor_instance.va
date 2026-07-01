@@ -1,0 +1,6 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module analog_primitive_resistor_instance (inout electrical p, inout electrical n);
+resistor #(.r(1000.0)) rload (p, n);
+endmodule

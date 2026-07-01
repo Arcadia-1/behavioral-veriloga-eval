@@ -1,0 +1,14 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module analog_node_alias_initial (output electrical out);
+electrical aliased;
+integer ok;
+parameter string target_path = "$root.vin";
+analog initial begin
+    ok = $analog_node_alias(aliased, target_path);
+end
+analog begin
+    V(out) <+ transition(0.8 * (V(aliased)), 0.0, 200p, 200p);
+end
+endmodule

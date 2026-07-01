@@ -1,0 +1,8 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module generic_potential_access_function (input electrical in, output electrical out);
+analog begin
+    V(out) <+ transition(0.05 + potential(in), 0.0, 200p, 200p);
+end
+endmodule

@@ -1,0 +1,10 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module attribute_potential_abstol_probe (input electrical in, output electrical out);
+real tol;
+analog begin
+    tol = in.potential.abstol;
+    V(out) <+ transition(0.0 + 0.0*V(in) + 0.0 * tol, 0.0, 200p, 200p);
+end
+endmodule

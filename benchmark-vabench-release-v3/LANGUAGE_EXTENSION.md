@@ -55,6 +55,12 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   `$discontinuity`, `$param_given()`, `$port_connected()`, `$temperature`,
   `$simparam()`, explicit `branch` declarations, and `I(...)` current
   contribution syntax.
+- `471`-`494`: LRM gap-fill rows for indirect branch assignments,
+  attribute/access functions, OOMR and alias helpers, inherited port/m-factor
+  attributes, analog primitive instantiation, Cadence assert/conversion/Monte
+  Carlo/RF helpers, 2D/string `$table_model()`, deeper analog event
+  expressions, KCL `ddt`/`idt` current/voltage forms, and explicit
+  continuous-time Laplace/Z-domain tier rows.
 
 Each extension task contains:
 
@@ -82,22 +88,31 @@ Current local EVAS compile status after this expansion:
   now compile with current local EVAS.
 - `461`, `463`, `466`, `468`, `469`, and `470`: course-material gap-fill rows
   that currently compile with local EVAS.
-- `460`, `462`, `464`, `465`, and `467`: intentionally retained as
-  `evas-unsupported-candidate` rows for `analog initial`, `$vt(temp)`,
-  `$param_given()`, `$port_connected()`, and `$simparam()`.
-- `469` and `470`: KCL/current-contribution syntax candidates only; they are not
-  behavior-certified KCL/MNA claims.
+- `460`, `462`, `464`, `465`, and `467`: course-material environment
+  helper rows that now compile with current local EVAS.
+- `471`-`494`: newly added LRM gap-fill rows; all reference solutions now
+  compile with current local EVAS after the EVAS CLI helper allowlist update.
+- `471`, `472`, `493`, and `494`: behavioral continuous-time candidates;
+  these are compile-supported language rows, not full dynamic-solver accuracy
+  claims.
+- `469`, `470`, `481`, `482`, `491`, and `492`: KCL/current-contribution or
+  analog-primitive syntax candidates only; they are not behavior-certified
+  KCL/MNA claims.
 - `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
   longer inside conditionally executed `analysis()` branches.
 
 ## Remaining Language Gaps Worth Tracking
 
-Tracked upstream in EVAS issue #35.
+Upstream EVAS issues #35 and #36 are closed. The rows below are now
+compile-supported by current local EVAS, but remain extension candidates until
+their behavior checkers and negative-case scoring are promoted.
 
 The newly added rows avoid current-domain KCL and still leave some manual
 features as future work:
 
-- `analog initial` block support.
-- `$vt(temp)`, `$param_given()`, `$port_connected()`, and `$simparam()` support.
+- behavior certification, beyond compile support, for indirect branch assignment,
+  attribute/generic access functions, `$analog_node_alias`, `$rtoi`,
+  `$cds_get_mc_trial_number`, 2D/string `$table_model`, and continuous-time
+  `ddt`/`idt`/`laplace_nd`/`zi_nd` rows.
 - richer multi-dimensional `$table_model()` behavior certification.
 - AC/noise behavior certification beyond compile-level helper coverage.

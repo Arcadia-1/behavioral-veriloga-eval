@@ -7199,8 +7199,8 @@
 460-analog-initial-block-state: |
   version: 1
   task_id: v3_460_analog_initial_block_state
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7221,8 +7221,8 @@
 462-vt-temperature-argument: |
   version: 1
   task_id: v3_462_vt_temperature_argument
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7243,8 +7243,8 @@
 464-param-given-gain-select: |
   version: 1
   task_id: v3_464_param_given_gain_select
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7254,8 +7254,8 @@
 465-port-connected-output-enable: |
   version: 1
   task_id: v3_465_port_connected_output_enable
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7276,8 +7276,8 @@
 467-simparam-query-tnom: |
   version: 1
   task_id: v3_467_simparam_query_tnom
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7317,3 +7317,267 @@
       - "I(br)"
   notes:
     - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+471-indirect-branch-null-balance: |
+  version: 1
+  task_id: v3_471_indirect_branch_null_balance
+  backend: evas_rust_compile_capable
+  status: behavioral-continuous-time-candidate
+  checker: continuous_time_language_feature_contract
+  syntax:
+    must_include:
+      - "V(out) : V(in) == 0"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+472-indirect-branch-ddt-balance: |
+  version: 1
+  task_id: v3_472_indirect_branch_ddt_balance
+  backend: evas_rust_compile_capable
+  status: behavioral-continuous-time-candidate
+  checker: continuous_time_language_feature_contract
+  syntax:
+    must_include:
+      - "ddt(V(out))"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+473-attribute-potential-abstol-probe: |
+  version: 1
+  task_id: v3_473_attribute_potential_abstol_probe
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - ".potential.abstol"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+474-generic-potential-access-function: |
+  version: 1
+  task_id: v3_474_generic_potential_access_function
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "potential("
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+475-generic-potential-contribution: |
+  version: 1
+  task_id: v3_475_generic_potential_contribution
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "potential(out) <+"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+476-oomr-string-voltage-probe: |
+  version: 1
+  task_id: v3_476_oomr_string_voltage_probe
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "V(sigpath)"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+477-analog-node-alias-initial: |
+  version: 1
+  task_id: v3_477_analog_node_alias_initial
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$analog_node_alias"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+478-inherited-port-attribute-supply: |
+  version: 1
+  task_id: v3_478_inherited_port_attribute_supply
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "inh_conn_prop_name"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+479-inherited-mfactor-parameter: |
+  version: 1
+  task_id: v3_479_inherited_mfactor_parameter
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "inherited_mfactor"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+480-mfactor-system-function-gain: |
+  version: 1
+  task_id: v3_480_mfactor_system_function_gain
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$mfactor"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+481-analog-primitive-resistor-instance: |
+  version: 1
+  task_id: v3_481_analog_primitive_resistor_instance
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: kcl_language_feature_contract
+  syntax:
+    must_include:
+      - "resistor #"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+482-analog-primitive-isource-instance: |
+  version: 1
+  task_id: v3_482_analog_primitive_isource_instance
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: kcl_language_feature_contract
+  syntax:
+    must_include:
+      - "isource #"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+483-cds-violation-threshold-assert: |
+  version: 1
+  task_id: v3_483_cds_violation_threshold_assert
+  backend: evas_rust_compile_capable
+  status: cadence-simulator-function-candidate
+  checker: cadence_simulator_function_contract
+  syntax:
+    must_include:
+      - "$cds_violation"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+484-rtoi-conversion-quantizer: |
+  version: 1
+  task_id: v3_484_rtoi_conversion_quantizer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rtoi"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+485-mc-trial-number-metric: |
+  version: 1
+  task_id: v3_485_mc_trial_number_metric
+  backend: evas_rust_compile_capable
+  status: cadence-simulator-function-candidate
+  checker: cadence_simulator_function_contract
+  syntax:
+    must_include:
+      - "$cds_get_mc_trial_number"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+486-rf-source-info-registration: |
+  version: 1
+  task_id: v3_486_rf_source_info_registration
+  backend: evas_rust_compile_capable
+  status: cadence-simulator-function-candidate
+  checker: cadence_simulator_function_contract
+  syntax:
+    must_include:
+      - "$cds_set_rf_source_info"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+487-table-model-2d-array-surface: |
+  version: 1
+  task_id: v3_487_table_model_2d_array_surface
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+488-table-model-string-param-source: |
+  version: 1
+  task_id: v3_488_table_model_string_param_source
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "parameter string tmdata"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+489-event-nested-or-expression: |
+  version: 1
+  task_id: v3_489_event_nested_or_expression
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - " or "
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+490-event-task-function-state-update: |
+  version: 1
+  task_id: v3_490_event_task_function_state_update
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task update_state"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+491-kcl-capacitor-ddt-current: |
+  version: 1
+  task_id: v3_491_kcl_capacitor_ddt_current
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: kcl_language_feature_contract
+  syntax:
+    must_include:
+      - "I(p, n) <+ c * ddt"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+492-kcl-inductor-idt-voltage: |
+  version: 1
+  task_id: v3_492_kcl_inductor_idt_voltage
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: kcl_language_feature_contract
+  syntax:
+    must_include:
+      - "idt(I(p, n)"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+493-continuous-laplace-nd-filter: |
+  version: 1
+  task_id: v3_493_continuous_laplace_nd_filter
+  backend: evas_rust_compile_capable
+  status: behavioral-continuous-time-candidate
+  checker: continuous_time_language_feature_contract
+  syntax:
+    must_include:
+      - "laplace_nd"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+494-continuous-zi-nd-filter: |
+  version: 1
+  task_id: v3_494_continuous_zi_nd_filter
+  backend: evas_rust_compile_capable
+  status: behavioral-continuous-time-candidate
+  checker: continuous_time_language_feature_contract
+  syntax:
+    must_include:
+      - "zi_nd"
+  notes:
+    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."

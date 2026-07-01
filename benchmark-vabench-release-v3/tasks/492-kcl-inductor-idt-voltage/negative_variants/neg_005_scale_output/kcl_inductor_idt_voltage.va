@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module kcl_inductor_idt_voltage (inout electrical p, inout electrical n);
+parameter real l = 1n;
+analog begin
+    V(p, n) <+ l * idt(I(p, n), 0.0);
+end
+endmodule
