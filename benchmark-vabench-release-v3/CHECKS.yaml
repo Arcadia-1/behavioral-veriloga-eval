@@ -7467,16 +7467,49 @@
 373-task-output-limiter: |
   version: 1
   task_id: v3_373_task_output_limiter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: task_output_limiter_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "task "
+      - "update_outputs"
+      - "input real sample"
+      - "input integer mode_code"
+      - "endtask"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/task_output_limiter.va
+    negative:
+      - negative_variants/neg_001_force_zero/task_output_limiter.va
+      - negative_variants/neg_002_wrong_threshold/task_output_limiter.va
+      - negative_variants/neg_003_reset_bias/task_output_limiter.va
+      - negative_variants/neg_004_metric_offset/task_output_limiter.va
+      - negative_variants/neg_005_scale_output/task_output_limiter.va
+    checks:
+      - task_declared_and_called
+      - mode_one_threshold_output
+      - mode_two_clamps_to_vhi
+      - mode_zero_passes_sample
+      - metric_tracks_out_over_vhi
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Task language extension promoted to executable EVAS behavior candidate."
 374-task-dual-output-update: |
   version: 1
   task_id: v3_374_task_dual_output_update

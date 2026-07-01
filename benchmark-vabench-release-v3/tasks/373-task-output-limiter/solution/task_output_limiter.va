@@ -40,9 +40,9 @@ analog begin
             count_q = 0;
             state_q = 0;
         end else begin
-        count_q = count_q + 1;
-        state_q = count_q % 3;
-        update_outputs(V(vin), state_q);
+            count_q = count_q + 1;
+            state_q = count_q % 3;
+            update_outputs(V(vin), state_q);
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

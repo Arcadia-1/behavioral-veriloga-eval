@@ -36,26 +36,26 @@
     {
       "complete_tests_count": 0,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 0,
+      "fair_eval_count": 1,
       "range": "373-434",
       "sop_ready_count": 0,
       "task_count": 62,
       "top_issues": [
         [
-          "visible_scs_not_executable:include,instance,source",
-          62
-        ],
-        [
-          "hidden_scs_not_executable:include,instance,source",
-          62
-        ],
-        [
           "missing_required_behavior_section",
           62
         ],
         [
+          "visible_scs_not_executable:include,instance,source",
+          61
+        ],
+        [
+          "hidden_scs_not_executable:include,instance,source",
+          61
+        ],
+        [
           "checker_syntax_only_no_behavior_score",
-          62
+          61
         ]
       ]
     },
@@ -142,12 +142,12 @@
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
     "complete_tests_count": 72,
-    "fair_eval_count": 71,
+    "fair_eval_count": 72,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 123,
-      "hidden_scs_not_executable:include,instance,source": 122,
+      "checker_syntax_only_no_behavior_score": 122,
+      "hidden_scs_not_executable:include,instance,source": 121,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 122
+      "visible_scs_not_executable:include,instance,source": 121
     },
     "sop_ready_count": 71,
     "task_count": 194
@@ -1814,13 +1814,10 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": false,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
+        "missing_required_behavior_section"
       ],
       "negative_count": 5,
       "number": 373,

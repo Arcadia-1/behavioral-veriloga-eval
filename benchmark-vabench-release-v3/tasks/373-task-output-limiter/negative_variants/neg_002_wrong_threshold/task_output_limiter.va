@@ -17,7 +17,7 @@ task update_outputs;
     input integer mode_code;
     begin
         if (mode_code == 0) out_v = sample;
-        else if (mode_code == 1) out_v = sample > vth ? vhi : 0.0;
+        else if (mode_code == 1) out_v = sample > (vth + 0.3) ? vhi : 0.0;
         else out_v = sample < 0.0 ? 0.0 : (sample > vhi ? vhi : sample);
         metric_v = out_v / vhi;
     end
@@ -43,7 +43,6 @@ analog begin
         count_q = count_q + 1;
         state_q = count_q % 3;
         update_outputs(V(vin), state_q);
-        if (V(vin) > (vth + 0.1)) out_v = vhi;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
