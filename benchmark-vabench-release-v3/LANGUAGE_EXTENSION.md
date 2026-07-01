@@ -40,6 +40,10 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   combined `initial_step`/`final_step`, `while` loops, and parameter ranges.
 - `415`-`420`: additional digital/mixed-signal vector, reduction, `always`,
   `wreal`, and electrical-to-logic bridge rows.
+- `421`-`434`: explicit gap-fill rows for task-local variables, `$fscanf()`,
+  combined file replay, string formatting with `$swrite()` / `$sformat()`,
+  seed reproducibility, staged hierarchy, `ifndef` / `elsif` / `undef`, and
+  `repeat` loops.
 
 Each extension task contains:
 
@@ -64,6 +68,11 @@ Current local EVAS compile status after this expansion:
 - `301`-`420`: extension reference solutions are designed to parse and compile
   with current local EVAS, excluding known legacy non-Verilog-A harness/support
   targets outside the single reference-solution scan.
+- `421`, `423`, `425`, `427`, `430`, `431`, `432`, and `433`: additional
+  gap-fill rows that also compile with current local EVAS.
+- `422`, `424`, `426`, `428`, `429`, and `434`: intentionally
+  retained as `evas-unsupported-candidate` rows so the benchmark records manual
+  syntax gaps even before EVAS supports them.
 - `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
   longer inside conditionally executed `analysis()` branches.
 
@@ -75,7 +84,7 @@ The newly added rows avoid current-domain KCL and still leave some manual
 features as future work:
 
 - `$fscanf()` backend execution.
-- `$swrite()` / `$sformat()` string formatting backend execution.
+- `$sformat()` string formatting backend execution.
 - `repeat` and `do ... while` loop syntax.
 - `$rdist_uniform()` backend execution.
 - richer multi-dimensional `$table_model()` behavior certification.

@@ -1,0 +1,48 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module file_fscanf_multi_column_profile (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+integer fd;
+integer nread;
+real prof_t;
+real prof_v;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        count_q = 0;
+        fd = $fopen("stimulus_profile.txt", "r");
+        nread = $fscanf(fd, "%f %f", prof_t, prof_v);
+        $fclose(fd);
+        out_v = nread == 2 ? prof_v : 0.0;
+        metric_v = nread;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+            count_q = 0;
+        end else begin
+            out_v = prof_v;
+            metric_v = prof_t;
+            count_q = count_q + 1;
+            metric_v = metric_v + 0.125;
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

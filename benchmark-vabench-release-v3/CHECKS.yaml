@@ -6689,3 +6689,185 @@
       - "I("
   notes:
     - "Language extension task; not part of original full-300 transient certification claim."
+421-task-local-variable-transform: |
+  version: 1
+  task_id: v3_421_task_local_variable_transform
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task local variable"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+422-file-fscanf-table-stimulus: |
+  version: 1
+  task_id: v3_422_file_fscanf_table_stimulus
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fscanf"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+423-file-profile-replay-controller: |
+  version: 1
+  task_id: v3_423_file_profile_replay_controller
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rewind"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+424-file-fscanf-multi-column-profile: |
+  version: 1
+  task_id: v3_424_file_fscanf_multi_column_profile
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fscanf"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+425-string-swrite-label-builder: |
+  version: 1
+  task_id: v3_425_string_swrite_label_builder
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$swrite"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+426-string-sformat-mode-tag: |
+  version: 1
+  task_id: v3_426_string_sformat_mode_tag
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$sformat"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+427-string-formatted-metric-line: |
+  version: 1
+  task_id: v3_427_string_formatted_metric_line
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$swrite"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+428-string-mode-tagged-log: |
+  version: 1
+  task_id: v3_428_string_mode_tagged_log
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$sformat"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+429-string-config-label-select: |
+  version: 1
+  task_id: v3_429_string_config_label_select
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$sformat"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+430-rdist-seed-reproducibility: |
+  version: 1
+  task_id: v3_430_rdist_seed_reproducibility
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_poisson"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+431-hierarchy-support-artifact-staging: |
+  version: 1
+  task_id: v3_431_hierarchy_support_artifact_staging
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "module instantiation"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+432-hierarchy-nested-parameter-chain: |
+  version: 1
+  task_id: v3_432_hierarchy_nested_parameter_chain
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "parameter override"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+433-preprocessor-ifndef-elsif-undef: |
+  version: 1
+  task_id: v3_433_preprocessor_ifndef_elsif_undef
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "`ifndef"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+434-repeat-loop-accumulator: |
+  version: 1
+  task_id: v3_434_repeat_loop_accumulator
+  backend: evas_unsupported_pending_issue_30
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "repeat"
+    must_not_include:
+      - "I("
+  notes:
+    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."

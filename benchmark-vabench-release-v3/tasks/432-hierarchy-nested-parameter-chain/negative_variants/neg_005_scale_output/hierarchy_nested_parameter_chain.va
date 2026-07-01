@@ -1,0 +1,32 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module hierarchy_nested_parameter_chain (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real tr = 200p;
+electrical mid;
+    staged_gain_child #(.gain(1.2)) u_gain0(.vin(vin), .out(mid));
+    staged_gain_child #(.gain(0.5)) u_gain1(.vin(mid), .out(out));
+analog begin
+    V(metric) <+ transition(0.5*V(mid), 0.0, tr, tr);
+end
+endmodule
+
+module staged_gain_child(input electrical vin, output electrical out);
+parameter real gain = 1.0;
+analog begin
+    V(out) <+ gain * V(vin);
+end
+endmodule
+
+module staged_limit_child(input electrical vin, output electrical out);
+analog begin
+    V(out) <+ transition(V(vin) > 0.9 ? 0.9 : V(vin), 0.0, 200p, 200p);
+end
+endmodule

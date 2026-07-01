@@ -5053,6 +5053,202 @@
       "title": "Mixed Analog Digital Mode Latch",
       "syntax_focus": "Combine electrical threshold sampling with logic state output.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "421-task-local-variable-transform": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_421_task_local_variable_transform",
+      "level": "NA",
+      "target": [
+        "task_local_variable_transform.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Local Variable Transform",
+      "syntax_focus": "Use a task with an internal local variable before updating output and metric state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "422-file-fscanf-table-stimulus": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_422_file_fscanf_table_stimulus",
+      "level": "NA",
+      "target": [
+        "file_fscanf_table_stimulus.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "File Fscanf Table Stimulus",
+      "syntax_focus": "Use $fscanf() to read a table-driven stimulus/profile row.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "423-file-profile-replay-controller": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_423_file_profile_replay_controller",
+      "level": "NA",
+      "target": [
+        "file_profile_replay_controller.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Profile Replay Controller",
+      "syntax_focus": "Use $fseek(), $ftell(), and $rewind() together for profile replay bookkeeping.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "424-file-fscanf-multi-column-profile": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_424_file_fscanf_multi_column_profile",
+      "level": "NA",
+      "target": [
+        "file_fscanf_multi_column_profile.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "File Fscanf Multi Column Profile",
+      "syntax_focus": "Use $fscanf() to ingest a multi-column behavioral profile.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "425-string-swrite-label-builder": {
+      "category": "veriloga_string_format_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_425_string_swrite_label_builder",
+      "level": "NA",
+      "target": [
+        "string_swrite_label_builder.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "String Swrite Label Builder",
+      "syntax_focus": "Use $swrite() to build an internal label string.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "426-string-sformat-mode-tag": {
+      "category": "veriloga_string_format_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_426_string_sformat_mode_tag",
+      "level": "NA",
+      "target": [
+        "string_sformat_mode_tag.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "String Sformat Mode Tag",
+      "syntax_focus": "Use $sformat() to generate a mode-tagged behavioral label.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "427-string-formatted-metric-line": {
+      "category": "veriloga_string_format_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_427_string_formatted_metric_line",
+      "level": "NA",
+      "target": [
+        "string_formatted_metric_line.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "String Formatted Metric Line",
+      "syntax_focus": "Use $swrite() to format a metric file line before writing it.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "428-string-mode-tagged-log": {
+      "category": "veriloga_string_format_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_428_string_mode_tagged_log",
+      "level": "NA",
+      "target": [
+        "string_mode_tagged_log.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "String Mode Tagged Log",
+      "syntax_focus": "Use $sformat() to create mode-tagged log text for $strobe().",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "429-string-config-label-select": {
+      "category": "veriloga_string_format_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_429_string_config_label_select",
+      "level": "NA",
+      "target": [
+        "string_config_label_select.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "String Config Label Select",
+      "syntax_focus": "Use string formatting to select and record configuration labels.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "430-rdist-seed-reproducibility": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_430_rdist_seed_reproducibility",
+      "level": "NA",
+      "target": [
+        "rdist_seed_reproducibility.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Seed Reproducibility",
+      "syntax_focus": "Use repeated seeded random distribution calls to make reproducibility explicit.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "431-hierarchy-support-artifact-staging": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_431_hierarchy_support_artifact_staging",
+      "level": "NA",
+      "target": [
+        "hierarchy_support_artifact_staging.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Support Artifact Staging",
+      "syntax_focus": "Use a parent module plus staged support child artifact in the same source.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "432-hierarchy-nested-parameter-chain": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_432_hierarchy_nested_parameter_chain",
+      "level": "NA",
+      "target": [
+        "hierarchy_nested_parameter_chain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Nested Parameter Chain",
+      "syntax_focus": "Use nested child module instances with parameter overrides across two stages.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "433-preprocessor-ifndef-elsif-undef": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_433_preprocessor_ifndef_elsif_undef",
+      "level": "NA",
+      "target": [
+        "preprocessor_ifndef_elsif_undef.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Preprocessor Ifndef Elsif Undef",
+      "syntax_focus": "Use `ifndef, `elsif, and `undef to select a behavioral constant.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "434-repeat-loop-accumulator": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_434_repeat_loop_accumulator",
+      "level": "NA",
+      "target": [
+        "repeat_loop_accumulator.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Repeat Loop Accumulator",
+      "syntax_focus": "Use repeat-loop syntax to accumulate bounded behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     }
   }
 }
