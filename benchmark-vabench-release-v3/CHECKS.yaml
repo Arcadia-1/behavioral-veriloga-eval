@@ -6666,18 +6666,46 @@
 354-always-counter-two-bit: |
   version: 1
   task_id: v3_354_always_counter_two_bit
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_logic_sequential_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - clk
+    - rst
+    - d
+    - en
+    - q
   syntax:
     must_include:
       - "logic"
+      - "[1:0]"
+      - "count[1]"
       - "assign"
       - "always"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/always_counter_two_bit.vams
+    negative:
+      - negative_variants/neg_001_force_zero/always_counter_two_bit.vams
+      - negative_variants/neg_002_invert_select/always_counter_two_bit.vams
+      - negative_variants/neg_003_drop_reset/always_counter_two_bit.vams
+      - negative_variants/neg_004_wrong_edge/always_counter_two_bit.vams
+      - negative_variants/neg_005_scale_low/always_counter_two_bit.vams
+    checks:
+      - logic_vector_state_parse
+      - always_posedge_counter_update
+      - synchronous_reset_clears_counter_msb
+      - enabled_increment_reaches_msb
+      - enable_low_holds_counter
+      - d_low_holds_counter
+      - continuous_assign_bit_select_output
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 355-always-enable-hold: |
   version: 1
   task_id: v3_355_always_enable_hold

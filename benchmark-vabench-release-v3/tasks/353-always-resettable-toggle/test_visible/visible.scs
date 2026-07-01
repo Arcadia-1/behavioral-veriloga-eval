@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
-// Visible AMS smoke skeleton. An AMS-capable evaluator supplies and compiles the candidate.
-tran tran stop=80n
+
+ahdl_include "always_resettable_toggle.vams"
+
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 99n 1.0 100n 0.0 149n 0.0 150n 1.0 200n 1.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 49n 1.0 50n 0.0 200n 0.0]
+Vd (d 0) vsource dc=1.0
+Ven (en 0) vsource dc=1.0
+
+XDUT (clk rst d en q) always_resettable_toggle
+
+tran tran stop=200n
+save clk rst d en q

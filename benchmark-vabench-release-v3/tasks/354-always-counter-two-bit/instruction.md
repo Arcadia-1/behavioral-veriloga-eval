@@ -6,7 +6,29 @@ This is an AMS mixed-signal extension task. It intentionally exercises digital/m
 
 ## Required Behavior
 
-Use always block with small digital counter state.
+Use an `always @(posedge clk)` block with a small two-bit digital counter state.
+
+The module must have this interface:
+
+```verilog
+module always_counter_two_bit(clk, rst, d, en, q);
+    input clk, rst, d, en;
+    output q;
+    logic clk, rst, d, en, q;
+    logic [1:0] count;
+```
+
+On each positive clock edge:
+
+- if `rst` is high, set `count` to `2'b00`;
+- else if both `en` and `d` are high, increment `count` by one;
+- otherwise hold the previous `count`.
+
+Continuously drive `q` from the counter MSB:
+
+```verilog
+assign q = count[1];
+```
 
 Use the module and port names from the starter. Do not use current-domain `I(...)` contributions or transistor-level primitives.
 
