@@ -7759,6 +7759,23 @@ def check_v3_344_wreal_clamped_mux(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def check_v3_345_wreal_scale_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (120.0, 0.40),
+                (320.0, 0.50),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16744,6 +16761,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "343-wreal-threshold-flag": check_v3_343_wreal_threshold_flag,
     "v3_344_wreal_clamped_mux": check_v3_344_wreal_clamped_mux,
     "344-wreal-clamped-mux": check_v3_344_wreal_clamped_mux,
+    "v3_345_wreal_scale_offset": check_v3_345_wreal_scale_offset,
+    "345-wreal-scale-offset": check_v3_345_wreal_scale_offset,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

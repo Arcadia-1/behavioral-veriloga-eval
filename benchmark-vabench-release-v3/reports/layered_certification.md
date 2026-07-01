@@ -7,15 +7,15 @@ Date: 2026-07-01
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **44**
-- Compile-supported candidate rows: **150**
+- Behavior-certified extension rows: **45**
+- Compile-supported candidate rows: **149**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
 
 | Layer | Tasks | Certification levels |
 | --- | ---: | --- |
-| `ams_mixed_signal_extension` | 26 | behavior_certified_extension: 4, compile_supported_candidate: 22 |
+| `ams_mixed_signal_extension` | 26 | behavior_certified_extension: 5, compile_supported_candidate: 21 |
 | `behavioral_continuous_time_extension` | 4 | compile_supported_continuous_time_candidate: 4 |
 | `behavioral_event_core` | 268 | behavior_certified: 268 |
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
