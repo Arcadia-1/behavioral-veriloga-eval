@@ -10105,6 +10105,10 @@ def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple
 
 
 def check_v3_450_custom_nature_discipline_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
+
+
+def _check_v3_a_to_y_passthrough(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "a", "y"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
@@ -10126,6 +10130,14 @@ def check_v3_450_custom_nature_discipline_voltage(rows: list[dict[str, float]]) 
     if input_span < 0.3:
         return False, f"insufficient_input_span={input_span:.4f}"
     return True, f"checked={checked} input_span={input_span:.4f} max_err={max_err:.4f}"
+
+
+def check_v3_451_connectmodule_electrical_bridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
+
+
+def check_v3_452_connectrules_electrical_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
 
 
 def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -19352,6 +19364,10 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
     "v3_450_custom_nature_discipline_voltage": check_v3_450_custom_nature_discipline_voltage,
     "450-custom-nature-discipline-voltage": check_v3_450_custom_nature_discipline_voltage,
+    "v3_451_connectmodule_electrical_bridge": check_v3_451_connectmodule_electrical_bridge,
+    "451-connectmodule-electrical-bridge": check_v3_451_connectmodule_electrical_bridge,
+    "v3_452_connectrules_electrical_map": check_v3_452_connectrules_electrical_map,
+    "452-connectrules-electrical-map": check_v3_452_connectrules_electrical_map,
     "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
     "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,

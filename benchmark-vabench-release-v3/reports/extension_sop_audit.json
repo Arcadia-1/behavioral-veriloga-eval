@@ -54,14 +54,14 @@
     {
       "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 9,
+      "fair_eval_count": 11,
       "range": "435-458",
-      "sop_ready_count": 9,
+      "sop_ready_count": 11,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          15
+          13
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -101,11 +101,11 @@
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
     "complete_tests_count": 194,
-    "fair_eval_count": 154,
+    "fair_eval_count": 156,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 40
+      "checker_syntax_only_no_behavior_score": 38
     },
-    "sop_ready_count": 154,
+    "sop_ready_count": 156,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -3757,16 +3757,14 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 451,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Declare a connectmodule bridge for mixed-signal connection behavior.",
       "target": "connectmodule_electrical_bridge.vams",
@@ -3783,16 +3781,14 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 452,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Declare connectrules mapping between disciplines.",
       "target": "connectrules_electrical_map.vams",

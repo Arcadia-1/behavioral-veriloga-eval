@@ -4,7 +4,7 @@ endconnectrules
 
 connectmodule connectrules_electrical_map_bridge(input electrical a, output electrical y);
     analog begin
-        V(y) <+ (V(rst) > 0.45 ? 0.25 : (V(a)));
+        V(y) <+ (V(a) < 0.45 ? 0.25 : V(a));
     end
 endconnectmodule
 

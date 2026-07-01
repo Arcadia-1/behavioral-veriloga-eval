@@ -120,7 +120,7 @@ def test_staged_extension_rows_have_traceable_evas_issues() -> None:
         for row in sop_audit["tasks"]
         if "checker_syntax_only_no_behavior_score" in row.get("issues", [])
     ]
-    assert len(staged_tasks) == 40
+    assert len(staged_tasks) == 38
 
     missing_checks_url: list[str] = []
     missing_audit_url: list[str] = []
@@ -149,8 +149,8 @@ def test_blocking_issue_matrix_covers_all_staged_rows() -> None:
         for task in issue["tasks"]
     }
 
-    assert len(staged_rows) == 40
-    assert sum(issue["task_count"] for issue in blocking_issues) == 40
+    assert len(staged_rows) == 38
+    assert sum(issue["task_count"] for issue in blocking_issues) == 38
     assert issue_task_keys == {row["task_key"] for row in staged_rows}
     assert report["summary"]["blocking_issue_counts"] == {
         issue["issue_url"]: issue["task_count"]
@@ -184,15 +184,15 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
 
     assert audit["status"] == "partial_external_blocked"
     assert audit["is_complete"] is False
-    assert "40 extension tasks" in audit["reason"]
+    assert "38 extension tasks" in audit["reason"]
     assert len(requirements) == 7
     assert by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["status"] == "partial"
-    assert "154 extension tasks are behavior-certified" in by_requirement[
+    assert "156 extension tasks are behavior-certified" in by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["evidence"]
-    assert "40 remain excluded_until_behavior_promotion" in by_requirement[
+    assert "38 remain excluded_until_behavior_promotion" in by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["evidence"]
     assert by_requirement[

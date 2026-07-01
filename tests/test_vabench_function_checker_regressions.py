@@ -2925,6 +2925,19 @@ def test_v3_custom_nature_checker_tracks_input_potential() -> None:
     assert not sim.check_v3_450_custom_nature_discipline_voltage(offset_rows)[0]
 
 
+def test_v3_connectmodule_checkers_track_input_potential() -> None:
+    good_rows = [
+        {"time": idx * 1e-9, "a": value, "y": value}
+        for idx, value in enumerate([0.65, 0.2, 0.85, 0.1, 0.5, 0.9, 0.15, 0.7] * 3)
+    ]
+    threshold_rows = [{**row, "y": 0.9 if row["a"] > 0.55 else 0.0} for row in good_rows]
+
+    assert sim.check_v3_451_connectmodule_electrical_bridge(good_rows)[0]
+    assert sim.check_v3_452_connectrules_electrical_map(good_rows)[0]
+    assert not sim.check_v3_451_connectmodule_electrical_bridge(threshold_rows)[0]
+    assert not sim.check_v3_452_connectrules_electrical_map(threshold_rows)[0]
+
+
 def test_v3_recursive_function_checker_follows_hidden_depth_override() -> None:
     def rows(*, stim: float, out: float) -> list[dict[str, float]]:
         return [

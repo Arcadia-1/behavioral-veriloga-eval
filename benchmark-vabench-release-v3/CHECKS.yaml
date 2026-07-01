@@ -10398,24 +10398,46 @@
 451-connectmodule-electrical-bridge: |
   version: 1
   task_id: v3_451_connectmodule_electrical_bridge
-  backend: verilogams_connect_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: connectmodule_electrical_bridge_contract
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "connectmodule"
       - "endconnectmodule"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/connectmodule_electrical_bridge.vams
+    negative:
+      - negative_variants/neg_001_force_zero/connectmodule_electrical_bridge.vams
+      - negative_variants/neg_002_wrong_threshold/connectmodule_electrical_bridge.vams
+      - negative_variants/neg_003_reset_bias/connectmodule_electrical_bridge.vams
+      - negative_variants/neg_004_metric_offset/connectmodule_electrical_bridge.vams
+      - negative_variants/neg_005_scale_output/connectmodule_electrical_bridge.vams
+    checks:
+      - connectmodule_parse
+      - endconnectmodule_parse
+      - electrical_bridge_ports
+      - output_follows_input_potential
+      - no_current_domain_contribution
   notes:
-    - "connectmodule candidate staged pending EVAS connectmodule support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/47"
+    - "Connectmodule voltage bridge behavior promoted to executable EVAS behavior candidate."
 452-connectrules-electrical-map: |
   version: 1
   task_id: v3_452_connectrules_electrical_map
-  backend: verilogams_connect_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: connectrules_electrical_map_contract
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "connectrules"
@@ -10423,9 +10445,23 @@
       - "endconnectrules"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/connectrules_electrical_map.vams
+    negative:
+      - negative_variants/neg_001_force_zero/connectrules_electrical_map.vams
+      - negative_variants/neg_002_wrong_threshold/connectrules_electrical_map.vams
+      - negative_variants/neg_003_reset_bias/connectrules_electrical_map.vams
+      - negative_variants/neg_004_metric_offset/connectrules_electrical_map.vams
+      - negative_variants/neg_005_scale_output/connectrules_electrical_map.vams
+    checks:
+      - connectrules_parse
+      - connectmodule_parse
+      - endconnectrules_parse
+      - bridge_output_follows_input_potential
+      - no_current_domain_contribution
   notes:
-    - "connectrules candidate staged pending EVAS connectrules/connectmodule support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/47"
+    - "Connectrules file plus referenced connectmodule bridge behavior promoted to executable EVAS behavior candidate."
 453-specify-specparam-delay: |
   version: 1
   task_id: v3_453_specify_specparam_delay
