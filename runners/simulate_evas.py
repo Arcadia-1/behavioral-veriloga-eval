@@ -8319,6 +8319,44 @@ def check_v3_429_string_config_label_select(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_430_rdist_seed_reproducibility(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    metric_ok, metric_detail = _sample_many(
+        rows,
+        {
+            "metric": [
+                (130.0, 1.0),
+                (230.0, 1.0),
+                (330.0, 0.0),
+                (430.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+    if not metric_ok:
+        return False, metric_detail
+
+    ranges = [
+        (130.0, 0.69, 0.86),
+        (230.0, 0.29, 0.46),
+        (330.0, -0.04, 0.04),
+        (430.0, 0.79, 0.96),
+    ]
+    observed: list[float] = []
+    for time_ns, lo, hi in ranges:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        if out is None:
+            return False, f"missing_out_sample_at={time_ns:g}ns"
+        observed.append(out)
+        if not (lo <= out <= hi):
+            return False, f"out@{time_ns:g}ns={out:.4f} expected_range=[{lo:.3f},{hi:.3f}]"
+    return True, metric_detail + " out=" + ",".join(f"{value:.3f}" for value in observed)
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18763,6 +18801,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "428-string-mode-tagged-log": check_v3_428_string_mode_tagged_log,
     "v3_429_string_config_label_select": check_v3_429_string_config_label_select,
     "429-string-config-label-select": check_v3_429_string_config_label_select,
+    "v3_430_rdist_seed_reproducibility": check_v3_430_rdist_seed_reproducibility,
+    "430-rdist-seed-reproducibility": check_v3_430_rdist_seed_reproducibility,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

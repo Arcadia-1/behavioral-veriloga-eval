@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 56,
+      "complete_tests_count": 57,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 52,
+      "fair_eval_count": 53,
       "range": "373-434",
-      "sop_ready_count": 51,
+      "sop_ready_count": 52,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          10
+          9
         ],
         [
           "missing_required_behavior_section",
-          6
+          5
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          5
+          4
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 128,
-    "fair_eval_count": 123,
+    "complete_tests_count": 129,
+    "fair_eval_count": 124,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 71,
-      "hidden_scs_not_executable:include,instance,source": 65,
-      "missing_required_behavior_section": 66,
-      "visible_scs_not_executable:include,instance,source": 65
+      "checker_syntax_only_no_behavior_score": 70,
+      "hidden_scs_not_executable:include,instance,source": 64,
+      "missing_required_behavior_section": 65,
+      "visible_scs_not_executable:include,instance,source": 64
     },
-    "sop_ready_count": 122,
+    "sop_ready_count": 123,
     "task_count": 194
   },
   "tasks": [
@@ -3136,20 +3136,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 430,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use repeated seeded random distribution calls to make reproducibility explicit.",
       "target": "rdist_seed_reproducibility.va",

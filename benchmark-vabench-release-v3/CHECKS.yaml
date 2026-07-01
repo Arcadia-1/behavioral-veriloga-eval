@@ -9801,16 +9801,40 @@
 430-rdist-seed-reproducibility: |
   version: 1
   task_id: v3_430_rdist_seed_reproducibility
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rdist_seed_reproducibility_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$rdist_poisson"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/rdist_seed_reproducibility.va
+    negative:
+      - negative_variants/neg_001_force_zero/rdist_seed_reproducibility.va
+      - negative_variants/neg_002_wrong_threshold/rdist_seed_reproducibility.va
+      - negative_variants/neg_003_reset_bias/rdist_seed_reproducibility.va
+      - negative_variants/neg_004_metric_offset/rdist_seed_reproducibility.va
+      - negative_variants/neg_005_scale_output/rdist_seed_reproducibility.va
+    checks:
+      - seeded_rdist_poisson_parse
+      - paired_seeded_calls_metric_high
+      - random_offset_output_range
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Seeded random distribution reproducibility behavior promoted to executable EVAS behavior candidate."
 431-hierarchy-support-artifact-staging: |
   version: 1
   task_id: v3_431_hierarchy_support_artifact_staging

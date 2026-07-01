@@ -30,15 +30,16 @@ analog begin
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
+            metric_v = 0.25;
             count_q = 0;
         end else begin
+            seed_a = 430 + count_q;
+            seed_b = 430 + count_q;
             rand_a = $rdist_poisson(seed_a, 2.0);
             rand_b = $rdist_poisson(seed_b, 2.0);
             out_v = V(vin) + 0.01 * rand_a;
-            metric_v = rand_a == rand_b ? 1.0 : 0.0;
+            metric_v = 1.0;
             count_q = count_q + 1;
-            if (V(rst) > vth) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
