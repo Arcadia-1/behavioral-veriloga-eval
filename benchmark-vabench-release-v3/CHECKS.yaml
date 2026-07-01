@@ -11404,8 +11404,11 @@
   syntax:
     must_include:
       - "idt(I(p, n)"
+      - "V(p, n) <+"
+    must_not_include:
+      - "V(out)"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support tracked by EVAS issue #44."
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
