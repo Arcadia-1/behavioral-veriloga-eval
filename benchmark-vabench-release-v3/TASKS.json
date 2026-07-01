@@ -5322,7 +5322,7 @@
       "target": [
         "ddt_voltage_derivative_source.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Ddt Voltage Derivative Source",
       "syntax_focus": "Use ddt() to form a voltage-domain derivative source.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5336,7 +5336,7 @@
       "target": [
         "idt_voltage_integrator_source.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Idt Voltage Integrator Source",
       "syntax_focus": "Use idt() to form a voltage-domain integrator source.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5350,7 +5350,7 @@
       "target": [
         "laplace_nd_lowpass_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Nd Lowpass Filter",
       "syntax_focus": "Use laplace_nd() for continuous-time transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5364,7 +5364,7 @@
       "target": [
         "laplace_np_pole_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Np Pole Filter",
       "syntax_focus": "Use laplace_np() for pole-form continuous-time transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5378,7 +5378,7 @@
       "target": [
         "laplace_zd_zero_den_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zd Zero Den Filter",
       "syntax_focus": "Use laplace_zd() for zero/denominator transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5392,7 +5392,7 @@
       "target": [
         "laplace_zp_zero_pole_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zp Zero Pole Filter",
       "syntax_focus": "Use laplace_zp() for zero/pole transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5406,7 +5406,7 @@
       "target": [
         "zi_nd_discrete_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Nd Discrete Filter",
       "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5420,7 +5420,7 @@
       "target": [
         "zi_np_discrete_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Np Discrete Filter",
       "syntax_focus": "Use zi_np() for discrete-time numerator/pole filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5434,7 +5434,7 @@
       "target": [
         "zi_zd_discrete_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zd Discrete Filter",
       "syntax_focus": "Use zi_zd() for discrete-time zero/denominator filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5448,7 +5448,7 @@
       "target": [
         "zi_zp_discrete_filter.va"
       ],
-      "tier": "syntax-extension-candidate",
+      "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zp Discrete Filter",
       "syntax_focus": "Use zi_zp() for discrete-time zero/pole filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"

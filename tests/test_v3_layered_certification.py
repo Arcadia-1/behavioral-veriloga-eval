@@ -78,7 +78,26 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         row for row in rows
         if row["semantic_layer"] == "conservative_kcl_syntax_extension"
     ]
-    assert len(continuous_rows) == 4
+    assert len(continuous_rows) == 14
+    assert {
+        row["task_key"][:3]
+        for row in continuous_rows
+    } == {
+        "435",
+        "436",
+        "437",
+        "438",
+        "439",
+        "440",
+        "441",
+        "442",
+        "443",
+        "444",
+        "471",
+        "472",
+        "493",
+        "494",
+    }
     assert len(kcl_rows) == 6
     assert all(row["certification_level"] == "compile_supported_continuous_time_candidate" for row in continuous_rows)
     assert all(row["certification_level"] == "compile_supported_kcl_candidate" for row in kcl_rows)
