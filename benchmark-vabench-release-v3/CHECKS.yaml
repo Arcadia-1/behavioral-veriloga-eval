@@ -9185,16 +9185,46 @@
 413-while-loop-array-sum: |
   version: 1
   task_id: v3_413_while_loop_array_sum
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: while_loop_array_sum_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "while ("
+      - "i < 3"
+      - "acc_q = acc_q + i + count_q"
+      - "metric_v = acc_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/while_loop_array_sum.va
+    negative:
+      - negative_variants/neg_001_force_zero/while_loop_array_sum.va
+      - negative_variants/neg_002_wrong_threshold/while_loop_array_sum.va
+      - negative_variants/neg_003_reset_bias/while_loop_array_sum.va
+      - negative_variants/neg_004_metric_offset/while_loop_array_sum.va
+      - negative_variants/neg_005_scale_output/while_loop_array_sum.va
+    checks:
+      - while_loop_accumulates_three_terms
+      - metric_reports_accumulator_sequence
+      - output_threshold_separates_acc_three_from_six
+      - startup_count_bias_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Loop/control-flow language extension promoted to executable EVAS behavior candidate."
 414-parameter-range-real-control: |
   version: 1
   task_id: v3_414_parameter_range_real_control
