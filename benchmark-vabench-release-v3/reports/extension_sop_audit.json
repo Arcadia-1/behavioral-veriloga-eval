@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 35,
+      "complete_tests_count": 36,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 36,
+      "fair_eval_count": 37,
       "range": "373-434",
-      "sop_ready_count": 35,
+      "sop_ready_count": 36,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          27
+          26
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          26
+          25
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          26
+          25
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          26
+          25
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 107,
-    "fair_eval_count": 107,
+    "complete_tests_count": 108,
+    "fair_eval_count": 108,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 87,
-      "hidden_scs_not_executable:include,instance,source": 86,
-      "missing_required_behavior_section": 87,
-      "visible_scs_not_executable:include,instance,source": 86
+      "checker_syntax_only_no_behavior_score": 86,
+      "hidden_scs_not_executable:include,instance,source": 85,
+      "missing_required_behavior_section": 86,
+      "visible_scs_not_executable:include,instance,source": 85
     },
-    "sop_ready_count": 106,
+    "sop_ready_count": 107,
     "task_count": 194
   },
   "tasks": [
@@ -2643,20 +2643,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 409,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a function-like preprocessor macro in analog behavior.",
       "target": "macro_functionlike_clamp.va",

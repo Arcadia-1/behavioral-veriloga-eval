@@ -9224,6 +9224,33 @@ def check_v3_408_vector_shift_and_mask_decoder(rows: list[dict[str, float]]) -> 
     )
 
 
+def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.35),
+                (280.0, 0.9),
+                (380.0, 0.7),
+                (480.0, 0.0),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.3889),
+                (280.0, 1.0),
+                (380.0, 0.7778),
+                (480.0, 0.0),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18335,6 +18362,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "407-vector-reduction-parity": check_v3_407_vector_reduction_parity,
     "v3_408_vector_shift_and_mask_decoder": check_v3_408_vector_shift_and_mask_decoder,
     "408-vector-shift-and-mask-decoder": check_v3_408_vector_shift_and_mask_decoder,
+    "v3_409_macro_functionlike_clamp": check_v3_409_macro_functionlike_clamp,
+    "409-macro-functionlike-clamp": check_v3_409_macro_functionlike_clamp,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

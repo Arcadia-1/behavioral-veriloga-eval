@@ -9038,16 +9038,45 @@
 409-macro-functionlike-clamp: |
   version: 1
   task_id: v3_409_macro_functionlike_clamp
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: macro_functionlike_clamp_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "`V3_CLAMP"
+      - "`define V3_CLAMP"
+      - "V(vin)"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/macro_functionlike_clamp.va
+    negative:
+      - negative_variants/neg_001_force_zero/macro_functionlike_clamp.va
+      - negative_variants/neg_002_wrong_threshold/macro_functionlike_clamp.va
+      - negative_variants/neg_003_reset_bias/macro_functionlike_clamp.va
+      - negative_variants/neg_004_metric_offset/macro_functionlike_clamp.va
+      - negative_variants/neg_005_scale_output/macro_functionlike_clamp.va
+    checks:
+      - function_like_macro_clamps_below_zero
+      - function_like_macro_passes_midrange_value
+      - function_like_macro_clamps_above_vhi
+      - metric_tracks_normalized_clamped_value
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Preprocessor language extension promoted to executable EVAS behavior candidate."
 410-macro-ifdef-gain-select: |
   version: 1
   task_id: v3_410_macro_ifdef_gain_select
