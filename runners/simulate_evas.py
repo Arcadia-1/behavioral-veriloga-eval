@@ -8164,6 +8164,31 @@ def check_v3_366_noise_table_gated_shaper(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_367_analysis_dependent_dc_tran_mode(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.2),
+                (180.0, 0.6),
+                (280.0, 0.3),
+                (380.0, 0.8),
+            ],
+            "metric": [
+                (80.0, 0.9),
+                (180.0, 0.9),
+                (280.0, 0.9),
+                (380.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17191,6 +17216,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "365-noise-table-voltage-shaper": check_v3_365_noise_table_voltage_shaper,
     "v3_366_noise_table_gated_shaper": check_v3_366_noise_table_gated_shaper,
     "366-noise-table-gated-shaper": check_v3_366_noise_table_gated_shaper,
+    "v3_367_analysis_dependent_dc_tran_mode": check_v3_367_analysis_dependent_dc_tran_mode,
+    "367-analysis-dependent-dc-tran-mode": check_v3_367_analysis_dependent_dc_tran_mode,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

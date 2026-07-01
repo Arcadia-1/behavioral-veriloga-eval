@@ -11,8 +11,14 @@ parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 real metric_v;
+real out_drive_v;
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        metric_v = 0.0;
+        out_drive_v = 0.0;
+    end
+    // TODO: use analysis("dc") and analysis("tran") to select out_drive_v.
+    V(out) <+ transition(out_drive_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule
