@@ -8258,6 +8258,25 @@ def check_v3_370_ac_stim_phase_selector(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_371_combined_white_flicker_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "metric": [
+                (80.0, 1.5),
+                (180.0, 1.5),
+                (280.0, 1.5),
+                (380.0, 1.5),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17293,6 +17312,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "369-ac-stim-small-signal-source": check_v3_369_ac_stim_small_signal_source,
     "v3_370_ac_stim_phase_selector": check_v3_370_ac_stim_phase_selector,
     "370-ac-stim-phase-selector": check_v3_370_ac_stim_phase_selector,
+    "v3_371_combined_white_flicker_noise": check_v3_371_combined_white_flicker_noise,
+    "371-combined-white-flicker-noise": check_v3_371_combined_white_flicker_noise,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
