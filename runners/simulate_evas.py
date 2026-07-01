@@ -9189,6 +9189,41 @@ def check_v3_407_vector_reduction_parity(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_408_vector_shift_and_mask_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.9),
+                (180.0, 0.9),
+                (280.0, 0.0),
+                (380.0, 0.0),
+                (480.0, 0.0),
+                (580.0, 0.0),
+                (680.0, 0.0),
+                (780.0, 0.0),
+                (880.0, 0.9),
+            ],
+            "metric": [
+                (80.0, 2.0),
+                (180.0, 2.0),
+                (280.0, 3.0),
+                (380.0, 3.0),
+                (480.0, 0.0),
+                (580.0, 0.0),
+                (680.0, 1.0),
+                (780.0, 1.0),
+                (880.0, 2.0),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18298,6 +18333,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "406-vector-replication-mask": check_v3_406_vector_replication_mask,
     "v3_407_vector_reduction_parity": check_v3_407_vector_reduction_parity,
     "407-vector-reduction-parity": check_v3_407_vector_reduction_parity,
+    "v3_408_vector_shift_and_mask_decoder": check_v3_408_vector_shift_and_mask_decoder,
+    "408-vector-shift-and-mask-decoder": check_v3_408_vector_shift_and_mask_decoder,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

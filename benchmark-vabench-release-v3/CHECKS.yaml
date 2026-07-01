@@ -8995,16 +8995,46 @@
 408-vector-shift-and-mask-decoder: |
   version: 1
   task_id: v3_408_vector_shift_and_mask_decoder
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vector_shift_and_mask_decoder_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - ">>"
+      - "& 3"
+      - "field_q"
+      - "count_q + 12"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/vector_shift_and_mask_decoder.va
+    negative:
+      - negative_variants/neg_001_force_zero/vector_shift_and_mask_decoder.va
+      - negative_variants/neg_002_wrong_threshold/vector_shift_and_mask_decoder.va
+      - negative_variants/neg_003_reset_bias/vector_shift_and_mask_decoder.va
+      - negative_variants/neg_004_metric_offset/vector_shift_and_mask_decoder.va
+      - negative_variants/neg_005_scale_output/vector_shift_and_mask_decoder.va
+    checks:
+      - right_shift_and_mask_extract_two_bit_field
+      - output_asserts_only_for_field_two
+      - metric_covers_full_field_cycle
+      - startup_count_bias_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
 409-macro-functionlike-clamp: |
   version: 1
   task_id: v3_409_macro_functionlike_clamp

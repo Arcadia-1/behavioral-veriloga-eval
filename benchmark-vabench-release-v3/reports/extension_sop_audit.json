@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 34,
+      "complete_tests_count": 35,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 35,
+      "fair_eval_count": 36,
       "range": "373-434",
-      "sop_ready_count": 34,
+      "sop_ready_count": 35,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          28
+          27
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          27
+          26
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          27
+          26
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          27
+          26
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 106,
-    "fair_eval_count": 106,
+    "complete_tests_count": 107,
+    "fair_eval_count": 107,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 88,
-      "hidden_scs_not_executable:include,instance,source": 87,
-      "missing_required_behavior_section": 88,
-      "visible_scs_not_executable:include,instance,source": 87
+      "checker_syntax_only_no_behavior_score": 87,
+      "hidden_scs_not_executable:include,instance,source": 86,
+      "missing_required_behavior_section": 87,
+      "visible_scs_not_executable:include,instance,source": 86
     },
-    "sop_ready_count": 105,
+    "sop_ready_count": 106,
     "task_count": 194
   },
   "tasks": [
@@ -2620,20 +2620,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 408,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use shifts and masks for compact code decoding.",
       "target": "vector_shift_and_mask_decoder.va",
