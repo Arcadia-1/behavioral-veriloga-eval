@@ -19,6 +19,16 @@ REPORT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
 REPORT_CSV = REPORTS_ROOT / "extension_sop_audit_tasks.csv"
 REPORT_MD = REPORTS_ROOT / "extension_sop_audit.md"
 
+RANGE_GROUPS = [
+    (301, 340, "language-semantics voltage-domain candidates"),
+    (341, 360, "AMS mixed-signal candidates"),
+    (361, 372, "noise and analysis candidates"),
+    (373, 434, "task/file/table/random/hierarchy syntax candidates"),
+    (435, 458, "manual syntax-completion candidates"),
+    (459, 470, "course-material gap-fill candidates"),
+    (471, 494, "LRM KCL/continuous-time gap-fill candidates"),
+]
+
 
 def task_number(slug: str) -> int:
     return int(slug.split("-", 1)[0])
@@ -70,6 +80,9 @@ def negative_count(task_dir: Path) -> int:
         variants = manifest.get("variants")
         if isinstance(variants, list):
             return len(variants)
+        negative_variants = manifest.get("negative_variants")
+        if isinstance(negative_variants, list):
+            return len(negative_variants)
     return 0
 
 
@@ -222,6 +235,20 @@ def write_md(report: dict[str, Any]) -> None:
         lines.append(f"- `{issue}`: {count}")
     lines.extend([
         "",
+        "## Range Summary",
+        "",
+        "| Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Top Issues |",
+        "| --- | --- | ---: | ---: | ---: | ---: | --- |",
+    ])
+    for row in report["range_summary"]:
+        top_issues = "<br>".join(f"`{issue}`: {count}" for issue, count in row["top_issues"])
+        lines.append(
+            f"| `{row['range']}` | {row['description']} | {row['task_count']} | "
+            f"{row['sop_ready_count']} | {row['complete_tests_count']} | "
+            f"{row['fair_eval_count']} | {top_issues} |"
+        )
+    lines.extend([
+        "",
         "## Highest Severity Finding",
         "",
         "Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. "
@@ -250,6 +277,19 @@ def main() -> int:
         if task_number(slug) >= 301
     ]
     issue_counts = dict(sorted(Counter(issue for row in rows for issue in row["issues"]).items()))
+    range_summary = []
+    for start, end, description in RANGE_GROUPS:
+        group_rows = [row for row in rows if start <= row["number"] <= end]
+        group_issues = Counter(issue for row in group_rows for issue in row["issues"])
+        range_summary.append({
+            "range": f"{start}-{end}",
+            "description": description,
+            "task_count": len(group_rows),
+            "sop_ready_count": sum(row["sop_ready"] for row in group_rows),
+            "complete_tests_count": sum(row["complete_tests"] for row in group_rows),
+            "fair_eval_count": sum(row["fair_eval"] for row in group_rows),
+            "top_issues": group_issues.most_common(5),
+        })
     report = {
         "date": date.today().isoformat(),
         "scope": "benchmark-vabench-release-v3 tasks 301-494",
@@ -261,6 +301,7 @@ def main() -> int:
             "fair_eval_count": sum(row["fair_eval"] for row in rows),
             "issue_counts": issue_counts,
         },
+        "range_summary": range_summary,
         "tasks": rows,
     }
     REPORTS_ROOT.mkdir(parents=True, exist_ok=True)

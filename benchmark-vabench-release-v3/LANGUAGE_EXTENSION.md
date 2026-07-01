@@ -79,6 +79,23 @@ The extension tasks are marked as candidate rows in `TASKS.json` and
 Before any paper-facing full-suite claim, promote only the rows whose reference
 solutions, hidden checks, and five negative variants are behavior-certified.
 
+Re-run the SOP audit for these extension rows with:
+
+```bash
+python3 benchmark-vabench-release-v3/scripts/audit_v3_extension_sop.py
+```
+
+As of 2026-07-01, the SOP audit covers tasks `301`-`494` and reports:
+
+- audited extension tasks: `194`
+- SOP-ready extension tasks: `0`
+- rows with executable visible+hidden SCS evidence: `0`
+- rows with behavior-checker evidence: `0`
+
+The common blocking issues are skeleton visible/hidden SCS decks without a
+candidate include, DUT instance, or stimulus source, plus syntax-only checker
+entries that do not yet prove hidden behavior or reject the negative variants.
+
 Current local EVAS compile status after this expansion:
 
 - `001`-`300`: unchanged original benchmark surface.
