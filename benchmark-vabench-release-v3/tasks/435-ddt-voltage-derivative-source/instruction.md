@@ -4,10 +4,14 @@ Implement one behavioral Verilog-A/AMS source file named `ddt_voltage_derivative
 
 ## Interface
 
-Use the ports shown in the starter file. Keep the task focused on the required language feature.
+Use the exact module interface shown in the starter file. This is a behavioral-continuous-time candidate, not part of the ordinary behavioral-event certification layer.
 
 ## Required Feature
 
 Use ddt() to form a voltage-domain derivative source.
+
+## Required Behavior
+
+The intended model samples a voltage-domain derivative expression and drives behavioral voltage outputs only. Do not use `I(...)` current contributions.
 
 Return exactly one source artifact named `ddt_voltage_derivative_source.va`.
