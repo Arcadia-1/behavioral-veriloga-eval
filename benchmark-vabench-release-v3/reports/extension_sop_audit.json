@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 38,
+      "complete_tests_count": 39,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 38,
+      "fair_eval_count": 39,
       "range": "373-434",
-      "sop_ready_count": 37,
+      "sop_ready_count": 38,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          24
+          23
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          24
+          23
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          23
+          22
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          23
+          22
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 110,
-    "fair_eval_count": 109,
+    "complete_tests_count": 111,
+    "fair_eval_count": 110,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 85,
-      "hidden_scs_not_executable:include,instance,source": 83,
-      "missing_required_behavior_section": 84,
-      "visible_scs_not_executable:include,instance,source": 83
+      "checker_syntax_only_no_behavior_score": 84,
+      "hidden_scs_not_executable:include,instance,source": 82,
+      "missing_required_behavior_section": 83,
+      "visible_scs_not_executable:include,instance,source": 82
     },
-    "sop_ready_count": 108,
+    "sop_ready_count": 109,
     "task_count": 194
   },
   "tasks": [
@@ -2714,20 +2714,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 412,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use initial_step and final_step in one behavioral model.",
       "target": "initial_final_step_lifecycle.va",

@@ -9276,6 +9276,31 @@ def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_412_initial_final_step_lifecycle(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.2),
+                (180.0, 0.5),
+                (280.0, 0.7),
+                (380.0, 0.3),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 1.0),
+                (280.0, 2.0),
+                (380.0, 3.0),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18391,6 +18416,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "409-macro-functionlike-clamp": check_v3_409_macro_functionlike_clamp,
     "v3_411_escaped_identifier_state": check_v3_411_escaped_identifier_state,
     "411-escaped-identifier-state": check_v3_411_escaped_identifier_state,
+    "v3_412_initial_final_step_lifecycle": check_v3_412_initial_final_step_lifecycle,
+    "412-initial-final-step-lifecycle": check_v3_412_initial_final_step_lifecycle,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

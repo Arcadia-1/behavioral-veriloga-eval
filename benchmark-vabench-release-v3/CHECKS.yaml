@@ -9142,16 +9142,46 @@
 412-initial-final-step-lifecycle: |
   version: 1
   task_id: v3_412_initial_final_step_lifecycle
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: initial_final_step_lifecycle_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "initial_step"
       - "final_step"
+      - "state_q = count_q"
+      - "metric_v = count_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/initial_final_step_lifecycle.va
+    negative:
+      - negative_variants/neg_001_force_zero/initial_final_step_lifecycle.va
+      - negative_variants/neg_002_wrong_threshold/initial_final_step_lifecycle.va
+      - negative_variants/neg_003_reset_bias/initial_final_step_lifecycle.va
+      - negative_variants/neg_004_metric_offset/initial_final_step_lifecycle.va
+      - negative_variants/neg_005_scale_output/initial_final_step_lifecycle.va
+    checks:
+      - initial_step_resets_counter_and_outputs
+      - clocked_lifecycle_reports_count_before_increment
+      - output_tracks_input_sample
+      - final_step_callback_is_syntax_guarded
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Lifecycle task promoted with observable initial_step/clocked behavior; final_step presence is syntax-guarded because post-final state is not visible in transient CSV."
 413-while-loop-array-sum: |
   version: 1
   task_id: v3_413_while_loop_array_sum
