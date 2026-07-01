@@ -9720,16 +9720,44 @@
 428-string-mode-tagged-log: |
   version: 1
   task_id: v3_428_string_mode_tagged_log
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: string_mode_tagged_log_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "string"
       - "$sformat"
+      - "$strobe"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/string_mode_tagged_log.va
+    negative:
+      - negative_variants/neg_001_force_zero/string_mode_tagged_log.va
+      - negative_variants/neg_002_wrong_threshold/string_mode_tagged_log.va
+      - negative_variants/neg_003_reset_bias/string_mode_tagged_log.va
+      - negative_variants/neg_004_metric_offset/string_mode_tagged_log.va
+      - negative_variants/neg_005_scale_output/string_mode_tagged_log.va
+    checks:
+      - string_variable_parse
+      - sformat_expression_parse
+      - strobe_log_path_executes
+      - threshold_output_high_low
+      - metric_count_sequence
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "String mode-tagged strobe log behavior promoted to executable EVAS behavior candidate."
 429-string-config-label-select: |
   version: 1
   task_id: v3_429_string_config_label_select
