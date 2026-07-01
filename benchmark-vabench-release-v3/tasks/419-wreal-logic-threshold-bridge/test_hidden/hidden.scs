@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "wreal_logic_threshold_bridge.vams"
 
-Vain (ain 0) vsource type=pwl wave=[0 0.30 99n 0.30 100n 0.50 199n 0.50 200n 0.60 299n 0.60 300n 0.40 399n 0.40 400n 0.70 500n 0.70]
-Ven (en 0) vsource type=pwl wave=[0 1.0 249n 1.0 250n 0.0 349n 0.0 350n 1.0 500n 1.0]
+Vain (ain 0) vsource type=pwl wave=[0 0.20 79n 0.20 80n 0.55 179n 0.55 180n 0.35 279n 0.35 280n 0.82 379n 0.82 380n 0.42 500n 0.42]
+Ven (en 0) vsource type=pwl wave=[0 1.0 149n 1.0 150n 0.0 249n 0.0 250n 1.0 500n 1.0]
 
 XDUT (ain en flag) wreal_logic_threshold_bridge
 

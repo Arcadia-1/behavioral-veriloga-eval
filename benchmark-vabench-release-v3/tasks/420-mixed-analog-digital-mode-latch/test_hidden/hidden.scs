@@ -3,7 +3,7 @@ global 0
 
 ahdl_include "mixed_analog_digital_mode_latch.vams"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.20 79n 0.20 80n 0.50 149n 0.50 150n 0.30 249n 0.30 250n 0.70 349n 0.70 350n 0.40 449n 0.40 450n 0.80 550n 0.80]
+Vvin (vin 0) vsource type=pwl wave=[0 0.75 79n 0.75 80n 0.50 149n 0.50 150n 0.40 249n 0.40 250n 0.65 349n 0.65 350n 0.30 449n 0.30 450n 0.80 550n 0.80]
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 199n 0.0 200n 1.0 249n 1.0 250n 0.0 299n 0.0 300n 1.0 349n 1.0 350n 0.0 399n 0.0 400n 1.0 449n 1.0 450n 0.0 499n 0.0 500n 1.0 550n 1.0]
 
 XDUT (vin clk flag) mixed_analog_digital_mode_latch

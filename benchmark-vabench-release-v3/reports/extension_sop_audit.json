@@ -49,7 +49,7 @@
           7
         ]
       ],
-      "visible_hidden_distinct_count": 42
+      "visible_hidden_distinct_count": 56
     },
     {
       "complete_tests_count": 24,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 36,
+    "sop_ready_visible_hidden_identical_count": 22,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 141,
-    "visible_hidden_identical_count": 53,
+    "visible_hidden_distinct_count": 155,
+    "visible_hidden_identical_count": 39,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 53
+      "visible_hidden_identical": 39
     }
   },
   "tasks": [
@@ -2998,11 +2998,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Logic Threshold Bridge",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3023,11 +3022,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Analog Digital Mode Latch",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3048,11 +3046,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Task Local Variable Transform",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3073,11 +3070,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Table Stimulus",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3098,11 +3094,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Profile Replay Controller",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3123,11 +3118,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Multi Column Profile",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3148,11 +3142,10 @@
       "tier": "syntax-extension-candidate",
       "title": "String Swrite Label Builder",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3173,11 +3166,10 @@
       "tier": "syntax-extension-candidate",
       "title": "String Sformat Mode Tag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3198,11 +3190,10 @@
       "tier": "syntax-extension-candidate",
       "title": "String Formatted Metric Line",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3223,11 +3214,10 @@
       "tier": "syntax-extension-candidate",
       "title": "String Mode Tagged Log",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3248,11 +3238,10 @@
       "tier": "syntax-extension-candidate",
       "title": "String Config Label Select",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3273,11 +3262,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Rdist Seed Reproducibility",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3352,11 +3340,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Preprocessor Ifndef Elsif Undef",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -3377,11 +3364,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Repeat Loop Accumulator",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

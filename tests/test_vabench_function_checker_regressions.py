@@ -2582,6 +2582,169 @@ def test_v3_macro_lifecycle_loop_parameter_checkers_follow_hidden_stimulus_value
         assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
 
 
+def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values() -> None:
+    def logic_bridge_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(501):
+            time_ns = float(idx)
+            ain = _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.20), (80.0, 0.55), (180.0, 0.35), (280.0, 0.82), (380.0, 0.42)],
+            )
+            en = _task_input_from_segments(time_ns, [(0.0, 1.0), (150.0, 0.0), (250.0, 1.0)])
+            flag = 1.0 if en > 0.45 and ain > 0.45 else 0.0
+            rows.append({"time": time_ns * 1e-9, "ain": ain, "en": en, "flag": 0.0 if wrong else flag})
+        return rows
+
+    def latch_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        flag = 0.0
+        prev_clk = 0.0
+        for idx in range(551):
+            time_ns = float(idx)
+            vin = _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.75), (80.0, 0.50), (150.0, 0.40), (250.0, 0.65), (350.0, 0.30), (450.0, 0.80)],
+            )
+            clk = 1.0 if any(edge <= time_ns <= edge + 49.0 for edge in [100.0, 200.0, 300.0, 400.0, 500.0]) else 0.0
+            if prev_clk <= 0.45 < clk:
+                flag = 1.0 if vin > 0.45 else 0.0
+            rows.append({"time": time_ns * 1e-9, "vin": vin, "clk": clk, "flag": 0.0 if wrong else flag})
+            prev_clk = clk
+        return rows
+
+    def clocked_rows(update_fn, input_fn, *, initial_out=0.0, initial_metric=0.0, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        state: dict[str, float | int] = {"count": 0, "metric": initial_metric}
+        out = initial_out
+        metric = initial_metric
+        prev_clk = 0.0
+        for idx in range(551):
+            time_ns = float(idx)
+            clk = 1.0 if any(edge <= time_ns <= edge + 49.0 for edge in [100.0, 200.0, 300.0, 400.0, 500.0]) else 0.0
+            vin, mode, rst = input_fn(time_ns)
+            row = {"time": time_ns * 1e-9, "vin": vin, "clk": clk, "mode": mode, "rst": rst, "out": out, "metric": metric}
+            if prev_clk <= 0.45 < clk:
+                out, metric = update_fn(state, row)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+            rows.append(row)
+            prev_clk = clk
+        return rows
+
+    input_general = lambda t: (
+        _task_input_from_segments(t, [(0.0, 0.25), (150.0, 0.85), (250.0, 0.35), (350.0, 0.75)]),
+        0.0,
+        0.9 if 350.0 <= t <= 429.0 else 0.0,
+    )
+
+    def clamp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    def file_constant_update(out_value: float, metric_value: float):
+        def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+            if row["rst"] > 0.45:
+                return 0.0, 0.0
+            return out_value, metric_value
+
+        return update
+
+    def profile_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["metric"] = 0.0
+            return 0.0, 0.0
+        out = 0.9 if row["vin"] > 0.45 else 0.0
+        metric = float(state["metric"]) + 0.01 * int(state["count"])
+        state["metric"] = metric
+        state["count"] = int(state["count"]) + 1
+        return out, metric
+
+    def count_threshold_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if row["vin"] > 0.45 else 0.0, metric
+
+    def config_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        count = int(state["count"])
+        state["count"] = count + 1
+        if row["mode"] > 0.45:
+            return 0.0 if row["vin"] > 0.45 else 0.9, float(count + 10)
+        return 0.9 if row["vin"] > 0.45 else 0.0, float(count)
+
+    def rdist_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return row["vin"] + 0.03, 1.0
+
+    def gain_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return 0.75 * row["vin"], 0.75
+
+    def repeat_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 4 * (int(state["count"]) + 1)
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if acc > 4 else 0.0, float(acc)
+
+    assert sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows())[0]
+    assert not sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows(wrong=True))[0]
+    assert sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows())[0]
+    assert not sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows(wrong=True))[0]
+
+    cases = [
+        (sim.check_v3_421_task_local_variable_transform, clamp_update, input_general, 0.0, 0.0),
+        (sim.check_v3_422_file_fscanf_table_stimulus, file_constant_update(0.7, 0.0), input_general, 0.7, 2.0),
+        (sim.check_v3_423_file_profile_replay_controller, profile_update, input_general, 0.0, 1.0),
+        (sim.check_v3_424_file_fscanf_multi_column_profile, file_constant_update(0.7, 0.5), input_general, 0.7, 3.0),
+        (sim.check_v3_425_string_swrite_label_builder, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_426_string_sformat_mode_tag, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_427_string_formatted_metric_line, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_428_string_mode_tagged_log, count_threshold_update, input_general, 0.0, 0.0),
+        (
+            sim.check_v3_429_string_config_label_select,
+            config_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.20), (150.0, 0.82), (250.0, 0.35), (350.0, 0.68)]),
+                _task_input_from_segments(t, [(0.0, 1.0), (150.0, 0.0), (250.0, 1.0)]),
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_430_rdist_seed_reproducibility,
+            rdist_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.62), (150.0, 0.18), (250.0, 0.76), (350.0, 0.44)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (sim.check_v3_433_preprocessor_ifndef_elsif_undef, gain_update, input_general, 0.0, 0.0),
+        (sim.check_v3_434_repeat_loop_accumulator, repeat_update, input_general, 0.0, 0.0),
+    ]
+    for checker, update_fn, input_fn, initial_out, initial_metric in cases:
+        assert checker(clocked_rows(update_fn, input_fn, initial_out=initial_out, initial_metric=initial_metric))[0]
+        assert not checker(
+            clocked_rows(update_fn, input_fn, initial_out=initial_out, initial_metric=initial_metric, wrong=True)
+        )[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
