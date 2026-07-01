@@ -3,4 +3,4 @@
 - Task id: `v3_468_branch_declaration_voltage_probe`
 - Category: `veriloga_branch_semantics`
 - Required syntax focus: `Declare an explicit branch and read its voltage.`
-- EVAS status: `supported`
+- EVAS status: `pending EVAS explicit branch voltage probe support; see Arcadia-1/EVAS#50`

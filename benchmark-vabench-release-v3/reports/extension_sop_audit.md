@@ -6,15 +6,15 @@ Date: 2026-07-02
 
 - Audited extension tasks: **194**
 - SOP-ready tasks: **141**
-- Tasks with executable visible+hidden SCS evidence: **160**
+- Tasks with executable visible+hidden SCS evidence: **161**
 - Tasks with behavior checker evidence: **142**
 
 ## Issue Counts
 
 - `checker_syntax_only_no_behavior_score`: 52
-- `hidden_scs_not_executable:include,instance,source`: 33
-- `missing_required_behavior_section`: 28
-- `visible_scs_not_executable:include,instance,source`: 33
+- `hidden_scs_not_executable:include,instance,source`: 32
+- `missing_required_behavior_section`: 27
+- `visible_scs_not_executable:include,instance,source`: 32
 
 ## Range Summary
 
@@ -25,7 +25,7 @@ Date: 2026-07-02
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
-| `459-470` | course-material gap-fill candidates | 12 | 8 | 9 | 8 | `checker_syntax_only_no_behavior_score`: 4<br>`visible_scs_not_executable:include,instance,source`: 3<br>`hidden_scs_not_executable:include,instance,source`: 3<br>`missing_required_behavior_section`: 3 |
+| `459-470` | course-material gap-fill candidates | 12 | 8 | 10 | 8 | `checker_syntax_only_no_behavior_score`: 4<br>`visible_scs_not_executable:include,instance,source`: 2<br>`hidden_scs_not_executable:include,instance,source`: 2<br>`missing_required_behavior_section`: 2 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 
 ## Highest Severity Finding
@@ -203,7 +203,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `465-port-connected-output-enable` | `syntax-extension-candidate` | True | - |
 | `466-temperature-environment-metric` | `syntax-extension-candidate` | True | - |
 | `467-simparam-query-tnom` | `syntax-extension-candidate` | True | - |
-| `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `469-current-contribution-conductance` | `kcl-syntax-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `470-branch-current-probe-contribution` | `kcl-syntax-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `471-indirect-branch-null-balance` | `behavioral-continuous-time-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

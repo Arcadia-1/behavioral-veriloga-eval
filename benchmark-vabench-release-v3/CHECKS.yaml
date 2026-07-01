@@ -10896,14 +10896,17 @@
 468-branch-declaration-voltage-probe: |
   version: 1
   task_id: v3_468_branch_declaration_voltage_probe
-  backend: evas_rust_compile_capable
+  backend: evas_pending_branch_voltage_probe_semantics
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "branch ("
+      - "V(br)"
+    must_not_include:
+      - "I("
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "Behavior promotion is blocked by EVAS explicit branch voltage probe semantics; see Arcadia-1/EVAS#50."
 469-current-contribution-conductance: |
   version: 1
   task_id: v3_469_current_contribution_conductance
