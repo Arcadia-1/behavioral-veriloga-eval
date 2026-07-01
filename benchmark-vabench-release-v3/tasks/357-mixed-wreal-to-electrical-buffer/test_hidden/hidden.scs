@@ -1,4 +1,16 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "mixed_wreal_to_electrical_buffer.vams"
+
+Vvin (vin 0) vsource dc=0.65
+Vclk (clk 0) vsource dc=0.0
+Ven (en 0) vsource dc=1.0
+Vsel (sel 0) vsource dc=0.0
+Va (a 0) vsource type=pwl wave=[0 0.2 199n 0.2 200n 0.8 399n 0.8 400n 0.4 600n 0.4]
+Vb (b 0) vsource dc=0.1
+
+XDUT (vin clk en sel a b vout) mixed_wreal_to_electrical_buffer
+
+tran tran stop=600n
+save vin clk en sel a b vout

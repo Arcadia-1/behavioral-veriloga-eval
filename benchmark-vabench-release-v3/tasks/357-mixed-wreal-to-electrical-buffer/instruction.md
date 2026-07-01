@@ -6,7 +6,26 @@ This is an AMS mixed-signal extension task. It intentionally exercises digital/m
 
 ## Required Behavior
 
-Bridge wreal value into an electrical voltage output.
+Bridge a `wreal` value into an electrical voltage output.
+
+The module must have this interface:
+
+```verilog
+module mixed_wreal_to_electrical_buffer(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+```
+
+Continuously assign the internal `wreal` level from input `a`:
+
+```verilog
+assign level = a;
+```
+
+In the analog block, drive `V(vout)` from `level` using `transition(level, 0.0, tr, tr)`. Do not use `vin`, `b`, `sel`, or `en` to determine `vout` in this task.
 
 Use the module and port names from the starter. Do not use current-domain `I(...)` contributions or transistor-level primitives.
 

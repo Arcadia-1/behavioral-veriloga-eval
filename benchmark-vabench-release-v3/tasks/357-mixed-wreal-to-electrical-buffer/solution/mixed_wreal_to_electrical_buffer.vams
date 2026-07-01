@@ -7,12 +7,11 @@ module mixed_wreal_to_electrical_buffer(vin, clk, en, sel, a, b, vout);
     electrical vin, vout;
     logic clk, en, sel;
     wreal a, b, level;
-    logic en_logic;
-    logic sampled;
-    real flag_real;
-    parameter real vth = 0.45;
-    parameter real vhi = 0.9;
     parameter real tr = 200p;
+
     assign level = a;
-    analog begin V(vout) <+ transition(level, 0.0, tr, tr); end
+
+    analog begin
+        V(vout) <+ transition(level, 0.0, tr, tr);
+    end
 endmodule

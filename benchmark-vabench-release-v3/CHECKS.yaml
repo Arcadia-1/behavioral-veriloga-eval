@@ -6792,18 +6792,46 @@
 357-mixed-wreal-to-electrical-buffer: |
   version: 1
   task_id: v3_357_mixed_wreal_to_electrical_buffer
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_mixed_signal_voltage_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - en
+    - sel
+    - a
+    - b
+    - vout
   syntax:
     must_include:
       - "wreal"
       - "logic"
       - "assign"
+      - "V(vout)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/mixed_wreal_to_electrical_buffer.vams
+    negative:
+      - negative_variants/neg_001_force_zero/mixed_wreal_to_electrical_buffer.vams
+      - negative_variants/neg_002_invert_select/mixed_wreal_to_electrical_buffer.vams
+      - negative_variants/neg_003_drop_reset/mixed_wreal_to_electrical_buffer.vams
+      - negative_variants/neg_004_wrong_edge/mixed_wreal_to_electrical_buffer.vams
+      - negative_variants/neg_005_scale_low/mixed_wreal_to_electrical_buffer.vams
+    checks:
+      - mixed_electrical_output_trace
+      - wreal_level_alias_assign
+      - electrical_output_tracks_wreal_low
+      - electrical_output_tracks_wreal_high
+      - electrical_output_tracks_wreal_mid
+      - ignores_unrelated_vin_b_sel_en
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 358-mixed-electrical-threshold-logic-flag: |
   version: 1
   task_id: v3_358_mixed_electrical_threshold_logic_flag
