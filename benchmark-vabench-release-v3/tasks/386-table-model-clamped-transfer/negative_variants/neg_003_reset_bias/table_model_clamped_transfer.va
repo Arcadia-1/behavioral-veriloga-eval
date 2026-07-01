@@ -31,9 +31,8 @@ analog begin
             state_q = 0;
         end else begin
         count_q = count_q + 1;
-        out_v = $table_model(V(vin), "table-model-clamped-transfer.tbl", "1L");
+        out_v = $table_model(V(vin) + 0.15, "table-model-clamped-transfer.tbl");
         metric_v = out_v / vhi;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

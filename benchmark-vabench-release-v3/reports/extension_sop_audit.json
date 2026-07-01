@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 12,
+      "complete_tests_count": 13,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 13,
+      "fair_eval_count": 14,
       "range": "373-434",
-      "sop_ready_count": 12,
+      "sop_ready_count": 13,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          50
+          49
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          49
+          48
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          49
+          48
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          49
+          48
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 84,
-    "fair_eval_count": 84,
+    "complete_tests_count": 85,
+    "fair_eval_count": 85,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 110,
-      "hidden_scs_not_executable:include,instance,source": 109,
-      "missing_required_behavior_section": 110,
-      "visible_scs_not_executable:include,instance,source": 109
+      "checker_syntax_only_no_behavior_score": 109,
+      "hidden_scs_not_executable:include,instance,source": 108,
+      "missing_required_behavior_section": 109,
+      "visible_scs_not_executable:include,instance,source": 108
     },
-    "sop_ready_count": 83,
+    "sop_ready_count": 84,
     "task_count": 194
   },
   "tasks": [
@@ -2114,20 +2114,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 386,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $table_model() for a clamped transfer curve lookup.",
       "target": "table_model_clamped_transfer.va",

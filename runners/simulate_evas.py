@@ -8631,6 +8631,31 @@ def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_386_table_model_clamped_transfer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.1556),
+                (280.0, 0.9),
+                (380.0, 0.7778),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.1728),
+                (280.0, 1.0),
+                (380.0, 0.8642),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17696,6 +17721,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "384-file-fopen-mode-selector": check_v3_384_file_fopen_mode_selector,
     "v3_385_table_model_linear_gain": check_v3_385_table_model_linear_gain,
     "385-table-model-linear-gain": check_v3_385_table_model_linear_gain,
+    "v3_386_table_model_clamped_transfer": check_v3_386_table_model_clamped_transfer,
+    "386-table-model-clamped-transfer": check_v3_386_table_model_clamped_transfer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
