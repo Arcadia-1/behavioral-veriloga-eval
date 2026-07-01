@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A artifact and stricter checks.
-tran tran stop=160n
+
+ahdl_include "task_metric_normalizer.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.45 99n 0.45 100n 0.0 199n 0.0 200n 0.9 299n 0.9 300n 0.2 420n 0.2]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 420n 1.0]
+Vmode (mode 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 0.9 420n 0.9]
+Vrst (rst 0) vsource dc=0.0
+
+XDUT (vin clk mode rst out metric) task_metric_normalizer
+
+tran tran stop=420n
 save vin clk mode rst out metric

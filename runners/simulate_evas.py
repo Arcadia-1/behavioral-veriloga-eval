@@ -8431,6 +8431,31 @@ def check_v3_377_task_stateful_threshold_update(rows: list[dict[str, float]]) ->
     )
 
 
+def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.45),
+                (180.0, 0.0),
+                (280.0, 0.9),
+                (380.0, 0.2),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.45),
+                (380.0, 0.25),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17480,6 +17505,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "376-task-reset-sequencer": check_v3_376_task_reset_sequencer,
     "v3_377_task_stateful_threshold_update": check_v3_377_task_stateful_threshold_update,
     "377-task-stateful-threshold-update": check_v3_377_task_stateful_threshold_update,
+    "v3_378_task_metric_normalizer": check_v3_378_task_metric_normalizer,
+    "378-task-metric-normalizer": check_v3_378_task_metric_normalizer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

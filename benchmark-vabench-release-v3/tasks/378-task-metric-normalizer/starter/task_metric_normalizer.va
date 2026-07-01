@@ -9,9 +9,32 @@ module task_metric_normalizer (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+task normalize_metric;
+    input real sample;
+    input real norm_span;
+    begin
+        // TODO: update out_v and normalized metric_v.
+    end
+endtask
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            normalize_metric(V(vin), V(mode) > vth ? vhi : vth);
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

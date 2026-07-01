@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 4,
+      "complete_tests_count": 5,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 5,
+      "fair_eval_count": 6,
       "range": "373-434",
-      "sop_ready_count": 4,
+      "sop_ready_count": 5,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          58
+          57
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          57
+          56
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          57
+          56
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          57
+          56
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 76,
-    "fair_eval_count": 76,
+    "complete_tests_count": 77,
+    "fair_eval_count": 77,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 118,
-      "hidden_scs_not_executable:include,instance,source": 117,
-      "missing_required_behavior_section": 118,
-      "visible_scs_not_executable:include,instance,source": 117
+      "checker_syntax_only_no_behavior_score": 117,
+      "hidden_scs_not_executable:include,instance,source": 116,
+      "missing_required_behavior_section": 117,
+      "visible_scs_not_executable:include,instance,source": 116
     },
-    "sop_ready_count": 75,
+    "sop_ready_count": 76,
     "task_count": 194
   },
   "tasks": [
@@ -1930,20 +1930,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 378,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a task to normalize a computed metric into a voltage-domain output.",
       "target": "task_metric_normalizer.va",

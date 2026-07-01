@@ -7699,16 +7699,49 @@
 378-task-metric-normalizer: |
   version: 1
   task_id: v3_378_task_metric_normalizer
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: task_metric_normalizer_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "task "
+      - "normalize_metric"
+      - "input real sample"
+      - "input real norm_span"
+      - "endtask"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/task_metric_normalizer.va
+    negative:
+      - negative_variants/neg_001_force_zero/task_metric_normalizer.va
+      - negative_variants/neg_002_wrong_threshold/task_metric_normalizer.va
+      - negative_variants/neg_003_reset_bias/task_metric_normalizer.va
+      - negative_variants/neg_004_metric_offset/task_metric_normalizer.va
+      - negative_variants/neg_005_scale_output/task_metric_normalizer.va
+    checks:
+      - task_declared_and_called
+      - sample_output_clamped_to_voltage_domain
+      - metric_uses_absolute_distance_from_vth
+      - mode_selects_normalization_span
+      - metric_clamped_to_vhi
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Task language extension promoted to executable EVAS behavior candidate."
 379-file-fgets-config-loader: |
   version: 1
   task_id: v3_379_file_fgets_config_loader
