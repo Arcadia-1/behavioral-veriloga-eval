@@ -8050,6 +8050,25 @@ def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "metric": [
+                (80.0, 0.2),
+                (180.0, 0.6),
+                (280.0, 0.3),
+                (380.0, 0.8),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17065,6 +17084,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "359-mixed-logic-clocked-voltage-sampler": check_v3_359_mixed_logic_clocked_voltage_sampler,
     "v3_360_mixed_wreal_logic_select_driver": check_v3_360_mixed_wreal_logic_select_driver,
     "360-mixed-wreal-logic-select-driver": check_v3_360_mixed_wreal_logic_select_driver,
+    "v3_361_white_noise_voltage_source": check_v3_361_white_noise_voltage_source,
+    "361-white-noise-voltage-source": check_v3_361_white_noise_voltage_source,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

@@ -5,18 +5,18 @@ Date: 2026-07-01
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **59**
-- Tasks with executable visible+hidden SCS evidence: **60**
-- Tasks with behavior checker evidence: **59**
+- SOP-ready tasks: **60**
+- Tasks with executable visible+hidden SCS evidence: **61**
+- Tasks with behavior checker evidence: **60**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 135
+- `checker_syntax_only_no_behavior_score`: 134
 - `hidden_scs_not_executable:include,instance,source`: 122
-- `hidden_scs_not_executable:include,instance,source,save`: 12
+- `hidden_scs_not_executable:include,instance,source,save`: 11
 - `missing_required_behavior_section`: 122
 - `visible_scs_not_executable:include,instance,source`: 122
-- `visible_scs_not_executable:include,instance,source,save`: 12
+- `visible_scs_not_executable:include,instance,source,save`: 11
 
 ## Range Summary
 
@@ -24,7 +24,7 @@ Date: 2026-07-01
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
-| `361-372` | noise and analysis candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source,save`: 12<br>`hidden_scs_not_executable:include,instance,source,save`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
+| `361-372` | noise and analysis candidates | 12 | 1 | 1 | 1 | `visible_scs_not_executable:include,instance,source,save`: 11<br>`hidden_scs_not_executable:include,instance,source,save`: 11<br>`checker_syntax_only_no_behavior_score`: 11 |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 62<br>`hidden_scs_not_executable:include,instance,source`: 62<br>`missing_required_behavior_section`: 62<br>`checker_syntax_only_no_behavior_score`: 62 |
 | `435-458` | manual syntax-completion candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 | `459-470` | course-material gap-fill candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
@@ -98,7 +98,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `358-mixed-electrical-threshold-logic-flag` | `ams-mixed-signal-candidate` | True | - |
 | `359-mixed-logic-clocked-voltage-sampler` | `ams-mixed-signal-candidate` | True | - |
 | `360-mixed-wreal-logic-select-driver` | `ams-mixed-signal-candidate` | True | - |
-| `361-white-noise-voltage-source` | `noise-analysis-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
+| `361-white-noise-voltage-source` | `noise-analysis-candidate` | True | - |
 | `362-white-noise-gated-source` | `noise-analysis-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
 | `363-flicker-noise-voltage-source` | `noise-analysis-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |
 | `364-flicker-noise-corner-selector` | `noise-analysis-candidate` | False | `visible_scs_not_executable:include,instance,source,save`<br>`hidden_scs_not_executable:include,instance,source,save`<br>`checker_syntax_only_no_behavior_score` |

@@ -6966,16 +6966,43 @@
 361-white-noise-voltage-source: |
   version: 1
   task_id: v3_361_white_noise_voltage_source
-  backend: noise_analysis_capable
-  status: noise-analysis-candidate
-  checker: noise_analysis_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: white_noise_transient_sideband_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ctrl
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - "white_noise"
+      - "V(out)"
+      - "cross"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/white_noise_voltage_source.va
+    negative:
+      - negative_variants/neg_001_zero_noise/white_noise_voltage_source.va
+      - negative_variants/neg_002_wrong_label/white_noise_voltage_source.va
+      - negative_variants/neg_003_disable_analysis/white_noise_voltage_source.va
+      - negative_variants/neg_004_wrong_metric/white_noise_voltage_source.va
+      - negative_variants/neg_005_scale_output/white_noise_voltage_source.va
+    checks:
+      - executable_white_noise_voltage_contribution
+      - metric_initial_step_zero
+      - metric_samples_ctrl_on_clk_rising_crossing
+      - transient_sideband_only_not_spectral_noise_certification
+      - no_current_domain_contribution
   notes:
-    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+    - "Noise/source extension task promoted for executable transient sideband behavior."
+    - "The checker verifies the deterministic metric sideband; spectral white_noise power still requires a noise-analysis-capable layer."
 362-white-noise-gated-source: |
   version: 1
   task_id: v3_362_white_noise_gated_source
