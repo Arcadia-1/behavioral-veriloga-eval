@@ -10056,81 +10056,135 @@
 439-laplace-zd-zero-den-filter: |
   version: 1
   task_id: v3_439_laplace_zd_zero_den_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "laplace_zd"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 440-laplace-zp-zero-pole-filter: |
   version: 1
   task_id: v3_440_laplace_zp_zero_pole_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "laplace_zp"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 441-zi-nd-discrete-filter: |
   version: 1
   task_id: v3_441_zi_nd_discrete_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "zi_nd"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 442-zi-np-discrete-filter: |
   version: 1
   task_id: v3_442_zi_np_discrete_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "zi_np"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 443-zi-zd-discrete-filter: |
   version: 1
   task_id: v3_443_zi_zd_discrete_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "zi_zd"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 444-zi-zp-discrete-filter: |
   version: 1
   task_id: v3_444_zi_zp_discrete_filter
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: behavioral_continuous_time_capable
+  status: behavioral-continuous-time-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "zi_zp"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
 445-limexp-soft-exponential: |
   version: 1
   task_id: v3_445_limexp_soft_exponential
