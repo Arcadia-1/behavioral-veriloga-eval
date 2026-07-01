@@ -7,6 +7,6 @@ analog initial begin
     init_v = 0.25;
 end
 analog begin
-    V(out) <+ (V(rst) > 0.45 ? 0.25 : (init_v)) + V(vin);
+    V(out) <+ init_v - V(vin);
 end
 endmodule

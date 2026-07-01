@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "analog_initial_block_state.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.0 39n 0.0 40n 0.2 79n 0.2 80n 0.5 119n 0.5 120n -0.1 160n -0.1]
+
+XDUT (vin out) analog_initial_block_state
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save vin out

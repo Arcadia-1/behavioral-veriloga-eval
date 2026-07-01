@@ -10628,14 +10628,35 @@
 460-analog-initial-block-state: |
   version: 1
   task_id: v3_460_analog_initial_block_state
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: analog_initial_block_state_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - out
   syntax:
     must_include:
       - "analog initial"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/analog_initial_block_state.va
+    negative:
+      - negative_variants/neg_001_force_zero/analog_initial_block_state.va
+      - negative_variants/neg_002_wrong_threshold/analog_initial_block_state.va
+      - negative_variants/neg_003_reset_bias/analog_initial_block_state.va
+      - negative_variants/neg_004_metric_offset/analog_initial_block_state.va
+      - negative_variants/neg_005_scale_output/analog_initial_block_state.va
+    checks:
+      - analog_initial_parse
+      - initialized_offset_applied
+      - follows_vin_plus_offset
+      - no_current_domain_contribution
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "Analog initial state behavior promoted to executable EVAS behavior candidate."
 461-vt-thermal-voltage-source: |
   version: 1
   task_id: v3_461_vt_thermal_voltage_source

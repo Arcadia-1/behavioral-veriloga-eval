@@ -8661,6 +8661,25 @@ def check_v3_459_do_while_loop_accumulator(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_460_analog_initial_block_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.25),
+                (50.0, 0.45),
+                (90.0, 0.75),
+                (130.0, 0.15),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19133,6 +19152,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "458-recursive-function-candidate": check_v3_458_recursive_function_candidate,
     "v3_459_do_while_loop_accumulator": check_v3_459_do_while_loop_accumulator,
     "459-do-while-loop-accumulator": check_v3_459_do_while_loop_accumulator,
+    "v3_460_analog_initial_block_state": check_v3_460_analog_initial_block_state,
+    "460-analog-initial-block-state": check_v3_460_analog_initial_block_state,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
