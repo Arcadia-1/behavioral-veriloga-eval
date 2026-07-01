@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "last_crossing_period_meter.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.1 99n 0.1 100n 0.8 180n 0.8 181n 0.1 299n 0.1 300n 0.8 380n 0.8 381n 0.1 599n 0.1 600n 0.8 680n 0.8 681n 0.1 839n 0.1 840n 0.8 900n 0.8]
+Vvin (vin 0) vsource type=pwl wave=[0 0.1 89n 0.1 90n 0.8 160n 0.8 161n 0.1 259n 0.1 260n 0.8 350n 0.8 351n 0.1 559n 0.1 560n 0.8 650n 0.8 651n 0.1 819n 0.1 820n 0.8 900n 0.8]
 Vmode (mode 0) vsource dc=0.0 type=dc
-Vrst (rst 0) vsource type=pwl wave=[0 0.0 749n 0.0 750n 0.9 770n 0.9 771n 0.0 900n 0.0]
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 719n 0.0 720n 0.9 749n 0.9 750n 0.0 900n 0.0]
 Vclk (clk 0) vsource dc=0.0 type=dc
 
 XDUT (vin clk mode rst out metric) last_crossing_period_meter

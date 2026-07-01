@@ -9,7 +9,7 @@
       "sop_ready_count": 40,
       "task_count": 40,
       "top_issues": [],
-      "visible_hidden_distinct_count": 31
+      "visible_hidden_distinct_count": 36
     },
     {
       "complete_tests_count": 20,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 10,
+    "sop_ready_visible_hidden_identical_count": 5,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 167,
-    "visible_hidden_identical_count": 27,
+    "visible_hidden_distinct_count": 172,
+    "visible_hidden_identical_count": 22,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 27
+      "visible_hidden_identical": 22
     }
   },
   "tasks": [
@@ -859,11 +859,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Threshold Latch",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -884,11 +883,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Window Qualifier",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -909,11 +907,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Last Crossing Period Meter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -934,11 +931,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Last Crossing Edge Age",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -959,11 +955,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Above Resettable Peak Marker",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

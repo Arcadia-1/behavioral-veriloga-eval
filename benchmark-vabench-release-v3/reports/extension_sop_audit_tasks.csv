@@ -29,11 +29,11 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 328-idtmod-frequency-control,328,Idtmod Frequency Control,syntax-extension-candidate,idtmod_frequency_control.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 329-idtmod-modulo-phase-marker,329,Idtmod Modulo Phase Marker,syntax-extension-candidate,idtmod_modulo_phase_marker.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 330-idtmod-clock-phase-meter,330,Idtmod Clock Phase Meter,syntax-extension-candidate,idtmod_clock_phase_meter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-331-above-threshold-latch,331,Above Threshold Latch,syntax-extension-candidate,above_threshold_latch.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-332-above-window-qualifier,332,Above Window Qualifier,syntax-extension-candidate,above_window_qualifier.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-333-last-crossing-period-meter,333,Last Crossing Period Meter,syntax-extension-candidate,last_crossing_period_meter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-334-last-crossing-edge-age,334,Last Crossing Edge Age,syntax-extension-candidate,last_crossing_edge_age.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-335-above-resettable-peak-marker,335,Above Resettable Peak Marker,syntax-extension-candidate,above_resettable_peak_marker.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+331-above-threshold-latch,331,Above Threshold Latch,syntax-extension-candidate,above_threshold_latch.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+332-above-window-qualifier,332,Above Window Qualifier,syntax-extension-candidate,above_window_qualifier.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+333-last-crossing-period-meter,333,Last Crossing Period Meter,syntax-extension-candidate,last_crossing_period_meter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+334-last-crossing-edge-age,334,Last Crossing Edge Age,syntax-extension-candidate,last_crossing_edge_age.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+335-above-resettable-peak-marker,335,Above Resettable Peak Marker,syntax-extension-candidate,above_resettable_peak_marker.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 336-directive-configurable-threshold,336,Directive Configurable Threshold,syntax-extension-candidate,directive_configurable_threshold.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 337-parameter-range-limited-gain,337,Parameter Range Limited Gain,syntax-extension-candidate,parameter_range_limited_gain.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 338-math-trig-envelope-detector,338,Math Trig Envelope Detector,syntax-extension-candidate,math_trig_envelope_detector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready

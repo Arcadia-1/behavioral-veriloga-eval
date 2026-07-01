@@ -2912,6 +2912,138 @@ def test_v3_event_or_timer_checker_follows_hidden_events() -> None:
     assert not sim.check_v3_456_event_or_cross_timer(rows(wrong=True))[0]
 
 
+def test_v3_above_last_crossing_checkers_follow_hidden_events() -> None:
+    def make_rows(vin_segments, rst_segments, model_fn, *, stop_ns: int = 760, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        state: dict[str, float | int] = {}
+        prev_vin = _task_input_from_segments(0.0, vin_segments)
+        prev_rst = _task_input_from_segments(0.0, rst_segments)
+        for idx in range(stop_ns + 1):
+            time_ns = float(idx)
+            row = {
+                "time": time_ns * 1e-9,
+                "vin": _task_input_from_segments(time_ns, vin_segments),
+                "clk": 0.0,
+                "mode": 0.0,
+                "rst": _task_input_from_segments(time_ns, rst_segments),
+                "out": 0.0,
+                "metric": 0.0,
+            }
+            out, metric = model_fn(state, row, prev_vin, prev_rst)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+            rows.append(row)
+            prev_vin = row["vin"]
+            prev_rst = row["rst"]
+        return rows
+
+    def latch_model(metric_fn):
+        def model(state, row, prev_vin, prev_rst):
+            if "state" not in state:
+                state.update({"state": 0, "last_t": -1.0, "prev_t": -1.0, "metric": 0.0})
+            if prev_rst <= 0.45 < row["rst"]:
+                state.update({"state": 0, "last_t": -1.0, "prev_t": -1.0, "metric": 0.0})
+            if prev_vin <= 0.45 < row["vin"]:
+                state["state"] = 1
+                state["prev_t"] = state["last_t"]
+                state["last_t"] = row["time"]
+                if state["prev_t"] > 0.0:
+                    state["metric"] = metric_fn(state["last_t"] - state["prev_t"])
+                else:
+                    state["metric"] = 0.0
+            return (0.9 if state["state"] else 0.0), float(state["metric"])
+
+        return model
+
+    def period_model(state, row, prev_vin, prev_rst):
+        if "last_t" not in state:
+            state.update({"last_t": -1.0, "prev_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"last_t": -1.0, "prev_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["prev_t"] = state["last_t"]
+            state["last_t"] = row["time"]
+            if state["prev_t"] > 0.0:
+                state["out"] = min(0.9, max(0.0, 0.9 * (state["last_t"] - state["prev_t"]) / 400e-9))
+                state["metric"] = 0.9
+            else:
+                state["out"] = 0.0
+                state["metric"] = 0.0
+        return float(state["out"]), float(state["metric"])
+
+    def age_model(state, row, prev_vin, prev_rst):
+        if "next_timer" not in state:
+            state.update({"active": 0, "last_t": -1.0, "out": 0.0, "metric": 0.0, "next_timer": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"active": 0, "last_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["active"] = 1
+            state["last_t"] = row["time"]
+        while row["time"] + 1e-15 >= state["next_timer"]:
+            if state["active"]:
+                age = state["next_timer"] - state["last_t"]
+                state["out"] = min(0.9, max(0.0, 0.9 * age / 300e-9))
+                state["metric"] = 0.9 if age <= 150e-9 else 0.0
+            state["next_timer"] += 50e-9
+        return float(state["out"]), float(state["metric"])
+
+    def peak_model(state, row, prev_vin, prev_rst):
+        if "next_timer" not in state:
+            state.update({"active": 0, "peak": 0.0, "metric": 0.0, "next_timer": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"active": 0, "peak": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["active"] = 1
+        while row["time"] + 1e-15 >= state["next_timer"]:
+            if state["active"]:
+                state["peak"] = min(0.9, max(0.0, max(state["peak"], row["vin"])))
+                state["metric"] = state["peak"]
+            state["next_timer"] += 50e-9
+        return (0.9 if state["active"] else 0.0), float(state["metric"])
+
+    cases = [
+        (
+            sim.check_v3_331_above_threshold_latch,
+            [(0.0, 0.1), (80.0, 0.75), (151.0, 0.1), (260.0, 0.82), (341.0, 0.1), (580.0, 0.78)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            latch_model(lambda period: 0.9 if period < 250e-9 else 0.0),
+            700,
+        ),
+        (
+            sim.check_v3_332_above_window_qualifier,
+            [(0.0, 0.1), (90.0, 0.76), (161.0, 0.1), (240.0, 0.80), (331.0, 0.1), (640.0, 0.78)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            latch_model(lambda period: 0.9 if 120e-9 <= period <= 260e-9 else 0.0),
+            760,
+        ),
+        (
+            sim.check_v3_333_last_crossing_period_meter,
+            [(0.0, 0.1), (90.0, 0.8), (161.0, 0.1), (260.0, 0.8), (351.0, 0.1), (560.0, 0.8), (651.0, 0.1), (820.0, 0.8)],
+            [(0.0, 0.0), (720.0, 0.9), (750.0, 0.0)],
+            period_model,
+            900,
+        ),
+        (
+            sim.check_v3_334_last_crossing_edge_age,
+            [(0.0, 0.1), (80.0, 0.8), (161.0, 0.1), (460.0, 0.8), (561.0, 0.1)],
+            [(0.0, 0.0), (670.0, 0.9), (700.0, 0.0)],
+            age_model,
+            800,
+        ),
+        (
+            sim.check_v3_335_above_resettable_peak_marker,
+            [(0.0, 0.1), (80.0, 0.50), (260.0, 0.85), (351.0, 0.25), (560.0, 0.65)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            peak_model,
+            720,
+        ),
+    ]
+
+    for checker, vin_segments, rst_segments, model_fn, stop_ns in cases:
+        assert checker(make_rows(vin_segments, rst_segments, model_fn, stop_ns=stop_ns))[0]
+        assert not checker(make_rows(vin_segments, rst_segments, model_fn, stop_ns=stop_ns, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

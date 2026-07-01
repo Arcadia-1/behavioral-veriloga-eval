@@ -7211,6 +7211,67 @@ def _check_v3_task_clocked_behavior(
     )
 
 
+def _check_v3_expected_trace(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    out_values: list[float],
+    metric_values: list[float],
+    change_times: list[float],
+    tol: float = 0.08,
+    min_samples: int = 8,
+    min_out_span: float = 0.12,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    if len(rows) != len(out_values) or len(rows) != len(metric_values) or len(rows) != len(change_times):
+        return False, "expected_trace_length_mismatch"
+
+    stride = max(1, len(rows) // 140)
+    checked_out = 0
+    checked_metric = 0
+    observed_out_expected: list[float] = []
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        if rows[index]["time"] - change_times[index] < 0.30e-9:
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = out_values[index]
+        metric_expected = metric_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            observed_out_expected.append(out_expected)
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if checked_out < min_samples or checked_metric < min_samples:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    out_span = max(observed_out_expected) - min(observed_out_expected) if observed_out_expected else 0.0
+    if out_span < min_out_span:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return (
+        True,
+        f"out_samples={checked_out} metric_samples={checked_metric} "
+        f"out_span={out_span:.4f} max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -7859,26 +7920,43 @@ def check_v3_331_above_threshold_latch(rows: list[dict[str, float]]) -> tuple[bo
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    prev_t = -1.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            prev_t = -1.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                metric = 0.9 if last_t - prev_t < 250e-9 else 0.0
+            else:
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (120.0, 0.9),
-                (220.0, 0.9),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (620.0, 0.9),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (620.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7887,25 +7965,44 @@ def check_v3_332_above_window_qualifier(rows: list[dict[str, float]]) -> tuple[b
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    prev_t = -1.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            prev_t = -1.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                period = last_t - prev_t
+                metric = 0.9 if 120e-9 <= period <= 260e-9 else 0.0
+            else:
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (120.0, 0.9),
-                (220.0, 0.9),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (710.0, 0.9),
-            ],
-            "metric": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (710.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7914,25 +8011,44 @@ def check_v3_333_last_crossing_period_meter(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    last_t = -1.0
+    prev_t = -1.0
+    out = 0.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            last_t = -1.0
+            prev_t = -1.0
+            out = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                out = min(0.9, max(0.0, 0.9 * (last_t - prev_t) / 400e-9))
+                metric = 0.9
+            else:
+                out = 0.0
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(out)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (120.0, 0.0),
-                (320.0, 0.45),
-                (620.0, 0.675),
-                (760.0, 0.0),
-                (860.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (620.0, 0.9),
-                (760.0, 0.0),
-                (860.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7941,29 +8057,46 @@ def check_v3_334_last_crossing_edge_age(rows: list[dict[str, float]]) -> tuple[b
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    out = 0.0
+    metric = 0.0
+    next_timer = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            out = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            last_t = row["time"]
+            last_change = row["time"]
+        while row["time"] + 1e-15 >= next_timer:
+            if state:
+                age = next_timer - last_t
+                out = min(0.9, max(0.0, 0.9 * age / 300e-9))
+                metric = 0.9 if age <= 150e-9 else 0.0
+                last_change = next_timer
+            next_timer += 50e-9
+        out_values.append(out)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (160.0, 0.15),
-                (260.0, 0.45),
-                (430.0, 0.9),
-                (560.0, 0.15),
-                (660.0, 0.45),
-                (730.0, 0.0),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (160.0, 0.9),
-                (260.0, 0.0),
-                (310.0, 0.0),
-                (560.0, 0.9),
-                (660.0, 0.0),
-                (730.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7972,26 +8105,42 @@ def check_v3_335_above_resettable_peak_marker(rows: list[dict[str, float]]) -> t
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    peak = 0.0
+    metric = 0.0
+    next_timer = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            peak = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            last_change = row["time"]
+        while row["time"] + 1e-15 >= next_timer:
+            if state:
+                peak = min(0.9, max(0.0, max(peak, row["vin"])))
+                metric = peak
+                last_change = next_timer
+            next_timer += 50e-9
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (160.0, 0.9),
-                (360.0, 0.9),
-                (460.0, 0.0),
-                (660.0, 0.9),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (160.0, 0.5),
-                (360.0, 0.8),
-                (420.0, 0.8),
-                (460.0, 0.0),
-                (660.0, 0.6),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
