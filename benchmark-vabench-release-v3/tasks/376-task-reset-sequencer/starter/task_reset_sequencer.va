@@ -9,9 +9,30 @@ module task_reset_sequencer (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer phase_q;
+task sequence_update;
+    input real sample;
+    input integer reset_active;
+    input integer boost_mode;
+    begin
+        // TODO: implement shared reset and normal update sequencing.
+    end
+endtask
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        phase_q = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        sequence_update(V(vin), V(rst) > vth, V(mode) > vth);
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

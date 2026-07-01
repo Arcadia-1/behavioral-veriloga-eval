@@ -7605,16 +7605,50 @@
 376-task-reset-sequencer: |
   version: 1
   task_id: v3_376_task_reset_sequencer
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: task_reset_sequencer_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "task "
+      - "sequence_update"
+      - "input real sample"
+      - "input integer reset_active"
+      - "input integer boost_mode"
+      - "endtask"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/task_reset_sequencer.va
+    negative:
+      - negative_variants/neg_001_force_zero/task_reset_sequencer.va
+      - negative_variants/neg_002_wrong_threshold/task_reset_sequencer.va
+      - negative_variants/neg_003_reset_bias/task_reset_sequencer.va
+      - negative_variants/neg_004_metric_offset/task_reset_sequencer.va
+      - negative_variants/neg_005_scale_output/task_reset_sequencer.va
+    checks:
+      - task_declared_and_called
+      - reset_branch_clears_phase_and_outputs
+      - post_reset_phase_restarts_at_one
+      - boost_mode_adds_voltage_before_clamp
+      - metric_reports_sequence_phase
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Task language extension promoted to executable EVAS behavior candidate."
 377-task-stateful-threshold-update: |
   version: 1
   task_id: v3_377_task_stateful_threshold_update

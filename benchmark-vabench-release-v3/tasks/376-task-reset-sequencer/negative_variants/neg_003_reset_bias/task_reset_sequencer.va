@@ -12,39 +12,36 @@ module task_reset_sequencer (
 parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
-task update_outputs;
-    input real sample;
-    input integer mode_code;
-    begin
-        if (mode_code == 0) out_v = sample;
-        else if (mode_code == 1) out_v = sample > vth ? vhi : 0.0;
-        else out_v = sample < 0.0 ? 0.0 : (sample > vhi ? vhi : sample);
-        metric_v = out_v / vhi;
-    end
-endtask
 real out_v;
 real metric_v;
-integer count_q;
-integer state_q;
+integer phase_q;
+task sequence_update;
+    input real sample;
+    input integer reset_active;
+    input integer boost_mode;
+    begin
+        if (reset_active != 0) begin
+            phase_q = 1;
+            out_v = 0.0;
+            metric_v = 0.0;
+        end else begin
+            phase_q = phase_q + 1;
+            if (boost_mode != 0) out_v = sample + 0.2;
+            else out_v = sample;
+            if (out_v < 0.0) out_v = 0.0;
+            else if (out_v > vhi) out_v = vhi;
+            metric_v = phase_q / 4.0;
+        end
+    end
+endtask
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
-        state_q = 0;
+        phase_q = 0;
     end
     @(cross(V(clk) - vth, +1)) begin
-        if (V(rst) > vth) begin
-            out_v = 0.0;
-            metric_v = 0.0;
-            count_q = 0;
-            state_q = 0;
-        end else begin
-        count_q = count_q + 1;
-        state_q = count_q % 3;
-        update_outputs(V(vin), state_q);
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
-        end
+        sequence_update(V(vin), V(rst) > vth, V(mode) > vth);
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

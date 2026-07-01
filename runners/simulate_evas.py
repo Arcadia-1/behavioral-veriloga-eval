@@ -8377,6 +8377,33 @@ def check_v3_375_task_event_counter_service(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_376_task_reset_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.2),
+                (180.0, 0.0),
+                (280.0, 0.8),
+                (380.0, 0.4),
+                (480.0, 0.9),
+            ],
+            "metric": [
+                (80.0, 0.25),
+                (180.0, 0.0),
+                (280.0, 0.25),
+                (380.0, 0.5),
+                (480.0, 0.75),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17422,6 +17449,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "374-task-dual-output-update": check_v3_374_task_dual_output_update,
     "v3_375_task_event_counter_service": check_v3_375_task_event_counter_service,
     "375-task-event-counter-service": check_v3_375_task_event_counter_service,
+    "v3_376_task_reset_sequencer": check_v3_376_task_reset_sequencer,
+    "376-task-reset-sequencer": check_v3_376_task_reset_sequencer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
