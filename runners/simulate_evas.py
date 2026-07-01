@@ -8756,6 +8756,31 @@ def check_v3_390_table_model_piecewise_calibrator(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.7379),
+                (180.0, 0.7056),
+                (280.0, 0.7062),
+                (380.0, 0.7017),
+            ],
+            "metric": [
+                (80.0, 3.7943),
+                (180.0, 0.5581),
+                (280.0, 0.6179),
+                (380.0, 0.1685),
+            ],
+        },
+        tol=0.05,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17831,6 +17856,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "389-table-model-temperature-profile": check_v3_389_table_model_temperature_profile,
     "v3_390_table_model_piecewise_calibrator": check_v3_390_table_model_piecewise_calibrator,
     "390-table-model-piecewise-calibrator": check_v3_390_table_model_piecewise_calibrator,
+    "v3_391_rdist_exponential_jitter": check_v3_391_rdist_exponential_jitter,
+    "391-rdist-exponential-jitter": check_v3_391_rdist_exponential_jitter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
