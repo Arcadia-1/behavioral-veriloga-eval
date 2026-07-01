@@ -19,9 +19,19 @@ module slew_limited_envelope (
 
 ## Required Behavior
 
-Use slew() to limit voltage-domain output slope.
+Use `slew()` to limit a sampled voltage envelope output.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+Use voltage-coded logic with `vth = 0.45` V, `rise_rate = 8.0e8` V/s, and `fall_rate = 3.0e8` V/s.
+
+On reset, clear the envelope to zero. On each rising crossing of `clk` while reset is low:
+
+- if `mode` is low, update the envelope to `max(previous_envelope, vin)`
+- if `mode` is high, release the envelope to the current `vin`
+- clamp the envelope to `[0, 0.8]`
+- set target `out = envelope`
+- set target `metric = envelope / 0.8`
+
+Drive both outputs using `slew(target, rise_rate, fall_rate)`. The hidden evaluator checks the rising ramp, held envelope plateau, and slew-limited release. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

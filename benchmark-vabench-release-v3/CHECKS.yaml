@@ -5561,11 +5561,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 324-slew-limited-envelope: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_324_slew_limited_envelope
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_324_slew_limited_envelope
+    metric: sampled_slew_limited_envelope
   required_columns:
     - time
     - vin
@@ -5579,8 +5582,19 @@
       - "slew("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+      - "transition("
+  sim_correct:
+    checks:
+      - reset_clears_envelope
+      - low_mode_tracks_peak_envelope
+      - lower_input_does_not_reduce_hold_envelope
+      - high_mode_releases_envelope_to_current_input
+      - output_slew_limits_envelope_changes
+      - metric_tracks_normalized_envelope
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 325-slew-asymmetric-rise-fall: |
   version: 1
   task_id: v3_325_slew_asymmetric_rise_fall

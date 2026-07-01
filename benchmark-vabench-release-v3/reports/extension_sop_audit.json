@@ -2,28 +2,28 @@
   "date": "2026-07-01",
   "range_summary": [
     {
-      "complete_tests_count": 23,
+      "complete_tests_count": 24,
       "description": "language-semantics voltage-domain candidates",
-      "fair_eval_count": 23,
+      "fair_eval_count": 24,
       "range": "301-340",
-      "sop_ready_count": 23,
+      "sop_ready_count": 24,
       "task_count": 40,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          17
+          16
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          17
+          16
         ],
         [
           "generic_prompt_template",
-          17
+          16
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          17
+          16
         ]
       ]
     },
@@ -179,18 +179,18 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 23,
-    "fair_eval_count": 23,
+    "complete_tests_count": 24,
+    "fair_eval_count": 24,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 171,
-      "generic_prompt_template": 17,
-      "hidden_scs_not_executable:include,instance,source": 139,
+      "checker_syntax_only_no_behavior_score": 170,
+      "generic_prompt_template": 16,
+      "hidden_scs_not_executable:include,instance,source": 138,
       "hidden_scs_not_executable:include,instance,source,save": 32,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 139,
+      "visible_scs_not_executable:include,instance,source": 138,
       "visible_scs_not_executable:include,instance,source,save": 32
     },
-    "sop_ready_count": 23,
+    "sop_ready_count": 24,
     "task_count": 194
   },
   "tasks": [
@@ -725,20 +725,15 @@
     },
     {
       "certification_scope": "extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "generic_prompt_template",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 324,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use slew() to limit voltage-domain output slope.",
       "target": "slew_limited_envelope.va",

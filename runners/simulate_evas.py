@@ -7232,6 +7232,37 @@ def check_v3_323_slew_output_reset_recovery(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_324_slew_limited_envelope(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (7.0, 0.0),
+                (26.0, 0.20),
+                (45.5, 0.60),
+                (46.0, 0.70),
+                (66.0, 0.70),
+                (85.5, 0.55),
+                (87.0, 0.30),
+            ],
+            "metric": [
+                (7.0, 0.0),
+                (26.0, 0.25),
+                (45.5, 0.75),
+                (46.0, 0.875),
+                (66.0, 0.875),
+                (85.5, 0.725),
+                (87.5, 0.375),
+            ],
+        },
+        tol=0.10,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16175,6 +16206,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "322-slew-limited-mode-stepper": check_v3_322_slew_limited_mode_stepper,
     "v3_323_slew_output_reset_recovery": check_v3_323_slew_output_reset_recovery,
     "323-slew-output-reset-recovery": check_v3_323_slew_output_reset_recovery,
+    "v3_324_slew_limited_envelope": check_v3_324_slew_limited_envelope,
+    "324-slew-limited-envelope": check_v3_324_slew_limited_envelope,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
