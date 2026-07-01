@@ -3,5 +3,5 @@
 
 module analog_primitive_isource_instance (inout electrical p, inout electrical n);
 parameter real ibias = 1u;
-isource #(.dc(ibias)) ib (n, p);
+isource #(.dc(0.5u)) ib (n, p);
 endmodule

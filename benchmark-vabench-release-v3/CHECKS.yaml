@@ -11162,14 +11162,18 @@
 482-analog-primitive-isource-instance: |
   version: 1
   task_id: v3_482_analog_primitive_isource_instance
-  backend: evas_rust_compile_capable
+  backend: evas_pending_analog_primitive_isource_instance
   status: kcl-syntax-candidate
   checker: kcl_language_feature_contract
   syntax:
     must_include:
       - "isource #"
+      - ".dc(ibias)"
+    must_not_include:
+      - "V(out)"
+      - "I("
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked by EVAS issue #55 because isource is treated as an unknown child module."
 483-cds-violation-threshold-assert: |
   version: 1
   task_id: v3_483_cds_violation_threshold_assert
