@@ -8620,6 +8620,18 @@ def check_v3_457_nested_function_pipeline(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_458_recursive_function_candidate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {"out": [(10.0, 6.0)]},
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19088,6 +19100,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "456-event-or-cross-timer": check_v3_456_event_or_cross_timer,
     "v3_457_nested_function_pipeline": check_v3_457_nested_function_pipeline,
     "457-nested-function-pipeline": check_v3_457_nested_function_pipeline,
+    "v3_458_recursive_function_candidate": check_v3_458_recursive_function_candidate,
+    "458-recursive-function-candidate": check_v3_458_recursive_function_candidate,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

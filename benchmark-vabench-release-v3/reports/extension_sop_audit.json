@@ -54,25 +54,29 @@
     {
       "complete_tests_count": 17,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 7,
+      "fair_eval_count": 8,
       "range": "435-458",
       "sop_ready_count": 7,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          17
+          16
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          7
+          6
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          7
+          6
         ],
         [
-          "missing_required_behavior_section",
+          "visible_scs_not_executable:source",
+          1
+        ],
+        [
+          "hidden_scs_not_executable:source",
           1
         ]
       ]
@@ -134,12 +138,14 @@
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
     "complete_tests_count": 150,
-    "fair_eval_count": 133,
+    "fair_eval_count": 134,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 61,
-      "hidden_scs_not_executable:include,instance,source": 43,
-      "missing_required_behavior_section": 38,
-      "visible_scs_not_executable:include,instance,source": 43
+      "checker_syntax_only_no_behavior_score": 60,
+      "hidden_scs_not_executable:include,instance,source": 42,
+      "hidden_scs_not_executable:source": 1,
+      "missing_required_behavior_section": 37,
+      "visible_scs_not_executable:include,instance,source": 42,
+      "visible_scs_not_executable:source": 1
     },
     "sop_ready_count": 132,
     "task_count": 194
@@ -3821,17 +3827,15 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": false,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
+        "visible_scs_not_executable:source",
+        "hidden_scs_not_executable:source"
       ],
       "negative_count": 5,
       "number": 458,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,

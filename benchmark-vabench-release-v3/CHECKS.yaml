@@ -10556,16 +10556,37 @@
 458-recursive-function-candidate: |
   version: 1
   task_id: v3_458_recursive_function_candidate
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: recursive_function_candidate_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - out
   syntax:
     must_include:
+      - "function real fact"
       - "fact("
+      - "fact(n - 1)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/recursive_function_candidate.va
+    negative:
+      - negative_variants/neg_001_force_zero/recursive_function_candidate.va
+      - negative_variants/neg_002_wrong_threshold/recursive_function_candidate.va
+      - negative_variants/neg_003_reset_bias/recursive_function_candidate.va
+      - negative_variants/neg_004_metric_offset/recursive_function_candidate.va
+      - negative_variants/neg_005_scale_output/recursive_function_candidate.va
+    checks:
+      - recursive_function_parse
+      - factorial_base_case
+      - factorial_recursive_case
+      - fact3_output
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Recursive user-defined function behavior promoted to executable EVAS behavior candidate."
 459-do-while-loop-accumulator: |
   version: 1
   task_id: v3_459_do_while_loop_accumulator

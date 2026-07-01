@@ -9,6 +9,6 @@ function real fact;
     end
 endfunction
 analog begin
-    V(out) <+ (V(rst) > 0.45 ? 0.25 : (fact(3)));
+    V(out) <+ fact(3) + 0.25;
 end
 endmodule

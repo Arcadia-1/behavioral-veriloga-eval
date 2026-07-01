@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact.
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "recursive_function_candidate.va"
+
+XDUT (out) recursive_function_candidate
+
+tran tran stop=20n
+save out
