@@ -16,6 +16,7 @@ electrical mid;
     v3_child_gain u1(vin, mid);
     v3_child_gain #(.gain(0.5)) u2(mid, out);
 analog begin
+    V(out) <+ transition(0.07, 0.0, tr, tr);
     V(metric) <+ transition(V(rst) > vth ? 0.25 : V(mid), 0.0, tr, tr);
 end
 endmodule

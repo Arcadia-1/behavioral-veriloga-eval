@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module v3_child_gain(input electrical vin, output electrical out);
+parameter real gain = 0.8;
+analog begin
+    V(out) <+ gain * V(vin);
+end
+endmodule

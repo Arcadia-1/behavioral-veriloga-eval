@@ -8699,16 +8699,44 @@
 401-hierarchy-ordered-port-map: |
   version: 1
   task_id: v3_401_hierarchy_ordered_port_map
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: hierarchy_ordered_port_map_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "v3_child"
+      - "v3_child_gain"
+      - "u1(vin, mid)"
+      - "u2(mid, out)"
+      - "#(.gain(0.5))"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/hierarchy_ordered_port_map.va
+    negative:
+      - negative_variants/neg_001_force_zero/hierarchy_ordered_port_map.va
+      - negative_variants/neg_002_wrong_threshold/hierarchy_ordered_port_map.va
+      - negative_variants/neg_003_reset_bias/hierarchy_ordered_port_map.va
+      - negative_variants/neg_004_metric_offset/hierarchy_ordered_port_map.va
+      - negative_variants/neg_005_scale_output/hierarchy_ordered_port_map.va
+    checks:
+      - ordered_port_map_connects_vin_mid_out
+      - two_child_instances_form_gain_chain
+      - parameter_override_sets_second_stage_gain_to_0p5
+      - metric_reports_internal_mid_node
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Hierarchy/instantiation language extension promoted to executable EVAS behavior candidate."
 402-hierarchy-shared-threshold-child: |
   version: 1
   task_id: v3_402_hierarchy_shared_threshold_child

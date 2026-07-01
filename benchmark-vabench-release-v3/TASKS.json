@@ -4831,6 +4831,9 @@
       "target": [
         "hierarchy_ordered_port_map.va"
       ],
+      "support": [
+        "v3_child_gain.va"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Ordered Port Map",
       "syntax_focus": "Use ordered port mapping for a child module instance.",
