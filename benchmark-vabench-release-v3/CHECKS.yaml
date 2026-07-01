@@ -6874,8 +6874,8 @@
 435-ddt-voltage-derivative-source: |
   version: 1
   task_id: v3_435_ddt_voltage_derivative_source
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6887,8 +6887,8 @@
 436-idt-voltage-integrator-source: |
   version: 1
   task_id: v3_436_idt_voltage_integrator_source
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6900,8 +6900,8 @@
 437-laplace-nd-lowpass-filter: |
   version: 1
   task_id: v3_437_laplace_nd_lowpass_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6913,8 +6913,8 @@
 438-laplace-np-pole-filter: |
   version: 1
   task_id: v3_438_laplace_np_pole_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6926,8 +6926,8 @@
 439-laplace-zd-zero-den-filter: |
   version: 1
   task_id: v3_439_laplace_zd_zero_den_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6939,8 +6939,8 @@
 440-laplace-zp-zero-pole-filter: |
   version: 1
   task_id: v3_440_laplace_zp_zero_pole_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6952,8 +6952,8 @@
 441-zi-nd-discrete-filter: |
   version: 1
   task_id: v3_441_zi_nd_discrete_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6965,8 +6965,8 @@
 442-zi-np-discrete-filter: |
   version: 1
   task_id: v3_442_zi_np_discrete_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6978,8 +6978,8 @@
 443-zi-zd-discrete-filter: |
   version: 1
   task_id: v3_443_zi_zd_discrete_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -6991,8 +6991,8 @@
 444-zi-zp-discrete-filter: |
   version: 1
   task_id: v3_444_zi_zp_discrete_filter
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7004,8 +7004,8 @@
 445-limexp-soft-exponential: |
   version: 1
   task_id: v3_445_limexp_soft_exponential
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7082,8 +7082,8 @@
 451-connectmodule-electrical-bridge: |
   version: 1
   task_id: v3_451_connectmodule_electrical_bridge
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7121,8 +7121,8 @@
 454-multidimensional-array-state: |
   version: 1
   task_id: v3_454_multidimensional_array_state
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7173,8 +7173,8 @@
 458-recursive-function-candidate: |
   version: 1
   task_id: v3_458_recursive_function_candidate
-  backend: evas_unsupported_pending_issue
-  status: evas-unsupported-candidate
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
@@ -7196,3 +7196,124 @@
       - "I("
   notes:
     - "Manual language gap-fill task; row compiles with current local EVAS."
+460-analog-initial-block-state: |
+  version: 1
+  task_id: v3_460_analog_initial_block_state
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "analog initial"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+461-vt-thermal-voltage-source: |
+  version: 1
+  task_id: v3_461_vt_thermal_voltage_source
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$vt"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+462-vt-temperature-argument: |
+  version: 1
+  task_id: v3_462_vt_temperature_argument
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$vt("
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+463-discontinuity-event-announcement: |
+  version: 1
+  task_id: v3_463_discontinuity_event_announcement
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$discontinuity"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+464-param-given-gain-select: |
+  version: 1
+  task_id: v3_464_param_given_gain_select
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$param_given"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+465-port-connected-output-enable: |
+  version: 1
+  task_id: v3_465_port_connected_output_enable
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$port_connected"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+466-temperature-environment-metric: |
+  version: 1
+  task_id: v3_466_temperature_environment_metric
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$temperature"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+467-simparam-query-tnom: |
+  version: 1
+  task_id: v3_467_simparam_query_tnom
+  backend: evas_unsupported_pending_issue
+  status: evas-unsupported-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$simparam"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+468-branch-declaration-voltage-probe: |
+  version: 1
+  task_id: v3_468_branch_declaration_voltage_probe
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "branch ("
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+469-current-contribution-conductance: |
+  version: 1
+  task_id: v3_469_current_contribution_conductance
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "I("
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+470-branch-current-probe-contribution: |
+  version: 1
+  task_id: v3_470_branch_current_probe_contribution
+  backend: evas_rust_compile_capable
+  status: kcl-syntax-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "I(br)"
+  notes:
+    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."

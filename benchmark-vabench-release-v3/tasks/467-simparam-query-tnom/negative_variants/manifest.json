@@ -1,0 +1,39 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_force_zero",
+      "description": "Force output low after otherwise plausible computation.",
+      "files": [
+        "neg_001_force_zero/simparam_query_tnom.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "files": [
+        "neg_002_wrong_threshold/simparam_query_tnom.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "files": [
+        "neg_003_reset_bias/simparam_query_tnom.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "description": "Offset the metric output while leaving the main path plausible.",
+      "files": [
+        "neg_004_metric_offset/simparam_query_tnom.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "description": "Scale the final output so calibrated checks fail.",
+      "files": [
+        "neg_005_scale_output/simparam_query_tnom.va"
+      ]
+    }
+  ]
+}

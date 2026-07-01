@@ -51,6 +51,10 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   arrays, packed bus declarations, analog event-or expressions, nested
   functions, and recursive function candidates.
 - `459`: explicit `do ... while` control-flow candidate.
+- `460`-`470`: course-material gap-fill rows for `analog initial`, `$vt`,
+  `$discontinuity`, `$param_given()`, `$port_connected()`, `$temperature`,
+  `$simparam()`, explicit `branch` declarations, and `I(...)` current
+  contribution syntax.
 
 Each extension task contains:
 
@@ -72,30 +76,28 @@ solutions, hidden checks, and five negative variants are behavior-certified.
 Current local EVAS compile status after this expansion:
 
 - `001`-`300`: unchanged original benchmark surface.
-- `301`-`420`: extension reference solutions are designed to parse and compile
-  with current local EVAS, excluding known legacy non-Verilog-A harness/support
-  targets outside the single reference-solution scan.
-- `421`, `423`, `425`, `427`, `430`, `431`, `432`, and `433`: additional
-  gap-fill rows that also compile with current local EVAS.
-- `422`, `424`, `426`, `428`, `429`, and `434`: intentionally
-  retained as `evas-unsupported-candidate` rows so the benchmark records manual
-  syntax gaps even before EVAS supports them.
-- `446`, `447`, `448`, `449`, `450`, `452`, `453`, `455`, `456`, and `457`:
-  additional syntax-completion rows that compile with current local EVAS.
-- `435`-`445`, `451`, `454`, and `458`: intentionally retained as
-  `evas-unsupported-candidate` rows for dynamic operators, transfer functions,
-  `connectmodule`, multi-dimensional arrays, and recursive functions.
-- `459`: additional control-flow row that compiles with current local EVAS.
+- `301`-`459`: extension reference solutions currently parse and compile with
+  local EVAS.
+- `435`-`445`, `451`, `454`, and `458`: previously tracked as unsupported, but
+  now compile with current local EVAS.
+- `461`, `463`, `466`, `468`, `469`, and `470`: course-material gap-fill rows
+  that currently compile with local EVAS.
+- `460`, `462`, `464`, `465`, and `467`: intentionally retained as
+  `evas-unsupported-candidate` rows for `analog initial`, `$vt(temp)`,
+  `$param_given()`, `$port_connected()`, and `$simparam()`.
+- `469` and `470`: KCL/current-contribution syntax candidates only; they are not
+  behavior-certified KCL/MNA claims.
 - `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
   longer inside conditionally executed `analysis()` branches.
 
 ## Remaining Language Gaps Worth Tracking
 
-Tracked upstream in EVAS issues #31, #32, and #33.
+Tracked upstream in EVAS issue #35.
 
 The newly added rows avoid current-domain KCL and still leave some manual
 features as future work:
 
+- `analog initial` block support.
+- `$vt(temp)`, `$param_given()`, `$port_connected()`, and `$simparam()` support.
 - richer multi-dimensional `$table_model()` behavior certification.
-- broader AMS `connectmodule` semantics.
 - AC/noise behavior certification beyond compile-level helper coverage.

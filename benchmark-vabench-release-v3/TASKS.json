@@ -5259,7 +5259,7 @@
       "target": [
         "ddt_voltage_derivative_source.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Ddt Voltage Derivative Source",
       "syntax_focus": "Use ddt() to form a voltage-domain derivative source.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5273,7 +5273,7 @@
       "target": [
         "idt_voltage_integrator_source.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Idt Voltage Integrator Source",
       "syntax_focus": "Use idt() to form a voltage-domain integrator source.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5287,7 +5287,7 @@
       "target": [
         "laplace_nd_lowpass_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Laplace Nd Lowpass Filter",
       "syntax_focus": "Use laplace_nd() for continuous-time transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5301,7 +5301,7 @@
       "target": [
         "laplace_np_pole_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Laplace Np Pole Filter",
       "syntax_focus": "Use laplace_np() for pole-form continuous-time transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5315,7 +5315,7 @@
       "target": [
         "laplace_zd_zero_den_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Laplace Zd Zero Den Filter",
       "syntax_focus": "Use laplace_zd() for zero/denominator transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5329,7 +5329,7 @@
       "target": [
         "laplace_zp_zero_pole_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Laplace Zp Zero Pole Filter",
       "syntax_focus": "Use laplace_zp() for zero/pole transfer modeling.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5343,7 +5343,7 @@
       "target": [
         "zi_nd_discrete_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Zi Nd Discrete Filter",
       "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5357,7 +5357,7 @@
       "target": [
         "zi_np_discrete_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Zi Np Discrete Filter",
       "syntax_focus": "Use zi_np() for discrete-time numerator/pole filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5371,7 +5371,7 @@
       "target": [
         "zi_zd_discrete_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Zi Zd Discrete Filter",
       "syntax_focus": "Use zi_zd() for discrete-time zero/denominator filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5385,7 +5385,7 @@
       "target": [
         "zi_zp_discrete_filter.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Zi Zp Discrete Filter",
       "syntax_focus": "Use zi_zp() for discrete-time zero/pole filtering.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5399,7 +5399,7 @@
       "target": [
         "limexp_soft_exponential.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Limexp Soft Exponential",
       "syntax_focus": "Use limexp() for a limited exponential behavioral transform.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5483,7 +5483,7 @@
       "target": [
         "connectmodule_electrical_bridge.vams"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Connectmodule Electrical Bridge",
       "syntax_focus": "Declare a connectmodule bridge for mixed-signal connection behavior.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5525,7 +5525,7 @@
       "target": [
         "multidimensional_array_state.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Multidimensional Array State",
       "syntax_focus": "Use a two-dimensional integer array for behavioral state.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5581,7 +5581,7 @@
       "target": [
         "recursive_function_candidate.va"
       ],
-      "tier": "evas-unsupported-candidate",
+      "tier": "syntax-extension-candidate",
       "title": "Recursive Function Candidate",
       "syntax_focus": "Use a recursive user-defined function candidate.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
@@ -5598,6 +5598,160 @@
       "tier": "syntax-extension-candidate",
       "title": "Do While Loop Accumulator",
       "syntax_focus": "Use do ... while loop syntax to accumulate bounded behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "460-analog-initial-block-state": {
+      "category": "veriloga_analog_initial_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_460_analog_initial_block_state",
+      "level": "NA",
+      "target": [
+        "analog_initial_block_state.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Analog Initial Block State",
+      "syntax_focus": "Use an analog initial block to initialize behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "461-vt-thermal-voltage-source": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_461_vt_thermal_voltage_source",
+      "level": "NA",
+      "target": [
+        "vt_thermal_voltage_source.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vt Thermal Voltage Source",
+      "syntax_focus": "Use $vt as a thermal voltage environment value.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "462-vt-temperature-argument": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_462_vt_temperature_argument",
+      "level": "NA",
+      "target": [
+        "vt_temperature_argument.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Vt Temperature Argument",
+      "syntax_focus": "Use $vt(temp) with an explicit temperature argument.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "463-discontinuity-event-announcement": {
+      "category": "veriloga_simulator_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_463_discontinuity_event_announcement",
+      "level": "NA",
+      "target": [
+        "discontinuity_event_announcement.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Discontinuity Event Announcement",
+      "syntax_focus": "Use $discontinuity() in an event body to announce a behavioral discontinuity.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "464-param-given-gain-select": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_464_param_given_gain_select",
+      "level": "NA",
+      "target": [
+        "param_given_gain_select.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Param Given Gain Select",
+      "syntax_focus": "Use $param_given() to choose behavior based on parameter override presence.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "465-port-connected-output-enable": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_465_port_connected_output_enable",
+      "level": "NA",
+      "target": [
+        "port_connected_output_enable.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Port Connected Output Enable",
+      "syntax_focus": "Use $port_connected() to choose behavior based on optional port binding.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "466-temperature-environment-metric": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_466_temperature_environment_metric",
+      "level": "NA",
+      "target": [
+        "temperature_environment_metric.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Temperature Environment Metric",
+      "syntax_focus": "Use $temperature as an environment-dependent metric.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "467-simparam-query-tnom": {
+      "category": "veriloga_environment_function_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_467_simparam_query_tnom",
+      "level": "NA",
+      "target": [
+        "simparam_query_tnom.va"
+      ],
+      "tier": "evas-unsupported-candidate",
+      "title": "Simparam Query Tnom",
+      "syntax_focus": "Use $simparam() to query simulator/environment parameters.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "468-branch-declaration-voltage-probe": {
+      "category": "veriloga_branch_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_468_branch_declaration_voltage_probe",
+      "level": "NA",
+      "target": [
+        "branch_declaration_voltage_probe.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Branch Declaration Voltage Probe",
+      "syntax_focus": "Declare an explicit branch and read its voltage.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "469-current-contribution-conductance": {
+      "category": "veriloga_kcl_contribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_469_current_contribution_conductance",
+      "level": "NA",
+      "target": [
+        "current_contribution_conductance.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Current Contribution Conductance",
+      "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "470-branch-current-probe-contribution": {
+      "category": "veriloga_kcl_contribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_470_branch_current_probe_contribution",
+      "level": "NA",
+      "target": [
+        "branch_current_probe_contribution.va"
+      ],
+      "tier": "kcl-syntax-candidate",
+      "title": "Branch Current Probe Contribution",
+      "syntax_focus": "Use a named branch with current contribution and current probing.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     }
   }

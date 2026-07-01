@@ -1,0 +1,10 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module branch_current_probe_contribution (input electrical p, input electrical n, output electrical out);
+branch (p, n) br;
+analog begin
+    I(br) <+ ((V(p,n)) > 0.55 ? 0.9 : 0.0);
+    V(out) <+ transition(I(br), 0.0, 200p, 200p);
+end
+endmodule

@@ -1,0 +1,12 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module analog_initial_block_state (input electrical vin, output electrical out);
+real init_v;
+analog initial begin
+    init_v = 0.25;
+end
+analog begin
+    V(out) <+ (0.5 * (init_v)) + V(vin);
+end
+endmodule

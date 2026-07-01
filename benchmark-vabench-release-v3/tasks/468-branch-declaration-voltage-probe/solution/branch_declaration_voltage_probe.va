@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module branch_declaration_voltage_probe (input electrical p, input electrical n, output electrical out);
+branch (p, n) br;
+analog begin
+    V(out) <+ transition(V(br), 0.0, 200p, 200p);
+end
+endmodule
