@@ -25,24 +25,24 @@
       ]
     },
     {
-      "complete_tests_count": 3,
+      "complete_tests_count": 4,
       "description": "noise and analysis candidates",
-      "fair_eval_count": 3,
+      "fair_eval_count": 4,
       "range": "361-372",
-      "sop_ready_count": 3,
+      "sop_ready_count": 4,
       "task_count": 12,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source,save",
-          9
+          8
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          9
+          8
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          9
+          8
         ]
       ]
     },
@@ -154,17 +154,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 63,
-    "fair_eval_count": 62,
+    "complete_tests_count": 64,
+    "fair_eval_count": 63,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 132,
+      "checker_syntax_only_no_behavior_score": 131,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 9,
+      "hidden_scs_not_executable:include,instance,source,save": 8,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 9
+      "visible_scs_not_executable:include,instance,source,save": 8
     },
-    "sop_ready_count": 62,
+    "sop_ready_count": 63,
     "task_count": 194
   },
   "tasks": [
@@ -1621,19 +1621,15 @@
     },
     {
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 364,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Select flicker_noise() strength with a voltage-domain control.",
       "target": "flicker_noise_corner_selector.va",

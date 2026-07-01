@@ -7089,16 +7089,46 @@
 364-flicker-noise-corner-selector: |
   version: 1
   task_id: v3_364_flicker_noise_corner_selector
-  backend: noise_analysis_capable
-  status: noise-analysis-candidate
-  checker: noise_analysis_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: flicker_noise_corner_transient_sideband_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ctrl
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - "flicker_noise"
+      - "V(ctrl) > vth ? kf_hi : kf_lo"
+      - "V(out)"
+      - "cross"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/flicker_noise_corner_selector.va
+    negative:
+      - negative_variants/neg_001_zero_noise/flicker_noise_corner_selector.va
+      - negative_variants/neg_002_wrong_label/flicker_noise_corner_selector.va
+      - negative_variants/neg_003_disable_analysis/flicker_noise_corner_selector.va
+      - negative_variants/neg_004_wrong_metric/flicker_noise_corner_selector.va
+      - negative_variants/neg_005_scale_output/flicker_noise_corner_selector.va
+    checks:
+      - executable_flicker_noise_corner_select_contribution
+      - metric_initial_step_zero
+      - metric_samples_corner_state_on_clk_rising_crossing
+      - low_ctrl_reports_low_corner
+      - high_ctrl_reports_high_corner
+      - transient_sideband_only_not_spectral_noise_certification
+      - no_current_domain_contribution
   notes:
-    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+    - "Noise/source extension task promoted for executable transient sideband behavior."
+    - "The checker verifies the deterministic corner-select sideband; spectral flicker_noise behavior still requires a noise-analysis-capable layer."
 365-noise-table-voltage-shaper: |
   version: 1
   task_id: v3_365_noise_table_voltage_shaper
