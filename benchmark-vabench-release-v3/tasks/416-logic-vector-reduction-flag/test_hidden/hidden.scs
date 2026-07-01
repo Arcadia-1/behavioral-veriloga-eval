@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A artifact and stricter checks.
-tran tran stop=160n
-save vin clk mode rst out metric
+
+ahdl_include "logic_vector_reduction_flag.vams"
+
+Vcode0 (code0 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 199n 1.0 200n 0.0 299n 0.0 300n 1.0 500n 1.0]
+Vcode1 (code1 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 1.0 299n 1.0 300n 0.0 500n 0.0]
+Vcode2 (code2 0) vsource type=pwl wave=[0 0.0 299n 0.0 300n 1.0 399n 1.0 400n 0.0 500n 0.0]
+Vcode3 (code3 0) vsource type=pwl wave=[0 0.0 399n 0.0 400n 1.0 500n 1.0]
+
+XDUT (code0 code1 code2 code3 valid) logic_vector_reduction_flag
+
+tran tran stop=500n
+save code0 code1 code2 code3 valid

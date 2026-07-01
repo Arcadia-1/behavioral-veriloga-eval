@@ -9296,13 +9296,21 @@
   backend: digital_mixed_capable
   status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - code0
+    - code1
+    - code2
+    - code3
+    - valid
   syntax:
     must_include:
       - "|code"
     must_not_include:
       - "I("
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Executable AMS/digital vector reduction candidate staged pending EVAS digital continuous assign/vector-port support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
 417-always-async-reset-counter: |
   version: 1
   task_id: v3_417_always_async_reset_counter
