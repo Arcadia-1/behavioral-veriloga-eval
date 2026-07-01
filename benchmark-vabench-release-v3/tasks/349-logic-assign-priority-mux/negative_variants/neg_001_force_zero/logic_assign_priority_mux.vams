@@ -2,5 +2,5 @@ module logic_assign_priority_mux(a, b, en, y);
     input a, b, en;
     output y;
     logic a, b, en, y;
-    assign y = 0.0 * en ? a : b;
+    assign y = (en ? a : b) & (a & !a);
 endmodule
