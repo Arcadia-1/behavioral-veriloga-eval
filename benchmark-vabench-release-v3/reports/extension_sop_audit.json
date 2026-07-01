@@ -74,7 +74,7 @@
       ]
     },
     {
-      "complete_tests_count": 5,
+      "complete_tests_count": 6,
       "description": "course-material gap-fill candidates",
       "fair_eval_count": 5,
       "range": "459-470",
@@ -82,20 +82,20 @@
       "task_count": 12,
       "top_issues": [
         [
-          "visible_scs_not_executable:include,instance,source",
+          "checker_syntax_only_no_behavior_score",
           7
+        ],
+        [
+          "visible_scs_not_executable:include,instance,source",
+          6
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          7
+          6
         ],
         [
           "missing_required_behavior_section",
-          7
-        ],
-        [
-          "checker_syntax_only_no_behavior_score",
-          7
+          6
         ]
       ]
     },
@@ -129,13 +129,13 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 156,
+    "complete_tests_count": 157,
     "fair_eval_count": 139,
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 55,
-      "hidden_scs_not_executable:include,instance,source": 37,
-      "missing_required_behavior_section": 32,
-      "visible_scs_not_executable:include,instance,source": 37
+      "hidden_scs_not_executable:include,instance,source": 36,
+      "missing_required_behavior_section": 31,
+      "visible_scs_not_executable:include,instance,source": 36
     },
     "sop_ready_count": 138,
     "task_count": 194
@@ -3954,18 +3954,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 464,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
       "sop_ready": false,
       "starter_file_count": 1,

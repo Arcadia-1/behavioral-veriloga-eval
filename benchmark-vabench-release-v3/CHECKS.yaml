@@ -10771,14 +10771,16 @@
 464-param-given-gain-select: |
   version: 1
   task_id: v3_464_param_given_gain_select
-  backend: evas_rust_compile_capable
+  backend: evas_pending_instance_param_given_semantics
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "$param_given"
+    must_not_include:
+      - "I("
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "Behavior promotion is blocked by EVAS instance parameter override semantics; see Arcadia-1/EVAS#49."
 465-port-connected-output-enable: |
   version: 1
   task_id: v3_465_port_connected_output_enable
