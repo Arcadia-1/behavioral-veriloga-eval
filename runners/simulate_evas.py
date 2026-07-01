@@ -889,6 +889,11 @@ FINAL_STEP_AVERAGE_METRIC_TASKS = {
     "317-final-step-average-metric-file",
 }
 
+FINAL_STEP_MAX_METRIC_TASKS = {
+    "v3_318_final_step_max_observer_file",
+    "318-final-step-max-observer-file",
+}
+
 
 def _remove_stale_metric_file(task_id: str, run_dir: Path) -> None:
     for name in behavior_side_output_names(task_id):
@@ -945,6 +950,27 @@ def _parse_metric_time_token(token: str) -> float:
 
 
 def _validate_file_metric_output(task_id: str, run_dir: Path, csv_path: Path) -> tuple[bool, str] | None:
+    if task_id in FINAL_STEP_MAX_METRIC_TASKS:
+        candidate_paths = []
+        for path in (run_dir / "candidate.out", csv_path.parent / "candidate.out"):
+            if path not in candidate_paths:
+                candidate_paths.append(path)
+        metric_path = next((path for path in candidate_paths if path.exists()), None)
+        if metric_path is None:
+            return False, "candidate_file_missing"
+        text = metric_path.read_text(encoding="utf-8").strip()
+        match = re.fullmatch(
+            r"count=([0-9]+)\s+max=([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s+metric=([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)",
+            text,
+        )
+        if match is None:
+            return False, f"candidate_file_bad_format={text!r}"
+        count = int(match.group(1))
+        max_v = float(match.group(2))
+        metric = float(match.group(3))
+        ok = count == 4 and abs(max_v - 0.81) <= 0.02 and abs(metric - 0.90) <= 0.02
+        return ok, f"candidate_file_count={count} max={max_v:.3f} metric={metric:.3f}"
+
     if task_id in FINAL_STEP_AVERAGE_METRIC_TASKS:
         candidate_paths = []
         for path in (run_dir / "candidate.out", csv_path.parent / "candidate.out"):
@@ -1018,6 +1044,8 @@ def validate_behavior_side_outputs(task_id: str, run_dir: Path, csv_path: Path) 
 
 
 def behavior_side_output_names(task_id: str) -> tuple[str, ...]:
+    if task_id in FINAL_STEP_MAX_METRIC_TASKS:
+        return ("candidate.out",)
     if task_id in FINAL_STEP_AVERAGE_METRIC_TASKS:
         return ("candidate.out",)
     if task_id in FINAL_STEP_FILE_METRIC_TASKS:
@@ -7038,6 +7066,21 @@ def check_v3_317_final_step_average_metric_file(rows: list[dict[str, float]]) ->
         {
             "out": [(7.0, 0.0), (27.0, 0.225), (47.0, 0.3375), (67.0, 0.45), (87.0, 0.45)],
             "metric": [(7.0, 0.0), (27.0, 0.25), (47.0, 0.375), (67.0, 0.50), (87.0, 0.50)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_318_final_step_max_observer_file(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (27.0, 0.18), (47.0, 0.72), (67.0, 0.72), (87.0, 0.81)],
+            "metric": [(7.0, 0.0), (27.0, 0.20), (47.0, 0.80), (67.0, 0.80), (87.0, 0.90)],
         },
         tol=0.025,
     )
@@ -15974,6 +16017,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "316-final-step-edge-counter-file": check_v3_316_final_step_edge_counter_file,
     "v3_317_final_step_average_metric_file": check_v3_317_final_step_average_metric_file,
     "317-final-step-average-metric-file": check_v3_317_final_step_average_metric_file,
+    "v3_318_final_step_max_observer_file": check_v3_318_final_step_max_observer_file,
+    "318-final-step-max-observer-file": check_v3_318_final_step_max_observer_file,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
