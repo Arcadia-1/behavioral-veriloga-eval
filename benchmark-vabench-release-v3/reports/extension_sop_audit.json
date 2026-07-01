@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 5,
+      "complete_tests_count": 6,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 6,
+      "fair_eval_count": 7,
       "range": "373-434",
-      "sop_ready_count": 5,
+      "sop_ready_count": 6,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          57
+          56
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          56
+          55
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          56
+          55
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          56
+          55
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 77,
-    "fair_eval_count": 77,
+    "complete_tests_count": 78,
+    "fair_eval_count": 78,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 117,
-      "hidden_scs_not_executable:include,instance,source": 116,
-      "missing_required_behavior_section": 117,
-      "visible_scs_not_executable:include,instance,source": 116
+      "checker_syntax_only_no_behavior_score": 116,
+      "hidden_scs_not_executable:include,instance,source": 115,
+      "missing_required_behavior_section": 116,
+      "visible_scs_not_executable:include,instance,source": 115
     },
-    "sop_ready_count": 76,
+    "sop_ready_count": 77,
     "task_count": 194
   },
   "tasks": [
@@ -1953,20 +1953,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 379,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $fopen(), $fgets(), and $fclose() in initial_step configuration loading.",
       "target": "file_fgets_config_loader.va",

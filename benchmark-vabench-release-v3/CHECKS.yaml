@@ -7745,16 +7745,48 @@
 379-file-fgets-config-loader: |
   version: 1
   task_id: v3_379_file_fgets_config_loader
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_fgets_config_loader_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fopen"
       - "$fgets"
+      - "$fclose"
+      - "config_lines.txt"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_fgets_config_loader.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_fgets_config_loader.va
+      - negative_variants/neg_002_wrong_threshold/file_fgets_config_loader.va
+      - negative_variants/neg_003_reset_bias/file_fgets_config_loader.va
+      - negative_variants/neg_004_metric_offset/file_fgets_config_loader.va
+      - negative_variants/neg_005_scale_output/file_fgets_config_loader.va
+    checks:
+      - config_file_staged_as_support_artifact
+      - fopen_fgets_fclose_used_for_initial_load
+      - two_lines_required_for_loaded_state
+      - metric_reports_loaded_status
+      - output_gated_by_loaded_status_and_vin_threshold
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "File I/O language extension promoted to executable EVAS behavior candidate."
 380-file-feof-line-counter: |
   version: 1
   task_id: v3_380_file_feof_line_counter

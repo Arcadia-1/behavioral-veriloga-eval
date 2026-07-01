@@ -4475,6 +4475,9 @@
       "target": [
         "file_fgets_config_loader.va"
       ],
+      "support": [
+        "config_lines.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Fgets Config Loader",
       "syntax_focus": "Use $fopen(), $fgets(), and $fclose() in initial_step configuration loading.",

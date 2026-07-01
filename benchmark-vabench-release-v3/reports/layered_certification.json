@@ -47,8 +47,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 45,
-        "compile_supported_candidate": 98
+        "behavior_certified_extension": 46,
+        "compile_supported_candidate": 97
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 143
@@ -78,22 +78,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 376,
-    "behavior_certified_extension_count": 76,
+    "behavior_certified_count": 377,
+    "behavior_certified_extension_count": 77,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 76,
+      "behavior_certified_extension": 77,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 108,
+      "compile_supported_candidate": 107,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 118,
+    "compile_supported_candidate_count": 117,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 118,
-      "extension_behavior_certified_outside_original_300": 76,
+      "excluded_until_behavior_promotion": 117,
+      "extension_behavior_certified_outside_original_300": 77,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -7305,15 +7305,15 @@
       "title": "Task Metric Normalizer"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_file_read_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use $fopen(), $fgets(), and $fclose() in initial_step configuration loading.",
       "target": "file_fgets_config_loader.va",
