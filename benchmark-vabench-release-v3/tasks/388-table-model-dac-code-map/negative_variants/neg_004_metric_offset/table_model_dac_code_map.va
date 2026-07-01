@@ -31,7 +31,7 @@ analog begin
             state_q = 0;
         end else begin
         count_q = count_q + 1;
-        out_v = $table_model(V(vin), "table-model-dac-code-map.tbl", "1L");
+        out_v = $table_model(V(vin), "table-model-dac-code-map.tbl");
         metric_v = out_v / vhi;
         metric_v = metric_v + 0.125;
         end

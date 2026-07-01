@@ -8681,6 +8681,31 @@ def check_v3_387_table_model_threshold_map(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_388_table_model_dac_code_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.0),
+                (180.0, 0.3),
+                (280.0, 0.6),
+                (380.0, 0.9),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.3333),
+                (280.0, 0.6667),
+                (380.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17750,6 +17775,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "386-table-model-clamped-transfer": check_v3_386_table_model_clamped_transfer,
     "v3_387_table_model_threshold_map": check_v3_387_table_model_threshold_map,
     "387-table-model-threshold-map": check_v3_387_table_model_threshold_map,
+    "v3_388_table_model_dac_code_map": check_v3_388_table_model_dac_code_map,
+    "388-table-model-dac-code-map": check_v3_388_table_model_dac_code_map,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
