@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "mc_trial_number_metric.va"
+
+Vdummy (stim 0) vsource dc=0.0
+
+XDUT (out) mc_trial_number_metric
+
 tran tran stop=80n
-save vin clk mode rst out metric
+save stim out

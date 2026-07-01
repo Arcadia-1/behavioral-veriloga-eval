@@ -7,6 +7,6 @@ analog begin
     @(initial_step) begin
         trial_num = $cds_get_mc_trial_number();
     end
-    V(out) <+ transition(trial_num, 0.0, 200p, 200p);
+    V(out) <+ transition(0.35 + 0.1 * trial_num, 0.0, 200p, 200p);
 end
 endmodule

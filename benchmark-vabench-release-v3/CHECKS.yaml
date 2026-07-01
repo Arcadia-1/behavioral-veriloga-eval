@@ -10562,6 +10562,7 @@
   # vabench-release-v2-checks
   required_columns:
     - time
+    - stim
     - out
   syntax:
     must_include:
@@ -11237,14 +11238,31 @@
 485-mc-trial-number-metric: |
   version: 1
   task_id: v3_485_mc_trial_number_metric
-  backend: evas_rust_compile_capable
-  status: cadence-simulator-function-candidate
-  checker: cadence_simulator_function_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: mc_trial_number_metric_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - out
   syntax:
     must_include:
       - "$cds_get_mc_trial_number"
+      - "@(initial_step)"
+  sim_correct:
+    positive:
+      - solution/mc_trial_number_metric.va
+    negative:
+      - negative_variants/neg_001_force_zero/mc_trial_number_metric.va
+      - negative_variants/neg_002_wrong_threshold/mc_trial_number_metric.va
+      - negative_variants/neg_003_reset_bias/mc_trial_number_metric.va
+      - negative_variants/neg_004_metric_offset/mc_trial_number_metric.va
+      - negative_variants/neg_005_scale_output/mc_trial_number_metric.va
+    checks:
+      - mc_trial_function_parse
+      - default_trial_zero_metric
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Cadence Monte Carlo helper promoted for default non-Monte-Carlo transient behavior; trial index is expected to be 0."
 486-rf-source-info-registration: |
   version: 1
   task_id: v3_486_rf_source_info_registration
