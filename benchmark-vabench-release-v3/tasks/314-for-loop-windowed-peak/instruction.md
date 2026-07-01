@@ -19,9 +19,18 @@ module for_loop_windowed_peak (
 
 ## Required Behavior
 
-Use a for loop and array state for voltage-domain computation.
+Use a Verilog-A `for` loop over a four-sample history array to compute a windowed peak and trough.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+The model keeps `samples[0:3]`, initialized to zero. On a rising crossing of `clk` through `vth = 0.45` V:
+
+- if `rst` is high, clear all samples and drive both outputs to zero
+- otherwise shift the history toward older indexes and store the new `V(vin)` in `samples[0]`
+- initialize `peak_v` and `min_v` from `samples[0]`
+- use a `for` loop over the remaining entries to find the maximum and minimum sample in the four-entry window
+- drive `out = peak_v`
+- drive `metric = min_v`
+
+A rising `rst` event must also clear the sample history immediately. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

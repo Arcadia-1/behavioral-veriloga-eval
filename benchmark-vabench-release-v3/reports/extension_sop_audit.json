@@ -2,28 +2,28 @@
   "date": "2026-07-01",
   "range_summary": [
     {
-      "complete_tests_count": 13,
+      "complete_tests_count": 14,
       "description": "language-semantics voltage-domain candidates",
-      "fair_eval_count": 13,
+      "fair_eval_count": 14,
       "range": "301-340",
-      "sop_ready_count": 13,
+      "sop_ready_count": 14,
       "task_count": 40,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          27
+          26
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          27
+          26
         ],
         [
           "generic_prompt_template",
-          27
+          26
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          27
+          26
         ]
       ]
     },
@@ -179,18 +179,18 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 13,
-    "fair_eval_count": 13,
+    "complete_tests_count": 14,
+    "fair_eval_count": 14,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 181,
-      "generic_prompt_template": 27,
-      "hidden_scs_not_executable:include,instance,source": 149,
+      "checker_syntax_only_no_behavior_score": 180,
+      "generic_prompt_template": 26,
+      "hidden_scs_not_executable:include,instance,source": 148,
       "hidden_scs_not_executable:include,instance,source,save": 32,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 149,
+      "visible_scs_not_executable:include,instance,source": 148,
       "visible_scs_not_executable:include,instance,source,save": 32
     },
-    "sop_ready_count": 13,
+    "sop_ready_count": 14,
     "task_count": 194
   },
   "tasks": [
@@ -495,20 +495,15 @@
     },
     {
       "certification_scope": "extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "generic_prompt_template",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 314,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a for loop and array state for voltage-domain computation.",
       "target": "for_loop_windowed_peak.va",

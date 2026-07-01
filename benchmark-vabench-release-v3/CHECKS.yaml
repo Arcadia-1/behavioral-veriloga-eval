@@ -5206,11 +5206,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 314-for-loop-windowed-peak: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_314_for_loop_windowed_peak
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_314_for_loop_windowed_peak
+    metric: sampled_for_loop_windowed_peak
   required_columns:
     - time
     - vin
@@ -5224,8 +5227,18 @@
       - "for ("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_clears_sample_history
+      - for_loop_scans_window_for_peak
+      - for_loop_scans_window_for_minimum
+      - output_tracks_four_sample_peak
+      - metric_tracks_four_sample_trough
+      - oldest_sample_drops_after_four_clocks
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 315-for-loop-code-popcount: |
   version: 1
   task_id: v3_315_for_loop_code_popcount
