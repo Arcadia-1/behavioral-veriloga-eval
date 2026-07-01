@@ -9317,13 +9317,20 @@
   backend: digital_mixed_capable
   status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - clk
+    - rst
+    - en
+    - q
   syntax:
     must_include:
       - "always @"
     must_not_include:
       - "I("
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Executable AMS/digital async-reset always candidate staged pending EVAS event-or support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/39"
 418-always-enable-saturating-counter: |
   version: 1
   task_id: v3_418_always_enable_saturating_counter
