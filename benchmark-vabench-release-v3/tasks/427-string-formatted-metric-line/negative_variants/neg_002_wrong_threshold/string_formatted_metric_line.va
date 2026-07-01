@@ -36,7 +36,7 @@ analog begin
         $fwrite(fd, "%s\n", label_q);
         $fclose(fd);
             count_q = count_q + 1;
-            if (V(vin) > vth + 0.1) out_v = vhi;
+            if (V(vin) > 0.25) out_v = vhi;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
