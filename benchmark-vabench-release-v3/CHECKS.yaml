@@ -9891,16 +9891,43 @@
 433-preprocessor-ifndef-elsif-undef: |
   version: 1
   task_id: v3_433_preprocessor_ifndef_elsif_undef
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: preprocessor_ifndef_elsif_undef_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "`ifndef"
+      - "`elsif"
+      - "`undef"
+      - "`V3_GAIN_VALUE"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/preprocessor_ifndef_elsif_undef.va
+    negative:
+      - negative_variants/neg_001_force_zero/preprocessor_ifndef_elsif_undef.va
+      - negative_variants/neg_002_wrong_threshold/preprocessor_ifndef_elsif_undef.va
+      - negative_variants/neg_003_reset_bias/preprocessor_ifndef_elsif_undef.va
+      - negative_variants/neg_004_metric_offset/preprocessor_ifndef_elsif_undef.va
+      - negative_variants/neg_005_scale_output/preprocessor_ifndef_elsif_undef.va
+    checks:
+      - ifndef_elsif_undef_parse
+      - macro_gain_applied_to_output
+      - macro_gain_metric
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Preprocessor ifndef/elsif/undef behavior promoted to executable EVAS behavior candidate."
 434-repeat-loop-accumulator: |
   version: 1
   task_id: v3_434_repeat_loop_accumulator
