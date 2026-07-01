@@ -34,7 +34,7 @@
       "sop_ready_count": 12,
       "task_count": 12,
       "top_issues": [],
-      "visible_hidden_distinct_count": 0
+      "visible_hidden_distinct_count": 12
     },
     {
       "complete_tests_count": 62,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 83,
+    "sop_ready_visible_hidden_identical_count": 71,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 93,
-    "visible_hidden_identical_count": 101,
+    "visible_hidden_distinct_count": 105,
+    "visible_hidden_identical_count": 89,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 101
+      "visible_hidden_identical": 89
     }
   },
   "tasks": [
@@ -1592,11 +1592,10 @@
       "tier": "noise-analysis-candidate",
       "title": "White Noise Voltage Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1617,11 +1616,10 @@
       "tier": "noise-analysis-candidate",
       "title": "White Noise Gated Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1642,11 +1640,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Flicker Noise Voltage Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1667,11 +1664,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Flicker Noise Corner Selector",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1692,11 +1688,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Noise Table Voltage Shaper",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1717,11 +1712,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Noise Table Gated Shaper",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1742,11 +1736,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Dependent Dc Tran Mode",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1767,11 +1760,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Dependent Noise Enable",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1792,11 +1784,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Ac Stim Small Signal Source",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1817,11 +1808,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Ac Stim Phase Selector",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1842,11 +1832,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Combined White Flicker Noise",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1867,11 +1856,10 @@
       "tier": "noise-analysis-candidate",
       "title": "Analysis Aware Noise Metric",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

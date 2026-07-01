@@ -59,18 +59,18 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 358-mixed-electrical-threshold-logic-flag,358,Mixed Electrical Threshold Logic Flag,ams-mixed-signal-candidate,mixed_electrical_threshold_logic_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 359-mixed-logic-clocked-voltage-sampler,359,Mixed Logic Clocked Voltage Sampler,ams-mixed-signal-candidate,mixed_logic_clocked_voltage_sampler.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 360-mixed-wreal-logic-select-driver,360,Mixed Wreal Logic Select Driver,ams-mixed-signal-candidate,mixed_wreal_logic_select_driver.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-361-white-noise-voltage-source,361,White Noise Voltage Source,noise-analysis-candidate,white_noise_voltage_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-362-white-noise-gated-source,362,White Noise Gated Source,noise-analysis-candidate,white_noise_gated_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-363-flicker-noise-voltage-source,363,Flicker Noise Voltage Source,noise-analysis-candidate,flicker_noise_voltage_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-364-flicker-noise-corner-selector,364,Flicker Noise Corner Selector,noise-analysis-candidate,flicker_noise_corner_selector.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-365-noise-table-voltage-shaper,365,Noise Table Voltage Shaper,noise-analysis-candidate,noise_table_voltage_shaper.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-366-noise-table-gated-shaper,366,Noise Table Gated Shaper,noise-analysis-candidate,noise_table_gated_shaper.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-367-analysis-dependent-dc-tran-mode,367,Analysis Dependent Dc Tran Mode,noise-analysis-candidate,analysis_dependent_dc_tran_mode.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-368-analysis-dependent-noise-enable,368,Analysis Dependent Noise Enable,noise-analysis-candidate,analysis_dependent_noise_enable.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-369-ac-stim-small-signal-source,369,Ac Stim Small Signal Source,noise-analysis-candidate,ac_stim_small_signal_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-370-ac-stim-phase-selector,370,Ac Stim Phase Selector,noise-analysis-candidate,ac_stim_phase_selector.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-371-combined-white-flicker-noise,371,Combined White Flicker Noise,noise-analysis-candidate,combined_white_flicker_noise.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-372-analysis-aware-noise-metric,372,Analysis Aware Noise Metric,noise-analysis-candidate,analysis_aware_noise_metric.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+361-white-noise-voltage-source,361,White Noise Voltage Source,noise-analysis-candidate,white_noise_voltage_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+362-white-noise-gated-source,362,White Noise Gated Source,noise-analysis-candidate,white_noise_gated_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+363-flicker-noise-voltage-source,363,Flicker Noise Voltage Source,noise-analysis-candidate,flicker_noise_voltage_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+364-flicker-noise-corner-selector,364,Flicker Noise Corner Selector,noise-analysis-candidate,flicker_noise_corner_selector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+365-noise-table-voltage-shaper,365,Noise Table Voltage Shaper,noise-analysis-candidate,noise_table_voltage_shaper.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+366-noise-table-gated-shaper,366,Noise Table Gated Shaper,noise-analysis-candidate,noise_table_gated_shaper.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+367-analysis-dependent-dc-tran-mode,367,Analysis Dependent Dc Tran Mode,noise-analysis-candidate,analysis_dependent_dc_tran_mode.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+368-analysis-dependent-noise-enable,368,Analysis Dependent Noise Enable,noise-analysis-candidate,analysis_dependent_noise_enable.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+369-ac-stim-small-signal-source,369,Ac Stim Small Signal Source,noise-analysis-candidate,ac_stim_small_signal_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+370-ac-stim-phase-selector,370,Ac Stim Phase Selector,noise-analysis-candidate,ac_stim_phase_selector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+371-combined-white-flicker-noise,371,Combined White Flicker Noise,noise-analysis-candidate,combined_white_flicker_noise.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+372-analysis-aware-noise-metric,372,Analysis Aware Noise Metric,noise-analysis-candidate,analysis_aware_noise_metric.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 373-task-output-limiter,373,Task Output Limiter,syntax-extension-candidate,task_output_limiter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 374-task-dual-output-update,374,Task Dual Output Update,syntax-extension-candidate,task_dual_output_update.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 375-task-event-counter-service,375,Task Event Counter Service,syntax-extension-candidate,task_event_counter_service.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical

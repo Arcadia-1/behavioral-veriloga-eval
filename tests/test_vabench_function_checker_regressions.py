@@ -2069,6 +2069,61 @@ def test_v3_mixed_signal_checkers_follow_hidden_stimulus_values() -> None:
     )[0]
 
 
+def _noise_metric_rows(metric_fn, *, out_fn=None, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.25, 0.0),
+        (60.0, 0.25, 1.0),
+        (90.0, 0.25, 0.0),
+        (170.0, 0.72, 1.0),
+        (200.0, 0.72, 0.0),
+        (310.0, 0.38, 1.0),
+        (340.0, 0.38, 0.0),
+        (450.0, 0.82, 1.0),
+        (480.0, 0.82, 0.0),
+    ]
+    metric = 0.0
+    prev_clk = samples[0][2]
+    edge_count = 0
+    rows: list[dict[str, float]] = []
+    for time_ns, ctrl, clk in samples:
+        if rows and prev_clk <= 0.45 < clk:
+            edge_count += 1
+            metric = metric_fn(ctrl, edge_count)
+        out = ctrl if out_fn is None else out_fn(ctrl)
+        for offset_ns in range(6):
+            rows.append(
+                {
+                    "time": (time_ns + offset_ns) * 1e-9,
+                    "ctrl": ctrl,
+                    "clk": clk,
+                    "out": out,
+                    "metric": 0.0 if wrong else metric,
+                }
+            )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_noise_analysis_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (sim.check_v3_361_white_noise_voltage_source, lambda ctrl, _edge: ctrl, None),
+        (sim.check_v3_362_white_noise_gated_source, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_363_flicker_noise_voltage_source, lambda _ctrl, _edge: 1.0, None),
+        (sim.check_v3_364_flicker_noise_corner_selector, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_365_noise_table_voltage_shaper, lambda ctrl, _edge: 0.3 + ctrl * 0.2, None),
+        (sim.check_v3_366_noise_table_gated_shaper, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_367_analysis_dependent_dc_tran_mode, lambda _ctrl, _edge: 0.9, lambda ctrl: ctrl),
+        (sim.check_v3_368_analysis_dependent_noise_enable, lambda ctrl, _edge: ctrl, None),
+        (sim.check_v3_369_ac_stim_small_signal_source, lambda _ctrl, _edge: 1.0, lambda ctrl: ctrl),
+        (sim.check_v3_370_ac_stim_phase_selector, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, lambda ctrl: ctrl),
+        (sim.check_v3_371_combined_white_flicker_noise, lambda _ctrl, _edge: 1.5, None),
+        (sim.check_v3_372_analysis_aware_noise_metric, lambda _ctrl, edge: edge / 8.0, lambda ctrl: ctrl),
+    ]
+    for checker, metric_fn, out_fn in cases:
+        assert checker(_noise_metric_rows(metric_fn, out_fn=out_fn))[0]
+        assert not checker(_noise_metric_rows(metric_fn, out_fn=out_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

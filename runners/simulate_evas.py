@@ -7067,6 +7067,74 @@ def _check_v3_mixed_clocked_voltage_sampler(
     return True, f"checked={checked} edges={edge_count} low={low_expected} high={high_expected} max_err={max_err:.4f}"
 
 
+def _check_v3_clocked_metric_expression(
+    rows: list[dict[str, float]],
+    *,
+    metric_fn,
+    out_fn=None,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    metric_expected = 0.0
+    metric_values: list[float] = [metric_expected]
+    out_values: list[float] = [out_fn(rows[0]) if out_fn else rows[0]["out"]]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            metric_expected = metric_fn(row, edge_count)
+        metric_values.append(metric_expected)
+        out_values.append(out_fn(row) if out_fn else row["out"])
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_metric = 0
+    checked_out = 0
+    max_metric_err = 0.0
+    max_out_err = 0.0
+    for index in range(0, len(rows), stride):
+        metric_expected = metric_values[index]
+        metric_window = metric_values[max(0, index - 5) : min(len(rows), index + 6)]
+        if max(abs(metric_expected - value) for value in metric_window) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+        if out_fn is not None:
+            out_expected = out_values[index]
+            out_window = out_values[max(0, index - 5) : min(len(rows), index + 6)]
+            if max(abs(out_expected - value) for value in out_window) <= 0.02:
+                out_err = abs(rows[index]["out"] - out_expected)
+                max_out_err = max(max_out_err, out_err)
+                checked_out += 1
+                if out_err > tol:
+                    return False, (
+                        f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                        f"expected={out_expected:.4f} tol={tol:.4f}"
+                    )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_metric < 8:
+        return False, f"insufficient_metric_samples={checked_metric}"
+    if out_fn is not None and checked_out < 8:
+        return False, f"insufficient_out_samples={checked_out}"
+    return (
+        True,
+        f"edges={edge_count} metric_samples={checked_metric} out_samples={checked_out} "
+        f"max_metric_err={max_metric_err:.4f} max_out_err={max_out_err:.4f}",
+    )
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -9202,254 +9270,90 @@ def check_v3_490_event_task_function_state_update(rows: list[dict[str, float]]) 
 
 
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: row["ctrl"],
     )
 
 
 def check_v3_362_white_noise_gated_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_363_flicker_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.0,
     )
 
 
 def check_v3_364_flicker_noise_corner_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_365_noise_table_voltage_shaper(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.34),
-                (180.0, 0.42),
-                (280.0, 0.36),
-                (380.0, 0.46),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.3 + row["ctrl"] * 0.2,
     )
 
 
 def check_v3_366_noise_table_gated_shaper(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_367_analysis_dependent_dc_tran_mode(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 0.9,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_368_analysis_dependent_noise_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: row["ctrl"],
     )
 
 
 def check_v3_369_ac_stim_small_signal_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_370_ac_stim_phase_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.7),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_371_combined_white_flicker_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 1.5),
-                (180.0, 1.5),
-                (280.0, 1.5),
-                (380.0, 1.5),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.5,
     )
 
 
 def check_v3_372_analysis_aware_noise_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.125),
-                (180.0, 0.25),
-                (280.0, 0.375),
-                (380.0, 0.5),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, edge_count: edge_count / 8.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 

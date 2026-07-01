@@ -135,13 +135,14 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 93
-    assert len(identical_tasks) == 101
+    assert len(distinct_tasks) == 105
+    assert len(identical_tasks) == 89
     assert "331-above-threshold-latch" in identical_tasks
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks
     assert "351-always-posedged-dff" in distinct_tasks
     assert "356-mixed-logic-enable-voltage-driver" in distinct_tasks
+    assert "361-white-noise-voltage-source" in distinct_tasks
     assert "397-hierarchy-gain-child" in distinct_tasks
 
 
