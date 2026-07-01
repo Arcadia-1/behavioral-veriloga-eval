@@ -8088,6 +8088,25 @@ def check_v3_362_white_noise_gated_source(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_363_flicker_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "metric": [
+                (80.0, 1.0),
+                (180.0, 1.0),
+                (280.0, 1.0),
+                (380.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17107,6 +17126,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "361-white-noise-voltage-source": check_v3_361_white_noise_voltage_source,
     "v3_362_white_noise_gated_source": check_v3_362_white_noise_gated_source,
     "362-white-noise-gated-source": check_v3_362_white_noise_gated_source,
+    "v3_363_flicker_noise_voltage_source": check_v3_363_flicker_noise_voltage_source,
+    "363-flicker-noise-voltage-source": check_v3_363_flicker_noise_voltage_source,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

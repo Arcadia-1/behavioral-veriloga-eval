@@ -12,17 +12,17 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 parameter real kf = 1.0e-12;
 parameter real af = 1.0;
-real out_v;
 real metric_v;
-integer count_q;
+
 analog begin
     @(initial_step) begin
-        out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
     end
-V(out) <+ flicker_noise(kf, af, "flicker_voltage_noise");
+
+    V(out) <+ flicker_noise(kf, af, "flicker_voltage_noise");
+
     @(cross(V(clk)-vth,+1)) metric_v = kf * 1.0e12;
+
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

@@ -17,7 +17,20 @@ module flicker_noise_voltage_source (
 
 ## Required Behavior
 
-Use flicker_noise() as a behavioral 1/f noise contribution.
+Use `flicker_noise()` as a behavioral 1/f noise contribution on `out`:
+
+```verilog
+V(out) <+ flicker_noise(kf, af, "flicker_voltage_noise");
+```
+
+Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `kf * 1.0e12`:
+
+```verilog
+@(cross(V(clk)-vth,+1)) metric_v = kf * 1.0e12;
+V(metric) <+ transition(metric_v, 0.0, tr, tr);
+```
+
+The transient checker verifies the clocked parameter sideband. The flicker noise source is covered as an executable language feature; spectral 1/f behavior requires a noise-analysis-capable certification layer.
 
 Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
 
