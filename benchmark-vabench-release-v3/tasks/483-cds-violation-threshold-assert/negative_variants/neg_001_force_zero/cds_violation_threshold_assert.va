@@ -2,10 +2,12 @@
 `include "disciplines.vams"
 
 module cds_violation_threshold_assert (input electrical in, output electrical out);
+real out_v;
 analog begin
     if (V(in) > 1.0) begin
-        $cds_violation("va_threshold", "input above threshold", V(in));
+        $cds_violation("va_threshold", "threshold_exceeded", V(in));
     end
-    V(out) <+ transition(0.0 + 0.0*V(in), 0.0, 200p, 200p);
+    out_v = 0.0 + 0.0*V(in);
+    V(out) <+ transition(out_v, 0.0, 200p, 200p);
 end
 endmodule

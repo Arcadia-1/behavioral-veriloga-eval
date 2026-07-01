@@ -55,7 +55,8 @@
     },
     {
       "certification_levels": {
-        "compile_supported_candidate": 3
+        "behavior_certified_extension": 1,
+        "compile_supported_candidate": 2
       },
       "semantic_layer": "cadence_simulator_function_extension",
       "task_count": 3
@@ -78,22 +79,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 446,
-    "behavior_certified_extension_count": 146,
+    "behavior_certified_count": 447,
+    "behavior_certified_extension_count": 147,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 146,
+      "behavior_certified_extension": 147,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 38,
+      "compile_supported_candidate": 37,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 48,
+    "compile_supported_candidate_count": 47,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 48,
-      "extension_behavior_certified_outside_original_300": 146,
+      "excluded_until_behavior_promotion": 47,
+      "extension_behavior_certified_outside_original_300": 147,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9281,15 +9282,15 @@
       "title": "Analog Primitive Isource Instance"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_assert_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Cadence simulator helper syntax candidate; behavior certification is pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "cadence_simulator_function_extension",
       "syntax_focus": "Use $cds_violation() to emit a Verilog-A assert violation.",
       "target": "cds_violation_threshold_assert.va",

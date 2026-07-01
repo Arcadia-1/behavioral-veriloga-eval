@@ -5,16 +5,16 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **146**
-- Tasks with executable visible+hidden SCS evidence: **175**
-- Tasks with behavior checker evidence: **147**
+- SOP-ready tasks: **147**
+- Tasks with executable visible+hidden SCS evidence: **176**
+- Tasks with behavior checker evidence: **148**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 47
-- `hidden_scs_not_executable:include,instance,source`: 18
-- `missing_required_behavior_section`: 13
-- `visible_scs_not_executable:include,instance,source`: 18
+- `checker_syntax_only_no_behavior_score`: 46
+- `hidden_scs_not_executable:include,instance,source`: 17
+- `missing_required_behavior_section`: 12
+- `visible_scs_not_executable:include,instance,source`: 17
 
 ## Range Summary
 
@@ -26,7 +26,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 5 | 12 | 5 | `checker_syntax_only_no_behavior_score`: 19<br>`visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 6 | 13 | 6 | `checker_syntax_only_no_behavior_score`: 18<br>`visible_scs_not_executable:include,instance,source`: 11<br>`hidden_scs_not_executable:include,instance,source`: 11<br>`missing_required_behavior_section`: 11 |
 
 ## Highest Severity Finding
 
@@ -218,7 +218,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `480-mfactor-system-function-gain` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `481-analog-primitive-resistor-instance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `482-analog-primitive-isource-instance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `483-cds-violation-threshold-assert` | `cadence-simulator-function-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `483-cds-violation-threshold-assert` | `cadence-simulator-function-candidate` | True | - |
 | `484-rtoi-conversion-quantizer` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `485-mc-trial-number-metric` | `cadence-simulator-function-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `486-rf-source-info-registration` | `cadence-simulator-function-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

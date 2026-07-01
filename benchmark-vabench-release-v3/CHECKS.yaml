@@ -11177,14 +11177,33 @@
 483-cds-violation-threshold-assert: |
   version: 1
   task_id: v3_483_cds_violation_threshold_assert
-  backend: evas_rust_compile_capable
-  status: cadence-simulator-function-candidate
-  checker: cadence_simulator_function_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: cds_violation_threshold_assert_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "$cds_violation"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/cds_violation_threshold_assert.va
+    negative:
+      - negative_variants/neg_001_force_zero/cds_violation_threshold_assert.va
+      - negative_variants/neg_002_wrong_threshold/cds_violation_threshold_assert.va
+      - negative_variants/neg_003_reset_bias/cds_violation_threshold_assert.va
+      - negative_variants/neg_004_metric_offset/cds_violation_threshold_assert.va
+      - negative_variants/neg_005_scale_output/cds_violation_threshold_assert.va
+    checks:
+      - cds_violation_call_parse
+      - output_clamps_on_assert_threshold
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Cadence assertion helper promoted with executable threshold behavior verification."
 484-rtoi-conversion-quantizer: |
   version: 1
   task_id: v3_484_rtoi_conversion_quantizer

@@ -9002,6 +9002,25 @@ def check_v3_480_mfactor_system_function_gain(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_483_cds_violation_threshold_assert(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.20),
+                (50.0, 0.75),
+                (90.0, 1.00),
+                (130.0, 0.40),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19504,6 +19523,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "479-inherited-mfactor-parameter": check_v3_479_inherited_mfactor_parameter,
     "v3_480_mfactor_system_function_gain": check_v3_480_mfactor_system_function_gain,
     "480-mfactor-system-function-gain": check_v3_480_mfactor_system_function_gain,
+    "v3_483_cds_violation_threshold_assert": check_v3_483_cds_violation_threshold_assert,
+    "483-cds-violation-threshold-assert": check_v3_483_cds_violation_threshold_assert,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
