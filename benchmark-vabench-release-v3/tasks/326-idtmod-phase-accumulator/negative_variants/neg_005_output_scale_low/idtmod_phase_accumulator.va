@@ -10,7 +10,7 @@ module idtmod_phase_accumulator (
     output electrical metric
 );
 parameter real vth = 0.45;
-parameter real vhi = 0.72;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
@@ -27,7 +27,7 @@ analog begin
     end
     freq_q = 1.0e6 + 2.0e6 * V(vin);
     phase_q = idtmod(freq_q, 0.0, 1.0);
-    out_v = phase_q * vhi;
+    out_v = phase_q * 0.75;
     metric_v = (phase_q > V(mode)) ? vhi : 0.0;
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

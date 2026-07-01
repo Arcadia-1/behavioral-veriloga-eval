@@ -5631,11 +5631,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 326-idtmod-phase-accumulator: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_326_idtmod_phase_accumulator
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_326_idtmod_phase_accumulator
+    metric: sampled_idtmod_phase_accumulator
   required_columns:
     - time
     - vin
@@ -5649,8 +5652,17 @@
       - "idtmod("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - idtmod_wraps_phase_every_half_microsecond
+      - output_tracks_wrapped_phase_voltage
+      - metric_thresholds_upper_half_of_phase
+      - vin_controls_frequency
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 327-idtmod-wrapped-ramp-source: |
   version: 1
   task_id: v3_327_idtmod_wrapped_ramp_source
