@@ -1,66 +1,30 @@
 # Segmented DAC
 
-## Task Contract
+Implement a mixed binary/thermometer segmented voltage DAC.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter Models
-- Base function: Segmented DAC
-- Domain: `voltage`
-- Target artifact(s): `segmented_dac.va`
-- Supplied/reference support artifact(s): `tb_segmented_dac_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `segmented_dac` with positional ports `b0, b1, t0, t1, t2,
+vref, vss, aout`. All ports are electrical.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `segmented_dac.va` declares module `segmented_dac` with positional ports: `b0`, `b1`, `t0`, `t1`, `t2`, `vref`, `vss`, `aout`.
+- `vth = 0.45 V`: digital decision threshold for binary and thermometer
+  controls.
+- `tr = 500 ps`: output transition smoothing time.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+Treat `b0` and `b1` as binary LSB controls with weights 1 and 2. Treat
+`t0`, `t1`, and `t2` as unary thermometer segment controls, each contributing
+four LSB steps. Drive `aout` between `vss` and `vref` according to the summed
+15-step segmented code, so the all-active code reaches full scale.
 
-```spectre
-tran tran stop=150n maxstep=500p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `b0`
-- `b1`
-- `t0`
-- `t1`
-- `t2`
-- `aout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `safe_time_output_levels_match_expected_segmented_codes`
-- `output_is_monotonic_across_programmed_codes`
-- `thermometer_segment_weight_is_four_lsb_steps`
-
-## Output Contract
-
-Return exactly one source artifact named `segmented_dac.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-## Additional Task Details
-
-Write a pure voltage-domain Verilog-A module named `segmented_dac`.
-
-The module has electrical inputs `b0`, `b1`, `t0`, `t1`, `t2` and electrical
-output `aout`. Treat `b0`/`b1` as binary LSB controls and `t0`/`t1`/`t2` as
-thermometer segment controls. With `vref=0.72`, each binary LSB contributes
-`vref/12`, and each thermometer segment contributes four LSB steps. Drive
-`aout` with a smoothed voltage transition and use voltage contributions only.
-
-Return exactly one complete Verilog-A file named `segmented_dac.va`.
+Return only `segmented_dac.va`. Use deterministic voltage-domain Verilog-A and
+smooth output transitions. Do not modify or emit the support testbench, add
+checker logic, hard-code private waveform sample points, add simulator-private
+side channels, use current contributions, `ddt()`, or `idt()`.

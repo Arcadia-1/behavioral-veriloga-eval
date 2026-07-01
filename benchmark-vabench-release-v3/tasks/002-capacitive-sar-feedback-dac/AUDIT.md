@@ -1,14 +1,22 @@
-# Honest SOP Audit: Task 002 Capacitive SAR Feedback DAC
+# Audit: 002 Capacitive SAR Feedback DAC
 
-## Scope
+Gate 1: `independent_l1_ready`. This is a reusable SAR ADC capacitive
+feedback DAC model with a distinct calibration-code contribution. It is not a
+duplicate of the simple voltage DAC, segmented DAC, thermometer DAC, or
+subradix/weighted-decoder rows because the behavior is clocked, differential,
+common-mode centered, and includes redundant calibration offset handling.
 
-Task boundary is one Verilog-A DUT, `cdac_cal.va`, plus Spectre-compatible `.scs` testbenches.
+Gate 2: `cadence_modeling_ready`. The public prompt states the module
+interface, parameters, sampled 10-bit main code, calibration-code contribution,
+common-mode behavior, and voltage-only modeling constraints. Current PR
+validation: EVAS gold PASS, Spectre AX hidden gold PASS, and EVAS/Spectre
+negatives rejected with no Spectre errors. Spectre emitted only
+environment/setup warnings.
 
-## Four Standards
+Hidden/visible coverage: visible and hidden decks are structurally distinct.
+The hidden deck exercises bit weights, calibration states, polarity, and
+common-mode behavior beyond the visible smoke scenario.
 
-- Useful scenario: a calibrated capacitive feedback DAC is a common SAR ADC behavioral primitive.
-- Reasonable task: the public prompt states the exact port order, rising-clock sampling rule, 10-bit binary weighting, redundant calibration code, 0.45 V common-mode, and differential voltage formula.
-- Complete tests: visible `.scs` checks basic code movement and calibration visibility; hidden `.scs` covers zero, individual bit weights, mixed large codes, all calibration states, polarity, and common-mode behavior across a 68 ns sequence.
-- Fair evaluation: checker should derive expected `VDAC_P` and `VDAC_N` only from the public formula and the saved input/output traces. Concrete negatives preserve the interface but fail the required behavior.
-
-Certification status: certified as an EVAS formal candidate on 2026-06-24. Gold PASS; 5/5 concrete negatives compile and fail with `FAIL_SIM_CORRECTNESS` under `v3_002_capacitive_weighted_sar_feedback_dac`.
+Checker coverage: `v3_002_capacitive_weighted_sar_feedback_dac` evaluates the
+public differential transfer contract from saved input/output traces and rejects
+wrong gain, polarity, calibration weighting, and endpoint behavior.

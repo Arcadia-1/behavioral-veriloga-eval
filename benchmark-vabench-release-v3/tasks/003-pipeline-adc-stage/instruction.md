@@ -1,72 +1,40 @@
 # Pipeline ADC Stage
 
-## Task Contract
+Implement a clocked 1.5-bit pipeline ADC MDAC stage.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter Models
-- Base function: Pipeline ADC MDAC stage
-- Domain: `voltage`
-- Target artifact(s): `pipeline_stage.va`
-- Supplied/reference support artifact(s): `tb_pipeline_stage_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `pipeline_stage` with positional ports `VDD, VSS, PHI1, PHI2,
+VIN, VREF, VRES, D1, D0`. All ports are electrical. `VRES` is the residue
+output and `D1,D0` are the sub-ADC decision outputs.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `pipeline_stage.va` declares module `pipeline_stage` with positional ports: `VDD`, `VSS`, `PHI1`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`.
+- `vth = 0.45 V`: clock decision threshold for `PHI1` and `PHI2`.
+- `vdd = 0.9 V`: nominal output high level used for initialization.
+- `tedge = 200 ps`: output transition smoothing time.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+On each rising `PHI1` edge, sample `VIN`. On each rising `PHI2` edge, compare
+the sampled input around `V(VDD)/2` against the 1.5-bit thresholds
+`+V(VREF)/4` and `-V(VREF)/4`.
 
-```spectre
-tran tran stop=300n maxstep=500p
-```
+- Upper region: drive `D1` high, `D0` low, and subtract a half-reference from
+  the gain-two residue.
+- Middle region: drive `D1` low, `D0` high, and use the gain-two residue
+  without reference subtraction or addition.
+- Lower region: drive both decision outputs low and add a half-reference to the
+  gain-two residue.
 
-The evaluator expects these exact public scalar observables:
+Clamp `VRES` to the supply range and drive all outputs with smooth
+voltage-domain transitions.
 
-- `phi1`
-- `phi2`
-- `vin`
-- `vres`
-- `d1`
-- `d0`
+## Modeling Constraints
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `upper_middle_lower_regions_exercised`
-- `sub_adc_decisions_match_thresholds`
-- `residue_follows_gain_two_mdac_formula`
-- `residue_output_bounded`
-
-## Output Contract
-
-Return exactly one source artifact named `pipeline_stage.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement a pure voltage-domain 1.5-bit pipeline ADC MDAC stage.
-
-Public functional contract:
-
-- On each rising edge of `PHI1`, sample `VIN`.
-- On each rising edge of `PHI2`, compare the sampled input relative to
-  `Vcm = V(VDD)/2` against `+VREF/4` and `-VREF/4`.
-- Upper region: drive `D1=1`, `D0=0`, and
-  `VRES = Vcm + 2*(VIN - Vcm) - VREF/2`.
-- Lower region: drive `D1=0`, `D0=0`, and
-  `VRES = Vcm + 2*(VIN - Vcm) + VREF/2`.
-- Middle region: drive `D1=0`, `D0=1`, and
-  `VRES = Vcm + 2*(VIN - Vcm)`.
-- Clamp `VRES` to the supply range and drive all outputs with `transition(...)`.
-- Avoid current-domain contributions, `ddt`, `idt`, transistor-level devices,
-  AC/noise analysis, and KCL/KVL solver assumptions.
+Return only `pipeline_stage.va`. Use deterministic voltage-domain Verilog-A.
+Do not modify or emit the support testbench, add checker logic, hard-code
+private waveform sample points, add simulator-private side channels, use
+current contributions, `ddt()`, or `idt()`.
