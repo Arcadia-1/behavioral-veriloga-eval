@@ -9761,16 +9761,43 @@
 429-string-config-label-select: |
   version: 1
   task_id: v3_429_string_config_label_select
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: string_config_label_select_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "string"
       - "$sformat"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/string_config_label_select.va
+    negative:
+      - negative_variants/neg_001_force_zero/string_config_label_select.va
+      - negative_variants/neg_002_wrong_threshold/string_config_label_select.va
+      - negative_variants/neg_003_reset_bias/string_config_label_select.va
+      - negative_variants/neg_004_metric_offset/string_config_label_select.va
+      - negative_variants/neg_005_scale_output/string_config_label_select.va
+    checks:
+      - string_variable_parse
+      - sformat_config_label_parse
+      - mode_low_config_a_output
+      - mode_high_config_b_output
+      - mode_high_metric_offset
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "String config label select behavior promoted to executable EVAS behavior candidate."
 430-rdist-seed-reproducibility: |
   version: 1
   task_id: v3_430_rdist_seed_reproducibility

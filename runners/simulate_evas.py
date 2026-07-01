@@ -8294,6 +8294,31 @@ def check_v3_428_string_mode_tagged_log(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def check_v3_429_string_config_label_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (130.0, 0.9),
+                (230.0, 0.9),
+                (330.0, 0.0),
+                (430.0, 0.0),
+            ],
+            "metric": [
+                (130.0, 0.0),
+                (230.0, 11.0),
+                (330.0, 0.0),
+                (430.0, 10.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18736,6 +18761,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "427-string-formatted-metric-line": check_v3_427_string_formatted_metric_line,
     "v3_428_string_mode_tagged_log": check_v3_428_string_mode_tagged_log,
     "428-string-mode-tagged-log": check_v3_428_string_mode_tagged_log,
+    "v3_429_string_config_label_select": check_v3_429_string_config_label_select,
+    "429-string-config-label-select": check_v3_429_string_config_label_select,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

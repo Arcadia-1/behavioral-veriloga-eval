@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 55,
+      "complete_tests_count": 56,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 51,
+      "fair_eval_count": 52,
       "range": "373-434",
-      "sop_ready_count": 50,
+      "sop_ready_count": 51,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          11
+          10
         ],
         [
           "missing_required_behavior_section",
-          7
+          6
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          6
+          5
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          6
+          5
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 127,
-    "fair_eval_count": 122,
+    "complete_tests_count": 128,
+    "fair_eval_count": 123,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 72,
-      "hidden_scs_not_executable:include,instance,source": 66,
-      "missing_required_behavior_section": 67,
-      "visible_scs_not_executable:include,instance,source": 66
+      "checker_syntax_only_no_behavior_score": 71,
+      "hidden_scs_not_executable:include,instance,source": 65,
+      "missing_required_behavior_section": 66,
+      "visible_scs_not_executable:include,instance,source": 65
     },
-    "sop_ready_count": 121,
+    "sop_ready_count": 122,
     "task_count": 194
   },
   "tasks": [
@@ -3113,20 +3113,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 429,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use string formatting to select and record configuration labels.",
       "target": "string_config_label_select.va",
