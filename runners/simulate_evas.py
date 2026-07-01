@@ -9116,6 +9116,26 @@ def check_v3_488_table_model_string_param_source(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_489_event_nested_or_expression(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (15.0, 0.1),
+                (40.0, 0.3),
+                (60.0, 0.4),
+                (80.0, 0.6),
+                (120.0, 0.8),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19630,6 +19650,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "487-table-model-2d-array-surface": check_v3_487_table_model_2d_array_surface,
     "v3_488_table_model_string_param_source": check_v3_488_table_model_string_param_source,
     "488-table-model-string-param-source": check_v3_488_table_model_string_param_source,
+    "v3_489_event_nested_or_expression": check_v3_489_event_nested_or_expression,
+    "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

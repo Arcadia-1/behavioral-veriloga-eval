@@ -11321,14 +11321,35 @@
 489-event-nested-or-expression: |
   version: 1
   task_id: v3_489_event_nested_or_expression
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: event_nested_or_expression_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - a
+    - b
+    - out
   syntax:
     must_include:
       - " or "
+      - "cross("
+      - "above("
+      - "timer("
+  sim_correct:
+    positive:
+      - solution/event_nested_or_expression.va
+    negative:
+      - negative_variants/neg_001_force_zero/event_nested_or_expression.va
+      - negative_variants/neg_002_wrong_threshold/event_nested_or_expression.va
+      - negative_variants/neg_003_reset_bias/event_nested_or_expression.va
+      - negative_variants/neg_004_metric_offset/event_nested_or_expression.va
+      - negative_variants/neg_005_scale_output/event_nested_or_expression.va
+    checks:
+      - nested_or_event_parse
+      - cross_above_timer_events_increment_state
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Nested analog event-or expression promoted with executable cross/above/timer behavior verification."
 490-event-task-function-state-update: |
   version: 1
   task_id: v3_490_event_task_function_state_update
