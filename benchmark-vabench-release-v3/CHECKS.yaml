@@ -11072,14 +11072,34 @@
 478-inherited-port-attribute-supply: |
   version: 1
   task_id: v3_478_inherited_port_attribute_supply
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: inherited_port_attribute_supply_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "inh_conn_prop_name"
+      - "inh_conn_def_value"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/inherited_port_attribute_supply.va
+    negative:
+      - negative_variants/neg_001_force_zero/inherited_port_attribute_supply.va
+      - negative_variants/neg_002_wrong_threshold/inherited_port_attribute_supply.va
+      - negative_variants/neg_003_reset_bias/inherited_port_attribute_supply.va
+      - negative_variants/neg_004_metric_offset/inherited_port_attribute_supply.va
+      - negative_variants/neg_005_scale_output/inherited_port_attribute_supply.va
+    checks:
+      - inherited_port_attribute_parse
+      - output_tracks_input_with_explicit_supplies
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Inherited supply-port attribute syntax promoted with explicit-supply behavioral verification."
 479-inherited-mfactor-parameter: |
   version: 1
   task_id: v3_479_inherited_mfactor_parameter

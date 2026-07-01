@@ -8945,6 +8945,25 @@ def check_v3_477_analog_node_alias_initial(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_478_inherited_port_attribute_supply(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.22),
+                (90.0, 0.52),
+                (130.0, -0.18),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19441,6 +19460,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "476-oomr-string-voltage-probe": check_v3_476_oomr_string_voltage_probe,
     "v3_477_analog_node_alias_initial": check_v3_477_analog_node_alias_initial,
     "477-analog-node-alias-initial": check_v3_477_analog_node_alias_initial,
+    "v3_478_inherited_port_attribute_supply": check_v3_478_inherited_port_attribute_supply,
+    "478-inherited-port-attribute-supply": check_v3_478_inherited_port_attribute_supply,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

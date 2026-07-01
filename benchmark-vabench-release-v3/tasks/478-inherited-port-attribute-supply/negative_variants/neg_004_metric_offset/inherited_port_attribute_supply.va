@@ -8,6 +8,6 @@ electrical out, in;
 (* inh_conn_prop_name = "gnd", inh_conn_def_value = "cds_globals.\gnd!" *) inout gnd;
 electrical vdd, gnd;
 analog begin
-    V(out, gnd) <+ transition(V(in, gnd), 0.0, 200p, 200p);
+    V(out, gnd) <+ transition(V(in, gnd) + 0.05, 0.0, 200p, 200p);
 end
 endmodule

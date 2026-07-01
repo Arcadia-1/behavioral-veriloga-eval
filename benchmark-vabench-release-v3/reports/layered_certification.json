@@ -47,8 +47,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 111,
-        "compile_supported_candidate": 32
+        "behavior_certified_extension": 112,
+        "compile_supported_candidate": 31
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 143
@@ -78,22 +78,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 444,
-    "behavior_certified_extension_count": 144,
+    "behavior_certified_count": 445,
+    "behavior_certified_extension_count": 145,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 144,
+      "behavior_certified_extension": 145,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 40,
+      "compile_supported_candidate": 39,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 50,
+    "compile_supported_candidate_count": 49,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 50,
-      "extension_behavior_certified_outside_original_300": 144,
+      "excluded_until_behavior_promotion": 49,
+      "extension_behavior_certified_outside_original_300": 145,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9186,15 +9186,15 @@
       "title": "Analog Node Alias Initial"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_inherited_port_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Declare inherited terminal attributes on supply-like ports.",
       "target": "inherited_port_attribute_supply.va",
