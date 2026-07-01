@@ -10590,16 +10590,41 @@
 459-do-while-loop-accumulator: |
   version: 1
   task_id: v3_459_do_while_loop_accumulator
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: do_while_loop_accumulator_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "do begin"
+      - "while (i < 3)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/do_while_loop_accumulator.va
+    negative:
+      - negative_variants/neg_001_force_zero/do_while_loop_accumulator.va
+      - negative_variants/neg_002_wrong_threshold/do_while_loop_accumulator.va
+      - negative_variants/neg_003_reset_bias/do_while_loop_accumulator.va
+      - negative_variants/neg_004_metric_offset/do_while_loop_accumulator.va
+      - negative_variants/neg_005_scale_output/do_while_loop_accumulator.va
+    checks:
+      - do_while_parse
+      - three_iteration_accumulator
+      - reset_clears_counter
+      - output_threshold_after_second_event
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; row compiles with current local EVAS."
+    - "Do-while control-flow accumulator behavior promoted to executable EVAS behavior candidate."
 460-analog-initial-block-state: |
   version: 1
   task_id: v3_460_analog_initial_block_state

@@ -5,16 +5,16 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **133**
-- Tasks with executable visible+hidden SCS evidence: **151**
-- Tasks with behavior checker evidence: **134**
+- SOP-ready tasks: **134**
+- Tasks with executable visible+hidden SCS evidence: **152**
+- Tasks with behavior checker evidence: **135**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 60
-- `hidden_scs_not_executable:include,instance,source`: 42
-- `missing_required_behavior_section`: 37
-- `visible_scs_not_executable:include,instance,source`: 42
+- `checker_syntax_only_no_behavior_score`: 59
+- `hidden_scs_not_executable:include,instance,source`: 41
+- `missing_required_behavior_section`: 36
+- `visible_scs_not_executable:include,instance,source`: 41
 
 ## Range Summary
 
@@ -25,7 +25,7 @@ Date: 2026-07-02
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
-| `459-470` | course-material gap-fill candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
+| `459-470` | course-material gap-fill candidates | 12 | 1 | 1 | 1 | `visible_scs_not_executable:include,instance,source`: 11<br>`hidden_scs_not_executable:include,instance,source`: 11<br>`missing_required_behavior_section`: 11<br>`checker_syntax_only_no_behavior_score`: 11 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 
 ## Highest Severity Finding
@@ -194,7 +194,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | True | - |
 | `457-nested-function-pipeline` | `syntax-extension-candidate` | True | - |
 | `458-recursive-function-candidate` | `syntax-extension-candidate` | True | - |
-| `459-do-while-loop-accumulator` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `459-do-while-loop-accumulator` | `syntax-extension-candidate` | True | - |
 | `460-analog-initial-block-state` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `461-vt-thermal-voltage-source` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `462-vt-temperature-argument` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

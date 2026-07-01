@@ -74,28 +74,28 @@
       ]
     },
     {
-      "complete_tests_count": 0,
+      "complete_tests_count": 1,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 0,
+      "fair_eval_count": 1,
       "range": "459-470",
-      "sop_ready_count": 0,
+      "sop_ready_count": 1,
       "task_count": 12,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          12
+          11
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          12
+          11
         ],
         [
           "missing_required_behavior_section",
-          12
+          11
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          12
+          11
         ]
       ]
     },
@@ -129,15 +129,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 151,
-    "fair_eval_count": 134,
+    "complete_tests_count": 152,
+    "fair_eval_count": 135,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 60,
-      "hidden_scs_not_executable:include,instance,source": 42,
-      "missing_required_behavior_section": 37,
-      "visible_scs_not_executable:include,instance,source": 42
+      "checker_syntax_only_no_behavior_score": 59,
+      "hidden_scs_not_executable:include,instance,source": 41,
+      "missing_required_behavior_section": 36,
+      "visible_scs_not_executable:include,instance,source": 41
     },
-    "sop_ready_count": 133,
+    "sop_ready_count": 134,
     "task_count": 194
   },
   "tasks": [
@@ -3839,20 +3839,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 459,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use do ... while loop syntax to accumulate bounded behavioral state.",
       "target": "do_while_loop_accumulator.va",

@@ -8632,6 +8632,35 @@ def check_v3_458_recursive_function_candidate(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_459_do_while_loop_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.0),
+                (32.0, 0.9),
+                (52.0, 0.9),
+                (72.0, 0.0),
+                (92.0, 0.0),
+                (112.0, 0.9),
+            ],
+            "metric": [
+                (12.0, 3.0),
+                (32.0, 6.0),
+                (52.0, 9.0),
+                (72.0, 0.0),
+                (92.0, 3.0),
+                (112.0, 6.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19102,6 +19131,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "457-nested-function-pipeline": check_v3_457_nested_function_pipeline,
     "v3_458_recursive_function_candidate": check_v3_458_recursive_function_candidate,
     "458-recursive-function-candidate": check_v3_458_recursive_function_candidate,
+    "v3_459_do_while_loop_accumulator": check_v3_459_do_while_loop_accumulator,
+    "459-do-while-loop-accumulator": check_v3_459_do_while_loop_accumulator,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
