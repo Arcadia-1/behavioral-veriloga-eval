@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -10,6 +11,7 @@ V3 = ROOT / "benchmark-vabench-release-v3"
 REPORT = V3 / "reports" / "layered_certification.json"
 TASKS = V3 / "TASKS.json"
 SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
+CHECKS = V3 / "CHECKS.yaml"
 
 
 def test_v3_layered_certification_counts_match_task_manifest() -> None:
@@ -73,3 +75,45 @@ def test_v3_layered_certification_claim_boundary_is_explicit() -> None:
     assert "Tasks 301-494 are extension candidates" in boundary
     assert "do not certify continuous-time numeric accuracy" in boundary
     assert "do not certify MNA/KCL solving behavior" in boundary
+
+
+def _checks_block(checks_text: str, task_key: str) -> str:
+    lines = checks_text.splitlines()
+    start: int | None = None
+    for index, line in enumerate(lines):
+        if line == f"{task_key}: |":
+            start = index + 1
+            break
+    assert start is not None, f"missing CHECKS block for {task_key}"
+    end = len(lines)
+    for index in range(start, len(lines)):
+        if re.match(r"^\d{3}-", lines[index]):
+            end = index
+            break
+    return "\n".join(lines[start:end])
+
+
+def test_staged_extension_rows_have_traceable_evas_issues() -> None:
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    checks_text = CHECKS.read_text(encoding="utf-8")
+    issue_url = "https://github.com/Arcadia-1/EVAS/issues/"
+
+    staged_tasks = [
+        row["task"]
+        for row in sop_audit["tasks"]
+        if "checker_syntax_only_no_behavior_score" in row.get("issues", [])
+    ]
+    assert len(staged_tasks) == 41
+
+    missing_checks_url: list[str] = []
+    missing_audit_url: list[str] = []
+    for task_key in staged_tasks:
+        if issue_url not in _checks_block(checks_text, task_key):
+            missing_checks_url.append(task_key)
+        audit_path = V3 / "tasks" / task_key / "AUDIT.md"
+        assert audit_path.exists(), f"missing AUDIT.md for {task_key}"
+        if issue_url not in audit_path.read_text(encoding="utf-8"):
+            missing_audit_url.append(task_key)
+
+    assert missing_checks_url == []
+    assert missing_audit_url == []

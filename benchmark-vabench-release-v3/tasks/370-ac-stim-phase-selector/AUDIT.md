@@ -11,4 +11,4 @@ This task belongs to the noise/analysis extension set. It is not part of the ori
 - Complete tests: visible/hidden harness placeholders and five concrete negative variants are materialized for evaluator integration.
 - Fair evaluation: negatives are intended to compile under an AC/noise-capable simulator while changing small behavior details that should fail full checks.
 
-Certification status: noise-analysis-candidate. EVAS currently parses these functions but does not compile them; track EVAS issue #23 before EVAS certification.
+Certification status: noise-analysis-candidate. EVAS currently parses these functions but does not compile them; track EVAS issue #23: https://github.com/Arcadia-1/EVAS/issues/23 before EVAS certification.
