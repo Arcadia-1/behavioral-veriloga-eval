@@ -9228,16 +9228,45 @@
 414-parameter-range-real-control: |
   version: 1
   task_id: v3_414_parameter_range_real_control
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: parameter_range_real_control_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "from ["
+      - "gain_limited = 0.8"
+      - "max_count = 8"
+      - "(count_q + 1) % max_count"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/parameter_range_real_control.va
+    negative:
+      - negative_variants/neg_001_force_zero/parameter_range_real_control.va
+      - negative_variants/neg_002_wrong_threshold/parameter_range_real_control.va
+      - negative_variants/neg_003_reset_bias/parameter_range_real_control.va
+      - negative_variants/neg_004_metric_offset/parameter_range_real_control.va
+      - negative_variants/neg_005_scale_output/parameter_range_real_control.va
+    checks:
+      - ranged_real_parameter_scales_input
+      - ranged_integer_parameter_bounds_counter_modulus
+      - metric_reports_incremented_counter
+      - startup_count_bias_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Parameter declaration language extension promoted to executable EVAS behavior candidate."
 415-logic-vector-assign-slice: |
   version: 1
   task_id: v3_415_logic_vector_assign_slice

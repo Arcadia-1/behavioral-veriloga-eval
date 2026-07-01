@@ -47,8 +47,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 79,
-        "compile_supported_candidate": 64
+        "behavior_certified_extension": 80,
+        "compile_supported_candidate": 63
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 143
@@ -78,22 +78,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 410,
-    "behavior_certified_extension_count": 110,
+    "behavior_certified_count": 411,
+    "behavior_certified_extension_count": 111,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 110,
+      "behavior_certified_extension": 111,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 74,
+      "compile_supported_candidate": 73,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 84,
+    "compile_supported_candidate_count": 83,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 84,
-      "extension_behavior_certified_outside_original_300": 110,
+      "excluded_until_behavior_promotion": 83,
+      "extension_behavior_certified_outside_original_300": 111,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -7970,15 +7970,15 @@
       "title": "While Loop Array Sum"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_preprocessor_control_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use parameter range constraints for real-valued controls.",
       "target": "parameter_range_real_control.va",

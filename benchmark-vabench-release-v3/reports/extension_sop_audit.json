@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 40,
+      "complete_tests_count": 41,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 40,
+      "fair_eval_count": 41,
       "range": "373-434",
-      "sop_ready_count": 39,
+      "sop_ready_count": 40,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          22
+          21
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          22
+          21
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          21
+          20
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          21
+          20
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 112,
-    "fair_eval_count": 111,
+    "complete_tests_count": 113,
+    "fair_eval_count": 112,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 83,
-      "hidden_scs_not_executable:include,instance,source": 81,
-      "missing_required_behavior_section": 82,
-      "visible_scs_not_executable:include,instance,source": 81
+      "checker_syntax_only_no_behavior_score": 82,
+      "hidden_scs_not_executable:include,instance,source": 80,
+      "missing_required_behavior_section": 81,
+      "visible_scs_not_executable:include,instance,source": 80
     },
-    "sop_ready_count": 110,
+    "sop_ready_count": 111,
     "task_count": 194
   },
   "tasks": [
@@ -2760,20 +2760,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 414,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use parameter range constraints for real-valued controls.",
       "target": "parameter_range_real_control.va",
