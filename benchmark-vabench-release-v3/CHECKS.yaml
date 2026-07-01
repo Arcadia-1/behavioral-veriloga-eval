@@ -11418,8 +11418,12 @@
   syntax:
     must_include:
       - "laplace_nd"
+      - "{1.0}"
+      - "{1.0, 1e-6}"
+    must_not_include:
+      - "transition("
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Continuous-time transfer-function smoke tests staged; behavior certification requires dynamic-operator support tracked by EVAS issue #44."
 494-continuous-zi-nd-filter: |
   version: 1
   task_id: v3_494_continuous_zi_nd_filter

@@ -3,6 +3,6 @@
 
 module continuous_laplace_nd_filter (input electrical in, output electrical out);
 analog begin
-    V(out) <+ laplace_nd(V(in), {1.0}, {1.0, 1e-6});
+    V(out) <+ laplace_nd(V(in) + 0.1, {1.0}, {1.0, 1e-6});
 end
 endmodule
