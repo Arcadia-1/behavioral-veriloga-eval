@@ -3114,13 +3114,17 @@ def _checker_fstring_range_values(node: ast.AST) -> set[str]:
         not isinstance(generator.iter, ast.Call)
         or not isinstance(generator.iter.func, ast.Name)
         or generator.iter.func.id != "range"
-        or len(generator.iter.args) != 1
-        or not isinstance(generator.iter.args[0], ast.Constant)
-        or not isinstance(generator.iter.args[0].value, int)
+        or len(generator.iter.args) not in {1, 2}
+        or not all(isinstance(arg, ast.Constant) and isinstance(arg.value, int) for arg in generator.iter.args)
     ):
         return set()
-    stop = generator.iter.args[0].value
-    if stop < 0 or stop > 256:
+    if len(generator.iter.args) == 1:
+        start = 0
+        stop = generator.iter.args[0].value
+    else:
+        start = generator.iter.args[0].value
+        stop = generator.iter.args[1].value
+    if start < 0 or stop < start or stop > 256:
         return set()
 
     elt = node.elt
@@ -3144,7 +3148,7 @@ def _checker_fstring_range_values(node: ast.AST) -> set[str]:
         return set()
 
     names: set[str] = set()
-    for idx in range(stop):
+    for idx in range(start, stop):
         text = "".join(str(idx) if part is None else part for part in parts).strip()
         if text:
             names.add(text)
@@ -3162,13 +3166,17 @@ def _checker_for_loop_fstring_values(tree: ast.AST) -> set[str]:
             not isinstance(node.iter, ast.Call)
             or not isinstance(node.iter.func, ast.Name)
             or node.iter.func.id != "range"
-            or len(node.iter.args) != 1
-            or not isinstance(node.iter.args[0], ast.Constant)
-            or not isinstance(node.iter.args[0].value, int)
+            or len(node.iter.args) not in {1, 2}
+            or not all(isinstance(arg, ast.Constant) and isinstance(arg.value, int) for arg in node.iter.args)
         ):
             continue
-        stop = node.iter.args[0].value
-        if stop < 0 or stop > 256:
+        if len(node.iter.args) == 1:
+            start = 0
+            stop = node.iter.args[0].value
+        else:
+            start = node.iter.args[0].value
+            stop = node.iter.args[1].value
+        if start < 0 or stop < start or stop > 256:
             continue
         for child in ast.walk(node):
             if not isinstance(child, ast.JoinedStr):
@@ -3190,7 +3198,7 @@ def _checker_for_loop_fstring_values(tree: ast.AST) -> set[str]:
                     break
             if not saw_loop_value or not parts:
                 continue
-            for idx in range(stop):
+            for idx in range(start, stop):
                 text = "".join(str(idx) if part is None else part for part in parts).strip()
                 if text:
                     names.add(text)
@@ -8545,19 +8553,53 @@ def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def _stable_bits_tuple(row: dict[str, float], bit_names: list[str]) -> tuple[int, ...] | None:
+    bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
+    if any(bit is None for bit in bits):
+        return None
+    return tuple(int(bit) for bit in bits if bit is not None)
+
+
 def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "aout7b", "aout7b5", "aout8b"}
+    bit_names = [f"d{i}" for i in range(9)]
+    required = {"time", "aout7b", "aout7b5", "aout8b", *bit_names}
     if not rows or not required.issubset(rows[0]):
         return False, "missing weighted decoder outputs"
-    return _sample_many(
-        rows,
-        {
-            "aout7b": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1727941), (35.0, 0.4963235)],
-            "aout7b5": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1691176), (35.0, 0.4963235)],
-            "aout8b": [(5.0, -0.4981618), (15.0, -0.1636029), (25.0, 0.1709559), (35.0, 0.4981618)],
-        },
-        tol=0.01,
-    )
+    ladder_weights = [1.0, 2.0, 4.0, 8.0, 8.0, 16.0, 32.0, 64.0]
+    denom = 2.0 * (sum(ladder_weights) + 1.0)
+    last_bits: tuple[int, ...] | None = None
+    settle_until = 0.0
+    checked = 0
+    max_err = 0.0
+    worst_code = ""
+    for row in rows:
+        t = row.get("time")
+        if t is None:
+            continue
+        bits = _stable_bits_tuple(row, bit_names)
+        if bits is None:
+            continue
+        if last_bits is None or bits != last_bits:
+            last_bits = bits
+            settle_until = t + 0.08e-9
+            continue
+        if t < settle_until:
+            continue
+        bipolar = [1.0 if bit else -1.0 for bit in bits]
+        paired_lsb = 1.0 if bits[0] and bits[1] else -1.0 if not bits[0] and not bits[1] else 0.0
+        expected = {
+            "aout7b": sum(weight * bipolar[idx + 1] for idx, weight in enumerate(ladder_weights)) / denom,
+            "aout8b": (0.5 * bipolar[0] + sum(weight * bipolar[idx + 1] for idx, weight in enumerate(ladder_weights))) / denom,
+            "aout7b5": (paired_lsb + sum(weight * bipolar[idx + 2] for idx, weight in enumerate(ladder_weights[1:]))) / denom,
+        }
+        err = max(abs(row[name] - value) for name, value in expected.items())
+        if err > max_err:
+            max_err = err
+            worst_code = "".join(str(bit) for bit in bits)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_weighted_decoder_rows={checked}"
+    return max_err <= 0.025, f"checked={checked} max_weighted7b5_error={max_err:.5f} worst_code={worst_code}"
 
 
 def check_v3_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9111,14 +9153,46 @@ def check_v3_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "rdy", "din1", "din2", "din3", "din4", "din5", "din6", "din7", "aout"}
+    bit_names = [f"din{i}" for i in range(1, 8)]
+    required = {"time", "rdy", "aout", *bit_names}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 7b dac ready signals"
-    return _sample_many(
-        rows,
-        {"aout": [(0.5, 0.0), (1.5, -0.9), (2.5, 0.2860465), (3.5, 0.8720930)]},
-        tol=0.02,
-    )
+    vth = 0.45
+    vdd = 0.9
+    weights_by_bit = [0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0]
+    total_weight = sum(weights_by_bit) + 1.0
+    armed = False
+    expected = 0.0
+    prev_rdy = rows[0].get("rdy", 0.0)
+    settle_until = 0.0
+    checked = 0
+    edge_count = 0
+    max_err = 0.0
+    for row in rows:
+        t = row.get("time")
+        rdy = row.get("rdy")
+        if t is None or rdy is None:
+            continue
+        if prev_rdy is not None and prev_rdy <= vth and rdy > vth:
+            edge_count += 1
+            if not armed:
+                armed = True
+                expected = 0.0
+            else:
+                bits = _stable_bits_tuple(row, bit_names)
+                if bits is not None:
+                    switched = sum(float(bit) * weight for bit, weight in zip(bits, weights_by_bit))
+                    expected = (switched / total_weight) * 2.0 * vdd - vdd
+            settle_until = t + 0.08e-9
+        prev_rdy = rdy
+        if t < settle_until:
+            continue
+        err = abs(row["aout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20 or edge_count < 3:
+        return False, f"insufficient_ready_dac_rows={checked} edges={edge_count}"
+    return max_err <= 0.03, f"checked={checked} ready_edges={edge_count} max_ready_dac_error={max_err:.5f}"
 
 
 def check_v3_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9451,13 +9525,53 @@ def check_v3_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac serial 16b nobridge signals"
-    return _sample_many(
-        rows,
-        {
-            "out": [(0.5, -1.1), (1.1, -0.1290701), (2.1, -0.1290701), (3.1, 0.1136623), (4.1, 0.3563948)],
-            "clk_sample": [(0.1, 1.1), (0.35, 0.0), (0.8, 1.1)],
-        },
-        tol=0.025,
+    vcm = 0.55
+    vdd = 1.1
+    prefix_weights = [64.0, 32.0, 16.0, 16.0, 8.0]
+    continuation_weights = [4.0, 2.0, 1.0, 1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.015625]
+    total_weight = sum(prefix_weights) + sum(continuation_weights) + 0.015625
+    state = 0.0
+    counter = 1
+    expected = -vdd
+    prev_sample = rows[0].get("clk_sample", 0.0)
+    prev_ready = rows[0].get("clk_sarready", 0.0)
+    settle_until = 0.05e-9
+    checked = 0
+    ready_edges = 0
+    sample_resets = 0
+    max_err = 0.0
+    for row in rows:
+        t = row.get("time")
+        sample = row.get("clk_sample")
+        ready = row.get("clk_sarready")
+        data = row.get("data")
+        if t is None or sample is None or ready is None or data is None:
+            continue
+        if prev_sample is not None and prev_sample > vcm and sample <= vcm:
+            state = 0.0
+            counter = 1
+            expected = -vdd
+            sample_resets += 1
+            settle_until = t + 0.05e-9
+        if prev_ready is not None and prev_ready > vcm and ready <= vcm:
+            if counter <= len(prefix_weights) and data > vcm:
+                state += prefix_weights[counter - 1] / total_weight
+            counter += 1
+            expected = state * 2.0 * vdd - vdd
+            ready_edges += 1
+            settle_until = t + 0.05e-9
+        prev_sample = sample
+        prev_ready = ready
+        if t < settle_until:
+            continue
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20 or ready_edges < 4 or sample_resets < 1:
+        return False, f"insufficient_serial_dac_rows={checked} ready_edges={ready_edges} sample_resets={sample_resets}"
+    return max_err <= 0.04, (
+        f"checked={checked} ready_edges={ready_edges} sample_resets={sample_resets} "
+        f"max_serial_dac_error={max_err:.5f}"
     )
 
 
