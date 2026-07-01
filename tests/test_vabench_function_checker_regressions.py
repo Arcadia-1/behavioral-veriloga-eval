@@ -2290,6 +2290,38 @@ def test_v3_task_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
 
 
+def test_v3_file_io_checkers_follow_hidden_stimulus_values() -> None:
+    def file_gate_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.9
+        return (0.9 if row["vin"] > 0.45 else 0.0), 0.9
+
+    def input_fn(time_ns: float) -> tuple[float, float, float]:
+        return (
+            _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.82), (100.0, 0.20), (200.0, 0.55), (300.0, 0.10), (400.0, 0.95)],
+            ),
+            0.0,
+            0.9 if 230.0 <= time_ns <= 289.0 else 0.0,
+        )
+
+    checkers = [
+        sim.check_v3_379_file_fgets_config_loader,
+        sim.check_v3_380_file_feof_line_counter,
+        sim.check_v3_381_file_fseek_offset_reader,
+        sim.check_v3_382_file_ftell_position_meter,
+        sim.check_v3_383_file_rewind_second_pass,
+        sim.check_v3_384_file_fopen_mode_selector,
+    ]
+    for checker in checkers:
+        good_rows = _task_clocked_rows(file_gate_update, input_fn)
+        for row in good_rows:
+            row["metric"] = 0.9
+        assert checker(good_rows)[0]
+        assert not checker(_task_clocked_rows(file_gate_update, input_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

@@ -77,12 +77,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 376-task-reset-sequencer,376,Task Reset Sequencer,syntax-extension-candidate,task_reset_sequencer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 377-task-stateful-threshold-update,377,Task Stateful Threshold Update,syntax-extension-candidate,task_stateful_threshold_update.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 378-task-metric-normalizer,378,Task Metric Normalizer,syntax-extension-candidate,task_metric_normalizer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-379-file-fgets-config-loader,379,File Fgets Config Loader,syntax-extension-candidate,file_fgets_config_loader.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-380-file-feof-line-counter,380,File Feof Line Counter,syntax-extension-candidate,file_feof_line_counter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-381-file-fseek-offset-reader,381,File Fseek Offset Reader,syntax-extension-candidate,file_fseek_offset_reader.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-382-file-ftell-position-meter,382,File Ftell Position Meter,syntax-extension-candidate,file_ftell_position_meter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-383-file-rewind-second-pass,383,File Rewind Second Pass,syntax-extension-candidate,file_rewind_second_pass.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-384-file-fopen-mode-selector,384,File Fopen Mode Selector,syntax-extension-candidate,file_fopen_mode_selector.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+379-file-fgets-config-loader,379,File Fgets Config Loader,syntax-extension-candidate,file_fgets_config_loader.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+380-file-feof-line-counter,380,File Feof Line Counter,syntax-extension-candidate,file_feof_line_counter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+381-file-fseek-offset-reader,381,File Fseek Offset Reader,syntax-extension-candidate,file_fseek_offset_reader.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+382-file-ftell-position-meter,382,File Ftell Position Meter,syntax-extension-candidate,file_ftell_position_meter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+383-file-rewind-second-pass,383,File Rewind Second Pass,syntax-extension-candidate,file_rewind_second_pass.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+384-file-fopen-mode-selector,384,File Fopen Mode Selector,syntax-extension-candidate,file_fopen_mode_selector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 385-table-model-linear-gain,385,Table Model Linear Gain,syntax-extension-candidate,table_model_linear_gain.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 386-table-model-clamped-transfer,386,Table Model Clamped Transfer,syntax-extension-candidate,table_model_clamped_transfer.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 387-table-model-threshold-map,387,Table Model Threshold Map,syntax-extension-candidate,table_model_threshold_map.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical

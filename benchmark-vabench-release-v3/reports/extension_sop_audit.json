@@ -49,7 +49,7 @@
           7
         ]
       ],
-      "visible_hidden_distinct_count": 12
+      "visible_hidden_distinct_count": 18
     },
     {
       "complete_tests_count": 24,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 65,
+    "sop_ready_visible_hidden_identical_count": 59,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 111,
-    "visible_hidden_identical_count": 83,
+    "visible_hidden_distinct_count": 117,
+    "visible_hidden_identical_count": 77,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 83
+      "visible_hidden_identical": 77
     }
   },
   "tasks": [
@@ -2024,11 +2024,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fgets Config Loader",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2049,11 +2048,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Feof Line Counter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2074,11 +2072,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fseek Offset Reader",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2099,11 +2096,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Ftell Position Meter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2124,11 +2120,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Rewind Second Pass",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2149,11 +2144,10 @@
       "tier": "syntax-extension-candidate",
       "title": "File Fopen Mode Selector",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

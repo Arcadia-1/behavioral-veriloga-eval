@@ -9550,154 +9550,41 @@ def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
-def check_v3_379_file_fgets_config_loader(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+def _check_v3_file_io_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.9
+        return (0.9 if row["vin"] > 0.45 else 0.0), 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.9},
     )
+
+
+def check_v3_379_file_fgets_config_loader(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_380_file_feof_line_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_381_file_fseek_offset_reader(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_382_file_ftell_position_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_383_file_rewind_second_pass(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_384_file_fopen_mode_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
