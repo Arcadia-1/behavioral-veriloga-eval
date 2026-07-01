@@ -3350,7 +3350,7 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         "config_latch_128b_static_enable": frozenset({"time", "en"})
         | frozenset({f"d{idx}" for idx in range(128)})
         | frozenset({f"q{idx}" for idx in range(128)}),
-        "config_shift_register_64b": frozenset({"time", "serial_in"})
+        "config_shift_register_64b": frozenset({"time", "rst_n", "serial_in"})
         | frozenset({f"q{idx}" for idx in range(64)}),
         "bus_splitter_256_to_16x16": frozenset({"time"})
         | frozenset({f"in{idx}" for idx in range(256)})
@@ -14301,19 +14301,31 @@ def check_config_latch_128b_static_enable(rows: list[dict[str, float]]) -> tuple
 def check_config_shift_register_64b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     serial_key = "serial_in" if rows and "serial_in" in rows[0] else "sin"
     required = {"time", serial_key, *{f"q{i}" for i in range(64)}}
+    has_reset = bool(rows and "rst_n" in rows[0])
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
     samples = _sample_rows_every_10ns(rows)
     history: list[int] = []
     errors = 0
+    reset_samples = 0
     for row in samples:
+        if has_reset and row["rst_n"] <= 0.45:
+            history = []
+            reset_samples += 1
+            for idx in range(64):
+                if row[f"q{idx}"] > 0.45:
+                    errors += 1
+            continue
         history.insert(0, 1 if row[serial_key] > 0.45 else 0)
         history = history[:64]
         for idx in range(min(len(history), 64)):
             if (row[f"q{idx}"] > 0.45) != (history[idx] == 1):
                 errors += 1
-    return errors == 0 and len(samples) >= 10, f"checked={len(samples)} bit_errors={errors}"
+    return (
+        errors == 0 and len(samples) >= 10,
+        f"checked={len(samples)} reset_samples={reset_samples} bit_errors={errors}",
+    )
 
 
 def check_bus_splitter_256_to_16x16(rows: list[dict[str, float]]) -> tuple[bool, str]:
