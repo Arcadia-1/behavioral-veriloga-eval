@@ -9931,16 +9931,40 @@
 434-repeat-loop-accumulator: |
   version: 1
   task_id: v3_434_repeat_loop_accumulator
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: repeat_loop_accumulator_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "repeat"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/repeat_loop_accumulator.va
+    negative:
+      - negative_variants/neg_001_force_zero/repeat_loop_accumulator.va
+      - negative_variants/neg_002_wrong_threshold/repeat_loop_accumulator.va
+      - negative_variants/neg_003_reset_bias/repeat_loop_accumulator.va
+      - negative_variants/neg_004_metric_offset/repeat_loop_accumulator.va
+      - negative_variants/neg_005_scale_output/repeat_loop_accumulator.va
+    checks:
+      - repeat_loop_parse
+      - accumulator_count_sequence
+      - output_threshold_from_accumulator
+      - reset_clears_count_and_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Repeat-loop accumulator behavior promoted to executable EVAS behavior candidate."
 435-ddt-voltage-derivative-source: |
   version: 1
   task_id: v3_435_ddt_voltage_derivative_source

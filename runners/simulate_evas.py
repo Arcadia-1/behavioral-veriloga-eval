@@ -8424,6 +8424,31 @@ def check_v3_433_preprocessor_ifndef_elsif_undef(rows: list[dict[str, float]]) -
     )
 
 
+def check_v3_434_repeat_loop_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (130.0, 0.0),
+                (230.0, 0.9),
+                (330.0, 0.0),
+                (430.0, 0.0),
+            ],
+            "metric": [
+                (130.0, 4.0),
+                (230.0, 8.0),
+                (330.0, 0.0),
+                (430.0, 4.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18876,6 +18901,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "432-hierarchy-nested-parameter-chain": check_v3_432_hierarchy_nested_parameter_chain,
     "v3_433_preprocessor_ifndef_elsif_undef": check_v3_433_preprocessor_ifndef_elsif_undef,
     "433-preprocessor-ifndef-elsif-undef": check_v3_433_preprocessor_ifndef_elsif_undef,
+    "v3_434_repeat_loop_accumulator": check_v3_434_repeat_loop_accumulator,
+    "434-repeat-loop-accumulator": check_v3_434_repeat_loop_accumulator,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

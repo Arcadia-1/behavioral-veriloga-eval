@@ -25,7 +25,7 @@ analog begin
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
+            metric_v = 0.25;
             count_q = 0;
         end else begin
             acc_q = 0;
@@ -35,7 +35,6 @@ analog begin
             out_v = acc_q > 4 ? vhi : 0.0;
             metric_v = acc_q;
             count_q = count_q + 1;
-            if (V(rst) > vth) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
