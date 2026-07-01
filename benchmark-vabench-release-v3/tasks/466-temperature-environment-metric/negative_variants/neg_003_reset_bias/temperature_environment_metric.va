@@ -27,8 +27,8 @@ analog begin
             metric_v = 0.0;
             count_q = 0;
         end else begin
-            out_v = (V(rst) > 0.45 ? 0.25 : ($temperature / 300.0));
-            metric_v = $temperature;
+            out_v = $temperature / 300.0;
+            metric_v = $temperature + 10.0;
             count_q = count_q + 1;
         end
     end

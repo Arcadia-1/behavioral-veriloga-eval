@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "temperature_environment_metric.va"
+
+Vvin (vin 0) vsource dc=0.0
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 9n 0.0 10n 1.0 14n 1.0 15n 0.0 49n 0.0 50n 1.0 54n 1.0 55n 0.0 80n 0.0]
+Vmode (mode 0) vsource dc=0.0
+Vrst (rst 0) vsource dc=0.0
+
+XDUT (vin clk mode rst out metric) temperature_environment_metric
+
 tran tran stop=80n
 save vin clk mode rst out metric

@@ -8792,6 +8792,36 @@ def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_466_temperature_environment_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    temp_expected = 300.15
+    out_expected = temp_expected / 300.0
+    checks = [
+        (12.0, out_expected, temp_expected),
+        (52.0, out_expected, temp_expected),
+        (72.0, 0.0, 0.0),
+        (92.0, out_expected, temp_expected),
+        (132.0, out_expected, temp_expected),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, expected_metric in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        out_tol = 0.04 if expected_out else 0.04
+        metric_tol = 2.0 if expected_metric else 0.04
+        if abs(out - expected_out) > out_tol:
+            return False, f"out@{time_ns:g}ns={out:.4f} expected={expected_out:.4f} tol={out_tol:.4f}"
+        if abs(metric - expected_metric) > metric_tol:
+            return False, f"metric@{time_ns:g}ns={metric:.4f} expected={expected_metric:.4f} tol={metric_tol:.4f}"
+        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.2f}")
+    return True, " ".join(observed)
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19274,6 +19304,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "463-discontinuity-event-announcement": check_v3_463_discontinuity_event_announcement,
     "v3_465_port_connected_output_enable": check_v3_465_port_connected_output_enable,
     "465-port-connected-output-enable": check_v3_465_port_connected_output_enable,
+    "v3_466_temperature_environment_metric": check_v3_466_temperature_environment_metric,
+    "466-temperature-environment-metric": check_v3_466_temperature_environment_metric,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

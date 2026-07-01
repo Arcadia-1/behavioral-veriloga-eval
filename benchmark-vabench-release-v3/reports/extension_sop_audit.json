@@ -74,28 +74,28 @@
       ]
     },
     {
-      "complete_tests_count": 7,
+      "complete_tests_count": 8,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 6,
+      "fair_eval_count": 7,
       "range": "459-470",
-      "sop_ready_count": 6,
+      "sop_ready_count": 7,
       "task_count": 12,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          6
+          5
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "missing_required_behavior_section",
-          5
+          4
         ]
       ]
     },
@@ -129,15 +129,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 158,
-    "fair_eval_count": 140,
+    "complete_tests_count": 159,
+    "fair_eval_count": 141,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 54,
-      "hidden_scs_not_executable:include,instance,source": 35,
-      "missing_required_behavior_section": 30,
-      "visible_scs_not_executable:include,instance,source": 35
+      "checker_syntax_only_no_behavior_score": 53,
+      "hidden_scs_not_executable:include,instance,source": 34,
+      "missing_required_behavior_section": 29,
+      "visible_scs_not_executable:include,instance,source": 34
     },
-    "sop_ready_count": 139,
+    "sop_ready_count": 140,
     "task_count": 194
   },
   "tasks": [
@@ -4002,20 +4002,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 466,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $temperature as an environment-dependent metric.",
       "target": "temperature_environment_metric.va",
