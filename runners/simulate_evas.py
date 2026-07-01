@@ -8194,6 +8194,31 @@ def check_v3_424_file_fscanf_multi_column_profile(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_425_string_swrite_label_builder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (130.0, 0.9),
+                (230.0, 0.0),
+                (330.0, 0.0),
+                (430.0, 0.9),
+            ],
+            "metric": [
+                (130.0, 0.0),
+                (230.0, 1.0),
+                (330.0, 0.0),
+                (430.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18628,6 +18653,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "423-file-profile-replay-controller": check_v3_423_file_profile_replay_controller,
     "v3_424_file_fscanf_multi_column_profile": check_v3_424_file_fscanf_multi_column_profile,
     "424-file-fscanf-multi-column-profile": check_v3_424_file_fscanf_multi_column_profile,
+    "v3_425_string_swrite_label_builder": check_v3_425_string_swrite_label_builder,
+    "425-string-swrite-label-builder": check_v3_425_string_swrite_label_builder,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

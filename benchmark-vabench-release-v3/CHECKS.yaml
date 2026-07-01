@@ -9599,16 +9599,43 @@
 425-string-swrite-label-builder: |
   version: 1
   task_id: v3_425_string_swrite_label_builder
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: string_swrite_label_builder_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "string"
       - "$swrite"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/string_swrite_label_builder.va
+    negative:
+      - negative_variants/neg_001_force_zero/string_swrite_label_builder.va
+      - negative_variants/neg_002_wrong_threshold/string_swrite_label_builder.va
+      - negative_variants/neg_003_reset_bias/string_swrite_label_builder.va
+      - negative_variants/neg_004_metric_offset/string_swrite_label_builder.va
+      - negative_variants/neg_005_scale_output/string_swrite_label_builder.va
+    checks:
+      - string_variable_parse
+      - swrite_format_parse
+      - clocked_label_update_path_executes
+      - threshold_output_high_low
+      - metric_count_sequence
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "String swrite label-builder behavior promoted to executable EVAS behavior candidate."
 426-string-sformat-mode-tag: |
   version: 1
   task_id: v3_426_string_sformat_mode_tag
