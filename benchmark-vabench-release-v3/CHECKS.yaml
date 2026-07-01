@@ -5858,9 +5858,10 @@
 332-above-window-qualifier: |
   version: 1
   task_id: v3_332_above_window_qualifier
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5872,10 +5873,26 @@
   syntax:
     must_include:
       - "above("
+      - "last_crossing("
+      - "cross("
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/above_window_qualifier.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/above_window_qualifier.va
+      - negative_variants/neg_002_drive_metric_zero/above_window_qualifier.va
+      - negative_variants/neg_003_reset_polarity_wrong/above_window_qualifier.va
+      - negative_variants/neg_004_logic_threshold_shifted/above_window_qualifier.va
+      - negative_variants/neg_005_output_scale_low/above_window_qualifier.va
+    checks:
+      - above_sets_threshold_latch
+      - last_crossing_qualifies_bounded_rising_window
+      - reset_clears_window_history
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 333-last-crossing-period-meter: |
   version: 1
   task_id: v3_333_last_crossing_period_meter

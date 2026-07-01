@@ -2,28 +2,28 @@
   "date": "2026-07-01",
   "range_summary": [
     {
-      "complete_tests_count": 31,
+      "complete_tests_count": 32,
       "description": "language-semantics voltage-domain candidates",
-      "fair_eval_count": 31,
+      "fair_eval_count": 32,
       "range": "301-340",
-      "sop_ready_count": 31,
+      "sop_ready_count": 32,
       "task_count": 40,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          9
+          8
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          9
+          8
         ],
         [
           "generic_prompt_template",
-          9
+          8
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          9
+          8
         ]
       ]
     },
@@ -179,18 +179,18 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 31,
-    "fair_eval_count": 31,
+    "complete_tests_count": 32,
+    "fair_eval_count": 32,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 163,
-      "generic_prompt_template": 9,
-      "hidden_scs_not_executable:include,instance,source": 131,
+      "checker_syntax_only_no_behavior_score": 162,
+      "generic_prompt_template": 8,
+      "hidden_scs_not_executable:include,instance,source": 130,
       "hidden_scs_not_executable:include,instance,source,save": 32,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 131,
+      "visible_scs_not_executable:include,instance,source": 130,
       "visible_scs_not_executable:include,instance,source,save": 32
     },
-    "sop_ready_count": 31,
+    "sop_ready_count": 32,
     "task_count": 194
   },
   "tasks": [
@@ -909,20 +909,15 @@
     },
     {
       "certification_scope": "extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "generic_prompt_template",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 332,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use above() and last_crossing() for threshold/edge timing behavior.",
       "target": "above_window_qualifier.va",

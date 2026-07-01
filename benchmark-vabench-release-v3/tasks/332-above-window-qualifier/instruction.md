@@ -19,9 +19,23 @@ module above_window_qualifier (
 
 ## Required Behavior
 
-Use above() and last_crossing() for threshold/edge timing behavior.
+Use `above()` and `last_crossing()` to qualify whether two rising threshold crossings arrive inside a timing window.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `@(above(V(vin) - vth))` sets a latch and drives `out` high
+- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
+- `@(cross(V(vin) - vth, +1, 0.0, 1e-12))` records `lc_q`
+- when two consecutive rising crossings are separated by at least `120 ns` and at most `260 ns`, drive `metric = 0.9`
+- otherwise drive `metric = 0.0`
+- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time
+- drive `out = 0.9` when the latch is set, otherwise `0.0`
+
+The hidden testbench drives three rising threshold crossings: the second is inside the qualification window and the third is too late after reset. The evaluator checks latch behavior and the bounded timing-window metric.
 
 ## Output
 

@@ -7463,6 +7463,33 @@ def check_v3_331_above_threshold_latch(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
+def check_v3_332_above_window_qualifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (120.0, 0.9),
+                (220.0, 0.9),
+                (320.0, 0.9),
+                (460.0, 0.0),
+                (710.0, 0.9),
+            ],
+            "metric": [
+                (120.0, 0.0),
+                (320.0, 0.9),
+                (460.0, 0.0),
+                (710.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16422,6 +16449,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "330-idtmod-clock-phase-meter": check_v3_330_idtmod_clock_phase_meter,
     "v3_331_above_threshold_latch": check_v3_331_above_threshold_latch,
     "331-above-threshold-latch": check_v3_331_above_threshold_latch,
+    "v3_332_above_window_qualifier": check_v3_332_above_window_qualifier,
+    "332-above-window-qualifier": check_v3_332_above_window_qualifier,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
