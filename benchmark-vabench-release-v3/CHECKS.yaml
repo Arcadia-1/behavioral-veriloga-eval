@@ -10188,16 +10188,40 @@
 445-limexp-soft-exponential: |
   version: 1
   task_id: v3_445_limexp_soft_exponential
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: limexp_soft_exponential_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "limexp"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/limexp_soft_exponential.va
+    negative:
+      - negative_variants/neg_001_force_zero/limexp_soft_exponential.va
+      - negative_variants/neg_002_wrong_threshold/limexp_soft_exponential.va
+      - negative_variants/neg_003_reset_bias/limexp_soft_exponential.va
+      - negative_variants/neg_004_metric_offset/limexp_soft_exponential.va
+      - negative_variants/neg_005_scale_output/limexp_soft_exponential.va
+    checks:
+      - limexp_parse
+      - exp_like_small_signal_values
+      - metric_tracks_output
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "limexp small-signal exponential behavior promoted to executable EVAS behavior candidate."
 446-fstrobe-file-line-writer: |
   version: 1
   task_id: v3_446_fstrobe_file_line_writer
