@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 21,
+      "complete_tests_count": 22,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 22,
+      "fair_eval_count": 23,
       "range": "373-434",
-      "sop_ready_count": 21,
+      "sop_ready_count": 22,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          41
+          40
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          40
+          39
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          40
+          39
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          40
+          39
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 93,
-    "fair_eval_count": 93,
+    "complete_tests_count": 94,
+    "fair_eval_count": 94,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 101,
-      "hidden_scs_not_executable:include,instance,source": 100,
-      "missing_required_behavior_section": 101,
-      "visible_scs_not_executable:include,instance,source": 100
+      "checker_syntax_only_no_behavior_score": 100,
+      "hidden_scs_not_executable:include,instance,source": 99,
+      "missing_required_behavior_section": 100,
+      "visible_scs_not_executable:include,instance,source": 99
     },
-    "sop_ready_count": 92,
+    "sop_ready_count": 93,
     "task_count": 194
   },
   "tasks": [
@@ -2321,20 +2321,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 395,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $rdist_t() for heavy-tail seeded dither.",
       "target": "rdist_t_tail_dither.va",

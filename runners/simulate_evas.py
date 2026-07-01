@@ -8856,6 +8856,31 @@ def check_v3_394_rdist_chi_square_energy(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def check_v3_395_rdist_t_tail_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.6825),
+                (180.0, 0.7010),
+                (280.0, 0.7047),
+                (380.0, 0.6847),
+            ],
+            "metric": [
+                (80.0, -1.7540),
+                (180.0, 0.0963),
+                (280.0, 0.4683),
+                (380.0, -1.5343),
+            ],
+        },
+        tol=0.03,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17939,6 +17964,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "393-rdist-normal-offset-dither": check_v3_393_rdist_normal_offset_dither,
     "v3_394_rdist_chi_square_energy": check_v3_394_rdist_chi_square_energy,
     "394-rdist-chi-square-energy": check_v3_394_rdist_chi_square_energy,
+    "v3_395_rdist_t_tail_dither": check_v3_395_rdist_t_tail_dither,
+    "395-rdist-t-tail-dither": check_v3_395_rdist_t_tail_dither,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
