@@ -2169,7 +2169,7 @@
       - "prbs7_sequence_advances"
       - "serial_output_has_transitions"
       - "parallel_state_bus_updates"
-  
+
   parity:
     reference: "spectre"
     status: "pass"
@@ -2219,7 +2219,7 @@
   sim_correct:
     checks:
       - "multitone_waveform_matches_public_samples"
-  
+
   parity:
     reference: "spectre"
     status: "pass"

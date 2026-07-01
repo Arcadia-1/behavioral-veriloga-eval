@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "programmable_stimulus_sequencer.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output/metric stub.",
+      "path": "negative_variants/neg_001_zero/programmable_stimulus_sequencer.va"
+    },
+    {
+      "id": "neg_002_flat_ramp",
+      "description": "Keeps the ramp-mode output flat instead of monotonic.",
+      "path": "negative_variants/neg_002_flat_ramp/programmable_stimulus_sequencer.va"
+    },
+    {
+      "id": "neg_003_fixed_sine_not_chirp",
+      "description": "Collapses the chirp segment to the center level instead of an increasing-frequency sine segment.",
+      "path": "negative_variants/neg_003_fixed_sine_not_chirp/programmable_stimulus_sequencer.va"
+    },
+    {
+      "id": "neg_004_ignore_gate",
+      "description": "Continues burst output while gate is low.",
+      "path": "negative_variants/neg_004_ignore_gate/programmable_stimulus_sequencer.va"
     }
   ]
 }

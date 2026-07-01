@@ -1,0 +1,20 @@
+syntax:
+  must_include:
+    - "electrical"
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "multitone_waveform_matches_public_formula"
+    - "multitone_amplitude_span_present"
+
+parity:
+  reference: "spectre"
+  status: "pending_fresh_recertification_after_manual_audit"
+  notes:
+    - "Checker strength, hidden coverage, and negative variants were changed during manual audit."

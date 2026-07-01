@@ -1,7 +1,5 @@
-// 31-bit LFSR — gain_extraction benchmark gold.
-// Uses an explicit stored output level for a deterministic, easy-to-read gold
-// style. This choice now sits mostly in benchmark authoring/style territory
-// rather than being required by the current EVAS transition checks.
+// 31-bit LFSR support source for the gain-extraction flow.
+// Stores the output level explicitly before smoothing it onto DPN.
 
 `include "constants.vams"
 `include "disciplines.vams"
@@ -22,7 +20,7 @@ parameter integer seed = 42;
 integer lfsr_r[31:0];
 integer tmp_lfsr_r[32:0];
 integer i;
-real    dpn_level;   // explicit stored output voltage for the gold path
+real    dpn_level;   // stored output voltage
 
 analog begin
     @(initial_step or cross(V(RSTB) - 0.5, -1)) begin

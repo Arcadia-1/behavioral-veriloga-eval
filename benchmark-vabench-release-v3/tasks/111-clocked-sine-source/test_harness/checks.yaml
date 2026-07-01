@@ -1,0 +1,15 @@
+checker:
+  task_id: v3_111_clocked_sine_source
+  metric: flow_gain_separation
+support_classification:
+  status: l2_support_component_pending_fresh_recertification
+  notes:
+    - "This support component is currently evaluated inside the gain-extraction flow harness."
+    - "It should not be claimed as a standalone L1 circuit function without a task-specific checker."
+sim_correct:
+  checks:
+    - "flow_gain_amplification_present"
+    - "component_supports_clocked_measurement_stimulus"
+parity:
+  reference: "spectre"
+  status: "pending_fresh_recertification_after_manual_audit"

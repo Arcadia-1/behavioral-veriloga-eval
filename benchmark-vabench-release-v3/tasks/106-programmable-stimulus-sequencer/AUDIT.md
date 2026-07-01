@@ -1,22 +1,25 @@
-# Honest SOP Audit: Task 106 Programmable Stimulus Sequencer
+# Two-Gate Audit: Task 106 Programmable Stimulus Sequencer
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one primary Verilog-A DUT artifact, `programmable_stimulus_sequencer.va`, migrated from `vbr1_l2_programmable_stimulus_sequencer:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `independent_l1_ready` after repair.
+- Human-confirmed judgment: a single programmable sequencer DUT is L1, not L2. It is an independent source/control component because it implements mode sequencing, ramp, chirp, and gate behavior in one reusable Verilog-A block.
+- Public contract: `programmable_stimulus_sequencer.va` generates sequenced analog stimulus and metric outputs with transition-smoothed state changes.
+- Artifact boundary: `task.toml` now classifies the row as L1 and targets only `programmable_stimulus_sequencer.va`; prompt, manifests, starter, solution, and negatives agree.
+- Migration context: the row originated from `vbr1_l2_programmable_stimulus_sequencer:tb`, but the repaired benchmark boundary is the standalone DUT artifact rather than the old flow/testbench identity.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready` for the audited L1 row.
+- Prompt hygiene: removed stale testbench/Spectre-deck wording so the prompt asks for the DUT module, not construction of a simulator testbench.
+- Modeling repair: solution output contributions now use the public transition smoothing parameter instead of abrupt contributions.
+- Visible/hidden coverage: visible and hidden decks are distinct and exercise different sequencer timing coverage.
+- Checker strength: the streaming checker validates ramp monotonicity, chirp segment behavior, mode-switch continuity, and gate dependence. It rejects zero, flat-ramp, non-chirping, and gate-ignored variants.
+- Negatives: 4/4 concrete variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
+- EVAS evidence: hidden gold PASS in `external-evidence/v3_batch1_gold_106.json`; hidden negatives 4/4 behavioral rejections in `external-evidence/v3_batch1_negatives_evas.json`.
+- Spectre evidence: visible gold PASS in `external-evidence/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `external-evidence/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `external-evidence/v3_batch1_spectre_hidden_negatives.json`.
+- AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l2_programmable_stimulus_sequencer_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+No local blocker remains after the current L1 reclassification and checker/negative repair. It should not be described as L2 unless rewritten into a composed measurement or subsystem flow.

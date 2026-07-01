@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "vin_src.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Drives both stimulus outputs to zero.",
+      "path": "negative_variants/neg_001_zero/vin_src.va"
+    },
+    {
+      "id": "neg_002_static_common_mode",
+      "description": "Holds both outputs at common mode, so the composed gain flow sees no input signal.",
+      "path": "negative_variants/neg_002_static_common_mode/vin_src.va"
+    },
+    {
+      "id": "neg_003_common_mode_sine",
+      "description": "Drives both outputs to the wrong high common-mode level with no differential stimulus.",
+      "path": "negative_variants/neg_003_common_mode_sine/vin_src.va"
+    },
+    {
+      "id": "neg_004_reset_stuck",
+      "description": "Never updates after reset release.",
+      "path": "negative_variants/neg_004_reset_stuck/vin_src.va"
     }
   ]
 }

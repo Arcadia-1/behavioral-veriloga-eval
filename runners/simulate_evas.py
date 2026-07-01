@@ -311,10 +311,18 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
 
 
 def read_task_artifact_targets(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "target")
+
+
+def read_task_artifact_supports(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "support")
+
+
+def _read_task_artifact_list(task_dir: Path, key: str) -> list[str]:
     task_toml = task_dir / "task.toml"
     if task_toml.exists():
         text = task_toml.read_text(encoding="utf-8", errors="ignore")
-        match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
+        match = re.search(rf"(?m)^\s*{re.escape(key)}\s*=\s*(\[[^\n]*\])", text)
         if not match:
             return []
         try:
@@ -324,10 +332,10 @@ def read_task_artifact_targets(task_dir: Path) -> list[str]:
     else:
         task_entry = _v3_task_index_entry(task_dir)
         artifacts = task_entry.get("artifacts", {})
-        if isinstance(artifacts, dict) and "target" in artifacts:
-            parsed = artifacts.get("target", [])
+        if isinstance(artifacts, dict) and key in artifacts:
+            parsed = artifacts.get(key, [])
         else:
-            parsed = task_entry.get("target", [])
+            parsed = task_entry.get(key, [])
     if not isinstance(parsed, list):
         return []
     targets: list[str] = []
@@ -1183,8 +1191,11 @@ def evaluate_noise_gen_csv(csv_path: Path) -> tuple[float, list[str]]:
 
     var = m2 / count
     std = math.sqrt(max(var, 0.0))
-    ok = std > 0.01 and max_abs > 0.05
-    return (1.0 if ok else 0.0), [f"noise_std={std:.4f} max_abs={max_abs:.4f} samples={count}"]
+    ok = 0.025 <= std <= 0.12 and abs(mean) <= 0.025 and 0.05 <= max_abs <= 0.22
+    return (
+        1.0 if ok else 0.0,
+        [f"noise_mean={mean:.4f} noise_std={std:.4f} max_abs={max_abs:.4f} samples={count}"],
+    )
 
 
 def _csv_fields(csv_path: Path) -> set[str]:
@@ -5688,8 +5699,9 @@ def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     mean = sum(noises) / len(noises)
     var = sum((x - mean) ** 2 for x in noises) / len(noises)
     std = var ** 0.5
-    ok = std > 0.01 and max(abs(x) for x in noises) > 0.05
-    return ok, f"noise_std={std:.4f}"
+    max_abs = max(abs(x) for x in noises)
+    ok = 0.025 <= std <= 0.12 and abs(mean) <= 0.025 and 0.05 <= max_abs <= 0.22
+    return ok, f"noise_mean={mean:.4f} noise_std={std:.4f} max_abs={max_abs:.4f}"
 
 
 def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15874,11 +15886,12 @@ def run_case(
 
         t0 = time.perf_counter()
         task_artifact_targets = read_task_artifact_targets(task_dir)
+        task_artifact_supports = read_task_artifact_supports(task_dir)
         dut_dst, tb_dst = copy_inputs(
             run_dir,
             dut_path,
             tb_path,
-            target_filenames=task_artifact_targets,
+            target_filenames=[*task_artifact_targets, *task_artifact_supports],
             primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
             companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
         )

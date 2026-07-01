@@ -1,4 +1,9 @@
 {
+  "task_id": "v3_088_ramp_step_source",
+  "primary_target": "bound_step_period_guard_ref.va",
+  "artifact_targets": [
+    "bound_step_period_guard_ref.va"
+  ],
   "visible": [
     "instruction.md",
     "starter/",
@@ -9,5 +14,9 @@
     "test_hidden/",
     "test_harness/",
     "negative_variants/"
-  ]
+  ],
+  "visible_smoke": "tb_visible_smoke.scs",
+  "hidden_testbench": "tb_bound_step_period_guard_ref.scs",
+  "gate1_label": "independent_l1_rework",
+  "status": "hidden_coverage_and_negative_repair_pending_recertification"
 }

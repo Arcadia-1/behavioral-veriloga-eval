@@ -1,5 +1,5 @@
 // noise_gen gold smoke testbench
-// DC input at 1.0V; noise_gen adds Gaussian noise (sigma=0.1V, dt=0.5ns).
+// DC input at 1.0V; noise_gen adds deterministic sampled dither (sigma=0.1V, dt=0.5ns).
 // Runs 500ns. Check: std(noise) > 0.01V, max|noise| > 0.05V.
 simulator lang=spectre
 global 0

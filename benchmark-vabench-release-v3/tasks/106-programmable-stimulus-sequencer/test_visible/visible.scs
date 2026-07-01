@@ -10,5 +10,5 @@ Vgate (gate 0) vsource type=pwl wave=[0 0 65.9n 0 66n 0.9 75.9n 0.9 76n 0 79.9n 
 
 XDUT (clk rst mode gate out metric) programmable_stimulus_sequencer
 
-tran tran stop=90n maxstep=1n
+tran tran stop=90n maxstep=0.5n
 save clk rst mode gate out metric

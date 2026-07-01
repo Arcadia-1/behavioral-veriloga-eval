@@ -1,22 +1,24 @@
-# Honest SOP Audit: Task 086 Dither Noise Like Deterministic Source
+# Two-Gate Audit: Task 086 Dither Noise-Like Deterministic Source
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one Verilog-A DUT migrated from `vbr1_l1_dither_or_noise_like_deterministic_source:dut`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready` after repair.
+- Human-confirmed judgment: this is a standalone source/shaping component, distinct from the larger gain-extraction flow, if the task evaluates deterministic sampled dither injection rather than a generic testbench sine source.
+- Public contract: `noise_gen_ref.va` adds a bounded, zero-mean, sampled pseudo-noise-like dither component to the input and drives the output through `transition()`.
+- Artifact boundary: `task.toml`, prompt, manifests, starter, solution, and negatives now consistently target `noise_gen_ref.va`; stale legacy `noise_gen.va` target files were removed.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready` for the audited L1 row.
+- Modeling repair: the previous one-shot/random-style behavior was replaced with a deterministic periodic sampled pseudo-noise sequence using a public timer-update contract, avoiding EVAS/Spectre random and one-shot timer ambiguity.
+- Prompt hygiene: removed hidden-evaluator/source-provenance text and exposed the observable dither contract without leaking hidden sample windows.
+- Visible/hidden coverage: visible and hidden decks use different input timing/stop windows and are not byte-identical.
+- Checker strength: the checker verifies nonzero bounded dither, near-zero mean, expected statistical scale range, and amplitude bounds, rejecting passthrough, zero, excessive, and biased dither variants.
+- Negatives: 4/4 concrete variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
+- EVAS evidence: hidden gold PASS in `external-evidence/v3_batch1_gold_085_089.json`; hidden negatives 4/4 behavioral rejections in `external-evidence/v3_batch1_negatives_evas.json`.
+- Spectre evidence: visible gold PASS in `external-evidence/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `external-evidence/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `external-evidence/v3_batch1_spectre_hidden_negatives.json`.
+- AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l1_dither_or_noise_like_deterministic_source`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-This is an initial migration artifact. Do not count this task in a release denominator until gold and negative evidence are attached.
+The checker validates deterministic dither statistics and bounds, not a physical noise process. That is intentional for a deterministic benchmark row and is now reflected in the prompt.

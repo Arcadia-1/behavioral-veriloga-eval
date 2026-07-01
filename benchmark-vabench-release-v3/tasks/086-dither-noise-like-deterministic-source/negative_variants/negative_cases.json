@@ -1,7 +1,22 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "noise_gen.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "target": "noise_gen_ref.va",
+    "intent": "zero output stub"
+  },
+  {
+    "id": "neg_002_passthrough",
+    "target": "noise_gen_ref.va",
+    "intent": "no sampled perturbation"
+  },
+  {
+    "id": "neg_003_too_large_noise",
+    "target": "noise_gen_ref.va",
+    "intent": "variance too large"
+  },
+  {
+    "id": "neg_004_biased_noise",
+    "target": "noise_gen_ref.va",
+    "intent": "nonzero mean perturbation"
   }
 ]

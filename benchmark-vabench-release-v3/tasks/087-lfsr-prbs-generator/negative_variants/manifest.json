@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "prbs7.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output/state stub.",
+      "path": "negative_variants/neg_001_zero/prbs7_ref.va"
+    },
+    {
+      "id": "neg_002_wrong_taps",
+      "description": "Uses the wrong feedback tap relation for the public PRBS-7 polynomial.",
+      "path": "negative_variants/neg_002_wrong_taps/prbs7_ref.va"
+    },
+    {
+      "id": "neg_003_ignore_enable",
+      "description": "Advances the LFSR even while enable is low.",
+      "path": "negative_variants/neg_003_ignore_enable/prbs7_ref.va"
+    },
+    {
+      "id": "neg_004_wrong_serial_bit",
+      "description": "Drives serial_out from state_0 instead of the public state_6 bit.",
+      "path": "negative_variants/neg_004_wrong_serial_bit/prbs7_ref.va"
     }
   ]
 }

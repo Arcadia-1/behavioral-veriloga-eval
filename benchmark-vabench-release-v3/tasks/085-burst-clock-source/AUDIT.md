@@ -1,22 +1,23 @@
-# Honest SOP Audit: Task 085 Burst Clock Source
+# Two-Gate Audit: Task 085 Burst Clock Source
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one Verilog-A DUT migrated from `vbr1_l1_burst_clock_source:dut`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready` after repair.
+- Human-confirmed judgment: a reusable burst clock source is a legitimate standalone L1 source/control component when it has its own public behavior boundary and checker, not merely a hidden testbench artifact.
+- Public contract: `clk_burst_gen.va` drives `CLK_OUT` from `CLK_IN`, emits a burst only after `RESET` deasserts, uses a public divide ratio and pass-cycle count, and holds the output low outside the burst window.
+- Artifact boundary: `task.toml`, prompt, visible/hidden manifests, starter, solution, and negative variants all target `clk_burst_gen.va`.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready` for the audited L1 row.
+- Prompt hygiene: removed migration/hidden-evaluator style wording; the prompt now states the public module contract rather than private checker internals.
+- Visible/hidden coverage: visible is a public smoke deck; hidden uses a distinct reset/release timing and stop window. Hash comparison confirmed the visible and hidden decks are not byte-identical.
+- Checker strength: the checker derives burst-cycle behavior from observed clock cycles and reset timing, so it rejects always-zero, always-pass, one-cycle-only, and wrong-divider variants behaviorally.
+- Negatives: 4/4 concrete variants rejected behaviorally under EVAS and as `NEGATIVE_REJECTED` under Spectre.
+- EVAS evidence: hidden gold PASS in `external-evidence/v3_batch1_gold_085_089.json`; hidden negatives 4/4 behavioral rejections in `external-evidence/v3_batch1_negatives_evas.json`.
+- Spectre evidence: visible gold PASS in `external-evidence/v3_batch1_spectre_visible_gold.json`; hidden gold PASS in `external-evidence/v3_batch1_spectre_hidden_gold.json`; hidden negatives 4/4 `NEGATIVE_REJECTED` in `external-evidence/v3_batch1_spectre_hidden_negatives.json`.
+- AHDL lint status: Spectre read-in completed for visible, hidden, and negative decks with no recorded AHDLLINT failure in the audited result logs.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l1_burst_clock_source`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-This is an initial migration artifact. Do not count this task in a release denominator until gold and negative evidence are attached.
+Release counting is still governed by the global issue #29 denominator policy, but this row no longer has a known local prompt, artifact-boundary, hidden-coverage, or negative-strength blocker.

@@ -3,7 +3,7 @@ global 0
 
 XDUT (OUT) multitone
 
-tran tran stop=500n maxstep=500p
+tran tran stop=650n maxstep=400p
 save OUT
 
 ahdl_include "multitone.va"

@@ -1,10 +1,25 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "status": "behavioral_negatives_pending_recertification",
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "clk_burst_gen.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Zero output stub; must fail the pass-two-pulses contract.",
+      "path": "negative_variants/neg_001_zero/clk_burst_gen.va"
+    },
+    {
+      "id": "neg_002_pass_all_cycles",
+      "description": "Passes every input clock high phase after reset instead of suppressing cycles 2..7.",
+      "path": "negative_variants/neg_002_pass_all_cycles/clk_burst_gen.va"
+    },
+    {
+      "id": "neg_003_one_cycle_burst",
+      "description": "Passes only the first clock in each frame instead of the first two.",
+      "path": "negative_variants/neg_003_one_cycle_burst/clk_burst_gen.va"
+    },
+    {
+      "id": "neg_004_wrong_div4",
+      "description": "Uses a four-cycle repeat frame instead of the public div=8 frame.",
+      "path": "negative_variants/neg_004_wrong_div4/clk_burst_gen.va"
     }
   ]
 }

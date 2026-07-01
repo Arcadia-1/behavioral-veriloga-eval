@@ -1,4 +1,9 @@
 {
+  "task_id": "v3_086_dither_noise_like_deterministic_source",
+  "primary_target": "noise_gen_ref.va",
+  "artifact_targets": [
+    "noise_gen_ref.va"
+  ],
   "visible": [
     "instruction.md",
     "starter/",
@@ -9,5 +14,9 @@
     "test_hidden/",
     "test_harness/",
     "negative_variants/"
-  ]
+  ],
+  "visible_smoke": "tb_visible_smoke.scs",
+  "hidden_testbench": "tb_noise_gen_ref.scs",
+  "gate1_label": "independent_l1_rework",
+  "status": "target_boundary_hidden_coverage_and_negative_repair_pending_recertification"
 }

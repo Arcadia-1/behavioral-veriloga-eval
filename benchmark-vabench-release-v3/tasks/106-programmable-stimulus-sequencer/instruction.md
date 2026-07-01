@@ -4,54 +4,38 @@ Implement `programmable_stimulus_sequencer.va` in Verilog-A.
 
 ## Interface
 
-```verilog
-module programmable_stimulus_sequencer(clk, rst, mode, gate, out, metric);
-```
+Declare module `programmable_stimulus_sequencer` with positional ports
+`clk, rst, mode, gate, out, metric`. All ports are electrical.
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `programmable_stimulus_sequencer` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_programmable_stimulus_sequencer` transient scenario and checks the saved waveform/metric behavior with EVAS.
+- `tr = 80 ps`: output transition smoothing time.
 
-Original public behavior context:
+## Functional Contract
 
-### Programmable stimulus sequencer (tb-generation)
+This is a voltage-domain stimulus-source DUT, not a Spectre testbench. `clk`,
+`rst`, `mode`, and `gate` are voltage-coded control inputs with low level near
+0 V, high level near 0.9 V, and a 0.45 V decision threshold.
 
-Write a Spectre transient testbench for the described behavioral Verilog-A module.
+When reset is high, drive `out` near 0.45 V and `metric` low. Otherwise:
 
-Behavioral intent:
+- ramp mode, selected when `mode < 0.30 V`, drives a monotonic ramp segment
+  from roughly 0.18 V toward 0.45 V and marks `metric` near 0.20 V;
+- chirp mode, selected when `0.30 V <= mode < 0.60 V`, drives a sine segment
+  centered near 0.45 V whose instantaneous frequency increases over the
+  segment and marks `metric` near 0.50 V;
+- burst mode, selected when `mode >= 0.60 V`, drives a gated PRBS-like burst
+  between low and high stimulus levels while `gate` is high, returns `out` near
+  0.45 V while `gate` is low, and marks `metric` near the burst/idle segment
+  status.
 
-Generate a programmable ramp, swept/chirp sine, and gated burst/PRBS stimulus schedule.
+The control schedule is supplied by the public/hidden transient benches. The
+DUT may use absolute transient time to implement the segment shapes, but should
+derive mode and gating decisions from the voltage-coded inputs.
 
-Module name: `programmable_stimulus_sequencer`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
+## Modeling Constraints
 
-Public port contract:
-
-```verilog
-module programmable_stimulus_sequencer(clk, rst, mode, gate, out, metric);
-input clk, rst, mode, gate;
-output out, metric;
-electrical clk, rst, mode, gate, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. mode selects ramp, sine, or burst/PRBS behavior. gate enables the burst segment. out is the generated stimulus waveform. metric is a voltage-coded segment-status observable.
-
-Saved waveform columns:
-
-```text
-clk rst mode gate out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=90n maxstep=0.25n
-```
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `programmable_stimulus_sequencer.va`. Do not generate a Spectre
+testbench or checker logic. Do not use current contributions, `ddt()`, `idt()`,
+transistor-level devices, AC/noise analysis, or simulator-private side
+channels.

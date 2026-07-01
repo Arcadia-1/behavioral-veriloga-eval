@@ -1,4 +1,9 @@
 {
+  "task_id": "v3_089_sine_periodic_voltage_source",
+  "primary_target": "multitone.va",
+  "artifact_targets": [
+    "multitone.va"
+  ],
   "visible": [
     "instruction.md",
     "starter/",
@@ -9,5 +14,9 @@
     "test_hidden/",
     "test_harness/",
     "negative_variants/"
-  ]
+  ],
+  "visible_smoke": "tb_visible_smoke.scs",
+  "hidden_testbench": "tb_multitone_ref.scs",
+  "gate1_label": "independent_l1_rework",
+  "status": "hidden_coverage_and_negative_repair_pending_recertification"
 }

@@ -1,0 +1,26 @@
+syntax:
+  must_include:
+    - "electrical"
+    - "@(cross("
+    - "transition("
+    - "serial_out"
+    - "state_0"
+  must_not_include:
+    - "I("
+    - "ddt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "prbs7_sequence_matches_public_taps"
+    - "enable_low_holds_state"
+    - "serial_output_matches_state_6"
+    - "parallel_state_bus_bit_order_matches_prompt"
+
+parity:
+  reference: "spectre"
+  status: "pending_fresh_recertification_after_manual_audit"
+  notes:
+    - "Prompt, target artifact, checker strength, hidden coverage, and negative variants were changed during manual audit."
