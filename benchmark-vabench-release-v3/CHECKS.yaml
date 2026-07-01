@@ -10342,16 +10342,24 @@
 449-generate-genvar-replicated-stage: |
   version: 1
   task_id: v3_449_generate_genvar_replicated_stage
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "genvar"
+      - "generate"
+      - "wreal"
+      - "assign"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "AMS/wreal generate candidate staged pending EVAS generate/genvar and wreal assign support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/45"
 450-custom-nature-discipline-voltage: |
   version: 1
   task_id: v3_450_custom_nature_discipline_voltage
