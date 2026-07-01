@@ -878,6 +878,8 @@ FILE_METRIC_WRITER_TASKS = {
 
 FINAL_STEP_FILE_METRIC_TASKS = {
     "final_step_file_metric_smoke",
+    "v3_316_final_step_edge_counter_file",
+    "316-final-step-edge-counter-file",
     "vbr1_l2_measurement_flow_tb",
     "vbr1_l2_measurement_flow_e2e",
 }
@@ -6978,6 +6980,21 @@ def check_v3_315_for_loop_code_popcount(rows: list[dict[str, float]]) -> tuple[b
         {
             "out": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.225), (37.0, 0.675), (47.0, 0.90), (57.0, 0.45)],
             "metric": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.25), (37.0, 0.75), (47.0, 1.00), (57.0, 0.50)],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_316_final_step_edge_counter_file(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (27.0, 0.225), (47.0, 0.45), (67.0, 0.675), (87.0, 0.90)],
+            "metric": [(7.0, 0.0), (27.0, 0.25), (47.0, 0.50), (67.0, 0.75), (87.0, 1.00)],
         },
         tol=0.025,
     )
@@ -15910,6 +15927,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "314-for-loop-windowed-peak": check_v3_314_for_loop_windowed_peak,
     "v3_315_for_loop_code_popcount": check_v3_315_for_loop_code_popcount,
     "315-for-loop-code-popcount": check_v3_315_for_loop_code_popcount,
+    "v3_316_final_step_edge_counter_file": check_v3_316_final_step_edge_counter_file,
+    "316-final-step-edge-counter-file": check_v3_316_final_step_edge_counter_file,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

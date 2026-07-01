@@ -5274,11 +5274,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 316-final-step-edge-counter-file: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_316_final_step_edge_counter_file
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_316_final_step_edge_counter_file
+    metric: sampled_final_step_edge_counter_file
   required_columns:
     - time
     - vin
@@ -5290,11 +5293,23 @@
   syntax:
     must_include:
       - "final_step"
+      - "$fopen"
       - "$fwrite"
+      - "$fclose"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_edge_is_ignored
+      - post_reset_clock_edges_increment_count
+      - output_normalizes_edge_count_to_vhi
+      - metric_normalizes_edge_count_to_one
+      - final_step_writes_candidate_out
+      - candidate_out_matches_final_count_and_metric
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 317-final-step-average-metric-file: |
   version: 1
   task_id: v3_317_final_step_average_metric_file
