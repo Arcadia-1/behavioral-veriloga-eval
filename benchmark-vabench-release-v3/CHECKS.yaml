@@ -10917,7 +10917,7 @@
     must_include:
       - "I("
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification."
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution

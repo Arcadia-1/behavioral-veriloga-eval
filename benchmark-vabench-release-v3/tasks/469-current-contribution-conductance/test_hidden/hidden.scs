@@ -1,4 +1,12 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "current_contribution_conductance.va"
+
+Vp (p 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.50 60n 0.50 61n 0.20 100n 0.20 101n 0.80 160n 0.80]
+Vn (n 0) vsource dc=0.0
+
+XDUT (p n) current_contribution_conductance
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save p n

@@ -4,6 +4,6 @@
 module current_contribution_conductance (input electrical p, input electrical n);
 parameter real gain = 1e-3;
 analog begin
-    I(p, n) <+ (V(rst) > 0.45 ? 0.25 : (gain * V(p,n)));
+    I(p, n) <+ gain * V(p,n) + 1e-4;
 end
 endmodule
