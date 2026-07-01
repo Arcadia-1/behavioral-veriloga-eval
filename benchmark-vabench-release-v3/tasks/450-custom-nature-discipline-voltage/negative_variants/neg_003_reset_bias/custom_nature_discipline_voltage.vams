@@ -13,6 +13,6 @@ module custom_nature_discipline_voltage(a, y);
     output y;
     v3electrical a, y;
     analog begin
-        V(y) <+ (V(rst) > 0.45 ? 0.25 : (V(a)));
+        V(y) <+ (V(a) < 0.45 ? 0.25 : V(a));
     end
 endmodule

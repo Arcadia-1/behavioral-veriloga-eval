@@ -54,14 +54,14 @@
     {
       "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 8,
+      "fair_eval_count": 9,
       "range": "435-458",
-      "sop_ready_count": 8,
+      "sop_ready_count": 9,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          16
+          15
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -101,11 +101,11 @@
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
     "complete_tests_count": 194,
-    "fair_eval_count": 153,
+    "fair_eval_count": 154,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 41
+      "checker_syntax_only_no_behavior_score": 40
     },
-    "sop_ready_count": 153,
+    "sop_ready_count": 154,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -3733,16 +3733,14 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 450,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Declare a custom nature and discipline for behavioral voltage modeling.",
       "target": "custom_nature_discipline_voltage.vams",

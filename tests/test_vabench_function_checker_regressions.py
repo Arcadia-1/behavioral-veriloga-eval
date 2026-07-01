@@ -2912,6 +2912,19 @@ def test_v3_event_or_timer_checker_follows_hidden_events() -> None:
     assert not sim.check_v3_456_event_or_cross_timer(rows(wrong=True))[0]
 
 
+def test_v3_custom_nature_checker_tracks_input_potential() -> None:
+    good_rows = [
+        {"time": idx * 1e-9, "a": value, "y": value}
+        for idx, value in enumerate([0.0, 0.2, 0.7, 0.4, 0.9, 0.1, 0.55, 0.8] * 3)
+    ]
+    zero_rows = [{**row, "y": 0.0} for row in good_rows]
+    offset_rows = [{**row, "y": row["a"] + 0.12} for row in good_rows]
+
+    assert sim.check_v3_450_custom_nature_discipline_voltage(good_rows)[0]
+    assert not sim.check_v3_450_custom_nature_discipline_voltage(zero_rows)[0]
+    assert not sim.check_v3_450_custom_nature_discipline_voltage(offset_rows)[0]
+
+
 def test_v3_recursive_function_checker_follows_hidden_depth_override() -> None:
     def rows(*, stim: float, out: float) -> list[dict[str, float]]:
         return [

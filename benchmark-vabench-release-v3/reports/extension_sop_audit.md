@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **153**
+- SOP-ready tasks: **154**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **153**
+- Tasks with behavior checker evidence: **154**
 - Tasks with distinct visible/hidden SCS stimuli: **194**
 - Tasks with identical visible/hidden SCS stimuli: **0**
 - SOP-ready tasks with identical visible/hidden SCS stimuli: **0**
@@ -15,7 +15,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 41
+- `checker_syntax_only_no_behavior_score`: 40
 
 ## Warning Counts
 
@@ -29,7 +29,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 20 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 55 | 62 | 55 | 62 | `checker_syntax_only_no_behavior_score`: 7 |
-| `435-458` | manual syntax-completion candidates | 24 | 8 | 24 | 8 | 24 | `checker_syntax_only_no_behavior_score`: 16 |
+| `435-458` | manual syntax-completion candidates | 24 | 9 | 24 | 9 | 24 | `checker_syntax_only_no_behavior_score`: 15 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | 12 | `checker_syntax_only_no_behavior_score`: 4 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
 
@@ -190,7 +190,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `447-display-warning-debug-log` | `syntax-extension-candidate` | True | - |
 | `448-rdist-uniform-seeded-dither` | `syntax-extension-candidate` | True | - |
 | `449-generate-genvar-replicated-stage` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | True | - |
 | `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |

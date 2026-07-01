@@ -10363,9 +10363,13 @@
 450-custom-nature-discipline-voltage: |
   version: 1
   task_id: v3_450_custom_nature_discipline_voltage
-  backend: verilogams_discipline_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: custom_nature_discipline_voltage_contract
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "nature"
@@ -10374,9 +10378,23 @@
       - "v3electrical"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/custom_nature_discipline_voltage.vams
+    negative:
+      - negative_variants/neg_001_force_zero/custom_nature_discipline_voltage.vams
+      - negative_variants/neg_002_wrong_threshold/custom_nature_discipline_voltage.vams
+      - negative_variants/neg_003_reset_bias/custom_nature_discipline_voltage.vams
+      - negative_variants/neg_004_metric_offset/custom_nature_discipline_voltage.vams
+      - negative_variants/neg_005_scale_output/custom_nature_discipline_voltage.vams
+    checks:
+      - custom_nature_declaration_parse
+      - custom_discipline_potential_parse
+      - custom_discipline_port_declarations
+      - output_follows_input_potential
+      - no_current_domain_contribution
   notes:
-    - "Custom nature/discipline candidate staged pending EVAS custom discipline support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/46"
+    - "Custom nature/discipline voltage pass-through behavior promoted to executable EVAS behavior candidate."
 451-connectmodule-electrical-bridge: |
   version: 1
   task_id: v3_451_connectmodule_electrical_bridge

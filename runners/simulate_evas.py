@@ -10104,6 +10104,30 @@ def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_450_custom_nature_discipline_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    input_span_values: list[float] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        err = abs(row["y"] - row["a"])
+        max_err = max(max_err, err)
+        checked += 1
+        input_span_values.append(row["a"])
+        if err > 0.035:
+            return False, f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} expected_a={row['a']:.4f}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    input_span = max(input_span_values) - min(input_span_values)
+    if input_span < 0.3:
+        return False, f"insufficient_input_span={input_span:.4f}"
+    return True, f"checked={checked} input_span={input_span:.4f} max_err={max_err:.4f}"
+
+
 def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
     def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
         if row["rst"] > 0.45:
@@ -19326,6 +19350,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
     "v3_448_rdist_uniform_seeded_dither": check_v3_448_rdist_uniform_seeded_dither,
     "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
+    "v3_450_custom_nature_discipline_voltage": check_v3_450_custom_nature_discipline_voltage,
+    "450-custom-nature-discipline-voltage": check_v3_450_custom_nature_discipline_voltage,
     "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
     "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,

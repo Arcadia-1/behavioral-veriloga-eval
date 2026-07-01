@@ -229,7 +229,7 @@ def test_behavior_certified_extension_checks_reference_expected_artifacts() -> N
         for task_key in extension_tasks()
         if has_sim_correct(task_key)
     ]
-    assert len(behavior_tasks) == 153
+    assert len(behavior_tasks) == 154
 
     for task_key in behavior_tasks:
         task = extension_tasks()[task_key]
