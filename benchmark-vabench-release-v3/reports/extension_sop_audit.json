@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 19,
+      "complete_tests_count": 20,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 20,
+      "fair_eval_count": 21,
       "range": "373-434",
-      "sop_ready_count": 19,
+      "sop_ready_count": 20,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          43
+          42
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          42
+          41
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          42
+          41
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          42
+          41
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 91,
-    "fair_eval_count": 91,
+    "complete_tests_count": 92,
+    "fair_eval_count": 92,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 103,
-      "hidden_scs_not_executable:include,instance,source": 102,
-      "missing_required_behavior_section": 103,
-      "visible_scs_not_executable:include,instance,source": 102
+      "checker_syntax_only_no_behavior_score": 102,
+      "hidden_scs_not_executable:include,instance,source": 101,
+      "missing_required_behavior_section": 102,
+      "visible_scs_not_executable:include,instance,source": 101
     },
-    "sop_ready_count": 90,
+    "sop_ready_count": 91,
     "task_count": 194
   },
   "tasks": [
@@ -2275,20 +2275,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 393,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $rdist_normal() for deterministic offset dither.",
       "target": "rdist_normal_offset_dither.va",

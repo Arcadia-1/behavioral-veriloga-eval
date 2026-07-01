@@ -8806,6 +8806,31 @@ def check_v3_392_rdist_poisson_count_noise(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_393_rdist_normal_offset_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.7001),
+                (180.0, 0.6998),
+                (280.0, 0.7006),
+                (380.0, 0.7003),
+            ],
+            "metric": [
+                (80.0, 0.0113),
+                (180.0, -0.0160),
+                (280.0, 0.0591),
+                (380.0, 0.0312),
+            ],
+        },
+        tol=0.008,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17885,6 +17910,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "391-rdist-exponential-jitter": check_v3_391_rdist_exponential_jitter,
     "v3_392_rdist_poisson_count_noise": check_v3_392_rdist_poisson_count_noise,
     "392-rdist-poisson-count-noise": check_v3_392_rdist_poisson_count_noise,
+    "v3_393_rdist_normal_offset_dither": check_v3_393_rdist_normal_offset_dither,
+    "393-rdist-normal-offset-dither": check_v3_393_rdist_normal_offset_dither,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

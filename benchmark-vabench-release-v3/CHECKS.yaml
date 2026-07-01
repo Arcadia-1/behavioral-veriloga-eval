@@ -8364,16 +8364,45 @@
 393-rdist-normal-offset-dither: |
   version: 1
   task_id: v3_393_rdist_normal_offset_dither
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rdist_normal_offset_dither_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "$rdist_normal()"
+      - "$rdist_normal"
+      - "seed_q"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/rdist_normal_offset_dither.va
+    negative:
+      - negative_variants/neg_001_force_zero/rdist_normal_offset_dither.va
+      - negative_variants/neg_002_wrong_threshold/rdist_normal_offset_dither.va
+      - negative_variants/neg_003_reset_bias/rdist_normal_offset_dither.va
+      - negative_variants/neg_004_metric_offset/rdist_normal_offset_dither.va
+      - negative_variants/neg_005_scale_output/rdist_normal_offset_dither.va
+    checks:
+      - seeded_normal_draw_sequence_is_deterministic
+      - output_adds_small_normal_dither_to_vin
+      - metric_reports_raw_normal_offset
+      - wrong_seed_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
 394-rdist-chi-square-energy: |
   version: 1
   task_id: v3_394_rdist_chi_square_energy
