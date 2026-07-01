@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 V3 = ROOT / "benchmark-vabench-release-v3"
 TASKS = V3 / "TASKS.json"
+CHECKS = V3 / "CHECKS.yaml"
 TASK_ROOT = V3 / "tasks"
 
 
@@ -75,6 +77,28 @@ def negative_variants(task_key: str) -> list[dict]:
     return []
 
 
+def checks_block(task_key: str) -> str:
+    checks = CHECKS.read_text(encoding="utf-8")
+    match = re.search(
+        rf"^{re.escape(task_key)}: \|\n(?P<body>.*?)(?=^\d{{3}}-|\Z)",
+        checks,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    assert match, f"{task_key} missing CHECKS block"
+    return match.group("body")
+
+
+def sim_correct_refs(task_key: str, prefix: str) -> list[str]:
+    body = checks_block(task_key)
+    if "sim_correct:" not in body:
+        return []
+    return re.findall(rf"^\s+-\s+({re.escape(prefix)}\S+)", body, flags=re.MULTILINE)
+
+
+def has_sim_correct(task_key: str) -> bool:
+    return "sim_correct:" in checks_block(task_key)
+
+
 def test_all_v3_extension_negative_variants_are_materialized_and_distinct() -> None:
     for task_key in extension_tasks():
         variants = negative_variants(task_key)
@@ -97,3 +121,40 @@ def test_all_v3_extension_negative_variants_are_materialized_and_distinct() -> N
                     encoding="utf-8",
                     errors="ignore",
                 ), f"{task_key} {variant_id} is identical to solution"
+
+
+def test_behavior_certified_extension_checks_reference_expected_artifacts() -> None:
+    behavior_tasks = [
+        task_key
+        for task_key in extension_tasks()
+        if has_sim_correct(task_key)
+    ]
+    assert len(behavior_tasks) == 153
+
+    for task_key in behavior_tasks:
+        task = extension_tasks()[task_key]
+        positive_refs = sim_correct_refs(task_key, "solution/")
+        negative_refs = sim_correct_refs(task_key, "negative_variants/")
+        manifest_refs = {
+            f"negative_variants/{file_name}"
+            for variant in negative_variants(task_key)
+            for file_name in variant["files"]
+        }
+
+        if positive_refs or negative_refs:
+            assert positive_refs == [f"solution/{task['target'][0]}"], (
+                f"{task_key} sim_correct positive must use canonical solution target"
+            )
+            assert set(negative_refs) == manifest_refs, (
+                f"{task_key} sim_correct negatives must match negative manifest"
+            )
+            assert len(negative_refs) == 5, f"{task_key} sim_correct must include five negatives"
+        else:
+            assert (TASK_ROOT / task_key / "solution" / task["target"][0]).exists(), (
+                f"{task_key} legacy sim_correct relies on TASKS target"
+            )
+            assert len(manifest_refs) == 5, (
+                f"{task_key} legacy sim_correct relies on negative manifest"
+            )
+        for ref in [*positive_refs, *negative_refs]:
+            assert (TASK_ROOT / task_key / ref).exists(), f"{task_key} missing CHECKS ref {ref}"
