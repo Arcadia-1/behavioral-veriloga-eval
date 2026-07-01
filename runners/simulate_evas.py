@@ -7848,6 +7848,25 @@ def check_v3_349_logic_assign_priority_mux(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_350_logic_assign_reduction(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "en", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (100.0, 1.0),
+                (220.0, 0.0),
+                (340.0, 0.0),
+                (460.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16843,6 +16862,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "348-logic-assign-xor-flag": check_v3_348_logic_assign_xor_flag,
     "v3_349_logic_assign_priority_mux": check_v3_349_logic_assign_priority_mux,
     "349-logic-assign-priority-mux": check_v3_349_logic_assign_priority_mux,
+    "v3_350_logic_assign_reduction": check_v3_350_logic_assign_reduction,
+    "350-logic-assign-reduction": check_v3_350_logic_assign_reduction,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

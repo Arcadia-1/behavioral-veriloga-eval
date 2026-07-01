@@ -2,5 +2,5 @@ module logic_assign_reduction(a, b, en, y);
     input a, b, en;
     output y;
     logic a, b, en, y;
-    assign y = ~ a & b & en;
+    assign y = !(a & b & en);
 endmodule

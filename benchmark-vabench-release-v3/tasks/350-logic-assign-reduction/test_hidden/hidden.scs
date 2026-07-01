@@ -1,4 +1,13 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "logic_assign_reduction.vams"
+
+Va (a 0) vsource type=pwl wave=[0 1.0 299n 1.0 300n 0.0 399n 0.0 400n 1.0 500n 1.0]
+Vb (b 0) vsource type=pwl wave=[0 1.0 149n 1.0 150n 0.0 299n 0.0 300n 1.0 500n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 399n 1.0 400n 0.0 500n 0.0]
+
+XDUT (a b en y) logic_assign_reduction
+
+tran tran stop=500n
+save a b en y
