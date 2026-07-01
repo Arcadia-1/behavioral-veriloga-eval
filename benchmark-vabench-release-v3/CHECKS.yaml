@@ -11390,8 +11390,11 @@
   syntax:
     must_include:
       - "I(p, n) <+ c * ddt"
+      - "V(p, n)"
+    must_not_include:
+      - "V(out)"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support tracked by EVAS issue #44."
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage

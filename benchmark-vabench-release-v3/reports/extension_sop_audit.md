@@ -6,15 +6,15 @@ Date: 2026-07-02
 
 - Audited extension tasks: **194**
 - SOP-ready tasks: **152**
-- Tasks with executable visible+hidden SCS evidence: **183**
+- Tasks with executable visible+hidden SCS evidence: **184**
 - Tasks with behavior checker evidence: **153**
 
 ## Issue Counts
 
 - `checker_syntax_only_no_behavior_score`: 41
-- `hidden_scs_not_executable:include,instance,source`: 10
-- `missing_required_behavior_section`: 5
-- `visible_scs_not_executable:include,instance,source`: 10
+- `hidden_scs_not_executable:include,instance,source`: 9
+- `missing_required_behavior_section`: 4
+- `visible_scs_not_executable:include,instance,source`: 9
 
 ## Range Summary
 
@@ -26,7 +26,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 18 | 8 | `checker_syntax_only_no_behavior_score`: 16<br>`visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | `checker_syntax_only_no_behavior_score`: 4 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 20 | 11 | `checker_syntax_only_no_behavior_score`: 13<br>`visible_scs_not_executable:include,instance,source`: 4<br>`hidden_scs_not_executable:include,instance,source`: 4<br>`missing_required_behavior_section`: 4 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 21 | 11 | `checker_syntax_only_no_behavior_score`: 13<br>`visible_scs_not_executable:include,instance,source`: 3<br>`hidden_scs_not_executable:include,instance,source`: 3<br>`missing_required_behavior_section`: 3 |
 
 ## Highest Severity Finding
 
@@ -226,7 +226,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `488-table-model-string-param-source` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `489-event-nested-or-expression` | `syntax-extension-candidate` | True | - |
 | `490-event-task-function-state-update` | `syntax-extension-candidate` | True | - |
-| `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
