@@ -12,38 +12,32 @@ module task_stateful_threshold_update (
 parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
-task update_outputs;
-    input real sample;
-    input integer mode_code;
-    begin
-        if (mode_code == 0) out_v = sample;
-        else if (mode_code == 1) out_v = sample > vth ? vhi : 0.0;
-        else out_v = sample < 0.0 ? 0.0 : (sample > vhi ? vhi : sample);
-        metric_v = out_v / vhi;
-    end
-endtask
 real out_v;
 real metric_v;
-integer count_q;
-integer state_q;
+real threshold_q;
+task threshold_update;
+    input real sample;
+    input integer raise_mode;
+    begin
+        if (sample > threshold_q) out_v = vhi;
+        else out_v = 0.0;
+        metric_v = threshold_q;
+        if (raise_mode != 0) threshold_q = threshold_q + 0.1;
+    end
+endtask
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
-        state_q = 0;
+        threshold_q = 0.35;
     end
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
             metric_v = 0.0;
-            count_q = 0;
-            state_q = 0;
+            threshold_q = 0.35;
         end else begin
-        count_q = count_q + 1;
-        state_q = count_q % 3;
-        update_outputs(V(vin), state_q);
-        if (V(vin) > (vth + 0.1)) out_v = vhi;
+            threshold_update(V(vin), V(mode) > vth);
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

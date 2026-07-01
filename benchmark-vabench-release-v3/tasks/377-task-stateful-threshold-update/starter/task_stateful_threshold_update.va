@@ -9,9 +9,35 @@ module task_stateful_threshold_update (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+real threshold_q;
+task threshold_update;
+    input real sample;
+    input integer raise_mode;
+    begin
+        // TODO: compare against threshold_q, then optionally update it.
+    end
+endtask
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        threshold_q = vth;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+            threshold_q = vth;
+        end else begin
+            threshold_update(V(vin), V(mode) > vth);
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule
