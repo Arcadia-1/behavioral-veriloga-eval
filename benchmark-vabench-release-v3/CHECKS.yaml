@@ -9429,16 +9429,45 @@
 421-task-local-variable-transform: |
   version: 1
   task_id: v3_421_task_local_variable_transform
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: task_local_variable_transform_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "task local variable"
+      - "task update_with_local"
+      - "real clipped"
+      - "endtask"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/task_local_variable_transform.va
+    negative:
+      - negative_variants/neg_001_force_zero/task_local_variable_transform.va
+      - negative_variants/neg_002_wrong_threshold/task_local_variable_transform.va
+      - negative_variants/neg_003_reset_bias/task_local_variable_transform.va
+      - negative_variants/neg_004_metric_offset/task_local_variable_transform.va
+      - negative_variants/neg_005_scale_output/task_local_variable_transform.va
+    checks:
+      - task_parse
+      - task_local_real_variable_parse
+      - clamp_lower_bound
+      - clamp_upper_bound
+      - metric_normalization
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "Task local-variable behavior promoted to executable EVAS behavior candidate."
 422-file-fscanf-table-stimulus: |
   version: 1
   task_id: v3_422_file_fscanf_table_stimulus
