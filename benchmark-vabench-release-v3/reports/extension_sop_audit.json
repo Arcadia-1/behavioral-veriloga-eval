@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 16,
+      "complete_tests_count": 17,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 17,
+      "fair_eval_count": 18,
       "range": "373-434",
-      "sop_ready_count": 16,
+      "sop_ready_count": 17,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          46
+          45
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          45
+          44
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          45
+          44
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          45
+          44
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 88,
-    "fair_eval_count": 88,
+    "complete_tests_count": 89,
+    "fair_eval_count": 89,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 106,
-      "hidden_scs_not_executable:include,instance,source": 105,
-      "missing_required_behavior_section": 106,
-      "visible_scs_not_executable:include,instance,source": 105
+      "checker_syntax_only_no_behavior_score": 105,
+      "hidden_scs_not_executable:include,instance,source": 104,
+      "missing_required_behavior_section": 105,
+      "visible_scs_not_executable:include,instance,source": 104
     },
-    "sop_ready_count": 87,
+    "sop_ready_count": 88,
     "task_count": 194
   },
   "tasks": [
@@ -2206,20 +2206,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 390,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $table_model() as a piecewise calibration primitive.",
       "target": "table_model_piecewise_calibrator.va",

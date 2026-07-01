@@ -8237,16 +8237,46 @@
 390-table-model-piecewise-calibrator: |
   version: 1
   task_id: v3_390_table_model_piecewise_calibrator
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: table_model_piecewise_calibrator_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$table_model"
+      - "table-model-piecewise-calibrator.tbl"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/table_model_piecewise_calibrator.va
+    negative:
+      - negative_variants/neg_001_force_zero/table_model_piecewise_calibrator.va
+      - negative_variants/neg_002_wrong_threshold/table_model_piecewise_calibrator.va
+      - negative_variants/neg_003_reset_bias/table_model_piecewise_calibrator.va
+      - negative_variants/neg_004_metric_offset/table_model_piecewise_calibrator.va
+      - negative_variants/neg_005_scale_output/table_model_piecewise_calibrator.va
+    checks:
+      - table_file_staged_as_support_artifact
+      - table_model_interpolates_nonuniform_calibration_segments
+      - table_model_checks_midsegment_points_not_only_knots
+      - metric_reports_normalized_calibration_output
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Table-model language extension promoted to executable EVAS behavior candidate."
+    - "Certifies the currently executable two-argument 1D lookup subset; filename plus control-string compatibility is tracked in EVAS issue #40."
 391-rdist-exponential-jitter: |
   version: 1
   task_id: v3_391_rdist_exponential_jitter
