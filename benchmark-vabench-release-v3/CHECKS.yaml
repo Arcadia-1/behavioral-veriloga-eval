@@ -10928,7 +10928,7 @@
     must_include:
       - "I(br)"
   notes:
-    - "Course-material gap-fill task; KCL rows are syntax candidates, not behavior-certified claims."
+    - "KCL/current contribution task with executable voltage-source testbench; branch current behavior remains outside ordinary event-level certification."
 471-indirect-branch-null-balance: |
   version: 1
   task_id: v3_471_indirect_branch_null_balance

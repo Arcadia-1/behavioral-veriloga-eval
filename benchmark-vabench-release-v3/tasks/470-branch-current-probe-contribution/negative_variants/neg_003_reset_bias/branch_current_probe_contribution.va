@@ -4,7 +4,7 @@
 module branch_current_probe_contribution (input electrical p, input electrical n, output electrical out);
 branch (p, n) br;
 analog begin
-    I(br) <+ (V(rst) > 0.45 ? 0.25 : (V(p,n)));
+    I(br) <+ V(p,n) + 0.125;
     V(out) <+ transition(I(br), 0.0, 200p, 200p);
 end
 endmodule
