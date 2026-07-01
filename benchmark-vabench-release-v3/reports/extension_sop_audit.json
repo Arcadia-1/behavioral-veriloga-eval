@@ -11,24 +11,24 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 14,
+      "complete_tests_count": 15,
       "description": "AMS mixed-signal candidates",
-      "fair_eval_count": 13,
+      "fair_eval_count": 14,
       "range": "341-360",
-      "sop_ready_count": 13,
+      "sop_ready_count": 14,
       "task_count": 20,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          7
+          6
         ],
         [
           "visible_scs_not_executable:include,instance,source,save",
-          6
+          5
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          6
+          5
         ]
       ]
     },
@@ -162,17 +162,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 54,
-    "fair_eval_count": 53,
+    "complete_tests_count": 55,
+    "fair_eval_count": 54,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 141,
+      "checker_syntax_only_no_behavior_score": 140,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 18,
+      "hidden_scs_not_executable:include,instance,source,save": 17,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 18
+      "visible_scs_not_executable:include,instance,source,save": 17
     },
-    "sop_ready_count": 53,
+    "sop_ready_count": 54,
     "task_count": 194
   },
   "tasks": [
@@ -1422,19 +1422,15 @@
     },
     {
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 355,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use always block with enable/hold semantics.",
       "target": "always_enable_hold.vams",

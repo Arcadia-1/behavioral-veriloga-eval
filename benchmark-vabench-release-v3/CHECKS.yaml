@@ -6709,17 +6709,43 @@
 355-always-enable-hold: |
   version: 1
   task_id: v3_355_always_enable_hold
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_logic_sequential_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - clk
+    - rst
+    - d
+    - en
+    - q
   syntax:
     must_include:
       - "logic"
       - "always"
+      - "else if (en)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/always_enable_hold.vams
+    negative:
+      - negative_variants/neg_001_force_zero/always_enable_hold.vams
+      - negative_variants/neg_002_invert_select/always_enable_hold.vams
+      - negative_variants/neg_003_drop_reset/always_enable_hold.vams
+      - negative_variants/neg_004_wrong_edge/always_enable_hold.vams
+      - negative_variants/neg_005_scale_low/always_enable_hold.vams
+    checks:
+      - logic_ports_parse
+      - always_posedge_event_parse
+      - synchronous_reset_clears_q
+      - enabled_sample_high_and_low
+      - enable_low_holds_high_despite_d_low
+      - enable_low_holds_low_despite_d_high
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 356-mixed-logic-enable-voltage-driver: |
   version: 1
   task_id: v3_356_mixed_logic_enable_voltage_driver
