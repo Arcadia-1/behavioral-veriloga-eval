@@ -4,7 +4,7 @@ global 0
 ahdl_include "v3_child_gain.va"
 ahdl_include "hierarchy_two_stage_chain.va"
 
-Vvin (vin 0) vsource dc=0.7
+Vvin (vin 0) vsource type=pwl wave=[0 0.25 49n 0.25 50n 0.72 99n 0.72 100n 0.45 149n 0.45 150n 0.9 200n 0.9]
 Vclk (clk 0) vsource dc=0.0
 Vmode (mode 0) vsource dc=0.0
 Vrst (rst 0) vsource dc=0.0

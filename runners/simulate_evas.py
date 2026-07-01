@@ -9740,141 +9740,90 @@ def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[boo
     return _check_v3_rdist_sequence(rows, [1.0851, 1.0945, 0.5121, 0.2559], tol=0.03)
 
 
-def check_v3_397_hierarchy_gain_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _check_v3_hierarchy_expression(
+    rows: list[dict[str, float]],
+    *,
+    out_fn,
+    metric_fn=None,
+    tol: float = 0.035,
+) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (20.0, 0.56),
-                (80.0, 0.56),
-                (140.0, 0.56),
-            ],
-            "metric": [
-                (20.0, 0.0),
-                (80.0, 0.0),
-                (140.0, 0.0),
-            ],
-        },
-        tol=0.02,
+
+    stride = max(1, len(rows) // 120)
+    checked_out = 0
+    checked_metric = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    expected_outs = [out_fn(row) for row in rows]
+    expected_metrics = [metric_fn(row) if metric_fn else 0.0 for row in rows]
+    for index in range(0, len(rows), stride):
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = expected_outs[index]
+        if max(abs(out_expected - value) for value in expected_outs[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        metric_expected = expected_metrics[index]
+        if max(abs(metric_expected - value) for value in expected_metrics[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
     )
 
 
+def check_v3_397_hierarchy_gain_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 0.8 * row["vin"], tol=0.035)
+
+
 def check_v3_398_hierarchy_two_stage_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_hierarchy_expression(
         rows,
-        {
-            "out": [
-                (20.0, 0.28),
-                (80.0, 0.28),
-                (140.0, 0.28),
-            ],
-            "metric": [
-                (20.0, 0.56),
-                (80.0, 0.56),
-                (140.0, 0.56),
-            ],
-        },
-        tol=0.025,
+        out_fn=lambda row: 0.4 * row["vin"],
+        metric_fn=lambda row: 0.8 * row["vin"],
     )
 
 
 def check_v3_399_hierarchy_parameter_override(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (20.0, 1.05),
-                (80.0, 1.05),
-                (140.0, 1.05),
-            ],
-            "metric": [
-                (20.0, 0.0),
-                (80.0, 0.0),
-                (140.0, 0.0),
-            ],
-        },
-        tol=0.025,
-    )
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 1.5 * row["vin"], tol=0.04)
 
 
 def check_v3_400_hierarchy_named_port_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (20.0, 0.56),
-                (80.0, 0.56),
-                (140.0, 0.56),
-            ],
-            "metric": [
-                (20.0, 0.0),
-                (80.0, 0.0),
-                (140.0, 0.0),
-            ],
-        },
-        tol=0.02,
-    )
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 0.8 * row["vin"], tol=0.035)
 
 
 def check_v3_401_hierarchy_ordered_port_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_hierarchy_expression(
         rows,
-        {
-            "out": [
-                (20.0, 0.28),
-                (80.0, 0.28),
-                (140.0, 0.28),
-            ],
-            "metric": [
-                (20.0, 0.56),
-                (80.0, 0.56),
-                (140.0, 0.56),
-            ],
-        },
-        tol=0.025,
+        out_fn=lambda row: 0.4 * row["vin"],
+        metric_fn=lambda row: 0.8 * row["vin"],
     )
 
 
 def check_v3_402_hierarchy_shared_threshold_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_hierarchy_expression(
         rows,
-        {
-            "out": [
-                (20.0, 0.9),
-                (80.0, 0.9),
-                (140.0, 0.9),
-            ],
-            "metric": [
-                (20.0, 0.0),
-                (80.0, 0.0),
-                (140.0, 0.0),
-            ],
-        },
-        tol=0.03,
+        out_fn=lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
+        tol=0.04,
     )
 
 

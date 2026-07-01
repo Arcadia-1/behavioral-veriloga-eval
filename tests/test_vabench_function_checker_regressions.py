@@ -2419,6 +2419,41 @@ def test_v3_rdist_checkers_follow_hidden_vin_values() -> None:
         assert not checker(_rdist_sequence_rows(sequence, wrong=True))[0]
 
 
+def _hierarchy_rows(out_fn, *, metric_fn=None, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vin_segments = [(0.0, 0.25), (50.0, 0.72), (100.0, 0.45), (150.0, 0.9)]
+    for idx in range(201):
+        time_ns = float(idx)
+        vin = _task_input_from_segments(time_ns, vin_segments)
+        row = {
+            "time": time_ns * 1e-9,
+            "vin": vin,
+            "clk": 0.0,
+            "mode": 0.0,
+            "rst": 0.0,
+            "out": 0.0,
+            "metric": 0.0,
+        }
+        row["out"] = 0.0 if wrong else out_fn(row)
+        row["metric"] = 0.0 if wrong else (metric_fn(row) if metric_fn else 0.0)
+        rows.append(row)
+    return rows
+
+
+def test_v3_hierarchy_checkers_follow_hidden_vin_values() -> None:
+    cases = [
+        (sim.check_v3_397_hierarchy_gain_child, lambda row: 0.8 * row["vin"], None),
+        (sim.check_v3_398_hierarchy_two_stage_chain, lambda row: 0.4 * row["vin"], lambda row: 0.8 * row["vin"]),
+        (sim.check_v3_399_hierarchy_parameter_override, lambda row: 1.5 * row["vin"], None),
+        (sim.check_v3_400_hierarchy_named_port_map, lambda row: 0.8 * row["vin"], None),
+        (sim.check_v3_401_hierarchy_ordered_port_map, lambda row: 0.4 * row["vin"], lambda row: 0.8 * row["vin"]),
+        (sim.check_v3_402_hierarchy_shared_threshold_child, lambda row: 0.9 if row["vin"] > 0.45 else 0.0, None),
+    ]
+    for checker, out_fn, metric_fn in cases:
+        assert checker(_hierarchy_rows(out_fn, metric_fn=metric_fn))[0]
+        assert not checker(_hierarchy_rows(out_fn, metric_fn=metric_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]
