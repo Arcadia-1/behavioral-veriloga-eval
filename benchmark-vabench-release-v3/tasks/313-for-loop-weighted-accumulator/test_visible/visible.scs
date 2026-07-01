@@ -1,6 +1,14 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
-// Drive vin/clk/mode/rst with deterministic voltage-domain sources and save vin clk mode rst out metric.
-tran tran stop=80n
+
+ahdl_include "for_loop_weighted_accumulator.va"
+
+Vvin (vin 0) vsource type=pwl wave=[ 0n 0.1 19n 0.1 20n 0.2 29n 0.2 30n 0.8 45n 0.8 ]
+Vmode (mode 0) vsource type=pwl wave=[ 0n 0 45n 0 ]
+Vrst (rst 0) vsource type=pwl wave=[ 0n 0 45n 0 ]
+Vclk (clk 0) vsource type=pwl wave=[ 0n 0 4.9n 0 5.0n 0.9 5.5n 0.9 5.6n 0 14.9n 0 15.0n 0.9 15.5n 0.9 15.6n 0 24.9n 0 25.0n 0.9 25.5n 0.9 25.6n 0 34.9n 0 35.0n 0.9 35.5n 0.9 35.6n 0 45n 0 ]
+
+XDUT (vin clk mode rst out metric) for_loop_weighted_accumulator
+
+tran tran stop=45n
 save vin clk mode rst out metric

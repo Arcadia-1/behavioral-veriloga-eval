@@ -19,9 +19,17 @@ module for_loop_weighted_accumulator (
 
 ## Required Behavior
 
-Use a for loop and array state for voltage-domain computation.
+Use a Verilog-A `for` loop over array state to implement a four-tap weighted accumulator.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+The model keeps `samples[0:3]` and `weights[0:3] = {4.0, 3.0, 2.0, 1.0}`, all initialized in `initial_step`. On a rising crossing of `clk` through `vth = 0.45` V:
+
+- if `rst` is high, clear all samples and drive both outputs to zero
+- otherwise shift the history toward older indexes and store the new `V(vin)` in `samples[0]`
+- use a `for` loop over all four taps to compute `acc = sum(samples[i] * weights[i])`
+- drive `out = acc / 10.0`
+- drive `metric = acc`
+
+A rising `rst` event must also clear the sample history immediately. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

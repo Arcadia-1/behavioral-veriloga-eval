@@ -5172,11 +5172,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 313-for-loop-weighted-accumulator: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_313_for_loop_weighted_accumulator
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_313_for_loop_weighted_accumulator
+    metric: sampled_for_loop_weighted_accumulator
   required_columns:
     - time
     - vin
@@ -5190,8 +5193,18 @@
       - "for ("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_clears_sample_history
+      - for_loop_sums_four_weighted_taps
+      - newest_sample_has_weight_four
+      - oldest_sample_has_weight_one
+      - output_is_accumulator_divided_by_ten
+      - metric_reports_raw_accumulator
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 314-for-loop-windowed-peak: |
   version: 1
   task_id: v3_314_for_loop_windowed_peak

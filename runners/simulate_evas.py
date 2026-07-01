@@ -6938,6 +6938,21 @@ def check_v3_312_for_loop_thermometer_count(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_313_for_loop_weighted_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.04), (27.0, 0.11), (37.0, 0.24), (47.0, 0.49), (57.0, 0.46)],
+            "metric": [(7.0, 0.0), (17.0, 0.40), (27.0, 1.10), (37.0, 2.40), (47.0, 4.90), (57.0, 4.60)],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -15859,6 +15874,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "311-for-loop-running-average": check_v3_311_for_loop_running_average,
     "v3_312_for_loop_thermometer_count": check_v3_312_for_loop_thermometer_count,
     "312-for-loop-thermometer-count": check_v3_312_for_loop_thermometer_count,
+    "v3_313_for_loop_weighted_accumulator": check_v3_313_for_loop_weighted_accumulator,
+    "313-for-loop-weighted-accumulator": check_v3_313_for_loop_weighted_accumulator,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
