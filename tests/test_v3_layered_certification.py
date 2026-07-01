@@ -140,3 +140,21 @@ def test_blocking_issue_matrix_covers_all_staged_rows() -> None:
         issue["issue_url"]: issue["task_count"]
         for issue in blocking_issues
     }
+
+
+def test_blocking_issue_matrix_has_promotion_checklists() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    for issue in report["blocking_issues"]:
+        task_count = issue["task_count"]
+        negative_count = task_count * 5
+        command = issue["promotion_command"]
+        acceptance = issue["promotion_acceptance"]
+        task_numbers = [task["task_key"][:3] for task in issue["tasks"]]
+
+        assert "--include-staged" in command
+        assert "--tasks " in command
+        assert "run_v3_gold_negative_verification.py" in command
+        assert f"--tasks {','.join(task_numbers)}" in command
+        assert f"{task_count}/{task_count} gold PASS" in acceptance
+        assert f"{negative_count}/{negative_count} negative variants rejected" in acceptance
+        assert "zero expectation_fail" in acceptance

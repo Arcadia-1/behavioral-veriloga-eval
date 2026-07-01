@@ -21,6 +21,19 @@ def task_number(task_dir: Path) -> int | None:
         return None
 
 
+def parse_task_filter(value: str | None) -> set[str]:
+    if not value:
+        return set()
+    return {item.strip() for item in value.split(",") if item.strip()}
+
+
+def task_matches_filter(task_dir: Path, task_filter: set[str]) -> bool:
+    if not task_filter:
+        return True
+    number = task_number(task_dir)
+    return task_dir.name in task_filter or (number is not None and f"{number:03d}" in task_filter)
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -165,6 +178,11 @@ def main() -> int:
     parser.add_argument("--root", default="benchmark-vabench-release-v3/tasks")
     parser.add_argument("--start", type=int, required=True)
     parser.add_argument("--end", type=int, required=True)
+    parser.add_argument(
+        "--tasks",
+        default="",
+        help="Optional comma-separated task slugs or three-digit task numbers to run inside the start/end range.",
+    )
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--out", required=True)
@@ -188,11 +206,14 @@ def main() -> int:
     os.environ.setdefault("VAEVAS_EVAS_PERSISTENT_WORKER", "0")
     root = Path(args.root)
     sim_correct_slugs = read_sim_correct_task_slugs(Path(args.checks))
+    task_filter = parse_task_filter(args.tasks)
     cases: list[tuple[Path, str | None, int]] = []
     skipped_tasks: list[str] = []
     for task_dir in sorted(p for p in root.iterdir() if p.is_dir()):
         number = task_number(task_dir)
         if number is None or not (args.start <= number <= args.end):
+            continue
+        if not task_matches_filter(task_dir, task_filter):
             continue
         if not args.include_staged and task_dir.name not in sim_correct_slugs:
             skipped_tasks.append(task_dir.name)

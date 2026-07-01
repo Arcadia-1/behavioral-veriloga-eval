@@ -184,6 +184,32 @@ def counter(rows: list[dict[str, Any]], key: str) -> dict[str, int]:
     return dict(sorted(Counter(str(row[key]) for row in rows).items()))
 
 
+def promotion_command_for(blocked_rows: list[dict[str, Any]]) -> str:
+    numbers = sorted(int(row["task_number"]) for row in blocked_rows)
+    if not numbers:
+        return ""
+    task_filter = ",".join(f"{number:03d}" for number in numbers)
+    return (
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python "
+        "VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" "
+        ".venv-evas/bin/python scripts/run_v3_gold_negative_verification.py "
+        f"--start {numbers[0]} --end {numbers[-1]} --tasks {task_filter} "
+        "--include-staged --timeout 120 --jobs 1 "
+        f"--out benchmark-vabench-release-v3/reports/verify_issue_{numbers[0]}_{numbers[-1]}.json"
+    )
+
+
+def promotion_acceptance_for(blocked_rows: list[dict[str, Any]]) -> str:
+    task_count = len(blocked_rows)
+    negative_count = task_count * 5
+    return (
+        f"After EVAS support lands, promote the listed {task_count} task(s) by adding sim_correct "
+        "behavior contracts/checkers if missing, then require "
+        f"{task_count}/{task_count} gold PASS, {negative_count}/{negative_count} negative variants rejected, "
+        "and zero expectation_fail in the verification report."
+    )
+
+
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
     sop_ready_extension_tasks = read_sop_ready_extension_tasks()
@@ -231,6 +257,8 @@ def build_report() -> dict[str, Any]:
             "issue_url": issue_url,
             "task_count": count,
             "semantic_layers": counter(blocked_rows, "semantic_layer"),
+            "promotion_command": promotion_command_for(blocked_rows),
+            "promotion_acceptance": promotion_acceptance_for(blocked_rows),
             "tasks": [
                 {
                     "task_key": row["task_key"],
@@ -333,15 +361,18 @@ def write_md(report: dict[str, Any]) -> None:
         "",
         "## Blocking Issues",
         "",
-        "| EVAS issue | Blocked tasks | Semantic layers |",
-        "| --- | ---: | --- |",
+        "| EVAS issue | Blocked tasks | Semantic layers | Promotion acceptance |",
+        "| --- | ---: | --- | --- |",
     ])
     for issue in report["blocking_issues"]:
         layers = ", ".join(
             f"{name}: {count}"
             for name, count in issue["semantic_layers"].items()
         )
-        lines.append(f"| {issue['issue_url']} | {issue['task_count']} | {layers} |")
+        lines.append(
+            f"| {issue['issue_url']} | {issue['task_count']} | {layers} | "
+            f"{issue['promotion_acceptance']} |"
+        )
     lines.extend([
         "",
         "## Claim Boundary",
