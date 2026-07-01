@@ -9100,16 +9100,45 @@
 411-escaped-identifier-state: |
   version: 1
   task_id: v3_411_escaped_identifier_state
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: escaped_identifier_state_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "\trim.state"
+      - \trim.state
+      - "V(mode) > vth"
+      - "V(vin) +"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/escaped_identifier_state.va
+    negative:
+      - negative_variants/neg_001_force_zero/escaped_identifier_state.va
+      - negative_variants/neg_002_wrong_threshold/escaped_identifier_state.va
+      - negative_variants/neg_003_reset_bias/escaped_identifier_state.va
+      - negative_variants/neg_004_metric_offset/escaped_identifier_state.va
+      - negative_variants/neg_005_scale_output/escaped_identifier_state.va
+    checks:
+      - escaped_identifier_holds_low_trim_state
+      - escaped_identifier_holds_high_trim_state
+      - output_adds_trim_to_input
+      - metric_reports_trim_state
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Identifier syntax extension promoted to executable EVAS behavior candidate."
 412-initial-final-step-lifecycle: |
   version: 1
   task_id: v3_412_initial_final_step_lifecycle

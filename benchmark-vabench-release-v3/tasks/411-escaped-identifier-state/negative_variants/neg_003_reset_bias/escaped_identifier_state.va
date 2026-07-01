@@ -36,7 +36,7 @@ analog begin
         out_v = V(vin) + \trim.state ;
         metric_v = \trim.state ;
         count_q = count_q + 1;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
+        if (count_q == 1) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

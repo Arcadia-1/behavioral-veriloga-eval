@@ -9251,6 +9251,31 @@ def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.4),
+                (180.0, 0.6),
+                (280.0, 0.7),
+                (380.0, 0.7),
+            ],
+            "metric": [
+                (80.0, 0.1),
+                (180.0, 0.2),
+                (280.0, 0.1),
+                (380.0, 0.2),
+            ],
+        },
+        tol=0.04,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -18364,6 +18389,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "408-vector-shift-and-mask-decoder": check_v3_408_vector_shift_and_mask_decoder,
     "v3_409_macro_functionlike_clamp": check_v3_409_macro_functionlike_clamp,
     "409-macro-functionlike-clamp": check_v3_409_macro_functionlike_clamp,
+    "v3_411_escaped_identifier_state": check_v3_411_escaped_identifier_state,
+    "411-escaped-identifier-state": check_v3_411_escaped_identifier_state,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
