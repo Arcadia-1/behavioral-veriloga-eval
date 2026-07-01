@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 46,
+      "complete_tests_count": 47,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 42,
+      "fair_eval_count": 43,
       "range": "373-434",
-      "sop_ready_count": 41,
+      "sop_ready_count": 42,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          20
+          19
         ],
         [
           "missing_required_behavior_section",
-          16
+          15
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          15
+          14
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          15
+          14
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 118,
-    "fair_eval_count": 113,
+    "complete_tests_count": 119,
+    "fair_eval_count": 114,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 81,
-      "hidden_scs_not_executable:include,instance,source": 75,
-      "missing_required_behavior_section": 76,
-      "visible_scs_not_executable:include,instance,source": 75
+      "checker_syntax_only_no_behavior_score": 80,
+      "hidden_scs_not_executable:include,instance,source": 74,
+      "missing_required_behavior_section": 75,
+      "visible_scs_not_executable:include,instance,source": 74
     },
-    "sop_ready_count": 112,
+    "sop_ready_count": 113,
     "task_count": 194
   },
   "tasks": [
@@ -2906,20 +2906,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 420,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Combine electrical threshold sampling with logic state output.",
       "target": "mixed_analog_digital_mode_latch.vams",

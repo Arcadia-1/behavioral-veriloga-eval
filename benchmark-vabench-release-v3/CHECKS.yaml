@@ -9392,16 +9392,40 @@
 420-mixed-analog-digital-mode-latch: |
   version: 1
   task_id: v3_420_mixed_analog_digital_mode_latch
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: mixed_analog_digital_mode_latch_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - flag
   syntax:
     must_include:
       - "electrical vin"
+      - "logic clk"
+      - "always @"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/mixed_analog_digital_mode_latch.vams
+    negative:
+      - negative_variants/neg_001_force_zero/mixed_analog_digital_mode_latch.vams
+      - negative_variants/neg_002_wrong_threshold/mixed_analog_digital_mode_latch.vams
+      - negative_variants/neg_003_reset_bias/mixed_analog_digital_mode_latch.vams
+      - negative_variants/neg_004_metric_offset/mixed_analog_digital_mode_latch.vams
+      - negative_variants/neg_005_scale_output/mixed_analog_digital_mode_latch.vams
+    checks:
+      - electrical_voltage_probe_parse
+      - logic_clock_parse
+      - posedge_sampling_updates_flag
+      - below_threshold_clears_flag
+      - above_threshold_sets_flag
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Mixed analog-to-digital clocked latch promoted to executable EVAS behavior candidate."
 421-task-local-variable-transform: |
   version: 1
   task_id: v3_421_task_local_variable_transform

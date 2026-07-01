@@ -3,7 +3,7 @@ module mixed_analog_digital_mode_latch(vin, clk, flag);
     output flag;
     electrical vin;
     logic clk, flag;
-    always @(posedge clk) begin
+    always @(negedge clk) begin
         flag = V(vin) > 0.45;
     end
 endmodule

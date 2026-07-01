@@ -8070,6 +8070,26 @@ def check_v3_419_wreal_logic_threshold_bridge(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_420_mixed_analog_digital_mode_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "flag"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "flag": [
+                (130.0, 1.0),
+                (230.0, 0.0),
+                (330.0, 1.0),
+                (430.0, 0.0),
+                (530.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18494,6 +18514,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "414-parameter-range-real-control": check_v3_414_parameter_range_real_control,
     "v3_419_wreal_logic_threshold_bridge": check_v3_419_wreal_logic_threshold_bridge,
     "419-wreal-logic-threshold-bridge": check_v3_419_wreal_logic_threshold_bridge,
+    "v3_420_mixed_analog_digital_mode_latch": check_v3_420_mixed_analog_digital_mode_latch,
+    "420-mixed-analog-digital-mode-latch": check_v3_420_mixed_analog_digital_mode_latch,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

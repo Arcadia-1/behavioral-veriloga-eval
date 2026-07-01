@@ -18,8 +18,8 @@
   "layers": [
     {
       "certification_levels": {
-        "behavior_certified_extension": 20,
-        "compile_supported_candidate": 6
+        "behavior_certified_extension": 21,
+        "compile_supported_candidate": 5
       },
       "semantic_layer": "ams_mixed_signal_extension",
       "task_count": 26
@@ -78,22 +78,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 412,
-    "behavior_certified_extension_count": 112,
+    "behavior_certified_count": 413,
+    "behavior_certified_extension_count": 113,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 112,
+      "behavior_certified_extension": 113,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 72,
+      "compile_supported_candidate": 71,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 82,
+    "compile_supported_candidate_count": 81,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 82,
-      "extension_behavior_certified_outside_original_300": 112,
+      "excluded_until_behavior_promotion": 81,
+      "extension_behavior_certified_outside_original_300": 113,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -8084,15 +8084,15 @@
       "title": "Wreal Logic Threshold Bridge"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "verilogams_digital_mixed_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Combine electrical threshold sampling with logic state output.",
       "target": "mixed_analog_digital_mode_latch.vams",
