@@ -5527,11 +5527,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 323-slew-output-reset-recovery: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_323_slew_output_reset_recovery
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_323_slew_output_reset_recovery
+    metric: sampled_slew_output_reset_recovery
   required_columns:
     - time
     - vin
@@ -5545,8 +5548,18 @@
       - "slew("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+      - "transition("
+  sim_correct:
+    checks:
+      - initial_reset_clears_target
+      - first_clock_slews_up_to_high_target
+      - mid_run_reset_slews_down_to_zero
+      - post_reset_clock_recovers_high_target
+      - metric_follows_same_recovery_sequence
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 324-slew-limited-envelope: |
   version: 1
   task_id: v3_324_slew_limited_envelope

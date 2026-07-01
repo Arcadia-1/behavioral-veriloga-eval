@@ -7205,6 +7205,33 @@ def check_v3_322_slew_limited_mode_stepper(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_323_slew_output_reset_recovery(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (7.0, 0.0),
+                (26.2, 0.80),
+                (35.5, 0.38),
+                (38.0, 0.0),
+                (56.0, 0.80),
+            ],
+            "metric": [
+                (7.0, 0.0),
+                (26.2, 1.00),
+                (35.5, 0.58),
+                (38.5, 0.0),
+                (56.3, 1.00),
+            ],
+        },
+        tol=0.10,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16146,6 +16173,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "321-slew-limited-voltage-follower": check_v3_321_slew_limited_voltage_follower,
     "v3_322_slew_limited_mode_stepper": check_v3_322_slew_limited_mode_stepper,
     "322-slew-limited-mode-stepper": check_v3_322_slew_limited_mode_stepper,
+    "v3_323_slew_output_reset_recovery": check_v3_323_slew_output_reset_recovery,
+    "323-slew-output-reset-recovery": check_v3_323_slew_output_reset_recovery,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
