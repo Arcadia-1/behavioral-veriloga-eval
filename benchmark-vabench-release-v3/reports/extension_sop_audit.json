@@ -88,28 +88,28 @@
       ]
     },
     {
-      "complete_tests_count": 4,
+      "complete_tests_count": 5,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 2,
+      "fair_eval_count": 3,
       "range": "471-494",
-      "sop_ready_count": 2,
+      "sop_ready_count": 3,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          22
+          21
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          20
+          19
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          20
+          19
         ],
         [
           "missing_required_behavior_section",
-          20
+          19
         ]
       ]
     }
@@ -117,15 +117,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 167,
-    "fair_eval_count": 144,
+    "complete_tests_count": 168,
+    "fair_eval_count": 145,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 50,
-      "hidden_scs_not_executable:include,instance,source": 26,
-      "missing_required_behavior_section": 21,
-      "visible_scs_not_executable:include,instance,source": 26
+      "checker_syntax_only_no_behavior_score": 49,
+      "hidden_scs_not_executable:include,instance,source": 25,
+      "missing_required_behavior_section": 20,
+      "visible_scs_not_executable:include,instance,source": 25
     },
-    "sop_ready_count": 143,
+    "sop_ready_count": 144,
     "task_count": 194
   },
   "tasks": [
@@ -4207,20 +4207,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 475,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use the generic potential() access function as a contribution target.",
       "target": "generic_potential_contribution.va",

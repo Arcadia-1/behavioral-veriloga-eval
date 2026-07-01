@@ -11017,14 +11017,34 @@
 475-generic-potential-contribution: |
   version: 1
   task_id: v3_475_generic_potential_contribution
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: generic_potential_contribution_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "potential(out) <+"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/generic_potential_contribution.va
+    negative:
+      - negative_variants/neg_001_force_zero/generic_potential_contribution.va
+      - negative_variants/neg_002_wrong_threshold/generic_potential_contribution.va
+      - negative_variants/neg_003_reset_bias/generic_potential_contribution.va
+      - negative_variants/neg_004_metric_offset/generic_potential_contribution.va
+      - negative_variants/neg_005_scale_output/generic_potential_contribution.va
+    checks:
+      - generic_potential_contribution_parse
+      - output_tracks_input_voltage
+      - no_current_domain_contribution
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Generic potential() contribution target behavior promoted to executable EVAS behavior candidate."
 476-oomr-string-voltage-probe: |
   version: 1
   task_id: v3_476_oomr_string_voltage_probe
