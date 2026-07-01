@@ -3,14 +3,14 @@ global 0
 
 ahdl_include "mixed_logic_clocked_voltage_sampler.vams"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.6 299n 0.6 300n 0.8 600n 0.8]
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 249n 0.0 250n 1.0 299n 1.0 300n 0.0 399n 0.0 400n 1.0 449n 1.0 450n 0.0 549n 0.0 550n 1.0 600n 1.0]
-Ven (en 0) vsource type=pwl wave=[0 0.0 179n 0.0 180n 1.0 329n 1.0 330n 0.0 479n 0.0 480n 1.0 600n 1.0]
+Vvin (vin 0) vsource type=pwl wave=[0 0.45 219n 0.45 220n 0.72 479n 0.72 480n 0.30 659n 0.30 660n 0.86 820n 0.86]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 79n 0.0 80n 1.0 119n 1.0 120n 0.0 219n 0.0 220n 1.0 259n 1.0 260n 0.0 359n 0.0 360n 1.0 399n 1.0 400n 0.0 519n 0.0 520n 1.0 559n 1.0 560n 0.0 679n 0.0 680n 1.0 719n 1.0 720n 0.0 779n 0.0 780n 1.0 820n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 0.0 179n 0.0 180n 1.0 329n 1.0 330n 0.0 609n 0.0 610n 1.0 820n 1.0]
 Vsel (sel 0) vsource dc=0.0
 Va (a 0) vsource dc=0.2
 Vb (b 0) vsource dc=0.7
 
 XDUT (vin clk en sel a b vout) mixed_logic_clocked_voltage_sampler
 
-tran tran stop=600n
+tran tran stop=820n
 save vin clk en sel a b vout

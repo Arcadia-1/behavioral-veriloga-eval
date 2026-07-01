@@ -24,7 +24,7 @@
           1
         ]
       ],
-      "visible_hidden_distinct_count": 14
+      "visible_hidden_distinct_count": 19
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 88,
+    "sop_ready_visible_hidden_identical_count": 83,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 88,
-    "visible_hidden_identical_count": 106,
+    "visible_hidden_distinct_count": 93,
+    "visible_hidden_identical_count": 101,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 106
+      "visible_hidden_identical": 101
     }
   },
   "tasks": [
@@ -1472,11 +1472,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Logic Enable Voltage Driver",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1497,11 +1496,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Wreal To Electrical Buffer",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1522,11 +1520,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Electrical Threshold Logic Flag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1547,11 +1544,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Logic Clocked Voltage Sampler",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1572,11 +1568,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Mixed Wreal Logic Select Driver",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

@@ -1976,6 +1976,99 @@ def test_v3_clocked_checkers_follow_edge_stimulus_values() -> None:
     assert not sim.check_v3_354_always_counter_two_bit(_counter_msb_rows(wrong=True))[0]
 
 
+def _mixed_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.55, 0.0, 1.0, 0.0, 0.25, 0.75),
+        (100.0, 0.55, 0.0, 1.0, 0.0, 0.25, 0.75),
+        (220.0, 0.25, 0.0, 0.0, 1.0, 0.68, 0.75),
+        (280.0, 0.30, 0.0, 0.0, 0.0, 0.70, 0.24),
+        (340.0, 0.82, 0.0, 0.0, 0.0, 0.68, 0.22),
+        (520.0, 0.82, 0.0, 1.0, 1.0, 0.42, 0.22),
+        (610.0, 0.35, 0.0, 1.0, 0.0, 0.30, 0.56),
+        (700.0, 0.40, 0.0, 0.0, 1.0, 0.42, 0.56),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, vin, clk, en, sel, a_value, b_value in base_rows:
+        for offset_ns in range(6):
+            row = {
+                "time": (time_ns + offset_ns) * 1e-9,
+                "vin": vin,
+                "clk": clk,
+                "en": en,
+                "sel": sel,
+                "a": a_value,
+                "b": b_value,
+                "vout": 0.0,
+            }
+            row["vout"] = 0.0 if wrong else expected_fn(row)
+            rows.append(row)
+    return rows
+
+
+def _mixed_sampler_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.45, 0.0, 0.0),
+        (80.0, 0.45, 1.0, 0.0),
+        (120.0, 0.45, 0.0, 0.0),
+        (220.0, 0.72, 1.0, 1.0),
+        (300.0, 0.72, 0.0, 1.0),
+        (520.0, 0.30, 1.0, 0.0),
+        (600.0, 0.30, 0.0, 0.0),
+        (680.0, 0.86, 1.0, 1.0),
+    ]
+    sampled = False
+    prev_clk = samples[0][2]
+    rows: list[dict[str, float]] = []
+    for time_ns, vin, clk, en in samples:
+        if rows and prev_clk <= 1e-9 < clk:
+            sampled = en > 1e-9
+        expected = vin if sampled else 0.0
+        for offset_ns in range(6):
+            rows.append(
+                {
+                    "time": (time_ns + offset_ns) * 1e-9,
+                    "vin": vin,
+                    "clk": clk,
+                    "en": en,
+                    "sel": 0.0,
+                    "a": 0.2,
+                    "b": 0.7,
+                    "vout": 0.0 if wrong else expected,
+                }
+            )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_mixed_signal_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_356_mixed_logic_enable_voltage_driver,
+            lambda row: row["vin"] if row["en"] > 1e-9 else 0.0,
+        ),
+        (
+            sim.check_v3_357_mixed_wreal_to_electrical_buffer,
+            lambda row: row["a"],
+        ),
+        (
+            sim.check_v3_358_mixed_electrical_threshold_logic_flag,
+            lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
+        ),
+        (
+            sim.check_v3_360_mixed_wreal_logic_select_driver,
+            lambda row: row["a"] if row["sel"] > 1e-9 else row["b"],
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_mixed_rows(expected_fn))[0]
+        assert not checker(_mixed_rows(expected_fn, wrong=True))[0]
+
+    assert sim.check_v3_359_mixed_logic_clocked_voltage_sampler(_mixed_sampler_rows())[0]
+    assert not sim.check_v3_359_mixed_logic_clocked_voltage_sampler(
+        _mixed_sampler_rows(wrong=True)
+    )[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

@@ -3,7 +3,7 @@ global 0
 
 ahdl_include "mixed_electrical_threshold_logic_flag.vams"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.2 199n 0.2 200n 0.7 399n 0.7 400n 0.4 600n 0.4]
+Vvin (vin 0) vsource type=pwl wave=[0 0.25 159n 0.25 160n 0.62 339n 0.62 340n 0.38 519n 0.38 520n 0.80 760n 0.80]
 Vclk (clk 0) vsource dc=0.0
 Ven (en 0) vsource dc=1.0
 Vsel (sel 0) vsource dc=0.0
@@ -12,5 +12,5 @@ Vb (b 0) vsource dc=0.75
 
 XDUT (vin clk en sel a b vout) mixed_electrical_threshold_logic_flag
 
-tran tran stop=600n
+tran tran stop=760n
 save vin clk en sel a b vout

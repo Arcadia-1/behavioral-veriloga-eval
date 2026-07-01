@@ -6972,6 +6972,101 @@ def _check_v3_clocked_counter_msb(
     return True, f"checked={checked} edges={edge_count} low={low_count} high={high_count} max_err={max_err:.4f}"
 
 
+def _check_v3_mixed_vout_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    required: set[str] | None = None,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required_columns = required or {"time", "vin", "en", "sel", "a", "b", "vout"}
+    if not rows or not required_columns.issubset(rows[0]):
+        missing = sorted(required_columns - set(rows[0].keys())) if rows else sorted(required_columns)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 100)
+    checked = 0
+    low_expected = 0
+    high_expected = 0
+    max_err = 0.0
+    for index in range(0, len(rows), stride):
+        row = rows[index]
+        expected = expected_fn(row)
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        nearby_expected = [expected_fn(rows[near_index]) for near_index in range(window_start, window_end)]
+        if max(abs(expected - value) for value in nearby_expected) > 0.02:
+            continue
+        error = abs(row["vout"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.45:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"vout@{row['time'] * 1e9:g}ns={row['vout']:.4f} "
+                f"expected={expected:.4f} tol={tol:.4f}"
+            )
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_vout_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
+def _check_v3_mixed_clocked_voltage_sampler(
+    rows: list[dict[str, float]],
+    *,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    sampled = False
+    prev_clk = rows[0]["clk"]
+    edge_count = 0
+    expected_values: list[float] = [0.0]
+    low_expected = 0
+    high_expected = 0
+    for row in rows[1:]:
+        clk = row["clk"]
+        if prev_clk <= 1e-9 < clk:
+            edge_count += 1
+            sampled = row["en"] > 1e-9
+        expected_values.append(row["vin"] if sampled else 0.0)
+        prev_clk = clk
+
+    checked = 0
+    max_err = 0.0
+    for index in range(1, len(rows), max(1, len(rows) // 100)):
+        row = rows[index]
+        expected = expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(expected - expected_values[near_index]) for near_index in range(window_start, window_end)) > 0.02:
+            continue
+        error = abs(row["vout"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.45:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"vout@{row['time'] * 1e9:g}ns={row['vout']:.4f} "
+                f"expected={expected:.4f} sampled={sampled} tol={tol:.4f}"
+            )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_vout_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} edges={edge_count} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -7969,99 +8064,35 @@ def check_v3_355_always_enable_hold(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_v3_356_mixed_logic_enable_voltage_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_mixed_vout_expression(
         rows,
-        {
-            "vout": [
-                (120.0, 0.7),
-                (220.0, 0.3),
-                (340.0, 0.0),
-                (520.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["vin"] if row["en"] > 1e-9 else 0.0,
     )
 
 
 def check_v3_357_mixed_wreal_to_electrical_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_mixed_vout_expression(
         rows,
-        {
-            "vout": [
-                (120.0, 0.2),
-                (300.0, 0.8),
-                (500.0, 0.4),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["a"],
     )
 
 
 def check_v3_358_mixed_electrical_threshold_logic_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_mixed_vout_expression(
         rows,
-        {
-            "vout": [
-                (120.0, 0.0),
-                (300.0, 0.9),
-                (500.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
     )
 
 
 def check_v3_359_mixed_logic_clocked_voltage_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "vout": [
-                (130.0, 0.0),
-                (220.0, 0.0),
-                (280.0, 0.6),
-                (360.0, 0.8),
-                (430.0, 0.0),
-                (520.0, 0.0),
-                (580.0, 0.8),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_mixed_clocked_voltage_sampler(rows)
 
 
 def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_mixed_vout_expression(
         rows,
-        {
-            "vout": [
-                (80.0, 0.8),
-                (150.0, 0.25),
-                (220.0, 0.7),
-                (360.0, 0.15),
-                (500.0, 0.35),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["a"] if row["sel"] > 1e-9 else row["b"],
+        required={"time", "vin", "clk", "en", "sel", "a", "b", "vout"},
     )
 
 
