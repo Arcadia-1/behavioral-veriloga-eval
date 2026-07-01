@@ -6203,17 +6203,39 @@
 341-wreal-gain-pass-through: |
   version: 1
   task_id: v3_341_wreal_gain_pass_through
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_wreal_assign_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - a
+    - b
+    - sel
+    - y
   syntax:
     must_include:
       - "wreal"
       - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/wreal_gain_pass_through.vams
+    negative:
+      - negative_variants/neg_001_force_zero/wreal_gain_pass_through.vams
+      - negative_variants/neg_002_invert_select/wreal_gain_pass_through.vams
+      - negative_variants/neg_003_drop_reset/wreal_gain_pass_through.vams
+      - negative_variants/neg_004_wrong_edge/wreal_gain_pass_through.vams
+      - negative_variants/neg_005_scale_low/wreal_gain_pass_through.vams
+    checks:
+      - wreal_ports_parse
+      - continuous_assign_evaluates_real_expression
+      - select_low_uses_b_path
+      - select_high_uses_a_gain_offset_path
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 342-wreal-two-input-summer: |
   version: 1
   task_id: v3_342_wreal_two_input_summer

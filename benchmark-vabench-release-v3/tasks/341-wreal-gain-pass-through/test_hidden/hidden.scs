@@ -1,4 +1,13 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "wreal_gain_pass_through.vams"
+
+Va (a 0) vsource dc=0.80 type=dc
+Vb (b 0) vsource dc=0.20 type=dc
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+
+XDUT (a b sel y) wreal_gain_pass_through
+
+tran tran stop=500n
+save a b sel y

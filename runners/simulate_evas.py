@@ -298,7 +298,7 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
         return []
     source_text = "\n".join(
         path.read_text(encoding="utf-8", errors="ignore")
-        for path in sorted([*run_dir.glob("*.va"), *run_dir.glob("*.scs")])
+        for path in sorted([*run_dir.glob("*.va"), *run_dir.glob("*.vams"), *run_dir.glob("*.scs")])
     )
     failures: list[str] = []
     for phrase in checks_config.get("syntax_must_include", []):
@@ -7685,6 +7685,23 @@ def check_v3_340_bound_step_clock_guard(rows: list[dict[str, float]]) -> tuple[b
                 (120.0, 0.2),
                 (320.0, 0.8),
                 (520.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_341_wreal_gain_pass_through(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (120.0, 0.15),
+                (320.0, 0.70),
             ],
         },
         tol=0.08,
@@ -16668,6 +16685,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "339-random-seeded-dither-source": check_v3_339_random_seeded_dither_source,
     "v3_340_bound_step_clock_guard": check_v3_340_bound_step_clock_guard,
     "340-bound-step-clock-guard": check_v3_340_bound_step_clock_guard,
+    "v3_341_wreal_gain_pass_through": check_v3_341_wreal_gain_pass_through,
+    "341-wreal-gain-pass-through": check_v3_341_wreal_gain_pass_through,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
