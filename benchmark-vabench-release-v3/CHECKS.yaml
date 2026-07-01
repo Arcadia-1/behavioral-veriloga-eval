@@ -9513,16 +9513,46 @@
 423-file-profile-replay-controller: |
   version: 1
   task_id: v3_423_file_profile_replay_controller
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_profile_replay_controller_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fgets"
+      - "$fseek"
+      - "$ftell"
       - "$rewind"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_profile_replay_controller.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_profile_replay_controller.va
+      - negative_variants/neg_002_wrong_threshold/file_profile_replay_controller.va
+      - negative_variants/neg_003_reset_bias/file_profile_replay_controller.va
+      - negative_variants/neg_004_metric_offset/file_profile_replay_controller.va
+      - negative_variants/neg_005_scale_output/file_profile_replay_controller.va
+    checks:
+      - file_open_parse
+      - fgets_line_parse
+      - ftell_position_metric
+      - fseek_replay_parse
+      - rewind_parse
+      - threshold_output_replay
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Gap-fill language extension task; unsupported rows track EVAS issue #30."
+    - "File replay bookkeeping behavior promoted to executable EVAS behavior candidate."
 424-file-fscanf-multi-column-profile: |
   version: 1
   task_id: v3_424_file_fscanf_multi_column_profile

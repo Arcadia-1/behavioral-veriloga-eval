@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 49,
+      "complete_tests_count": 50,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 45,
+      "fair_eval_count": 46,
       "range": "373-434",
-      "sop_ready_count": 44,
+      "sop_ready_count": 45,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          17
+          16
         ],
         [
           "missing_required_behavior_section",
-          13
+          12
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          12
+          11
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          12
+          11
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 121,
-    "fair_eval_count": 116,
+    "complete_tests_count": 122,
+    "fair_eval_count": 117,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 78,
-      "hidden_scs_not_executable:include,instance,source": 72,
-      "missing_required_behavior_section": 73,
-      "visible_scs_not_executable:include,instance,source": 72
+      "checker_syntax_only_no_behavior_score": 77,
+      "hidden_scs_not_executable:include,instance,source": 71,
+      "missing_required_behavior_section": 72,
+      "visible_scs_not_executable:include,instance,source": 71
     },
-    "sop_ready_count": 115,
+    "sop_ready_count": 116,
     "task_count": 194
   },
   "tasks": [
@@ -2975,20 +2975,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 423,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $fseek(), $ftell(), and $rewind() together for profile replay bookkeeping.",
       "target": "file_profile_replay_controller.va",

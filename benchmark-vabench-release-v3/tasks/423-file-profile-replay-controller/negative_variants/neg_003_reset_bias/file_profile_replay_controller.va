@@ -18,7 +18,6 @@ integer count_q;
 integer fd;
 integer pos0;
 integer pos1;
-integer nread;
 string line_buf;
 analog begin
     @(initial_step) begin
@@ -27,10 +26,10 @@ analog begin
         count_q = 0;
         fd = $fopen("stimulus_profile.txt", "r");
         pos0 = $ftell(fd);
-        nread = $fgets(line_buf, fd);
+        $fgets(line_buf, fd);
         pos1 = $ftell(fd);
         $fseek(fd, pos0, 0);
-        nread = nread + $fgets(line_buf, fd);
+        $fgets(line_buf, fd);
         $rewind(fd);
         $fclose(fd);
         metric_v = pos1 >= pos0 ? 1.0 : 0.0;
@@ -38,13 +37,12 @@ analog begin
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
+            metric_v = 0.25;
             count_q = 0;
         end else begin
             out_v = V(vin) > vth ? vhi : 0.0;
             metric_v = metric_v + 0.01 * count_q;
             count_q = count_q + 1;
-            if (V(rst) > vth) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

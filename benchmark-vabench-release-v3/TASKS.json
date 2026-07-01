@@ -5148,6 +5148,9 @@
       "target": [
         "file_profile_replay_controller.va"
       ],
+      "support": [
+        "stimulus_profile.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Profile Replay Controller",
       "syntax_focus": "Use $fseek(), $ftell(), and $rewind() together for profile replay bookkeeping.",
