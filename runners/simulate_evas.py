@@ -8117,6 +8117,31 @@ def check_v3_421_task_local_variable_transform(rows: list[dict[str, float]]) -> 
     )
 
 
+def check_v3_422_file_fscanf_table_stimulus(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.7),
+                (130.0, 0.7),
+                (330.0, 0.0),
+                (430.0, 0.7),
+            ],
+            "metric": [
+                (50.0, 2.0),
+                (130.0, 0.0),
+                (330.0, 0.0),
+                (430.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18545,6 +18570,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "420-mixed-analog-digital-mode-latch": check_v3_420_mixed_analog_digital_mode_latch,
     "v3_421_task_local_variable_transform": check_v3_421_task_local_variable_transform,
     "421-task-local-variable-transform": check_v3_421_task_local_variable_transform,
+    "v3_422_file_fscanf_table_stimulus": check_v3_422_file_fscanf_table_stimulus,
+    "422-file-fscanf-table-stimulus": check_v3_422_file_fscanf_table_stimulus,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
@@ -18848,7 +18875,7 @@ def run_case(
             tb_path,
             target_filenames=[*task_artifact_targets, *task_artifact_supports],
             primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
-            companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
+            companion_search_dirs=(dut_path.parent, task_dir / "solution", task_dir / "starter"),
         )
         timing_split["copy_inputs_s"] = time.perf_counter() - t0
 

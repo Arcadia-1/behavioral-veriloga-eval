@@ -47,8 +47,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 81,
-        "compile_supported_candidate": 62
+        "behavior_certified_extension": 82,
+        "compile_supported_candidate": 61
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 143
@@ -78,22 +78,22 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 414,
-    "behavior_certified_extension_count": 114,
+    "behavior_certified_count": 415,
+    "behavior_certified_extension_count": 115,
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 114,
+      "behavior_certified_extension": 115,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 70,
+      "compile_supported_candidate": 69,
       "compile_supported_continuous_time_candidate": 4,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 80,
+    "compile_supported_candidate_count": 79,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 80,
-      "extension_behavior_certified_outside_original_300": 114,
+      "excluded_until_behavior_promotion": 79,
+      "extension_behavior_certified_outside_original_300": 115,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -8122,15 +8122,15 @@
       "title": "Task Local Variable Transform"
     },
     {
-      "behavior_certified": false,
+      "behavior_certified": true,
       "category": "veriloga_file_read_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use $fscanf() to read a table-driven stimulus/profile row.",
       "target": "file_fscanf_table_stimulus.va",

@@ -5131,6 +5131,9 @@
       "target": [
         "file_fscanf_table_stimulus.va"
       ],
+      "support": [
+        "stimulus_profile.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Fscanf Table Stimulus",
       "syntax_focus": "Use $fscanf() to read a table-driven stimulus/profile row.",
