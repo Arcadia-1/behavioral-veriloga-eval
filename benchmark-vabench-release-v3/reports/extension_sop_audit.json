@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 1,
+      "complete_tests_count": 2,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 2,
+      "fair_eval_count": 3,
       "range": "373-434",
-      "sop_ready_count": 1,
+      "sop_ready_count": 2,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          61
+          60
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          60
+          59
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          60
+          59
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          60
+          59
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 73,
-    "fair_eval_count": 73,
+    "complete_tests_count": 74,
+    "fair_eval_count": 74,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 121,
-      "hidden_scs_not_executable:include,instance,source": 120,
-      "missing_required_behavior_section": 121,
-      "visible_scs_not_executable:include,instance,source": 120
+      "checker_syntax_only_no_behavior_score": 120,
+      "hidden_scs_not_executable:include,instance,source": 119,
+      "missing_required_behavior_section": 120,
+      "visible_scs_not_executable:include,instance,source": 119
     },
-    "sop_ready_count": 72,
+    "sop_ready_count": 73,
     "task_count": 194
   },
   "tasks": [
@@ -1861,20 +1861,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 375,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a task to service event counter state on clock crossings.",
       "target": "task_event_counter_service.va",

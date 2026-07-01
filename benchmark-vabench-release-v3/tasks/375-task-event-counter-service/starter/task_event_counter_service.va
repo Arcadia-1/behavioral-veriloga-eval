@@ -9,9 +9,38 @@ module task_event_counter_service (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+real sum_v;
+integer count_q;
+task service_event;
+    input real sample;
+    input integer enabled;
+    begin
+        // TODO: update count_q, sum_v, out_v, and metric_v.
+    end
+endtask
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        sum_v = 0.0;
+        count_q = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+            metric_v = 0.0;
+            sum_v = 0.0;
+            count_q = 0;
+        end else begin
+            service_event(V(vin), V(mode) > vth);
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule
