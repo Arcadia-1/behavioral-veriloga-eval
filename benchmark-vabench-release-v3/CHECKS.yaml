@@ -10939,7 +10939,7 @@
     must_include:
       - "V(out) : V(in) == 0"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Continuous-time/constraint task with executable source-driven testbench; indirect-branch equation behavior remains outside ordinary event-level certification."
 472-indirect-branch-ddt-balance: |
   version: 1
   task_id: v3_472_indirect_branch_ddt_balance
