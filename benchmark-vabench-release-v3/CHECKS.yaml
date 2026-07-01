@@ -11207,14 +11207,33 @@
 484-rtoi-conversion-quantizer: |
   version: 1
   task_id: v3_484_rtoi_conversion_quantizer
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: rtoi_conversion_quantizer_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
-      - "$rtoi"
+      - "$rtoi("
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/rtoi_conversion_quantizer.va
+    negative:
+      - negative_variants/neg_001_force_zero/rtoi_conversion_quantizer.va
+      - negative_variants/neg_002_wrong_threshold/rtoi_conversion_quantizer.va
+      - negative_variants/neg_003_reset_bias/rtoi_conversion_quantizer.va
+      - negative_variants/neg_004_metric_offset/rtoi_conversion_quantizer.va
+      - negative_variants/neg_005_scale_output/rtoi_conversion_quantizer.va
+    checks:
+      - rtoi_parse
+      - quantized_output_saturates
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Real-to-integer conversion helper promoted with executable quantizer behavior verification."
 485-mc-trial-number-metric: |
   version: 1
   task_id: v3_485_mc_trial_number_metric

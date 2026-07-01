@@ -5,7 +5,7 @@ module rtoi_conversion_quantizer (input electrical in, output electrical out);
 integer code;
 analog begin
     code = $rtoi(8.0 * V(in));
-    if (code < 0) code = 0;
+    if (code < 1) code = 1;
     if (code > 7) code = 7;
     V(out) <+ transition(code / 7.0, 0.0, 200p, 200p);
 end

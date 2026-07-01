@@ -9021,6 +9021,26 @@ def check_v3_483_cds_violation_threshold_assert(rows: list[dict[str, float]]) ->
     )
 
 
+def check_v3_484_rtoi_conversion_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.0 / 7.0),
+                (50.0, 2.0 / 7.0),
+                (90.0, 5.0 / 7.0),
+                (120.0, 1.0),
+                (145.0, 0.0),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19525,6 +19545,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "480-mfactor-system-function-gain": check_v3_480_mfactor_system_function_gain,
     "v3_483_cds_violation_threshold_assert": check_v3_483_cds_violation_threshold_assert,
     "483-cds-violation-threshold-assert": check_v3_483_cds_violation_threshold_assert,
+    "v3_484_rtoi_conversion_quantizer": check_v3_484_rtoi_conversion_quantizer,
+    "484-rtoi-conversion-quantizer": check_v3_484_rtoi_conversion_quantizer,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

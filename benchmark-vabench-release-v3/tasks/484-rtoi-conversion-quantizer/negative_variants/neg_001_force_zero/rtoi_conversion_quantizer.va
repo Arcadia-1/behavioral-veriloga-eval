@@ -7,6 +7,6 @@ analog begin
     code = $rtoi(8.0 * V(in));
     if (code < 0) code = 0;
     if (code > 7) code = 7;
-    V(out) <+ transition(code / 7.0, 0.0, 200p, 200p);
+    V(out) <+ transition(0.0 + 0.0 * code, 0.0, 200p, 200p);
 end
 endmodule
