@@ -88,28 +88,28 @@
       ]
     },
     {
-      "complete_tests_count": 19,
+      "complete_tests_count": 20,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 10,
+      "fair_eval_count": 11,
       "range": "471-494",
-      "sop_ready_count": 10,
+      "sop_ready_count": 11,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          14
+          13
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          5
+          4
         ],
         [
           "missing_required_behavior_section",
-          5
+          4
         ]
       ]
     }
@@ -117,15 +117,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 182,
-    "fair_eval_count": 152,
+    "complete_tests_count": 183,
+    "fair_eval_count": 153,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 42,
-      "hidden_scs_not_executable:include,instance,source": 11,
-      "missing_required_behavior_section": 6,
-      "visible_scs_not_executable:include,instance,source": 11
+      "checker_syntax_only_no_behavior_score": 41,
+      "hidden_scs_not_executable:include,instance,source": 10,
+      "missing_required_behavior_section": 5,
+      "visible_scs_not_executable:include,instance,source": 10
     },
-    "sop_ready_count": 151,
+    "sop_ready_count": 152,
     "task_count": 194
   },
   "tasks": [
@@ -4566,20 +4566,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 490,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Combine event body, task state update, and function post-processing.",
       "target": "event_task_function_state_update.va",

@@ -11353,14 +11353,34 @@
 490-event-task-function-state-update: |
   version: 1
   task_id: v3_490_event_task_function_state_update
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: event_task_function_state_update_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - clk
+    - inp
+    - out
   syntax:
     must_include:
       - "task update_state"
+      - "function real clamp01"
+      - "cross("
+  sim_correct:
+    positive:
+      - solution/event_task_function_state_update.va
+    negative:
+      - negative_variants/neg_001_force_zero/event_task_function_state_update.va
+      - negative_variants/neg_002_wrong_threshold/event_task_function_state_update.va
+      - negative_variants/neg_003_reset_bias/event_task_function_state_update.va
+      - negative_variants/neg_004_metric_offset/event_task_function_state_update.va
+      - negative_variants/neg_005_scale_output/event_task_function_state_update.va
+    checks:
+      - task_function_event_parse
+      - state_update_clamp_sequence
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Event body plus task state update and function post-processing promoted with executable behavior verification."
 491-kcl-capacitor-ddt-current: |
   version: 1
   task_id: v3_491_kcl_capacitor_ddt_current

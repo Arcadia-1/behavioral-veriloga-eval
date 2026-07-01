@@ -9136,6 +9136,25 @@ def check_v3_489_event_nested_or_expression(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_490_event_task_function_state_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (20.0, 0.15),
+                (40.0, 0.40),
+                (60.0, 0.85),
+                (80.0, 1.00),
+            ],
+        },
+        tol=0.035,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19652,6 +19671,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "488-table-model-string-param-source": check_v3_488_table_model_string_param_source,
     "v3_489_event_nested_or_expression": check_v3_489_event_nested_or_expression,
     "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
+    "v3_490_event_task_function_state_update": check_v3_490_event_task_function_state_update,
+    "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

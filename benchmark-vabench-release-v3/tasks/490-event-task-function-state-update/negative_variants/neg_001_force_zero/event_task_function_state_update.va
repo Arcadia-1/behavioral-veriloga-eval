@@ -16,7 +16,7 @@ task update_state;
     input real sample;
     begin
         count = count + 1;
-        q = clamp01(sample + 0.05 * count);
+        q = 0.0 + 0.0 * sample;
     end
 endtask
 analog begin

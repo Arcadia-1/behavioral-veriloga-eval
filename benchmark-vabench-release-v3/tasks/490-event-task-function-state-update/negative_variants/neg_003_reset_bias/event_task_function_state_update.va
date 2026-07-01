@@ -15,7 +15,7 @@ endfunction
 task update_state;
     input real sample;
     begin
-        count = count + 1;
+        count = count + 2;
         q = clamp01(sample + 0.05 * count);
     end
 endtask
