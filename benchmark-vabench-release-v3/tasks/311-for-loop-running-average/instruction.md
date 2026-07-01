@@ -19,9 +19,17 @@ module for_loop_running_average (
 
 ## Required Behavior
 
-Use a for loop and array state for voltage-domain computation.
+Use a Verilog-A `for` loop and a four-entry real array to implement a clocked running average.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+The model keeps `samples[0:3]`, initialized to zero. On a rising crossing of `clk` through `vth = 0.45` V:
+
+- if `rst` is high, clear all samples, clear the valid sample count, and drive both outputs to zero
+- otherwise shift the history toward older indexes, store the new `V(vin)` in `samples[0]`, and increment the valid sample count up to four
+- use a `for` loop over all four array entries to compute `acc = samples[0] + samples[1] + samples[2] + samples[3]`
+- drive `out = acc / 4.0`
+- drive `metric = 0.9 * valid_count / 4.0`
+
+A rising `rst` event must also clear the array immediately. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 

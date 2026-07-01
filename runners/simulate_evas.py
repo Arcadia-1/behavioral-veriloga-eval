@@ -6908,6 +6908,21 @@ def check_v3_310_case_resettable_state_decoder(rows: list[dict[str, float]]) -> 
     )
 
 
+def check_v3_311_for_loop_running_average(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.05), (27.0, 0.15), (37.0, 0.30), (47.0, 0.50), (57.0, 0.55)],
+            "metric": [(7.0, 0.0), (17.0, 0.225), (27.0, 0.45), (37.0, 0.675), (47.0, 0.90), (57.0, 0.90)],
+        },
+        tol=0.025,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -15825,6 +15840,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "309-case-clocked-range-bucket": check_v3_309_case_clocked_range_bucket,
     "v3_310_case_resettable_state_decoder": check_v3_310_case_resettable_state_decoder,
     "310-case-resettable-state-decoder": check_v3_310_case_resettable_state_decoder,
+    "v3_311_for_loop_running_average": check_v3_311_for_loop_running_average,
+    "311-for-loop-running-average": check_v3_311_for_loop_running_average,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
