@@ -10427,16 +10427,40 @@
 454-multidimensional-array-state: |
   version: 1
   task_id: v3_454_multidimensional_array_state
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: multidimensional_array_state_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "[0:1][0:1]"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/multidimensional_array_state.va
+    negative:
+      - negative_variants/neg_001_force_zero/multidimensional_array_state.va
+      - negative_variants/neg_002_wrong_threshold/multidimensional_array_state.va
+      - negative_variants/neg_003_reset_bias/multidimensional_array_state.va
+      - negative_variants/neg_004_metric_offset/multidimensional_array_state.va
+      - negative_variants/neg_005_scale_output/multidimensional_array_state.va
+    checks:
+      - multidimensional_integer_array_parse
+      - nested_array_index_write_read
+      - array_state_count_sequence
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "Multidimensional array state behavior promoted to executable EVAS behavior candidate."
 455-packed-logic-bus-slice: |
   version: 1
   task_id: v3_455_packed_logic_bus_slice

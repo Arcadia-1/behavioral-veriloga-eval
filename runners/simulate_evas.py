@@ -8549,6 +8549,33 @@ def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tu
     return True, " ".join(observed)
 
 
+def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (130.0, 0.0),
+                (230.0, 0.0),
+                (330.0, 0.9),
+                (430.0, 0.0),
+                (530.0, 0.0),
+            ],
+            "metric": [
+                (130.0, 1.0),
+                (230.0, 2.0),
+                (330.0, 3.0),
+                (430.0, 0.0),
+                (530.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19011,6 +19038,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
     "v3_448_rdist_uniform_seeded_dither": check_v3_448_rdist_uniform_seeded_dither,
     "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
+    "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
+    "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

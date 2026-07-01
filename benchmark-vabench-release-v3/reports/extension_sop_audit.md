@@ -5,16 +5,16 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **129**
-- Tasks with executable visible+hidden SCS evidence: **147**
-- Tasks with behavior checker evidence: **130**
+- SOP-ready tasks: **130**
+- Tasks with executable visible+hidden SCS evidence: **148**
+- Tasks with behavior checker evidence: **131**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 64
-- `hidden_scs_not_executable:include,instance,source`: 46
-- `missing_required_behavior_section`: 42
-- `visible_scs_not_executable:include,instance,source`: 46
+- `checker_syntax_only_no_behavior_score`: 63
+- `hidden_scs_not_executable:include,instance,source`: 45
+- `missing_required_behavior_section`: 41
+- `visible_scs_not_executable:include,instance,source`: 45
 
 ## Range Summary
 
@@ -24,7 +24,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 54 | 61 | 55 | `checker_syntax_only_no_behavior_score`: 7<br>`missing_required_behavior_section`: 1 |
-| `435-458` | manual syntax-completion candidates | 24 | 4 | 14 | 4 | `checker_syntax_only_no_behavior_score`: 20<br>`visible_scs_not_executable:include,instance,source`: 10<br>`hidden_scs_not_executable:include,instance,source`: 10<br>`missing_required_behavior_section`: 5 |
+| `435-458` | manual syntax-completion candidates | 24 | 5 | 15 | 5 | `checker_syntax_only_no_behavior_score`: 19<br>`visible_scs_not_executable:include,instance,source`: 9<br>`hidden_scs_not_executable:include,instance,source`: 9<br>`missing_required_behavior_section`: 4 |
 | `459-470` | course-material gap-fill candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 12<br>`hidden_scs_not_executable:include,instance,source`: 12<br>`missing_required_behavior_section`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 24<br>`hidden_scs_not_executable:include,instance,source`: 24<br>`missing_required_behavior_section`: 24<br>`checker_syntax_only_no_behavior_score`: 24 |
 
@@ -189,7 +189,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
 | `452-connectrules-electrical-map` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
 | `453-specify-specparam-delay` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`checker_syntax_only_no_behavior_score` |
-| `454-multidimensional-array-state` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
+| `454-multidimensional-array-state` | `syntax-extension-candidate` | True | - |
 | `455-packed-logic-bus-slice` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |
 | `457-nested-function-pipeline` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`missing_required_behavior_section`<br>`checker_syntax_only_no_behavior_score` |

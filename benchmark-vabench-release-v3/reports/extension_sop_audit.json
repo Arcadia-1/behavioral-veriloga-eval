@@ -52,28 +52,28 @@
       ]
     },
     {
-      "complete_tests_count": 14,
+      "complete_tests_count": 15,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 4,
+      "fair_eval_count": 5,
       "range": "435-458",
-      "sop_ready_count": 4,
+      "sop_ready_count": 5,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          20
+          19
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          10
+          9
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          10
+          9
         ],
         [
           "missing_required_behavior_section",
-          5
+          4
         ]
       ]
     },
@@ -133,15 +133,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 147,
-    "fair_eval_count": 130,
+    "complete_tests_count": 148,
+    "fair_eval_count": 131,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 64,
-      "hidden_scs_not_executable:include,instance,source": 46,
-      "missing_required_behavior_section": 42,
-      "visible_scs_not_executable:include,instance,source": 46
+      "checker_syntax_only_no_behavior_score": 63,
+      "hidden_scs_not_executable:include,instance,source": 45,
+      "missing_required_behavior_section": 41,
+      "visible_scs_not_executable:include,instance,source": 45
     },
-    "sop_ready_count": 129,
+    "sop_ready_count": 130,
     "task_count": 194
   },
   "tasks": [
@@ -3724,20 +3724,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 454,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a two-dimensional integer array for behavioral state.",
       "target": "multidimensional_array_state.va",
