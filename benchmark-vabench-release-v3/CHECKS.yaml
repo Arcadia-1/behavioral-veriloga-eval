@@ -8953,16 +8953,45 @@
 407-vector-reduction-parity: |
   version: 1
   task_id: v3_407_vector_reduction_parity
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: vector_reduction_parity_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "^code_q"
+      - "|code_q"
+      - "count_q + 1"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/vector_reduction_parity.va
+    negative:
+      - negative_variants/neg_001_force_zero/vector_reduction_parity.va
+      - negative_variants/neg_002_wrong_threshold/vector_reduction_parity.va
+      - negative_variants/neg_003_reset_bias/vector_reduction_parity.va
+      - negative_variants/neg_004_metric_offset/vector_reduction_parity.va
+      - negative_variants/neg_005_scale_output/vector_reduction_parity.va
+    checks:
+      - reduction_xor_reports_code_parity
+      - reduction_or_reports_nonzero_validity
+      - parity_sequence_distinguishes_codes_three_and_five
+      - startup_count_bias_is_rejected
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
 408-vector-shift-and-mask-decoder: |
   version: 1
   task_id: v3_408_vector_shift_and_mask_decoder
