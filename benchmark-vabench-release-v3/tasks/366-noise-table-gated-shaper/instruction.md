@@ -17,7 +17,20 @@ module noise_table_gated_shaper (
 
 ## Required Behavior
 
-Gate a noise_table() contribution.
+Gate a `noise_table()` contribution with the control voltage:
+
+```verilog
+V(out) <+ (V(ctrl) > vth ? noise_table("noise_profile.tbl", "profile_noise") : 0.0);
+```
+
+Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `vhi` when `ctrl` enables the table-defined noise source, otherwise to zero:
+
+```verilog
+@(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
+V(metric) <+ transition(metric_v, 0.0, tr, tr);
+```
+
+The transient checker verifies the clocked gate-status sideband. The table-defined noise source is covered as an executable language feature; spectral noise behavior requires a noise-analysis-capable certification layer.
 
 Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
 

@@ -7172,16 +7172,46 @@
 366-noise-table-gated-shaper: |
   version: 1
   task_id: v3_366_noise_table_gated_shaper
-  backend: noise_analysis_capable
-  status: noise-analysis-candidate
-  checker: noise_analysis_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: gated_noise_table_transient_sideband_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ctrl
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - "noise_table"
+      - "V(ctrl) > vth"
+      - "V(out)"
+      - "cross"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/noise_table_gated_shaper.va
+    negative:
+      - negative_variants/neg_001_zero_noise/noise_table_gated_shaper.va
+      - negative_variants/neg_002_wrong_label/noise_table_gated_shaper.va
+      - negative_variants/neg_003_disable_analysis/noise_table_gated_shaper.va
+      - negative_variants/neg_004_wrong_metric/noise_table_gated_shaper.va
+      - negative_variants/neg_005_scale_output/noise_table_gated_shaper.va
+    checks:
+      - executable_gated_noise_table_voltage_contribution
+      - metric_initial_step_zero
+      - metric_samples_gate_state_on_clk_rising_crossing
+      - low_ctrl_reports_zero
+      - high_ctrl_reports_vhi
+      - transient_sideband_only_not_spectral_noise_certification
+      - no_current_domain_contribution
   notes:
-    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+    - "Noise/source extension task promoted for executable transient sideband behavior if the simulator supports noise_table."
+    - "The checker verifies the deterministic gate-status sideband; spectral noise_table behavior still requires a noise-analysis-capable layer."
 367-analysis-dependent-dc-tran-mode: |
   version: 1
   task_id: v3_367_analysis_dependent_dc_tran_mode

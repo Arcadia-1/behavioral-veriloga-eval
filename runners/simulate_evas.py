@@ -8145,6 +8145,25 @@ def check_v3_365_noise_table_voltage_shaper(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_366_noise_table_gated_shaper(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.0),
+                (380.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17170,6 +17189,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "364-flicker-noise-corner-selector": check_v3_364_flicker_noise_corner_selector,
     "v3_365_noise_table_voltage_shaper": check_v3_365_noise_table_voltage_shaper,
     "365-noise-table-voltage-shaper": check_v3_365_noise_table_voltage_shaper,
+    "v3_366_noise_table_gated_shaper": check_v3_366_noise_table_gated_shaper,
+    "366-noise-table-gated-shaper": check_v3_366_noise_table_gated_shaper,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
