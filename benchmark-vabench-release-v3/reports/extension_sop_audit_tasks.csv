@@ -101,12 +101,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 400-hierarchy-named-port-map,400,Hierarchy Named Port Map,syntax-extension-candidate,hierarchy_named_port_map.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 401-hierarchy-ordered-port-map,401,Hierarchy Ordered Port Map,syntax-extension-candidate,hierarchy_ordered_port_map.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 402-hierarchy-shared-threshold-child,402,Hierarchy Shared Threshold Child,syntax-extension-candidate,hierarchy_shared_threshold_child.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-403-vector-bit-select-flag,403,Vector Bit Select Flag,syntax-extension-candidate,vector_bit_select_flag.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-404-vector-part-select-window,404,Vector Part Select Window,syntax-extension-candidate,vector_part_select_window.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-405-vector-concat-code-build,405,Vector Concat Code Build,syntax-extension-candidate,vector_concat_code_build.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-406-vector-replication-mask,406,Vector Replication Mask,syntax-extension-candidate,vector_replication_mask.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-407-vector-reduction-parity,407,Vector Reduction Parity,syntax-extension-candidate,vector_reduction_parity.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-408-vector-shift-and-mask-decoder,408,Vector Shift And Mask Decoder,syntax-extension-candidate,vector_shift_and_mask_decoder.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+403-vector-bit-select-flag,403,Vector Bit Select Flag,syntax-extension-candidate,vector_bit_select_flag.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+404-vector-part-select-window,404,Vector Part Select Window,syntax-extension-candidate,vector_part_select_window.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+405-vector-concat-code-build,405,Vector Concat Code Build,syntax-extension-candidate,vector_concat_code_build.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+406-vector-replication-mask,406,Vector Replication Mask,syntax-extension-candidate,vector_replication_mask.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+407-vector-reduction-parity,407,Vector Reduction Parity,syntax-extension-candidate,vector_reduction_parity.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+408-vector-shift-and-mask-decoder,408,Vector Shift And Mask Decoder,syntax-extension-candidate,vector_shift_and_mask_decoder.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 409-macro-functionlike-clamp,409,Macro Functionlike Clamp,syntax-extension-candidate,macro_functionlike_clamp.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 410-macro-ifdef-gain-select,410,Macro Ifdef Gain Select,syntax-extension-candidate,macro_ifdef_gain_select.va,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical
 411-escaped-identifier-state,411,Escaped Identifier State,syntax-extension-candidate,escaped_identifier_state.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical

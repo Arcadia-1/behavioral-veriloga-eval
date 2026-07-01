@@ -9,7 +9,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "Invert the selected vector bit so syntax checks pass but bit-specific behavior fails.",
       "files": [
         "neg_002_wrong_threshold/vector_bit_select_flag.va"
       ]

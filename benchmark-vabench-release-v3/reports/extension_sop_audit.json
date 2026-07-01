@@ -49,7 +49,7 @@
           7
         ]
       ],
-      "visible_hidden_distinct_count": 30
+      "visible_hidden_distinct_count": 36
     },
     {
       "complete_tests_count": 24,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 47,
+    "sop_ready_visible_hidden_identical_count": 41,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 129,
-    "visible_hidden_identical_count": 65,
+    "visible_hidden_distinct_count": 135,
+    "visible_hidden_identical_count": 59,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 65
+      "visible_hidden_identical": 59
     }
   },
   "tasks": [
@@ -2600,11 +2600,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Bit Select Flag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2625,11 +2624,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Part Select Window",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2650,11 +2648,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Concat Code Build",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2675,11 +2672,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Replication Mask",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2700,11 +2696,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Reduction Parity",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -2725,11 +2720,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Vector Shift And Mask Decoder",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

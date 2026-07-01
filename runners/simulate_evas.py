@@ -9827,183 +9827,133 @@ def check_v3_402_hierarchy_shared_threshold_child(rows: list[dict[str, float]]) 
     )
 
 
-def check_v3_403_vector_bit_select_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _check_v3_vector_counter_behavior(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.05,
+) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+
+    count = 0
+    out_expected = 0.0
+    metric_expected = 0.0
+    out_values = [out_expected]
+    metric_values = [metric_expected]
+    edge_times: list[float] = []
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_times.append(row["time"])
+            edge_count += 1
+            if row["rst"] > 0.45:
+                count = 0
+                out_expected = 0.0
+                metric_expected = 0.0
+            else:
+                out_expected, metric_expected = expected_fn(count)
+                count += 1
+        out_values.append(out_expected)
+        metric_values.append(metric_expected)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 140)
+    checked_out = 0
+    checked_metric = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        if any(0.0 <= rows[index]["time"] - edge_time <= 1.0e-9 for edge_time in edge_times):
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = out_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        metric_expected = metric_values[index]
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if edge_count < 4:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def _odd_parity(value: int) -> bool:
+    return bin(value & 0xFFFFFFFF).count("1") % 2 == 1
+
+
+def check_v3_403_vector_bit_select_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-                (480.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 0.0),
-                (380.0, 1.0),
-                (480.0, 0.0),
-            ],
-        },
-        tol=0.03,
+        expected_fn=lambda count: (0.9 if ((count + 4) & 0x4) else 0.0, float((count + 4) & 0x1)),
     )
 
 
 def check_v3_404_vector_part_select_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-                (480.0, 0.9),
-                (580.0, 0.9),
-                (680.0, 0.9),
-                (780.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 4.0),
-                (180.0, 5.0),
-                (280.0, 5.0),
-                (380.0, 6.0),
-                (480.0, 6.0),
-                (580.0, 7.0),
-                (680.0, 7.0),
-                (780.0, 0.0),
-            ],
-        },
-        tol=0.04,
+        expected_fn=lambda count: (
+            0.9 if (((count + 9) >> 1) & 0x7) > 3 else 0.0,
+            float(((count + 9) >> 1) & 0x7),
+        ),
     )
 
 
 def check_v3_405_vector_concat_code_build(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-                (480.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 8.0),
-                (180.0, 9.0),
-                (280.0, 10.0),
-                (380.0, 11.0),
-                (480.0, 8.0),
-            ],
-        },
-        tol=0.04,
+        expected_fn=lambda count: (
+            0.9 if (8 | (count & 0x3)) > 8 else 0.0,
+            float(8 | (count & 0x3)),
+        ),
     )
 
 
 def check_v3_406_vector_replication_mask(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.0),
-                (280.0, 0.9),
-                (380.0, 0.9),
-                (480.0, 0.0),
-                (580.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 10.0),
-                (180.0, 10.0),
-                (280.0, 10.0),
-                (380.0, 10.0),
-                (480.0, 10.0),
-                (580.0, 10.0),
-            ],
-        },
-        tol=0.04,
+        expected_fn=lambda count: (0.9 if (10 & count) != 0 else 0.0, 10.0),
     )
 
 
 def check_v3_407_vector_reduction_parity(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-                (480.0, 0.0),
-                (580.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-                (480.0, 1.0),
-                (580.0, 1.0),
-            ],
-        },
-        tol=0.04,
+        expected_fn=lambda count: (0.9 if _odd_parity(count + 1) else 0.0, 1.0 if (count + 1) != 0 else 0.0),
     )
 
 
 def check_v3_408_vector_shift_and_mask_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_vector_counter_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.0),
-                (480.0, 0.0),
-                (580.0, 0.0),
-                (680.0, 0.0),
-                (780.0, 0.0),
-                (880.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 2.0),
-                (180.0, 2.0),
-                (280.0, 3.0),
-                (380.0, 3.0),
-                (480.0, 0.0),
-                (580.0, 0.0),
-                (680.0, 1.0),
-                (780.0, 1.0),
-                (880.0, 2.0),
-            ],
-        },
-        tol=0.04,
+        expected_fn=lambda count: (
+            0.9 if (((count + 12) >> 1) & 0x3) == 2 else 0.0,
+            float(((count + 12) >> 1) & 0x3),
+        ),
     )
 
 

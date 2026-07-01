@@ -9,7 +9,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "why_wrong": "Use an inclusive window threshold so syntax checks pass but boundary behavior fails.",
       "files": [
         "neg_002_wrong_threshold/vector_part_select_window.va"
       ]

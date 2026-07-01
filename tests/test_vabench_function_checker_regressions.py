@@ -2454,6 +2454,56 @@ def test_v3_hierarchy_checkers_follow_hidden_vin_values() -> None:
         assert not checker(_hierarchy_rows(out_fn, metric_fn=metric_fn, wrong=True))[0]
 
 
+def _vector_counter_rows(expected_fn, *, reset_edges: set[int] | None = None, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    reset_edges = reset_edges or set()
+    count = 0
+    out = 0.0
+    metric = 0.0
+    prev_clk = 0.0
+    edges = [50.0, 150.0, 250.0, 350.0, 450.0, 550.0, 650.0, 750.0, 850.0]
+    for idx in range(921):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in edges) else 0.0
+        edge_index = sum(1 for edge in edges if edge <= time_ns)
+        rst = 0.9 if edge_index in reset_edges and clk > 0.45 else 0.0
+        if prev_clk <= 0.45 < clk:
+            if rst > 0.45:
+                count = 0
+                out = 0.0
+                metric = 0.0
+            else:
+                out, metric = expected_fn(count)
+                count += 1
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "vin": 0.7,
+                "clk": clk,
+                "mode": 0.0,
+                "rst": rst,
+                "out": 0.0 if wrong else out,
+                "metric": 0.0 if wrong else metric,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_vector_checkers_follow_counter_and_reset_values() -> None:
+    cases = [
+        (sim.check_v3_403_vector_bit_select_flag, lambda c: (0.9 if ((c + 4) & 0x4) else 0.0, float((c + 4) & 1))),
+        (sim.check_v3_404_vector_part_select_window, lambda c: (0.9 if (((c + 9) >> 1) & 7) > 3 else 0.0, float(((c + 9) >> 1) & 7))),
+        (sim.check_v3_405_vector_concat_code_build, lambda c: (0.9 if (8 | (c & 3)) > 8 else 0.0, float(8 | (c & 3)))),
+        (sim.check_v3_406_vector_replication_mask, lambda c: (0.9 if (10 & c) != 0 else 0.0, 10.0)),
+        (sim.check_v3_407_vector_reduction_parity, lambda c: (0.9 if sim._odd_parity(c + 1) else 0.0, 1.0)),
+        (sim.check_v3_408_vector_shift_and_mask_decoder, lambda c: (0.9 if (((c + 12) >> 1) & 3) == 2 else 0.0, float(((c + 12) >> 1) & 3))),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_vector_counter_rows(expected_fn, reset_edges={3}))[0]
+        assert not checker(_vector_counter_rows(expected_fn, reset_edges={3}, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

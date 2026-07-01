@@ -6,7 +6,7 @@ ahdl_include "vector_shift_and_mask_decoder.va"
 Vvin (vin 0) vsource dc=0.7
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 379n 1.0 380n 0.0 449n 0.0 450n 1.0 479n 1.0 480n 0.0 549n 0.0 550n 1.0 579n 1.0 580n 0.0 649n 0.0 650n 1.0 679n 1.0 680n 0.0 749n 0.0 750n 1.0 779n 1.0 780n 0.0 849n 0.0 850n 1.0 920n 1.0]
 Vmode (mode 0) vsource dc=0.0
-Vrst (rst 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 429n 0.0 430n 0.9 489n 0.9 490n 0.0 920n 0.0]
 
 XDUT (vin clk mode rst out metric) vector_shift_and_mask_decoder
 
