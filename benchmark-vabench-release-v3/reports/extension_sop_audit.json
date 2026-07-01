@@ -24,7 +24,7 @@
           1
         ]
       ],
-      "visible_hidden_distinct_count": 0
+      "visible_hidden_distinct_count": 5
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 102,
+    "sop_ready_visible_hidden_identical_count": 97,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 74,
-    "visible_hidden_identical_count": 120,
+    "visible_hidden_distinct_count": 79,
+    "visible_hidden_identical_count": 115,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 120
+      "visible_hidden_identical": 115
     }
   },
   "tasks": [
@@ -1109,11 +1109,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Gain Pass Through",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1134,11 +1133,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Two Input Summer",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1159,11 +1157,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Threshold Flag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1184,11 +1181,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Clamped Mux",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1209,11 +1205,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Wreal Scale Offset",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

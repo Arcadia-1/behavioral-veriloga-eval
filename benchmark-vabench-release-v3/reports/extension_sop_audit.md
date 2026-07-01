@@ -8,9 +8,9 @@ Date: 2026-07-02
 - SOP-ready tasks: **153**
 - Tasks with executable visible+hidden SCS evidence: **194**
 - Tasks with behavior checker evidence: **153**
-- Tasks with distinct visible/hidden SCS stimuli: **74**
-- Tasks with identical visible/hidden SCS stimuli: **120**
-- SOP-ready tasks with identical visible/hidden SCS stimuli: **102**
+- Tasks with distinct visible/hidden SCS stimuli: **79**
+- Tasks with identical visible/hidden SCS stimuli: **115**
+- SOP-ready tasks with identical visible/hidden SCS stimuli: **97**
 - Staged tasks with identical visible/hidden SCS stimuli: **18**
 
 ## Issue Counts
@@ -20,14 +20,14 @@ Date: 2026-07-02
 ## Warning Counts
 
 - `candidate_tier_not_score_ready`: 194
-- `visible_hidden_identical`: 120
+- `visible_hidden_identical`: 115
 
 ## Range Summary
 
 | Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Distinct V/H | Top Issues |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 | 26 |  |
-| `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 0 | `checker_syntax_only_no_behavior_score`: 1 |
+| `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 5 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 0 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 55 | 62 | 55 | 6 | `checker_syntax_only_no_behavior_score`: 7 |
 | `435-458` | manual syntax-completion candidates | 24 | 8 | 24 | 8 | 6 | `checker_syntax_only_no_behavior_score`: 16 |

@@ -1767,6 +1767,60 @@ def test_acquisition_limited_sample_hold_checker_rejects_ideal_jump_and_hold_dri
     )[0]
 
 
+def _wreal_assign_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.60, 0.10, 0.0),
+        (100.0, 0.60, 0.10, 0.0),
+        (210.0, 0.45, 0.10, 0.9),
+        (330.0, 0.45, 0.32, 0.9),
+        (390.0, 0.50, 0.32, 0.9),
+        (470.0, 0.72, 0.32, 0.0),
+        (620.0, 0.72, 0.32, 0.0),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, a_value, b_value, sel_value in base_rows:
+        row = {
+            "time": time_ns * 1e-9,
+            "a": a_value,
+            "b": b_value,
+            "sel": sel_value,
+            "y": 0.0,
+        }
+        row["y"] = 0.0 if wrong else expected_fn(row)
+        rows.append(row)
+    return rows
+
+
+def test_v3_wreal_assign_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_341_wreal_gain_pass_through,
+            lambda row: 0.75 * row["a"] + 0.1 if row["sel"] > 0.45 else 0.75 * row["b"],
+        ),
+        (
+            sim.check_v3_342_wreal_two_input_summer,
+            lambda row: row["a"] + row["b"] + (0.1 if row["sel"] > 0.45 else 0.0),
+        ),
+        (
+            sim.check_v3_343_wreal_threshold_flag,
+            lambda row: 0.9
+            if ((row["a"] + (0.1 if row["sel"] > 0.45 else 0.0)) > 0.45)
+            else 0.0,
+        ),
+        (
+            sim.check_v3_344_wreal_clamped_mux,
+            lambda row: min(0.9, max(0.0, row["a"] if row["sel"] > 0.45 else row["b"])),
+        ),
+        (
+            sim.check_v3_345_wreal_scale_offset,
+            lambda row: 0.75 * row["b"] - 0.1 if row["sel"] > 0.45 else 0.75 * row["a"] + 0.1,
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_wreal_assign_rows(expected_fn))[0]
+        assert not checker(_wreal_assign_rows(expected_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

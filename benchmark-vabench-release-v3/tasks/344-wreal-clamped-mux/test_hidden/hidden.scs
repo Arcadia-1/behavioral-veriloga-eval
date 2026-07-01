@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "wreal_clamped_mux.vams"
 
-Va (a 0) vsource dc=1.20 type=dc
-Vb (b 0) vsource dc=-0.20 type=dc
-Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+Va (a 0) vsource type=pwl wave=[0 1.10 320n 1.10 321n 0.55 650n 0.55]
+Vb (b 0) vsource type=pwl wave=[0 -0.15 300n -0.15 301n 0.35 650n 0.35]
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 0.9 449n 0.9 450n 0.0 650n 0.0]
 
 XDUT (a b sel y) wreal_clamped_mux
 
-tran tran stop=500n
+tran tran stop=650n
 save a b sel y

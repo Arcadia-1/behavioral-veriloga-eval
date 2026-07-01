@@ -39,11 +39,11 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 338-math-trig-envelope-detector,338,Math Trig Envelope Detector,syntax-extension-candidate,math_trig_envelope_detector.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 339-random-seeded-dither-source,339,Random Seeded Dither Source,syntax-extension-candidate,random_seeded_dither_source.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 340-bound-step-clock-guard,340,Bound Step Clock Guard,syntax-extension-candidate,bound_step_clock_guard.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-341-wreal-gain-pass-through,341,Wreal Gain Pass Through,ams-mixed-signal-candidate,wreal_gain_pass_through.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-342-wreal-two-input-summer,342,Wreal Two Input Summer,ams-mixed-signal-candidate,wreal_two_input_summer.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-343-wreal-threshold-flag,343,Wreal Threshold Flag,ams-mixed-signal-candidate,wreal_threshold_flag.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-344-wreal-clamped-mux,344,Wreal Clamped Mux,ams-mixed-signal-candidate,wreal_clamped_mux.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-345-wreal-scale-offset,345,Wreal Scale Offset,ams-mixed-signal-candidate,wreal_scale_offset.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+341-wreal-gain-pass-through,341,Wreal Gain Pass Through,ams-mixed-signal-candidate,wreal_gain_pass_through.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+342-wreal-two-input-summer,342,Wreal Two Input Summer,ams-mixed-signal-candidate,wreal_two_input_summer.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+343-wreal-threshold-flag,343,Wreal Threshold Flag,ams-mixed-signal-candidate,wreal_threshold_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+344-wreal-clamped-mux,344,Wreal Clamped Mux,ams-mixed-signal-candidate,wreal_clamped_mux.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+345-wreal-scale-offset,345,Wreal Scale Offset,ams-mixed-signal-candidate,wreal_scale_offset.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 346-logic-assign-inverter,346,Logic Assign Inverter,ams-mixed-signal-candidate,logic_assign_inverter.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 347-logic-assign-and-or,347,Logic Assign And Or,ams-mixed-signal-candidate,logic_assign_and_or.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 348-logic-assign-xor-flag,348,Logic Assign Xor Flag,ams-mixed-signal-candidate,logic_assign_xor_flag.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical

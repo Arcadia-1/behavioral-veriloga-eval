@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "wreal_two_input_summer.vams"
 
-Va (a 0) vsource dc=0.25 type=dc
-Vb (b 0) vsource dc=0.35 type=dc
-Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+Va (a 0) vsource type=pwl wave=[0 0.15 220n 0.15 221n 0.42 650n 0.42]
+Vb (b 0) vsource type=pwl wave=[0 0.28 340n 0.28 341n 0.18 650n 0.18]
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 0.9 449n 0.9 450n 0.0 650n 0.0]
 
 XDUT (a b sel y) wreal_two_input_summer
 
-tran tran stop=500n
+tran tran stop=650n
 save a b sel y

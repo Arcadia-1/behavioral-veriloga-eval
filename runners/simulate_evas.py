@@ -6792,6 +6792,45 @@ def _sample_many(
     return True, " ".join(details)
 
 
+def _check_v3_wreal_assign_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "a", "b", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 80)
+    checked = 0
+    low_rows = 0
+    high_rows = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        sel = row["sel"]
+        if 0.20 < sel < 0.70:
+            continue
+        expected = expected_fn(row)
+        error = abs(row["y"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if sel <= 0.20:
+            low_rows += 1
+        if sel >= 0.70:
+            high_rows += 1
+        if error > tol:
+            return False, (
+                f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} "
+                f"expected={expected:.4f} sel={sel:.4f} tol={tol:.4f}"
+            )
+
+    if low_rows < 3 or high_rows < 3:
+        return False, f"insufficient_select_coverage low={low_rows} high={high_rows}"
+    return True, f"checked={checked} low={low_rows} high={high_rows} max_err={max_err:.4f}"
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -7692,87 +7731,48 @@ def check_v3_340_bound_step_clock_guard(rows: list[dict[str, float]]) -> tuple[b
 
 
 def check_v3_341_wreal_gain_pass_through(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.15),
-                (320.0, 0.70),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.75 * row["a"] + 0.1 if row["sel"] > 0.45 else 0.75 * row["b"]
+        ),
     )
 
 
 def check_v3_342_wreal_two_input_summer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.60),
-                (320.0, 0.70),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["a"]
+        + row["b"]
+        + (0.1 if row["sel"] > 0.45 else 0.0),
     )
 
 
 def check_v3_343_wreal_threshold_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.9 if ((row["a"] + (0.1 if row["sel"] > 0.45 else 0.0)) > 0.45) else 0.0
+        ),
     )
 
 
 def check_v3_344_wreal_clamped_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: min(
+            0.9,
+            max(0.0, row["a"] if row["sel"] > 0.45 else row["b"]),
+        ),
     )
 
 
 def check_v3_345_wreal_scale_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.40),
-                (320.0, 0.50),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.75 * row["b"] - 0.1 if row["sel"] > 0.45 else 0.75 * row["a"] + 0.1
+        ),
     )
 
 
