@@ -11296,14 +11296,15 @@
 487-table-model-2d-array-surface: |
   version: 1
   task_id: v3_487_table_model_2d_array_surface
-  backend: evas_rust_compile_capable
+  backend: evas_pending_table_model_2d_array_surface
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "$table_model"
+      - "1L,1L"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #56 because 2D array-backed $table_model() currently returns 0."
 488-table-model-string-param-source: |
   version: 1
   task_id: v3_488_table_model_string_param_source

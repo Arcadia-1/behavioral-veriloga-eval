@@ -9078,6 +9078,25 @@ def check_v3_486_rf_source_info_registration(rows: list[dict[str, float]]) -> tu
     )
 
 
+def check_v3_487_table_model_2d_array_surface(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "x", "y", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.0),
+                (50.0, 1.0),
+                (90.0, 3.0),
+                (130.0, 2.0),
+            ],
+        },
+        tol=0.05,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -19588,6 +19607,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "485-mc-trial-number-metric": check_v3_485_mc_trial_number_metric,
     "v3_486_rf_source_info_registration": check_v3_486_rf_source_info_registration,
     "486-rf-source-info-registration": check_v3_486_rf_source_info_registration,
+    "v3_487_table_model_2d_array_surface": check_v3_487_table_model_2d_array_surface,
+    "487-table-model-2d-array-surface": check_v3_487_table_model_2d_array_surface,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

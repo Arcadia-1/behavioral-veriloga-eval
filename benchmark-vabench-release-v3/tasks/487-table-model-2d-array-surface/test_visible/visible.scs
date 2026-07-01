@@ -1,4 +1,12 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "table_model_2d_array_surface.va"
+
+Vx (x 0) vsource type=pwl wave=[0 0.0 20n 0.0 21n 1.0 60n 1.0 61n 1.0 100n 1.0]
+Vy (y 0) vsource type=pwl wave=[0 0.0 20n 0.0 21n 0.0 60n 0.0 61n 1.0 100n 1.0]
+
+XDUT (x y out) table_model_2d_array_surface
+
+tran tran stop=100n
+save x y out
