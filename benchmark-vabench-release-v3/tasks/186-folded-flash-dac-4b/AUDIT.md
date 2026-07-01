@@ -1,11 +1,7 @@
-# Source Folded Flash DAC 4b Audit
+# Folded Flash DAC 4b Audit
 
-- Source: `zhangad/dac_4bit_flash_ideal.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: folded 4-bit flash DAC code-to-voltage reconstruction.
-- Note: the imported solution uses an event-updated equivalent of the source
-  threshold comparisons so EVAS and Spectre sample the same stable DAC code.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch13-evas/186-folded-flash-dac-4b`
-  - `WORK/source-import-batch13-spectre/186-folded-flash-dac-4b`
+- Gate 1: kept as the folded 4-bit DAC row. The near-duplicate `293-flash-folded-dac4` should not be counted separately unless it is rewritten into a distinct folded-DAC behavior.
+- Public contract: decode lower-bit subcode weights 4, 2, and 1, use the MSB as the folded branch selector, and scale the folded code by `vref/16`.
+- Cadence reference correspondence: the local Cadence DAC reference models code-to-voltage conversion and clock/transition-aware output driving; this benchmark uses the same code-to-voltage concept with a folded transfer.
+- Duplicate review: `186` and `293` implement the same folded branch behavior under different names. `186` is retained because its public prompt is cleaner and the solution already exposes transition timing parameters.
+- Evaluation note: hidden coverage should use a code sequence distinct from visible smoke, and checker expectations should be derived from saved input code bits.
