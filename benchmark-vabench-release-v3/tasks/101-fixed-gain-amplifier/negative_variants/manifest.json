@@ -1,10 +1,24 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "gain_amp_fixed.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Drives both outputs to zero instead of amplifying the differential input.",
+      "path": "negative_variants/neg_001_zero/gain_amp_fixed.va"
+    },
+    {
+      "id": "neg_002_unity_gain",
+      "description": "Passes the input differential signal with unity gain instead of using ACTUAL_GAIN.",
+      "path": "negative_variants/neg_002_unity_gain/gain_amp_fixed.va"
+    },
+    {
+      "id": "neg_003_inverted_polarity",
+      "description": "Uses the requested gain but reverses the differential output polarity.",
+      "path": "negative_variants/neg_003_inverted_polarity/gain_amp_fixed.va"
+    },
+    {
+      "id": "neg_004_ignores_gain_parameter",
+      "description": "Hard-codes the old flow gain and fails hidden benches that vary ACTUAL_GAIN.",
+      "path": "negative_variants/neg_004_ignores_gain_parameter/gain_amp_fixed.va"
     }
   ]
 }

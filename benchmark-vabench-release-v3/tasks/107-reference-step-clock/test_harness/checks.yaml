@@ -1,0 +1,26 @@
+syntax:
+  must_include:
+    - "@(timer("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+dut_compile:
+  backend: "evas"
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "reference_clock_pre_step_period"
+    - "reference_clock_post_step_period"
+    - "reference_clock_switch_near_t_switch"
+    - "reference_clock_50_percent_duty"
+    - "reference_clock_voltage_rails"
+  public_observables:
+    - "CLK"
+parity:
+  reference: "spectre"
+  status: "needs_rerun"
+  notes:
+    - "Task 107 was split from the CPPLL system-level checker into a standalone reference-step-clock checker; rerun EVAS/Spectre certification after this task change."

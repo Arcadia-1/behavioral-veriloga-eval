@@ -16,46 +16,38 @@ module dither_adder(
 
 ## Required Behavior
 
-This task asks for the `dither_adder` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_gain_extraction_convergence_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+Implement a standalone differential dither injection block. The module receives
+a differential residual signal on `VRES_P/VRES_N` and a voltage-coded dither
+polarity input `DPN`. When `DPN` is above the threshold, inject a positive
+differential dither; when it is below the threshold, inject a negative
+differential dither.
 
-Gold-source design notes carried into the public contract:
+The injected differential offset is controlled by parameter `DITHER_AMP`
+and must be split symmetrically between the two outputs:
 
 ```text
-// Differential dither adder — benchmark gold style.
-// Keeps a direct contribution instead of the original transition(V(VRES_P)+...)
-// form. This is no longer required for EVAS acceptance; the gold keeps the
-// lower-warning, simpler output style for benchmark stability.
-//
-//   dither_diff = +DITHER_AMP  when DPN > vth
-//   dither_diff = -DITHER_AMP  when DPN < vth
-//   VOUT_P = VRES_P + dither_diff / 2
-//   VOUT_N = VRES_N - dither_diff / 2
+dither_diff = +DITHER_AMP when V(DPN) > vth
+dither_diff = -DITHER_AMP when V(DPN) <= vth
+VOUT_P = VRES_P + dither_diff / 2
+VOUT_N = VRES_N - dither_diff / 2
 ```
 
-Original public behavior context:
+This keeps the output common-mode equal to the input common-mode while adding
+only the requested differential dither. Keep the block usable with different
+`DITHER_AMP` values selected by the testbench.
 
-# Dithered differential gain extraction flow Testbench Companion
+Public parameters:
 
-Write a Spectre transient testbench for the `Dithered differential gain extraction flow` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+- `DITHER_AMP = 0.014063 V`: nonnegative differential dither magnitude.
+- `vth = 0.45 V`: voltage threshold for the `DPN` polarity input.
+- `vdd = 0.9 V`: compatibility/supply-domain parameter retained by the module
+  interface. The standalone dither operation preserves input common-mode and
+  does not add a `vdd/2` output offset.
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+Honor legal testbench overrides of these parameters. Use `vth` to interpret the
+voltage-coded `DPN` polarity input, and keep the model pure behavioral
+Verilog-A. Do not use
+transistor-level devices, AC/noise analysis, private test hooks, or
+simulator-private side channels.
 
-Domain: pure voltage-domain behavioral Verilog-A.
-
-Public requirements:
-
-- include a transient `tran` analysis
-- save the public observables needed by the public behavior checks
-- include or instantiate the Verilog-A behavioral module under test
-- satisfy the named behavior checks using only public waveforms and side outputs
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Only `dither_adder.va` is graded as the candidate implementation.

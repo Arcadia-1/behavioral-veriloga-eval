@@ -94,7 +94,7 @@ module cppll_timer_ref (
                 if (integ < integ_min) integ = integ_min;
                 if (integ > integ_max) integ = integ_max;
 
-                vctrl = vcm + kp * phase_err + integ;
+                vctrl = vctrl_init;
                 if (vctrl < vl) vctrl = vl;
                 if (vctrl > vh) vctrl = vh;
 

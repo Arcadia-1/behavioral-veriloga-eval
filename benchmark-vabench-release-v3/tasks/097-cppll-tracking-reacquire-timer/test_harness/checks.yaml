@@ -1,0 +1,28 @@
+syntax:
+  must_include:
+    - "@(cross("
+    - "@(timer("
+    - "transition("
+  must_not_include:
+    - "I("
+    - "ddt("
+    - "idt("
+tb_compile:
+  backend: "evas"
+sim_correct:
+  checks:
+    - "cppll_reacquires_after_reference_step"
+    - "late_window_tracks_new_reference"
+    - "vctrl_stays_bounded"
+    - "vctrl_changes_during_reacquire"
+  public_observables:
+    - "ref_clk"
+    - "fb_clk"
+    - "dco_clk"
+    - "vctrl_mon"
+    - "lock"
+parity:
+  reference: "spectre"
+  status: "needs_rerun"
+  notes:
+    - "Current v3 audit refresh validates EVAS only by request; Spectre parity should be rerun before final release certification."

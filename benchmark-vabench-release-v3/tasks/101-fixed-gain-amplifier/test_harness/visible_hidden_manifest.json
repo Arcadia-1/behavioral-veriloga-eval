@@ -1,16 +1,11 @@
 {
   "task_id": "v3_101_fixed_gain_amplifier",
-  "source_task": "vbr1_l2_gain_extraction_convergence_measurement_flow",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_gain_extraction_convergence_measurement_flow_tb",
+  "checker_id": "v3_101_fixed_gain_amplifier",
   "primary_target": "gain_amp_fixed.va",
   "artifact_targets": [
-    "gain_amp_fixed.va",
-    "vin_src.va",
-    "lfsr.va",
-    "dither_adder.va"
+    "gain_amp_fixed.va"
   ],
-  "hidden_testbench": "tb_gain_extraction_ref.scs",
+  "hidden_testbench": "test_hidden/tests/tb_gain_amp_fixed_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "status": "standalone_l1_component_pending_fresh_dual_rerun"
 }
